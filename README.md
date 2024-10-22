@@ -1,2 +1,1 @@
-# 
-![ioul io-2](https://github.com/user-attachments/assets/b5da846f-f7db-4270-a1dc-61965829bb95)
+<img width="1440" alt="Screenshot 2024-10-21 at 19 15 13" src="https://github.com/user-attachments/assets/961e753b-2e41-45c7-a799-5af5e6066ca5">

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IOUL</title>
+    <title>My Image</title>
     <style>
         body {
             display: flex;
@@ -11,23 +11,35 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #ffffff;
+            background-color: #f4f4f4;
         }
         img {
             max-width: 100%;
             height: auto;
             cursor: pointer;
         }
+        .fullscreen-message {
+            position: absolute;
+            top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
-    <img src="ioul.jpeg" alt="My Image" id="myImage">
+    <div class="fullscreen-message" id="fullscreenMessage">Click anywhere to enter full-screen mode</div>
+    <img src="my-image.jpg" alt="My Image" id="myImage">
     
     <script>
         const img = document.getElementById('myImage');
+        const message = document.getElementById('fullscreenMessage');
 
-        img.addEventListener('click', () => {
-            // Check if fullscreen is available
+        // Add event listener for the first click to enter fullscreen
+        document.body.addEventListener('click', () => {
+            // Hide the message after the user interacts
+            message.style.display = 'none';
+
+            // Request full-screen mode
             if (img.requestFullscreen) {
                 img.requestFullscreen();
             } else if (img.mozRequestFullScreen) { // Firefox
@@ -37,7 +49,7 @@
             } else if (img.msRequestFullscreen) { // IE/Edge
                 img.msRequestFullscreen();
             }
-        });
+        }, { once: true }); // Ensure the listener only triggers once
     </script>
 </body>
 </html>

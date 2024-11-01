@@ -41,7 +41,7 @@ body {
 
 /* Fourth line positioned 458px from the left and 80px from the right edge */
 .fourth {
-    top: 112px;
+    top: 113px;
     left: 514px;
     width: calc(100vw - 508px - 90px); /* Full screen width minus left and right offsets */
 }

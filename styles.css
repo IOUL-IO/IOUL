@@ -9,7 +9,7 @@ body {
     height: 800px;
 }
 
-/* Style for the original line positioned in the upper left corner */
+/* Style for the lines */
 .line {
     position: absolute;
     width: 294px;
@@ -24,5 +24,10 @@ body {
 
 .second {
     top: 228px; /* 100px + 128px = 228px */
+    left: 80px;
+}
+
+.third {
+    top: 661px; /* 228px + 433px = 661px */
     left: 80px;
 }

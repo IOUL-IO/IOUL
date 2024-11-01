@@ -1,42 +1,94 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Login Area</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f9f9f9;
-    font-family: Arial, sans-serif;
-}
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
 
-.container {
-    width: 60%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #ffffff;
-}
+        .container {
+            width: 60%;
+            max-width: 600px;
+        }
 
-.row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 20px 0;
-}
+        .line {
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
 
-.input-line {
-    flex: 1;
-    height: 1px;
-    background-color: #ddd;
-    margin: 0 10px;
-}
+        .clickable-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px 0;
+            color: #888;
+            font-size: 14px;
+        }
 
-.dots {
-    color: #bbb;
-    font-size: 24px;
-    font-weight: bold;
-}
+        .clickable-row:hover {
+            color: #333;
+        }
+
+        .hidden-fields {
+            display: none;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+
+        .hidden-fields input {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="line"></div>
+    
+    <div class="clickable-row" onclick="toggleFields()">
+        <span>Click here to enter details</span>
+        <span>></span>
+    </div>
+    
+    <div class="line"></div>
+    
+    <div id="hiddenFields" class="hidden-fields">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter Username">
+        
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter Password">
+    </div>
+
+    <div class="line"></div>
+</div>
+
+<script>
+    function toggleFields() {
+        const hiddenFields = document.getElementById("hiddenFields");
+        hiddenFields.style.display = hiddenFields.style.display === "flex" ? "none" : "flex";
+    }
+</script>
+
+</body>
+</html>

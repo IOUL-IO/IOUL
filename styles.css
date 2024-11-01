@@ -13,22 +13,34 @@ body {
 /* Style for the lines */
 .line {
     position: absolute;
-    width: 294px;
     height: 1px;
     background-color: #e6e6e6;
 }
 
+/* Positioning each line */
+
 .original {
     top: 100px;
     left: 80px;
+    width: 294px;
 }
 
 .second {
-    top: 233px; /* 100px + 128px = 228px */
+    top: 228px; /* 100px + 128px = 228px */
     left: 80px;
+    width: 294px;
 }
 
 .third {
-    top: 670px; /* 228px + 433px = 661px */
+    top: 661px; /* 228px + 433px = 661px */
     left: 80px;
+    width: 294px;
 }
+
+/* New fourth line, positioned 129px to the right of the first line */
+.fourth {
+    top: 100px; /* Aligned with the original line */
+    left: 209px; /* 80px + 129px = 209px */
+    width: 742px;
+}
+

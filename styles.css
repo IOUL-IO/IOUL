@@ -1,13 +1,15 @@
-/* Set the body to have a fixed size of 1280x800 pixels */
-body {
+/* Reset default styles */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
     background-color: #ffffff;
-    display: flex;
-    justify-content: start;
-    align-items: start;
-    width: 1280px;
-    height: 800px;
     position: relative;
+    min-height: 100vh;
+    min-width: 100vw;
 }
 
 /* Style for the lines */
@@ -37,9 +39,10 @@ body {
     width: 294px;
 }
 
-/* New fourth line */
+/* Fourth line positioned 458px from the left and 80px from the right edge */
 .fourth {
-    top: 100px; /* Aligned with the original line */
-    left: 458px; /* Positioned 458px from the left edge */
-    width: 742px;
+    top: 100px;
+    left: 458px;
+    width: calc(100vw - 458px - 80px); /* Full screen width minus left and right offsets */
 }
+

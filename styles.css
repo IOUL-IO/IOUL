@@ -9,12 +9,20 @@ body {
     height: 800px;
 }
 
-/* Style for the line positioned in the upper left corner */
+/* Style for the original line positioned in the upper left corner */
 .line {
     position: absolute;
-    top: 100px;
-    left: 80px;
     width: 294px;
     height: 1px;
     background-color: #e6e6e6;
+}
+
+.original {
+    top: 100px;
+    left: 80px;
+}
+
+.second {
+    top: 228px; /* 100px + 128px = 228px */
+    left: 80px;
 }

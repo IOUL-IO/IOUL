@@ -4,52 +4,40 @@
     padding: 0;
 }
 
-body {
+body, html {
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background-color: #f9f9f9;
-    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    font-family: 'Roboto', sans-serif; /* Substitute for Distill Expanded */
 }
 
 .container {
-    width: 80%;
-    max-width: 600px;
-    padding: 20px;
-    background-color: #ffffff;
+    width: 90%;
+    max-width: 800px;
 }
 
 .row {
     display: flex;
     align-items: center;
-    margin: 20px 0;
+    margin: 25px 0; /* Spacing between lines */
 }
 
-.input-line {
+.line {
     flex-grow: 1;
-    border-bottom: 1px solid #ddd;
-    margin-right: 10px;
-    height: 2px;
+    border-bottom: 1px solid #e6e6e6;
+    height: 1px;
 }
 
-.input-line:last-child {
-    margin-right: 0;
+.line + .line {
+    margin-left: 20px; /* Space between the two lines in the first row */
 }
 
 .options {
-    color: #ccc;
-    font-size: 20px;
-    font-weight: bold;
+    color: #e6e6e6;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif; /* Backup font */
+    font-weight: 300;
     margin-left: 10px;
-    cursor: pointer;
-}
-
-.options:hover {
-    color: #999;
-}
-
-/* Spacing for the first row with two fields */
-.row:first-child .input-line {
-    margin-right: 10px;
 }

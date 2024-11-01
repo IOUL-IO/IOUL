@@ -50,14 +50,14 @@ body {
 .dashed {
     top: 260px;
     left: 514px;
-    width: 756px;
+    width: 758px;
     border-top: 1px dashed;
     border-color: #e6e6e6;
     background: repeating-linear-gradient(
         to right,
         #e6e6e6 0px,
-        #e6e6e6 5px,
-        #ffffff 5px,
-        #ffffff 10px
+        #e6e6e6 10px,
+        #ffffff 10px,
+        #ffffff 20px
     );
 }

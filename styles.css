@@ -40,7 +40,7 @@ body {
 /* New fourth line, positioned 129px to the right of the first line */
 .fourth {
     top: 100px; /* Aligned with the original line */
-    left: 209px; /* 80px + 129px = 209px */
+    left: 458px; /* 80px + 129px = 209px */
     width: 742px;
 }
 

@@ -22,41 +22,41 @@ body {
 /* Positioning each line */
 
 .original {
-    top: 112px;
+    top: 113px;
     left: 90px;
-    width: 332px;
+    width: 331px;
 }
 
 .second {
-    top: 260px; 
+    top: 261px; 
     left: 90px;
-    width: 332px;
+    width: 331px;
 }
 
 .third {
-    top: 753px; 
+    top: 752px; 
     left: 90px;
-    width: 332px;
+    width: 331px;
 }
 
 .fourth {
     top: 112px;
-    left: 516px;
-    width: 830px;
+    left: 515px;
+    width: 833px;
 }
 
 /* New dashed line */
 .dashed {
     top: 260px;
-    left: 516px;
-    width: 759px;
+    left: 515px;
+    width: 758px;
     border-top: 1px dashed;
     border-color: #e6e6e6;
     background: repeating-linear-gradient(
         to right,
         #e6e6e6 0px,
-        #e6e6e6 21px,
-        #ffffff 21px,
-        #ffffff 42px
+        #e6e6e6 5px,
+        #ffffff 5px,
+        #ffffff 20px
     );
 }

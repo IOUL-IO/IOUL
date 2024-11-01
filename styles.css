@@ -14,9 +14,8 @@ body {
 }
 
 .container {
-    width: 60%;
+    width: 80%;
     max-width: 600px;
-    margin: 0 auto;
     padding: 20px;
     background-color: #ffffff;
 }
@@ -24,19 +23,33 @@ body {
 .row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     margin: 20px 0;
 }
 
 .input-line {
-    flex: 1;
-    height: 1px;
-    background-color: #ddd;
-    margin: 0 10px;
+    flex-grow: 1;
+    border-bottom: 1px solid #ddd;
+    margin-right: 10px;
+    height: 2px;
 }
 
-.dots {
-    color: #bbb;
-    font-size: 24px;
+.input-line:last-child {
+    margin-right: 0;
+}
+
+.options {
+    color: #ccc;
+    font-size: 20px;
     font-weight: bold;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.options:hover {
+    color: #999;
+}
+
+/* Spacing for the first row with two fields */
+.row:first-child .input-line {
+    margin-right: 10px;
 }

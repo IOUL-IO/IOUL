@@ -11,5 +11,22 @@
     <div class="line second"></div>
     <div class="line third"></div>
     <div class="line fourth"></div> <!-- New line positioned 458px from the left and 80px from the right -->
+
+    <script>
+        // Function to enter full screen on double-click
+        document.addEventListener('dblclick', () => {
+            if (!document.fullscreenElement) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                    document.documentElement.msRequestFullscreen();
+                }
+            }
+        });
+    </script>
 </body>
 </html>

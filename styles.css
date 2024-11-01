@@ -41,22 +41,22 @@ body {
 
 .fourth {
     top: 113px;
-    left: 514px;
+    left: 515px;
     width: 800px;
 }
 
 /* New dashed line */
 .dashed {
     top: 261px;
-    left: 514px;
-    width: 760px;
+    left: 515px;
+    width: 759px;
     border-top: 1px dashed;
     border-color: #e6e6e6;
     background: repeating-linear-gradient(
         to right,
         #e6e6e6 0px,
-        #e6e6e6 20px,
-        #ffffff 20px,
-        #ffffff 40px
+        #e6e6e6 11px,
+        #ffffff 11px,
+        #ffffff 22px
     );
 }

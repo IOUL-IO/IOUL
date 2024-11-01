@@ -22,19 +22,19 @@ body {
 /* Positioning each line */
 
 .original {
-    top: 112px;
+    top: 113px;
     left: 90px;
     width: 331px;
 }
 
 .second {
-    top: 260px; 
+    top: 261px; 
     left: 90px;
     width: 331px;
 }
 
 .third {
-    top: 752px; 
+    top: 753px; 
     left: 90px;
     width: 331px;
 }

@@ -3,94 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Initial Layout</title>
-    <style>
-        /* General Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f9f9f9;
-        }
-
-        .container {
-            width: 60%;
-            max-width: 600px;
-        }
-
-        /* Styling for each line divider */
-        .line {
-            border-top: 1px solid #ddd;
-            margin: 20px 0;
-        }
-
-        /* Styling for clickable rows */
-        .clickable-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #aaa;
-            font-size: 14px;
-            padding: 10px 0;
-        }
-
-        /* Styling the right-aligned text (dots) */
-        .right-text {
-            color: #ccc;
-            font-size: 12px;
-        }
-    </style>
+    <title>Simple Form Layout</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="container">
+        <!-- First Row -->
+        <div class="row">
+            <div class="input-line"></div>
+            <div class="input-line"></div>
+        </div>
+        
+        <!-- Second Row -->
+        <div class="row">
+            <div class="input-line"></div>
+        </div>
 
-<div class="container">
-    <!-- Top line -->
-    <div class="line"></div>
-    
-    <!-- Placeholder row with right-aligned dots -->
-    <div class="clickable-row">
-        <span> </span>
-        <span class="right-text">··········</span>
+        <!-- Third Row -->
+        <div class="row">
+            <div class="input-line"></div>
+            <span class="dots">···</span>
+        </div>
+
+        <!-- Fourth Row -->
+        <div class="row">
+            <div class="input-line"></div>
+            <span class="dots">···</span>
+        </div>
+
+        <!-- Fifth Row -->
+        <div class="row">
+            <div class="input-line"></div>
+            <span class="dots">···</span>
+        </div>
     </div>
-    
-    <!-- Line divider -->
-    <div class="line"></div>
-
-    <!-- Placeholder row with right-aligned dots -->
-    <div class="clickable-row">
-        <span> </span>
-        <span class="right-text">··········</span>
-    </div>
-
-    <!-- Line divider -->
-    <div class="line"></div>
-
-    <!-- Placeholder row with right-aligned dots -->
-    <div class="clickable-row">
-        <span> </span>
-        <span class="right-text">··········</span>
-    </div>
-
-    <!-- Line divider -->
-    <div class="line"></div>
-
-    <!-- Placeholder row with right-aligned dots -->
-    <div class="clickable-row">
-        <span> </span>
-        <span class="right-text">··········</span>
-    </div>
-
-    <!-- Bottom line -->
-    <div class="line"></div>
-</div>
-
 </body>
 </html>

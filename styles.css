@@ -22,26 +22,26 @@ body {
 /* Positioning each line */
 
 .original {
-    top: 110px;
-    left: 89px;
-    width: 327px;
+    top: 112px;
+    left: 90px;
+    width: 330px;
 }
 
 .second {
-    top: 256px; 
-    left: 89px;
-    width: 327px;
+    top: 260px; 
+    left: 90px;
+    width: 330px;
 }
 
 .third {
-    top: 742px; 
-    left: 89px;
-    width: 327px;
+    top: 752px; 
+    left: 90px;
+    width: 330px;
 }
 
 /* Fourth line positioned 458px from the left and 80px from the right edge */
 .fourth {
-    top: 110px;
+    top: 112px;
     left: 508px;
     width: calc(100vw - 508px - 89px); /* Full screen width minus left and right offsets */
 }

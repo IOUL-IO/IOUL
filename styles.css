@@ -56,8 +56,8 @@ body {
     background: repeating-linear-gradient(
         to right,
         #e6e6e6 0px,
-        #e6e6e6 4px,
-        #ffffff 4px,
-        #ffffff 8px
+        #e6e6e6 5px,
+        #ffffff 5px,
+        #ffffff 10px
     );
 }

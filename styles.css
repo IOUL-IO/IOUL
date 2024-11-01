@@ -37,9 +37,9 @@ body {
     width: 294px;
 }
 
+/* New fourth line */
 .fourth {
-    top: 100px; 
-    left: 458px;
+    top: 100px; /* Aligned with the original line */
+    left: 458px; /* Positioned 458px from the left edge */
     width: 742px;
 }
-

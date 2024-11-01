@@ -46,3 +46,18 @@ body {
     width: calc(100vw - 508px - 90px); /* Full screen width minus left and right offsets */
 }
 
+/* New dashed line */
+.dashed {
+    top: 260px;
+    left: 514px;
+    width: 742px;
+    border-top: 1px dashed;
+    border-color: #e6e6e6;
+    background: repeating-linear-gradient(
+        to right,
+        #e6e6e6 0px,
+        #e6e6e6 4px,
+        #ffffff 4px,
+        #ffffff 8px
+    );
+}

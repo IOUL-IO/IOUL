@@ -24,25 +24,25 @@ body {
 .original {
     top: 112px;
     left: 90px;
-    width: 330px;
+    width: 331px;
 }
 
 .second {
     top: 260px; 
     left: 90px;
-    width: 330px;
+    width: 331px;
 }
 
 .third {
     top: 752px; 
     left: 90px;
-    width: 330px;
+    width: 331px;
 }
 
 /* Fourth line positioned 458px from the left and 80px from the right edge */
 .fourth {
     top: 112px;
-    left: 508px;
-    width: calc(100vw - 508px - 89px); /* Full screen width minus left and right offsets */
+    left: 514px;
+    width: calc(100vw - 508px - 90px); /* Full screen width minus left and right offsets */
 }
 

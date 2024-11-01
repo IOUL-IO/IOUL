@@ -24,11 +24,11 @@ body {
 }
 
 .second {
-    top: 228px; /* 100px + 128px = 228px */
+    top: 233px; /* 100px + 128px = 228px */
     left: 80px;
 }
 
 .third {
-    top: 661px; /* 228px + 433px = 661px */
+    top: 670px; /* 228px + 433px = 661px */
     left: 80px;
 }

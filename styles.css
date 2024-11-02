@@ -48,14 +48,14 @@ body {
 .dashed {
     top: 260.5px;
     left: 515px;
-    width: 761px;
+    width: 760px;
     height: 1px;
     background: linear-gradient(
         to right,
         #e6e6e6 0px,
-        #e6e6e6 5px, /* Dash length */
-        #ffffff 5px,
-        #ffffff 10px /* Gap length matching the dash */
+        #e6e6e6 6px, /* Dash length */
+        #ffffff 6px,
+        #ffffff 12px /* Gap length matching the dash */
     );
-    background-size: 10px 1px; /* Adjusts the repeat size for even smaller spacing */
+    background-size: 12px 1px; /* Adjusts the repeat size for increased spacing */
 }

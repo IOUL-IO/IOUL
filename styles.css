@@ -53,9 +53,9 @@ body {
     background: linear-gradient(
         to right,
         #e6e6e6 0px,
-        #e6e6e6 10px, /* Dash length */
-        #ffffff 10px,
-        #ffffff 20px /* Gap length matching the dash */
+        #e6e6e6 7px, /* Dash length */
+        #ffffff 7px,
+        #ffffff 14px /* Gap length matching the dash */
     );
-    background-size: 20px 1px; /* Adjusts the repeat size for equal spacing */
+    background-size: 14px 1px; /* Adjusts the repeat size for smaller spacing */
 }

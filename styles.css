@@ -28,7 +28,7 @@ body {
 }
 
 .second {
-    top: 260px; 
+    top: 260.5px; 
     left: 90px;
     width: 331px;
 }
@@ -46,9 +46,9 @@ body {
 }
 
 .dashed {
-    top: 260px;
+    top: 260.5px;
     left: 515px;
-    width: 764px;
+    width: 761px;
     height: 1px;
     background: linear-gradient(
         to right,

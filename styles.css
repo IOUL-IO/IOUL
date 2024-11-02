@@ -45,17 +45,17 @@ body {
     width: 834px;
 }
 
-/* New dashed line */
 .dashed {
     top: 260px;
     left: 515px;
     width: 758px;
-    border-top: 1px dashed;
-    background: repeating-linear-gradient(
+    height: 1px;
+    background: linear-gradient(
         to right,
         #e6e6e6 0px,
         #e6e6e6 10px, /* Dash length */
         #ffffff 10px,
-        #ffffff 20px /* Gap length, matching the dash */
+        #ffffff 20px /* Gap length matching the dash */
     );
+    background-size: 20px 1px; /* Adjusts the repeat size for equal spacing */
 }

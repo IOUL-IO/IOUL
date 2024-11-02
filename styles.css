@@ -59,3 +59,8 @@ body {
     );
     background-size: 12px 1px; /* Adjusts the repeat size for increased spacing */
 }
+
+.second-dashed {
+    top: 405px; /* 405px from the top */
+    left: 515px; /* 515px from the left */
+}

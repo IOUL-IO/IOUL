@@ -95,8 +95,18 @@ body {
 
 .second-time-text {
     position: absolute;
-    top: 424px; /* Adjusted to be 259px below the original */
-    left: 1296px; /* Same left position */
+    top: 424px; 
+    left: 1296px; 
+    font-size: 0.28rem;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #a1a1a1;
+    letter-spacing: 2px;
+}
+
+.third-time-text {
+    position: absolute;
+    top: 588px; 
+    left: 1296px; 
     font-size: 0.28rem;
     font-family: 'Distill Expanded', sans-serif;
     color: #a1a1a1;

@@ -74,3 +74,36 @@ body {
     top: 752px; /* 695px from the top */
     left: 515px; /* 515px from the left */
 }
+
+.fourth-dashed {
+    top: 695px; /* 695px from the top */
+    left: 515px; /* 515px from the left */
+}
+
+/* Styling for the text labels */
+.time-label {
+    position: absolute;
+    font-size: 3rem;
+    color: #000; /* Black color for the text */
+}
+
+/* Positioning for each text label */
+.first-label {
+    top: 260px;
+    left: calc(514px + 742px + 10px); /* Position 10px to the right of the first dashed line */
+}
+
+.second-label {
+    top: 405px;
+    left: calc(515px + 742px + 10px); /* Position 10px to the right of the second dashed line */
+}
+
+.third-label {
+    top: 550px;
+    left: calc(515px + 742px + 10px); /* Position 10px to the right of the third dashed line */
+}
+
+.fourth-label {
+    top: 695px;
+    left: calc(515px + 742px + 10px); /* Position 10px to the right of the fourth dashed line */
+}

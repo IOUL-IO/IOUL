@@ -95,7 +95,7 @@ body {
 
 .second-time-text {
     position: absolute;
-    top: 518px; /* Adjusted to be 259px below the original */
+    top: 424px; /* Adjusted to be 259px below the original */
     left: 1296px; /* Same left position */
     font-size: 0.28rem;
     font-family: 'Distill Expanded', sans-serif;

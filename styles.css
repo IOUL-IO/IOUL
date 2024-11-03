@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'Distill Expanded';
+    src: url('font.woff2') format('woff2'),
+         url('font.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* Reset default styles */
 * {
     margin: 0;
@@ -73,4 +81,13 @@ body {
 .fourth-dashed {
     top: 752px; /* 695px from the top */
     left: 515px; /* 515px from the left */
+    
+}
+.time-text {
+    position: absolute;
+    top: 260.5px;
+    left: 2000px;
+    font-size: 3rem; /* Adjust this if needed */
+    font-family: 'Distill Expanded', sans-serif;
+    color: #e6e6e6;
 }

@@ -1,0 +1,76 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #ffffff;
+    position: relative;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+/* Style for the lines */
+.line {
+    position: absolute;
+    height: 1px;
+    background-color: #e6e6e6;
+}
+
+/* Positioning each line */
+
+.original {
+    top: 112.5px;
+    left: 90px;
+    width: 331px;
+}
+
+.second {
+    top: 260.5px; 
+    left: 90px;
+    width: 331px;
+}
+
+.third {
+    top: 752px; 
+    left: 90px;
+    width: 331px;
+}
+
+.fourth {
+    top: 112.5px;
+    left: 515px;
+    width: 835px;
+}
+
+.dashed {
+    top: 260.5px;
+    left: 515px;
+    width: 760px;
+    height: 1px;
+    background: linear-gradient(
+        to right,
+        #e6e6e6 0px,
+        #e6e6e6 6px, /* Dash length */
+        #ffffff 6px,
+        #ffffff 12px /* Gap length matching the dash */
+    );
+    background-size: 12px 1px; /* Adjusts the repeat size for increased spacing */
+}
+
+.second-dashed {
+    top: 424px; /* 405px from the top */
+    left: 515px; /* 515px from the left */
+}
+
+.third-dashed {
+    top: 588px; /* 550px from the top */
+    left: 515px; /* 515px from the left */
+}
+
+.fourth-dashed {
+    top: 752px; /* 695px from the top */
+    left: 515px; /* 515px from the left */
+}

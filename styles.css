@@ -83,11 +83,12 @@ body {
     left: 515px; /* 515px from the left */
     
 }
+
 .time-text {
     position: absolute;
-    top: 260.5px;
-    left: 2000px;
-    font-size: 3rem; /* Adjust this if needed */
+    top: 260.5px; /* Adjust this as needed */
+    left: 1000px; /* Position 1000px from the left */
+    font-size: 0.8rem; /* Smaller font size */
     font-family: 'Distill Expanded', sans-serif;
     color: #e6e6e6;
 }

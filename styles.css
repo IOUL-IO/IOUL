@@ -86,9 +86,9 @@ body {
 
 .time-text {
     position: absolute;
-    top: 260.5px; /* Adjust this as needed */
-    left: 1000px; /* Position 1000px from the left */
-    font-size: 0.8rem; /* Smaller font size */
+    top: 255px; 
+    left: 1500px; 
+    font-size: 0.4rem; 
     font-family: 'Distill Expanded', sans-serif;
     color: #e6e6e6;
 }

@@ -89,27 +89,27 @@ body {
     left: 1296px; 
     font-size: 0.28rem; 
     font-family: 'Distill Expanded', sans-serif;
-    color: #aaaaaa;
+    color: #a1a1a1;
     letter-spacing: 2px;
 }
 
 .second-time-text {
     position: absolute;
-    top: 422px; 
+    top: 423px; 
     left: 1296px; 
     font-size: 0.28rem;
     font-family: 'Distill Expanded', sans-serif;
-    color: #aaaaaa;
+    color: #a1a1a1;
     letter-spacing: 2px;
 }
 
 .third-time-text {
     position: absolute;
-    top: 586px; 
+    top: 587px; 
     left: 1296px; 
     font-size: 0.28rem;
     font-family: 'Distill Expanded', sans-serif;
-    color: #aaaaaa;
+    color: #a1a1a1;
     letter-spacing: 2px;
 }
 
@@ -119,6 +119,6 @@ body {
     left: 1300px; 
     font-size: 0.28rem;
     font-family: 'Distill Expanded', sans-serif;
-    color: #aaaaaa;
+    color: #a1a1a1;
     letter-spacing: 2px;
 }

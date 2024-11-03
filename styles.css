@@ -85,10 +85,10 @@ body {
 
 .time-text {
     position: absolute;
-    top: 255px; 
-    left: 1200px; 
+    top: 258.5px; 
+    left: 1300px; 
     font-size: 0.3rem; 
     font-family: 'Distill Expanded', sans-serif;
-    color: #e6e6e6;
-    letter-spacing: 4px;
+    color: #747474;
+    letter-spacing: 2px;
 }

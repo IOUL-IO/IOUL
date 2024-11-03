@@ -92,3 +92,13 @@ body {
     color: #a1a1a1;
     letter-spacing: 2px;
 }
+
+.second-time-text {
+    position: absolute;
+    top: 518px; /* Adjusted to be 259px below the original */
+    left: 1296px; /* Same left position */
+    font-size: 0.28rem;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #a1a1a1;
+    letter-spacing: 2px;
+}

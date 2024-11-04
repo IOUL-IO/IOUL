@@ -32,7 +32,7 @@ body {
 
 .fade-in {
     opacity: 0;
-    animation: fade-in 1s ease-in-out 2s forwards; /* 2s delay, 1s duration */
+    animation: fade-in 1s ease-in-out 1s forwards; 
 }
 
 /* Style for the lines */
@@ -56,7 +56,7 @@ body {
 .third-time-text,
 .fourth-time-text {
     opacity: 0;
-    animation: fade-in 1s ease-in-out 2s forwards;
+    animation: fade-in 1s ease-in-out 1s forwards;
 }
 
 .original {

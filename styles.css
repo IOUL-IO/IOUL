@@ -20,6 +20,21 @@ body {
     min-width: 100vw;
 }
 
+/* Fade-in animation */
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fade-in 1s ease-in-out 2s forwards; /* 2s delay, 1s duration */
+}
+
 /* Style for the lines */
 .line {
     position: absolute;
@@ -28,6 +43,21 @@ body {
 }
 
 /* Positioning each line */
+.original,
+.second,
+.third,
+.fourth,
+.dashed,
+.second-dashed,
+.third-dashed,
+.fourth-dashed,
+.time-text,
+.second-time-text,
+.third-time-text,
+.fourth-time-text {
+    opacity: 0;
+    animation: fade-in 1s ease-in-out 2s forwards;
+}
 
 .original {
     top: 112.5px;
@@ -61,31 +91,31 @@ body {
     background: linear-gradient(
         to right,
         #e6e6e6 0px,
-        #e6e6e6 6px, /* Dash length */
+        #e6e6e6 6px,
         #ffffff 6px,
-        #ffffff 12px /* Gap length matching the dash */
+        #ffffff 12px
     );
-    background-size: 12px 1px; /* Adjusts the repeat size for increased spacing */
+    background-size: 12px 1px;
 }
 
 .second-dashed {
-    top: 424px; /* 405px from the top */
-    left: 515px; /* 515px from the left */
+    top: 424px;
+    left: 515px;
 }
 
 .third-dashed {
-    top: 588px; /* 550px from the top */
-    left: 515px; /* 515px from the left */
+    top: 588px;
+    left: 515px;
 }
 
 .fourth-dashed {
-    top: 752px; /* 695px from the top */
-    left: 515px; /* 515px from the left */
+    top: 752px;
+    left: 515px;
 }
 
 .time-text {
     position: absolute;
-    top: 260px; 
+    top: 259px; 
     left: 1296px; 
     font-size: 0.28rem; 
     font-family: 'Distill Expanded', sans-serif;

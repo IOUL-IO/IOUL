@@ -37,7 +37,7 @@ body {
 
 /* Apply fade-in animation when triggered */
 .fade-in-trigger .fade-in {
-    animation: fade-in 1s ease-in-out forwards;
+    animation: fade-in 0.2s ease-in-out forwards;
 }
 
 /* Style for the lines */

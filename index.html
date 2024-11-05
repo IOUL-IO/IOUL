@@ -27,9 +27,9 @@
             document.body.classList.add('fade-in-trigger');
         });
 
-        // Full-screen toggle on click
+        // Enter full-screen mode on first click, without exiting on subsequent clicks
         document.addEventListener('click', () => {
-            if (!document.fullscreenElement) {
+            if (!document.fullscreenElement) { // Only request full-screen if not already in full-screen
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -38,16 +38,6 @@
                     document.documentElement.webkitRequestFullscreen();
                 } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
                     document.documentElement.msRequestFullscreen();
-                }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) { // Firefox
-                    document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) { // IE/Edge
-                    document.msExitFullscreen();
                 }
             }
         });

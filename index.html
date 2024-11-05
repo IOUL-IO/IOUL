@@ -22,14 +22,10 @@
     <span class="time-text fourth-time-text fade-in">1:00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
     <script>
-        // Trigger fade-in effect on mouse-over
-        document.addEventListener('mouseover', () => {
-            document.body.classList.add('fade-in-trigger');
-        });
-
-        // Enter full-screen mode on first click, without exiting on subsequent clicks
+        // Full-screen and fade-in on first click
         document.addEventListener('click', () => {
-            if (!document.fullscreenElement) { // Only request full-screen if not already in full-screen
+            // Enter full-screen mode
+            if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -40,6 +36,11 @@
                     document.documentElement.msRequestFullscreen();
                 }
             }
+
+            // Trigger fade-in after a 1-second delay
+            setTimeout(() => {
+                document.body.classList.add('fade-in-trigger');
+            }, 1000); // 1 second delay before fade-in starts
         });
     </script>
 </body>

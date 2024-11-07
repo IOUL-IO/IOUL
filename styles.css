@@ -18,6 +18,7 @@ body {
     position: relative;
     min-height: 100vh;
     min-width: 100vw;
+    overflow: hidden; /* Prevents accidental scrolling */
 }
 
 /* Fade-in animation */
@@ -40,49 +41,84 @@ body {
     animation: fade-in 0.2s ease-in-out forwards;
 }
 
-/* Style for the lines */
+/* Default styling for the lines, using fixed pixels to keep layout consistent */
 .line {
     position: absolute;
-    height: 0.1vh; /* Relative height for better scaling */
+    height: 1px;
     background-color: #e6e6e6;
 }
 
 /* Positioning each line */
-.original { top: 12vh; left: 7vw; width: 25vw; }
-.second { top: 28vh; left: 7vw; width: 25vw; }
-.third { top: 80vh; left: 7vw; width: 25vw; }
-.fourth { top: 12vh; left: 40vw; width: 60vw; }
+.original { top: 112.5px; left: 90px; width: 331px; }
+.second { top: 260.5px; left: 90px; width: 331px; }
+.third { top: 752px; left: 90px; width: 331px; }
+.fourth { top: 112.5px; left: 515px; width: 835px; }
 
 .dashed {
-    top: 28vh;
-    left: 40vw;
-    width: 60vw;
-    height: 0.1vh;
+    top: 260.5px;
+    left: 515px;
+    width: 760px;
+    height: 1px;
     background: linear-gradient(
         to right,
         #e1e1e1 0px,
-        #e1e1e1 0.5vw,
-        #ffffff 0.5vw,
-        #ffffff 1vw
+        #e1e1e1 6px,
+        #ffffff 6px,
+        #ffffff 12px
     );
-    background-size: 1vw 0.1vh;
+    background-size: 12px 1px;
 }
 
-.second-dashed { top: 45vh; left: 40vw; }
-.third-dashed { top: 61vh; left: 40vw; }
-.fourth-dashed { top: 77vh; left: 40vw; }
+.second-dashed { top: 424px; left: 515px; }
+.third-dashed { top: 588px; left: 515px; }
+.fourth-dashed { top: 752px; left: 515px; }
 
 /* Styling for the time text */
 .time-text {
     position: absolute;
-    top: 28vh;
-    left: 70vw;
-    font-size: 1.5vh;
+    top: 260px;
+    left: 1296px;
+    font-size: 0.28rem;
     font-family: 'Distill Expanded', sans-serif;
     color: #a1a1a1;
-    letter-spacing: 0.2vw;
+    letter-spacing: 2px;
 }
 
-.second-time-text { top: 45vh; left: 70vw; }
-.third-time-text { top: 61vh; left: 70vw; }
-.fourth-time-text { top: 77vh; left: 70vw; }
+.second-time-text { top: 423px; left: 1296px; }
+.third-time-text { top: 587px; left: 1296px; }
+.fourth-time-text { top: 750px; left: 1300px; }
+
+/* Responsive adjustments for smaller screens */
+@media (max-height: 800px) {
+    .original, .second, .third, .fourth {
+        transform: scale(0.9); /* Scales down line elements slightly */
+        transform-origin: top left; /* Ensures scaling is consistent */
+    }
+    
+    .dashed, .second-dashed, .third-dashed, .fourth-dashed {
+        transform: scale(0.9);
+        transform-origin: top left;
+    }
+
+    .time-text, .second-time-text, .third-time-text, .fourth-time-text {
+        font-size: 0.25rem; /* Slightly smaller font */
+        left: 1200px; /* Adjust left position */
+    }
+}
+
+@media (max-height: 600px) {
+    .original, .second, .third, .fourth {
+        transform: scale(0.8); /* Further scale down for smaller screens */
+        transform-origin: top left;
+    }
+    
+    .dashed, .second-dashed, .third-dashed, .fourth-dashed {
+        transform: scale(0.8);
+        transform-origin: top left;
+    }
+
+    .time-text, .second-time-text, .third-time-text, .fourth-time-text {
+        font-size: 0.22rem;
+        left: 1100px;
+    }
+}

@@ -87,28 +87,3 @@ body {
 .second-time-text { top: 423px; left: 1296px; }
 .third-time-text { top: 587px; left: 1296px; }
 .fourth-time-text { top: 750px; left: 1300px; }
-
-/* Adjust positions when not in full-screen */
-.non-fullscreen .second {
-    top: 240px;
-}
-
-.non-fullscreen .third {
-    top: 732px;
-}
-
-.non-fullscreen .dashed {
-    top: 240px;
-}
-
-.non-fullscreen .second-dashed {
-    top: 404px;
-}
-
-.non-fullscreen .third-dashed {
-    top: 568px;
-}
-
-.non-fullscreen .fourth-dashed {
-    top: 732px;
-}

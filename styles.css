@@ -41,7 +41,7 @@ body {
     animation: fade-in 0.2s ease-in-out forwards;
 }
 
-/* Default styling for the lines, using fixed pixels to keep layout consistent */
+/* Default styling for the lines */
 .line {
     position: absolute;
     height: 1px;
@@ -88,37 +88,27 @@ body {
 .third-time-text { top: 587px; left: 1296px; }
 .fourth-time-text { top: 750px; left: 1300px; }
 
-/* Responsive adjustments for smaller screens */
-@media (max-height: 800px) {
-    .original, .second, .third, .fourth {
-        transform: scale(0.9); /* Scales down line elements slightly */
-        transform-origin: top left; /* Ensures scaling is consistent */
-    }
-    
-    .dashed, .second-dashed, .third-dashed, .fourth-dashed {
-        transform: scale(0.9);
-        transform-origin: top left;
-    }
-
-    .time-text, .second-time-text, .third-time-text, .fourth-time-text {
-        font-size: 0.25rem; /* Slightly smaller font */
-        left: 1200px; /* Adjust left position */
-    }
+/* Adjust positions when not in full-screen */
+.non-fullscreen .second {
+    top: 240px;
 }
 
-@media (max-height: 600px) {
-    .original, .second, .third, .fourth {
-        transform: scale(0.8); /* Further scale down for smaller screens */
-        transform-origin: top left;
-    }
-    
-    .dashed, .second-dashed, .third-dashed, .fourth-dashed {
-        transform: scale(0.8);
-        transform-origin: top left;
-    }
+.non-fullscreen .third {
+    top: 732px;
+}
 
-    .time-text, .second-time-text, .third-time-text, .fourth-time-text {
-        font-size: 0.22rem;
-        left: 1100px;
-    }
+.non-fullscreen .dashed {
+    top: 240px;
+}
+
+.non-fullscreen .second-dashed {
+    top: 404px;
+}
+
+.non-fullscreen .third-dashed {
+    top: 568px;
+}
+
+.non-fullscreen .fourth-dashed {
+    top: 732px;
 }

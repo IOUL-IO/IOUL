@@ -22,8 +22,8 @@
     <span class="time-text fourth-time-text fade-in">1:00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
     <script>
-        // Full-screen and fade-in on first click
-        document.addEventListener('click', () => {
+        // Full-screen and fade-in on first hover
+        document.addEventListener('mouseover', () => {
             // Enter full-screen mode
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
@@ -41,7 +41,7 @@
             setTimeout(() => {
                 document.body.classList.add('fade-in-trigger');
             }, 1000); // 1 second delay before fade-in starts
-        });
+        }, { once: true }); // Ensure it only triggers once
     </script>
 </body>
 </html>

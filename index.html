@@ -6,7 +6,7 @@
     <title>IOUL</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="non-fullscreen">
     <div class="line original fade-in"></div>
     <div class="line second fade-in"></div>
     <div class="line third fade-in"></div>
@@ -22,26 +22,20 @@
     <span class="time-text fourth-time-text fade-in">1:00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
     <script>
-        // Full-screen and fade-in on first click
-        document.addEventListener('click', () => {
-            // Enter full-screen mode
-            if (!document.fullscreenElement) {
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
-                    document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
-                    document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
-                    document.documentElement.msRequestFullscreen();
-                }
+        // Detect full-screen mode changes
+        function toggleFullscreenClass() {
+            if (document.fullscreenElement) {
+                document.body.classList.remove('non-fullscreen');
+            } else {
+                document.body.classList.add('non-fullscreen');
             }
+        }
 
-            // Trigger fade-in after a 1-second delay
-            setTimeout(() => {
-                document.body.classList.add('fade-in-trigger');
-            }, 1000); // 1 second delay before fade-in starts
-        });
+        // Listen for full-screen change events
+        document.addEventListener('fullscreenchange', toggleFullscreenClass);
+        document.addEventListener('webkitfullscreenchange', toggleFullscreenClass); // Safari
+        document.addEventListener('mozfullscreenchange', toggleFullscreenClass); // Firefox
+        document.addEventListener('MSFullscreenChange', toggleFullscreenClass); // IE/Edge
     </script>
 </body>
 </html>

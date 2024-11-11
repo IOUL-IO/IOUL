@@ -50,12 +50,12 @@ body {
 
 /* Positioning each line */
 .original { top: 112px; left: 90px; width: 331px; }
-.second { top: 240px; left: 90px; width: 331px; }
-.third { top: 772px; left: 90px; width: 331px; }
+.second { top: 250px; left: 90px; width: 331px; }
+.third { top: 762px; left: 90px; width: 331px; }
 .fourth { top: 112px; left: 515px; width: 835px; }
 
 .dashed {
-    top: 240px;
+    top: 250px;
     left: 515px;
     width: 760px;
     height: 1px;
@@ -69,14 +69,14 @@ body {
     background-size: 12px 1px;
 }
 
-.second-dashed { top: 417px; left: 515px; }
-.third-dashed { top: 594px; left: 515px; }
-.fourth-dashed { top: 772px; left: 515px; }
+.second-dashed { top: 420px; left: 515px; }
+.third-dashed { top: 590px; left: 515px; }
+.fourth-dashed { top: 762px; left: 515px; }
 
 /* Styling for the time text */
 .time-text {
     position: absolute;
-    top: 240px;
+    top: 250px;
     left: 1296px;
     font-size: 0.28rem;
     font-family: 'Distill Expanded', sans-serif;
@@ -84,6 +84,6 @@ body {
     letter-spacing: 2px;
 }
 
-.second-time-text { top: 417px; left: 1296px; }
-.third-time-text { top: 594px; left: 1296px; }
-.fourth-time-text { top: 770px; left: 1300px; }
+.second-time-text { top: 420px; left: 1296px; }
+.third-time-text { top: 590px; left: 1296px; }
+.fourth-time-text { top: 760px; left: 1300px; }

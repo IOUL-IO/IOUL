@@ -23,7 +23,7 @@ body {
 
 /* Move all content up by 10px when not in full-screen */
 .non-fullscreen {
-    transform: translateY(-10px);
+    transform: translateY(-40px);
 }
 
 /* Fade-in animation */

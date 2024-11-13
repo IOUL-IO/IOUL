@@ -87,3 +87,44 @@ body {
 .second-time-text { top: 423px; left: 1296px; }
 .third-time-text { top: 587px; left: 1296px; }
 .fourth-time-text { top: 750px; left: 1300px; }
+
+/* Adjust positions when not in full-screen */
+.non-fullscreen .second {
+    top: 250.5px;
+}
+
+.non-fullscreen .third {
+    top: 742px;
+}
+
+.non-fullscreen .dashed {
+    top: 250.5px;
+}
+
+.non-fullscreen .second-dashed {
+    top: 414px;
+}
+
+.non-fullscreen .third-dashed {
+    top: 578px;
+}
+
+.non-fullscreen .fourth-dashed {
+    top: 742px;
+}
+
+.non-fullscreen .time-text {
+    top: 250px;
+}
+
+.non-fullscreen .second-time-text {
+    top: 413px;
+}
+
+.non-fullscreen .third-time-text {
+    top: 577px;
+}
+
+.non-fullscreen .fourth-time-text {
+    top: 740px;
+}

@@ -21,11 +21,6 @@ body {
     overflow: hidden; /* Prevents accidental scrolling */
 }
 
-/* Move all content up by 10px when not in full-screen */
-.non-fullscreen {
-    transform: translateY(-40px);
-}
-
 /* Fade-in animation */
 @keyframes fade-in {
     0% {
@@ -49,46 +44,46 @@ body {
 /* Default styling for the lines */
 .line {
     position: absolute;
-    height: 1px;
+    height: 0.08vh; /* 1px based on 800px height */
     background-color: #e6e6e6;
 }
 
-/* Positioning each line */
-.original { top: 112.5px; left: 90px; width: 331px; }
-.second { top: 260.5px; left: 90px; width: 331px; }
-.third { top: 752px; left: 90px; width: 331px; }
-.fourth { top: 112.5px; left: 515px; width: 835px; }
+/* Positioning each line, based on a 1280x800 screen */
+.original { top: 14.06vh; left: 7.03vw; width: 25.86vw; }
+.second { top: 32.56vh; left: 7.03vw; width: 25.86vw; }
+.third { top: 94vh; left: 7.03vw; width: 25.86vw; }
+.fourth { top: 14.06vh; left: 40.23vw; width: 65.23vw; }
 
 .dashed {
-    top: 260.5px;
-    left: 515px;
-    width: 760px;
-    height: 1px;
+    top: 32.56vh;
+    left: 40.23vw;
+    width: 59.38vw;
+    height: 0.08vh;
     background: linear-gradient(
         to right,
-        #e1e1e1 0px,
-        #e1e1e1 6px,
-        #ffffff 6px,
-        #ffffff 12px
+        #e1e1e1 0,
+        #e1e1e1 0.47vw, /* Dash length */
+        #ffffff 0.47vw,
+        #ffffff 0.94vw /* Gap length matching the dash */
     );
-    background-size: 12px 1px;
+    background-size: 0.94vw 0.08vh; /* Adjusts the repeat size for spacing */
 }
 
-.second-dashed { top: 424px; left: 515px; }
-.third-dashed { top: 588px; left: 515px; }
-.fourth-dashed { top: 752px; left: 515px; }
+.second-dashed { top: 53vh; left: 40.23vw; }
+.third-dashed { top: 73.5vh; left: 40.23vw; }
+.fourth-dashed { top: 94vh; left: 40.23vw; }
 
 /* Styling for the time text */
 .time-text {
     position: absolute;
-    top: 260px;
-    left: 1296px;
-    font-size: 0.28rem;
+    top: 32.5vh;
+    left: 101.25vw;
+    font-size: 0.35vh; /* Scale font size relative to height */
     font-family: 'Distill Expanded', sans-serif;
     color: #a1a1a1;
-    letter-spacing: 2px;
+    letter-spacing: 0.16vw;
 }
 
-.second-time-text { top: 423px; left: 1296px; }
-.third-time-text { top: 587px; left: 1296px; }
-.fourth-time-text { top: 750px; left: 1300px; }
+.second-time-text { top: 52.9vh; left: 101.25vw; }
+.third-time-text { top: 73.4vh; left: 101.25vw; }
+.fourth-time-text { top: 93.75vh; left: 101.75vw; }

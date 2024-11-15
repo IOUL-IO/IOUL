@@ -21,14 +21,15 @@ body {
     overflow: hidden;
 }
 
-/* Wrapper for layout */
+/* Wrapper container for scaling and layout */
 .wrapper {
     width: 1280px;
     height: 800px;
     transform-origin: top left;
     transform: scale(calc(min(100vw / 1280, 100vh / 800)));
-    max-width: 100vw; /* Prevents overflow on wide screens */
-    max-height: 100vh; /* Prevents overflow on tall screens */
+    max-width: 1280px;
+    max-height: 800px;
+    opacity: 0; /* Initially hidden */
 }
 
 /* Fade-in animation */
@@ -37,13 +38,7 @@ body {
     100% { opacity: 1; }
 }
 
-.fade-in {
-    opacity: 0; /* Initial state is invisible */
-    animation: fade-in 1s ease-in-out forwards;
-}
-
-/* Fade-in trigger */
-.fade-in-trigger .fade-in {
+.fade-in-trigger .wrapper {
     animation: fade-in 1s ease-in-out forwards;
 }
 
@@ -54,89 +49,88 @@ body {
     background-color: #e6e6e6;
 }
 
-/* Line positioning */
+/* Line positioning based on proportional scaling */
 .original {
-    top: calc(112.5 / 800 * 100vh);
-    left: calc(90 / 1280 * 100vw);
-    width: calc(331 / 1280 * 100vw);
+    top: calc(112.5 / 800 * 100%);
+    left: calc(90 / 1280 * 100%);
+    width: calc(331 / 1280 * 100%);
 }
 
 .second {
-    top: calc(260.5 / 800 * 100vh);
-    left: calc(90 / 1280 * 100vw);
-    width: calc(331 / 1280 * 100vw);
+    top: calc(260.5 / 800 * 100%);
+    left: calc(90 / 1280 * 100%);
+    width: calc(331 / 1280 * 100%);
 }
 
 .third {
-    top: calc(752 / 800 * 100vh);
-    left: calc(90 / 1280 * 100vw);
-    width: calc(331 / 1280 * 100vw);
+    top: calc(752 / 800 * 100%);
+    left: calc(90 / 1280 * 100%);
+    width: calc(331 / 1280 * 100%);
 }
 
 .fourth {
-    top: calc(112.5 / 800 * 100vh);
-    left: calc(515 / 1280 * 100vw);
-    width: calc(835 / 1280 * 100vw);
+    top: calc(112.5 / 800 * 100%);
+    left: calc(515 / 1280 * 100%);
+    width: calc(835 / 1280 * 100%);
 }
 
-/* Dashed line styles */
 .dashed {
-    top: calc(260.5 / 800 * 100vh);
-    left: calc(515 / 1280 * 100vw);
-    width: calc(760 / 1280 * 100vw);
+    top: calc(260.5 / 800 * 100%);
+    left: calc(515 / 1280 * 100%);
+    width: calc(760 / 1280 * 100%);
     background: linear-gradient(
         to right,
         #e6e6e6 0,
-        #e6e6e6 calc(6 / 1280 * 100vw),
-        #ffffff calc(6 / 1280 * 100vw),
-        #ffffff calc(12 / 1280 * 100vw)
+        #e6e6e6 calc(6 / 1280 * 100%),
+        #ffffff calc(6 / 1280 * 100%),
+        #ffffff calc(12 / 1280 * 100%)
     );
-    background-size: calc(12 / 1280 * 100vw) 1px;
+    background-size: calc(12 / 1280 * 100%) 1px;
 }
 
 .second-dashed {
-    top: calc(424 / 800 * 100vh);
-    left: calc(515 / 1280 * 100vw);
-    width: calc(760 / 1280 * 100vw);
+    top: calc(424 / 800 * 100%);
+    left: calc(515 / 1280 * 100%);
+    width: calc(760 / 1280 * 100%);
 }
 
 .third-dashed {
-    top: calc(588 / 800 * 100vh);
-    left: calc(515 / 1280 * 100vw);
-    width: calc(760 / 1280 * 100vw);
+    top: calc(588 / 800 * 100%);
+    left: calc(515 / 1280 * 100%);
+    width: calc(760 / 1280 * 100%);
 }
 
 .fourth-dashed {
-    top: calc(752 / 800 * 100vh);
-    left: calc(515 / 1280 * 100vw);
-    width: calc(760 / 1280 * 100vw);
+    top: calc(752 / 800 * 100%);
+    left: calc(515 / 1280 * 100%);
+    width: calc(760 / 1280 * 100%);
 }
 
 /* Time text styles */
 .time-text {
     position: absolute;
-    font-size: calc(14 / 800 * 100vh);
+    font-size: calc(14 / 800 * 100%);
     font-family: 'Distill Expanded', sans-serif;
     color: #a1a1a1;
-    letter-spacing: calc(2 / 1280 * 100vw);
+    letter-spacing: calc(2 / 1280 * 100%);
 }
 
 .time-text {
-    top: calc(260 / 800 * 100vh);
-    left: calc(1296 / 1280 * 100vw);
+    top: calc(260 / 800 * 100%);
+    left: calc(1296 / 1280 * 100%);
 }
 
 .second-time-text {
-    top: calc(423 / 800 * 100vh);
-    left: calc(1296 / 1280 * 100vw);
+    top: calc(423 / 800 * 100%);
+    left: calc(1296 / 1280 * 100%);
 }
 
 .third-time-text {
-    top: calc(587 / 800 * 100vh);
-    left: calc(1296 / 1280 * 100vw);
+    top: calc(587 / 800 * 100%);
+    left: calc(1296 / 1280 * 100%);
 }
 
 .fourth-time-text {
-    top: calc(750 / 800 * 100vh);
-    left: calc(1296 / 1280 * 100vw);
+    top: calc(750 / 800 * 100%);
+    left: calc(1296 / 1280 * 100%);
 }

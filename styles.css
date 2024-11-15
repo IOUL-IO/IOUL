@@ -6,7 +6,6 @@
     font-style: normal;
 }
 
-/* Reset default styles */
 * {
     margin: 0;
     padding: 0;
@@ -14,46 +13,49 @@
 }
 
 body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #ffffff;
-    position: relative;
-    min-height: 100vh;
-    min-width: 100vw;
-    overflow: hidden; /* Prevents accidental scrolling */
+    height: 100vh;
+    overflow: hidden;
 }
 
-/* Move all content up by 10px when not in full-screen */
-.non-fullscreen {
-    transform: translateY(-40px);
+/* Wrapper container with proportional scaling and centering */
+.wrapper {
+    width: 1280px;
+    height: 800px;
+    transform-origin: top left;
+    transform: scale(calc(min(100vw / 1280, 100vh / 800)));
+}
+
+/* Apply upward shift in non-full-screen mode */
+.non-fullscreen .wrapper {
+    transform: translateY(-40px) scale(calc(min(100vw / 1280, 100vh / 800)));
 }
 
 /* Fade-in animation */
 @keyframes fade-in {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
-/* Initial opacity set to 0 for fade-in effect */
 .fade-in {
     opacity: 0;
 }
 
-/* Apply fade-in animation when triggered, with a 0.2s duration */
 .fade-in-trigger .fade-in {
     animation: fade-in 0.2s ease-in-out forwards;
 }
 
-/* Default styling for the lines */
+/* Line styles */
 .line {
     position: absolute;
     height: 1px;
     background-color: #e6e6e6;
 }
 
-/* Positioning each line */
+/* Line positioning */
 .original { top: 112.5px; left: 90px; width: 331px; }
 .second { top: 260.5px; left: 90px; width: 331px; }
 .third { top: 752px; left: 90px; width: 331px; }
@@ -78,7 +80,7 @@ body {
 .third-dashed { top: 588px; left: 515px; }
 .fourth-dashed { top: 752px; left: 515px; }
 
-/* Styling for the time text */
+/* Time text styling */
 .time-text {
     position: absolute;
     top: 260px;

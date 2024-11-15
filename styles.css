@@ -21,17 +21,19 @@ body {
     overflow: hidden;
 }
 
-/* Wrapper container with proportional scaling and centering */
+/* Wrapper container with proportional scaling */
 .wrapper {
     width: 1280px;
     height: 800px;
-    transform-origin: top left;
+    transform-origin: center;
     transform: scale(calc(min(100vw / 1280, 100vh / 800)));
 }
 
-/* Apply upward shift in non-full-screen mode */
-.non-fullscreen .wrapper {
-    transform: translateY(-40px) scale(calc(min(100vw / 1280, 100vh / 800)));
+/* Apply upward shift only on laptop-sized screens in non-full-screen mode */
+@media (min-width: 1024px) and (max-width: 1440px) {
+    .non-fullscreen .wrapper {
+        transform: translateY(-40px) scale(calc(min(100vw / 1280, 100vh / 800)));
+    }
 }
 
 /* Fade-in animation */

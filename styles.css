@@ -21,115 +21,122 @@ body {
     overflow: hidden;
 }
 
-/* Wrapper with capped scaling for larger screens */
+/* Wrapper for layout */
 .wrapper {
     width: 1280px;
     height: 800px;
-    max-width: 95vw; /* Limit the maximum width to 95% of the viewport */
-    max-height: 95vh; /* Limit the maximum height to 95% of the viewport */
     transform-origin: top left;
     transform: scale(calc(min(100vw / 1280, 100vh / 800)));
+    max-width: 100vw; /* Prevents overflow on wide screens */
+    max-height: 100vh; /* Prevents overflow on tall screens */
+}
+
+/* Fade-in animation */
+@keyframes fade-in {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.fade-in {
+    opacity: 0; /* Initial state is invisible */
+    animation: fade-in 1s ease-in-out forwards;
+}
+
+/* Fade-in trigger */
+.fade-in-trigger .fade-in {
+    animation: fade-in 1s ease-in-out forwards;
 }
 
 /* Line styles */
 .line {
     position: absolute;
-    height: 0.125vh; /* 1px relative to 800px height */
+    height: 1px;
     background-color: #e6e6e6;
 }
 
-/* Line positioning based on proportional scaling */
+/* Line positioning */
 .original {
-    top: 14vh; /* 112.5px relative to 800px */
-    left: 7vw; /* 90px relative to 1280px */
-    width: 25.8vw; /* 331px relative to 1280px */
+    top: calc(112.5 / 800 * 100vh);
+    left: calc(90 / 1280 * 100vw);
+    width: calc(331 / 1280 * 100vw);
 }
 
 .second {
-    top: 32.6vh; /* 260.5px relative to 800px */
-    left: 7vw;
-    width: 25.8vw;
+    top: calc(260.5 / 800 * 100vh);
+    left: calc(90 / 1280 * 100vw);
+    width: calc(331 / 1280 * 100vw);
 }
 
 .third {
-    top: 94vh; /* 752px relative to 800px */
-    left: 7vw;
-    width: 25.8vw;
+    top: calc(752 / 800 * 100vh);
+    left: calc(90 / 1280 * 100vw);
+    width: calc(331 / 1280 * 100vw);
 }
 
 .fourth {
-    top: 14vh;
-    left: 40.2vw; /* 515px relative to 1280px */
-    width: 65.2vw; /* 835px relative to 1280px */
+    top: calc(112.5 / 800 * 100vh);
+    left: calc(515 / 1280 * 100vw);
+    width: calc(835 / 1280 * 100vw);
 }
 
+/* Dashed line styles */
 .dashed {
-    top: 32.6vh;
-    left: 40.2vw;
-    width: 59.4vw; /* 760px relative to 1280px */
-    height: 0.125vh;
+    top: calc(260.5 / 800 * 100vh);
+    left: calc(515 / 1280 * 100vw);
+    width: calc(760 / 1280 * 100vw);
     background: linear-gradient(
         to right,
-        #e6e6e6 0px,
-        #e6e6e6 0.47vw, /* Dash length */
-        #ffffff 0.47vw,
-        #ffffff 0.94vw /* Gap length */
+        #e6e6e6 0,
+        #e6e6e6 calc(6 / 1280 * 100vw),
+        #ffffff calc(6 / 1280 * 100vw),
+        #ffffff calc(12 / 1280 * 100vw)
     );
-    background-size: 0.94vw 0.125vh;
+    background-size: calc(12 / 1280 * 100vw) 1px;
 }
 
 .second-dashed {
-    top: 53vh; /* 424px relative to 800px */
-    left: 40.2vw;
-    width: 59.4vw;
-    height: 0.125vh;
-    background: inherit;
-    background-size: inherit;
+    top: calc(424 / 800 * 100vh);
+    left: calc(515 / 1280 * 100vw);
+    width: calc(760 / 1280 * 100vw);
 }
 
 .third-dashed {
-    top: 73.5vh; /* 588px relative to 800px */
-    left: 40.2vw;
-    width: 59.4vw;
-    height: 0.125vh;
-    background: inherit;
-    background-size: inherit;
+    top: calc(588 / 800 * 100vh);
+    left: calc(515 / 1280 * 100vw);
+    width: calc(760 / 1280 * 100vw);
 }
 
 .fourth-dashed {
-    top: 94vh;
-    left: 40.2vw;
-    width: 59.4vw;
-    height: 0.125vh;
-    background: inherit;
-    background-size: inherit;
+    top: calc(752 / 800 * 100vh);
+    left: calc(515 / 1280 * 100vw);
+    width: calc(760 / 1280 * 100vw);
 }
 
-/* Time text styling */
+/* Time text styles */
 .time-text {
     position: absolute;
-    font-size: 0.35vh; /* Scales with screen height */
+    font-size: calc(14 / 800 * 100vh);
     font-family: 'Distill Expanded', sans-serif;
     color: #a1a1a1;
-    letter-spacing: 0.16vw; /* Proportional to screen width */
+    letter-spacing: calc(2 / 1280 * 100vw);
 }
 
 .time-text {
-    top: 32.6vh; /* 260px relative to 800px */
-    left: 101.25vw; /* 1296px relative to 1280px */
+    top: calc(260 / 800 * 100vh);
+    left: calc(1296 / 1280 * 100vw);
 }
 
 .second-time-text {
-    top: 53vh;
-    left: 101.25vw;
+    top: calc(423 / 800 * 100vh);
+    left: calc(1296 / 1280 * 100vw);
 }
 
 .third-time-text {
-    top: 73.5vh;
-    left: 101.25vw;
+    top: calc(587 / 800 * 100vh);
+    left: calc(1296 / 1280 * 100vw);
 }
 
 .fourth-time-text {
-    top: 94vh;
-    left: 101.25vw;
+    top: calc(750 / 800 * 100vh);
+    left: calc(1296 / 1280 * 100vw);
 }

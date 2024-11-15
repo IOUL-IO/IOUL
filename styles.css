@@ -18,12 +18,7 @@ body {
     position: relative;
     min-height: 100vh;
     min-width: 100vw;
-    overflow: hidden; /* Prevents accidental scrolling */
-}
-
-/* Move all content up when not in full-screen */
-.non-fullscreen {
-    transform: translateY(-5vh);
+    overflow: hidden; /* Prevents scrolling */
 }
 
 /* Fade-in animation */
@@ -72,15 +67,15 @@ body {
 
 .fourth {
     top: 14.06vh; /* 112.5px relative to 800px height */
-    left: 40.23vw; /* 515px relative to 1280px width */
-    width: 65.23vw; /* 835px relative to 1280px width */
+    left: 7.03vw; /* 90px from the left edge */
+    width: calc(100vw - 14.06vw); /* Constrained within the screen bounds */
 }
 
 /* Dashed Lines */
 .dashed {
     top: 32.56vh;
-    left: 40.23vw;
-    width: 59.38vw; /* 760px relative to 1280px width */
+    left: 7.03vw; /* 90px from the left edge */
+    width: calc(100vw - 14.06vw); /* Constrained within the screen bounds */
     height: 0.125vh;
     background: linear-gradient(
         to right,
@@ -94,48 +89,48 @@ body {
 
 .second-dashed {
     top: 53vh; /* 424px relative to 800px height */
-    left: 40.23vw;
-    width: 59.38vw;
+    left: 7.03vw; /* 90px from the left edge */
+    width: calc(100vw - 14.06vw); /* Constrained within the screen bounds */
 }
 
 .third-dashed {
     top: 73.5vh; /* 588px relative to 800px height */
-    left: 40.23vw;
-    width: 59.38vw;
+    left: 7.03vw; /* 90px from the left edge */
+    width: calc(100vw - 14.06vw); /* Constrained within the screen bounds */
 }
 
 .fourth-dashed {
     top: 94vh; /* 752px relative to 800px height */
-    left: 40.23vw;
-    width: 59.38vw;
+    left: 7.03vw; /* 90px from the left edge */
+    width: calc(100vw - 14.06vw); /* Constrained within the screen bounds */
 }
 
 /* Time Text Styles */
 .time-text {
     position: absolute;
-    font-size: 1.25vh; /* Adjusted font size for proportional readability */
     font-family: 'Distill Expanded', sans-serif;
+    font-size: 14px; /* Fixed pixel size for font */
     color: #a1a1a1;
-    letter-spacing: 0.16vw;
+    letter-spacing: 2px; /* Fixed pixel spacing for letters */
 }
 
 /* Text Positions */
 .time-text {
-    top: 32.56vh; /* 260.5px relative to 800px height */
-    left: calc(100vw - 7.03vw); /* 90px relative to 1280px width */
+    top: 260px; /* Matches original px positioning */
+    left: calc(100vw - 90px); /* Constrained 90px from the right edge */
 }
 
 .second-time-text {
-    top: 53vh; /* 424px relative to 800px height */
-    left: calc(100vw - 7.03vw);
+    top: 424px; /* Matches original px positioning */
+    left: calc(100vw - 90px); /* Constrained 90px from the right edge */
 }
 
 .third-time-text {
-    top: 73.5vh; /* 588px relative to 800px height */
-    left: calc(100vw - 7.03vw);
+    top: 588px; /* Matches original px positioning */
+    left: calc(100vw - 90px); /* Constrained 90px from the right edge */
 }
 
 .fourth-time-text {
-    top: 94vh; /* 752px relative to 800px height */
-    left: calc(100vw - 7.03vw);
+    top: 752px; /* Matches original px positioning */
+    left: calc(100vw - 90px); /* Constrained 90px from the right edge */
 }

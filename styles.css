@@ -23,7 +23,7 @@ body {
 
 /* Move all content up proportionally when not in full-screen */
 .non-fullscreen {
-    transform: translateY(-5vh); /* Adjusted from 40px to proportional value */
+    transform: translateY(-5vh); /* Adjusted to 40px equivalent */
 }
 
 /* Fade-in animation */
@@ -36,12 +36,11 @@ body {
     }
 }
 
-/* Initial opacity set to 0 for fade-in effect */
 .fade-in {
     opacity: 0;
 }
 
-/* Apply fade-in animation */
+/* Apply fade-in animation when triggered */
 .fade-in-trigger .fade-in {
     animation: fade-in 0.2s ease-in-out forwards;
 }
@@ -49,40 +48,40 @@ body {
 /* Styling for the lines */
 .line {
     position: absolute;
-    height: 0.125vh; /* 1px height proportional to screen height */
+    height: 0.125vh; /* 1px relative to viewport height */
     background-color: #e6e6e6;
 }
 
 /* Line positioning converted to vw/vh */
 .original {
-    top: 14.06vh; /* 112.5px proportional to 800px height */
-    left: 7.03vw; /* 90px proportional to 1280px width */
-    width: 25.86vw; /* 331px proportional to 1280px width */
+    top: 14.06vh; /* 112.5px relative to 800px height */
+    left: 7.03vw; /* 90px relative to 1280px width */
+    width: 25.86vw; /* 331px relative to 1280px width */
 }
 
 .second {
-    top: 32.56vh; /* 260.5px proportional to 800px height */
+    top: 32.56vh; /* 260.5px relative to 800px height */
     left: 7.03vw;
     width: 25.86vw;
 }
 
 .third {
-    top: 94vh; /* 752px proportional to 800px height */
+    top: 94vh; /* 752px relative to 800px height */
     left: 7.03vw;
     width: 25.86vw;
 }
 
 .fourth {
-    top: 14.06vh; /* 112.5px proportional to 800px height */
-    left: 40.23vw; /* 515px proportional to 1280px width */
-    width: 65.23vw; /* 835px proportional to 1280px width */
+    top: 14.06vh; /* 112.5px relative to 800px height */
+    left: 40.23vw; /* 515px relative to 1280px width */
+    width: 65.23vw; /* 835px relative to 1280px width */
 }
 
 /* Dashed line styling */
 .dashed {
     top: 32.56vh;
     left: 40.23vw;
-    width: 59.38vw; /* 760px proportional to 1280px width */
+    width: 59.38vw; /* 760px relative to 1280px width */
     height: 0.125vh;
     background: linear-gradient(
         to right,
@@ -95,19 +94,19 @@ body {
 }
 
 .second-dashed {
-    top: 53vh; /* 424px proportional to 800px height */
+    top: 53vh; /* 424px relative to 800px height */
     left: 40.23vw;
     width: 59.38vw;
 }
 
 .third-dashed {
-    top: 73.5vh; /* 588px proportional to 800px height */
+    top: 73.5vh; /* 588px relative to 800px height */
     left: 40.23vw;
     width: 59.38vw;
 }
 
 .fourth-dashed {
-    top: 94vh; /* 752px proportional to 800px height */
+    top: 94vh; /* 752px relative to 800px height */
     left: 40.23vw;
     width: 59.38vw;
 }
@@ -116,28 +115,28 @@ body {
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 1.75vh; /* Adjusted font size proportionally */
+    font-size: 14px; /* Retained as px */
     color: #a1a1a1;
-    letter-spacing: calc(2px / 1280 * 100vw); /* Proportional letter spacing */
+    letter-spacing: 2px; /* Retained as px */
 }
 
 /* Text positioning */
 .time-text {
-    top: 32.56vh; /* 260.5px proportional to 800px height */
-    left: calc(100vw - 7.03vw); /* Constrained to stay 90px from the right edge */
+    top: 260px; /* Retained as px */
+    left: calc(100vw - 90px); /* Adjusted for proportional alignment */
 }
 
 .second-time-text {
-    top: 53vh; /* 424px proportional to 800px height */
-    left: calc(100vw - 7.03vw);
+    top: 424px; /* Retained as px */
+    left: calc(100vw - 90px);
 }
 
 .third-time-text {
-    top: 73.5vh; /* 588px proportional to 800px height */
-    left: calc(100vw - 7.03vw);
+    top: 588px; /* Retained as px */
+    left: calc(100vw - 90px);
 }
 
 .fourth-time-text {
-    top: 94vh; /* 752px proportional to 800px height */
-    left: calc(100vw - 7.03vw);
+    top: 752px; /* Retained as px */
+    left: calc(100vw - 90px);
 }

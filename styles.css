@@ -73,9 +73,10 @@ body {
 .fourth {
     top: 14.06vh;
     left: 40.23vw; /* 515px converted to vw */
-    width: 65.23vw; /* 835px converted to vw */
+    width: 59.38vw; /* 760px converted to vw to match dashed lines */
 }
 
+/* Dashed Lines */
 .dashed {
     top: 32.56vh;
     left: 40.23vw;
@@ -113,9 +114,9 @@ body {
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.28rem; /* Text size remains unchanged */
+    font-size: 14px; /* Text size remains in px */
     color: #a1a1a1;
-    letter-spacing: calc(2px / 1280 * 100vw); /* Converted letter-spacing to scale proportionally */
+    letter-spacing: 2px; /* Letter spacing remains in px */
 }
 
 /* Text Positions aligned */

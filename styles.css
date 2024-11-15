@@ -42,7 +42,7 @@ body {
 /* Styling for the lines */
 .line {
     position: absolute;
-    height: 0.1vh; /* Reduced height for proportional scaling */
+    height: 0.1vh; /* 1px relative to viewport height */
     background-color: #e6e6e6;
 }
 
@@ -66,17 +66,17 @@ body {
 }
 
 .fourth {
-    top: 14.06vh;
-    left: 40.23vw; /* 515px relative to 1280px width */
-    width: 65.23vw; /* 835px relative to 1280px width */
+    top: 14.06vh; /* 112.5px relative to 800px height */
+    left: 7.03vw; /* 90px relative to 1280px width */
+    width: calc(100vw - 14.06vw); /* Match dashed lines' width */
 }
 
 /* Dashed Lines */
 .dashed {
     top: 32.5vh;
-    left: 40.23vw;
-    width: 59.38vw; /* Adjusted for proportional scaling */
-    height: 0.1vh; /* Reduced height for proportional scaling */
+    left: 7.03vw; /* 90px relative to 1280px width */
+    width: calc(100vw - 14.06vw); /* Constrained to prevent overflow */
+    height: 0.1vh;
     background: linear-gradient(
         to right,
         #e6e6e6 0,
@@ -89,27 +89,27 @@ body {
 
 .second-dashed {
     top: 53vh; /* 424px relative to 800px height */
-    left: 40.23vw;
-    width: 59.38vw;
+    left: 7.03vw;
+    width: calc(100vw - 14.06vw); /* Constrained to prevent overflow */
 }
 
 .third-dashed {
     top: 73.5vh; /* 588px relative to 800px height */
-    left: 40.23vw;
-    width: 59.38vw;
+    left: 7.03vw;
+    width: calc(100vw - 14.06vw); /* Constrained to prevent overflow */
 }
 
 .fourth-dashed {
     top: 94vh;
-    left: 40.23vw;
-    width: 59.38vw;
+    left: 7.03vw;
+    width: calc(100vw - 14.06vw); /* Constrained to prevent overflow */
 }
 
 /* Time Text Styling */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 12px; /* Reduced size to match proportions */
+    font-size: 12px; /* Adjusted for readability */
     color: #a1a1a1;
     letter-spacing: 1.5px; /* Adjusted for alignment */
 }

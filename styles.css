@@ -21,23 +21,11 @@ body {
     overflow: hidden;
 }
 
-/* Wrapper container to maintain original 1280x800 layout */
 .wrapper {
-    width: 1280px;
-    height: 800px;
+    width: 1280px; /* Base width */
+    height: 800px; /* Base height */
     transform-origin: top left;
-}
-
-/* Apply slight right stretch for large screens */
-@media (min-width: 1600px) {
-    .wrapper {
-        width: 1350px; /* Adjusted width for larger screens */
-    }
-}
-
-/* Move up by 40px in non-full-screen mode */
-.non-fullscreen .wrapper {
-    transform: translateY(-40px);
+    transform: scale(calc(100vw / 1280), calc(100vh / 800));
 }
 
 /* Fade-in animation */
@@ -61,7 +49,7 @@ body {
     background-color: #e6e6e6;
 }
 
-/* Line positions based on 1280x800 reference */
+/* Line positions as per 1280x800 reference */
 .original { top: 112.5px; left: 90px; width: 331px; }
 .second { top: 260.5px; left: 90px; width: 331px; }
 .third { top: 752px; left: 90px; width: 331px; }

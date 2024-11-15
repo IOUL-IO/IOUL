@@ -21,11 +21,17 @@ body {
     overflow: hidden;
 }
 
+/* Wrapper to hold and scale all content */
 .wrapper {
     width: 1280px; /* Base width */
     height: 800px; /* Base height */
     transform-origin: top left;
-    transform: scale(calc(100vw / 1280), calc(100vh / 800));
+    transform: scale(calc(100vw / 1280 * 1.05), calc(100vh / 800 * 1.05));
+}
+
+/* Move up by 40px in non-full-screen mode */
+.non-fullscreen .wrapper {
+    transform: translateY(-40px) scale(calc(100vw / 1280 * 1.05), calc(100vh / 800 * 1.05));
 }
 
 /* Fade-in animation */
@@ -49,7 +55,7 @@ body {
     background-color: #e6e6e6;
 }
 
-/* Line positions as per 1280x800 reference */
+/* Line positions based on 1280x800 reference */
 .original { top: 112.5px; left: 90px; width: 331px; }
 .second { top: 260.5px; left: 90px; width: 331px; }
 .third { top: 752px; left: 90px; width: 331px; }

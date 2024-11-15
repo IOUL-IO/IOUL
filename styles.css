@@ -23,7 +23,7 @@ body {
 
 /* Move all content up proportionally when not in full-screen */
 .non-fullscreen {
-    transform: translateY(-3vh); /* Equivalent to 40px adjustment */
+    transform: translateY(-3vh); /* Equivalent to a slightly smaller offset */
 }
 
 /* Fade-in animation */
@@ -47,7 +47,7 @@ body {
 /* Default styling for the lines */
 .line {
     position: absolute;
-    height: 0.1vh; /* Equivalent to 1px for proportional scaling */
+    height: 0.1vh; /* Reduced height for proportional scaling */
     background-color: #e6e6e6;
 }
 
@@ -55,7 +55,7 @@ body {
 .original {
     top: 12.5vh; /* Adjusted to fit better on larger screens */
     left: 6.5vw;
-    width: 24vw;
+    width: 24vw; /* Reduced width */
 }
 
 .second {
@@ -65,7 +65,7 @@ body {
 }
 
 .third {
-    top: 82vh; /* Moved up slightly for alignment */
+    top: 84vh;
     left: 6.5vw;
     width: 24vw;
 }
@@ -73,69 +73,69 @@ body {
 .fourth {
     top: 12.5vh;
     left: 38vw;
-    width: 50vw; /* Reduced width for consistency */
+    width: 55vw; /* Reduced width */
 }
 
 /* Dashed Lines */
 .dashed {
     top: 28.5vh;
     left: 38vw;
-    width: 50vw; /* Matches line four */
+    width: 55vw; /* Matches line four */
     height: 0.1vh;
     background: linear-gradient(
         to right,
-        #e1e1e1 0,
-        #e1e1e1 1.5vw, /* Dash length */
-        #ffffff 1.5vw,
-        #ffffff 3vw /* Gap length */
+        #e6e6e6 0,
+        #e6e6e6 calc(0.4vw), /* Dash length */
+        #ffffff calc(0.4vw),
+        #ffffff calc(0.8vw) /* Gap length */
     );
-    background-size: 3vw 0.1vh;
+    background-size: calc(0.8vw) 0.1vh;
 }
 
 .second-dashed {
     top: 47vh; /* Adjusted for consistency */
     left: 38vw;
-    width: 50vw;
+    width: 55vw;
 }
 
 .third-dashed {
     top: 67vh; /* Adjusted for consistency */
     left: 38vw;
-    width: 50vw;
+    width: 55vw;
 }
 
 .fourth-dashed {
-    top: 82vh; /* Adjusted for consistency */
+    top: 84vh; /* Adjusted for consistency */
     left: 38vw;
-    width: 50vw;
+    width: 55vw;
 }
 
 /* Styling for the time text */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 1.75vh; /* Reduced size for better fit */
+    font-size: 0.25rem; /* Reduced size for better fit */
     color: #a1a1a1;
-    letter-spacing: 0.5vw; /* Adjusted for proportional spacing */
+    letter-spacing: 0.12vw; /* Adjusted for proportional spacing */
 }
 
 /* Text Positions aligned */
 .time-text {
     top: 28.5vh;
-    left: 93vw; /* Proper alignment */
+    left: calc(100vw - 6.5vw); /* Constrained for consistent spacing */
 }
 
 .second-time-text {
     top: 47vh;
-    left: 93vw;
+    left: calc(100vw - 6.5vw);
 }
 
 .third-time-text {
     top: 67vh;
-    left: 93vw;
+    left: calc(100vw - 6.5vw);
 }
 
 .fourth-time-text {
-    top: 87vh;
-    left: 93vw;
+    top: 84vh;
+    left: calc(100vw - 6.5vw);
 }

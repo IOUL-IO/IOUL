@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IOUL</title>
-    <!-- Link to Favicon -->
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -35,28 +34,17 @@
 
         // Listen for full-screen change events
         document.addEventListener('fullscreenchange', toggleFullscreenClass);
-        document.addEventListener('webkitfullscreenchange', toggleFullscreenClass); // Safari
-        document.addEventListener('mozfullscreenchange', toggleFullscreenClass); // Firefox
-        document.addEventListener('MSFullscreenChange', toggleFullscreenClass); // IE/Edge
 
         // Trigger full-screen mode and fade-in effect on click
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
-                    document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
-                    document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
-                    document.documentElement.msRequestFullscreen();
                 }
             }
 
             // Trigger fade-in effect
-            setTimeout(() => {
-                document.body.classList.add('fade-in-trigger');
-            }, 1000); // 1 second delay before fade-in starts
+            document.body.classList.add('fade-in-trigger');
         });
     </script>
 </body>

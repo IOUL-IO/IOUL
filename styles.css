@@ -21,11 +21,17 @@ body {
     overflow: hidden;
 }
 
+/* Wrapper container to scale the content proportionally */
 .wrapper {
-    width: 1280px; /* Base width */
-    height: 800px; /* Base height */
+    width: 1280px; /* Fixed base width */
+    height: 800px; /* Fixed base height */
     transform-origin: top left;
     transform: scale(calc(100vw / 1280), calc(100vh / 800));
+}
+
+/* Move up by 40px in non-full-screen mode */
+.non-fullscreen .wrapper {
+    transform: translateY(-40px) scale(calc(100vw / 1280), calc(100vh / 800));
 }
 
 /* Fade-in animation */
@@ -49,7 +55,7 @@ body {
     background-color: #e6e6e6;
 }
 
-/* Line positions as per 1280x800 reference */
+/* Line positions based on 1280x800 reference */
 .original { top: 112.5px; left: 90px; width: 331px; }
 .second { top: 260.5px; left: 90px; width: 331px; }
 .third { top: 752px; left: 90px; width: 331px; }

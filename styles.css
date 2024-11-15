@@ -21,17 +21,17 @@ body {
     overflow: hidden;
 }
 
-/* Wrapper container to scale the content proportionally */
+/* Wrapper container with proportional scaling */
 .wrapper {
     width: 1280px;
     height: 800px;
-    transform-origin: center;
-    transform: scale(calc(100vw / 1280), calc(100vh / 800));
+    transform-origin: top left;
+    transform: scale(calc(min(100vw / 1280, 100vh / 800)));
 }
 
-/* Move up by 40px in non-full-screen mode */
+/* Apply upward shift in non-full-screen mode */
 .non-fullscreen .wrapper {
-    transform: translateY(-40px) scale(calc(100vw / 1280), calc(100vh / 800));
+    transform: translateY(-40px) scale(calc(min(100vw / 1280, 100vh / 800)));
 }
 
 /* Fade-in animation */
@@ -48,14 +48,14 @@ body {
     animation: fade-in 0.2s ease-in-out forwards;
 }
 
-/* Styling for the lines */
+/* Line styles */
 .line {
     position: absolute;
     height: 1px;
     background-color: #e6e6e6;
 }
 
-/* Line positions based on 1280x800 reference */
+/* Line positioning */
 .original { top: 112.5px; left: 90px; width: 331px; }
 .second { top: 260.5px; left: 90px; width: 331px; }
 .third { top: 752px; left: 90px; width: 331px; }
@@ -80,7 +80,7 @@ body {
 .third-dashed { top: 588px; left: 515px; }
 .fourth-dashed { top: 752px; left: 515px; }
 
-/* Styling for the time text */
+/* Time text styling */
 .time-text {
     position: absolute;
     top: 260px;

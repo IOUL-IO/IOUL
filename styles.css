@@ -21,17 +21,23 @@ body {
     overflow: hidden;
 }
 
-/* Wrapper to hold and scale all content */
+/* Wrapper container to maintain original 1280x800 layout */
 .wrapper {
-    width: 1280px; /* Base width */
-    height: 800px; /* Base height */
+    width: 1280px;
+    height: 800px;
     transform-origin: top left;
-    transform: scale(calc(100vw / 1280 * 1.05), calc(100vh / 800 * 1.05));
+}
+
+/* Apply slight right stretch for large screens */
+@media (min-width: 1600px) {
+    .wrapper {
+        width: 1350px; /* Adjusted width for larger screens */
+    }
 }
 
 /* Move up by 40px in non-full-screen mode */
 .non-fullscreen .wrapper {
-    transform: translateY(-40px) scale(calc(100vw / 1280 * 1.05), calc(100vh / 800 * 1.05));
+    transform: translateY(-40px);
 }
 
 /* Fade-in animation */

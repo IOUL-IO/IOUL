@@ -18,7 +18,12 @@ body {
     position: relative;
     min-height: 100vh;
     min-width: 100vw;
-    overflow: hidden; /* Prevent scrolling */
+    overflow: hidden; /* Prevents accidental scrolling */
+}
+
+/* Move all content up when not in full-screen */
+.non-fullscreen {
+    transform: translateY(-5vh);
 }
 
 /* Fade-in animation */
@@ -32,7 +37,7 @@ body {
 }
 
 .fade-in {
-    opacity: 0;
+    opacity: 0; /* Initially hidden */
 }
 
 .fade-in-trigger .fade-in {
@@ -42,44 +47,45 @@ body {
 /* Styling for the lines */
 .line {
     position: absolute;
-    height: 0.125vh; /* 1px height */
+    height: 0.125vh; /* 1px relative to viewport height */
     background-color: #e6e6e6;
 }
 
-/* Line positioning based on original pixel values */
+/* Line Positions */
 .original {
-    top: 14.06vh; /* Equivalent to 112.5px */
-    left: 7.03vw; /* Equivalent to 90px */
-    width: 25.86vw; /* Equivalent to 331px */
+    top: 14.06vh; /* 112.5px relative to 800px height */
+    left: 7.03vw; /* 90px relative to 1280px width */
+    width: 25.86vw; /* 331px relative to 1280px width */
 }
 
 .second {
-    top: 32.56vh; /* Equivalent to 260.5px */
+    top: 32.56vh; /* 260.5px relative to 800px height */
     left: 7.03vw;
     width: 25.86vw;
 }
 
 .third {
-    top: 94vh; /* Equivalent to 752px */
+    top: 94vh; /* 752px relative to 800px height */
     left: 7.03vw;
     width: 25.86vw;
 }
 
 .fourth {
-    top: 14.06vh; /* Equivalent to 112.5px */
-    left: 40.23vw; /* Equivalent to 515px */
-    width: 65.23vw; /* Equivalent to 835px */
+    top: 14.06vh; /* 112.5px relative to 800px height */
+    left: 40.23vw; /* 515px relative to 1280px width */
+    width: 65.23vw; /* 835px relative to 1280px width */
 }
 
+/* Dashed Lines */
 .dashed {
     top: 32.56vh;
     left: 40.23vw;
-    width: 59.38vw; /* Equivalent to 760px */
+    width: 59.38vw; /* 760px relative to 1280px width */
     height: 0.125vh;
     background: linear-gradient(
         to right,
-        #e1e1e1 0,
-        #e1e1e1 calc(0.47vw), /* Dash length */
+        #e6e6e6 0,
+        #e6e6e6 calc(0.47vw), /* Dash length */
         #ffffff calc(0.47vw),
         #ffffff calc(0.94vw) /* Gap length */
     );
@@ -87,48 +93,49 @@ body {
 }
 
 .second-dashed {
-    top: 53vh; /* Equivalent to 424px */
+    top: 53vh; /* 424px relative to 800px height */
     left: 40.23vw;
-    width: 59.38vw; /* Equivalent to 760px */
+    width: 59.38vw;
 }
 
 .third-dashed {
-    top: 73.5vh; /* Equivalent to 588px */
+    top: 73.5vh; /* 588px relative to 800px height */
     left: 40.23vw;
-    width: 59.38vw; /* Equivalent to 760px */
+    width: 59.38vw;
 }
 
 .fourth-dashed {
-    top: 94vh; /* Equivalent to 752px */
+    top: 94vh; /* 752px relative to 800px height */
     left: 40.23vw;
-    width: 59.38vw; /* Equivalent to 760px */
+    width: 59.38vw;
 }
 
-/* Styling for the time text */
+/* Time Text Styles */
 .time-text {
     position: absolute;
-    font-size: 1.25vh; /* Scaled equivalent of the font size */
+    font-size: 1.25vh; /* Adjusted font size for proportional readability */
     font-family: 'Distill Expanded', sans-serif;
     color: #a1a1a1;
     letter-spacing: 0.16vw;
 }
 
+/* Text Positions */
 .time-text {
-    top: 32.56vh; /* Equivalent to 260.5px */
-    left: calc(100vw - 6.25vw); /* Positioned within the viewport */
+    top: 32.56vh; /* 260.5px relative to 800px height */
+    left: calc(100vw - 7.03vw); /* 90px relative to 1280px width */
 }
 
 .second-time-text {
-    top: 53vh; /* Equivalent to 424px */
-    left: calc(100vw - 6.25vw);
+    top: 53vh; /* 424px relative to 800px height */
+    left: calc(100vw - 7.03vw);
 }
 
 .third-time-text {
-    top: 73.5vh; /* Equivalent to 588px */
-    left: calc(100vw - 6.25vw);
+    top: 73.5vh; /* 588px relative to 800px height */
+    left: calc(100vw - 7.03vw);
 }
 
 .fourth-time-text {
-    top: 94vh; /* Equivalent to 752px */
-    left: calc(100vw - 6.25vw);
+    top: 94vh; /* 752px relative to 800px height */
+    left: calc(100vw - 7.03vw);
 }

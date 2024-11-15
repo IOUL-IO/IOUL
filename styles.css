@@ -13,10 +13,22 @@
 }
 
 body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #ffffff;
     height: 100vh;
     overflow: hidden;
-    position: relative;
+}
+
+/* Wrapper with capped scaling for larger screens */
+.wrapper {
+    width: 1280px;
+    height: 800px;
+    max-width: 95vw; /* Limit the maximum width to 95% of the viewport */
+    max-height: 95vh; /* Limit the maximum height to 95% of the viewport */
+    transform-origin: top left;
+    transform: scale(calc(min(100vw / 1280, 100vh / 800)));
 }
 
 /* Line styles */

@@ -21,9 +21,9 @@ body {
     overflow: hidden; /* Prevents accidental scrolling */
 }
 
-/* Move all content up by 10px when not in full-screen */
+/* Move all content up proportionally when not in full-screen */
 .non-fullscreen {
-    transform: translateY(-40px);
+    transform: translateY(-5vh); /* Equivalent to 40px for proportional scaling */
 }
 
 /* Fade-in animation */
@@ -41,7 +41,7 @@ body {
     opacity: 0;
 }
 
-/* Apply fade-in animation when triggered, with a 0.2s duration */
+/* Apply fade-in animation when triggered */
 .fade-in-trigger .fade-in {
     animation: fade-in 0.2s ease-in-out forwards;
 }
@@ -49,46 +49,90 @@ body {
 /* Default styling for the lines */
 .line {
     position: absolute;
-    height: 1px;
+    height: 0.125vh; /* Equivalent to 1px for proportional scaling */
     background-color: #e6e6e6;
 }
 
 /* Positioning each line */
-.original { top: 112.5px; left: 90px; width: 331px; }
-.second { top: 260.5px; left: 90px; width: 331px; }
-.third { top: 752px; left: 90px; width: 331px; }
-.fourth { top: 112.5px; left: 515px; width: 835px; }
-
-.dashed {
-    top: 260.5px;
-    left: 515px;
-    width: 760px;
-    height: 1px;
-    background: linear-gradient(
-        to right,
-        #e1e1e1 0px,
-        #e1e1e1 6px,
-        #ffffff 6px,
-        #ffffff 12px
-    );
-    background-size: 12px 1px;
+.original {
+    top: 14.06vh; /* 112.5px converted to vh */
+    left: 7.03vw; /* 90px converted to vw */
+    width: 25.86vw; /* 331px converted to vw */
 }
 
-.second-dashed { top: 424px; left: 515px; }
-.third-dashed { top: 588px; left: 515px; }
-.fourth-dashed { top: 752px; left: 515px; }
+.second {
+    top: 32.56vh; /* 260.5px converted to vh */
+    left: 7.03vw;
+    width: 25.86vw;
+}
+
+.third {
+    top: 94vh; /* 752px converted to vh */
+    left: 7.03vw;
+    width: 25.86vw;
+}
+
+.fourth {
+    top: 14.06vh; /* 112.5px converted to vh */
+    left: 40.23vw; /* 515px converted to vw */
+    width: 65.23vw; /* 835px converted to vw */
+}
+
+.dashed {
+    top: 32.56vh; /* 260.5px converted to vh */
+    left: 40.23vw;
+    width: 59.38vw; /* 760px converted to vw */
+    height: 0.125vh;
+    background: linear-gradient(
+        to right,
+        #e1e1e1 0,
+        #e1e1e1 calc(0.47vw), /* Dash length */
+        #ffffff calc(0.47vw),
+        #ffffff calc(0.94vw) /* Gap length */
+    );
+    background-size: calc(0.94vw) 0.125vh;
+}
+
+.second-dashed {
+    top: 53vh; /* 424px converted to vh */
+    left: 40.23vw;
+    width: 59.38vw;
+}
+
+.third-dashed {
+    top: 73.5vh; /* 588px converted to vh */
+    left: 40.23vw;
+    width: 59.38vw;
+}
+
+.fourth-dashed {
+    top: 94vh; /* 752px converted to vh */
+    left: 40.23vw;
+    width: 59.38vw;
+}
 
 /* Styling for the time text */
 .time-text {
     position: absolute;
-    top: 260px;
-    left: 1296px;
-    font-size: 0.28rem;
+    top: 32.5vh; /* 260px converted to vh */
+    left: calc(100vw - 10vw); /* Constrained to maintain proportional distance */
+    font-size: 0.28rem; /* Text size remains consistent */
     font-family: 'Distill Expanded', sans-serif;
     color: #a1a1a1;
-    letter-spacing: 2px;
+    letter-spacing: 0.15vw; /* Proportional letter spacing */
 }
 
-.second-time-text { top: 423px; left: 1296px; }
-.third-time-text { top: 587px; left: 1296px; }
-.fourth-time-text { top: 750px; left: 1300px; }
+.second-time-text {
+    top: 53vh; /* 423px converted to vh */
+    left: calc(100vw - 10vw);
+}
+
+.third-time-text {
+    top: 73.38vh; /* 587px converted to vh */
+    left: calc(100vw - 10vw);
+}
+
+.fourth-time-text {
+    top: 93.75vh; /* 750px converted to vh */
+    left: calc(100vw - 10vw);
+}

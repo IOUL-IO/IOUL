@@ -23,7 +23,7 @@ body {
 
 /* Move all content up by 10px when not in full-screen */
 .non-fullscreen {
-    transform: translateY(-40px);
+    transform: translateY(-5vh); /* Adjusted for viewport-relative units */
 }
 
 /* Fade-in animation */
@@ -46,49 +46,97 @@ body {
     animation: fade-in 0.2s ease-in-out forwards;
 }
 
-/* Default styling for the lines */
+/* Styling for the lines */
 .line {
     position: absolute;
-    height: 1px;
+    height: 0.125vh; /* 1px relative to viewport height */
     background-color: #e6e6e6;
 }
 
-/* Positioning each line */
-.original { top: 112.5px; left: 90px; width: 331px; }
-.second { top: 260.5px; left: 90px; width: 331px; }
-.third { top: 752px; left: 90px; width: 331px; }
-.fourth { top: 112.5px; left: 515px; width: 835px; }
-
-.dashed {
-    top: 260.5px;
-    left: 515px;
-    width: 760px;
-    height: 1px;
-    background: linear-gradient(
-        to right,
-        #e1e1e1 0px,
-        #e1e1e1 6px,
-        #ffffff 6px,
-        #ffffff 12px
-    );
-    background-size: 12px 1px;
+/* Constrain lines within 80px (converted to 6.25vw) from the left and right edges */
+.original {
+    top: 14.06vh; /* 112.5px relative to 800px height */
+    left: 6.25vw; /* 80px from left edge */
+    width: calc(100vw - 12.5vw); /* Full width minus 80px from both sides */
 }
 
-.second-dashed { top: 424px; left: 515px; }
-.third-dashed { top: 588px; left: 515px; }
-.fourth-dashed { top: 752px; left: 515px; }
+.second {
+    top: 32.56vh; /* 260.5px relative to 800px height */
+    left: 6.25vw;
+    width: calc(100vw - 12.5vw);
+}
+
+.third {
+    top: 94vh; /* 752px relative to 800px height */
+    left: 6.25vw;
+    width: calc(100vw - 12.5vw);
+}
+
+.fourth {
+    top: 14.06vh; /* Same as original */
+    left: 6.25vw;
+    width: calc(100vw - 12.5vw);
+}
+
+/* Dashed lines */
+.dashed {
+    top: 32.56vh;
+    left: 6.25vw;
+    width: calc(100vw - 12.5vw);
+    height: 0.125vh;
+    background: linear-gradient(
+        to right,
+        #e6e6e6 0,
+        #e6e6e6 calc(0.47vw), /* Dash length */
+        #ffffff calc(0.47vw),
+        #ffffff calc(0.94vw) /* Gap length */
+    );
+    background-size: calc(0.94vw) 0.125vh;
+}
+
+.second-dashed {
+    top: 53vh; /* 424px relative to 800px height */
+    left: 6.25vw;
+    width: calc(100vw - 12.5vw);
+}
+
+.third-dashed {
+    top: 73.5vh; /* 588px relative to 800px height */
+    left: 6.25vw;
+    width: calc(100vw - 12.5vw);
+}
+
+.fourth-dashed {
+    top: 94vh;
+    left: 6.25vw;
+    width: calc(100vw - 12.5vw);
+}
 
 /* Styling for the time text */
 .time-text {
     position: absolute;
-    top: 260px;
-    left: 1296px;
-    font-size: 0.28rem;
+    font-size: 0.28vh; /* Slightly larger text for better readability */
     font-family: 'Distill Expanded', sans-serif;
     color: #a1a1a1;
-    letter-spacing: 2px;
+    letter-spacing: 0.18vw;
 }
 
-.second-time-text { top: 423px; left: 1296px; }
-.third-time-text { top: 587px; left: 1296px; }
-.fourth-time-text { top: 750px; left: 1300px; }
+.time-text {
+    top: 32.56vh;
+    left: calc(100vw - 6.25vw); /* Constrained 80px from the right edge */
+}
+
+.second-time-text {
+    top: 53vh;
+    left: calc(100vw - 6.25vw); /* Constrained 80px from the right edge */
+}
+
+.third-time-text {
+    top: 73.5vh;
+    left: calc(100vw - 6.25vw); /* Constrained 80px from the right edge */
+}
+
+.fourth-time-text {
+    top: 94vh;
+    left: calc(100vw - 6.25vw); /* Constrained 80px from the right edge */
+}

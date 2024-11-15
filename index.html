@@ -8,7 +8,7 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="non-fullscreen">
     <div class="wrapper">
         <div class="line original fade-in"></div>
         <div class="line second fade-in"></div>
@@ -26,7 +26,19 @@
     </div>
 
     <script>
-        // Trigger full-screen mode and fade-in effect on click
+        function toggleFullscreenClass() {
+            if (document.fullscreenElement) {
+                document.body.classList.remove('non-fullscreen');
+            } else {
+                document.body.classList.add('non-fullscreen');
+            }
+        }
+
+        document.addEventListener('fullscreenchange', toggleFullscreenClass);
+        document.addEventListener('webkitfullscreenchange', toggleFullscreenClass); // Safari
+        document.addEventListener('mozfullscreenchange', toggleFullscreenClass); // Firefox
+        document.addEventListener('MSFullscreenChange', toggleFullscreenClass); // IE/Edge
+
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {

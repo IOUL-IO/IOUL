@@ -23,7 +23,7 @@ body {
 
 /* Move all content up proportionally when not in full-screen */
 .non-fullscreen {
-    transform: translateY(-5vh); /* 40px converted to vh for proportional scaling */
+    transform: translateY(-5vh); /* Adjusted from 40px to vh for proportional scaling */
 }
 
 /* Fade-in animation */
@@ -47,11 +47,11 @@ body {
 /* Default styling for the lines */
 .line {
     position: absolute;
-    height: 0.125vh; /* 1px converted to vh for proportional scaling */
+    height: 0.125vh; /* 1px converted to vh */
     background-color: #e6e6e6;
 }
 
-/* Positioning each line converted to vw/vh */
+/* Positioning each line */
 .original {
     top: 14.06vh; /* 112.5px converted to vh */
     left: 7.03vw; /* 90px converted to vw */
@@ -73,21 +73,20 @@ body {
 .fourth {
     top: 14.06vh;
     left: 40.23vw; /* 515px converted to vw */
-    width: 59.38vw; /* 760px converted to vw (matches dashed lines) */
+    width: 65.23vw; /* 835px converted to vw */
 }
 
-/* Dashed line styling */
 .dashed {
     top: 32.56vh;
     left: 40.23vw;
-    width: 59.38vw;
+    width: 59.38vw; /* 760px converted to vw */
     height: 0.125vh;
     background: linear-gradient(
         to right,
         #e1e1e1 0,
-        #e1e1e1 calc(0.47vw), /* Dash length */
+        #e1e1e1 calc(0.47vw), /* Dash length proportional */
         #ffffff calc(0.47vw),
-        #ffffff calc(0.94vw) /* Gap length */
+        #ffffff calc(0.94vw) /* Gap length proportional */
     );
     background-size: calc(0.94vw) 0.125vh;
 }
@@ -95,25 +94,28 @@ body {
 .second-dashed {
     top: 53vh; /* 424px converted to vh */
     left: 40.23vw;
+    width: 59.38vw;
 }
 
 .third-dashed {
     top: 73.5vh; /* 588px converted to vh */
     left: 40.23vw;
+    width: 59.38vw;
 }
 
 .fourth-dashed {
     top: 94vh; /* 752px converted to vh */
     left: 40.23vw;
+    width: 59.38vw;
 }
 
 /* Styling for the time text */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 14px; /* Text size remains in px */
+    font-size: 0.28rem; /* Text size remains unchanged */
     color: #a1a1a1;
-    letter-spacing: 2px; /* Letter spacing remains in px */
+    letter-spacing: calc(2px / 1280 * 100vw); /* Converted letter-spacing to scale proportionally */
 }
 
 /* Text Positions aligned */

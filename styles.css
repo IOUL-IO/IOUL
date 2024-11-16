@@ -72,51 +72,51 @@ body.non-fullscreen {
 /* Solid Line Positions */
 .original {
     top: 12.5vh;
-    left: 6.4vw;
+    left: 6.38vw;
     width: 24vw;
 }
 
 .second {
     top: 28.9vh;
-    left: 6.4vw;
+    left: 6.38vw;
     width: 24vw;
 }
 
 .third {
     top: 84vh;
-    left: 6.4vw;
+    left: 6.38vw;
     width: 24vw;
 }
 
 .fourth {
     top: 12.5vh;
     left: 37vw;
-    width: 56.7vw; /* Adjusted for proportional scaling */
+    width: 56.8vw; /* Adjusted for proportional scaling */
 }
 
 /* Dashed Line Positions */
 .dashed {
     top: 28.9vh;
     left: 37vw;
-    width: 51vw;
+    width: 52.5vw;
 }
 
 .second-dashed {
-    top: 47.4vh;
+    top: 47.3vh;
     left: 37vw;
-    width: 51vw;
+    width: 52.5vw;
 }
 
 .third-dashed {
-    top: 65.9vh;
+    top: 65.7vh;
     left: 37vw;
-    width: 51vw;
+    width: 52.5vw;
 }
 
 .fourth-dashed {
-    top: 84.4vh;
+    top: 84vh;
     left: 37vw;
-    width: 51vw;
+    width: 52.5vw;
 }
 
 /* Styling for the time text */
@@ -131,20 +131,20 @@ body.non-fullscreen {
 /* Time Text Positions */
 .time-text {
     top: 28.9vh;
-    left: 90.1vw;
+    left: 90.4vw;
 }
 
 .second-time-text {
-    top: 47.4vh;
-    left: 90.1vw;
+    top: 47.3vh;
+    left: 90.4vw;
 }
 
 .third-time-text {
-    top: 65.9vh;
-    left: 90.1vw;
+    top: 65.7vh;
+    left: 90.4vw;
 }
 
 .fourth-time-text {
     top: 83.9vh;
-    left: 90.1vw;
+    left: 90.4vw;
 }

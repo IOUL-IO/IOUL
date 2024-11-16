@@ -72,51 +72,51 @@ body.non-fullscreen {
 /* Solid Line Positions */
 .original {
     top: 12.5vh;
-    left: 6.5vw;
+    left: 6.4vw;
     width: 24vw;
 }
 
 .second {
     top: 28.5vh;
-    left: 6.5vw;
+    left: 6.4vw;
     width: 24vw;
 }
 
 .third {
     top: 84vh;
-    left: 6.5vw;
+    left: 6.4vw;
     width: 24vw;
 }
 
 .fourth {
     top: 12.5vh;
-    left: 38vw;
+    left: 37vw;
     width: 56.8vw; /* Adjusted for proportional scaling */
 }
 
 /* Dashed Line Positions */
 .dashed {
     top: 28.5vh;
-    left: 38vw;
-    width: 52vw;
+    left: 37vw;
+    width: 53vw;
 }
 
 .second-dashed {
     top: 47vh;
-    left: 38vw;
-    width: 52vw;
+    left: 37vw;
+    width: 53vw;
 }
 
 .third-dashed {
     top: 65.5vh;
-    left: 38vw;
-    width: 52vw;
+    left: 37vw;
+    width: 53vw;
 }
 
 .fourth-dashed {
     top: 84vh;
-    left: 38vw;
-    width: 52vw;
+    left: 37vw;
+    width: 53vw;
 }
 
 /* Styling for the time text */

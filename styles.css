@@ -21,11 +21,6 @@ body {
     overflow: hidden; /* Prevents accidental scrolling */
 }
 
-/* Move all content up proportionally when not in full-screen */
-.non-fullscreen {
-    transform: translateY(-3vh); /* Equivalent to a slightly smaller offset */
-}
-
 /* Fade-in animation */
 @keyframes fade-in {
     0% {
@@ -47,7 +42,7 @@ body {
 /* Default styling for the lines */
 .line {
     position: absolute;
-    height: 0.1vh; /* Reduced height for proportional scaling */
+    height: 0.1vh; /* Consistent height */
     background-color: #e6e6e6; /* Lines 1-4 are e6e6e6 */
 }
 
@@ -55,7 +50,7 @@ body {
 .original {
     top: 12.5vh;
     left: 6.5vw;
-    width: 24vw; 
+    width: 24vw;
 }
 
 .second {
@@ -73,15 +68,15 @@ body {
 .fourth {
     top: 12.5vh;
     left: 38vw;
-    width: 50vw; /* Reduced width */
+    width: 52vw; /* Slightly longer width */
 }
 
-/* Dashed Lines */
+/* Dashed Lines - Identical for Full-Screen and Non-Full-Screen */
 .dashed {
     top: 28.5vh;
     left: 38vw;
-    width: 50vw; /* Reduced length */
-    height: 0.1vh;
+    width: 51vw; /* Slightly longer width */
+    height: 0.1vh; /* Consistent height */
     background: linear-gradient(
         to right,
         #e1e1e1 0, /* Dashed lines are e1e1e1 */
@@ -95,47 +90,47 @@ body {
 .second-dashed {
     top: 47vh;
     left: 38vw;
-    width: 50vw; /* Matches shortened dashed lines */
+    width: 51vw;
 }
 
 .third-dashed {
     top: 67vh;
     left: 38vw;
-    width: 50vw;
+    width: 51vw;
 }
 
 .fourth-dashed {
     top: 84vh;
     left: 38vw;
-    width: 50vw;
+    width: 51vw;
 }
 
 /* Styling for the time text */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.25rem; /* Reduced size for better fit */
+    font-size: 0.25rem;
     color: #a1a1a1;
-    letter-spacing: 0.12vw; /* Adjusted for proportional spacing */
+    letter-spacing: 0.12vw;
 }
 
 /* Text Positions aligned */
 .time-text {
     top: 28.5vh;
-    left: 90vw; /* Adjusted for reduced dashed lines */
+    left: 91vw;
 }
 
 .second-time-text {
     top: 47vh;
-    left: 90vw;
+    left: 91vw;
 }
 
 .third-time-text {
     top: 67vh;
-    left: 90vw;
+    left: 91vw;
 }
 
 .fourth-time-text {
     top: 84vh;
-    left: 90vw;
+    left: 91vw;
 }

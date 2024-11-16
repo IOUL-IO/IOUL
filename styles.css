@@ -48,14 +48,14 @@ body {
 .line {
     position: absolute;
     height: 0.1vh; /* Reduced height for proportional scaling */
-    background-color: #e6e6e6;
+    background-color: #e6e6e6; /* Lines 1-4 are e6e6e6 */
 }
 
 /* Positioning each line */
 .original {
-    top: 12.5vh; /* Adjusted to fit better on larger screens */
+    top: 12.5vh;
     left: 6.5vw;
-    width: 24vw; /* Reduced width */
+    width: 24vw; 
 }
 
 .second {
@@ -73,41 +73,41 @@ body {
 .fourth {
     top: 12.5vh;
     left: 38vw;
-    width: 53vw; /* Reduced width slightly */
+    width: 50vw; /* Reduced width */
 }
 
 /* Dashed Lines */
 .dashed {
     top: 28.5vh;
     left: 38vw;
-    width: 53vw; /* Matches line four */
+    width: 50vw; /* Reduced length */
     height: 0.1vh;
     background: linear-gradient(
         to right,
-        #e6e6e6 0,
-        #e6e6e6 0.4vw, /* Dash length */
-        #ffffff 0.4vw,
-        #ffffff 0.8vw /* Gap length */
+        #e1e1e1 0, /* Dashed lines are e1e1e1 */
+        #e1e1e1 0.35vw, /* Dash length */
+        #ffffff 0.35vw,
+        #ffffff 0.7vw /* Gap length */
     );
-    background-size: 0.8vw 0.1vh;
+    background-size: 0.7vw 0.1vh;
 }
 
 .second-dashed {
-    top: 47vh; /* Adjusted for consistency */
+    top: 47vh;
     left: 38vw;
-    width: 53vw; /* Reduced width slightly */
+    width: 50vw; /* Matches shortened dashed lines */
 }
 
 .third-dashed {
-    top: 67vh; /* Adjusted for consistency */
+    top: 67vh;
     left: 38vw;
-    width: 53vw; /* Reduced width slightly */
+    width: 50vw;
 }
 
 .fourth-dashed {
-    top: 84vh; /* Adjusted for better alignment */
+    top: 84vh;
     left: 38vw;
-    width: 53vw; /* Reduced width slightly */
+    width: 50vw;
 }
 
 /* Styling for the time text */
@@ -122,20 +122,20 @@ body {
 /* Text Positions aligned */
 .time-text {
     top: 28.5vh;
-    left: 91vw; /* Adjusted to match reduced dashed lines */
+    left: 90vw; /* Adjusted for reduced dashed lines */
 }
 
 .second-time-text {
     top: 47vh;
-    left: 91vw; /* Adjusted to match reduced dashed lines */
+    left: 90vw;
 }
 
 .third-time-text {
     top: 67vh;
-    left: 91vw; /* Adjusted to match reduced dashed lines */
+    left: 90vw;
 }
 
 .fourth-time-text {
     top: 84vh;
-    left: 91vw; /* Adjusted to match reduced dashed lines */
+    left: 90vw;
 }

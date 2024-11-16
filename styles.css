@@ -21,6 +21,13 @@ body {
     overflow: hidden; /* Prevents accidental scrolling */
 }
 
+/* Ensure consistent rendering in non-full-screen mode */
+.non-fullscreen {
+    transform: none; /* Avoid scaling issues */
+    margin: 0;
+    padding: 0;
+}
+
 /* Fade-in animation */
 @keyframes fade-in {
     0% {
@@ -42,15 +49,15 @@ body {
 /* Default styling for the lines */
 .line {
     position: absolute;
-    height: 0.1vh; /* Consistent height */
-    background-color: #e6e6e6; /* Lines 1-4 are e6e6e6 */
+    height: 0.1vh; /* Fixed thickness */
+    background-color: #e6e6e6; /* Consistent for lines 1-4 */
 }
 
 /* Positioning each line */
 .original {
     top: 12.5vh;
     left: 6.5vw;
-    width: 24vw;
+    width: 24vw; 
 }
 
 .second {
@@ -71,18 +78,32 @@ body {
     width: 52vw; /* Slightly longer width */
 }
 
-/* Dashed Lines - Identical for Full-Screen and Non-Full-Screen */
+/* Dashed Lines */
 .dashed {
     top: 28.5vh;
     left: 38vw;
     width: 51vw; /* Slightly longer width */
-    height: 0.1vh; /* Consistent height */
+    height: 0.1vh; /* Fixed thickness */
     background: linear-gradient(
         to right,
         #e1e1e1 0, /* Dashed lines are e1e1e1 */
         #e1e1e1 0.35vw, /* Dash length */
         #ffffff 0.35vw,
         #ffffff 0.7vw /* Gap length */
+    );
+    background-size: 0.7vw 0.1vh;
+}
+
+/* Ensure dashed lines retain styles in all states */
+.non-fullscreen .dashed,
+body .dashed {
+    height: 0.1vh; /* Explicit thickness */
+    background: linear-gradient(
+        to right,
+        #e1e1e1 0,
+        #e1e1e1 0.35vw,
+        #ffffff 0.35vw,
+        #ffffff 0.7vw
     );
     background-size: 0.7vw 0.1vh;
 }
@@ -109,7 +130,7 @@ body {
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.25rem;
+    font-size: 0.25rem; /* Consistent size */
     color: #a1a1a1;
     letter-spacing: 0.12vw;
 }

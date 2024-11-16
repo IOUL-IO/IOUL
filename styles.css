@@ -91,7 +91,7 @@ body.non-fullscreen {
 .fourth {
     top: 12.5vh;
     left: 38vw;
-    width: 55vw; /* Adjusted for proportional scaling */
+    width: 57vw; /* Adjusted for proportional scaling */
 }
 
 /* Dashed Line Positions */
@@ -108,7 +108,7 @@ body.non-fullscreen {
 }
 
 .third-dashed {
-    top: 67vh;
+    top: 65.5vh;
     left: 38vw;
     width: 52vw;
 }
@@ -140,7 +140,7 @@ body.non-fullscreen {
 }
 
 .third-time-text {
-    top: 67vh;
+    top: 65.5vh;
     left: 91vw;
 }
 

@@ -91,32 +91,32 @@ body.non-fullscreen {
 .fourth {
     top: 12.5vh;
     left: 38vw;
-    width: 52vw; /* Adjusted for proportional scaling */
+    width: 55vw; /* Adjusted for proportional scaling */
 }
 
 /* Dashed Line Positions */
 .dashed {
     top: 28.5vh;
     left: 38vw;
-    width: 51vw;
+    width: 52vw;
 }
 
 .second-dashed {
     top: 47vh;
     left: 38vw;
-    width: 51vw;
+    width: 52vw;
 }
 
 .third-dashed {
     top: 67vh;
     left: 38vw;
-    width: 51vw;
+    width: 52vw;
 }
 
 .fourth-dashed {
     top: 84vh;
     left: 38vw;
-    width: 51vw;
+    width: 52vw;
 }
 
 /* Styling for the time text */

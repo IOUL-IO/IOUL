@@ -21,11 +21,10 @@ body {
     overflow: hidden; /* Prevents accidental scrolling */
 }
 
-/* Ensure consistent rendering in non-full-screen mode */
-.non-fullscreen {
-    transform: none; /* Avoid scaling issues */
-    margin: 0;
-    padding: 0;
+/* Force consistency for non-full-screen mode */
+body,
+body.non-fullscreen {
+    line-height: normal; /* Prevents line rendering discrepancies */
 }
 
 /* Fade-in animation */
@@ -46,18 +45,35 @@ body {
     animation: fade-in 0.2s ease-in-out forwards;
 }
 
-/* Default styling for the lines */
-.line {
+/* Default styling for all lines */
+.line,
+.dashed {
     position: absolute;
-    height: 0.1vh; /* Fixed thickness */
-    background-color: #e6e6e6; /* Consistent for lines 1-4 */
+    height: 1px; /* Hardcoded 1px thickness */
 }
 
-/* Positioning each line */
+/* Styling for solid lines (1-4) */
+.line {
+    background-color: #e6e6e6; /* Solid line color */
+}
+
+/* Dashed lines */
+.dashed {
+    background: linear-gradient(
+        to right,
+        #e1e1e1 0,
+        #e1e1e1 5px, /* Dash length */
+        #ffffff 5px,
+        #ffffff 10px /* Gap length */
+    );
+    background-size: 10px 1px;
+}
+
+/* Solid Line Positions */
 .original {
     top: 12.5vh;
     left: 6.5vw;
-    width: 24vw; 
+    width: 24vw;
 }
 
 .second {
@@ -75,37 +91,14 @@ body {
 .fourth {
     top: 12.5vh;
     left: 38vw;
-    width: 52vw; /* Slightly longer width */
+    width: 52vw; /* Adjusted for proportional scaling */
 }
 
-/* Dashed Lines */
+/* Dashed Line Positions */
 .dashed {
     top: 28.5vh;
     left: 38vw;
-    width: 51vw; /* Slightly longer width */
-    height: 0.1vh; /* Fixed thickness */
-    background: linear-gradient(
-        to right,
-        #e1e1e1 0, /* Dashed lines are e1e1e1 */
-        #e1e1e1 0.35vw, /* Dash length */
-        #ffffff 0.35vw,
-        #ffffff 0.7vw /* Gap length */
-    );
-    background-size: 0.7vw 0.1vh;
-}
-
-/* Ensure dashed lines retain styles in all states */
-.non-fullscreen .dashed,
-body .dashed {
-    height: 0.1vh; /* Explicit thickness */
-    background: linear-gradient(
-        to right,
-        #e1e1e1 0,
-        #e1e1e1 0.35vw,
-        #ffffff 0.35vw,
-        #ffffff 0.7vw
-    );
-    background-size: 0.7vw 0.1vh;
+    width: 51vw;
 }
 
 .second-dashed {
@@ -130,12 +123,12 @@ body .dashed {
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.25rem; /* Consistent size */
+    font-size: 0.25rem;
     color: #a1a1a1;
     letter-spacing: 0.12vw;
 }
 
-/* Text Positions aligned */
+/* Time Text Positions */
 .time-text {
     top: 28.5vh;
     left: 91vw;

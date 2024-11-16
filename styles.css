@@ -91,7 +91,7 @@ body.non-fullscreen {
 .fourth {
     top: 12.5vh;
     left: 38vw;
-    width: 57vw; /* Adjusted for proportional scaling */
+    width: 56.8vw; /* Adjusted for proportional scaling */
 }
 
 /* Dashed Line Positions */

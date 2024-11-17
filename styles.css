@@ -72,25 +72,25 @@ body.non-fullscreen {
 .original {
     top: 12.5vh;
     left: 6.38vw;
-    width: 22.42vw;
+    width: 22.48vw;
 }
 
 .second {
     top: 28.5vh;
     left: 6.38vw;
-    width: 22.42vw;
+    width: 22.48vw;
 }
 
 .third {
     top: 84vh;
     left: 6.38vw;
-    width: 22.42vw;
+    width: 22.48vw;
 }
 
 .fourth {
     top: 12.5vh;
     left: 36vw;
-    width: 58vw; 
+    width: 57.8vw; 
 }
 
 .dashed {
@@ -123,7 +123,7 @@ body.non-fullscreen {
     font-family: 'Distill Expanded', sans-serif;
     font-size: 0.25rem;
     color: #a1a1a1;
-    letter-spacing: 0.12vw;
+    letter-spacing: 0.20vw;
 }
 
 /* Time Text Positions */

@@ -98,25 +98,25 @@ body.non-fullscreen {
 .dashed {
     top: 28.5vh;
     left: 37vw;
-    width: 52.3vw;
+    width: 52.1vw;
 }
 
 .second-dashed {
     top: 47vh;
     left: 37vw;
-    width: 52.3vw;
+    width: 52.1vw;
 }
 
 .third-dashed {
     top: 65.5vh;
     left: 37vw;
-    width: 52.3vw;
+    width: 52.1vw;
 }
 
 .fourth-dashed {
     top: 84vh;
     left: 37vw;
-    width: 52.3vw;
+    width: 52.1vw;
 }
 
 /* Styling for the time text */
@@ -130,7 +130,7 @@ body.non-fullscreen {
 
 /* Time Text Positions */
 .time-text {
-    top: 28.9vh;
+    top: 28.5vh;
     left: 90.4vw;
 }
 

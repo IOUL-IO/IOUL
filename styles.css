@@ -90,33 +90,33 @@ body.non-fullscreen {
 
 .fourth {
     top: 12.5vh;
-    left: 37vw;
+    left: 38vw;
     width: 56.6vw; 
 }
 
 /* Dashed Line Positions */
 .dashed {
     top: 28.5vh;
-    left: 37vw;
-    width: 52.1vw;
+    left: 38vw;
+    width: 52vw;
 }
 
 .second-dashed {
     top: 47vh;
-    left: 37vw;
-    width: 52.1vw;
+    left: 38vw;
+    width: 52vw;
 }
 
 .third-dashed {
     top: 65.5vh;
-    left: 37vw;
-    width: 52.1vw;
+    left: 38vw;
+    width: 52vw;
 }
 
 .fourth-dashed {
     top: 84vh;
-    left: 37vw;
-    width: 52.1vw;
+    left: 38vw;
+    width: 52vw;
 }
 
 /* Styling for the time text */

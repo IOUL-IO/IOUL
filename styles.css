@@ -129,20 +129,20 @@ body.non-fullscreen {
 /* Time Text Positions */
 .time-text {
     top: 28.5vh;
-    left: 90.1vw;
+    left: 90vw;
 }
 
 .second-time-text {
     top: 47vh;
-    left: 90.1vw;
+    left: 90vw;
 }
 
 .third-time-text {
     top: 65.5vh;
-    left: 90.1vw;
+    left: 90vw;
 }
 
 .fourth-time-text {
     top: 83.9vh;
-    left: 90.1vw;
+    left: 90vw;
 }

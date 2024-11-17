@@ -77,7 +77,7 @@ body.non-fullscreen {
 }
 
 .second {
-    top: 28.9vh;
+    top: 28.5vh;
     left: 6.38vw;
     width: 24vw;
 }
@@ -91,32 +91,32 @@ body.non-fullscreen {
 .fourth {
     top: 12.5vh;
     left: 37vw;
-    width: 56.8vw; /* Adjusted for proportional scaling */
+    width: 56.6vw; 
 }
 
 /* Dashed Line Positions */
 .dashed {
-    top: 28.9vh;
+    top: 28.5vh;
     left: 37vw;
-    width: 52.5vw;
+    width: 52.3vw;
 }
 
 .second-dashed {
-    top: 47.3vh;
+    top: 47vh;
     left: 37vw;
-    width: 52.5vw;
+    width: 52.3vw;
 }
 
 .third-dashed {
-    top: 65.7vh;
+    top: 65.5vh;
     left: 37vw;
-    width: 52.5vw;
+    width: 52.3vw;
 }
 
 .fourth-dashed {
     top: 84vh;
     left: 37vw;
-    width: 52.5vw;
+    width: 52.3vw;
 }
 
 /* Styling for the time text */
@@ -135,12 +135,12 @@ body.non-fullscreen {
 }
 
 .second-time-text {
-    top: 47.3vh;
+    top: 47vh;
     left: 90.4vw;
 }
 
 .third-time-text {
-    top: 65.7vh;
+    top: 65.5vh;
     left: 90.4vw;
 }
 

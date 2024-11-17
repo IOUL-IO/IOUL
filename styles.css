@@ -62,60 +62,59 @@ body.non-fullscreen {
     background: linear-gradient(
         to right,
         #e1e1e1 0,
-        #e1e1e1 5px, /* Dash length */
+        #e1e1e1 5px, 
         #ffffff 5px,
-        #ffffff 10px /* Gap length */
+        #ffffff 10px 
     );
     background-size: 10px 1px;
 }
 
-/* Solid Line Positions */
 .original {
     top: 12.5vh;
     left: 6.38vw;
-    width: 24vw;
+    width: 22vw;
 }
 
 .second {
     top: 28.5vh;
     left: 6.38vw;
-    width: 24vw;
+    width: 22vw;
 }
 
 .third {
     top: 84vh;
     left: 6.38vw;
-    width: 24vw;
+    width: 22vw;
 }
 
 .fourth {
     top: 12.5vh;
-    left: 38vw;
-    width: 56.6vw; 
+    left: 36vw;
+    width: 58.6vw; 
 }
 
 /* Dashed Line Positions */
 .dashed {
     top: 28.5vh;
-    left: 38vw;
+    left: 36vw;
     width: 52vw;
 }
 
 .second-dashed {
     top: 47vh;
-    left: 38vw;
+    left: 36vw;
     width: 52vw;
 }
 
 .third-dashed {
     top: 65.5vh;
-    left: 38vw;
+    left: 36vw;
     width: 52vw;
 }
 
 .fourth-dashed {
     top: 84vh;
-    left: 38vw;
+    left: 36vw;
     width: 52vw;
 }
 
@@ -131,20 +130,20 @@ body.non-fullscreen {
 /* Time Text Positions */
 .time-text {
     top: 28.5vh;
-    left: 90.4vw;
+    left: 90.47vw;
 }
 
 .second-time-text {
     top: 47vh;
-    left: 90.4vw;
+    left: 90.47vw;
 }
 
 .third-time-text {
     top: 65.5vh;
-    left: 90.4vw;
+    left: 90.47vw;
 }
 
 .fourth-time-text {
     top: 83.9vh;
-    left: 90.4vw;
+    left: 90.47vw;
 }

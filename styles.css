@@ -123,26 +123,26 @@ body.non-fullscreen {
     font-family: 'Distill Expanded', sans-serif;
     font-size: 0.25rem;
     color: #a1a1a1;
-    letter-spacing: 0.17vw;
+    letter-spacing: 0.20vw;
 }
 
 /* Time Text Positions */
 .time-text {
     top: 28.5vh;
-    left: 90.46vw;
+    left: 90.4vw;
 }
 
 .second-time-text {
     top: 47vh;
-    left: 90.46vw;
+    left: 90.4vw;
 }
 
 .third-time-text {
     top: 65.5vh;
-    left: 90.46vw;
+    left: 90.4vw;
 }
 
 .fourth-time-text {
     top: 83.9vh;
-    left: 90.46vw;
+    left: 90.4vw;
 }

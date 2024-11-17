@@ -96,25 +96,25 @@ body.non-fullscreen {
 .dashed {
     top: 28.5vh;
     left: 36vw;
-    width: 52.4vw;
+    width: 52.1vw;
 }
 
 .second-dashed {
     top: 47vh;
     left: 36vw;
-    width: 52.4vw;
+    width: 52.1vw;
 }
 
 .third-dashed {
     top: 65.5vh;
     left: 36vw;
-    width: 52.4vw;
+    width: 52.1vw;
 }
 
 .fourth-dashed {
     top: 84vh;
     left: 36vw;
-    width: 52.4vw;
+    width: 52.1vw;
 }
 
 /* Styling for the time text */
@@ -123,26 +123,26 @@ body.non-fullscreen {
     font-family: 'Distill Expanded', sans-serif;
     font-size: 0.25rem;
     color: #a1a1a1;
-    letter-spacing: 0.20vw;
+    letter-spacing: 0.17vw;
 }
 
 /* Time Text Positions */
 .time-text {
     top: 28.5vh;
-    left: 90.47vw;
+    left: 90.46vw;
 }
 
 .second-time-text {
     top: 47vh;
-    left: 90.47vw;
+    left: 90.46vw;
 }
 
 .third-time-text {
     top: 65.5vh;
-    left: 90.47vw;
+    left: 90.46vw;
 }
 
 .fourth-time-text {
     top: 83.9vh;
-    left: 90.47vw;
+    left: 90.46vw;
 }

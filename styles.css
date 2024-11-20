@@ -141,28 +141,27 @@ body.non-fullscreen {
     left: 90.1vw;
 }
 
-/* Styling for login text */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.28rem;
+    font-size: 0.31rem;
     color: #a1a1a1;
     letter-spacing: 0.20vw;
 }
 
 .username {
-    top: 31.9vh;
-    left: 6.40vw;
+    top: 34.1vh;
+    left: 6.41vw;
 }
 
 .password {
-    top: 34.1vh;
-    left: 6.40vw;
+    top: 37.1vh;
+    left: 6.41vw;
 }
 
 .login-line {
     position: absolute;
-    top: 32.4vh;
+    top: 34.9vh;
     left: 6.38vw;
     width: 22.48vw;
     height: 1px;
@@ -171,7 +170,7 @@ body.non-fullscreen {
 
 .login-line-second {
     position: absolute;
-    top: 34.9vh;
+    top: 37.9vh;
     left: 6.38vw;
     width: 22.48vw;
     height: 1px;

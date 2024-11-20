@@ -116,7 +116,7 @@ body.non-fullscreen {
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.272rem;
+    font-size: 0.271rem;
     color: #a1a1a1;
     letter-spacing: 0.20vw;
 }
@@ -138,5 +138,5 @@ body.non-fullscreen {
 
 .fourth-time-text {
     top: 83.9vh;
-    left: 91.1vw;
+    left: 90.8vw;
 }

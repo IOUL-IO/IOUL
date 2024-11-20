@@ -54,15 +54,15 @@ body.non-fullscreen {
 
 /* Styling for solid lines (1-4) */
 .line {
-    background-color: #e6e6e6; /* Solid line color */
+    background-color: #e1e1e1; /* Solid line color */
 }
 
 /* Dashed lines */
 .dashed {
     background: linear-gradient(
         to right,
-        #e1e1e1 0,
-        #e1e1e1 5px, 
+        #d1d1d1 0,
+        #d1d1d1 5px, 
         #ffffff 5px,
         #ffffff 10px 
     );
@@ -121,7 +121,7 @@ body.non-fullscreen {
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.25rem;
+    font-size: 0.26rem;
     color: #a1a1a1;
     letter-spacing: 0.20vw;
 }

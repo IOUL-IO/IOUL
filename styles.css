@@ -116,27 +116,27 @@ body.non-fullscreen {
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.271rem;
+    font-size: 0.272rem;
     color: #a1a1a1;
     letter-spacing: 0.20vw;
 }
 
 .time-text {
     top: 28.5vh;
-    left: 90.1vw;
+    left: 90vw;
 }
 
 .second-time-text {
     top: 47vh;
-    left: 90.1vw;
+    left: 90vw;
 }
 
 .third-time-text {
     top: 65.5vh;
-    left: 90.1vw;
+    left: 90vw;
 }
 
 .fourth-time-text {
     top: 83.9vh;
-    left: 90.2vw;
+    left: 90.1vw;
 }

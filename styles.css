@@ -6,7 +6,6 @@
     font-style: normal;
 }
 
-
 * {
     margin: 0;
     padding: 0;
@@ -25,7 +24,6 @@ body,
 body.non-fullscreen {
     line-height: normal; 
 }
-
 
 @keyframes fade-in {
     0% {
@@ -139,4 +137,51 @@ body.non-fullscreen {
 .fourth-time-text {
     top: 83.9vh;
     left: 90.1vw;
+}
+
+/* Username container */
+.username-container {
+    position: absolute;
+    top: 35.5vh; /* 60px below the second line */
+    left: 36.1vw;
+    width: 22.48vw; /* Match the length of line 2 */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Username text */
+.username-text {
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.28rem;
+    color: #a1a1a1;
+    cursor: pointer;
+}
+
+/* Input field for username */
+.username-input {
+    display: none; /* Hidden by default */
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.28rem;
+    color: #000000;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.28); /* Transparent underline */
+    background: none;
+    width: 100%;
+    outline: none;
+}
+
+/* Show input field when clicked */
+.username-container .username-text:focus + .username-input,
+.username-container .username-input:focus {
+    display: block;
+}
+
+/* Transparent line below the text area */
+.username-line {
+    position: absolute;
+    top: 37.7vh; /* 17px below the text field */
+    left: 36.1vw;
+    width: 22.48vw; /* Match line 2 length */
+    height: 0.1vh;
+    background-color: rgba(0, 0, 0, 0.28); /* 28% transparency */
 }

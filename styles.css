@@ -121,8 +121,8 @@ body.non-fullscreen {
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.26rem;
-    color: #a1a1a1;
+    font-size: 0.28rem;
+    color: #4d4d4d;
     letter-spacing: 0.20vw;
 }
 

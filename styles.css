@@ -150,19 +150,19 @@ body.non-fullscreen {
 }
 
 .username {
-    top: 34.1vh;
+    top: 37vh;
     left: 6.41vw;
 }
 
 .password {
-    top: 37.1vh;
+    top: 41vh;
     left: 6.41vw;
 }
 
 .login-line {
     position: absolute;
-    top: 34.9vh;
-    left: 6.38vw;
+    top: 38.9vh;
+    left: 6.4vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
@@ -170,13 +170,9 @@ body.non-fullscreen {
 
 .login-line-second {
     position: absolute;
-    top: 37.9vh;
-    left: 6.38vw;
+    top: 42.9vh;
+    left: 6.4vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
-}
-
-.login-fade-delay {
-    animation-delay: 2s; 
 }

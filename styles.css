@@ -61,8 +61,8 @@ body.non-fullscreen {
 .dashed {
     background: linear-gradient(
         to right,
-        #d1d1d1 0,
-        #d1d1d1 5px, 
+        #e0e0e0 0,
+        #e0e0e0 5px, 
         #ffffff 5px,
         #ffffff 10px 
     );
@@ -122,7 +122,7 @@ body.non-fullscreen {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     font-size: 0.28rem;
-    color: #4d4d4d;
+    color: #d0d0d0;
     letter-spacing: 0.20vw;
 }
 

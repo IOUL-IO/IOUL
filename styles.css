@@ -144,24 +144,24 @@ body.non-fullscreen {
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.31rem;
+    font-size: 0.4rem;
     color: #a1a1a1;
     letter-spacing: 0.20vw;
 }
 
 .username {
-    top: 37vh;
+    top: 36.1vh;
     left: 6.41vw;
 }
 
 .password {
-    top: 41vh;
+    top: 42.1vh;
     left: 6.41vw;
 }
 
 .login-line {
     position: absolute;
-    top: 38.9vh;
+    top: 38vh;
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
@@ -170,9 +170,37 @@ body.non-fullscreen {
 
 .login-line-second {
     position: absolute;
-    top: 42.9vh;
+    top: 44vh;
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
+
+/* Base styles for login elements */
+.login-text,
+.login-line,
+.login-line-second {
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease-in-out; /* Smooth fade-in effect */
+}
+
+/* When hovering over any login element */
+.login-text:hover ~ .login-text,
+.login-text:hover ~ .login-line,
+.login-text:hover ~ .login-line-second,
+.login-line:hover ~ .login-text,
+.login-line:hover ~ .login-line,
+.login-line:hover ~ .login-line-second,
+.login-line-second:hover ~ .login-text,
+.login-line-second:hover ~ .login-line,
+.login-line-second:hover ~ .login-line-second {
+    opacity: 1; /* Fade in */
+}
+
+/* Additional hover on the lines themselves */
+.login-line:hover,
+.login-line-second:hover {
+    opacity: 1; /* Make the lines visible on hover */
+}
+

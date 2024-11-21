@@ -139,20 +139,6 @@ body.non-fullscreen {
     left: 90.1vw;
 }
 
-/* Login Container and Hover Effect */
-.login-container .login-text,
-.login-container .login-line,
-.login-container .login-line-second {
-    opacity: 0; /* Initially hidden */
-    transition: opacity 0.3s ease-in-out; /* Smooth fade-in effect */
-}
-
-.login-container:hover .login-text,
-.login-container:hover .login-line,
-.login-container:hover .login-line-second {
-    opacity: 1; /* Fade in and stay visible */
-}
-
 .username {
     position: absolute;
     top: 36.1vh;

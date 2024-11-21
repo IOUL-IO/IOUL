@@ -157,7 +157,7 @@ body.non-fullscreen {
 
 .password {
     position: absolute;
-    top: 44vh;
+    top: 45.1vh;
     left: 6.41vw;
     font-size: 0.4rem;
     color: #a1a1a1;
@@ -165,7 +165,7 @@ body.non-fullscreen {
 
 .login-line {
     position: absolute;
-    top: 38.1vh;
+    top: 39.1vh;
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
@@ -174,7 +174,7 @@ body.non-fullscreen {
 
 .login-line-second {
     position: absolute;
-    top: 46vh;
+    top: 48.1vh;
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;

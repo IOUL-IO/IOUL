@@ -177,18 +177,3 @@ body.non-fullscreen {
     background-color: rgba(230, 230, 230, 0.28);
 }
 
-.login-container .login-text,
-.login-container .login-line,
-.login-container .login-line-second {
-    opacity: 0; 
-    transition: opacity 0.3s ease-in-out; 
-}
-
-/* Hover effect on the container */
-.login-container:hover .login-text,
-.login-container:hover .login-line,
-.login-container:hover .login-line-second {
-    opacity: 1; 
-}
-
-

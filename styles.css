@@ -165,7 +165,7 @@ body.non-fullscreen {
 
 .login-line {
     position: absolute;
-    top: 38.3vh;
+    top: 38.9vh;
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
@@ -174,7 +174,7 @@ body.non-fullscreen {
 
 .login-line-second {
     position: absolute;
-    top: 46.4vh;
+    top: 47vh;
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;

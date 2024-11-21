@@ -142,7 +142,7 @@ body.non-fullscreen {
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.28rem;
+    font-size: 0.24rem;
     color: #a1a1a1;
     letter-spacing: 0.28vw;
 }
@@ -165,7 +165,7 @@ body.non-fullscreen {
 
 .login-line {
     position: absolute;
-    top: 37.9vh;
+    top: 37.1vh;
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
@@ -174,7 +174,7 @@ body.non-fullscreen {
 
 .login-line-second {
     position: absolute;
-    top: 47.1vh;
+    top: 46.3vh;
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;

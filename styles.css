@@ -149,7 +149,7 @@ body.non-fullscreen {
 
 .username {
     position: absolute;
-    top: 34.9vh;
+    top: 36.1vh;
     left: 6.41vw;
     font-size: 0.4rem;
     color: #a1a1a1;
@@ -157,7 +157,7 @@ body.non-fullscreen {
 
 .password {
     position: absolute;
-    top: 44.1vh;
+    top: 44.2vh;
     left: 6.41vw;
     font-size: 0.4rem;
     color: #a1a1a1;
@@ -165,7 +165,7 @@ body.non-fullscreen {
 
 .login-line {
     position: absolute;
-    top: 37.1vh;
+    top: 38.3vh;
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
@@ -174,7 +174,7 @@ body.non-fullscreen {
 
 .login-line-second {
     position: absolute;
-    top: 46.3vh;
+    top: 46.4vh;
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;

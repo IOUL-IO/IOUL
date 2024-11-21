@@ -177,30 +177,18 @@ body.non-fullscreen {
     background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* Base styles for login elements */
-.login-text,
-.login-line,
-.login-line-second {
-    opacity: 0; /* Initially hidden */
-    transition: opacity 0.3s ease-in-out; /* Smooth fade-in effect */
+.login-container .login-text,
+.login-container .login-line,
+.login-container .login-line-second {
+    opacity: 0; 
+    transition: opacity 0.3s ease-in-out; 
 }
 
-/* When hovering over any login element */
-.login-text:hover ~ .login-text,
-.login-text:hover ~ .login-line,
-.login-text:hover ~ .login-line-second,
-.login-line:hover ~ .login-text,
-.login-line:hover ~ .login-line,
-.login-line:hover ~ .login-line-second,
-.login-line-second:hover ~ .login-text,
-.login-line-second:hover ~ .login-line,
-.login-line-second:hover ~ .login-line-second {
-    opacity: 1; /* Fade in */
+/* Hover effect on the container */
+.login-container:hover .login-text,
+.login-container:hover .login-line,
+.login-container:hover .login-line-second {
+    opacity: 1; 
 }
 
-/* Additional hover on the lines themselves */
-.login-line:hover,
-.login-line-second:hover {
-    opacity: 1; /* Make the lines visible on hover */
-}
 

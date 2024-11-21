@@ -139,6 +139,13 @@ body.non-fullscreen {
     left: 90.1vw;
 }
 
+.login-text {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.28rem;
+    color: #a1a1a1;
+}
+
 .username {
     position: absolute;
     top: 36.1vh;

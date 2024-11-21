@@ -144,12 +144,12 @@ body.non-fullscreen {
     font-family: 'Distill Expanded', sans-serif;
     font-size: 0.28rem;
     color: #a1a1a1;
-    letter-spacing: 0.20vw;
+    letter-spacing: 0.28vw;
 }
 
 .username {
     position: absolute;
-    top: 36.1vh;
+    top: 34.1vh;
     left: 6.41vw;
     font-size: 0.4rem;
     color: #a1a1a1;
@@ -157,7 +157,7 @@ body.non-fullscreen {
 
 .password {
     position: absolute;
-    top: 44.2vh;
+    top: 44.1vh;
     left: 6.41vw;
     font-size: 0.4rem;
     color: #a1a1a1;
@@ -165,7 +165,7 @@ body.non-fullscreen {
 
 .login-line {
     position: absolute;
-    top: 39.1vh;
+    top: 37.1vh;
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
@@ -174,7 +174,7 @@ body.non-fullscreen {
 
 .login-line-second {
     position: absolute;
-    top: 47.2vh;
+    top: 47.1vh;
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;

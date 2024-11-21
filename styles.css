@@ -6,7 +6,6 @@
     font-style: normal;
 }
 
-
 * {
     margin: 0;
     padding: 0;
@@ -25,7 +24,6 @@ body,
 body.non-fullscreen {
     line-height: normal; 
 }
-
 
 @keyframes fade-in {
     0% {
@@ -141,22 +139,34 @@ body.non-fullscreen {
     left: 90.1vw;
 }
 
-.login-text {
-    position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.4rem;
-    color: #a1a1a1;
-    letter-spacing: 0.20vw;
+/* Login Container and Hover Effect */
+.login-container .login-text,
+.login-container .login-line,
+.login-container .login-line-second {
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease-in-out; /* Smooth fade-in effect */
+}
+
+.login-container:hover .login-text,
+.login-container:hover .login-line,
+.login-container:hover .login-line-second {
+    opacity: 1; /* Fade in and stay visible */
 }
 
 .username {
+    position: absolute;
     top: 36.1vh;
     left: 6.41vw;
+    font-size: 0.4rem;
+    color: #a1a1a1;
 }
 
 .password {
+    position: absolute;
     top: 42.1vh;
     left: 6.41vw;
+    font-size: 0.4rem;
+    color: #a1a1a1;
 }
 
 .login-line {
@@ -176,4 +186,3 @@ body.non-fullscreen {
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
-

@@ -149,7 +149,7 @@ body.non-fullscreen {
 
 .username {
     position: absolute;
-    top: 34.1vh;
+    top: 34.9vh;
     left: 6.41vw;
     font-size: 0.4rem;
     color: #a1a1a1;
@@ -165,7 +165,7 @@ body.non-fullscreen {
 
 .login-line {
     position: absolute;
-    top: 37.1vh;
+    top: 37.9vh;
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;

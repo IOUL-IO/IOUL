@@ -24,14 +24,16 @@
     <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
     <!-- Login Components -->
-    <span class="login-text username fade-in-login">USERnAME</span>
-    <span class="login-text password fade-in-login">PASSWORD</span>
-    <div class="line login-line fade-in-login"></div>
-    <div class="line login-line-second fade-in-login"></div>
+    <span class="login-text username">USERnAME</span>
+    <span class="login-text password">PASSWORD</span>
+    <div class="line login-line"></div>
+    <div class="line login-line-second"></div>
 
     <script>
+        // Add click listener to trigger full-screen and animations
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
+                // Trigger full-screen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) {
@@ -43,11 +45,11 @@
                 }
             }
 
-            // Trigger fade-in animations after full-screen
+            // Trigger animations after entering full-screen
             setTimeout(() => {
                 document.body.classList.remove('preload');
                 document.body.classList.add('fade-in-trigger');
-            }, 1000); // 1-second delay for animations
+            }, 1000); // Delay before animations begin
         });
     </script>
 </body>

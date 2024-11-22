@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="non-fullscreen">
-    <!-- Components -->
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -23,7 +22,6 @@
     <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-    <!-- Login Components -->
     <span class="login-text username">USERnAME</span>
     <span class="login-text password">PASSWORD</span>
     <div class="line login-line"></div>
@@ -47,7 +45,7 @@
             setTimeout(() => {
                 document.body.classList.remove('non-fullscreen');
                 document.body.classList.add('fade-in-trigger');
-            }, 1000); // Ensure animations follow after full-screen activation
+            }, 1000); 
         });
     </script>
 </body>

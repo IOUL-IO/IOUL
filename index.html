@@ -30,7 +30,6 @@
     <div class="line login-line-second"></div>
 
     <script>
-        // Add click listener to trigger full-screen and animations
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 // Trigger full-screen mode
@@ -45,7 +44,7 @@
                 }
             }
 
-            // Trigger animations after entering full-screen
+            // Trigger animations and background expansion
             setTimeout(() => {
                 document.body.classList.remove('preload');
                 document.body.classList.add('fade-in-trigger');

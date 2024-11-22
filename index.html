@@ -30,25 +30,31 @@
     <div class="line login-line-second fade-in fade-in-login-delay"></div>
 
     <script>
-        // Handle full-screen toggle and trigger animations
-        document.addEventListener('click', () => {
+        // Handle full-screen activation
+        function goFullScreen() {
+            const docElement = document.documentElement;
             if (!document.fullscreenElement) {
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
-                    document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
-                    document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
-                    document.documentElement.msRequestFullscreen();
+                if (docElement.requestFullscreen) {
+                    docElement.requestFullscreen();
+                } else if (docElement.mozRequestFullScreen) { // Firefox
+                    docElement.mozRequestFullScreen();
+                } else if (docElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                    docElement.webkitRequestFullscreen();
+                } else if (docElement.msRequestFullscreen) { // IE/Edge
+                    docElement.msRequestFullscreen();
                 }
             }
+        }
 
-            // Remove preload class and trigger fade-in animations
+        // Trigger animations and full-screen on click
+        document.addEventListener('click', () => {
+            goFullScreen();
+
+            // Remove preload and start fade-in animations
             document.body.classList.remove('preload');
             setTimeout(() => {
                 document.body.classList.add('fade-in-trigger');
-            }, 1000); // Delay animations by 1 second
+            }, 1000); // 1-second delay for animations
         });
     </script>
 </body>

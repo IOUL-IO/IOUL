@@ -30,8 +30,22 @@
     <div class="line login-line-second fade-in fade-in-login-delay"></div>
 
     <script>
-        // Handle full-screen toggle
+        // Ensure proper full-screen handling
+        function toggleFullscreenClass() {
+            if (document.fullscreenElement) {
+                document.body.classList.remove('preload');
+            } else {
+                document.body.classList.add('preload');
+            }
+        }
+
+        document.addEventListener('fullscreenchange', toggleFullscreenClass);
+        document.addEventListener('webkitfullscreenchange', toggleFullscreenClass); // Safari
+        document.addEventListener('mozfullscreenchange', toggleFullscreenClass); // Firefox
+        document.addEventListener('MSFullscreenChange', toggleFullscreenClass); // IE/Edge
+
         document.addEventListener('click', () => {
+            // Trigger full-screen mode
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
@@ -44,7 +58,7 @@
                 }
             }
 
-            // Trigger fade-in after full-screen
+            // Trigger fade-in animations after full-screen is active
             setTimeout(() => {
                 document.body.classList.add('fade-in-trigger');
             }, 1000); // 1-second delay for the fade-in trigger

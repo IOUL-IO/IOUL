@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="non-fullscreen">
+    <!-- Components to fade in after 1 second -->
     <div class="line original fade-in"></div>
     <div class="line second fade-in"></div>
     <div class="line third fade-in"></div>
@@ -22,11 +23,11 @@
     <span class="time-text third-time-text fade-in">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     <span class="time-text fourth-time-text fade-in">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-    <!-- Login Components with 1-Second Delay -->
-    <span class="login-text username fade-in fade-in-delay">USERnAME</span>
-    <span class="login-text password fade-in fade-in-delay">PASSWORD</span>
-    <div class="line login-line fade-in fade-in-delay"></div>
-    <div class="line login-line-second fade-in fade-in-delay"></div>
+    <!-- Login components with an additional 1-second delay -->
+    <span class="login-text username fade-in login-delay">USERnAME</span>
+    <span class="login-text password fade-in login-delay">PASSWORD</span>
+    <div class="line login-line fade-in login-delay"></div>
+    <div class="line login-line-second fade-in login-delay"></div>
 
     <script>
         function toggleFullscreenClass() {
@@ -55,10 +56,10 @@
                 }
             }
 
-            // Trigger fade-in effect
+            // Trigger fade-in animations
             setTimeout(() => {
                 document.body.classList.add('fade-in-trigger');
-            }, 1000); // 1-second delay for initial fade-in
+            }, 1000); // White background takes 1 second before fading in components
         });
     </script>
 </body>

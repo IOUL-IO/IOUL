@@ -45,15 +45,14 @@ body.non-fullscreen {
     animation-delay: 1s;
 }
 
-/* Login components hidden initially */
+/* Hover behavior for login components */
 .hover-reveal {
-    opacity: 0; /* Hidden by default */
+    opacity: 0; /* Hidden initially */
     transition: opacity 0.5s ease-in-out; /* Smooth fade-in on hover */
 }
 
-/* Hover effect to reveal login components */
 .hover-reveal:hover {
-    opacity: 1; /* Revealed when hovered */
+    opacity: 1; /* Revealed on hover */
 }
 
 .line,

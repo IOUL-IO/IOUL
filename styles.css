@@ -42,6 +42,10 @@ body.non-fullscreen {
     animation: fade-in 0.2s ease-in-out forwards;
 }
 
+.fade-in-delay {
+    animation-delay: 2s; /* 2-second delay for login elements */
+}
+
 .line,
 .dashed {
     position: absolute;
@@ -145,7 +149,6 @@ body.non-fullscreen {
     font-size: 0.20rem;
     color: #a1a1a1;
     letter-spacing: 0.28vw;
-    animation-delay: 2s;
 }
 
 .username {
@@ -154,7 +157,6 @@ body.non-fullscreen {
     left: 6.41vw;
     font-size: 0.4rem;
     color: #a1a1a1;
-    animation-delay: 2s;
 }
 
 .password {
@@ -163,7 +165,6 @@ body.non-fullscreen {
     left: 6.41vw;
     font-size: 0.4rem;
     color: #a1a1a1;
-    animation-delay: 2s;
 }
 
 .login-line {
@@ -173,7 +174,6 @@ body.non-fullscreen {
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
-    animation-delay: 2s;
 }
 
 .login-line-second {
@@ -183,5 +183,4 @@ body.non-fullscreen {
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
-    animation-delay: 2s;
 }

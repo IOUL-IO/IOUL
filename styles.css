@@ -13,13 +13,13 @@
 }
 
 /* Default body state with white background */
-body.non-fullscreen {
-    background-color: #ffffff; /* Background is white initially */
-    transition: background-color 1s ease-in-out; /* Smooth transition */
+body {
+    background-color: #ffffff; /* Start with a white background */
+    transition: background-color 1s ease-in-out; /* Smooth transition to transparent */
 }
 
 body.fade-in-trigger {
-    background-color: transparent; /* Background fades to transparent */
+    background-color: transparent; /* Transition background to transparent */
 }
 
 @keyframes fade-in {

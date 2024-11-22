@@ -51,9 +51,19 @@ body.preload .fade-in {
     animation-delay: 1s;
 }
 
-/* Login components fade in after an additional 1 second */
-.fade-in-login-delay {
-    animation-delay: 2s;
+/* Login components fade-in on hover */
+.login-text,
+.login-line,
+.login-line-second {
+    opacity: 0; /* Hidden initially */
+    transition: opacity 0.5s ease-in-out; /* Smooth fade-in effect */
+}
+
+/* Hover effect for login components */
+.login-text:hover,
+.login-line:hover,
+.login-line-second:hover {
+    opacity: 1; /* Fade in on hover */
 }
 
 .line,

@@ -43,7 +43,7 @@ body.non-fullscreen {
 }
 
 .fade-in-delay {
-    animation-delay: 2s; /* Add 2-second delay for login elements */
+    animation-delay: 1s; /* Delay for login elements */
 }
 
 .line,

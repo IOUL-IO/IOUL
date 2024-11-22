@@ -30,38 +30,25 @@
     <div class="line login-line-second fade-in fade-in-login-delay"></div>
 
     <script>
-        // Ensure proper full-screen handling
-        function toggleFullscreenClass() {
-            if (document.fullscreenElement) {
-                document.body.classList.remove('preload');
-            } else {
-                document.body.classList.add('preload');
-            }
-        }
-
-        document.addEventListener('fullscreenchange', toggleFullscreenClass);
-        document.addEventListener('webkitfullscreenchange', toggleFullscreenClass); // Safari
-        document.addEventListener('mozfullscreenchange', toggleFullscreenClass); // Firefox
-        document.addEventListener('MSFullscreenChange', toggleFullscreenClass); // IE/Edge
-
         document.addEventListener('click', () => {
             // Trigger full-screen mode
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                } else if (document.documentElement.mozRequestFullScreen) {
                     document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                } else if (document.documentElement.webkitRequestFullscreen) {
                     document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                } else if (document.documentElement.msRequestFullscreen) {
                     document.documentElement.msRequestFullscreen();
                 }
             }
 
-            // Trigger fade-in animations after full-screen is active
+            // Ensure animations start only after click
             setTimeout(() => {
+                document.body.classList.remove('preload');
                 document.body.classList.add('fade-in-trigger');
-            }, 1000); // 1-second delay for the fade-in trigger
+            }, 1000); // 1-second delay for fade-in animations
         });
     </script>
 </body>

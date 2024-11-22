@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="preload non-fullscreen">
+<body class="preload">
     <!-- Components -->
     <div class="line original fade-in"></div>
     <div class="line second fade-in"></div>
@@ -30,19 +30,7 @@
     <div class="line login-line-second fade-in fade-in-login-delay"></div>
 
     <script>
-        function toggleFullscreenClass() {
-            if (document.fullscreenElement) {
-                document.body.classList.remove('preload');
-            } else {
-                document.body.classList.add('preload');
-            }
-        }
-
-        document.addEventListener('fullscreenchange', toggleFullscreenClass);
-        document.addEventListener('webkitfullscreenchange', toggleFullscreenClass); // Safari
-        document.addEventListener('mozfullscreenchange', toggleFullscreenClass); // Firefox
-        document.addEventListener('MSFullscreenChange', toggleFullscreenClass); // IE/Edge
-
+        // Handle full-screen toggle
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
@@ -56,9 +44,10 @@
                 }
             }
 
+            // Trigger fade-in after full-screen
             setTimeout(() => {
                 document.body.classList.add('fade-in-trigger');
-            }, 1000); // 1-second delay before fade-in starts
+            }, 1000); // 1-second delay for the fade-in trigger
         });
     </script>
 </body>

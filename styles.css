@@ -14,11 +14,11 @@
 
 /* Initial state: white background */
 body.preload {
-    background-color: #ffffff; /* White screen on load */
+    background-color: #ffffff; /* White background */
     overflow: hidden; /* Prevent scrolling */
 }
 
-/* Transition to transparent background after click */
+/* Transition background to transparent after click */
 body.fade-in-trigger {
     background-color: transparent;
     transition: background-color 1s ease-in-out;
@@ -34,19 +34,19 @@ body.fade-in-trigger {
     }
 }
 
-/* Default fade-in animation */
+/* General fade-in animation */
 .fade-in {
     opacity: 0; 
     animation: fade-in 0.5s ease-in-out forwards;
 }
 
-/* General components fade in after 1-second delay */
-.fade-in-trigger .fade-in {
+/* General components fade in with a 1-second delay */
+body.fade-in-trigger .fade-in {
     animation-delay: 1s;
 }
 
-/* Login components fade in after a 2-second delay */
-.fade-in-login-delay {
+/* Login components fade in with a 2-second delay */
+body.fade-in-trigger .fade-in-login-delay {
     animation-delay: 2s;
 }
 

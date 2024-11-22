@@ -24,6 +24,12 @@ body.fade-in-trigger {
     transition: background-color 1s ease-in-out;
 }
 
+/* Hide all elements on preload */
+body.preload .fade-in,
+body.preload .fade-in-login-delay {
+    opacity: 0; /* All elements are hidden */
+}
+
 /* Keyframes for fade-in animations */
 @keyframes fade-in {
     0% {
@@ -34,7 +40,7 @@ body.fade-in-trigger {
     }
 }
 
-/* Default fade-in animation */
+/* General fade-in animation */
 .fade-in {
     opacity: 0; 
     animation: fade-in 0.5s ease-in-out forwards;

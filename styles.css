@@ -12,23 +12,19 @@
     box-sizing: border-box;
 }
 
-body {
-    background-color: #ffffff;
-    position: relative;
-    min-height: 100vh;
-    min-width: 100vw;
-    overflow: hidden; 
-}
-
+/* Initial white background */
 body.preload {
-    background-color: #ffffff; /* White background on load */
+    background-color: #ffffff;
+    overflow: hidden;
 }
 
+/* Fade-in-trigger transitions the background to transparent */
 body.fade-in-trigger {
-    background-color: transparent; /* Transition to transparent background */
+    background-color: transparent;
     transition: background-color 1s ease-in-out;
 }
 
+/* Keyframes for fade-in */
 @keyframes fade-in {
     0% {
         opacity: 0;
@@ -51,7 +47,6 @@ body.fade-in-trigger {
 
 /* Login components fade in after a 2-second delay */
 .fade-in-login-delay {
-    animation: fade-in 0.5s ease-in-out forwards;
     animation-delay: 2s;
 }
 

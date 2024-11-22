@@ -36,7 +36,7 @@ body.fade-in-trigger {
 .login-line,
 .login-line-second {
     opacity: 0;
-    transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
+    transition: opacity 0.5s ease-in-out;
 }
 
 /* Lines and time text fade in with a 1-second delay */
@@ -54,31 +54,17 @@ body.fade-in-trigger .login-line-second {
     transition-delay: 2s; /* 2-second delay for login components */
 }
 
-/* Line and text positioning and styling */
-.line, .dashed {
-    position: absolute;
-    height: 1px; 
-}
-
+/* Styling and positioning */
 .line {
-    background-color: #e6e6e6; 
-}
-
-.dashed {
-    background: linear-gradient(
-        to right,
-        #e1e1e1 0,
-        #e1e1e1 5px, 
-        #ffffff 5px,
-        #ffffff 10px 
-    );
-    background-size: 10px 1px;
+    position: absolute;
+    height: 1px;
+    background-color: #e6e6e6;
 }
 
 .original {
-    top: 12.5vh;
-    left: 6.38vw;
-    width: 22.48vw;
+    top: 12.5vh; /* Adjusted vertical position */
+    left: 6.38vw; /* Adjusted horizontal position */
+    width: 22.48vw; /* Adjusted width */
 }
 
 .second {
@@ -96,13 +82,23 @@ body.fade-in-trigger .login-line-second {
 .fourth {
     top: 12.5vh;
     left: 36vw;
-    width: 57.8vw; 
+    width: 57.8vw;
 }
 
 .dashed {
+    position: absolute;
+    height: 1px;
     top: 28.5vh;
     left: 36vw;
     width: 52.4vw;
+    background: linear-gradient(
+        to right,
+        #e1e1e1 0,
+        #e1e1e1 5px, 
+        #ffffff 5px,
+        #ffffff 10px 
+    );
+    background-size: 10px 1px;
 }
 
 .second-dashed {
@@ -123,6 +119,7 @@ body.fade-in-trigger .login-line-second {
     width: 52.4vw;
 }
 
+/* Time text */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -151,6 +148,7 @@ body.fade-in-trigger .login-line-second {
     left: 90.1vw;
 }
 
+/* Login text */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -160,7 +158,6 @@ body.fade-in-trigger .login-line-second {
 }
 
 .username {
-    position: absolute;
     top: 36.1vh;
     left: 6.41vw;
     font-size: 0.4rem;
@@ -168,7 +165,6 @@ body.fade-in-trigger .login-line-second {
 }
 
 .password {
-    position: absolute;
     top: 44.2vh;
     left: 6.41vw;
     font-size: 0.4rem;

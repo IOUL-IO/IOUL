@@ -12,18 +12,19 @@
     box-sizing: border-box;
 }
 
-/* Default state: White background with hidden elements */
+/* Ensure the body starts with a white background */
 body.preload {
-    background-color: #ffffff; /* Full white background */
+    background-color: #ffffff; /* White background before interaction */
     overflow: hidden; /* Prevent scrolling during preload */
 }
 
 /* Transition background after click */
 body.fade-in-trigger {
-    background-color: transparent; /* Transition to transparent background */
-    transition: background-color 1s ease-in-out; /* Smooth background transition */
+    background-color: transparent; /* Transition background to transparent */
+    transition: background-color 1s ease-in-out; /* Smooth transition */
 }
 
+/* Keyframes for fade-in animations */
 @keyframes fade-in {
     0% {
         opacity: 0;
@@ -35,16 +36,16 @@ body.fade-in-trigger {
 
 /* Default fade-in animation */
 .fade-in {
-    opacity: 0; /* Start hidden */
+    opacity: 0; /* Hidden initially */
     animation: fade-in 0.5s ease-in-out forwards;
 }
 
+/* Trigger animations after background transition */
 .fade-in-trigger .fade-in {
-    opacity: 1;
-    animation-delay: 1s; /* Components fade in after 1 second */
+    animation-delay: 1s; /* Components fade in 1 second after click */
 }
 
-/* Delay for login components */
+/* Login components fade in after an additional 1 second */
 .fade-in-login-delay {
     animation-delay: 2s; /* Login components fade in 2 seconds after click */
 }

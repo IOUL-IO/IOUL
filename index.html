@@ -30,6 +30,7 @@
     <div class="line login-line-second fade-in fade-in-login-delay"></div>
 
     <script>
+        // Handle full-screen toggle and trigger animations
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
@@ -47,7 +48,7 @@
             document.body.classList.remove('preload');
             setTimeout(() => {
                 document.body.classList.add('fade-in-trigger');
-            }, 1000); // 1-second delay before fade-in animations start
+            }, 1000); // Delay animations by 1 second
         });
     </script>
 </body>

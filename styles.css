@@ -20,9 +20,13 @@ body {
     overflow: hidden; 
 }
 
-body,
-body.non-fullscreen {
-    line-height: normal; 
+body.preload {
+    background-color: #ffffff; /* White background on load */
+}
+
+body.fade-in-trigger {
+    background-color: transparent; /* Transition to transparent background */
+    transition: background-color 1s ease-in-out;
 }
 
 @keyframes fade-in {
@@ -40,19 +44,15 @@ body.non-fullscreen {
     animation: fade-in 0.5s ease-in-out forwards;
 }
 
-/* General components fade in after 1 second */
+/* General components fade in after 1-second delay */
 .fade-in-trigger .fade-in {
     animation-delay: 1s;
 }
 
-/* Hover behavior for login components */
-.hover-reveal {
-    opacity: 0; /* Hidden initially */
-    transition: opacity 0.5s ease-in-out; /* Smooth fade-in on hover */
-}
-
-.hover-reveal:hover {
-    opacity: 1; /* Revealed on hover */
+/* Login components fade in after a 2-second delay */
+.fade-in-login-delay {
+    animation: fade-in 0.5s ease-in-out forwards;
+    animation-delay: 2s;
 }
 
 .line,

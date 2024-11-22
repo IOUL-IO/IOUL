@@ -18,7 +18,7 @@ body.preload {
     overflow: hidden; /* Prevent scrolling */
 }
 
-/* Transition background to transparent after click */
+/* Background transitions to transparent after click */
 body.fade-in-trigger {
     background-color: transparent;
     transition: background-color 1s ease-in-out;
@@ -34,7 +34,7 @@ body.fade-in-trigger {
     }
 }
 
-/* General fade-in animation */
+/* Default fade-in animation */
 .fade-in {
     opacity: 0; 
     animation: fade-in 0.5s ease-in-out forwards;

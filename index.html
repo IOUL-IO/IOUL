@@ -7,8 +7,8 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="non-fullscreen">
-    <!-- Components to fade in after 1 second -->
+<body class="non-fullscreen preload">
+    <!-- Components to fade in -->
     <div class="line original fade-in"></div>
     <div class="line second fade-in"></div>
     <div class="line third fade-in"></div>
@@ -23,26 +23,13 @@
     <span class="time-text third-time-text fade-in">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     <span class="time-text fourth-time-text fade-in">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-    <!-- Login Components with 1-second delay -->
+    <!-- Login Components -->
     <span class="login-text username fade-in fade-in-login-delay">USERnAME</span>
     <span class="login-text password fade-in fade-in-login-delay">PASSWORD</span>
     <div class="line login-line fade-in fade-in-login-delay"></div>
     <div class="line login-line-second fade-in fade-in-login-delay"></div>
 
     <script>
-        function toggleFullscreenClass() {
-            if (document.fullscreenElement) {
-                document.body.classList.remove('non-fullscreen');
-            } else {
-                document.body.classList.add('non-fullscreen');
-            }
-        }
-
-        document.addEventListener('fullscreenchange', toggleFullscreenClass);
-        document.addEventListener('webkitfullscreenchange', toggleFullscreenClass); // Safari
-        document.addEventListener('mozfullscreenchange', toggleFullscreenClass); // Firefox
-        document.addEventListener('MSFullscreenChange', toggleFullscreenClass); // IE/Edge
-
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
@@ -56,10 +43,11 @@
                 }
             }
 
-            // Trigger fade-in animations and background transition
+            // Trigger fade-in animations after 1-second delay
             setTimeout(() => {
+                document.body.classList.remove('preload');
                 document.body.classList.add('fade-in-trigger');
-            }, 1000); // 1-second delay before fade-in animations start
+            }, 1000); // 1-second delay before animations start
         });
     </script>
 </body>

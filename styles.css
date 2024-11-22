@@ -12,19 +12,25 @@
     box-sizing: border-box;
 }
 
-body {
+/* Initial state: white background */
+body.preload {
     background-color: #ffffff;
-    position: relative;
-    min-height: 100vh;
-    min-width: 100vw;
-    overflow: hidden; 
+    overflow: hidden; /* Prevent scrolling */
 }
 
-body,
-body.non-fullscreen {
-    line-height: normal; 
+/* Transition to transparent after click */
+body.fade-in-trigger {
+    background-color: transparent;
+    transition: background-color 1s ease-in-out;
 }
 
+/* Hide all animations before the click */
+body.preload .fade-in {
+    opacity: 0; /* Components hidden */
+    animation: none; /* No animations yet */
+}
+
+/* Keyframes for fade-in */
 @keyframes fade-in {
     0% {
         opacity: 0;
@@ -34,12 +40,20 @@ body.non-fullscreen {
     }
 }
 
+/* Default fade-in animation */
 .fade-in {
-    opacity: 0; 
+    opacity: 0;
+    animation: fade-in 0.5s ease-in-out forwards;
 }
 
+/* General components fade in after 1-second delay */
 .fade-in-trigger .fade-in {
-    animation: fade-in 0.2s ease-in-out forwards;
+    animation-delay: 1s;
+}
+
+/* Login components fade in after a 2-second delay */
+.fade-in-login-delay {
+    animation-delay: 2s;
 }
 
 .line,

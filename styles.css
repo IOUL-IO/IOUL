@@ -1,0 +1,182 @@
+@font-face {
+    font-family: 'Distill Expanded';
+    src: url('font.woff2') format('woff2'),
+         url('font.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #ffffff;
+    position: relative;
+    min-height: 100vh;
+    min-width: 100vw;
+    overflow: hidden; 
+}
+
+body,
+body.non-fullscreen {
+    line-height: normal; 
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    opacity: 0; 
+}
+
+.fade-in-trigger .fade-in {
+    animation: fade-in 0.2s ease-in-out forwards;
+}
+
+.line,
+.dashed {
+    position: absolute;
+    height: 1px; 
+}
+
+.line {
+    background-color: #e6e6e6; 
+}
+
+.dashed {
+    background: linear-gradient(
+        to right,
+        #e1e1e1 0,
+        #e1e1e1 5px, 
+        #ffffff 5px,
+        #ffffff 10px 
+    );
+    background-size: 10px 1px;
+}
+
+.original {
+    top: 12.5vh;
+    left: 6.38vw;
+    width: 22.48vw;
+}
+
+.second {
+    top: 28.5vh;
+    left: 6.38vw;
+    width: 22.48vw;
+}
+
+.third {
+    top: 84vh;
+    left: 6.38vw;
+    width: 22.48vw;
+}
+
+.fourth {
+    top: 12.5vh;
+    left: 36vw;
+    width: 57.8vw; 
+}
+
+.dashed {
+    top: 28.5vh;
+    left: 36vw;
+    width: 52.4vw;
+}
+
+.second-dashed {
+    top: 47vh;
+    left: 36vw;
+    width: 52.4vw;
+}
+
+.third-dashed {
+    top: 65.5vh;
+    left: 36vw;
+    width: 52.4vw;
+}
+
+.fourth-dashed {
+    top: 84vh;
+    left: 36vw;
+    width: 52.4vw;
+}
+
+.time-text {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.272rem;
+    color: #a1a1a1;
+    letter-spacing: 0.20vw;
+}
+
+.time-text {
+    top: 28.5vh;
+    left: 90vw;
+}
+
+.second-time-text {
+    top: 47vh;
+    left: 90vw;
+}
+
+.third-time-text {
+    top: 65.5vh;
+    left: 90vw;
+}
+
+.fourth-time-text {
+    top: 83.9vh;
+    left: 90.1vw;
+}
+
+.login-text {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.20rem;
+    color: #a1a1a1;
+    letter-spacing: 0.28vw;
+}
+
+.username {
+    position: absolute;
+    top: 36.1vh;
+    left: 6.41vw;
+    font-size: 0.4rem;
+    color: #a1a1a1;
+}
+
+.password {
+    position: absolute;
+    top: 44.2vh;
+    left: 6.41vw;
+    font-size: 0.4rem;
+    color: #a1a1a1;
+}
+
+.login-line {
+    position: absolute;
+    top: 38.9vh;
+    left: 6.4vw;
+    width: 22.48vw;
+    height: 1px;
+    background-color: rgba(230, 230, 230, 0.28);
+}
+
+.login-line-second {
+    position: absolute;
+    top: 47vh;
+    left: 6.4vw;
+    width: 22.48vw;
+    height: 1px;
+    background-color: rgba(230, 230, 230, 0.28);
+}

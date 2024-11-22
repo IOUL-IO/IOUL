@@ -7,48 +7,61 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="preload">
+<body class="non-fullscreen">
     <!-- Components -->
-    <div class="line original"></div>
-    <div class="line second"></div>
-    <div class="line third"></div>
-    <div class="line fourth"></div>
-    <div class="line dashed"></div>
-    <div class="line dashed second-dashed"></div>
-    <div class="line dashed third-dashed"></div>
-    <div class="line dashed fourth-dashed"></div>
+    <div class="line original fade-in"></div>
+    <div class="line second fade-in"></div>
+    <div class="line third fade-in"></div>
+    <div class="line fourth fade-in"></div>
+    <div class="line dashed fade-in"></div>
+    <div class="line dashed second-dashed fade-in"></div>
+    <div class="line dashed third-dashed fade-in"></div>
+    <div class="line dashed fourth-dashed fade-in"></div>
     
-    <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-    <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-    <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
-    <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+    <span class="time-text fade-in">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+    <span class="time-text second-time-text fade-in">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+    <span class="time-text third-time-text fade-in">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+    <span class="time-text fourth-time-text fade-in">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
     <!-- Login Components -->
-    <span class="login-text username">USERnAME</span>
-    <span class="login-text password">PASSWORD</span>
-    <div class="line login-line"></div>
-    <div class="line login-line-second"></div>
+    <span class="login-text username fade-in login-fade-delay">USERnAME</span>
+    <span class="login-text password fade-in login-fade-delay">PASSWORD</span>
+    <div class="line login-line fade-in login-fade-delay"></div>
+    <div class="line login-line-second fade-in login-fade-delay"></div>
 
     <script>
+        // Toggle between non-fullscreen and fullscreen states
+        function toggleFullscreenClass() {
+            if (document.fullscreenElement) {
+                document.body.classList.remove('non-fullscreen');
+                document.body.classList.add('fade-in-trigger');
+            } else {
+                document.body.classList.add('non-fullscreen');
+            }
+        }
+
+        document.addEventListener('fullscreenchange', toggleFullscreenClass);
+        document.addEventListener('webkitfullscreenchange', toggleFullscreenClass); // Safari
+        document.addEventListener('mozfullscreenchange', toggleFullscreenClass); // Firefox
+        document.addEventListener('MSFullscreenChange', toggleFullscreenClass); // IE/Edge
+
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 // Trigger full-screen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) {
+                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
                     document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) {
+                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
                     document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) {
+                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
                     document.documentElement.msRequestFullscreen();
                 }
             }
 
-            // Smoothly expand background and trigger animations
             setTimeout(() => {
-                document.body.classList.remove('preload');
                 document.body.classList.add('fade-in-trigger');
-            }, 1000); // 1-second delay before animations start
+            }, 1000); // Delay to ensure full-screen activation before animations
         });
     </script>
 </body>

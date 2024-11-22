@@ -18,37 +18,37 @@ body.preload {
     overflow: hidden; /* Prevent scrolling */
 }
 
-/* Transition background to transparent after click */
+/* Transition to transparent after click */
 body.fade-in-trigger {
     background-color: transparent;
     transition: background-color 1s ease-in-out;
 }
 
-/* Visibility settings for all components */
+/* Default hidden state for all elements */
 .line,
 .time-text,
-.login-text {
-    opacity: 0; /* Initially hidden */
+.login-text,
+.login-line {
+    opacity: 0;
     transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
 }
 
-/* General components fade in with a 1-second delay */
+/* Lines and time text fade in after a 1-second delay */
 body.fade-in-trigger .line,
 body.fade-in-trigger .time-text {
     opacity: 1;
-    transition-delay: 1s; /* 1-second delay for general components */
+    transition-delay: 1s; /* Fade in general components after 1 second */
 }
 
-/* Login components fade in with a 2-second delay */
+/* Login components fade in after a 2-second delay */
 body.fade-in-trigger .login-text,
 body.fade-in-trigger .login-line {
     opacity: 1;
-    transition-delay: 2s; /* 2-second delay for login components */
+    transition-delay: 2s; /* Fade in login components after 2 seconds */
 }
 
-/* Styling for lines, dashed lines, and text */
-.line,
-.dashed {
+/* Line and text positioning and styling */
+.line, .dashed {
     position: absolute;
     height: 1px; 
 }

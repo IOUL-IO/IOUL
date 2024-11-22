@@ -28,9 +28,23 @@
     <div class="line login-line-second"></div>
 
     <script>
+        function toggleFullscreenClass() {
+            if (document.fullscreenElement) {
+                document.body.classList.remove('non-fullscreen');
+                document.body.classList.add('fade-in-trigger');
+            } else {
+                document.body.classList.remove('fade-in-trigger');
+                document.body.classList.add('non-fullscreen');
+            }
+        }
+
+        document.addEventListener('fullscreenchange', toggleFullscreenClass);
+        document.addEventListener('webkitfullscreenchange', toggleFullscreenClass); // Safari
+        document.addEventListener('mozfullscreenchange', toggleFullscreenClass); // Firefox
+        document.addEventListener('MSFullscreenChange', toggleFullscreenClass); // IE/Edge
+
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
-                // Trigger full-screen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -41,11 +55,6 @@
                     document.documentElement.msRequestFullscreen();
                 }
             }
-
-            setTimeout(() => {
-                document.body.classList.remove('non-fullscreen');
-                document.body.classList.add('fade-in-trigger');
-            }, 1000); 
         });
     </script>
 </body>

@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="preload">
-    <!-- Components -->
     <div class="line original fade-in"></div>
     <div class="line second fade-in"></div>
     <div class="line third fade-in"></div>
@@ -23,7 +22,6 @@
     <span class="time-text third-time-text fade-in">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     <span class="time-text fourth-time-text fade-in">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-    <!-- Login Components -->
     <span class="login-text username fade-in fade-in-login-delay">USERnAME</span>
     <span class="login-text password fade-in fade-in-login-delay">PASSWORD</span>
     <div class="line login-line fade-in fade-in-login-delay"></div>
@@ -44,11 +42,10 @@
                 }
             }
 
-            // Add the fade-in-trigger class after a short delay
             setTimeout(() => {
                 document.body.classList.remove('preload');
                 document.body.classList.add('fade-in-trigger');
-            }, 1000); // 1-second delay before fade-in starts
+            }, 1000); 
         });
     </script>
 </body>

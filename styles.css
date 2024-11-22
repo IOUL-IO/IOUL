@@ -12,16 +12,21 @@
     box-sizing: border-box;
 }
 
-/* Ensure the body starts with a white background */
+/* White background and no animations initially */
 body.preload {
-    background-color: #ffffff; /* White background before interaction */
-    overflow: hidden; /* Prevent scrolling during preload */
+    background-color: #ffffff; /* White background */
+    overflow: hidden; /* Prevent scrolling */
 }
 
-/* Transition background after click */
 body.fade-in-trigger {
     background-color: transparent; /* Transition background to transparent */
     transition: background-color 1s ease-in-out; /* Smooth transition */
+}
+
+/* Prevent animations during preload */
+body.preload .fade-in {
+    opacity: 0; /* Keep components hidden */
+    animation: none; /* Disable animations */
 }
 
 /* Keyframes for fade-in animations */

@@ -36,13 +36,14 @@ body.non-fullscreen {
 
 .fade-in {
     opacity: 0; 
+    animation: fade-in 0.5s ease-in-out forwards;
 }
 
 .fade-in-trigger .fade-in {
-    animation: fade-in 0.2s ease-in-out forwards;
+    opacity: 1;
 }
 
-.fade-in-delay {
+.fade-in-login-delay {
     animation-delay: 1s; /* Delay for login elements */
 }
 

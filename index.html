@@ -30,25 +30,25 @@
     <div class="line login-line-second fade-in fade-in-login-delay"></div>
 
     <script>
+        // Add click listener to handle animations and full-screen
         document.addEventListener('click', () => {
-            // Trigger full-screen mode
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) {
+                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
                     document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) {
+                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
                     document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) {
+                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
                     document.documentElement.msRequestFullscreen();
                 }
             }
 
-            // Ensure animations start only after click
+            // Trigger fade-in animations after full-screen is active
             setTimeout(() => {
                 document.body.classList.remove('preload');
                 document.body.classList.add('fade-in-trigger');
-            }, 1000); // 1-second delay for fade-in animations
+            }, 1000); // 1-second delay for animations to begin
         });
     </script>
 </body>

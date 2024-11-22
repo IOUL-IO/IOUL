@@ -13,17 +13,17 @@
 }
 
 body.non-fullscreen {
-    background-color: #ffffff; 
+    background-color: #ffffff; /* White background */
     min-height: 100vh;
     min-width: 100vw;
     overflow: hidden;
-    transform: scale(0.1); 
-    transition: transform 1s ease, background-color 1s ease; 
+    transform: scale(0.1); /* Start small */
+    transition: transform 1s ease, background-color 1s ease; /* Smooth contraction */
 }
 
 body.fade-in-trigger {
-    transform: scale(1); 
-    background-color: #ffffff; 
+    transform: scale(1); /* Expand to full size */
+    background-color: #ffffff; /* Retain white background */
     transition: transform 1s ease, background-color 1s ease;
 }
 
@@ -39,14 +39,14 @@ body.fade-in-trigger {
 body.fade-in-trigger .line,
 body.fade-in-trigger .time-text {
     opacity: 1;
-    transition-delay: 1s; 
+    transition-delay: 1s; /* 1-second delay for general components */
 }
 
 body.fade-in-trigger .login-text,
 body.fade-in-trigger .login-line,
 body.fade-in-trigger .login-line-second {
     opacity: 1;
-    transition-delay: 2s; 
+    transition-delay: 2s; /* 2-second delay for login components */
 }
 
 .line {

@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="non-fullscreen preload">
+<body class="preload non-fullscreen">
     <!-- Components to fade in -->
     <div class="line original fade-in"></div>
     <div class="line second fade-in"></div>
@@ -43,11 +43,11 @@
                 }
             }
 
-            // Trigger fade-in animations after 1-second delay
+            // Remove preload class and trigger fade-in animations
+            document.body.classList.remove('preload');
             setTimeout(() => {
-                document.body.classList.remove('preload');
                 document.body.classList.add('fade-in-trigger');
-            }, 1000); // 1-second delay before animations start
+            }, 1000); // 1-second delay before fade-in animations start
         });
     </script>
 </body>

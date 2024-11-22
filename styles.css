@@ -12,22 +12,22 @@
     box-sizing: border-box;
 }
 
-/* Initial white screen with no components visible */
+/* Initial state: white screen starts hidden */
 body.preload {
-    background-color: #ffffff; /* Fully white screen */
+    background-color: #ffffff; /* Fully white */
     overflow: hidden; /* Prevent scrolling */
-    clip-path: circle(0% at 50% 50%); /* Start hidden at center */
-    transition: clip-path 1s ease-in-out; /* Smooth full-screen expansion */
-}
-
-/* Smoothly expand to full-screen on click */
-body.fade-in-trigger {
-    clip-path: circle(150% at 50% 50%);
-    background-color: transparent;
+    clip-path: circle(0% at 50% 50%); /* Start as a small circle at center */
     transition: clip-path 1s ease-in-out, background-color 1s ease-in-out;
 }
 
-/* Default hidden state for all elements */
+/* Expand background smoothly to full-screen */
+body.fade-in-trigger {
+    clip-path: circle(150% at 50% 50%);
+    background-color: #ffffff; /* Retain white background */
+    transition: clip-path 1s ease-in-out, background-color 1s ease-in-out;
+}
+
+/* Hidden state for all elements */
 .line,
 .time-text,
 .login-text,

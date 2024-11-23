@@ -41,11 +41,11 @@
                     document.documentElement.msRequestFullscreen();
                 }
 
-                // Add fade-in animation for fullscreen
+                // Trigger animation for entering fullscreen
+                document.body.classList.remove('non-fullscreen', 'fade-in-trigger');
                 setTimeout(() => {
-                    document.body.classList.remove('non-fullscreen');
                     document.body.classList.add('fade-in-trigger');
-                }, 1000); // Delay for animation
+                }, 10); // Slight delay to reapply class
             } else {
                 // Exit fullscreen mode
                 if (document.exitFullscreen) {
@@ -58,11 +58,11 @@
                     document.msExitFullscreen();
                 }
 
-                // Add fade-in animation for non-fullscreen
+                // Trigger animation for exiting fullscreen
+                document.body.classList.remove('fade-in-trigger', 'non-fullscreen');
                 setTimeout(() => {
-                    document.body.classList.remove('fade-in-trigger');
                     document.body.classList.add('non-fullscreen');
-                }, 1000); // Delay for animation
+                }, 10); // Slight delay to reapply class
             }
         });
     </script>

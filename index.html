@@ -28,16 +28,20 @@
     <div class="line login-line-second"></div>
 
     <script>
+        // Track fullscreen state
+        let isFullscreen = false;
+
         document.addEventListener('click', () => {
             const body = document.body;
 
-            if (!document.fullscreenElement) {
+            if (!isFullscreen) {
                 // Enter fullscreen
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 }
                 body.classList.remove('non-fullscreen');
                 body.classList.add('fullscreen');
+                isFullscreen = true;
             } else {
                 // Exit fullscreen
                 if (document.exitFullscreen) {
@@ -45,6 +49,7 @@
                 }
                 body.classList.remove('fullscreen');
                 body.classList.add('non-fullscreen');
+                isFullscreen = false;
             }
         });
     </script>

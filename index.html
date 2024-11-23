@@ -28,7 +28,7 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let hasEnteredFullScreen = false; // Track if full-screen was entered
+        let hasEnteredFullScreen = false; // Track if full-screen was entered initially
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
@@ -44,7 +44,7 @@
                 }
 
                 if (!hasEnteredFullScreen) {
-                    // Only apply animation the first time full-screen is entered
+                    // Initial full-screen transition
                     setTimeout(() => {
                         document.body.classList.remove('non-fullscreen');
                         document.body.classList.add('fade-in-trigger');
@@ -56,11 +56,17 @@
 
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
-                // Exit full-screen mode
+                // Smooth transition out of full-screen
                 document.body.classList.remove('fade-in-trigger');
+                document.body.style.transition = 'transform 1s ease, background-color 1s ease'; // Re-enable transitions
                 document.body.classList.add('non-fullscreen');
+
+                // Reset transitions after the smooth exit
+                setTimeout(() => {
+                    document.body.style.transition = '';
+                }, 1000);
             } else if (hasEnteredFullScreen) {
-                // When re-entering full-screen after the initial time, ensure no animation
+                // No animation for subsequent full-screen entries
                 document.body.classList.remove('non-fullscreen');
                 document.body.classList.add('fade-in-persistent');
             }

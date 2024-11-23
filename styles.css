@@ -17,7 +17,7 @@ body.non-fullscreen {
     min-height: 100vh;
     min-width: 100vw;
     overflow: hidden;
-    transform: scale(0.1); 
+    transform: scale(0.8); /* Reduced scale for better visibility */
     transition: transform 1s ease, background-color 1s ease; 
 }
 
@@ -47,6 +47,14 @@ body.fade-in-trigger .login-line,
 body.fade-in-trigger .login-line-second {
     opacity: 1;
     transition-delay: 2s; 
+}
+
+body.non-fullscreen .line,
+body.non-fullscreen .time-text,
+body.non-fullscreen .login-text,
+body.non-fullscreen .login-line,
+body.non-fullscreen .login-line-second {
+    opacity: 1; /* Ensure components remain visible when scaling down */
 }
 
 .line {

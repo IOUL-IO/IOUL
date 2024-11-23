@@ -12,49 +12,50 @@
     box-sizing: border-box;
 }
 
-/* Initial fade-in animation (only for the first toggle) */
+/* Initial fade-in animation (only happens once) */
 body.initial-fade {
-    opacity: 0; /* Invisible initially */
-    transform: scale(0.1); /* Small size initially */
-    transition: opacity 1s ease, transform 1s ease;
+    opacity: 0;
+    transform: scale(0.1); /* Shrink inward */
+    transition: opacity 1s ease, transform 1s ease; /* Smooth fade-in and scale */
 }
 
-/* Scaling when entering fullscreen */
+/* When fullscreen is toggled */
 body.fullscreen {
-    transform: scale(1); /* Expands outward */
-    transition: transform 1s ease;
+    transform: scale(1); /* Expand outward */
+    transition: transform 1s ease; /* Smooth scaling */
 }
 
-/* Scaling when exiting fullscreen */
+/* When exiting fullscreen */
 body.non-fullscreen {
-    transform: scale(0.1); /* Shrinks inward */
-    transition: transform 1s ease;
+    transform: scale(0.1); /* Shrink inward */
+    transition: transform 1s ease; /* Smooth scaling */
 }
 
-/* General line and text styles */
+/* General fade-in for elements */
 .line,
 .time-text,
 .login-text,
 .login-line,
 .login-line-second {
     opacity: 0; /* Hidden initially */
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
 }
 
+/* Delay element visibility when fullscreen is active */
 body.fullscreen .line,
 body.fullscreen .time-text {
     opacity: 1;
-    transition-delay: 1s; /* Staggered delay */
+    transition-delay: 1s; /* Staggered fade-in delay */
 }
 
 body.fullscreen .login-text,
 body.fullscreen .login-line,
 body.fullscreen .login-line-second {
     opacity: 1;
-    transition-delay: 2s; /* Additional staggered delay */
+    transition-delay: 2s; /* Additional delay for a staged effect */
 }
 
-/* Line styles */
+/* Line styling */
 .line {
     position: absolute;
     height: 1px;
@@ -62,9 +63,9 @@ body.fullscreen .login-line-second {
 }
 
 .original {
-    top: 12.5vh; 
-    left: 6.38vw; 
-    width: 22.48vw; 
+    top: 12.5vh;
+    left: 6.38vw;
+    width: 22.48vw;
 }
 
 .second {
@@ -172,6 +173,7 @@ body.fullscreen .login-line-second {
     color: #a1a1a1;
 }
 
+/* Login line styles */
 .login-line {
     position: absolute;
     top: 38.9vh;

@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="non-fullscreen">
+    <!-- White Overlay to Ensure Background Consistency -->
+    <div class="overlay"></div>
+
     <!-- Components -->
     <div class="line original"></div>
     <div class="line second"></div>
@@ -30,7 +33,7 @@
     <div class="line login-line-second"></div>
 
     <script>
-        // Toggle fullscreen and scaling classes
+        // Manage full-screen and scaling transitions
         function toggleFullscreenClass() {
             if (document.fullscreenElement) {
                 document.body.classList.remove('non-fullscreen');
@@ -41,13 +44,13 @@
             }
         }
 
-        // Listen for fullscreen changes
+        // Event listeners for full-screen changes
         document.addEventListener('fullscreenchange', toggleFullscreenClass);
         document.addEventListener('webkitfullscreenchange', toggleFullscreenClass); // Safari
         document.addEventListener('mozfullscreenchange', toggleFullscreenClass); // Firefox
         document.addEventListener('MSFullscreenChange', toggleFullscreenClass); // IE/Edge
 
-        // Trigger fullscreen on click
+        // Trigger full-screen on click
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {

@@ -43,7 +43,7 @@
                     document.documentElement.msRequestFullscreen();
                 }
 
-                // Trigger animation for entering fullscreen
+                // Smooth scale-out animation
                 document.body.classList.remove('non-fullscreen');
                 document.body.classList.add('fade-in-trigger');
                 isFullscreen = true;
@@ -60,20 +60,11 @@
                     document.msExitFullscreen();
                 }
 
-                // Trigger animation for exiting fullscreen
+                // Smooth scale-in animation
                 document.body.classList.remove('fade-in-trigger');
                 document.body.classList.add('non-fullscreen');
                 isFullscreen = false;
             }
-
-            // Ensure smooth transition every time
-            setTimeout(() => {
-                if (isFullscreen) {
-                    document.body.classList.add('fade-in-trigger');
-                } else {
-                    document.body.classList.add('non-fullscreen');
-                }
-            }, 500); // Add slight delay to ensure animation re-triggers
         });
     </script>
 </body>

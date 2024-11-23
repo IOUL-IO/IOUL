@@ -27,47 +27,53 @@
     <div class="line login-line"></div>
     <div class="line login-line-second"></div>
 
-<script>
-    const toggleFullScreen = () => {
-        if (!document.fullscreenElement) {
-            // Trigger full-screen mode
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen();
-            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
-                document.documentElement.mozRequestFullScreen();
-            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
-                document.documentElement.webkitRequestFullscreen();
-            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
-                document.documentElement.msRequestFullscreen();
-            }
-        } else {
-            // Exit full-screen mode
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.mozCancelFullScreen) { // Firefox
-                document.mozCancelFullScreen();
-            } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) { // IE/Edge
-                document.msExitFullscreen();
-            }
-        }
-    };
+    <script>
+        const resetTransitionState = () => {
+            // Remove all classes to reset state
+            document.body.classList.remove('fade-in-trigger', 'non-fullscreen');
+            // Force reflow to restart animation
+            void document.body.offsetWidth; 
+        };
 
-    const handleFullScreenToggle = () => {
-        document.body.classList.remove('fade-in-trigger', 'non-fullscreen');
-        // Add visual class to ensure scaling effect
-        document.body.offsetHeight; // Trigger a reflow to restart animations
-        if (document.fullscreenElement) {
-            document.body.classList.add('fade-in-trigger');
-        } else {
-            document.body.classList.add('non-fullscreen');
-        }
-    };
+        const toggleFullScreen = () => {
+            if (!document.fullscreenElement) {
+                // Enter full-screen mode
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                    document.documentElement.msRequestFullscreen();
+                }
 
-    document.addEventListener('click', toggleFullScreen);
-    document.addEventListener('fullscreenchange', handleFullScreenToggle);
-</script>
-    
+                // Add classes for full-screen animation
+                setTimeout(() => {
+                    resetTransitionState();
+                    document.body.classList.add('fade-in-trigger');
+                }, 1000);
+            } else {
+                // Exit full-screen mode
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) { // Firefox
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { // IE/Edge
+                    document.msExitFullscreen();
+                }
+
+                // Add classes for exiting full-screen animation
+                setTimeout(() => {
+                    resetTransitionState();
+                    document.body.classList.add('non-fullscreen');
+                }, 1000);
+            }
+        };
+
+        document.addEventListener('click', toggleFullScreen);
+    </script>
 </body>
 </html>

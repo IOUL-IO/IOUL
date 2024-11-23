@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="non-fullscreen">
+<body class="non-fullscreen initial">
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -28,6 +28,12 @@
     <div class="line login-line-second"></div>
 
     <script>
+        // Trigger the initial fade-in after the page loads
+        window.addEventListener('load', () => {
+            document.body.classList.remove('initial');
+        });
+
+        // Handle fullscreen transitions
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 // Enter fullscreen mode

@@ -27,34 +27,39 @@
     <div class="line login-line"></div>
     <div class="line login-line-second"></div>
 
-    <script>
-        const resetTransitionState = () => {
-            // Remove all classes to reset state
-            document.body.classList.remove('fade-in-trigger', 'non-fullscreen');
-            // Force reflow to restart animation
-            void document.body.offsetWidth; 
-        };
+<script>
+    const resetTransitionState = () => {
+        // Remove all classes to reset state
+        document.body.classList.remove('fade-in-trigger', 'non-fullscreen');
+        // Force reflow to restart animation
+        void document.body.offsetWidth;
+    };
 
-        const toggleFullScreen = () => {
-            if (!document.fullscreenElement) {
-                // Enter full-screen mode
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
-                    document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
-                    document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
-                    document.documentElement.msRequestFullscreen();
-                }
+    const toggleFullScreen = () => {
+        if (!document.fullscreenElement) {
+            // Enter full-screen mode
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                document.documentElement.msRequestFullscreen();
+            }
 
-                // Add classes for full-screen animation
-                setTimeout(() => {
-                    resetTransitionState();
-                    document.body.classList.add('fade-in-trigger');
-                }, 1000);
-            } else {
-                // Exit full-screen mode
+            // Smooth transition to full-screen
+            setTimeout(() => {
+                resetTransitionState();
+                document.body.classList.add('fade-in-trigger');
+            }, 100);
+        } else {
+            // Exit full-screen mode
+            resetTransitionState();
+            document.body.classList.add('non-fullscreen');
+
+            // Smooth transition out of full-screen
+            setTimeout(() => {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
                 } else if (document.mozCancelFullScreen) { // Firefox
@@ -64,16 +69,11 @@
                 } else if (document.msExitFullscreen) { // IE/Edge
                     document.msExitFullscreen();
                 }
+            }, 100); // Delay exit to allow scaling to start
+        }
+    };
 
-                // Add classes for exiting full-screen animation
-                setTimeout(() => {
-                    resetTransitionState();
-                    document.body.classList.add('non-fullscreen');
-                }, 1000);
-            }
-        };
-
-        document.addEventListener('click', toggleFullScreen);
-    </script>
+    document.addEventListener('click', toggleFullScreen);
+</script>
 </body>
 </html>

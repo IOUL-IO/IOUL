@@ -22,7 +22,7 @@
     <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-    <span class="login-text username">USERnAME</span>
+    <span class="login-text username">USERNAME</span>
     <span class="login-text password">PASSWORD</span>
     <div class="line login-line"></div>
     <div class="line login-line-second"></div>
@@ -52,9 +52,9 @@
         // Handle exit fullscreen
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
-                // Trigger fade-out
+                // Keep components visible but revert to the non-fullscreen state
                 document.body.classList.remove('fade-in-trigger');
-                document.body.classList.add('non-fullscreen', 'blank-screen');
+                document.body.classList.add('non-fullscreen');
             }
         });
     </script>

@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="initial-fade-in non-fullscreen">
+<body class="non-fullscreen initial-fade">
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -28,50 +28,49 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let isFullscreen = false; // Track fullscreen state
-        let initialFadeDone = false; // Ensure fade-in happens only once
+        let initialFadeComplete = false; // Track if the initial fade-in animation is done
 
         document.addEventListener('click', () => {
+            const body = document.body;
+
             if (!document.fullscreenElement) {
                 // Enter fullscreen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                } else if (document.documentElement.mozRequestFullScreen) {
                     document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                } else if (document.documentElement.webkitRequestFullscreen) {
                     document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                } else if (document.documentElement.msRequestFullscreen) {
                     document.documentElement.msRequestFullscreen();
                 }
 
-                // Apply fullscreen transition
-                document.body.classList.remove('non-fullscreen');
-                document.body.classList.add('fullscreen');
+                // Apply scaling for fullscreen
+                body.classList.remove('non-fullscreen');
+                body.classList.add('fullscreen');
 
-                // Remove initial fade-in after it's done
-                if (!initialFadeDone) {
-                    document.body.classList.remove('initial-fade-in');
-                    initialFadeDone = true;
+                // Remove initial fade-in effect after first transition
+                if (!initialFadeComplete) {
+                    setTimeout(() => {
+                        body.classList.remove('initial-fade');
+                        initialFadeComplete = true;
+                    }, 1000); // Match the CSS transition duration
                 }
-
-                isFullscreen = true;
             } else {
                 // Exit fullscreen mode
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) { // Firefox
+                } else if (document.mozCancelFullScreen) {
                     document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
+                } else if (document.webkitExitFullscreen) {
                     document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) { // IE/Edge
+                } else if (document.msExitFullscreen) {
                     document.msExitFullscreen();
                 }
 
-                // Apply non-fullscreen transition
-                document.body.classList.remove('fullscreen');
-                document.body.classList.add('non-fullscreen');
-
-                isFullscreen = false;
+                // Apply scaling for non-fullscreen
+                body.classList.remove('fullscreen');
+                body.classList.add('non-fullscreen');
             }
         });
     </script>

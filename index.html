@@ -52,7 +52,13 @@
             if (!document.fullscreenElement) {
                 // Handle exit from full-screen mode
                 document.body.classList.remove('fade-in-trigger');
+                // Temporarily disable transitions for instant effect
+                document.body.style.transition = 'none';
                 document.body.classList.add('non-fullscreen');
+                // Re-enable transitions after applying the class
+                setTimeout(() => {
+                    document.body.style.transition = '';
+                }, 0);
             }
         });
     </script>

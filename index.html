@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="non-fullscreen blank-screen">
+<body class="non-fullscreen">
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -22,7 +22,7 @@
     <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-    <span class="login-text username">USERNAME</span>
+    <span class="login-text username">USERnAME</span>
     <span class="login-text password">PASSWORD</span>
     <div class="line login-line"></div>
     <div class="line login-line-second"></div>
@@ -30,7 +30,7 @@
     <script>
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
-                // Enter fullscreen mode
+                // Trigger full-screen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -40,19 +40,17 @@
                 } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
                     document.documentElement.msRequestFullscreen();
                 }
-
-                // Trigger fade-in
-                setTimeout(() => {
-                    document.body.classList.remove('blank-screen', 'non-fullscreen');
-                    document.body.classList.add('fade-in-trigger');
-                }, 1000);
             }
+
+            setTimeout(() => {
+                document.body.classList.remove('non-fullscreen');
+                document.body.classList.add('fade-in-trigger');
+            }, 1000); 
         });
 
-        // Handle exit fullscreen
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
-                // Keep components visible but revert to the non-fullscreen state
+                // Handle exit from full-screen mode
                 document.body.classList.remove('fade-in-trigger');
                 document.body.classList.add('non-fullscreen');
             }

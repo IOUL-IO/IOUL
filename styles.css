@@ -12,16 +12,18 @@
     box-sizing: border-box;
 }
 
-/* When entering fullscreen */
-body.fullscreen {
-    transform: scale(1); /* Expand outward */
-    transition: transform 1s ease, background-color 1s ease;
-}
-
-/* When exiting fullscreen */
+/* Non-fullscreen (initial and when toggling out) */
 body.non-fullscreen {
     transform: scale(0.1); /* Shrink inward */
-    transition: transform 1s ease, background-color 1s ease;
+    transition: transform 1s ease, background-color 1s ease; /* Smooth shrinking */
+    background-color: #ffffff;
+}
+
+/* Fullscreen (when toggling in) */
+body.fullscreen {
+    transform: scale(1); /* Expand outward */
+    transition: transform 1s ease, background-color 1s ease; /* Smooth expansion */
+    background-color: #ffffff;
 }
 
 /* General fade-in for elements */
@@ -34,7 +36,7 @@ body.non-fullscreen {
     transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
 }
 
-/* Fade-in for elements in fullscreen */
+/* Fade-in elements when fullscreen is active */
 body.fullscreen .line,
 body.fullscreen .time-text {
     opacity: 1;
@@ -45,7 +47,7 @@ body.fullscreen .login-text,
 body.fullscreen .login-line,
 body.fullscreen .login-line-second {
     opacity: 1;
-    transition-delay: 2s; /* Additional delay for a staged effect */
+    transition-delay: 2s; /* Additional delay for staged fade-in */
 }
 
 /* Line styling */

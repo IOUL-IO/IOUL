@@ -28,6 +28,8 @@
     <div class="line login-line-second"></div>
 
     <script>
+        let isFullscreen = false; // Track fullscreen state
+
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 // Enter fullscreen mode
@@ -42,10 +44,10 @@
                 }
 
                 // Trigger animation for entering fullscreen
-                document.body.classList.remove('non-fullscreen', 'fade-in-trigger');
-                setTimeout(() => {
-                    document.body.classList.add('fade-in-trigger');
-                }, 10); // Slight delay to reapply class
+                document.body.classList.remove('non-fullscreen');
+                document.body.classList.add('fade-in-trigger');
+                isFullscreen = true;
+
             } else {
                 // Exit fullscreen mode
                 if (document.exitFullscreen) {
@@ -59,11 +61,19 @@
                 }
 
                 // Trigger animation for exiting fullscreen
-                document.body.classList.remove('fade-in-trigger', 'non-fullscreen');
-                setTimeout(() => {
-                    document.body.classList.add('non-fullscreen');
-                }, 10); // Slight delay to reapply class
+                document.body.classList.remove('fade-in-trigger');
+                document.body.classList.add('non-fullscreen');
+                isFullscreen = false;
             }
+
+            // Ensure smooth transition every time
+            setTimeout(() => {
+                if (isFullscreen) {
+                    document.body.classList.add('fade-in-trigger');
+                } else {
+                    document.body.classList.add('non-fullscreen');
+                }
+            }, 500); // Add slight delay to ensure animation re-triggers
         });
     </script>
 </body>

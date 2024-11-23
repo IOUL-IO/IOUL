@@ -30,7 +30,7 @@
     <script>
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
-                // Trigger full-screen mode
+                // Enter fullscreen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -40,12 +40,22 @@
                 } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
                     document.documentElement.msRequestFullscreen();
                 }
-            }
 
-            setTimeout(() => {
-                document.body.classList.remove('non-fullscreen');
-                document.body.classList.add('fade-in-trigger');
-            }, 1000); 
+                // Apply fade-in effect
+                setTimeout(() => {
+                    document.body.classList.remove('non-fullscreen');
+                    document.body.classList.add('fade-in-trigger');
+                }, 1000);
+            }
+        });
+
+        // Listen for exit fullscreen
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                // Reverse the transition
+                document.body.classList.remove('fade-in-trigger');
+                document.body.classList.add('non-fullscreen');
+            }
         });
     </script>
 </body>

@@ -27,13 +27,20 @@ body.fade-in-trigger {
     transition: transform 1s ease, background-color 1s ease;
 }
 
+/* Persistent full-screen class to avoid re-animation */
+body.fade-in-persistent {
+    transform: scale(1); 
+    background-color: #ffffff; 
+    transition: none; /* No animation on subsequent transitions */
+}
+
 .line,
 .time-text,
 .login-text,
 .login-line,
 .login-line-second {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
+    transition: none; /* Avoid animations after initial transition */
 }
 
 body.fade-in-trigger .line,

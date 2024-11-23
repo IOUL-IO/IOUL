@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="non-fullscreen">
+    <!-- Components -->
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -22,12 +23,14 @@
     <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
+    <!-- Login Components -->
     <span class="login-text username">USERnAME</span>
     <span class="login-text password">PASSWORD</span>
     <div class="line login-line"></div>
     <div class="line login-line-second"></div>
 
     <script>
+        // Toggle fullscreen and scaling classes
         function toggleFullscreenClass() {
             if (document.fullscreenElement) {
                 document.body.classList.remove('non-fullscreen');
@@ -38,11 +41,13 @@
             }
         }
 
+        // Listen for fullscreen changes
         document.addEventListener('fullscreenchange', toggleFullscreenClass);
         document.addEventListener('webkitfullscreenchange', toggleFullscreenClass); // Safari
         document.addEventListener('mozfullscreenchange', toggleFullscreenClass); // Firefox
         document.addEventListener('MSFullscreenChange', toggleFullscreenClass); // IE/Edge
 
+        // Trigger fullscreen on click
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {

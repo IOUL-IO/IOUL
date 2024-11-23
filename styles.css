@@ -12,49 +12,57 @@
     box-sizing: border-box;
 }
 
-/* Smooth scaling for non-fullscreen */
-body.non-fullscreen {
-    background-color: #ffffff; 
-    min-height: 100vh;
-    min-width: 100vw;
-    overflow: hidden;
-    transform: scale(0.1); /* Shrinks inward */
-    transition: transform 1s ease, background-color 1s ease; 
+/* Initial fade-in animation (only happens once) */
+body.initial-fade-in {
+    opacity: 0; /* Invisible initially */
+    transform: scale(0.1); /* Shrinks inward initially */
+    transition: opacity 1s ease, transform 1s ease; /* Smooth fade-in and scale */
 }
 
-/* Smooth scaling for fullscreen */
-body.fade-in-trigger {
+/* Once initial fade-in completes */
+body.initial-fade-in.fade-in-trigger {
+    opacity: 1;
+    transform: scale(1); /* Expand outward */
+}
+
+/* Fullscreen scaling */
+body.fullscreen {
     transform: scale(1); /* Expands outward */
-    background-color: #ffffff; 
-    transition: transform 1s ease, background-color 1s ease;
+    transition: transform 1s ease;
 }
 
-/* Initial fade-in for elements */
+/* Non-fullscreen scaling */
+body.non-fullscreen {
+    transform: scale(0.1); /* Shrinks inward */
+    transition: transform 1s ease;
+}
+
+/* Line styles and fade-in */
 .line,
 .time-text,
 .login-text,
 .login-line,
 .login-line-second {
-    opacity: 0;
+    opacity: 0; /* Hidden initially */
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Fade-in animation for lines and time text */
-body.fade-in-trigger .line,
-body.fade-in-trigger .time-text {
+/* Fade-in for lines and time text in fullscreen */
+body.fullscreen .line,
+body.fullscreen .time-text {
     opacity: 1;
-    transition-delay: 1s; 
+    transition-delay: 1s; /* Delay to sync with scaling */
 }
 
-/* Fade-in animation for login text and lines */
-body.fade-in-trigger .login-text,
-body.fade-in-trigger .login-line,
-body.fade-in-trigger .login-line-second {
+/* Fade-in for login text and lines in fullscreen */
+body.fullscreen .login-text,
+body.fullscreen .login-line,
+body.fullscreen .login-line-second {
     opacity: 1;
-    transition-delay: 2s; 
+    transition-delay: 2s; /* Additional delay for staged animation */
 }
 
-/* Line styles */
+/* General line styling */
 .line {
     position: absolute;
     height: 1px;
@@ -85,7 +93,7 @@ body.fade-in-trigger .login-line-second {
     width: 57.8vw;
 }
 
-/* Dashed line styles */
+/* Dashed line styling */
 .dashed {
     position: absolute;
     height: 1px;
@@ -120,7 +128,7 @@ body.fade-in-trigger .login-line-second {
     width: 52.4vw;
 }
 
-/* Time text styles */
+/* Time text styling */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -149,7 +157,7 @@ body.fade-in-trigger .login-line-second {
     left: 90.1vw;
 }
 
-/* Login text styles */
+/* Login text styling */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -172,6 +180,7 @@ body.fade-in-trigger .login-line-second {
     color: #a1a1a1;
 }
 
+/* Login lines styling */
 .login-line {
     position: absolute;
     top: 38.9vh;

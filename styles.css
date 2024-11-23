@@ -17,7 +17,7 @@ body.non-fullscreen {
     min-height: 100vh;
     min-width: 100vw;
     overflow: hidden;
-    transform: scale(0.8); /* Reduced scale for better visibility */
+    transform: scale(1); /* Maintain normal size when not fullscreen */
     transition: transform 1s ease, background-color 1s ease; 
 }
 
@@ -37,24 +37,21 @@ body.fade-in-trigger {
 }
 
 body.fade-in-trigger .line,
-body.fade-in-trigger .time-text {
+body.fade-in-trigger .time-text,
+body.non-fullscreen .line,
+body.non-fullscreen .time-text {
     opacity: 1;
     transition-delay: 1s; 
 }
 
 body.fade-in-trigger .login-text,
 body.fade-in-trigger .login-line,
-body.fade-in-trigger .login-line-second {
-    opacity: 1;
-    transition-delay: 2s; 
-}
-
-body.non-fullscreen .line,
-body.non-fullscreen .time-text,
+body.fade-in-trigger .login-line-second,
 body.non-fullscreen .login-text,
 body.non-fullscreen .login-line,
 body.non-fullscreen .login-line-second {
-    opacity: 1; /* Ensure components remain visible when scaling down */
+    opacity: 1; 
+    transition-delay: 2s; 
 }
 
 .line {

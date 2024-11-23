@@ -18,13 +18,20 @@ body.non-fullscreen {
     min-width: 100vw;
     overflow: hidden;
     transform: scale(0.1); 
+    transform-origin: center center; /* Smooth scaling */
     transition: transform 1s ease, background-color 1s ease; 
 }
 
 body.fade-in-trigger {
     transform: scale(1); 
+    transform-origin: center center; /* Smooth scaling */
     background-color: #ffffff; 
     transition: transform 1s ease, background-color 1s ease;
+}
+
+/* Prevent flickering or black screen */
+html, body {
+    background-color: #ffffff;
 }
 
 .line,

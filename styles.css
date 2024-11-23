@@ -18,7 +18,7 @@ body.non-fullscreen {
     min-width: 100vw;
     overflow: hidden;
     transform: scale(0.1); 
-    transition: transform 1s ease, background-color 1s ease; 
+    transition: transform 1s ease, background-color 1s ease; /* Smooth transition out of full-screen */
 }
 
 body.fade-in-trigger {
@@ -27,13 +27,13 @@ body.fade-in-trigger {
     transition: transform 1s ease, background-color 1s ease;
 }
 
-/* Persistent full-screen class to avoid re-animation */
 body.fade-in-persistent {
     transform: scale(1); 
     background-color: #ffffff; 
-    transition: none; /* No animation on subsequent transitions */
+    transition: none; /* No animation for subsequent entries */
 }
 
+/* Ensure components remain visible */
 .line,
 .time-text,
 .login-text,

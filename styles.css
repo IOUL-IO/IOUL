@@ -12,18 +12,24 @@
     box-sizing: border-box;
 }
 
-/* Non-fullscreen (initial and when toggling out) */
-body.non-fullscreen {
+/* Initial state with fade-in and scaling */
+body.initial-load {
+    opacity: 0; /* Hidden initially */
     transform: scale(0.1); /* Shrink inward */
-    transition: transform 1s ease, background-color 1s ease; /* Smooth shrinking */
-    background-color: #ffffff;
+    transition: opacity 1s ease, transform 1s ease; /* Smooth fade-in and scale */
 }
 
-/* Fullscreen (when toggling in) */
+/* After fullscreen is toggled for the first time */
 body.fullscreen {
     transform: scale(1); /* Expand outward */
-    transition: transform 1s ease, background-color 1s ease; /* Smooth expansion */
-    background-color: #ffffff;
+    transition: transform 1s ease; /* Smooth scaling */
+}
+
+/* Returning to non-fullscreen after the first toggle */
+body.non-fullscreen {
+    transform: scale(0.1); /* Shrink inward */
+    transition: transform 1s ease; /* Smooth scaling */
+    opacity: 1; /* Ensure visibility */
 }
 
 /* General fade-in for elements */
@@ -33,21 +39,26 @@ body.fullscreen {
 .login-line,
 .login-line-second {
     opacity: 0; /* Hidden initially */
-    transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
+    transition: opacity 0.5s ease-in-out;
 }
 
-/* Fade-in elements when fullscreen is active */
+/* Elements fade in during the initial load */
+body.initial-load .line,
+body.initial-load .time-text,
+body.initial-load .login-text,
+body.initial-load .login-line,
+body.initial-load .login-line-second {
+    opacity: 1; /* Fade-in effect */
+    transition-delay: 0.5s; /* Staggered animation delay */
+}
+
+/* After the initial load, elements remain visible */
 body.fullscreen .line,
-body.fullscreen .time-text {
-    opacity: 1;
-    transition-delay: 1s; /* Staggered fade-in delay */
-}
-
+body.fullscreen .time-text,
 body.fullscreen .login-text,
 body.fullscreen .login-line,
 body.fullscreen .login-line-second {
-    opacity: 1;
-    transition-delay: 2s; /* Additional delay for staged fade-in */
+    opacity: 1; /* Ensure visibility */
 }
 
 /* Line styling */
@@ -91,9 +102,9 @@ body.fullscreen .login-line-second {
     background: linear-gradient(
         to right,
         #e1e1e1 0,
-        #e1e1e1 5px, 
+        #e1e1e1 5px,
         #ffffff 5px,
-        #ffffff 10px 
+        #ffffff 10px
     );
     background-size: 10px 1px;
 }

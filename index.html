@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="non-fullscreen">
+<body class="initial-fade-in non-fullscreen">
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -29,6 +29,7 @@
 
     <script>
         let isFullscreen = false; // Track fullscreen state
+        let initialFadeDone = false; // Ensure fade-in happens only once
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
@@ -43,11 +44,17 @@
                     document.documentElement.msRequestFullscreen();
                 }
 
-                // Smooth scale-out animation
+                // Apply fullscreen transition
                 document.body.classList.remove('non-fullscreen');
-                document.body.classList.add('fade-in-trigger');
-                isFullscreen = true;
+                document.body.classList.add('fullscreen');
 
+                // Remove initial fade-in after it's done
+                if (!initialFadeDone) {
+                    document.body.classList.remove('initial-fade-in');
+                    initialFadeDone = true;
+                }
+
+                isFullscreen = true;
             } else {
                 // Exit fullscreen mode
                 if (document.exitFullscreen) {
@@ -60,9 +67,10 @@
                     document.msExitFullscreen();
                 }
 
-                // Smooth scale-in animation
-                document.body.classList.remove('fade-in-trigger');
+                // Apply non-fullscreen transition
+                document.body.classList.remove('fullscreen');
                 document.body.classList.add('non-fullscreen');
+
                 isFullscreen = false;
             }
         });

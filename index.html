@@ -54,17 +54,20 @@
         }
     };
 
-    document.addEventListener('click', toggleFullScreen);
-
-    document.addEventListener('fullscreenchange', () => {
+    const handleFullScreenToggle = () => {
+        document.body.classList.remove('fade-in-trigger', 'non-fullscreen');
+        // Add visual class to ensure scaling effect
+        document.body.offsetHeight; // Trigger a reflow to restart animations
         if (document.fullscreenElement) {
-            document.body.classList.remove('non-fullscreen');
             document.body.classList.add('fade-in-trigger');
         } else {
-            document.body.classList.remove('fade-in-trigger');
             document.body.classList.add('non-fullscreen');
         }
-    });
+    };
+
+    document.addEventListener('click', toggleFullScreen);
+    document.addEventListener('fullscreenchange', handleFullScreenToggle);
 </script>
+    
 </body>
 </html>

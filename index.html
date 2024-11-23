@@ -7,59 +7,58 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="non-fullscreen">
-    <!-- White Overlay to Ensure Background Consistency -->
-    <div class="overlay"></div>
+<body>
+    <!-- Full-Screen Container -->
+    <div class="fullscreen-container non-fullscreen">
+        <!-- Components -->
+        <div class="line original"></div>
+        <div class="line second"></div>
+        <div class="line third"></div>
+        <div class="line fourth"></div>
+        <div class="line dashed"></div>
+        <div class="line dashed second-dashed"></div>
+        <div class="line dashed third-dashed"></div>
+        <div class="line dashed fourth-dashed"></div>
 
-    <!-- Components -->
-    <div class="line original"></div>
-    <div class="line second"></div>
-    <div class="line third"></div>
-    <div class="line fourth"></div>
-    <div class="line dashed"></div>
-    <div class="line dashed second-dashed"></div>
-    <div class="line dashed third-dashed"></div>
-    <div class="line dashed fourth-dashed"></div>
-    
-    <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-    <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-    <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
-    <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+        <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+        <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+        <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+        <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-    <!-- Login Components -->
-    <span class="login-text username">USERnAME</span>
-    <span class="login-text password">PASSWORD</span>
-    <div class="line login-line"></div>
-    <div class="line login-line-second"></div>
+        <!-- Login Components -->
+        <span class="login-text username">USERnAME</span>
+        <span class="login-text password">PASSWORD</span>
+        <div class="line login-line"></div>
+        <div class="line login-line-second"></div>
+    </div>
 
     <script>
-        // Manage full-screen and scaling transitions
+        const container = document.querySelector('.fullscreen-container');
+
         function toggleFullscreenClass() {
             if (document.fullscreenElement) {
-                document.body.classList.remove('non-fullscreen');
-                document.body.classList.add('fade-in-trigger');
+                container.classList.remove('non-fullscreen');
+                container.classList.add('fade-in-trigger');
             } else {
-                document.body.classList.remove('fade-in-trigger');
-                document.body.classList.add('non-fullscreen');
+                container.classList.remove('fade-in-trigger');
+                container.classList.add('non-fullscreen');
             }
         }
 
-        // Event listeners for full-screen changes
         document.addEventListener('fullscreenchange', toggleFullscreenClass);
-        document.addEventListener('webkitfullscreenchange', toggleFullscreenClass); // Safari
-        document.addEventListener('mozfullscreenchange', toggleFullscreenClass); // Firefox
-        document.addEventListener('MSFullscreenChange', toggleFullscreenClass); // IE/Edge
+        document.addEventListener('webkitfullscreenchange', toggleFullscreenClass);
+        document.addEventListener('mozfullscreenchange', toggleFullscreenClass);
+        document.addEventListener('MSFullscreenChange', toggleFullscreenClass);
 
-        // Trigger full-screen on click
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                } else if (document.documentElement.mozRequestFullScreen) {
                     document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                } else if (document.documentElement.webkitRequestFullscreen) {
                     document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                } else if (document.documentElement.msRequestFullscreen) {
                     document.documentElement.msRequestFullscreen();
                 }
             }

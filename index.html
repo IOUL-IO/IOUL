@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="non-fullscreen initial">
+<body class="non-fullscreen blank-screen">
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -28,12 +28,6 @@
     <div class="line login-line-second"></div>
 
     <script>
-        // Trigger the initial fade-in after the page loads
-        window.addEventListener('load', () => {
-            document.body.classList.remove('initial');
-        });
-
-        // Handle fullscreen transitions
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 // Enter fullscreen mode
@@ -47,20 +41,20 @@
                     document.documentElement.msRequestFullscreen();
                 }
 
-                // Apply fade-in effect
+                // Trigger fade-in
                 setTimeout(() => {
-                    document.body.classList.remove('non-fullscreen');
+                    document.body.classList.remove('blank-screen', 'non-fullscreen');
                     document.body.classList.add('fade-in-trigger');
                 }, 1000);
             }
         });
 
-        // Listen for exit fullscreen
+        // Handle exit fullscreen
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
-                // Reverse the transition
+                // Trigger fade-out
                 document.body.classList.remove('fade-in-trigger');
-                document.body.classList.add('non-fullscreen');
+                document.body.classList.add('non-fullscreen', 'blank-screen');
             }
         });
     </script>

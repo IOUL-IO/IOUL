@@ -28,47 +28,47 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let initialFadeComplete = false; // Track if the initial fade-in animation is done
+        let hasFaded = false; // Track if the initial fade has been completed
 
         document.addEventListener('click', () => {
             const body = document.body;
 
             if (!document.fullscreenElement) {
-                // Enter fullscreen mode
+                // Enter fullscreen
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) {
+                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
                     document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) {
+                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
                     document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) {
+                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
                     document.documentElement.msRequestFullscreen();
                 }
 
-                // Apply scaling for fullscreen
+                // Add fullscreen scaling
                 body.classList.remove('non-fullscreen');
                 body.classList.add('fullscreen');
 
-                // Remove initial fade-in effect after first transition
-                if (!initialFadeComplete) {
+                // Remove the fade-in effect after the first toggle
+                if (!hasFaded) {
                     setTimeout(() => {
                         body.classList.remove('initial-fade');
-                        initialFadeComplete = true;
-                    }, 1000); // Match the CSS transition duration
+                        hasFaded = true;
+                    }, 1000); // Matches the transition duration
                 }
             } else {
-                // Exit fullscreen mode
+                // Exit fullscreen
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) {
+                } else if (document.mozCancelFullScreen) { // Firefox
                     document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) {
+                } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
                     document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) {
+                } else if (document.msExitFullscreen) { // IE/Edge
                     document.msExitFullscreen();
                 }
 
-                // Apply scaling for non-fullscreen
+                // Add non-fullscreen scaling
                 body.classList.remove('fullscreen');
                 body.classList.add('non-fullscreen');
             }

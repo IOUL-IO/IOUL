@@ -29,23 +29,23 @@
 
     <script>
         document.addEventListener('click', () => {
+            const body = document.body;
+
             if (!document.fullscreenElement) {
-                // Trigger full-screen mode
+                // Enter fullscreen
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
-                    document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
-                    document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
-                    document.documentElement.msRequestFullscreen();
                 }
+                body.classList.remove('non-fullscreen');
+                body.classList.add('fullscreen');
+            } else {
+                // Exit fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+                body.classList.remove('fullscreen');
+                body.classList.add('non-fullscreen');
             }
-
-            setTimeout(() => {
-                document.body.classList.remove('non-fullscreen');
-                document.body.classList.add('fade-in-trigger');
-            }, 1000); 
         });
     </script>
 </body>

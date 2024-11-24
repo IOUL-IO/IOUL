@@ -28,11 +28,12 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let hasInitialFadeInOccurred = false; // Track initial fade-in
+        let isInitialFullScreen = true; // Track whether it's the first toggle
 
         const resetTransitionState = () => {
+            // Remove animation-related classes
             document.body.classList.remove('fade-in-trigger', 'non-fullscreen');
-            void document.body.offsetWidth; // Force reflow to restart animations
+            void document.body.offsetWidth; // Trigger reflow to restart animations
         };
 
         const toggleFullScreen = () => {
@@ -48,12 +49,12 @@
                     document.documentElement.msRequestFullscreen();
                 }
 
-                // Apply full-screen animation
+                // Apply animations
                 resetTransitionState();
-                if (!hasInitialFadeInOccurred) {
-                    document.body.classList.add('fade-in-trigger'); // Fade-in on first toggle
+                if (isInitialFullScreen) {
+                    document.body.classList.add('fade-in-trigger'); // Apply fade-in for the first toggle
                 } else {
-                    document.body.classList.add('scaling-trigger'); // Scale only for subsequent toggles
+                    document.body.classList.add('scaling-trigger'); // Apply scaling for subsequent toggles
                 }
             }
         };
@@ -61,15 +62,13 @@
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 toggleFullScreen();
-                if (!hasInitialFadeInOccurred) {
-                    hasInitialFadeInOccurred = true; // Ensure fade-in only happens once
-                }
+                isInitialFullScreen = false; // Disable fade-in after the first toggle
             }
         });
 
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
-                // Smooth contraction to non-fullscreen
+                // Smooth contraction to non-full-screen
                 resetTransitionState();
                 document.body.classList.add('non-fullscreen');
             }

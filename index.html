@@ -28,9 +28,9 @@
     <div class="line login-line-second"></div>
 
     <script>
-        // Function to enter fullscreen mode
-        function enterFullscreen() {
+        function toggleFullscreen() {
             if (!document.fullscreenElement) {
+                // Enter fullscreen
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -43,32 +43,33 @@
             }
         }
 
-        // Function to apply consistent overflow and visual behavior
-        function applyFullscreenState() {
+        function applyFullscreenStyles() {
+            // Apply overflow: hidden to lock viewport during fullscreen
             if (document.fullscreenElement) {
-                document.body.style.overflow = 'hidden'; // Lock viewport
+                document.body.style.overflow = 'hidden';
                 document.body.classList.remove('non-fullscreen');
                 document.body.classList.add('fade-in-trigger');
             } else {
-                document.body.style.overflow = ''; // Reset overflow
+                // Restore styles when exiting fullscreen
+                document.body.style.overflow = ''; // Reset overflow to default
                 document.body.classList.remove('fade-in-trigger');
                 document.body.classList.add('non-fullscreen');
             }
         }
 
-        // Click listener to trigger fullscreen
+        // Listen for clicks to enter fullscreen
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
-                enterFullscreen();
+                toggleFullscreen();
             }
         });
 
-        // Listener for fullscreen state changes
+        // Update styles on fullscreen changes
         document.addEventListener('fullscreenchange', () => {
-            applyFullscreenState();
+            applyFullscreenStyles();
         });
 
-        // Restrict exit to ESC key
+        // Allow exit only via ESC key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && document.fullscreenElement) {
                 document.exitFullscreen();

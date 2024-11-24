@@ -22,6 +22,15 @@ body.non-fullscreen {
 body.fade-in-trigger {
     background-color: #ffffff; 
 }
+
+body.fade-complete .line,
+body.fade-complete .time-text,
+body.fade-complete .login-text,
+body.fade-complete .login-line,
+body.fade-complete .login-line-second {
+    opacity: 1; /* Keep all components visible */
+    transition: none; /* Disable transitions after initial fade-in */
+}
     
 .line,
 .time-text,

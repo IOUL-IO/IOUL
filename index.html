@@ -42,30 +42,43 @@
             }
         }
 
-        function resetVisualState() {
-            document.body.classList.remove('non-fullscreen', 'fade-in-trigger');
-            void document.body.offsetWidth; // Trigger reflow
-            document.body.classList.add(document.fullscreenElement ? 'fade-in-trigger' : 'non-fullscreen');
+        function applyOverflowBehavior() {
+            // Lock content visibility and prevent layout recalculations
+            document.body.style.overflow = 'hidden';
+        }
+
+        function resetOverflowBehavior() {
+            // Reset overflow to default
+            document.body.style.overflow = '';
         }
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 enterFullscreen();
-                setTimeout(resetVisualState, 1000); // Sync visual changes
+                setTimeout(() => {
+                    // Apply consistent overflow behavior for fullscreen transitions
+                    applyOverflowBehavior();
+                    document.body.classList.remove('non-fullscreen');
+                    document.body.classList.add('fade-in-trigger');
+                }, 1000);
             }
         });
 
         document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement) {
-                // Re-enter fullscreen if exited manually (e.g., via mouse click)
-                enterFullscreen();
+            if (document.fullscreenElement) {
+                applyOverflowBehavior();
+                document.body.classList.remove('non-fullscreen');
+                document.body.classList.add('fade-in-trigger');
             } else {
-                resetVisualState();
+                resetOverflowBehavior();
+                document.body.classList.remove('fade-in-trigger');
+                document.body.classList.add('non-fullscreen');
             }
         });
 
+        // Allow exiting fullscreen via ESC only
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
+            if (e.key === 'Escape' && document.fullscreenElement) {
                 document.exitFullscreen();
             }
         });

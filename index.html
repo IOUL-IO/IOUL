@@ -30,7 +30,6 @@
     <script>
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
-                // Enter fullscreen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -41,7 +40,6 @@
                     document.documentElement.msRequestFullscreen();
                 }
             } else {
-                // Exit fullscreen mode
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
                 } else if (document.mozCancelFullScreen) { // Firefox
@@ -54,21 +52,17 @@
             }
         }
 
-        function resetOverflowBehavior() {
-            document.body.classList.remove('non-fullscreen', 'fade-in-trigger');
-            document.body.offsetHeight; // Trigger reflow
-            document.body.classList.add(document.fullscreenElement ? 'fade-in-trigger' : 'non-fullscreen');
-        }
-
         document.addEventListener('click', () => {
             toggleFullscreen();
             setTimeout(() => {
-                resetOverflowBehavior();
-            }, 1000); // Matches CSS transition timing
+                document.body.classList.toggle('non-fullscreen', !document.fullscreenElement);
+                document.body.classList.toggle('fade-in-trigger', !!document.fullscreenElement);
+            }, 1000);
         });
 
         document.addEventListener('fullscreenchange', () => {
-            resetOverflowBehavior();
+            document.body.classList.toggle('non-fullscreen', !document.fullscreenElement);
+            document.body.classList.toggle('fade-in-trigger', !!document.fullscreenElement);
         });
     </script>
 </body>

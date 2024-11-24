@@ -28,50 +28,25 @@
     <div class="line login-line-second"></div>
 
     <script>
-    const toggleFullscreen = () => {
-        if (!document.fullscreenElement) {
-            // Enter full-screen mode
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen();
-            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
-                document.documentElement.mozRequestFullScreen();
-            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
-                document.documentElement.webkitRequestFullscreen();
-            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
-                document.documentElement.msRequestFullscreen();
+        document.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                // Trigger full-screen mode
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                    document.documentElement.msRequestFullscreen();
+                }
             }
-        } else {
-            // Exit full-screen mode
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.mozCancelFullScreen) { // Firefox
-                document.mozCancelFullScreen();
-            } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) { // IE/Edge
-                document.msExitFullscreen();
-            }
-        }
-    };
 
-    const handleFullscreenChange = () => {
-        if (document.fullscreenElement) {
-            // Entering full-screen: Apply fade-in-trigger class
-            document.body.classList.remove('non-fullscreen');
-            document.body.classList.add('fade-in-trigger');
-        } else {
-            // Exiting full-screen: Revert to non-fullscreen state
-            document.body.classList.remove('fade-in-trigger');
-            document.body.classList.add('non-fullscreen');
-        }
-    };
-
-    // Add event listeners
-    document.addEventListener('click', toggleFullscreen);
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
-    document.addEventListener('msfullscreenchange', handleFullscreenChange);
-</script>
+            setTimeout(() => {
+                document.body.classList.remove('non-fullscreen');
+                document.body.classList.add('fade-in-trigger');
+            }, 1000); 
+        });
+    </script>
 </body>
 </html>

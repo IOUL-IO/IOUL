@@ -60,7 +60,7 @@
             } else {
                 // Reset overflow when exiting fullscreen
                 document.body.style.overflow = '';
-                // Keep fade-in-trigger applied after the first toggle
+                document.body.classList.add('non-fullscreen');
             }
         });
     </script>

@@ -28,8 +28,10 @@
     <div class="line login-line-second"></div>
 
     <script>
-        function toggleFullscreen() {
+        // Enter fullscreen when clicking on the page
+        document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
+                // Trigger full-screen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -39,30 +41,25 @@
                 } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
                     document.documentElement.msRequestFullscreen();
                 }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) { // Firefox
-                    document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) { // IE/Edge
-                    document.msExitFullscreen();
-                }
+                setTimeout(() => {
+                    // Apply the visual toggle behavior
+                    document.body.classList.remove('non-fullscreen');
+                    document.body.classList.add('fade-in-trigger');
+                }, 1000);
             }
-        }
-
-        document.addEventListener('click', () => {
-            toggleFullscreen();
-            setTimeout(() => {
-                document.body.classList.toggle('non-fullscreen', !document.fullscreenElement);
-                document.body.classList.toggle('fade-in-trigger', !!document.fullscreenElement);
-            }, 1000);
         });
 
+        // Listen for fullscreen changes and maintain consistent overflow behavior
         document.addEventListener('fullscreenchange', () => {
-            document.body.classList.toggle('non-fullscreen', !document.fullscreenElement);
-            document.body.classList.toggle('fade-in-trigger', !!document.fullscreenElement);
+            if (!document.fullscreenElement) {
+                // Force fullscreen exit through ESC only, no other way to toggle out
+                document.documentElement.requestFullscreen();
+            } else {
+                // Apply fade-in effect when entering fullscreen
+                document.body.style.overflow = 'hidden';
+                document.body.classList.remove('non-fullscreen');
+                document.body.classList.add('fade-in-trigger');
+            }
         });
     </script>
 </body>

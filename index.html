@@ -28,9 +28,9 @@
     <div class="line login-line-second"></div>
 
     <script>
-        // Function to toggle fullscreen
-        function toggleFullscreen() {
+        document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
+                // Trigger fullscreen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -43,23 +43,16 @@
             } else {
                 document.exitFullscreen();
             }
-        }
-
-        // Event listener for click to toggle fullscreen
-        document.addEventListener('click', () => {
-            toggleFullscreen();
 
             setTimeout(() => {
-                // Ensure correct classes for transitions
                 document.body.classList.remove('non-fullscreen');
                 document.body.classList.add('fade-in-trigger');
-            }, 1000); // Matches the transition timing
+            }, 1000);
         });
 
-        // Event listener for fullscreen changes to manage overflow and classes
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
-                // Lock the viewport when entering fullscreen
+                // Lock overflow when entering fullscreen
                 document.body.style.overflow = 'hidden';
             } else {
                 // Reset overflow when exiting fullscreen

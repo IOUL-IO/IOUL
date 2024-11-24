@@ -11,17 +11,6 @@
     padding: 0;
     box-sizing: border-box;
 }
-
-body.non-fullscreen {
-    background-color: #ffffff; 
-    min-height: 100vh;
-    min-width: 100vw;
-    overflow: hidden;
-}
-
-body.fade-in-trigger {
-    background-color: #ffffff; 
-}
     
 .line,
 .time-text,

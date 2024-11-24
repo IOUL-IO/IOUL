@@ -28,10 +28,8 @@
     <div class="line login-line-second"></div>
 
     <script>
-        // Enter fullscreen when clicking on the page
-        document.addEventListener('click', () => {
+        function enterFullscreen() {
             if (!document.fullscreenElement) {
-                // Trigger full-screen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -41,24 +39,38 @@
                 } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
                     document.documentElement.msRequestFullscreen();
                 }
-                setTimeout(() => {
-                    // Apply the visual toggle behavior
-                    document.body.classList.remove('non-fullscreen');
-                    document.body.classList.add('fade-in-trigger');
-                }, 1000);
             }
-        });
+        }
 
-        // Listen for fullscreen changes and maintain consistent overflow behavior
-        document.addEventListener('fullscreenchange', () => {
+        function ensureFullscreenBehavior() {
             if (!document.fullscreenElement) {
-                // Force fullscreen exit through ESC only, no other way to toggle out
-                document.documentElement.requestFullscreen();
+                // Ensure fullscreen cannot exit via click
+                enterFullscreen();
             } else {
-                // Apply fade-in effect when entering fullscreen
+                // Apply consistent visual effects when fullscreen is active
                 document.body.style.overflow = 'hidden';
                 document.body.classList.remove('non-fullscreen');
                 document.body.classList.add('fade-in-trigger');
+            }
+        }
+
+        document.addEventListener('click', () => {
+            enterFullscreen();
+            setTimeout(() => {
+                // Apply visual effects on entering fullscreen
+                document.body.classList.remove('non-fullscreen');
+                document.body.classList.add('fade-in-trigger');
+            }, 1000); // Sync with initial behavior
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+            ensureFullscreenBehavior();
+        });
+
+        // Allow exiting fullscreen via ESC only
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.fullscreenElement) {
+                document.exitFullscreen();
             }
         });
     </script>

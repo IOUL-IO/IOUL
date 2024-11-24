@@ -27,16 +27,19 @@
     <div class="line login-line"></div>
     <div class="line login-line-second"></div>
 
-<script>
-    const resetTransitionState = () => {
-        // Remove all classes to reset state
-        document.body.classList.remove('fade-in-trigger', 'non-fullscreen');
-        // Force reflow to restart animation
-        void document.body.offsetWidth;
-    };
+    <script>
+        const resetTransitionState = () => {
+            // Remove animation classes to reset state
+            document.body.classList.remove('fade-in-trigger', 'non-fullscreen');
+            // Trigger reflow to restart animations
+            void document.body.offsetWidth;
+        };
 
-    const toggleFullScreen = () => {
-        if (!document.fullscreenElement) {
+        const enterFullScreen = () => {
+            // Ensure body starts in a non-fullscreen state
+            resetTransitionState();
+            document.body.classList.add('non-fullscreen');
+
             // Enter full-screen mode
             if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen();
@@ -48,32 +51,32 @@
                 document.documentElement.msRequestFullscreen();
             }
 
-            // Smooth transition to full-screen
+            // Add full-screen animation
             setTimeout(() => {
                 resetTransitionState();
                 document.body.classList.add('fade-in-trigger');
-            }, 100);
-        } else {
-            // Exit full-screen mode
-            resetTransitionState();
-            document.body.classList.add('non-fullscreen');
+            }, 100); // Slight delay for smooth transition
+        };
 
-            // Smooth transition out of full-screen
-            setTimeout(() => {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) { // Firefox
-                    document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) { // IE/Edge
-                    document.msExitFullscreen();
-                }
-            }, 100); // Delay exit to allow scaling to start
-        }
-    };
+        document.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                enterFullScreen();
+            }
+        });
 
-    document.addEventListener('click', toggleFullScreen);
-</script>
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                resetTransitionState();
+                document.body.classList.add('non-fullscreen'); // Ensure contraction on exit
+            }
+        });
+
+        // Prevent toggling out of full screen except with ESC
+        document.addEventListener('keydown', (event) => {
+            if (event.key === "Escape" && document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+        });
+    </script>
 </body>
 </html>

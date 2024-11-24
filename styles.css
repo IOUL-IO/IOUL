@@ -12,19 +12,6 @@
     box-sizing: border-box;
 }
 
-body.non-fullscreen {
-    background-color: #ffffff; 
-    min-height: 100vh;
-    min-width: 100vw;
-    overflow: hidden;
-    transition: background-color 1s ease;
-}
-
-body.fade-in-trigger {
-    background-color: #ffffff; 
-    transition: background-color 1s ease, opacity 1s ease;
-}
-
 .line,
 .time-text,
 .login-text,

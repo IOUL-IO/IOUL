@@ -28,10 +28,9 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let isInitialFullScreen = true; // Track whether it's the first toggle
+        let isInitialToggle = true; // Track initial toggle state
 
         const resetTransitionState = () => {
-            // Remove animation-related classes
             document.body.classList.remove('fade-in-trigger', 'non-fullscreen');
             void document.body.offsetWidth; // Trigger reflow to restart animations
         };
@@ -49,12 +48,12 @@
                     document.documentElement.msRequestFullscreen();
                 }
 
-                // Apply animations
+                // Add appropriate class
                 resetTransitionState();
-                if (isInitialFullScreen) {
-                    document.body.classList.add('fade-in-trigger'); // Apply fade-in for the first toggle
+                if (isInitialToggle) {
+                    document.body.classList.add('fade-in-trigger');
                 } else {
-                    document.body.classList.add('scaling-trigger'); // Apply scaling for subsequent toggles
+                    document.body.classList.add('scaling-trigger');
                 }
             }
         };
@@ -62,13 +61,13 @@
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 toggleFullScreen();
-                isInitialFullScreen = false; // Disable fade-in after the first toggle
+                isInitialToggle = false; // After the first toggle, disable fade-in
             }
         });
 
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
-                // Smooth contraction to non-full-screen
+                // Apply contraction animation
                 resetTransitionState();
                 document.body.classList.add('non-fullscreen');
             }

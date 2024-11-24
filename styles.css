@@ -12,13 +12,11 @@
     box-sizing: border-box;
 }
 
-/* Initial state with fade-in */
 body.initial-state {
     overflow: hidden;
     opacity: 1;
 }
 
-/* For contraction to non-full-screen */
 body.non-fullscreen {
     background-color: #ffffff; 
     min-height: 100vh;
@@ -29,7 +27,6 @@ body.non-fullscreen {
     transition: transform 1s ease, background-color 1s ease; 
 }
 
-/* For first toggle into full-screen with fade-in */
 body.fade-in-trigger {
     transform: scale(1); 
     transform-origin: center center; 
@@ -37,7 +34,6 @@ body.fade-in-trigger {
     transition: transform 1s ease, background-color 1s ease;
 }
 
-/* For subsequent toggles with scaling only */
 body.scaling-trigger {
     transform: scale(1); 
     transform-origin: center center; 
@@ -45,11 +41,8 @@ body.scaling-trigger {
     transition: transform 1s ease;
 }
 
-/* Prevent flickering or black screen */
 html, body {
     background-color: #ffffff;
-}
-
 }
 
 .line,
@@ -72,6 +65,15 @@ body.fade-in-trigger .login-line,
 body.fade-in-trigger .login-line-second {
     opacity: 1;
     transition-delay: 2s; 
+}
+
+.line,
+.time-text,
+.login-text,
+.login-line,
+.login-line-second {
+    opacity: 1; /* Ensure components stay visible */
+    transition: none; /* Remove fade-in transitions after initial toggle */
 }
 
 .line {

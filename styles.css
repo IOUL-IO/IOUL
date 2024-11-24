@@ -12,24 +12,40 @@
     box-sizing: border-box;
 }
 
+/* Initial fade-in state */
+body.initial-state {
+    overflow: hidden;
+    opacity: 1; /* Keep visible initially */
+}
+
+/* For contraction to non-full-screen */
 body.non-fullscreen {
     background-color: #ffffff; 
     min-height: 100vh;
     min-width: 100vw;
     overflow: hidden;
     transform: scale(0.1); 
-    transform-origin: center center; /* Smooth scaling */
+    transform-origin: center center; 
     transition: transform 1s ease, background-color 1s ease; 
 }
 
+/* For expansion to full-screen */
 body.fade-in-trigger {
     transform: scale(1); 
-    transform-origin: center center; /* Smooth scaling */
+    transform-origin: center center; 
     background-color: #ffffff; 
     transition: transform 1s ease, background-color 1s ease;
 }
 
-/* Prevent flickering or black screen */
+/* Scale in/out for all subsequent toggles */
+body.scaling-trigger {
+    transform: scale(1); 
+    transform-origin: center center; 
+    background-color: #ffffff; 
+    transition: transform 1s ease;
+}
+
+/* Ensure all components remain visible */
 html, body {
     background-color: #ffffff;
 }

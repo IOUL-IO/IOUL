@@ -28,9 +28,9 @@
     <div class="line login-line-second"></div>
 
     <script>
-        // Toggles fullscreen mode
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
+                // Enter fullscreen
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -41,6 +41,7 @@
                     document.documentElement.msRequestFullscreen();
                 }
             } else {
+                // Exit fullscreen
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
                 } else if (document.mozCancelFullScreen) { // Firefox
@@ -53,38 +54,23 @@
             }
         }
 
-        // Applies overflow behavior and handles transitions
-        function handleFullscreenToggle() {
-            if (document.fullscreenElement) {
-                // Fullscreen mode
-                document.body.style.overflow = 'hidden';
-                document.body.classList.remove('non-fullscreen');
-                document.body.classList.add('fade-in-trigger');
-            } else {
-                // Exit fullscreen mode
-                document.body.style.overflow = 'hidden'; // Mimic initial non-fullscreen effect
-                setTimeout(() => {
-                    document.body.classList.remove('fade-in-trigger');
-                    document.body.classList.add('non-fullscreen');
-                }, 1000); // Delay for smooth transition
-            }
+        function applyFadeEffect() {
+            document.body.classList.remove('fade-in-trigger', 'non-fullscreen');
+            void document.body.offsetWidth; // Force reflow to restart CSS animations
+            document.body.classList.add('fade-in-trigger');
         }
 
-        // Event listener for toggling fullscreen on click
         document.addEventListener('click', () => {
             toggleFullscreen();
+            setTimeout(() => {
+                applyFadeEffect();
+            }, 1000); // Matches transition timing
         });
 
-        // Event listener for fullscreen changes
         document.addEventListener('fullscreenchange', () => {
-            handleFullscreenToggle();
+            document.body.style.overflow = document.fullscreenElement ? 'hidden' : 'hidden';
+            applyFadeEffect();
         });
-
-        // Initial setup for non-fullscreen state
-        setTimeout(() => {
-            document.body.classList.remove('non-fullscreen');
-            document.body.classList.add('fade-in-trigger');
-        }, 1000);
     </script>
 </body>
 </html>

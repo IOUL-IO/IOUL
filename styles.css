@@ -17,14 +17,10 @@ body.non-fullscreen {
     min-height: 100vh;
     min-width: 100vw;
     overflow: hidden;
-    transform: scale(0.1); 
-    transition: transform 1s ease, background-color 1s ease; 
 }
 
 body.fade-in-trigger {
-    transform: scale(1); 
     background-color: #ffffff; 
-    transition: transform 1s ease, background-color 1s ease;
 }
 
 .line,

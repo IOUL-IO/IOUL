@@ -28,9 +28,8 @@
     <div class="line login-line-second"></div>
 
     <script>
-        function toggleFullscreen() {
+        function enterFullscreen() {
             if (!document.fullscreenElement) {
-                // Enter fullscreen
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -44,32 +43,30 @@
         }
 
         function applyFullscreenStyles() {
-            // Apply overflow: hidden to lock viewport during fullscreen
             if (document.fullscreenElement) {
                 document.body.style.overflow = 'hidden';
                 document.body.classList.remove('non-fullscreen');
                 document.body.classList.add('fade-in-trigger');
             } else {
-                // Restore styles when exiting fullscreen
-                document.body.style.overflow = ''; // Reset overflow to default
+                document.body.style.overflow = ''; // Reset overflow
                 document.body.classList.remove('fade-in-trigger');
                 document.body.classList.add('non-fullscreen');
             }
         }
 
-        // Listen for clicks to enter fullscreen
-        document.addEventListener('click', () => {
+        // Ensure click triggers fullscreen
+        document.addEventListener('click', (e) => {
             if (!document.fullscreenElement) {
-                toggleFullscreen();
+                enterFullscreen();
             }
         });
 
-        // Update styles on fullscreen changes
+        // Ensure styles apply on fullscreen change
         document.addEventListener('fullscreenchange', () => {
             applyFullscreenStyles();
         });
 
-        // Allow exit only via ESC key
+        // Restrict exit to ESC key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && document.fullscreenElement) {
                 document.exitFullscreen();

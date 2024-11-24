@@ -12,10 +12,10 @@
     box-sizing: border-box;
 }
 
-/* Initial fade-in state */
+/* Initial state with fade-in */
 body.initial-state {
     overflow: hidden;
-    opacity: 1; /* Keep visible initially */
+    opacity: 1;
 }
 
 /* For contraction to non-full-screen */
@@ -29,7 +29,7 @@ body.non-fullscreen {
     transition: transform 1s ease, background-color 1s ease; 
 }
 
-/* For expansion to full-screen */
+/* For first toggle into full-screen with fade-in */
 body.fade-in-trigger {
     transform: scale(1); 
     transform-origin: center center; 
@@ -37,7 +37,7 @@ body.fade-in-trigger {
     transition: transform 1s ease, background-color 1s ease;
 }
 
-/* Scale in/out for all subsequent toggles */
+/* For subsequent toggles with scaling only */
 body.scaling-trigger {
     transform: scale(1); 
     transform-origin: center center; 
@@ -45,9 +45,11 @@ body.scaling-trigger {
     transition: transform 1s ease;
 }
 
-/* Ensure all components remain visible */
+/* Prevent flickering or black screen */
 html, body {
     background-color: #ffffff;
+}
+
 }
 
 .line,

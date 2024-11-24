@@ -28,9 +28,9 @@
     <div class="line login-line-second"></div>
 
     <script>
-        document.addEventListener('click', () => {
+        function toggleFullscreen() {
             if (!document.fullscreenElement) {
-                // Enter full-screen mode
+                // Enter fullscreen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -40,9 +40,8 @@
                 } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
                     document.documentElement.msRequestFullscreen();
                 }
-                document.body.style.overflow = 'hidden'; // Disable scrolling in fullscreen mode
             } else {
-                // Exit full-screen mode
+                // Exit fullscreen mode
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
                 } else if (document.mozCancelFullScreen) { // Firefox
@@ -52,20 +51,30 @@
                 } else if (document.msExitFullscreen) { // IE/Edge
                     document.msExitFullscreen();
                 }
-                document.body.style.overflow = ''; // Restore default overflow
             }
+        }
 
-            setTimeout(() => {
-                document.body.classList.remove('non-fullscreen');
-                document.body.classList.add('fade-in-trigger');
-            }, 1000);
+        function applyOverflowBehavior() {
+            if (document.fullscreenElement) {
+                document.body.style.overflow = 'hidden'; // Disable scrolling in fullscreen
+            } else {
+                document.body.style.overflow = ''; // Restore default scrolling
+            }
+        }
+
+        document.addEventListener('click', () => {
+            toggleFullscreen();
         });
 
         document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement) {
-                document.body.style.overflow = ''; // Restore default overflow when exiting fullscreen
-            }
+            applyOverflowBehavior();
         });
+
+        // Initial setup to mimic the same effect for non-fullscreen mode
+        setTimeout(() => {
+            document.body.classList.remove('non-fullscreen');
+            document.body.classList.add('fade-in-trigger');
+        }, 1000);
     </script>
 </body>
 </html>

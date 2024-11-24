@@ -28,11 +28,11 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let firstFadeComplete = false; // Ensures fade-in-trigger stays applied after initial toggle
+        let fadeCompleted = false; // Tracks if the initial fade-in is done
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
-                // Enter fullscreen mode
+                // Trigger fullscreen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -42,29 +42,29 @@
                 } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
                     document.documentElement.msRequestFullscreen();
                 }
-            } else {
-                document.exitFullscreen();
             }
-
-            setTimeout(() => {
-                if (!firstFadeComplete) {
-                    document.body.classList.add('fade-in-trigger');
-                    firstFadeComplete = true; // Lock fade-in-trigger after first toggle
-                }
-                document.body.classList.remove('non-fullscreen');
-            }, 1000);
         });
 
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
-                // Ensure smooth fullscreen entry
+                // Entering fullscreen
                 document.body.style.overflow = 'hidden';
+                document.body.classList.remove('non-fullscreen');
+                document.body.classList.add('fade-in-trigger');
             } else {
-                // Restore normal overflow after exiting fullscreen
+                // Exiting fullscreen
                 document.body.style.overflow = '';
-                if (!firstFadeComplete) {
-                    document.body.classList.add('non-fullscreen');
+                if (!fadeCompleted) {
+                    fadeCompleted = true; // Mark fade-in as complete
                 }
+                // Keep fade-in-trigger permanently after the first toggle
+            }
+        });
+
+        // Exit fullscreen with ESC key only
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.fullscreenElement) {
+                document.exitFullscreen();
             }
         });
     </script>

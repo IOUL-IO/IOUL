@@ -30,7 +30,7 @@
     <script>
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
-                // Enter fullscreen
+                // Enter fullscreen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -41,7 +41,7 @@
                     document.documentElement.msRequestFullscreen();
                 }
             } else {
-                // Exit fullscreen
+                // Exit fullscreen mode
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
                 } else if (document.mozCancelFullScreen) { // Firefox
@@ -54,22 +54,20 @@
             }
         }
 
-        function applyFadeEffect() {
-            document.body.classList.remove('fade-in-trigger', 'non-fullscreen');
-            void document.body.offsetWidth; // Force reflow to restart CSS animations
-            document.body.classList.add('fade-in-trigger');
+        function applyState() {
+            // Remove and reapply classes to simulate initial effect
+            document.body.classList.remove('non-fullscreen', 'fade-in-trigger');
+            void document.body.offsetWidth; // Force reflow
+            document.body.classList.add(document.fullscreenElement ? 'fade-in-trigger' : 'non-fullscreen');
         }
 
         document.addEventListener('click', () => {
             toggleFullscreen();
-            setTimeout(() => {
-                applyFadeEffect();
-            }, 1000); // Matches transition timing
+            setTimeout(applyState, 1000); // Delay for smooth transition
         });
 
         document.addEventListener('fullscreenchange', () => {
-            document.body.style.overflow = document.fullscreenElement ? 'hidden' : 'hidden';
-            applyFadeEffect();
+            applyState();
         });
     </script>
 </body>

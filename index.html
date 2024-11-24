@@ -28,19 +28,19 @@
     <div class="line login-line-second"></div>
 
     <script>
+        let isFirstToggle = true; // Track if it's the initial toggle
+
         const resetTransitionState = () => {
-            // Remove animation classes to reset state
             document.body.classList.remove('fade-in-trigger', 'non-fullscreen');
-            // Trigger reflow to restart animations
-            void document.body.offsetWidth;
+            void document.body.offsetWidth; // Force reflow to restart animations
         };
 
         const enterFullScreen = () => {
-            // Ensure body starts in a non-fullscreen state
-            resetTransitionState();
-            document.body.classList.add('non-fullscreen');
+            if (isFirstToggle) {
+                resetTransitionState();
+                document.body.classList.add('non-fullscreen');
+            }
 
-            // Enter full-screen mode
             if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen();
             } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -51,27 +51,33 @@
                 document.documentElement.msRequestFullscreen();
             }
 
-            // Add full-screen animation
-            setTimeout(() => {
-                resetTransitionState();
-                document.body.classList.add('fade-in-trigger');
-            }, 100); // Slight delay for smooth transition
+            if (isFirstToggle) {
+                setTimeout(() => {
+                    resetTransitionState();
+                    document.body.classList.add('fade-in-trigger');
+                }, 100); // Delay to allow for smooth animation
+            }
         };
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 enterFullScreen();
+                if (isFirstToggle) {
+                    isFirstToggle = false; // Disable animations for subsequent toggles
+                }
             }
         });
 
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
-                resetTransitionState();
-                document.body.classList.add('non-fullscreen'); // Ensure contraction on exit
+                if (isFirstToggle) {
+                    resetTransitionState();
+                    document.body.classList.add('non-fullscreen');
+                }
             }
         });
 
-        // Prevent toggling out of full screen except with ESC
+        // Restrict exiting full-screen to the Esc key
         document.addEventListener('keydown', (event) => {
             if (event.key === "Escape" && document.fullscreenElement) {
                 document.exitFullscreen();

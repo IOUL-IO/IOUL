@@ -42,34 +42,30 @@
             }
         }
 
-        function ensureFullscreenBehavior() {
-            if (!document.fullscreenElement) {
-                // Ensure fullscreen cannot exit via click
-                enterFullscreen();
-            } else {
-                // Apply consistent visual effects when fullscreen is active
-                document.body.style.overflow = 'hidden';
-                document.body.classList.remove('non-fullscreen');
-                document.body.classList.add('fade-in-trigger');
-            }
+        function resetVisualState() {
+            document.body.classList.remove('non-fullscreen', 'fade-in-trigger');
+            void document.body.offsetWidth; // Trigger reflow
+            document.body.classList.add(document.fullscreenElement ? 'fade-in-trigger' : 'non-fullscreen');
         }
 
         document.addEventListener('click', () => {
-            enterFullscreen();
-            setTimeout(() => {
-                // Apply visual effects on entering fullscreen
-                document.body.classList.remove('non-fullscreen');
-                document.body.classList.add('fade-in-trigger');
-            }, 1000); // Sync with initial behavior
+            if (!document.fullscreenElement) {
+                enterFullscreen();
+                setTimeout(resetVisualState, 1000); // Sync visual changes
+            }
         });
 
         document.addEventListener('fullscreenchange', () => {
-            ensureFullscreenBehavior();
+            if (!document.fullscreenElement) {
+                // Re-enter fullscreen if exited manually (e.g., via mouse click)
+                enterFullscreen();
+            } else {
+                resetVisualState();
+            }
         });
 
-        // Allow exiting fullscreen via ESC only
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && document.fullscreenElement) {
+            if (e.key === 'Escape') {
                 document.exitFullscreen();
             }
         });

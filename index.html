@@ -28,52 +28,41 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let isFirstToggle = true; // Track if it's the initial toggle
-
         const resetTransitionState = () => {
             document.body.classList.remove('fade-in-trigger', 'non-fullscreen');
             void document.body.offsetWidth; // Force reflow to restart animations
         };
 
-        const enterFullScreen = () => {
-            if (isFirstToggle) {
+        const toggleFullScreen = () => {
+            if (!document.fullscreenElement) {
+                // Enter full-screen mode
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                    document.documentElement.msRequestFullscreen();
+                }
+
+                // Add full-screen animation
                 resetTransitionState();
-                document.body.classList.add('non-fullscreen');
-            }
-
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen();
-            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
-                document.documentElement.mozRequestFullScreen();
-            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
-                document.documentElement.webkitRequestFullscreen();
-            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
-                document.documentElement.msRequestFullscreen();
-            }
-
-            if (isFirstToggle) {
-                setTimeout(() => {
-                    resetTransitionState();
-                    document.body.classList.add('fade-in-trigger');
-                }, 100); // Delay to allow for smooth animation
+                document.body.classList.add('fade-in-trigger');
             }
         };
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
-                enterFullScreen();
-                if (isFirstToggle) {
-                    isFirstToggle = false; // Disable animations for subsequent toggles
-                }
+                toggleFullScreen();
             }
         });
 
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
-                if (isFirstToggle) {
-                    resetTransitionState();
-                    document.body.classList.add('non-fullscreen');
-                }
+                // Smooth contraction to non-fullscreen
+                resetTransitionState();
+                document.body.classList.add('non-fullscreen');
             }
         });
 

@@ -28,8 +28,10 @@
     <div class="line login-line-second"></div>
 
     <script>
-        function enterFullscreen() {
+        // Function to trigger fullscreen
+        function toggleFullscreen() {
             if (!document.fullscreenElement) {
+                // Enter fullscreen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -42,32 +44,30 @@
             }
         }
 
-        function applyFullscreenStyles() {
+        // Function to apply consistent overflow behavior
+        function applyOverflowBehavior() {
             if (document.fullscreenElement) {
-                // Apply overflow: hidden immediately to prevent black screen
-                document.body.style.overflow = 'hidden';
-                document.body.classList.remove('non-fullscreen');
-                document.body.classList.add('fade-in-trigger');
+                document.body.style.overflow = 'hidden'; // Lock viewport
             } else {
-                // Reset styles when exiting fullscreen
-                document.body.style.overflow = ''; // Reset overflow to default
-                document.body.classList.remove('fade-in-trigger');
-                document.body.classList.add('non-fullscreen');
+                document.body.style.overflow = ''; // Reset overflow when exiting fullscreen
             }
         }
 
-        // Listener for click events to enter fullscreen
+        // Click listener for fullscreen toggle
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
-                // Trigger fullscreen mode
-                enterFullscreen();
-                applyFullscreenStyles(); // Apply styles immediately
+                toggleFullscreen();
             }
+
+            setTimeout(() => {
+                document.body.classList.remove('non-fullscreen');
+                document.body.classList.add('fade-in-trigger');
+            }, 1000); // Sync transitions
         });
 
-        // Listener for fullscreen changes to reapply styles dynamically
+        // Fullscreen change listener to reapply overflow state
         document.addEventListener('fullscreenchange', () => {
-            applyFullscreenStyles();
+            applyOverflowBehavior();
         });
     </script>
 </body>

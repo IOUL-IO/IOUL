@@ -28,6 +28,8 @@
     <div class="line login-line-second"></div>
 
     <script>
+        let firstClick = true; // Tracks whether this is the first toggle
+
         // Function to enter fullscreen
         function enterFullscreen() {
             if (!document.fullscreenElement) {
@@ -43,29 +45,32 @@
             }
         }
 
-        // Function to ensure overflow behavior
+        // Function to ensure consistent overflow behavior
         function applyOverflowBehavior() {
             if (document.fullscreenElement) {
-                document.body.style.overflow = 'hidden'; // Lock viewport immediately
+                document.body.style.overflow = 'hidden'; // Lock viewport
                 document.body.classList.remove('non-fullscreen');
                 document.body.classList.add('fade-in-trigger');
             } else {
-                document.body.style.overflow = ''; // Reset overflow after exiting fullscreen
+                document.body.style.overflow = ''; // Reset overflow when exiting fullscreen
                 document.body.classList.remove('fade-in-trigger');
                 document.body.classList.add('non-fullscreen');
             }
         }
 
-        // Event listener for click to toggle fullscreen
+        // Click listener for the first fullscreen toggle
         document.addEventListener('click', () => {
+            if (firstClick) {
+                enterFullscreen();
+                firstClick = false; // Require double-click for subsequent toggles
+            }
+        });
+
+        // Double-click listener for subsequent fullscreen toggles
+        document.addEventListener('dblclick', () => {
             if (!document.fullscreenElement) {
                 enterFullscreen();
             }
-
-            setTimeout(() => {
-                document.body.classList.remove('non-fullscreen');
-                document.body.classList.add('fade-in-trigger');
-            }, 1000); // Sync animations with transitions
         });
 
         // Event listener for fullscreen state changes

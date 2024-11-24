@@ -28,6 +28,8 @@
     <div class="line login-line-second"></div>
 
     <script>
+        let fadeCompleted = false; // Tracks whether the initial fade-in has occurred
+
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 // Trigger fullscreen mode
@@ -44,10 +46,17 @@
                 document.exitFullscreen();
             }
 
+            if (!fadeCompleted) {
+                setTimeout(() => {
+                    document.body.classList.add('fade-complete'); // Mark fade as complete
+                    fadeCompleted = true;
+                }, 1000);
+            }
+
             setTimeout(() => {
                 document.body.classList.remove('non-fullscreen');
                 document.body.classList.add('fade-in-trigger');
-            }, 1000);
+            }, 1000); // Matches the transition timing
         });
 
         document.addEventListener('fullscreenchange', () => {
@@ -58,7 +67,11 @@
                 // Reset overflow when exiting fullscreen
                 document.body.style.overflow = '';
                 document.body.classList.remove('fade-in-trigger');
-                document.body.classList.add('non-fullscreen');
+                if (fadeCompleted) {
+                    document.body.classList.add('fade-complete');
+                } else {
+                    document.body.classList.add('non-fullscreen');
+                }
             }
         });
     </script>

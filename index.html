@@ -54,20 +54,21 @@
             }
         }
 
-        function applyState() {
-            // Remove and reapply classes to simulate initial effect
+        function resetOverflowBehavior() {
             document.body.classList.remove('non-fullscreen', 'fade-in-trigger');
-            void document.body.offsetWidth; // Force reflow
+            document.body.offsetHeight; // Trigger reflow
             document.body.classList.add(document.fullscreenElement ? 'fade-in-trigger' : 'non-fullscreen');
         }
 
         document.addEventListener('click', () => {
             toggleFullscreen();
-            setTimeout(applyState, 1000); // Delay for smooth transition
+            setTimeout(() => {
+                resetOverflowBehavior();
+            }, 1000); // Matches CSS transition timing
         });
 
         document.addEventListener('fullscreenchange', () => {
-            applyState();
+            resetOverflowBehavior();
         });
     </script>
 </body>

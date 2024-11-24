@@ -28,8 +28,9 @@
     <div class="line login-line-second"></div>
 
     <script>
-        function enterFullscreen() {
+        document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
+                // Enter fullscreen
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -40,36 +41,20 @@
                     document.documentElement.msRequestFullscreen();
                 }
             }
-        }
 
-        function applyFullscreenStyles() {
-            if (document.fullscreenElement) {
-                document.body.style.overflow = 'hidden';
+            setTimeout(() => {
                 document.body.classList.remove('non-fullscreen');
                 document.body.classList.add('fade-in-trigger');
-            } else {
-                document.body.style.overflow = ''; // Reset overflow
-                document.body.classList.remove('fade-in-trigger');
-                document.body.classList.add('non-fullscreen');
-            }
-        }
-
-        // Ensure click triggers fullscreen
-        document.addEventListener('click', (e) => {
-            if (!document.fullscreenElement) {
-                enterFullscreen();
-            }
+            }, 1000);
         });
 
-        // Ensure styles apply on fullscreen change
         document.addEventListener('fullscreenchange', () => {
-            applyFullscreenStyles();
-        });
-
-        // Restrict exit to ESC key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && document.fullscreenElement) {
-                document.exitFullscreen();
+            if (document.fullscreenElement) {
+                // Ensure consistent fullscreen behavior
+                document.body.style.overflow = 'hidden';
+            } else {
+                // Reset overflow after exiting fullscreen
+                document.body.style.overflow = '';
             }
         });
     </script>

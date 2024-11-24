@@ -30,7 +30,7 @@
     <script>
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
-                // Trigger full-screen mode
+                // Enter full-screen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -40,12 +40,31 @@
                 } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
                     document.documentElement.msRequestFullscreen();
                 }
+                document.body.style.overflow = 'hidden'; // Disable scrolling in fullscreen mode
+            } else {
+                // Exit full-screen mode
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) { // Firefox
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { // IE/Edge
+                    document.msExitFullscreen();
+                }
+                document.body.style.overflow = ''; // Restore default overflow
             }
 
             setTimeout(() => {
                 document.body.classList.remove('non-fullscreen');
                 document.body.classList.add('fade-in-trigger');
-            }, 1000); 
+            }, 1000);
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                document.body.style.overflow = ''; // Restore default overflow when exiting fullscreen
+            }
         });
     </script>
 </body>

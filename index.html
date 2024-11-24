@@ -28,7 +28,7 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let firstToggleComplete = false; // Tracks whether the first toggle is complete
+        let fadeComplete = false; // Tracks whether the initial fade-in has been completed
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
@@ -47,12 +47,12 @@
             }
 
             setTimeout(() => {
-                if (!firstToggleComplete) {
+                if (!fadeComplete) {
                     document.body.classList.add('fade-in-trigger');
-                    firstToggleComplete = true; // Lock the fade-in trigger after the first toggle
+                    fadeComplete = true; // Ensure fade-in persists after initial toggle
                 }
                 document.body.classList.remove('non-fullscreen');
-            }, 1000); // Matches the transition timing
+            }, 1000);
         });
 
         document.addEventListener('fullscreenchange', () => {
@@ -62,10 +62,10 @@
             } else {
                 // Reset overflow when exiting fullscreen
                 document.body.style.overflow = '';
-                if (!firstToggleComplete) {
+                if (!fadeComplete) {
                     document.body.classList.add('non-fullscreen');
                 }
-                // Keep fade-in-trigger if first toggle is complete
+                // Ensure fade-in-trigger remains after exiting fullscreen
             }
         });
     </script>

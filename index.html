@@ -28,7 +28,7 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let firstToggle = true; // Tracks whether it's the first fullscreen toggle
+        let firstClick = true; // Tracks whether this is the first toggle
 
         // Function to enter fullscreen
         function enterFullscreen() {
@@ -47,35 +47,39 @@
 
         // Function to ensure consistent overflow and style behavior
         function applyOverflowBehavior() {
+            document.body.style.overflow = document.fullscreenElement ? 'hidden' : ''; // Lock/unlock viewport
+        }
+
+        // Function to handle class transitions
+        function updateClasses() {
             if (document.fullscreenElement) {
-                document.body.style.overflow = 'hidden'; // Lock viewport
                 document.body.classList.remove('non-fullscreen');
                 document.body.classList.add('fade-in-trigger');
             } else {
-                document.body.style.overflow = ''; // Reset overflow when exiting fullscreen
                 document.body.classList.remove('fade-in-trigger');
                 document.body.classList.add('non-fullscreen');
             }
         }
 
-        // Click listener for the first fullscreen toggle
+        // Event listener for the first click
         document.addEventListener('click', () => {
-            if (firstToggle) {
+            if (firstClick) {
                 enterFullscreen();
-                firstToggle = false; // Require double-click for subsequent toggles
+                firstClick = false; // Require double-click for subsequent toggles
             }
         });
 
-        // Double-click listener for subsequent fullscreen toggles
+        // Event listener for subsequent double-click toggles
         document.addEventListener('dblclick', () => {
             if (!document.fullscreenElement) {
                 enterFullscreen();
             }
         });
 
-        // Event listener for fullscreen state changes
+        // Listener to apply styles and update classes on fullscreen change
         document.addEventListener('fullscreenchange', () => {
             applyOverflowBehavior();
+            updateClasses();
         });
 
         // Allow exiting fullscreen with ESC

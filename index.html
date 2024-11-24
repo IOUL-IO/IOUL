@@ -28,10 +28,8 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let firstClick = true; // Tracks whether the first toggle has occurred
-
-        // Function to enter fullscreen
-        function enterFullscreen() {
+        // Function to toggle fullscreen
+        function toggleFullscreen() {
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
@@ -42,46 +40,32 @@
                 } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
                     document.documentElement.msRequestFullscreen();
                 }
+            } else {
+                document.exitFullscreen();
             }
         }
 
-        // Function to apply overflow and transition behavior
-        function applyOverflowAndTransitions() {
-            if (document.fullscreenElement) {
-                document.body.style.overflow = 'hidden'; // Lock overflow immediately
+        // Event listener for click to toggle fullscreen
+        document.addEventListener('click', () => {
+            toggleFullscreen();
+
+            setTimeout(() => {
+                // Ensure correct classes for transitions
                 document.body.classList.remove('non-fullscreen');
                 document.body.classList.add('fade-in-trigger');
+            }, 1000); // Matches the transition timing
+        });
+
+        // Event listener for fullscreen changes to manage overflow and classes
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                // Lock the viewport when entering fullscreen
+                document.body.style.overflow = 'hidden';
             } else {
-                document.body.style.overflow = ''; // Reset overflow after exiting fullscreen
+                // Reset overflow when exiting fullscreen
+                document.body.style.overflow = '';
                 document.body.classList.remove('fade-in-trigger');
                 document.body.classList.add('non-fullscreen');
-            }
-        }
-
-        // Click listener for initial fullscreen toggle
-        document.addEventListener('click', () => {
-            if (firstClick) {
-                enterFullscreen();
-                firstClick = false; // Require double-click for subsequent toggles
-            }
-        });
-
-        // Double-click listener for subsequent fullscreen toggles
-        document.addEventListener('dblclick', () => {
-            if (!document.fullscreenElement) {
-                enterFullscreen();
-            }
-        });
-
-        // Listener for fullscreen state changes
-        document.addEventListener('fullscreenchange', () => {
-            applyOverflowAndTransitions();
-        });
-
-        // Allow exiting fullscreen via ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && document.fullscreenElement) {
-                document.exitFullscreen();
             }
         });
     </script>

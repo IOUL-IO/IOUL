@@ -28,9 +28,8 @@
     <div class="line login-line-second"></div>
 
     <script>
-        document.addEventListener('click', () => {
+        function enterFullscreen() {
             if (!document.fullscreenElement) {
-                // Enter fullscreen
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -41,21 +40,34 @@
                     document.documentElement.msRequestFullscreen();
                 }
             }
+        }
 
-            setTimeout(() => {
+        function applyFullscreenStyles() {
+            if (document.fullscreenElement) {
+                // Apply overflow: hidden immediately to prevent black screen
+                document.body.style.overflow = 'hidden';
                 document.body.classList.remove('non-fullscreen');
                 document.body.classList.add('fade-in-trigger');
-            }, 1000);
+            } else {
+                // Reset styles when exiting fullscreen
+                document.body.style.overflow = ''; // Reset overflow to default
+                document.body.classList.remove('fade-in-trigger');
+                document.body.classList.add('non-fullscreen');
+            }
+        }
+
+        // Listener for click events to enter fullscreen
+        document.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                // Trigger fullscreen mode
+                enterFullscreen();
+                applyFullscreenStyles(); // Apply styles immediately
+            }
         });
 
+        // Listener for fullscreen changes to reapply styles dynamically
         document.addEventListener('fullscreenchange', () => {
-            if (document.fullscreenElement) {
-                // Ensure consistent fullscreen behavior
-                document.body.style.overflow = 'hidden';
-            } else {
-                // Reset overflow after exiting fullscreen
-                document.body.style.overflow = '';
-            }
+            applyFullscreenStyles();
         });
     </script>
 </body>

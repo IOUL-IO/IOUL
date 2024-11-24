@@ -28,7 +28,7 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let firstClick = true; // Tracks whether this is the first toggle
+        let firstToggle = true; // Tracks whether it's the first fullscreen toggle
 
         // Function to enter fullscreen
         function enterFullscreen() {
@@ -45,7 +45,7 @@
             }
         }
 
-        // Function to ensure consistent overflow behavior
+        // Function to ensure consistent overflow and style behavior
         function applyOverflowBehavior() {
             if (document.fullscreenElement) {
                 document.body.style.overflow = 'hidden'; // Lock viewport
@@ -60,9 +60,9 @@
 
         // Click listener for the first fullscreen toggle
         document.addEventListener('click', () => {
-            if (firstClick) {
+            if (firstToggle) {
                 enterFullscreen();
-                firstClick = false; // Require double-click for subsequent toggles
+                firstToggle = false; // Require double-click for subsequent toggles
             }
         });
 
@@ -76,6 +76,13 @@
         // Event listener for fullscreen state changes
         document.addEventListener('fullscreenchange', () => {
             applyOverflowBehavior();
+        });
+
+        // Allow exiting fullscreen with ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.fullscreenElement) {
+                document.exitFullscreen();
+            }
         });
     </script>
 </body>

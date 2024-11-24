@@ -12,6 +12,16 @@
     box-sizing: border-box;
 }
 
+body.non-fullscreen {
+    background-color: #ffffff; 
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+body.fade-in-trigger {
+    background-color: #ffffff; 
+}
+    
 .line,
 .time-text,
 .login-text,

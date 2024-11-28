@@ -32,7 +32,7 @@ body.fade-in-trigger {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Initial fullscreen fade-in applies to lines and time-text only */
+/* Initial fullscreen fade-in applies to these only */
 body.fade-in-trigger .line,
 body.fade-in-trigger .time-text {
     opacity: 1;
@@ -47,7 +47,7 @@ body.fade-in-login .login-line-second {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Exclude login lines from initial fade-in */
+/* Exclude login lines from the initial fade-in */
 .login-line,
 .login-line-second {
     opacity: 0;

@@ -27,48 +27,56 @@
     <div class="line login-line"></div>
     <div class="line login-line-second"></div>
 
-    <script>
-        let fadeCompleted = false; // Tracks if the initial fade-in has been completed
+<script>
+    let fadeCompleted = false; // Tracks if the initial fade-in has been completed
+    let mouseMoved = false; // Tracks if the mouse has moved
 
-        document.addEventListener('click', () => {
-            if (!document.fullscreenElement) {
-                // Trigger fullscreen mode
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
-                    document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
-                    document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
-                    document.documentElement.msRequestFullscreen();
-                }
+    document.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+            // Trigger fullscreen mode
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                document.documentElement.msRequestFullscreen();
             }
+        }
 
-            setTimeout(() => {
-                if (!fadeCompleted) {
-                    document.body.classList.add('fade-in-trigger');
-                    fadeCompleted = true; // Ensure fade-in persists after the first toggle
-                }
-                document.body.classList.remove('non-fullscreen');
-            }, 1000);
-        });
-
-        document.addEventListener('fullscreenchange', () => {
-            if (document.fullscreenElement) {
-                // Lock overflow when entering fullscreen
-                document.body.style.overflow = 'hidden';
-
-                // Attach mouseover event to trigger login fade-in
-                document.addEventListener('mouseover', () => {
-                    document.body.classList.add('fade-in-login'); // Add the class for login elements
-                }, { once: true }); // Ensure it triggers only once per fullscreen session
-            } else {
-                // Reset overflow and classes when exiting fullscreen
-                document.body.style.overflow = '';
-                document.body.classList.add('non-fullscreen');
-                document.body.classList.remove('fade-in-login'); // Reset fade-in-login state
+        setTimeout(() => {
+            if (!fadeCompleted) {
+                document.body.classList.add('fade-in-trigger');
+                fadeCompleted = true; // Ensure fade-in persists after the first toggle
             }
-        });
-    </script>
+            document.body.classList.remove('non-fullscreen');
+        }, 1000);
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+        if (document.fullscreenElement) {
+            // Lock overflow when entering fullscreen
+            document.body.style.overflow = 'hidden';
+
+            // Reset mouseMoved flag and set up mousemove listener
+            mouseMoved = false;
+            document.addEventListener('mousemove', onMouseMoveOnce, { once: true });
+        } else {
+            // Reset overflow when exiting fullscreen
+            document.body.style.overflow = '';
+            document.body.classList.add('non-fullscreen');
+        }
+    });
+
+    function onMouseMoveOnce() {
+        mouseMoved = true;
+        setTimeout(() => {
+            if (mouseMoved) {
+                document.body.classList.add('login-fade-in-trigger');
+            }
+        }, 1000); // 1-second delay after mouse movement
+    }
+</script>
 </body>
 </html>

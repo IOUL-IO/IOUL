@@ -29,6 +29,7 @@
 
     <script>
         let fadeCompleted = false; // Tracks if the initial fade-in has been completed
+        let mouseMoved = false; // Tracks if the mouse has moved
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
@@ -61,6 +62,13 @@
                 // Reset overflow when exiting fullscreen
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
+            }
+        });
+
+        document.addEventListener('mousemove', () => {
+            if (!mouseMoved) {
+                mouseMoved = true;
+                document.body.classList.add('fade-in-login'); // Trigger fade-in for login elements
             }
         });
     </script>

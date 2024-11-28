@@ -30,6 +30,7 @@
     <script>
         let fadeCompleted = false; // Tracks if the initial fade-in has been completed
         let mouseMoved = false; // Tracks if the mouse has moved
+        let fullscreenActivated = false; // Tracks if fullscreen mode is entered
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
@@ -58,17 +59,19 @@
             if (document.fullscreenElement) {
                 // Lock overflow when entering fullscreen
                 document.body.style.overflow = 'hidden';
+                fullscreenActivated = true; // Mark fullscreen as activated
             } else {
                 // Reset overflow when exiting fullscreen
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
+                fullscreenActivated = false; // Reset fullscreen status
             }
         });
 
         document.addEventListener('mousemove', () => {
-            if (!mouseMoved) {
-                mouseMoved = true;
-                document.body.classList.add('fade-in-login'); // Trigger fade-in for login elements
+            if (fullscreenActivated && !mouseMoved) {
+                mouseMoved = true; // Trigger fade-in only once
+                document.body.classList.add('fade-in-login'); // Apply fade-in for login elements
             }
         });
     </script>

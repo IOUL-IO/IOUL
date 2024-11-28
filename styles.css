@@ -45,11 +45,11 @@ body.fade-in-login .login-line-second {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Ensure login lines are excluded from initial fade-in */
+/* Ensure login lines are completely excluded from the initial fade */
 .login-line,
 .login-line-second {
-    opacity: 0; /* Ensure these are not affected initially */
-    transition: opacity 0.5s ease-in-out; /* Allow fade-in during mouse-over */
+    opacity: 0; /* Always hidden initially */
+    transition: opacity 0.5s ease-in-out; /* Allow fade-in only during mouse-over */
 }
 
 .line {
@@ -182,3 +182,4 @@ body.fade-in-login .login-line-second {
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
+}

@@ -55,11 +55,9 @@
 
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
-                // Lock overflow when entering fullscreen
-                document.body.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden'; // Lock overflow when entering fullscreen
             } else {
-                // Reset overflow when exiting fullscreen
-                document.body.style.overflow = '';
+                document.body.style.overflow = ''; // Reset overflow when exiting fullscreen
                 document.body.classList.add('non-fullscreen');
             }
         });

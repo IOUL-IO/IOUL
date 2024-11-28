@@ -22,13 +22,14 @@
     <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-    <span class="login-text username">USERnAME</span>
+    <span class="login-text username">USERNAME</span>
     <span class="login-text password">PASSWORD</span>
     <div class="line login-line"></div>
     <div class="line login-line-second"></div>
 
     <script>
         let fadeCompleted = false; // Tracks if the initial fade-in has been completed
+        let elementsActivated = false; // Tracks if mouse-over activation is ready
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
@@ -50,6 +51,11 @@
                     fadeCompleted = true; // Ensure fade-in persists after the first toggle
                 }
                 document.body.classList.remove('non-fullscreen');
+
+                // Enable mouse-over behavior after 1 second
+                setTimeout(() => {
+                    elementsActivated = true;
+                }, 1000);
             }, 1000);
         });
 
@@ -59,6 +65,13 @@
             } else {
                 document.body.style.overflow = ''; // Reset overflow when exiting fullscreen
                 document.body.classList.add('non-fullscreen');
+                elementsActivated = false; // Reset activation on fullscreen exit
+            }
+        });
+
+        document.addEventListener('mouseover', () => {
+            if (elementsActivated) {
+                document.body.classList.add('hover-trigger');
             }
         });
     </script>

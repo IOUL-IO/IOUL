@@ -24,17 +24,21 @@ body.fade-in-trigger {
 }
     
 .line,
-.time-text {
+.time-text,
+.login-text,
+.login-line,
+.login-line-second {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
 
 body.fade-in-trigger .line,
 body.fade-in-trigger .time-text {
-    opacity: 1;
+    opacity: 1; /* Time and other lines fade in */
     transition-delay: 1s; 
 }
 
+/* Only fade in login elements when the mouseover triggers */
 body.fade-in-login .login-text,
 body.fade-in-login .login-line,
 body.fade-in-login .login-line-second {

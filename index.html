@@ -58,15 +58,15 @@
                 // Lock overflow when entering fullscreen
                 document.body.style.overflow = 'hidden';
 
-                // Add a mouseover event to trigger login fade-in
+                // Attach mouseover event to trigger login fade-in
                 document.addEventListener('mouseover', () => {
-                    document.body.classList.add('fade-in-login');
-                }, { once: true }); // Trigger only once per fullscreen session
+                    document.body.classList.add('fade-in-login'); // Add the class for login elements
+                }, { once: true }); // Ensure it triggers only once per fullscreen session
             } else {
                 // Reset overflow and classes when exiting fullscreen
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
-                document.body.classList.remove('fade-in-login');
+                document.body.classList.remove('fade-in-login'); // Reset fade-in-login state
             }
         });
     </script>

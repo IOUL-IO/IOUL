@@ -31,6 +31,7 @@
         let fadeCompleted = false; // Tracks if the initial fade-in has been completed
         let mouseMoved = false; // Tracks if the mouse has moved
         let fullscreenActivated = false; // Tracks if fullscreen mode is entered
+        let mouseOverEnabled = false; // Controls when mouse-over is allowed
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
@@ -60,16 +61,22 @@
                 // Lock overflow when entering fullscreen
                 document.body.style.overflow = 'hidden';
                 fullscreenActivated = true; // Mark fullscreen as activated
+
+                // Enable mouse-over functionality after 1 second
+                setTimeout(() => {
+                    mouseOverEnabled = true;
+                }, 1000);
             } else {
                 // Reset overflow when exiting fullscreen
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
                 fullscreenActivated = false; // Reset fullscreen status
+                mouseOverEnabled = false; // Disable mouse-over functionality
             }
         });
 
         document.addEventListener('mousemove', () => {
-            if (fullscreenActivated && !mouseMoved) {
+            if (fullscreenActivated && mouseOverEnabled && !mouseMoved) {
                 mouseMoved = true; // Trigger fade-in only once
                 document.body.classList.add('fade-in-login'); // Apply fade-in for login elements
             }

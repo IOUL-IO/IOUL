@@ -38,11 +38,18 @@ body.fade-in-trigger .time-text {
     transition-delay: 1s; 
 }
 
+/* Mouse motion fade-in for login elements only */
 body.fade-in-login .login-text,
 body.fade-in-login .login-line,
 body.fade-in-login .login-line-second {
     opacity: 1;
     transition: opacity 0.5s ease-in-out;
+}
+
+/* Ensure login lines do not fade in during the initial fade */
+.login-line,
+.login-line-second {
+    opacity: 0;
 }
 
 .line {

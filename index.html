@@ -49,9 +49,10 @@
                     document.body.classList.add('fade-in-trigger');
                     fadeCompleted = true;
 
+                    // Enable hover after 1 second
                     setTimeout(() => {
                         hoverEnabled = true;
-                    }, 1000); // Enable hover effect 1 second after fade-in completes
+                    }, 1000);
                 }
                 document.body.classList.remove('non-fullscreen');
             }, 1000);
@@ -63,12 +64,14 @@
             } else {
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
+                hoverEnabled = false; // Reset hover state when exiting fullscreen
             }
         });
 
-        document.body.addEventListener('mouseover', () => {
+        document.body.addEventListener('mouseover', (event) => {
             if (hoverEnabled) {
-                document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach((el) => {
+                const elements = document.querySelectorAll('.login-text, .login-line, .login-line-second');
+                elements.forEach((el) => {
                     el.classList.add('hover-active');
                 });
             }

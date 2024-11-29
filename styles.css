@@ -19,6 +19,10 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
+body.fade-in-trigger {
+    background-color: #ffffff; 
+}
+
 .line,
 .time-text {
     opacity: 0; /* Start hidden */

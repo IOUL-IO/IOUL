@@ -61,16 +61,16 @@
             }
         });
 
-        // Trigger hover logic 1 second after fade-in completes
+        // Add hover functionality to login elements
         setTimeout(() => {
             document.body.addEventListener('mouseover', () => {
                 if (fadeCompleted) {
-                    document.querySelectorAll('.login-line, .login-line-second').forEach((el) => {
+                    document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach((el) => {
                         el.classList.add('hovered');
                     });
                 }
             });
-        }, 2000); // Hover logic starts after 1 second delay post fade-in
+        }, 2000); // Hover effect starts 1 second after full-screen fade-in
     </script>
 </body>
 </html>

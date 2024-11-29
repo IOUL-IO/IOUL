@@ -22,20 +22,10 @@ body.non-fullscreen {
 body.fade-in-trigger {
     background-color: #ffffff; 
 }
-    
+
+/* Initial hidden state for .line, .time-text, .login-text, and lines */
 .line,
-.time-text {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-body.fade-in-trigger .line,
-body.fade-in-trigger .time-text {
-    opacity: 1;
-    transition-delay: 1s;
-}
-
-/* Prevent login elements from fading in on initial fullscreen open */
+.time-text,
 .login-text,
 .login-line,
 .login-line-second {
@@ -43,19 +33,27 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Fade-in for .line and .time-text on fullscreen open */
+/* Fade-in sequence for .line and .time-text */
 body.fade-in-trigger .line,
 body.fade-in-trigger .time-text {
     opacity: 1;
     transition-delay: 1s;
 }
 
-/* Hover trigger for login elements with a delay */
-.hover-active {
-    opacity: 1 !important;
-    pointer-events: none; /* Prevent accidental resets */
+/* .login-text and lines stay hidden during initial fade-in */
+.login-text,
+.login-line,
+.login-line-second {
+    pointer-events: none; /* Prevent hover interactions initially */
 }
 
+/* Hover trigger for .login-text and lines */
+.hover-active {
+    opacity: 1 !important;
+    pointer-events: none; /* Prevent interaction issues */
+}
+
+/* Lines styles */
 .line {
     position: absolute;
     height: 1px;
@@ -120,6 +118,7 @@ body.fade-in-trigger .time-text {
     width: 52.4vw;
 }
 
+/* Time text styles */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -148,6 +147,7 @@ body.fade-in-trigger .time-text {
     left: 90.1vw;
 }
 
+/* Login text styles */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -170,6 +170,7 @@ body.fade-in-trigger .time-text {
     color: #a1a1a1;
 }
 
+/* Login line styles */
 .login-line {
     position: absolute;
     top: 38.9vh;

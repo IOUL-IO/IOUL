@@ -34,11 +34,20 @@
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) {
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                    document.documentElement.msRequestFullscreen();
                 }
             }
 
             setTimeout(() => {
-                document.body.classList.add('fade-in-trigger');
+                if (!fadeCompleted) {
+                    document.body.classList.add('fade-in-trigger');
+                    fadeCompleted = true;
+                }
                 document.body.classList.remove('non-fullscreen');
             }, 1000);
         });
@@ -53,11 +62,18 @@
         });
 
         document.body.addEventListener('mouseover', () => {
-            if (!fadeCompleted) {
+            if (fadeCompleted) {
                 document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach((el) => {
                     el.style.opacity = '1';
                 });
-                fadeCompleted = true;
+            }
+        });
+
+        document.body.addEventListener('mouseout', () => {
+            if (fadeCompleted) {
+                document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach((el) => {
+                    el.style.opacity = '0';
+                });
             }
         });
     </script>

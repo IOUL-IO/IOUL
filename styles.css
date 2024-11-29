@@ -35,7 +35,7 @@ body.fade-in-trigger .time-text {
     transition-delay: 1s;
 }
 
-/* Ensure login-text, login-line, and login-line-second follow the same fade-in and hover rules */
+/* Ensure login-text, login-line, and login-line-second remain hidden initially */
 .login-text,
 .login-line,
 .login-line-second {
@@ -43,26 +43,10 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Prevent initial fade-in from affecting login elements */
-body.fade-in-trigger .login-text,
-body.fade-in-trigger .login-line,
-body.fade-in-trigger .login-line-second {
-    opacity: 0; /* Keep invisible until hover */
-}
-
-/* Apply hover persistence */
+/* Persistent visibility after mouse-triggered fade-in */
 .hovered {
-    opacity: 1 !important; /* Ensure visibility after hover */
+    opacity: 1 !important; /* Ensure visibility */
     transition: opacity 0.5s ease-in-out;
-}
-
-/* Hover activation logic */
-body:hover .login-text,
-body:hover .login-line,
-body:hover .login-line-second {
-    pointer-events: auto;
-    opacity: 1;
-    transition-delay: 0s;
 }
 
 .line {

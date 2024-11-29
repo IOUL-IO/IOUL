@@ -21,7 +21,7 @@ body.non-fullscreen {
 
 body.fade-in-trigger .line,
 body.fade-in-trigger .time-text {
-    opacity: 1; /* Initial fade-in for other items */
+    opacity: 1; /* Initial fade-in for other elements */
     transition: opacity 0.5s ease-in-out;
     transition-delay: 1s;
 }
@@ -32,7 +32,7 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Keep login elements hidden initially */
+/* Keep login lines and text hidden initially */
 .login-text,
 .login-line,
 .login-line-second {
@@ -41,11 +41,11 @@ body.fade-in-trigger .time-text {
     pointer-events: none; /* Prevent interaction before hover */
 }
 
-/* Show login elements on hover */
+/* Make login lines and text fade-in after mouse movement */
 body.hover-login .login-text,
 body.hover-login .login-line,
 body.hover-login .login-line-second {
-    opacity: 1; /* Fade in */
+    opacity: 1; /* Fade in together */
     pointer-events: auto; /* Enable interaction */
     transition-delay: 0s;
 }

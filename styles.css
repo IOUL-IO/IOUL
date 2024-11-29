@@ -40,7 +40,7 @@ body.fade-in-trigger .time-text {
 .login-line-second {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
-    pointer-events: none; /* Prevent hover interactions before mouse over */
+    pointer-events: none; /* Prevent hover interactions before hover is enabled */
 }
 
 body:hover .login-text,
@@ -48,7 +48,6 @@ body:hover .login-line,
 body:hover .login-line-second {
     pointer-events: auto;
     opacity: 1;
-    transition-delay: 1s; /* Fade-in only after 1s */
 }
 
 .line {

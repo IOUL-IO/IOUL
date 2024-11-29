@@ -19,17 +19,17 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
+.line,
+.time-text {
+    opacity: 0; /* Start hidden */
+    transition: opacity 0.5s ease-in-out;
+}
+
 body.fade-in-trigger .line,
 body.fade-in-trigger .time-text {
     opacity: 1; /* Initial fade-in for other elements */
     transition: opacity 0.5s ease-in-out;
     transition-delay: 1s;
-}
-
-.line,
-.time-text {
-    opacity: 0; /* Start hidden */
-    transition: opacity 0.5s ease-in-out;
 }
 
 /* Keep login lines and text hidden initially */

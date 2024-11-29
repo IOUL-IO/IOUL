@@ -28,7 +28,8 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let fadeCompleted = false;
+        let fadeCompleted = false; // Tracks if the initial fade-in of lines and time-text is complete
+        let mouseOverTriggered = false; // Tracks if the mouseover event triggered the fade-in of login elements
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
@@ -62,17 +63,10 @@
         });
 
         document.body.addEventListener('mouseover', () => {
-            if (fadeCompleted) {
-                document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach((el) => {
-                    el.style.opacity = '1';
-                });
+            if (fadeCompleted && !mouseOverTriggered) {
+                document.body.classList.add('fade-in-login'); // Trigger fade-in for login elements
+                mouseOverTriggered = true; // Ensure it only triggers once
             }
-        });
-
-        document.body.addEventListener('mouseout', () => {
-            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach((el) => {
-                el.style.opacity = '0';
-            });
         });
     </script>
 </body>

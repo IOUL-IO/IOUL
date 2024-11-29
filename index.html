@@ -28,10 +28,9 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let fadeCompleted = false;
-        let hoverActive = false;
+        let fadeCompleted = false; // To track when the full-screen is ready
+        let hoverActivated = false; // To ensure mouse movement works after 1 second
 
-        // Trigger full-screen and fade-in sequence
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
@@ -45,15 +44,9 @@
                 }
             }
 
-            // Start fade-in sequence after 1 second
+            // Trigger fade-in logic after 1 second of being in full-screen
             setTimeout(() => {
-                document.body.classList.add('fade-in-trigger');
-                fadeCompleted = true;
-
-                // Enable hover functionality after another 1 second
-                setTimeout(() => {
-                    hoverActive = true;
-                }, 1000);
+                fadeCompleted = true; // Full-screen is fully active
             }, 1000);
         });
 
@@ -63,13 +56,15 @@
             } else {
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
+                fadeCompleted = false; // Reset state on exit from full-screen
             }
         });
 
-        // Fade in login lines and text on hover
-        document.body.addEventListener('mouseover', () => {
-            if (hoverActive) {
-                document.body.classList.add('hover-login');
+        // Mouse movement to trigger the fade-in
+        document.body.addEventListener('mousemove', () => {
+            if (fadeCompleted && !hoverActivated) {
+                hoverActivated = true; // Only trigger this once
+                document.body.classList.add('hover-login'); // Activate fade-in
             }
         });
     </script>

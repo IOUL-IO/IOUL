@@ -43,12 +43,12 @@ body.fade-in-trigger .time-text {
     pointer-events: none; /* Prevent hover interactions before mouse over */
 }
 
-body.fade-in-trigger:hover .login-text,
-body.fade-in-trigger:hover .login-line,
-body.fade-in-trigger:hover .login-line-second {
+body.fade-in-trigger.show-elements .login-text,
+body.fade-in-trigger.show-elements .login-line,
+body.fade-in-trigger.show-elements .login-line-second {
     opacity: 1;
-    pointer-events: auto; /* Allow interaction after hover */
-    transition-delay: 1s; /* Optional delay for smooth appearance */
+    pointer-events: auto;
+    transition-delay: 0s; /* Remove delay for instant visibility on hover */
 }
 
 .line {

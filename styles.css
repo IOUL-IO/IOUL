@@ -24,7 +24,8 @@ body.fade-in-trigger {
 }
     
 .line,
-.time-text {
+.time-text,
+.login-text {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }

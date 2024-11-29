@@ -23,30 +23,27 @@ body.fade-in-trigger {
     background-color: #ffffff; 
 }
     
+/* General transition setup */
 .line,
-.time-text {
+.time-text,
+.login-text,
+.login-line,
+.login-line-second {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
 
+/* Initial fade-in */
 body.fade-in-trigger .line,
 body.fade-in-trigger .time-text {
     opacity: 1;
     transition-delay: 1s;
 }
 
-.login-text,
-.login-line,
-.login-line-second {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-    pointer-events: none; /* Prevent hover interactions before hover is enabled */
-}
-
-body:hover .login-text,
-body:hover .login-line,
-body:hover .login-line-second {
-    pointer-events: auto;
+/* Hover-triggered behavior */
+body.fade-in-trigger:hover .login-line,
+body.fade-in-trigger:hover .login-line-second,
+body.fade-in-trigger:hover .login-text {
     opacity: 1;
 }
 

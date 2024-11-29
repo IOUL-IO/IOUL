@@ -29,7 +29,8 @@
 
     <script>
         let fadeCompleted = false; // Tracks if the initial fade-in has been completed
-        let mouseMoved = false; // Tracks if the mouse has moved
+        let loginFadeCompleted = false; // Tracks if login fade-in has been triggered
+        let mouseMoveTimeout; // Timer for mouse movement delay
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
@@ -59,23 +60,29 @@
                 // Lock overflow when entering fullscreen
                 document.body.style.overflow = 'hidden';
 
-                // Reset mouseMoved flag and set up mousemove listener
-                mouseMoved = false;
-                document.addEventListener('mousemove', onMouseMoveOnce, { once: true });
+                // Add mousemove listener
+                document.addEventListener('mousemove', handleMouseMove, { once: true });
             } else {
                 // Reset overflow when exiting fullscreen
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
+                resetLoginFadeIn();
             }
         });
 
-        function onMouseMoveOnce() {
-            mouseMoved = true;
-            setTimeout(() => {
-                if (mouseMoved) {
+        function handleMouseMove() {
+            if (!loginFadeCompleted) {
+                clearTimeout(mouseMoveTimeout);
+                mouseMoveTimeout = setTimeout(() => {
                     document.body.classList.add('login-fade-in-trigger');
-                }
-            }, 1000); // 1-second delay after mouse movement
+                    loginFadeCompleted = true;
+                }, 1000); // 1-second delay after mouse movement
+            }
+        }
+
+        function resetLoginFadeIn() {
+            loginFadeCompleted = false;
+            document.body.classList.remove('login-fade-in-trigger');
         }
     </script>
 </body>

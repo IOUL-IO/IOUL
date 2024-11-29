@@ -42,16 +42,17 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
-body.fade-in-trigger:hover .login-text,
-body.fade-in-trigger:hover .login-line,
-body.fade-in-trigger:hover .login-line-second {
-    opacity: 1;
+body.fade-in-trigger .login-text,
+body.fade-in-trigger .login-line,
+body.fade-in-trigger .login-line-second {
+    pointer-events: none; /* Prevent accidental hover before activation */
 }
 
 .hover-active {
     opacity: 1 !important;
     pointer-events: none; /* Prevent accidental resets */
 }
+
 
 .line {
     position: absolute;

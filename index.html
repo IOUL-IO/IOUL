@@ -61,10 +61,16 @@
             }
         });
 
-        // Ensure login text and lines fade in only on hover after full-screen is opened
+        // Trigger login text and lines to fade-in on hover after fullscreen is ready
         document.body.addEventListener('mouseover', () => {
             if (fadeCompleted) {
-                document.body.classList.add('show-login-elements');
+                document.body.classList.add('hover-login');
+            }
+        });
+
+        document.body.addEventListener('mouseout', () => {
+            if (fadeCompleted) {
+                document.body.classList.remove('hover-login');
             }
         });
     </script>

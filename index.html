@@ -28,18 +28,13 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let fadeCompleted = false;
+        let fadeCompleted = false; // Tracks initial fade-in completion
+        let loginShown = false; // Tracks whether login elements have been shown
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) {
-                    document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) {
-                    document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) {
-                    document.documentElement.msRequestFullscreen();
                 }
             }
 
@@ -61,16 +56,17 @@
             }
         });
 
-        // Add hover functionality to login elements
-        setTimeout(() => {
-            document.body.addEventListener('mouseover', () => {
-                if (fadeCompleted) {
+        // Add event listener for mouse movement
+        document.body.addEventListener('mousemove', () => {
+            if (fadeCompleted && !loginShown) {
+                loginShown = true; // Prevent subsequent triggers
+                setTimeout(() => {
                     document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach((el) => {
-                        el.classList.add('hovered');
+                        el.classList.add('hovered'); // Trigger persistent visibility
                     });
-                }
-            });
-        }, 2000); // Hover effect starts 1 second after full-screen fade-in
+                }, 1000); // Delay for 1 second after initial fade-in
+            }
+        });
     </script>
 </body>
 </html>

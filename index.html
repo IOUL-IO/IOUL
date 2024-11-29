@@ -29,7 +29,6 @@
 
     <script>
         let fadeCompleted = false; // To track when the full-screen is ready
-        let hoverActivated = false; // To ensure mouse movement works after 1 second
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
@@ -56,14 +55,12 @@
             } else {
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
-                fadeCompleted = false; // Reset state on exit from full-screen
             }
         });
 
         // Mouse movement to trigger the fade-in
         document.body.addEventListener('mousemove', () => {
-            if (fadeCompleted && !hoverActivated) {
-                hoverActivated = true; // Only trigger this once
+            if (fadeCompleted) {
                 document.body.classList.add('hover-login'); // Activate fade-in
             }
         });

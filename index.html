@@ -29,7 +29,7 @@
 
     <script>
         let fadeCompleted = false;
-        let hoverEnabled = false;
+        let hoverTriggered = false;
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
@@ -59,14 +59,14 @@
             } else {
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
-                hoverEnabled = false; // Reset hover state when exiting fullscreen
+                hoverTriggered = false; // Reset hover state when exiting fullscreen
             }
         });
 
         document.body.addEventListener('mousemove', () => {
-            if (fadeCompleted && !hoverEnabled) {
+            if (fadeCompleted && !hoverTriggered) {
+                hoverTriggered = true; // Trigger hover only once
                 setTimeout(() => {
-                    hoverEnabled = true; // Enable hover after 2 seconds of mouse movement
                     const elements = document.querySelectorAll('.login-text, .login-line, .login-line-second');
                     elements.forEach((el) => {
                         el.classList.add('hover-active');

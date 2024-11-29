@@ -29,6 +29,7 @@
 
     <script>
         let fadeCompleted = false;
+        let hoverEnabled = false;
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
@@ -49,6 +50,11 @@
                     fadeCompleted = true;
                 }
                 document.body.classList.remove('non-fullscreen');
+
+                // Enable hover functionality after 1 second
+                setTimeout(() => {
+                    hoverEnabled = true;
+                }, 1000);
             }, 1000);
         });
 
@@ -63,7 +69,7 @@
 
         // Trigger login text and lines fade-in on hover
         document.body.addEventListener('mouseover', () => {
-            if (fadeCompleted) {
+            if (fadeCompleted && hoverEnabled) {
                 document.body.classList.add('hover-login');
             }
         });

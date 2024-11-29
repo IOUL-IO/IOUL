@@ -28,37 +28,45 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let fadeCompleted = false; // Tracks if the initial fade-in has been completed
+        let fadeCompleted = false; // Tracks if the initial fade-in is completed
+        let loginTriggered = false; // Tracks if login elements have been triggered by mouse movement
 
+        // Enable full-screen on click
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
-                // Trigger fullscreen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
-                    document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                } else if (document.documentElement.webkitRequestFullscreen) {
                     document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                } else if (document.documentElement.mozRequestFullScreen) {
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.msRequestFullscreen) {
                     document.documentElement.msRequestFullscreen();
                 }
             }
 
+            // Trigger fade-in for main elements
             setTimeout(() => {
-                if (!fadeCompleted) {
-                    document.body.classList.add('fade-in-trigger');
-                    fadeCompleted = true; // Ensure fade-in persists after the first toggle
-                }
-                document.body.classList.remove('non-fullscreen');
+                document.body.classList.add('fade-in-trigger');
+                fadeCompleted = true;
             }, 1000);
         });
 
+        // Detect mouse movement and trigger login elements
+        document.addEventListener('mousemove', () => {
+            if (fadeCompleted && !loginTriggered) {
+                loginTriggered = true;
+                document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
+                    el.classList.add('visible');
+                });
+            }
+        });
+
+        // Reset body styling on fullscreen toggle
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
-                // Lock overflow when entering fullscreen
                 document.body.style.overflow = 'hidden';
             } else {
-                // Reset overflow when exiting fullscreen
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
             }

@@ -19,36 +19,35 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
-body.fade-in-trigger {
-    background-color: #ffffff; 
+body.fade-in-trigger .line,
+body.fade-in-trigger .time-text {
+    opacity: 1; /* Initial fade-in for other items */
+    transition: opacity 0.5s ease-in-out;
+    transition-delay: 1s;
 }
 
 .line,
 .time-text {
-    opacity: 0;
+    opacity: 0; /* Start hidden */
     transition: opacity 0.5s ease-in-out;
 }
 
-body.fade-in-trigger .line,
-body.fade-in-trigger .time-text {
-    opacity: 1;
-    transition-delay: 1s;
-}
-
+/* Keep login elements hidden initially */
 .login-text,
 .login-line,
 .login-line-second {
-    opacity: 0; /* Start completely hidden */
+    opacity: 0;
     transition: opacity 0.5s ease-in-out;
     pointer-events: none; /* Prevent interaction before hover */
 }
 
+/* Show login elements on hover */
 body.hover-login .login-text,
 body.hover-login .login-line,
 body.hover-login .login-line-second {
-    opacity: 1; /* Fade-in together on hover */
-    pointer-events: auto; /* Enable interaction after hover */
-    transition-delay: 0s; /* Ensure instant effect */
+    opacity: 1; /* Fade in */
+    pointer-events: auto; /* Enable interaction */
+    transition-delay: 0s;
 }
 
 .line {

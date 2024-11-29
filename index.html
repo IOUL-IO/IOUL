@@ -29,8 +29,9 @@
 
     <script>
         let fadeCompleted = false;
-        let hoverEnabled = false;
+        let hoverActive = false;
 
+        // Trigger full-screen and fade-in sequence
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
@@ -44,16 +45,14 @@
                 }
             }
 
+            // Start fade-in sequence after 1 second
             setTimeout(() => {
-                if (!fadeCompleted) {
-                    document.body.classList.add('fade-in-trigger');
-                    fadeCompleted = true;
-                }
-                document.body.classList.remove('non-fullscreen');
+                document.body.classList.add('fade-in-trigger');
+                fadeCompleted = true;
 
-                // Enable hover functionality after 1 second
+                // Enable hover functionality after another 1 second
                 setTimeout(() => {
-                    hoverEnabled = true;
+                    hoverActive = true;
                 }, 1000);
             }, 1000);
         });
@@ -67,9 +66,9 @@
             }
         });
 
-        // Trigger login text and lines fade-in on hover
+        // Fade in login lines and text on hover
         document.body.addEventListener('mouseover', () => {
-            if (fadeCompleted && hoverEnabled) {
+            if (hoverActive) {
                 document.body.classList.add('hover-login');
             }
         });

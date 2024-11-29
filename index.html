@@ -28,8 +28,9 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let fadeCompleted = false; // Tracks whether the initial fade-in is complete
-        let loginShown = false; // Tracks if login elements have been shown
+        let fullscreenActivated = false; // Tracks fullscreen activation
+        let initialFadeCompleted = false; // Tracks initial fade-in completion
+        let loginFadeCompleted = false; // Tracks login elements fade-in completion
 
         // Trigger fullscreen on user interaction
         document.addEventListener('click', () => {
@@ -38,36 +39,35 @@
                     document.documentElement.requestFullscreen();
                 }
             }
-
-            // Trigger initial fade-in
-            setTimeout(() => {
-                if (!fadeCompleted) {
-                    document.body.classList.add('fade-in-trigger');
-                    fadeCompleted = true;
-                }
-                document.body.classList.remove('non-fullscreen');
-            }, 1000); // Fade in after 1 second
         });
 
         // Handle fullscreen change
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
+                fullscreenActivated = true;
+                document.body.classList.remove('non-fullscreen');
                 document.body.style.overflow = 'hidden';
+
+                // Trigger initial fade-in for .line and .time-text
+                setTimeout(() => {
+                    document.body.classList.add('fade-in-trigger');
+                    initialFadeCompleted = true;
+                }, 1000); // Trigger 1 second after fullscreen activation
             } else {
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
             }
         });
 
-        // Trigger login element fade-in on mouse move
+        // Trigger login elements fade-in on hover
         document.body.addEventListener('mousemove', () => {
-            if (fadeCompleted && !loginShown) {
-                loginShown = true; // Ensure this runs only once
+            if (fullscreenActivated && initialFadeCompleted && !loginFadeCompleted) {
+                loginFadeCompleted = true; // Ensure this runs only once
                 setTimeout(() => {
                     document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach((el) => {
                         el.classList.add('hovered'); // Trigger persistent visibility
                     });
-                }, 2000); // Delay by 2 seconds after mouse move
+                }, 2000); // Delay by 2 seconds after hover on fullscreen
             }
         });
     </script>

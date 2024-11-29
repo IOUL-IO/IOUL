@@ -38,17 +38,17 @@ body.fade-in-trigger .time-text {
 .login-text,
 .login-line,
 .login-line-second {
-    opacity: 0;
+    opacity: 0; /* Start completely hidden */
     transition: opacity 0.5s ease-in-out;
     pointer-events: none; /* Prevent interaction before hover */
 }
 
-body.show-login-elements .login-text,
-body.show-login-elements .login-line,
-body.show-login-elements .login-line-second {
-    opacity: 1;
-    pointer-events: auto; /* Allow interaction */
-    transition-delay: 0s; /* Ensure immediate effect on hover */
+body.hover-login .login-text,
+body.hover-login .login-line,
+body.hover-login .login-line-second {
+    opacity: 1; /* Fade-in together on hover */
+    pointer-events: auto; /* Enable interaction after hover */
+    transition-delay: 0s; /* Ensure instant effect */
 }
 
 .line {

@@ -22,9 +22,8 @@ body.non-fullscreen {
 body.fade-in-trigger {
     background-color: #ffffff; 
 }
-    
-.line,
-.time-text,
+
+/* Initial state: Invisible login elements */
 .login-text,
 .login-line,
 .login-line-second {
@@ -32,25 +31,14 @@ body.fade-in-trigger {
     transition: opacity 0.5s ease-in-out;
 }
 
+/* Only other elements fade-in automatically */
 body.fade-in-trigger .line,
 body.fade-in-trigger .time-text {
     opacity: 1;
-    transition-delay: 1s; 
+    transition-delay: 1s;
 }
 
-body.fade-in-trigger .login-text,
-body.fade-in-trigger .login-line,
-body.fade-in-trigger .login-line-second {
-    opacity: 1;
-    transition-delay: 2s; 
-}
-
-/* Persist visibility after fade-in */
-.always-visible {
-    opacity: 1 !important;
-}
-
-/* Add hover effect after initial fade-in is completed */
+/* Login elements become visible on hover after initial fade-in completes */
 body:hover .login-text,
 body:hover .login-line,
 body:hover .login-line-second {
@@ -58,11 +46,17 @@ body:hover .login-line-second {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Ensure hover effect doesn't trigger before fade-in is complete */
+/* Persist visibility of login elements after they first appear */
+.always-visible {
+    opacity: 1 !important;
+    transition: none; /* Remove transition for persisted state */
+}
+
+/* Ensure hover effect doesn't activate before fade-in completes */
 body.non-fullscreen:hover .login-text,
 body.non-fullscreen:hover .login-line,
 body.non-fullscreen:hover .login-line-second {
-    opacity: 0; /* Block hover effect before fade-in */
+    opacity: 0; /* Block hover effect during pre-fade-in */
 }
 
 .line {

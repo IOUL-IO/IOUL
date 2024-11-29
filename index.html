@@ -61,10 +61,20 @@
             }
         });
 
-        // Add a hover event to ensure the elements fade in on hover in full-screen mode
+        // Ensure login-line and login-line-second only fade in on hover
         document.body.addEventListener('mouseover', () => {
             if (fadeCompleted) {
-                document.body.classList.add('show-elements');
+                document.querySelectorAll('.login-line, .login-line-second').forEach((el) => {
+                    el.style.opacity = '1';
+                });
+            }
+        });
+
+        document.body.addEventListener('mouseout', () => {
+            if (fadeCompleted) {
+                document.querySelectorAll('.login-line, .login-line-second').forEach((el) => {
+                    el.style.opacity = '0';
+                });
             }
         });
     </script>

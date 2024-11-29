@@ -1,4 +1,3 @@
-/* General reset and font inclusion */
 @font-face {
     font-family: 'Distill Expanded';
     src: url('font.woff2') format('woff2'),
@@ -37,22 +36,22 @@ body.fade-in-trigger .time-text {
     transition-delay: 1s;
 }
 
-/* Hover-enabled login elements */
-body.hover-enabled .login-text,
-body.hover-enabled .login-line,
-body.hover-enabled .login-line-second {
-    opacity: 0; /* Default state */
+/* Hover-based fade-in for login elements */
+.login-text,
+.login-line,
+.login-line-second {
+    opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
 
-body.hover-enabled:hover .login-text,
-body.hover-enabled:hover .login-line,
-body.hover-enabled:hover .login-line-second {
-    opacity: 1; /* Fade-in on hover */
-    transition-delay: 0.5s; /* Add slight delay */
+body.fade-in-trigger:hover .login-text,
+body.fade-in-trigger:hover .login-line,
+body.fade-in-trigger:hover .login-line-second {
+    opacity: 1;
+    transition-delay: 0.5s; /* Adds a slight delay */
 }
 
-/* Positioning for lines and time-text */
+/* Line positions */
 .line {
     position: absolute;
     height: 1px;
@@ -83,6 +82,7 @@ body.hover-enabled:hover .login-line-second {
     width: 57.8vw;
 }
 
+/* Dashed lines */
 .dashed {
     position: absolute;
     height: 1px;
@@ -146,7 +146,7 @@ body.hover-enabled:hover .login-line-second {
     left: 90.1vw;
 }
 
-/* Login text and lines styling */
+/* Login text and line styling */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;

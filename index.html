@@ -28,11 +28,10 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let fadeCompleted = false; // Tracks initial fade-in of lines and time-text
+        let fadeCompleted = false;
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
-                // Trigger full-screen
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) {
@@ -47,7 +46,7 @@
             setTimeout(() => {
                 if (!fadeCompleted) {
                     document.body.classList.add('fade-in-trigger');
-                    fadeCompleted = true; // Ensure it only applies once
+                    fadeCompleted = true;
                 }
                 document.body.classList.remove('non-fullscreen');
             }, 1000);
@@ -61,13 +60,6 @@
                 document.body.classList.add('non-fullscreen');
             }
         });
-
-        // Enable hover effect after initial fade-in completes
-        setTimeout(() => {
-            if (fadeCompleted) {
-                document.body.classList.add('hover-enabled');
-            }
-        }, 1500);
     </script>
 </body>
 </html>

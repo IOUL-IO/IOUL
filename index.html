@@ -28,11 +28,11 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let fadeCompleted = false; // Tracks if the initial fade-in of lines and time-text is complete
-        let mouseOverTriggered = false; // Tracks if the mouseover event triggered the fade-in of login elements
+        let fadeCompleted = false; // Tracks initial fade-in of lines and time-text
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
+                // Trigger full-screen
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
                 } else if (document.documentElement.mozRequestFullScreen) {
@@ -47,7 +47,7 @@
             setTimeout(() => {
                 if (!fadeCompleted) {
                     document.body.classList.add('fade-in-trigger');
-                    fadeCompleted = true;
+                    fadeCompleted = true; // Ensure it only applies once
                 }
                 document.body.classList.remove('non-fullscreen');
             }, 1000);
@@ -62,12 +62,12 @@
             }
         });
 
-        document.body.addEventListener('mouseover', () => {
-            if (fadeCompleted && !mouseOverTriggered) {
-                document.body.classList.add('fade-in-login'); // Trigger fade-in for login elements
-                mouseOverTriggered = true; // Ensure it only triggers once
+        // Enable hover effect after initial fade-in completes
+        setTimeout(() => {
+            if (fadeCompleted) {
+                document.body.classList.add('hover-enabled');
             }
-        });
+        }, 1500);
     </script>
 </body>
 </html>

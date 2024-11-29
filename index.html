@@ -29,7 +29,7 @@
 
     <script>
         let fadeCompleted = false;
-        let hoverTriggered = false;
+        let hoverActivated = false;
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
@@ -44,6 +44,7 @@
                 }
             }
 
+            // Initial fade-in sequence
             setTimeout(() => {
                 if (!fadeCompleted) {
                     document.body.classList.add('fade-in-trigger');
@@ -59,19 +60,17 @@
             } else {
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
-                hoverTriggered = false; // Reset hover state when exiting fullscreen
             }
         });
 
-        document.body.addEventListener('mousemove', () => {
-            if (fadeCompleted && !hoverTriggered) {
-                hoverTriggered = true; // Trigger hover only once
-                setTimeout(() => {
-                    const elements = document.querySelectorAll('.login-text, .login-line, .login-line-second');
-                    elements.forEach((el) => {
-                        el.classList.add('hover-active');
-                    });
-                }, 2000); // 2-second delay
+        // Hover activation for .login-text, .login-line, and .login-line-second
+        document.body.addEventListener('mouseover', () => {
+            if (fadeCompleted && !hoverActivated) {
+                hoverActivated = true; // Prevents retriggering
+                const elements = document.querySelectorAll('.login-text, .login-line, .login-line-second');
+                elements.forEach((el) => {
+                    el.classList.add('hover-active');
+                });
             }
         });
     </script>

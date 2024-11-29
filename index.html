@@ -28,18 +28,17 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let fadeCompleted = false; // Tracks if the initial fade-in has been completed
+        let fadeCompleted = false;
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
-                // Trigger fullscreen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                } else if (document.documentElement.mozRequestFullScreen) {
                     document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                } else if (document.documentElement.webkitRequestFullscreen) {
                     document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                } else if (document.documentElement.msRequestFullscreen) {
                     document.documentElement.msRequestFullscreen();
                 }
             }
@@ -47,7 +46,7 @@
             setTimeout(() => {
                 if (!fadeCompleted) {
                     document.body.classList.add('fade-in-trigger');
-                    fadeCompleted = true; // Ensure fade-in persists after the first toggle
+                    fadeCompleted = true;
                 }
                 document.body.classList.remove('non-fullscreen');
             }, 1000);
@@ -55,13 +54,25 @@
 
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
-                // Lock overflow when entering fullscreen
                 document.body.style.overflow = 'hidden';
             } else {
-                // Reset overflow when exiting fullscreen
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
             }
+        });
+
+        document.body.addEventListener('mouseover', () => {
+            if (fadeCompleted) {
+                document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach((el) => {
+                    el.style.opacity = '1';
+                });
+            }
+        });
+
+        document.body.addEventListener('mouseout', () => {
+            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach((el) => {
+                el.style.opacity = '0';
+            });
         });
     </script>
 </body>

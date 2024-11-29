@@ -22,21 +22,9 @@ body.non-fullscreen {
 body.fade-in-trigger {
     background-color: #ffffff; 
 }
-
-/* Initial fade-in for lines and time-text */
+    
 .line,
-.time-text {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-body.fade-in-trigger .line,
-body.fade-in-trigger .time-text {
-    opacity: 1;
-    transition-delay: 1s;
-}
-
-/* Hover-based fade-in for login elements */
+.time-text,
 .login-text,
 .login-line,
 .login-line-second {
@@ -44,14 +32,32 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
-body.fade-in-trigger:hover .login-text,
-body.fade-in-trigger:hover .login-line,
-body.fade-in-trigger:hover .login-line-second {
+body.fade-in-trigger .line,
+body.fade-in-trigger .time-text {
     opacity: 1;
-    transition-delay: 0.5s; /* Adds a slight delay */
+    transition-delay: 1s; 
 }
 
-/* Line positions */
+body.fade-in-login-elements .login-text,
+body.fade-in-login-elements .login-line,
+body.fade-in-login-elements .login-line-second {
+    opacity: 1;
+}
+
+/* Hide elements after the timeout */
+body:not(.fade-in-login-elements) .login-text,
+body:not(.fade-in-login-elements) .login-line,
+body:not(.fade-in-login-elements) .login-line-second {
+    opacity: 0;
+}
+
+/* Hover effect to reappear */
+.login-text:hover,
+.login-line:hover,
+.login-line-second:hover {
+    opacity: 1 !important;
+}
+
 .line {
     position: absolute;
     height: 1px;
@@ -82,7 +88,6 @@ body.fade-in-trigger:hover .login-line-second {
     width: 57.8vw;
 }
 
-/* Dashed lines */
 .dashed {
     position: absolute;
     height: 1px;
@@ -117,7 +122,6 @@ body.fade-in-trigger:hover .login-line-second {
     width: 52.4vw;
 }
 
-/* Time text styling */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -146,7 +150,6 @@ body.fade-in-trigger:hover .login-line-second {
     left: 90.1vw;
 }
 
-/* Login text and line styling */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;

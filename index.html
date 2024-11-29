@@ -28,17 +28,30 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let fadeCompleted = false;
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fade-in after 4 seconds
+            setTimeout(() => {
+                document.body.classList.add('fade-in-login-elements');
+            }, 4000);
+
+            // Hide after 10 seconds
+            setTimeout(() => {
+                document.body.classList.remove('fade-in-login-elements');
+            }, 10000);
+        });
+
+        let fadeCompleted = false; // Tracks if the initial fade-in has been completed
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
+                // Trigger fullscreen mode
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) {
+                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
                     document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) {
+                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
                     document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) {
+                } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
                     document.documentElement.msRequestFullscreen();
                 }
             }
@@ -46,7 +59,7 @@
             setTimeout(() => {
                 if (!fadeCompleted) {
                     document.body.classList.add('fade-in-trigger');
-                    fadeCompleted = true;
+                    fadeCompleted = true; // Ensure fade-in persists after the first toggle
                 }
                 document.body.classList.remove('non-fullscreen');
             }, 1000);
@@ -54,8 +67,10 @@
 
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
+                // Lock overflow when entering fullscreen
                 document.body.style.overflow = 'hidden';
             } else {
+                // Reset overflow when exiting fullscreen
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
             }

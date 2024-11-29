@@ -24,10 +24,7 @@ body.fade-in-trigger {
 }
     
 .line,
-.time-text,
-.login-text,
-.login-line,
-.login-line-second {
+.time-text {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
@@ -35,14 +32,23 @@ body.fade-in-trigger {
 body.fade-in-trigger .line,
 body.fade-in-trigger .time-text {
     opacity: 1;
-    transition-delay: 1s; 
+    transition-delay: 1s;
 }
 
-body.fade-in-trigger .login-text,
-body.fade-in-trigger .login-line,
-body.fade-in-trigger .login-line-second {
+.login-text,
+.login-line,
+.login-line-second {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    pointer-events: none; /* Prevent hover interactions before mouse over */
+}
+
+body:hover .login-text,
+body:hover .login-line,
+body:hover .login-line-second {
+    pointer-events: auto;
     opacity: 1;
-    transition-delay: 2s; 
+    transition-delay: 1s; /* Fade-in only after 1s */
 }
 
 .line {

@@ -22,7 +22,7 @@ body.non-fullscreen {
 body.fade-in-trigger {
     background-color: #ffffff; 
 }
-    
+
 .line,
 .time-text {
     opacity: 0;
@@ -35,6 +35,7 @@ body.fade-in-trigger .time-text {
     transition-delay: 1s;
 }
 
+/* Ensure login-text, login-line, and login-line-second follow the same fade-in and hover rules */
 .login-text,
 .login-line,
 .login-line-second {
@@ -43,17 +44,20 @@ body.fade-in-trigger .time-text {
 }
 
 /* Prevent initial fade-in from affecting login elements */
+body.fade-in-trigger .login-text,
 body.fade-in-trigger .login-line,
 body.fade-in-trigger .login-line-second {
     opacity: 0; /* Keep invisible until hover */
 }
 
+/* Apply hover persistence */
 .hovered {
     opacity: 1 !important; /* Ensure visibility after hover */
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Delay hover effects */
+/* Hover activation logic */
+body:hover .login-text,
 body:hover .login-line,
 body:hover .login-line-second {
     pointer-events: auto;

@@ -28,8 +28,6 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let fadeCompleted = false; // Tracks if the initial fade-in has been completed
-
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 // Trigger fullscreen mode
@@ -45,12 +43,13 @@
             }
 
             setTimeout(() => {
-                if (!fadeCompleted) {
-                    document.body.classList.add('fade-in-trigger');
-                    fadeCompleted = true; // Ensure fade-in persists after the first toggle
-                }
-                document.body.classList.remove('non-fullscreen');
-            }, 1000);
+                document.body.classList.add('fade-in-trigger'); // Start fade-in for non-login elements
+
+                // Enable hover effects after fullscreen and delay
+                setTimeout(() => {
+                    document.body.classList.add('hover-enabled');
+                }, 1000); // Ensure hover behavior kicks in after fade-in for other elements
+            }, 1000); // Delay for fullscreen mode
         });
 
         document.addEventListener('fullscreenchange', () => {
@@ -60,7 +59,7 @@
             } else {
                 // Reset overflow when exiting fullscreen
                 document.body.style.overflow = '';
-                document.body.classList.add('non-fullscreen');
+                document.body.classList.remove('fade-in-trigger', 'hover-enabled');
             }
         });
     </script>

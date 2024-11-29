@@ -47,8 +47,8 @@ body.show-login-elements .login-text,
 body.show-login-elements .login-line,
 body.show-login-elements .login-line-second {
     opacity: 1;
-    pointer-events: auto; /* Allow interaction after hover */
-    transition-delay: 0.5s;
+    pointer-events: auto; /* Allow interaction */
+    transition-delay: 0s; /* Ensure immediate effect on hover */
 }
 
 .line {

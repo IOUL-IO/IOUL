@@ -33,7 +33,7 @@ body.fade-in-trigger {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Fade-in for main elements */
+/* Fade-in for main elements (excluding login lines and login text) */
 body.fade-in-trigger .line,
 body.fade-in-trigger .time-text {
     opacity: 1;
@@ -44,7 +44,7 @@ body.fade-in-trigger .time-text {
 .login-text,
 .login-line,
 .login-line-second {
-    opacity: 0;
+    opacity: 0; /* Default hidden state */
 }
 
 /* Make login elements visible on mouse movement */

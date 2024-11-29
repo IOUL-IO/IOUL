@@ -61,19 +61,10 @@
             }
         });
 
+        // Add a hover event to ensure the elements fade in on hover in full-screen mode
         document.body.addEventListener('mouseover', () => {
             if (fadeCompleted) {
-                document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach((el) => {
-                    el.style.opacity = '1';
-                });
-            }
-        });
-
-        document.body.addEventListener('mouseout', () => {
-            if (fadeCompleted) {
-                document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach((el) => {
-                    el.style.opacity = '0';
-                });
+                document.body.classList.add('show-elements');
             }
         });
     </script>

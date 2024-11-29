@@ -29,6 +29,7 @@
 
     <script>
         let fadeCompleted = false;
+        let hoverEnabled = false;
 
         document.addEventListener('click', () => {
             if (!document.fullscreenElement) {
@@ -47,6 +48,10 @@
                 if (!fadeCompleted) {
                     document.body.classList.add('fade-in-trigger');
                     fadeCompleted = true;
+
+                    setTimeout(() => {
+                        hoverEnabled = true;
+                    }, 1000); // Enable hover effect 1 second after fade-in completes
                 }
                 document.body.classList.remove('non-fullscreen');
             }, 1000);
@@ -62,17 +67,11 @@
         });
 
         document.body.addEventListener('mouseover', () => {
-            if (fadeCompleted) {
+            if (hoverEnabled) {
                 document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach((el) => {
-                    el.style.opacity = '1';
+                    el.classList.add('hover-active');
                 });
             }
-        });
-
-        document.body.addEventListener('mouseout', () => {
-            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach((el) => {
-                el.style.opacity = '0';
-            });
         });
     </script>
 </body>

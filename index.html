@@ -28,8 +28,8 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let fadeCompleted = false; // Tracks if the initial fade-in is completed
-        let loginTriggered = false; // Tracks if login elements have been triggered by mouse movement
+        let fadeCompleted = false; // Tracks if the initial fade-in is complete
+        let loginTriggered = false; // Tracks if login elements are revealed
 
         // Enable full-screen on click
         document.addEventListener('click', () => {
@@ -52,7 +52,7 @@
             }, 1000);
         });
 
-        // Detect mouse movement and trigger login elements
+        // Reveal login lines and text on mouse movement
         document.addEventListener('mousemove', () => {
             if (fadeCompleted && !loginTriggered) {
                 loginTriggered = true;
@@ -62,7 +62,7 @@
             }
         });
 
-        // Reset body styling on fullscreen toggle
+        // Fullscreen behavior adjustment
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
                 document.body.style.overflow = 'hidden';

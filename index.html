@@ -34,6 +34,12 @@
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) {
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                    document.documentElement.msRequestFullscreen();
                 }
             }
 
@@ -55,16 +61,16 @@
             }
         });
 
-        // Control hover interaction
+        // Trigger hover logic 1 second after fade-in completes
         setTimeout(() => {
             document.body.addEventListener('mouseover', () => {
                 if (fadeCompleted) {
                     document.querySelectorAll('.login-line, .login-line-second').forEach((el) => {
-                        el.classList.add('hovered'); // Apply a CSS class for hover effect
+                        el.classList.add('hovered');
                     });
                 }
             });
-        }, 2000); // Ensure hover effect starts 1 second after full-screen fade-in
+        }, 2000); // Hover logic starts after 1 second delay post fade-in
     </script>
 </body>
 </html>

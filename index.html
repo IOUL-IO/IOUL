@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IOUL</title>
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="non-fullscreen">
+    <div class="line original"></div>
+    <div class="line second"></div>
+    <div class="line third"></div>
+    <div class="line fourth"></div>
+    <div class="line dashed"></div>
+    <div class="line dashed second-dashed"></div>
+    <div class="line dashed third-dashed"></div>
+    <div class="line dashed fourth-dashed"></div>
+    
+    <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+    <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+    <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+    <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+
+    <span class="login-text username">USERnAME</span>
+    <span class="login-text password">PASSWORD</span>
+    <div class="line login-line"></div>
+    <div class="line login-line-second"></div>
+
+    <script>
+        let fadeCompleted = false;
+
+        document.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) {
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                    document.documentElement.msRequestFullscreen();
+                }
+            }
+
+            setTimeout(() => {
+                if (!fadeCompleted) {
+                    document.body.classList.add('fade-in-trigger');
+                    fadeCompleted = true;
+                }
+                document.body.classList.remove('non-fullscreen');
+            }, 1000);
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+                document.body.classList.add('non-fullscreen');
+            }
+        });
+
+        document.body.addEventListener('mouseover', () => {
+            if (fadeCompleted) {
+                document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach((el) => {
+                    el.style.opacity = '1';
+                });
+            }
+        });
+
+        document.body.addEventListener('mouseout', () => {
+            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach((el) => {
+                el.style.opacity = '0';
+            });
+        });
+    </script>
+</body>
+</html>

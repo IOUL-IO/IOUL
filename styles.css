@@ -1,3 +1,4 @@
+/* General reset and font inclusion */
 @font-face {
     font-family: 'Distill Expanded';
     src: url('font.woff2') format('woff2'),
@@ -22,7 +23,8 @@ body.non-fullscreen {
 body.fade-in-trigger {
     background-color: #ffffff; 
 }
-    
+
+/* Initial fade-in for lines and time-text */
 .line,
 .time-text {
     opacity: 0;
@@ -35,20 +37,22 @@ body.fade-in-trigger .time-text {
     transition-delay: 1s;
 }
 
-.login-text,
-.login-line,
-.login-line-second {
-    opacity: 0;
+/* Hover-enabled login elements */
+body.hover-enabled .login-text,
+body.hover-enabled .login-line,
+body.hover-enabled .login-line-second {
+    opacity: 0; /* Default state */
     transition: opacity 0.5s ease-in-out;
 }
 
-body.fade-in-login .login-text,
-body.fade-in-login .login-line,
-body.fade-in-login .login-line-second {
-    opacity: 1;
-    transition-delay: 0.5s; /* Add a slight delay for the fade-in effect */
+body.hover-enabled:hover .login-text,
+body.hover-enabled:hover .login-line,
+body.hover-enabled:hover .login-line-second {
+    opacity: 1; /* Fade-in on hover */
+    transition-delay: 0.5s; /* Add slight delay */
 }
 
+/* Positioning for lines and time-text */
 .line {
     position: absolute;
     height: 1px;
@@ -113,6 +117,7 @@ body.fade-in-login .login-line-second {
     width: 52.4vw;
 }
 
+/* Time text styling */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -141,6 +146,7 @@ body.fade-in-login .login-line-second {
     left: 90.1vw;
 }
 
+/* Login text and lines styling */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;

@@ -23,21 +23,18 @@ body.fade-in-trigger {
     background-color: #ffffff; 
 }
 
-/* Initial state: Hidden for general lines and time-text */
 .line:not(.login-line):not(.login-line-second),
 .time-text {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Fade-in for main elements, excluding login lines */
 body.fade-in-trigger .line:not(.login-line):not(.login-line-second),
 body.fade-in-trigger .time-text {
     opacity: 1;
     transition-delay: 1s; 
 }
 
-/* Login lines and text remain hidden until mouse movement */
 .login-line,
 .login-line-second,
 .login-text {
@@ -45,13 +42,11 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Make login elements visible on mouse movement */
 .visible {
     opacity: 1 !important;
     transition: opacity 0.5s ease-in-out;
 }
 
-/* General line styles */
 .line {
     position: absolute;
     height: 1px;

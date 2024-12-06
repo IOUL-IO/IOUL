@@ -30,26 +30,23 @@
     <script>
         let fadeCompleted = false; 
         let loginTriggered = false; 
-        let initialClickCompleted = false; // Tracks if the first full-screen click is completed
+        let initialClickCompleted = false; 
 
-        // Function to check if click is near screen edges
         function isEdgeClick(event) {
-            const edgeThreshold = 11; // Distance from edges to trigger full-screen
+            const edgeThreshold = 11; 
             const { clientX, clientY } = event;
             const { innerWidth, innerHeight } = window;
 
             return (
-                clientX <= edgeThreshold || // Left edge
-                clientX >= innerWidth - edgeThreshold || // Right edge
-                clientY <= edgeThreshold || // Top edge
-                clientY >= innerHeight - edgeThreshold // Bottom edge
+                clientX <= edgeThreshold || 
+                clientX >= innerWidth - edgeThreshold || 
+                clientY <= edgeThreshold || 
+                clientY >= innerHeight - edgeThreshold 
             );
         }
 
-        // Full-screen activation on click
         document.addEventListener('click', (event) => {
             if (!initialClickCompleted) {
-                // First click: Full-screen activation
                 if (!document.fullscreenElement) {
                     if (document.documentElement.requestFullscreen) {
                         document.documentElement.requestFullscreen();
@@ -62,7 +59,6 @@
                     }
                 }
 
-                // Set up fade-in trigger and delay for mouse movement
                 setTimeout(() => {
                     document.body.classList.add('fade-in-trigger');
                 }, 1000);
@@ -71,9 +67,8 @@
                     fadeCompleted = true; 
                 }, 4000);
 
-                initialClickCompleted = true; // Mark initial click as completed
+                initialClickCompleted = true; 
             } else if (isEdgeClick(event)) {
-                // Subsequent clicks only work near edges
                 if (!document.fullscreenElement) {
                     if (document.documentElement.requestFullscreen) {
                         document.documentElement.requestFullscreen();
@@ -88,7 +83,6 @@
             }
         });
 
-        // Reveal login lines and text on mouse movement
         document.addEventListener('mousemove', () => {
             if (fadeCompleted && !loginTriggered) {
                 loginTriggered = true;
@@ -98,7 +92,6 @@
             }
         });
 
-        // Reset body styling on fullscreen toggle
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
                 document.body.style.overflow = 'hidden';

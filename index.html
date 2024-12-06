@@ -30,30 +30,65 @@
     <script>
         let fadeCompleted = false; 
         let loginTriggered = false; 
+        let initialClickCompleted = false; // Tracks if the first full-screen click is completed
 
-        // Enable full-screen on click
-        document.addEventListener('click', () => {
-            if (!document.fullscreenElement) {
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
-                } else if (document.documentElement.webkitRequestFullscreen) {
-                    document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) {
-                    document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.msRequestFullscreen) {
-                    document.documentElement.msRequestFullscreen();
+        // Function to check if click is near screen edges
+        function isEdgeClick(event) {
+            const edgeThreshold = 50; // Distance from edges to trigger full-screen
+            const { clientX, clientY } = event;
+            const { innerWidth, innerHeight } = window;
+
+            return (
+                clientX <= edgeThreshold || // Left edge
+                clientX >= innerWidth - edgeThreshold || // Right edge
+                clientY <= edgeThreshold || // Top edge
+                clientY >= innerHeight - edgeThreshold // Bottom edge
+            );
+        }
+
+        // Full-screen activation on click
+        document.addEventListener('click', (event) => {
+            if (!initialClickCompleted) {
+                // First click: Full-screen activation
+                if (!document.fullscreenElement) {
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.msRequestFullscreen) {
+                        document.documentElement.msRequestFullscreen();
+                    }
+                }
+
+                // Set up fade-in trigger and delay for mouse movement
+                setTimeout(() => {
+                    document.body.classList.add('fade-in-trigger');
+                }, 1000);
+
+                setTimeout(() => {
+                    fadeCompleted = true; 
+                }, 4000);
+
+                initialClickCompleted = true; // Mark initial click as completed
+            } else if (isEdgeClick(event)) {
+                // Subsequent clicks only work near edges
+                if (!document.fullscreenElement) {
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.msRequestFullscreen) {
+                        document.documentElement.msRequestFullscreen();
+                    }
                 }
             }
-
-            setTimeout(() => {
-                document.body.classList.add('fade-in-trigger');
-            }, 1000);
-
-            setTimeout(() => {
-                fadeCompleted = true; 
-            }, 4000);
         });
 
+        // Reveal login lines and text on mouse movement
         document.addEventListener('mousemove', () => {
             if (fadeCompleted && !loginTriggered) {
                 loginTriggered = true;
@@ -63,6 +98,7 @@
             }
         });
 
+        // Reset body styling on fullscreen toggle
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
                 document.body.style.overflow = 'hidden';

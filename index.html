@@ -31,7 +31,9 @@
         let fadeCompleted = false; 
         let loginTriggered = false; 
         let initialClickCompleted = false; 
+        let inactivityTimer; // Timer to track mouse inactivity
 
+        // Function to check if click is near screen edges
         function isEdgeClick(event) {
             const edgeThreshold = 11; 
             const { clientX, clientY } = event;
@@ -45,6 +47,32 @@
             );
         }
 
+        // Function to hide login elements
+        function hideLoginElements() {
+            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
+                el.classList.add('hidden'); // Add class to hide elements
+                el.classList.remove('visible'); // Ensure visible is removed
+            });
+        }
+
+        // Function to show login elements
+        function showLoginElements() {
+            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
+                el.classList.add('visible'); // Add class to show elements
+                el.classList.remove('hidden'); // Ensure hidden is removed
+            });
+        }
+
+        // Reset inactivity timer on mouse movement
+        function resetInactivityTimer() {
+            if (fadeCompleted) {
+                showLoginElements(); // Show elements on mouse move
+                clearTimeout(inactivityTimer); // Clear previous timer
+                inactivityTimer = setTimeout(hideLoginElements, 60000); // Set timer for 1 minute
+            }
+        }
+
+        // Full-screen activation on click
         document.addEventListener('click', (event) => {
             if (!initialClickCompleted) {
                 if (!document.fullscreenElement) {
@@ -83,15 +111,16 @@
             }
         });
 
+        // Mousemove logic to show elements and reset timer
         document.addEventListener('mousemove', () => {
-            if (fadeCompleted && !loginTriggered) {
+            if (!loginTriggered && fadeCompleted) {
                 loginTriggered = true;
-                document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
-                    el.classList.add('visible');
-                });
+                showLoginElements(); // Initial fade-in of login elements
             }
+            resetInactivityTimer(); // Reset timer on any mouse movement
         });
 
+        // Reset body styling on fullscreen toggle
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
                 document.body.style.overflow = 'hidden';

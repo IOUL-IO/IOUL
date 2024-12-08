@@ -47,6 +47,11 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
+.hidden {
+    opacity: 0 !important;
+    transition: opacity 0.5s ease-in-out;
+}
+
 .line {
     position: absolute;
     height: 1px;

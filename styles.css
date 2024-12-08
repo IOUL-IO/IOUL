@@ -139,7 +139,6 @@ body.fade-in-trigger .time-text {
     left: 90.1vw;
 }
 
-/* Login text styles */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -162,7 +161,6 @@ body.fade-in-trigger .time-text {
     color: #a1a1a1;
 }
 
-/* Login lines styles */
 .login-line {
     position: absolute;
     top: 38.9vh;

@@ -120,7 +120,7 @@ body.fade-in-trigger .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     font-size: 0.272rem;
-    color: #717171;
+    color: #777777;
     letter-spacing: 0.20vw;
 }
 
@@ -148,7 +148,7 @@ body.fade-in-trigger .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     font-size: 0.20rem;
-    color: #717171;
+    color: #777777;
     letter-spacing: 0.28vw;
 }
 
@@ -156,14 +156,14 @@ body.fade-in-trigger .time-text {
     top: 36.1vh;
     left: 6.41vw;
     font-size: 0.4rem;
-    color: #717171;
+    color: #777777;
 }
 
 .password {
     top: 44.2vh;
     left: 6.41vw;
     font-size: 0.4rem;
-    color: #717171;
+    color: #777777;
 }
 
 .login-line {

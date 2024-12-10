@@ -55,7 +55,7 @@ body.fade-in-trigger .time-text {
 .line {
     position: absolute;
     height: 1px;
-    background-color: #e1e1e1;
+    background-color: #e6e6e6;
 }
 
 .original {
@@ -90,8 +90,8 @@ body.fade-in-trigger .time-text {
     width: 52.4vw;
     background: linear-gradient(
         to right,
-        #d1d1d1 0,
-        #d1d1d1 5px, 
+        #e0e0e0 0,
+        #e0e0e0 5px, 
         #ffffff 5px,
         #ffffff 10px 
     );

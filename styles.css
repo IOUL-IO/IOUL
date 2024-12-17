@@ -90,8 +90,8 @@ body.fade-in-trigger .time-text {
     width: 52.4vw;
     background: linear-gradient(
         to right,
-        #d1d1d1 0,
-        #d1d1d1 5px, 
+        #d0d0d0 0,
+        #d0d0d0 5px, 
         #ffffff 5px,
         #ffffff 10px 
     );

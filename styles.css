@@ -54,7 +54,7 @@ body.fade-in-trigger .time-text {
 
 .line {
     position: absolute;
-    height: 1px;
+    height: 0.991px;
     background-color: #dfdfdf;
 }
 

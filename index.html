@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IOUL</title>
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="non-fullscreen">
+    <div class="line original"></div>
+    <div class="line second"></div>
+    <div class="line third"></div>
+    <div class="line fourth"></div>
+    <div class="line dashed"></div>
+    <div class="line dashed second-dashed"></div>
+    <div class="line dashed third-dashed"></div>
+    <div class="line dashed fourth-dashed"></div>
+    
+    <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+    <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+    <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+    <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+
+    <span class="login-text username">USERnAME</span>
+    <span class="login-text password">PASSWORD</span>
+    <div class="line login-line"></div>
+    <div class="line login-line-second"></div>
+
+    <script>
+        let fadeCompleted = false; 
+        let loginTriggered = false; 
+        let initialClickCompleted = false; 
+        let inactivityTimer; 
+
+        function isEdgeClick(event) {
+            const edgeThreshold = 11; 
+            const { clientX, clientY } = event;
+            const { innerWidth, innerHeight } = window;
+
+            return (
+                clientX <= edgeThreshold || 
+                clientX >= innerWidth - edgeThreshold || 
+                clientY <= edgeThreshold || 
+                clientY >= innerHeight - edgeThreshold 
+            );
+        }
+
+        function hideLoginElements() {
+            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
+                el.classList.add('hidden'); 
+                el.classList.remove('visible'); 
+            });
+        }
+
+        function showLoginElements() {
+            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
+                el.classList.add('visible'); 
+                el.classList.remove('hidden'); 
+            });
+        }
+
+        function resetInactivityTimer() {
+            if (fadeCompleted) {
+                showLoginElements(); 
+                clearTimeout(inactivityTimer); 
+                inactivityTimer = setTimeout(hideLoginElements, 20000); 
+            }
+        }
+
+        document.addEventListener('click', (event) => {
+            if (!initialClickCompleted) {
+                if (!document.fullscreenElement) {
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.msRequestFullscreen) {
+                        document.documentElement.msRequestFullscreen();
+                    }
+                }
+
+                setTimeout(() => {
+                    document.body.classList.add('fade-in-trigger');
+                }, 1000);
+
+                setTimeout(() => {
+                    fadeCompleted = true; 
+                }, 4000);
+
+                initialClickCompleted = true; 
+            } else if (isEdgeClick(event)) {
+                if (!document.fullscreenElement) {
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.msRequestFullscreen) {
+                        document.documentElement.msRequestFullscreen();
+                    }
+                }
+            }
+        });
+
+        document.addEventListener('mousemove', () => {
+            if (!loginTriggered && fadeCompleted) {
+                loginTriggered = true;
+                showLoginElements(); 
+            }
+            resetInactivityTimer(); 
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+                document.body.classList.add('non-fullscreen');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -122,6 +122,38 @@
                 document.body.classList.add('non-fullscreen');
             }
         });
+
+        // New functionality for login text interaction
+        document.querySelectorAll('.login-text').forEach(element => {
+            element.addEventListener('click', function () {
+                if (fadeCompleted) {
+                    const currentText = this.innerText;
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.maxLength = 10;
+                    input.value = currentText; 
+                    input.style.fontFamily = 'Distill Expanded, sans-serif';
+                    input.style.color = '#414141'; 
+                    input.style.letterSpacing = '0.28vw'; 
+                    input.style.fontSize = this.style.fontSize; 
+                    input.style.width = 'calc(22.48vw - 12px)';
+                    input.style.border = 'none';
+                    input.style.outline = 'none';
+                    input.style.backgroundColor = 'transparent';
+                    
+                    this.replaceWith(input);
+                    input.focus();
+                    
+                    input.addEventListener('blur', function () {
+                        const span = document.createElement('span');
+                        span.className = element.className; 
+                        span.innerText = input.value || currentText;
+                        input.replaceWith(span);
+                        span.addEventListener('click', arguments.callee);
+                    });
+                }
+            });
+        });
     </script>
 </body>
 </html>

@@ -1,3 +1,11 @@
+/* General reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Font configuration */
 @font-face {
     font-family: 'Distill Expanded';
     src: url('font.woff2') format('woff2'),
@@ -6,62 +14,31 @@
     font-style: normal;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* Non-fullscreen body */
 body.non-fullscreen {
-    background-color: #ffffff; 
+    background-color: #ffffff;
     min-height: 100vh;
     min-width: 100vw;
     overflow: hidden;
 }
 
+/* Body fade-in trigger */
 body.fade-in-trigger {
-    background-color: #ffffff; 
+    background-color: #ffffff;
 }
 
-.line:not(.login-line):not(.login-line-second),
-.time-text {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-body.fade-in-trigger .line:not(.login-line):not(.login-line-second),
-body.fade-in-trigger .time-text {
-    opacity: 1;
-    transition-delay: 1s; 
-}
-
-.login-line,
-.login-line-second,
-.login-text {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-.visible {
-    opacity: 1 !important;
-    transition: opacity 0.5s ease-in-out;
-}
-
-.hidden {
-    opacity: 0 !important;
-    transition: opacity 0.5s ease-in-out;
-}
-
+/* General line styles */
 .line {
     position: absolute;
     height: 1px;
-    background-color: #dadada;
+    background-color: #e6e6e6;
 }
 
+/* Line configurations */
 .original {
-    top: 12.5vh; 
-    left: 6.38vw; 
-    width: 22.48vw; 
+    top: 12.5vh;
+    left: 6.38vw;
+    width: 22.48vw;
 }
 
 .second {
@@ -82,6 +59,7 @@ body.fade-in-trigger .time-text {
     width: 57.8vw;
 }
 
+/* Dashed line styles */
 .dashed {
     position: absolute;
     height: 1px;
@@ -90,10 +68,10 @@ body.fade-in-trigger .time-text {
     width: 52.4vw;
     background: linear-gradient(
         to right,
-        #c1c1c1 0,
-        #c1c1c1 5px, 
+        #e1e1e1 0,
+        #e1e1e1 5px,
         #ffffff 5px,
-        #ffffff 10px 
+        #ffffff 10px
     );
     background-size: 10px 1px;
 }
@@ -116,53 +94,61 @@ body.fade-in-trigger .time-text {
     width: 52.4vw;
 }
 
+/* Time-text configurations */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     font-size: 0.272rem;
-    color: #111111;
+    color: #a1a1a1;
     letter-spacing: 0.20vw;
 }
 
 .time-text {
     top: 28.5vh;
-    left: 89.91vw;
+    left: 90vw;
 }
 
 .second-time-text {
     top: 47vh;
-    left: 89.91vw;
+    left: 90vw;
 }
 
 .third-time-text {
     top: 65.5vh;
-    left: 89.91vw;
+    left: 90vw;
 }
 
 .fourth-time-text {
     top: 83.9vh;
-    left: 90.01vw;
+    left: 90.1vw;
 }
 
+/* Login text styles */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    color: #414141;
+    font-size: 0.20rem;
+    color: #a1a1a1;
     letter-spacing: 0.28vw;
 }
 
+/* Username text */
 .username {
     top: 36.1vh;
     left: 6.41vw;
     font-size: 0.4rem;
+    color: #a1a1a1;
 }
 
+/* Password text */
 .password {
     top: 44.2vh;
     left: 6.41vw;
     font-size: 0.4rem;
+    color: #a1a1a1;
 }
 
+/* Login line styles */
 .login-line {
     position: absolute;
     top: 38.9vh;
@@ -179,4 +165,38 @@ body.fade-in-trigger .time-text {
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
+}
+
+/* Login elements stay hidden until mouse movement or fade out */
+.login-line,
+.login-line-second,
+.login-text {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Visible state */
+.visible {
+    opacity: 1 !important;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Hidden state */
+.hidden {
+    opacity: 0 !important;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Input field styles */
+input.username,
+input.password {
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.20rem;
+    color: #a1a1a1;
+    letter-spacing: 0.28vw;
+    background: none;
+    border: none;
+    outline: none;
+    text-align: left;
+    padding: 0;
 }

@@ -31,8 +31,44 @@
         let fadeCompleted = false; 
         let loginTriggered = false; 
         let initialClickCompleted = false; 
-        let inactivityTimer; 
+        let inactivityTimer; // Timer to track mouse inactivity
 
+        // Transform username or password text into an input field on click
+        document.addEventListener('click', (event) => {
+            if (event.target.classList.contains('username')) {
+                transformToInput(event.target, 'text', 'Enter your username...');
+            } else if (event.target.classList.contains('password')) {
+                transformToInput(event.target, 'password', 'Enter your password...');
+            }
+        });
+
+        // Function to transform a span into an input field
+        function transformToInput(target, type, placeholder) {
+            const input = document.createElement('input');
+            input.type = type;
+            input.placeholder = placeholder;
+            input.value = target.textContent.trim(); // Preserve initial text as input value
+            input.className = target.className; // Copy the original class for styling
+            input.style.width = `${target.offsetWidth}px`; // Match width of the original element
+
+            // Replace the span with the input field
+            target.replaceWith(input);
+
+            // Focus the input field automatically
+            input.focus();
+
+            // Revert to span if the input loses focus and is empty
+            input.addEventListener('blur', () => {
+                if (input.value.trim() === '') {
+                    const span = document.createElement('span');
+                    span.className = input.className;
+                    span.textContent = placeholder.split(' ')[2].toUpperCase(); // Restore placeholder text
+                    input.replaceWith(span);
+                }
+            });
+        }
+
+        // Function to check if click is near screen edges
         function isEdgeClick(event) {
             const edgeThreshold = 11; 
             const { clientX, clientY } = event;
@@ -46,6 +82,7 @@
             );
         }
 
+        // Function to hide login elements
         function hideLoginElements() {
             document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
                 el.classList.add('hidden'); 
@@ -53,6 +90,7 @@
             });
         }
 
+        // Function to show login elements
         function showLoginElements() {
             document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
                 el.classList.add('visible'); 
@@ -60,14 +98,16 @@
             });
         }
 
+        // Reset inactivity timer on mouse movement
         function resetInactivityTimer() {
             if (fadeCompleted) {
                 showLoginElements(); 
                 clearTimeout(inactivityTimer); 
-                inactivityTimer = setTimeout(hideLoginElements, 20000); 
+                inactivityTimer = setTimeout(hideLoginElements, 60000); 
             }
         }
 
+        // Full-screen activation on click
         document.addEventListener('click', (event) => {
             if (!initialClickCompleted) {
                 if (!document.fullscreenElement) {
@@ -106,6 +146,7 @@
             }
         });
 
+        // Mousemove logic to show elements and reset timer
         document.addEventListener('mousemove', () => {
             if (!loginTriggered && fadeCompleted) {
                 loginTriggered = true;
@@ -114,6 +155,7 @@
             resetInactivityTimer(); 
         });
 
+        // Reset body styling on fullscreen toggle
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
                 document.body.style.overflow = 'hidden';

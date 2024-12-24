@@ -7,6 +7,10 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <style>
+        body {
+            overflow: visible;
+        }
+
         .login-text {
             position: absolute;
             left: 6.41vw;
@@ -63,7 +67,7 @@
         }
     </style>
 </head>
-<body class="non-fullscreen">
+<body>
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -127,12 +131,10 @@
         function fixUsernameCutoff() {
             const usernameElement = document.querySelector('.username');
             if (usernameElement) {
-                usernameElement.style.visibility = 'hidden'; // Temporarily hide the element
-                usernameElement.style.transform = 'none'; // Remove existing transform
-                setTimeout(() => {
-                    usernameElement.style.visibility = 'visible'; // Make it visible again
-                    usernameElement.style.transform = 'translateZ(0)'; // Reapply GPU rendering
-                }, 50); // Allow time for the browser to recalculate styles
+                const parent = usernameElement.parentNode;
+                const temp = usernameElement.cloneNode(true); // Clone the element
+                parent.removeChild(usernameElement); // Remove original element
+                parent.appendChild(temp); // Re-add the cloned element
             }
         }
 
@@ -154,10 +156,7 @@
                 });
             } else {
                 document.body.style.overflow = '';
-                document.body.classList.add('non-fullscreen');
-
-                // Fix cut-off for username in non-fullscreen mode
-                fixUsernameCutoff();
+                fixUsernameCutoff(); // Trigger re-render on username
             }
         });
 

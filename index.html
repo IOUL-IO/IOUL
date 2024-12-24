@@ -15,17 +15,17 @@
         }
 
         .username {
-            top: 36.1vh;
+            top: 36.1vh; /* Correct top for fullscreen */
             visibility: visible;
         }
 
         .password {
-            top: 44.2vh;
+            top: 44.2vh; /* Correct top for fullscreen */
         }
 
         .login-line {
             position: absolute;
-            top: 39.1vh;
+            top: 39.1vh; /* Updated for consistent spacing */
             left: 6.4vw;
             width: 22.48vw;
             height: 1px;
@@ -34,7 +34,7 @@
 
         .login-line-second {
             position: absolute;
-            top: 47.2vh;
+            top: 47.2vh; /* Updated for consistent spacing */
             left: 6.4vw;
             width: 22.48vw;
             height: 1px;
@@ -84,7 +84,6 @@
 
     <script>
         let fadeCompleted = false; 
-        let loginTriggered = false; 
         let initialClickCompleted = false; 
         let inactivityTimer; 
 
@@ -110,26 +109,34 @@
             }
         }
 
-        document.addEventListener('mousemove', resetInactivityTimer);
-
-        document.addEventListener('fullscreenchange', () => {
+        function adjustSpacing() {
             const usernameElement = document.querySelector('.username');
             const passwordElement = document.querySelector('.password');
             const loginLineElement = document.querySelector('.login-line');
             const loginLineSecondElement = document.querySelector('.login-line-second');
 
             if (!document.fullscreenElement) {
-                // Add slight padding to prevent cut-off
-                usernameElement.style.marginTop = '0.5vh';
-                passwordElement.style.marginTop = '0.5vh';
+                // Non-fullscreen adjustments
+                usernameElement.style.top = '36.6vh';
+                loginLineElement.style.top = '39.4vh';
+                passwordElement.style.top = '44.7vh';
+                loginLineSecondElement.style.top = '47.5vh';
             } else {
-                // Reset padding in fullscreen mode
-                usernameElement.style.marginTop = '0';
-                passwordElement.style.marginTop = '0';
+                // Fullscreen adjustments
+                usernameElement.style.top = '36.1vh';
+                loginLineElement.style.top = '39.1vh';
+                passwordElement.style.top = '44.2vh';
+                loginLineSecondElement.style.top = '47.2vh';
             }
-        });
+        }
 
-        document.addEventListener('click', (event) => {
+        document.addEventListener('mousemove', resetInactivityTimer);
+
+        document.addEventListener('fullscreenchange', adjustSpacing);
+
+        document.addEventListener('DOMContentLoaded', adjustSpacing);
+
+        document.addEventListener('click', () => {
             if (!initialClickCompleted) {
                 if (!document.fullscreenElement) {
                     if (document.documentElement.requestFullscreen) {

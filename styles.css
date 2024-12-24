@@ -12,6 +12,10 @@
     box-sizing: border-box;
 }
 
+:root {
+    --text-line-gap: 2.8vh; /* Adjustable gap between text and lines */
+}
+
 body.non-fullscreen {
     background-color: #ffffff; 
     min-height: 100vh;
@@ -170,7 +174,7 @@ body.non-fullscreen .username {
 
 .login-line {
     position: absolute;
-    top: 38.9vh;
+    top: calc(36.1vh + var(--text-line-gap));
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
@@ -179,7 +183,7 @@ body.non-fullscreen .username {
 
 .login-line-second {
     position: absolute;
-    top: 47vh;
+    top: calc(44.2vh + var(--text-line-gap));
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;

@@ -7,7 +7,6 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Updated alignment and spacing for login text and lines */
         .login-text {
             position: absolute;
             left: 6.41vw; /* Ensure alignment for both username and password */
@@ -39,6 +38,25 @@
             width: 22.48vw;
             height: 1px;
             background-color: rgba(230, 230, 230, 0.28);
+        }
+
+        input.typing-input {
+            font-family: 'Distill Expanded', sans-serif;
+            font-size: 0.35rem;
+            color: #414141;
+            letter-spacing: 0.28vw;
+            border: none;
+            outline: none;
+            background-color: transparent;
+            position: absolute;
+            caret-color: #d1d1d1;
+            animation: blink-caret 1s step-end infinite;
+        }
+
+        @keyframes blink-caret {
+            50% {
+                border-color: transparent;
+            }
         }
     </style>
 </head>
@@ -149,8 +167,8 @@
                     input.className = 'typing-input';
                     input.style.top = `${parentRect.top + window.scrollY}px`;
                     input.style.left = `${parentRect.left + window.scrollX}px`;
-                    input.style.width = `${this.offsetWidth + 50}px`;
-                    input.style.height = `${this.offsetHeight}px`;
+                    input.style.width = `${parentRect.width}px`;
+                    input.style.height = `${parentRect.height}px`;
                     this.replaceWith(input);
                     input.focus();
 

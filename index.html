@@ -111,28 +111,14 @@
             }
         }
 
-        function isEdgeClick(event) {
-            const edgeThreshold = 10; // Clicks within 10px of edge trigger full-screen
-            const { clientX, clientY } = event;
-            const { innerWidth, innerHeight } = window;
-
-            return (
-                clientX <= edgeThreshold || 
-                clientX >= innerWidth - edgeThreshold || 
-                clientY <= edgeThreshold || 
-                clientY >= innerHeight - edgeThreshold
-            );
-        }
-
         function fixUsernameCutoff() {
             const usernameElement = document.querySelector('.username');
             if (usernameElement) {
-                usernameElement.style.visibility = 'hidden'; // Temporarily hide
-                usernameElement.style.transform = 'none'; // Reset transform
-                setTimeout(() => {
-                    usernameElement.style.visibility = 'visible'; // Restore visibility
-                    usernameElement.style.transform = 'translateZ(0)'; // Apply GPU rendering fix
-                }, 50); // Allow time for recalculation
+                const parent = usernameElement.parentNode;
+                const temp = usernameElement.cloneNode(true); // Clone the element
+                parent.replaceChild(temp, usernameElement); // Replace with the clone
+                temp.style.visibility = 'visible'; // Ensure visibility
+                temp.style.transform = 'translateZ(0)'; // Apply GPU rendering
             }
         }
 
@@ -149,7 +135,7 @@
                 document.body.style.overflow = 'hidden'; // Prevent scrolling in full-screen mode
             } else {
                 document.body.style.overflow = ''; // Restore default scrolling
-                fixUsernameCutoff(); // Fix "username" cut-off issue when exiting full-screen
+                fixUsernameCutoff(); // Fix cut-off issue for "username" when exiting full-screen
             }
         });
 
@@ -176,18 +162,6 @@
                 }, 4000);
 
                 initialClickCompleted = true;
-            } else if (isEdgeClick(event)) {
-                if (!document.fullscreenElement) {
-                    if (document.documentElement.requestFullscreen) {
-                        document.documentElement.requestFullscreen();
-                    } else if (document.documentElement.webkitRequestFullscreen) {
-                        document.documentElement.webkitRequestFullscreen();
-                    } else if (document.documentElement.mozRequestFullScreen) {
-                        document.documentElement.mozRequestFullScreen();
-                    } else if (document.documentElement.msRequestFullscreen) {
-                        document.documentElement.msRequestFullscreen();
-                    }
-                }
             }
         });
 

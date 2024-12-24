@@ -58,6 +58,11 @@ body.fade-in-trigger .time-text {
     background-color: #dadada;
 }
 
+body.non-fullscreen .username {
+    top: 36.6vh; /* Adjusted top offset to prevent cut-off in non-fullscreen */
+    transform: none; /* Ensure no glitches */
+}
+
 .original {
     top: 12.5vh; 
     left: 6.38vw; 

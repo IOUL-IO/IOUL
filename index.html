@@ -16,7 +16,7 @@
         }
 
         .username {
-            top: 36.1vh;
+            top: 36.6vh; /* Adjusted for non-fullscreen */
             visibility: visible;
         }
 
@@ -111,14 +111,34 @@
             }
         }
 
+        function isEdgeClick(event) {
+            const edgeThreshold = 10; // Clicks within 10px of edge trigger full-screen
+            const { clientX, clientY } = event;
+            const { innerWidth, innerHeight } = window;
+
+            return (
+                clientX <= edgeThreshold || 
+                clientX >= innerWidth - edgeThreshold || 
+                clientY <= edgeThreshold || 
+                clientY >= innerHeight - edgeThreshold
+            );
+        }
+
+        function adjustSpacing() {
+            const usernameElement = document.querySelector('.username');
+            const loginLineElement = document.querySelector('.login-line');
+
+            if (usernameElement && loginLineElement) {
+                const loginLineTop = parseFloat(getComputedStyle(loginLineElement).top);
+                usernameElement.style.top = `${loginLineTop - 2.8}vh`; // Adjust spacing dynamically
+            }
+        }
+
         document.addEventListener('mousemove', resetInactivityTimer);
 
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
-                const usernameElement = document.querySelector('.username');
-                if (usernameElement) {
-                    usernameElement.style.top = '36.6vh'; // Adjust top offset for non-fullscreen
-                }
+                adjustSpacing();
             }
         });
 
@@ -138,6 +158,18 @@
                 }, 4000);
 
                 initialClickCompleted = true; 
+            } else if (isEdgeClick(event)) {
+                if (!document.fullscreenElement) {
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.msRequestFullscreen) {
+                        document.documentElement.msRequestFullscreen();
+                    }
+                }
             }
         });
 
@@ -169,6 +201,8 @@
                 }
             });
         });
+
+        window.onload = adjustSpacing; // Ensure spacing is correct on page load
     </script>
 </body>
 </html>

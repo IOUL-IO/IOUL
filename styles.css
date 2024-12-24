@@ -59,8 +59,19 @@ body.fade-in-trigger .time-text {
 }
 
 body.non-fullscreen .username {
-    top: 36.6vh; /* Adjusted top offset to prevent cut-off in non-fullscreen */
-    transform: none; /* Ensure no glitches */
+    top: 36.1vh; /* Maintain consistent spacing for non-fullscreen */
+}
+
+body.non-fullscreen .password {
+    top: 44.2vh; /* Maintain consistent spacing for non-fullscreen */
+}
+
+body.non-fullscreen .login-line {
+    top: 38.9vh; /* Consistent spacing for non-fullscreen */
+}
+
+body.non-fullscreen .login-line-second {
+    top: 47vh; /* Consistent spacing for non-fullscreen */
 }
 
 .original {

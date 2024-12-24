@@ -17,23 +17,14 @@
             outline: none;
             background-color: transparent;
             position: absolute;
+            caret-color: #d3d3d3; /* Lighter gray caret color */
             animation: blink-caret 1s step-end infinite;
-            caret-color: gray; /* Set caret to gray */
         }
 
         @keyframes blink-caret {
             50% {
                 border-color: transparent;
             }
-        }
-
-        /* Styling for the input's caret */
-        input.typing-input::placeholder {
-            font-size: 0; /* Remove placeholder text */
-        }
-
-        input.typing-input:focus {
-            caret-color: gray; /* Ensure gray caret on focus */
         }
     </style>
 </head>
@@ -157,7 +148,7 @@
         });
 
         // Updated login input behavior
-        document.querySelectorAll('.login-text').forEach(element => {
+        document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
             element.addEventListener('click', function () {
                 if (fadeCompleted) { 
                     const parentRect = this.getBoundingClientRect();
@@ -177,7 +168,9 @@
                         span.className = element.className;
                         span.innerText = input.value.trim() || element.innerText;
                         input.replaceWith(span);
-                        span.addEventListener('click', arguments.callee);
+
+                        // Rebind the click handler after blur
+                        addClickHandler(span);
                     });
                 }
             });

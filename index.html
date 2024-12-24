@@ -17,8 +17,9 @@
             outline: none;
             background-color: transparent;
             position: absolute;
-            caret-color: #d3d3d3; /* Lighter gray caret color */
+            caret-color: #d1d1d1; /* Updated lighter gray caret color */
             animation: blink-caret 1s step-end infinite;
+            width: calc(22.48vw + 4vw); /* Extended width to fit 10 characters comfortably */
         }
 
         @keyframes blink-caret {
@@ -145,6 +146,12 @@
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
             }
+
+            // Fix for cut-off issue on entering full-screen
+            document.querySelectorAll('.login-text').forEach(el => {
+                el.style.transform = 'translateY(0)'; // Reset position
+                el.style.visibility = 'visible'; // Ensure visibility
+            });
         });
 
         // Updated login input behavior
@@ -158,7 +165,7 @@
                     input.className = 'typing-input';
                     input.style.top = `${parentRect.top + window.scrollY}px`;
                     input.style.left = `${parentRect.left + window.scrollX}px`;
-                    input.style.width = `${this.offsetWidth}px`;
+                    input.style.width = `${this.offsetWidth + 50}px`; // Increase input width
                     input.style.height = `${this.offsetHeight}px`;
                     this.replaceWith(input);
                     input.focus();

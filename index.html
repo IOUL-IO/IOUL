@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Inline styles for additional changes */
+        /* Additional styles for updated cursor and input behavior */
         input.typing-input {
             font-family: 'Distill Expanded', sans-serif;
             font-size: 0.35rem; /* Adjusted font size */
@@ -18,12 +18,22 @@
             background-color: transparent;
             position: absolute;
             animation: blink-caret 1s step-end infinite;
+            caret-color: gray; /* Set caret to gray */
         }
 
         @keyframes blink-caret {
             50% {
                 border-color: transparent;
             }
+        }
+
+        /* Styling for the input's caret */
+        input.typing-input::placeholder {
+            font-size: 0; /* Remove placeholder text */
+        }
+
+        input.typing-input:focus {
+            caret-color: gray; /* Ensure gray caret on focus */
         }
     </style>
 </head>

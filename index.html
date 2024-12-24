@@ -63,7 +63,7 @@
         }
     </style>
 </head>
-<body>
+<body class="non-fullscreen">
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -114,12 +114,12 @@
         function fixUsernameCutoff() {
             const usernameElement = document.querySelector('.username');
             if (usernameElement) {
-                const parent = usernameElement.parentNode;
-                const clone = usernameElement.cloneNode(true); // Clone the element
-                usernameElement.remove(); // Remove the original element
-                parent.appendChild(clone); // Re-add the clone
-                clone.style.visibility = 'visible'; // Ensure visibility
-                clone.style.transform = 'translateZ(0)'; // Trigger re-render
+                usernameElement.style.visibility = 'hidden'; // Temporarily hide the element
+                usernameElement.style.transform = 'none'; // Remove existing transform
+                setTimeout(() => {
+                    usernameElement.style.visibility = 'visible'; // Restore visibility
+                    usernameElement.style.transform = 'translateZ(0)'; // Reapply GPU rendering
+                }, 50); // Allow time for the browser to recalculate styles
             }
         }
 
@@ -133,10 +133,18 @@
 
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
-                document.body.style.overflow = 'hidden'; // Prevent scrolling in full-screen mode
+                document.body.style.overflow = 'hidden';
+
+                document.querySelectorAll('.login-text').forEach(el => {
+                    el.style.transform = 'translateZ(0)';
+                    el.style.visibility = 'visible';
+                });
             } else {
-                document.body.style.overflow = ''; // Restore default scrolling
-                fixUsernameCutoff(); // Fix cut-off issue for "username"
+                document.body.style.overflow = '';
+                document.body.classList.add('non-fullscreen');
+
+                // Fix cut-off for username in non-fullscreen mode
+                fixUsernameCutoff();
             }
         });
 

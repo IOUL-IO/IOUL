@@ -7,25 +7,23 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Additional styles for updated cursor and input behavior */
-        input.typing-input {
-            font-family: 'Distill Expanded', sans-serif;
-            font-size: 0.35rem; /* Adjusted font size */
-            color: #414141; /* Grey color matching initial login text */
-            letter-spacing: 0.28vw;
-            border: none;
-            outline: none;
-            background-color: transparent;
-            position: absolute;
-            caret-color: #d1d1d1; /* Updated lighter gray caret color */
-            animation: blink-caret 1s step-end infinite;
-            width: calc(22.48vw + 4vw); /* Extended width to fit 10 characters comfortably */
+        /* Additional styles to fix fade-in/out issues */
+        .login-text {
+            position: relative;
+            z-index: 10; /* Ensure login text is above other elements */
+            transform: translateZ(0); /* Force GPU rendering to prevent clipping */
         }
 
-        @keyframes blink-caret {
-            50% {
-                border-color: transparent;
-            }
+        .hidden {
+            opacity: 0 !important;
+            visibility: hidden !important; /* Ensure elements are fully hidden */
+            transition: opacity 0.5s ease-in-out, visibility 0s linear 0.5s; /* Add delay to visibility */
+        }
+
+        .visible {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transition: opacity 0.5s ease-in-out, visibility 0s linear 0s;
         }
     </style>
 </head>
@@ -55,19 +53,6 @@
         let initialClickCompleted = false; 
         let inactivityTimer; 
 
-        function isEdgeClick(event) {
-            const edgeThreshold = 11; 
-            const { clientX, clientY } = event;
-            const { innerWidth, innerHeight } = window;
-
-            return (
-                clientX <= edgeThreshold || 
-                clientX >= innerWidth - edgeThreshold || 
-                clientY <= edgeThreshold || 
-                clientY >= innerHeight - edgeThreshold 
-            );
-        }
-
         function hideLoginElements() {
             document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
                 el.classList.add('hidden'); 
@@ -89,6 +74,29 @@
                 inactivityTimer = setTimeout(hideLoginElements, 20000); 
             }
         }
+
+        document.addEventListener('mousemove', () => {
+            if (!loginTriggered && fadeCompleted) {
+                loginTriggered = true;
+                showLoginElements(); 
+            }
+            resetInactivityTimer(); 
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                document.body.style.overflow = 'hidden';
+
+                // Force repaint to fix clipping
+                document.querySelectorAll('.login-text').forEach(el => {
+                    el.style.transform = 'translateZ(0)';
+                    el.style.visibility = 'visible';
+                });
+            } else {
+                document.body.style.overflow = '';
+                document.body.classList.add('non-fullscreen');
+            }
+        });
 
         document.addEventListener('click', (event) => {
             if (!initialClickCompleted) {
@@ -113,74 +121,7 @@
                 }, 4000);
 
                 initialClickCompleted = true; 
-            } else if (isEdgeClick(event)) {
-                if (!document.fullscreenElement) {
-                    if (document.documentElement.requestFullscreen) {
-                        document.documentElement.requestFullscreen();
-                    } else if (document.documentElement.webkitRequestFullscreen) {
-                        document.documentElement.webkitRequestFullscreen();
-                    } else if (document.documentElement.mozRequestFullScreen) {
-                        document.documentElement.mozRequestFullScreen();
-                    } else if (document.documentElement.msRequestFullscreen) {
-                        document.documentElement.msRequestFullscreen();
-                    }
-                }
             }
-        });
-
-        document.addEventListener('mousemove', () => {
-            if (!loginTriggered && fadeCompleted) {
-                loginTriggered = true;
-                showLoginElements(); 
-            }
-            resetInactivityTimer(); 
-        });
-
-        document.addEventListener('fullscreenchange', () => {
-            if (document.fullscreenElement) {
-                document.body.style.overflow = 'hidden';
-                document.querySelectorAll('.login-text').forEach(el => {
-                    el.style.visibility = 'visible';
-                });
-            } else {
-                document.body.style.overflow = '';
-                document.body.classList.add('non-fullscreen');
-            }
-
-            // Fix for cut-off issue on entering full-screen
-            document.querySelectorAll('.login-text').forEach(el => {
-                el.style.transform = 'translateY(0)'; // Reset position
-                el.style.visibility = 'visible'; // Ensure visibility
-            });
-        });
-
-        // Updated login input behavior
-        document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
-            element.addEventListener('click', function () {
-                if (fadeCompleted) { 
-                    const parentRect = this.getBoundingClientRect();
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.maxLength = 10;
-                    input.className = 'typing-input';
-                    input.style.top = `${parentRect.top + window.scrollY}px`;
-                    input.style.left = `${parentRect.left + window.scrollX}px`;
-                    input.style.width = `${this.offsetWidth + 50}px`; // Increase input width
-                    input.style.height = `${this.offsetHeight}px`;
-                    this.replaceWith(input);
-                    input.focus();
-
-                    input.addEventListener('blur', function () {
-                        const span = document.createElement('span');
-                        span.className = element.className;
-                        span.innerText = input.value.trim() || element.innerText;
-                        input.replaceWith(span);
-
-                        // Rebind the click handler after blur
-                        addClickHandler(span);
-                    });
-                }
-            });
         });
     </script>
 </body>

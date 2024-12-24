@@ -7,43 +7,38 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Additional styles to fix fade-in/out issues and input behavior */
+        /* Updated alignment and spacing for login text and lines */
         .login-text {
-            position: relative;
-            z-index: 10; /* Ensure login text is above other elements */
-            transform: translateZ(0); /* Force GPU rendering to prevent clipping */
-        }
-
-        .hidden {
-            opacity: 0 !important;
-            visibility: hidden !important; /* Ensure elements are fully hidden */
-            transition: opacity 0.5s ease-in-out, visibility 0s linear 0.5s; /* Add delay to visibility */
-        }
-
-        .visible {
-            opacity: 1 !important;
-            visibility: visible !important;
-            transition: opacity 0.5s ease-in-out, visibility 0s linear 0s;
-        }
-
-        input.typing-input {
-            font-family: 'Distill Expanded', sans-serif;
-            font-size: 0.35rem; /* Adjusted font size */
-            color: #414141; /* Grey color matching initial login text */
-            letter-spacing: 0.28vw;
-            border: none;
-            outline: none;
-            background-color: transparent;
             position: absolute;
-            caret-color: #d1d1d1; /* Updated lighter gray caret color */
-            animation: blink-caret 1s step-end infinite;
-            width: calc(22.48vw + 4vw); /* Extended width to fit 10 characters comfortably */
+            left: 6.41vw; /* Ensure alignment for both username and password */
+            z-index: 10;
+            transform: translateZ(0);
         }
 
-        @keyframes blink-caret {
-            50% {
-                border-color: transparent;
-            }
+        .username {
+            top: 36.1vh; /* Exact vertical positioning */
+        }
+
+        .password {
+            top: 44.2vh; /* Exact vertical positioning */
+        }
+
+        .login-line {
+            position: absolute;
+            top: 38.9vh; /* 2.8vh below username */
+            left: 6.4vw; /* Match left alignment */
+            width: 22.48vw;
+            height: 1px;
+            background-color: rgba(230, 230, 230, 0.28);
+        }
+
+        .login-line-second {
+            position: absolute;
+            top: 47vh; /* 2.8vh below password */
+            left: 6.4vw; /* Match left alignment */
+            width: 22.48vw;
+            height: 1px;
+            background-color: rgba(230, 230, 230, 0.28);
         }
     </style>
 </head>
@@ -107,7 +102,6 @@
             if (document.fullscreenElement) {
                 document.body.style.overflow = 'hidden';
 
-                // Force repaint to fix clipping
                 document.querySelectorAll('.login-text').forEach(el => {
                     el.style.transform = 'translateZ(0)';
                     el.style.visibility = 'visible';
@@ -155,7 +149,7 @@
                     input.className = 'typing-input';
                     input.style.top = `${parentRect.top + window.scrollY}px`;
                     input.style.left = `${parentRect.left + window.scrollX}px`;
-                    input.style.width = `${this.offsetWidth + 50}px`; // Increase input width
+                    input.style.width = `${this.offsetWidth + 50}px`;
                     input.style.height = `${this.offsetHeight}px`;
                     this.replaceWith(input);
                     input.focus();

@@ -13,7 +13,9 @@
 }
 
 :root {
-    --text-line-gap: 2.8vh; /* Uniform gap between text and lines */
+    --username-top: 36.1vh; /* Top position for the username */
+    --password-top: 44.2vh; /* Top position for the password */
+    --line-gap: 2.8vh;     /* Space between text and line */
 }
 
 body.non-fullscreen {
@@ -158,23 +160,22 @@ body.non-fullscreen .username {
     font-family: 'Distill Expanded', sans-serif;
     color: #414141;
     letter-spacing: 0.28vw;
-    font-size: 0.4rem; /* Ensure identical font size */
+    font-size: 0.4rem;
     line-height: 1; /* Prevent line-height inconsistencies */
+    left: 6.41vw;
 }
 
 .username {
-    top: 36.1vh;
-    left: 6.41vw;
+    top: var(--username-top); /* Use variable for positioning */
 }
 
 .password {
-    top: 44.2vh;
-    left: 6.41vw;
+    top: var(--password-top); /* Use variable for positioning */
 }
 
 .login-line {
     position: absolute;
-    top: calc(36.1vh + var(--text-line-gap)); /* Consistent spacing below username */
+    top: calc(var(--username-top) + var(--line-gap)); /* Positioned below username */
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
@@ -183,7 +184,7 @@ body.non-fullscreen .username {
 
 .login-line-second {
     position: absolute;
-    top: calc(44.2vh + var(--text-line-gap)); /* Consistent spacing below password */
+    top: calc(var(--password-top) + var(--line-gap)); /* Positioned below password */
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;

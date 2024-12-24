@@ -124,40 +124,19 @@
             );
         }
 
-        function fixUsernameCutoff() {
-            const usernameElement = document.querySelector('.username');
-            if (usernameElement) {
-                const parent = usernameElement.parentNode;
-                const temp = document.createElement('span'); // Temporary placeholder
-                parent.replaceChild(temp, usernameElement); // Remove "username" element
-                setTimeout(() => {
-                    parent.replaceChild(usernameElement, temp); // Reattach "username" element
-                }, 50); // Reattach after 50ms to force recalculation
-            }
-        }
-
-        document.addEventListener('mousemove', () => {
-            if (!loginTriggered && fadeCompleted) {
-                loginTriggered = true;
-                showLoginElements(); 
-            }
-            resetInactivityTimer(); 
-        });
+        document.addEventListener('mousemove', resetInactivityTimer);
 
         document.addEventListener('fullscreenchange', () => {
-            if (document.fullscreenElement) {
-                document.body.style.overflow = 'hidden';
-
-                document.querySelectorAll('.login-text').forEach(el => {
-                    el.style.transform = 'translateZ(0)';
-                    el.style.visibility = 'visible';
-                });
-            } else {
-                document.body.style.overflow = '';
+            if (!document.fullscreenElement) {
                 document.body.classList.add('non-fullscreen');
 
-                // Fix cut-off for username in non-fullscreen mode
-                fixUsernameCutoff();
+                // Trigger immediate style recalculation for .username
+                const usernameElement = document.querySelector('.username');
+                if (usernameElement) {
+                    usernameElement.style.top = '36.6vh'; // Adjust top offset for non-fullscreen
+                }
+            } else {
+                document.body.classList.remove('non-fullscreen');
             }
         });
 
@@ -166,15 +145,8 @@
                 if (!document.fullscreenElement) {
                     if (document.documentElement.requestFullscreen) {
                         document.documentElement.requestFullscreen();
-                    } else if (document.documentElement.webkitRequestFullscreen) {
-                        document.documentElement.webkitRequestFullscreen();
-                    } else if (document.documentElement.mozRequestFullScreen) {
-                        document.documentElement.mozRequestFullScreen();
-                    } else if (document.documentElement.msRequestFullscreen) {
-                        document.documentElement.msRequestFullscreen();
                     }
                 }
-
                 setTimeout(() => {
                     document.body.classList.add('fade-in-trigger');
                 }, 1000);
@@ -188,12 +160,6 @@
                 if (!document.fullscreenElement) {
                     if (document.documentElement.requestFullscreen) {
                         document.documentElement.requestFullscreen();
-                    } else if (document.documentElement.webkitRequestFullscreen) {
-                        document.documentElement.webkitRequestFullscreen();
-                    } else if (document.documentElement.mozRequestFullScreen) {
-                        document.documentElement.mozRequestFullScreen();
-                    } else if (document.documentElement.msRequestFullscreen) {
-                        document.documentElement.msRequestFullscreen();
                     }
                 }
             }

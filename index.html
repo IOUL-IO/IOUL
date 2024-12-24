@@ -63,7 +63,7 @@
         }
     </style>
 </head>
-<body class="non-fullscreen">
+<body>
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -111,14 +111,27 @@
             }
         }
 
+        function isEdgeClick(event) {
+            const edgeThreshold = 10; // Clicks within 10px of edge trigger full-screen
+            const { clientX, clientY } = event;
+            const { innerWidth, innerHeight } = window;
+
+            return (
+                clientX <= edgeThreshold || 
+                clientX >= innerWidth - edgeThreshold || 
+                clientY <= edgeThreshold || 
+                clientY >= innerHeight - edgeThreshold
+            );
+        }
+
         function fixUsernameCutoff() {
             const usernameElement = document.querySelector('.username');
             if (usernameElement) {
                 const parent = usernameElement.parentNode;
-                const temp = usernameElement.cloneNode(true); // Clone the element
-                parent.replaceChild(temp, usernameElement); // Replace with the clone
-                temp.style.visibility = 'visible'; // Ensure visibility
-                temp.style.transform = 'translateZ(0)'; // Apply GPU rendering
+                const clone = usernameElement.cloneNode(true); // Clone the element
+                parent.replaceChild(clone, usernameElement); // Replace with the clone
+                clone.style.visibility = 'visible'; // Ensure visibility
+                clone.style.transform = 'translateZ(0)'; // Apply GPU rendering
             }
         }
 
@@ -162,6 +175,18 @@
                 }, 4000);
 
                 initialClickCompleted = true;
+            } else if (isEdgeClick(event)) {
+                if (!document.fullscreenElement) {
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.msRequestFullscreen) {
+                        document.documentElement.msRequestFullscreen();
+                    }
+                }
             }
         });
 

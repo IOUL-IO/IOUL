@@ -58,11 +58,6 @@ body.fade-in-trigger .time-text {
     background-color: #dadada;
 }
 
-body.non-fullscreen .username {
-    top: 36.6vh; /* Adjusted top offset to prevent cut-off in non-fullscreen */
-    transform: none; /* Ensure no glitches */
-}
-
 .original {
     top: 12.5vh; 
     left: 6.38vw; 
@@ -162,6 +157,10 @@ body.non-fullscreen .username {
     font-size: 0.4rem;
 }
 
+body.non-fullscreen .username {
+    top: 36.6vh; /* Adjust for non-fullscreen */
+}
+
 .password {
     top: 44.2vh;
     left: 6.41vw;
@@ -175,6 +174,10 @@ body.non-fullscreen .username {
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
+}
+
+body.non-fullscreen .login-line {
+    top: 39.4vh; /* Maintain spacing with .username */
 }
 
 .login-line-second {

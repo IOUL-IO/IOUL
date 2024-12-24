@@ -9,26 +9,25 @@
     <style>
         .login-text {
             position: absolute;
-            left: 6.41vw; /* Ensure alignment for both username and password */
+            left: 6.41vw;
             z-index: 10;
-            transform: translateZ(0); /* Prevent clipping during rendering */
-            overflow: visible; /* Ensure no cut-off */
+            transform: translateZ(0);
+            overflow: visible;
         }
 
         .username {
-            top: 36.1vh; /* Exact vertical positioning */
-            visibility: visible; /* Ensure it is visible in non-fullscreen mode */
-            transform: translateZ(0); /* Prevent cut-off */
+            top: 36.1vh;
+            visibility: visible;
         }
 
         .password {
-            top: 44.2vh; /* Exact vertical positioning */
+            top: 44.2vh;
         }
 
         .login-line {
             position: absolute;
-            top: 38.9vh; /* 2.8vh below username */
-            left: 6.4vw; /* Match left alignment */
+            top: 38.9vh;
+            left: 6.4vw;
             width: 22.48vw;
             height: 1px;
             background-color: rgba(230, 230, 230, 0.28);
@@ -36,8 +35,8 @@
 
         .login-line-second {
             position: absolute;
-            top: 47vh; /* 2.8vh below password */
-            left: 6.4vw; /* Match left alignment */
+            top: 47vh;
+            left: 6.4vw;
             width: 22.48vw;
             height: 1px;
             background-color: rgba(230, 230, 230, 0.28);
@@ -54,7 +53,7 @@
             position: absolute;
             caret-color: #d1d1d1;
             animation: blink-caret 1s step-end infinite;
-            width: calc(22.48vw + 4vw); /* Extended width for 10 characters */
+            width: calc(22.48vw + 4vw);
         }
 
         @keyframes blink-caret {
@@ -112,17 +111,11 @@
             }
         }
 
-        function isEdgeClick(event) {
-            const edgeThreshold = 10; // Clicks within 10px of edge trigger full-screen
-            const { clientX, clientY } = event;
-            const { innerWidth, innerHeight } = window;
-
-            return (
-                clientX <= edgeThreshold || 
-                clientX >= innerWidth - edgeThreshold || 
-                clientY <= edgeThreshold || 
-                clientY >= innerHeight - edgeThreshold
-            );
+        function forceRepaint(element) {
+            element.style.transform = 'none'; // Temporarily remove transform
+            requestAnimationFrame(() => {
+                element.style.transform = 'translateZ(0)'; // Reapply transform to force repaint
+            });
         }
 
         document.addEventListener('mousemove', () => {
@@ -145,9 +138,10 @@
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
 
-                // Fix cut-off for username in non-fullscreen
-                document.querySelector('.username').style.transform = 'translateZ(0)';
-                document.querySelector('.username').style.visibility = 'visible';
+                // Fix cut-off for username in non-fullscreen mode
+                const usernameElement = document.querySelector('.username');
+                forceRepaint(usernameElement);
+                usernameElement.style.visibility = 'visible';
             }
         });
 
@@ -174,18 +168,6 @@
                 }, 4000);
 
                 initialClickCompleted = true; 
-            } else if (isEdgeClick(event)) {
-                if (!document.fullscreenElement) {
-                    if (document.documentElement.requestFullscreen) {
-                        document.documentElement.requestFullscreen();
-                    } else if (document.documentElement.webkitRequestFullscreen) {
-                        document.documentElement.webkitRequestFullscreen();
-                    } else if (document.documentElement.mozRequestFullScreen) {
-                        document.documentElement.mozRequestFullScreen();
-                    } else if (document.documentElement.msRequestFullscreen) {
-                        document.documentElement.msRequestFullscreen();
-                    }
-                }
             }
         });
 
@@ -200,7 +182,7 @@
                     input.className = 'typing-input';
                     input.style.top = `${parentRect.top + window.scrollY}px`;
                     input.style.left = `${parentRect.left + window.scrollX}px`;
-                    input.style.width = `calc(${parentRect.width}px + 4vw)`; /* Extended input width */
+                    input.style.width = `calc(${parentRect.width}px + 4vw)`;
                     input.style.height = `${parentRect.height}px`;
                     this.replaceWith(input);
                     input.focus();

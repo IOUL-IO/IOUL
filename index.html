@@ -111,32 +111,14 @@
             }
         }
 
-        function isEdgeClick(event) {
-            const edgeThreshold = 10; // Clicks within 10px of edge trigger full-screen
-            const { clientX, clientY } = event;
-            const { innerWidth, innerHeight } = window;
-
-            return (
-                clientX <= edgeThreshold || 
-                clientX >= innerWidth - edgeThreshold || 
-                clientY <= edgeThreshold || 
-                clientY >= innerHeight - edgeThreshold
-            );
-        }
-
         document.addEventListener('mousemove', resetInactivityTimer);
 
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
-                document.body.classList.add('non-fullscreen');
-
-                // Trigger immediate style recalculation for .username
                 const usernameElement = document.querySelector('.username');
                 if (usernameElement) {
                     usernameElement.style.top = '36.6vh'; // Adjust top offset for non-fullscreen
                 }
-            } else {
-                document.body.classList.remove('non-fullscreen');
             }
         });
 
@@ -156,12 +138,6 @@
                 }, 4000);
 
                 initialClickCompleted = true; 
-            } else if (isEdgeClick(event)) {
-                if (!document.fullscreenElement) {
-                    if (document.documentElement.requestFullscreen) {
-                        document.documentElement.requestFullscreen();
-                    }
-                }
             }
         });
 

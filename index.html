@@ -129,10 +129,10 @@
             if (usernameElement) {
                 usernameElement.style.visibility = 'hidden'; // Temporarily hide
                 usernameElement.style.transform = 'none'; // Reset transform
-                setTimeout(() => {
+                requestAnimationFrame(() => {
                     usernameElement.style.visibility = 'visible'; // Restore visibility
                     usernameElement.style.transform = 'translateZ(0)'; // Apply GPU rendering
-                }, 50); // Allow recalculation
+                });
             }
         }
 

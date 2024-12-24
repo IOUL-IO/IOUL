@@ -16,7 +16,7 @@
         }
 
         .username {
-            top: 36.6vh; /* Ensures correct positioning for non-fullscreen */
+            top: 36.1vh; /* Default spacing */
             visibility: visible;
         }
 
@@ -124,17 +124,21 @@
             );
         }
 
+        function adjustSpacing() {
+            const usernameElement = document.querySelector('.username');
+            const loginLineElement = document.querySelector('.login-line');
+
+            if (usernameElement && loginLineElement) {
+                const loginLineTop = parseFloat(getComputedStyle(loginLineElement).top);
+                usernameElement.style.top = `${loginLineTop - 2.8}vh`; // Adjust spacing dynamically
+            }
+        }
+
         document.addEventListener('mousemove', resetInactivityTimer);
 
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
-                const usernameElement = document.querySelector('.username');
-                const loginLineElement = document.querySelector('.login-line');
-
-                if (usernameElement && loginLineElement) {
-                    const loginLineTop = parseFloat(getComputedStyle(loginLineElement).top);
-                    usernameElement.style.top = `${loginLineTop - 2.8}vh`; // Adjust spacing for non-fullscreen
-                }
+                adjustSpacing(); // Adjust spacing when exiting fullscreen
             }
         });
 
@@ -197,6 +201,8 @@
                 }
             });
         });
+
+        window.onload = adjustSpacing; // Adjust spacing on page load
     </script>
 </body>
 </html>

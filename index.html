@@ -11,7 +11,8 @@
             position: absolute;
             left: 6.41vw; /* Ensure alignment for both username and password */
             z-index: 10;
-            transform: translateZ(0);
+            transform: translateZ(0); /* Prevent clipping during rendering */
+            overflow: visible; /* Ensure no cut-off */
         }
 
         .username {
@@ -51,6 +52,7 @@
             position: absolute;
             caret-color: #d1d1d1;
             animation: blink-caret 1s step-end infinite;
+            width: calc(22.48vw + 4vw); /* Extended width for 10 characters */
         }
 
         @keyframes blink-caret {
@@ -167,7 +169,7 @@
                     input.className = 'typing-input';
                     input.style.top = `${parentRect.top + window.scrollY}px`;
                     input.style.left = `${parentRect.left + window.scrollX}px`;
-                    input.style.width = `${parentRect.width}px`;
+                    input.style.width = `calc(${parentRect.width}px + 4vw)`; /* Extended input width */
                     input.style.height = `${parentRect.height}px`;
                     this.replaceWith(input);
                     input.focus();

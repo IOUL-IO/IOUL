@@ -127,12 +127,12 @@
         function fixUsernameCutoff() {
             const usernameElement = document.querySelector('.username');
             if (usernameElement) {
-                const parent = usernameElement.parentNode;
-                const temp = document.createElement('span'); // Temporary placeholder
-                parent.replaceChild(temp, usernameElement); // Remove "username" element
+                usernameElement.style.visibility = 'hidden'; // Temporarily hide the element
+                usernameElement.style.transform = 'none'; // Remove existing transform
                 setTimeout(() => {
-                    parent.replaceChild(usernameElement, temp); // Reattach "username" element
-                }, 50); // Reattach after 50ms to force recalculation
+                    usernameElement.style.visibility = 'visible'; // Make it visible again
+                    usernameElement.style.transform = 'translateZ(0)'; // Reapply GPU rendering
+                }, 50); // Allow time for the browser to recalculate styles
             }
         }
 

@@ -63,7 +63,7 @@
         }
     </style>
 </head>
-<body class="non-fullscreen">
+<body>
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -84,67 +84,71 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let fadeCompleted = false; 
-        let loginTriggered = false; 
-        let initialClickCompleted = false; 
-        let inactivityTimer; 
+        let fadeCompleted = false;
+        let loginTriggered = false;
+        let initialClickCompleted = false;
+        let inactivityTimer;
 
         function hideLoginElements() {
             document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
-                el.classList.add('hidden'); 
-                el.classList.remove('visible'); 
+                el.classList.add('hidden');
+                el.classList.remove('visible');
             });
         }
 
         function showLoginElements() {
             document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
-                el.classList.add('visible'); 
-                el.classList.remove('hidden'); 
+                el.classList.add('visible');
+                el.classList.remove('hidden');
             });
         }
 
         function resetInactivityTimer() {
             if (fadeCompleted) {
-                showLoginElements(); 
-                clearTimeout(inactivityTimer); 
-                inactivityTimer = setTimeout(hideLoginElements, 20000); 
+                showLoginElements();
+                clearTimeout(inactivityTimer);
+                inactivityTimer = setTimeout(hideLoginElements, 20000);
             }
+        }
+
+        function isEdgeClick(event) {
+            const edgeThreshold = 10; // Clicks within 10px of edge trigger full-screen
+            const { clientX, clientY } = event;
+            const { innerWidth, innerHeight } = window;
+
+            return (
+                clientX <= edgeThreshold || 
+                clientX >= innerWidth - edgeThreshold || 
+                clientY <= edgeThreshold || 
+                clientY >= innerHeight - edgeThreshold
+            );
         }
 
         function fixUsernameCutoff() {
             const usernameElement = document.querySelector('.username');
             if (usernameElement) {
-                usernameElement.style.visibility = 'hidden'; // Temporarily hide the element
-                usernameElement.style.transform = 'none'; // Remove existing transform
-                setTimeout(() => {
-                    usernameElement.style.visibility = 'visible'; // Restore visibility
-                    usernameElement.style.transform = 'translateZ(0)'; // Reapply GPU rendering
-                }, 50); // Allow time for the browser to recalculate styles
+                const parent = usernameElement.parentNode;
+                const clone = usernameElement.cloneNode(true); // Clone the element
+                parent.replaceChild(clone, usernameElement); // Replace with the clone
+                clone.style.transform = 'translateZ(0)'; // Trigger re-render
+                clone.style.visibility = 'visible'; // Ensure visibility
             }
         }
 
         document.addEventListener('mousemove', () => {
             if (!loginTriggered && fadeCompleted) {
                 loginTriggered = true;
-                showLoginElements(); 
+                showLoginElements();
             }
-            resetInactivityTimer(); 
+            resetInactivityTimer();
         });
 
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
-                document.body.style.overflow = 'hidden';
-
-                document.querySelectorAll('.login-text').forEach(el => {
-                    el.style.transform = 'translateZ(0)';
-                    el.style.visibility = 'visible';
-                });
+                document.body.style.overflow = 'hidden'; // Prevent scrolling in full-screen mode
             } else {
-                document.body.style.overflow = '';
-                document.body.classList.add('non-fullscreen');
-
-                // Fix cut-off for username in non-fullscreen mode
-                fixUsernameCutoff();
+                document.body.style.overflow = ''; // Restore default scrolling
+                fixUsernameCutoff(); // Fix cut-off issue for "username"
             }
         });
 
@@ -167,17 +171,29 @@
                 }, 1000);
 
                 setTimeout(() => {
-                    fadeCompleted = true; 
+                    fadeCompleted = true;
                 }, 4000);
 
-                initialClickCompleted = true; 
+                initialClickCompleted = true;
+            } else if (isEdgeClick(event)) {
+                if (!document.fullscreenElement) {
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.msRequestFullscreen) {
+                        document.documentElement.msRequestFullscreen();
+                    }
+                }
             }
         });
 
         // Input handling for login text
         document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
             element.addEventListener('click', function () {
-                if (fadeCompleted) { 
+                if (fadeCompleted) {
                     const parentRect = this.getBoundingClientRect();
                     const input = document.createElement('input');
                     input.type = 'text';

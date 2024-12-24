@@ -116,8 +116,15 @@
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
                 const usernameElement = document.querySelector('.username');
-                if (usernameElement) {
-                    usernameElement.style.top = '36.6vh'; // Adjust top offset for non-fullscreen
+                const passwordElement = document.querySelector('.password');
+                const loginLineElement = document.querySelector('.login-line');
+                const loginLineSecondElement = document.querySelector('.login-line-second');
+                
+                if (usernameElement && passwordElement && loginLineElement && loginLineSecondElement) {
+                    usernameElement.style.top = '36.1vh';
+                    passwordElement.style.top = '44.2vh';
+                    loginLineElement.style.top = '38.9vh';
+                    loginLineSecondElement.style.top = '47vh';
                 }
             }
         });
@@ -139,35 +146,6 @@
 
                 initialClickCompleted = true; 
             }
-        });
-
-        // Input handling for login text
-        document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
-            element.addEventListener('click', function () {
-                if (fadeCompleted) { 
-                    const parentRect = this.getBoundingClientRect();
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.maxLength = 10;
-                    input.className = 'typing-input';
-                    input.style.top = `${parentRect.top + window.scrollY}px`;
-                    input.style.left = `${parentRect.left + window.scrollX}px`;
-                    input.style.width = `calc(${parentRect.width}px + 4vw)`;
-                    input.style.height = `${parentRect.height}px`;
-                    this.replaceWith(input);
-                    input.focus();
-
-                    input.addEventListener('blur', function () {
-                        const span = document.createElement('span');
-                        span.className = element.className;
-                        span.innerText = input.value.trim() || element.innerText;
-                        input.replaceWith(span);
-
-                        // Rebind the click handler after blur
-                        addClickHandler(span);
-                    });
-                }
-            });
         });
     </script>
 </body>

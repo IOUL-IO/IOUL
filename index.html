@@ -16,7 +16,7 @@
         }
 
         .username {
-            top: 36.1vh;
+            top: 36.1vh; /* Default position for non-fullscreen */
             visibility: visible;
         }
 
@@ -131,10 +131,13 @@
             const loginLineElement = document.querySelector('.login-line');
 
             if (!document.fullscreenElement) {
+                // Adjust spacing dynamically in non-fullscreen mode
                 if (usernameElement && loginLineElement) {
                     const loginLineTop = parseFloat(getComputedStyle(loginLineElement).top);
                     usernameElement.style.top = `${loginLineTop - 2.8}vh`; // Adjust spacing
                 }
+            } else {
+                usernameElement.style.top = '36.1vh'; // Reset to default for fullscreen
             }
         });
 

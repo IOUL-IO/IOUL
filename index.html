@@ -16,7 +16,7 @@
         }
 
         .username {
-            top: 36.1vh; /* Default position for non-fullscreen */
+            top: 36.1vh;
             visibility: visible;
         }
 
@@ -124,20 +124,21 @@
             );
         }
 
-        document.addEventListener('mousemove', resetInactivityTimer);
-
-        document.addEventListener('fullscreenchange', () => {
+        function adjustUsernameSpacing() {
             const usernameElement = document.querySelector('.username');
             const loginLineElement = document.querySelector('.login-line');
 
+            if (usernameElement && loginLineElement) {
+                const loginLineTop = parseFloat(getComputedStyle(loginLineElement).top);
+                usernameElement.style.top = `${loginLineTop - 2.8}vh`; // Align to match spacing of PASSWORD
+            }
+        }
+
+        document.addEventListener('mousemove', resetInactivityTimer);
+
+        document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
-                // Adjust spacing dynamically in non-fullscreen mode
-                if (usernameElement && loginLineElement) {
-                    const loginLineTop = parseFloat(getComputedStyle(loginLineElement).top);
-                    usernameElement.style.top = `${loginLineTop - 2.8}vh`; // Adjust spacing
-                }
-            } else {
-                usernameElement.style.top = '36.1vh'; // Reset to default for fullscreen
+                adjustUsernameSpacing(); // Adjust spacing for non-fullscreen
             }
         });
 
@@ -200,6 +201,8 @@
                 }
             });
         });
+
+        window.onload = adjustUsernameSpacing; // Ensure correct spacing on load
     </script>
 </body>
 </html>

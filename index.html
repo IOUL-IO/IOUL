@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IOUL</title>
-    <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <style>
         .login-text {
@@ -41,26 +40,6 @@
             height: 1px;
             background-color: rgba(230, 230, 230, 0.28);
         }
-
-        input.typing-input {
-            font-family: 'Distill Expanded', sans-serif;
-            font-size: 0.35rem;
-            color: #414141;
-            letter-spacing: 0.28vw;
-            border: none;
-            outline: none;
-            background-color: transparent;
-            position: absolute;
-            caret-color: #d1d1d1;
-            animation: blink-caret 1s step-end infinite;
-            width: calc(22.48vw + 4vw);
-        }
-
-        @keyframes blink-caret {
-            50% {
-                border-color: transparent;
-            }
-        }
     </style>
 </head>
 <body>
@@ -68,44 +47,29 @@
     <div class="line second"></div>
     <div class="line third"></div>
     <div class="line fourth"></div>
-    <div class="line dashed"></div>
-    <div class="line dashed second-dashed"></div>
-    <div class="line dashed third-dashed"></div>
-    <div class="line dashed fourth-dashed"></div>
     
-    <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-    <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-    <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
-    <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
-
     <span class="login-text username">USERnAME</span>
     <span class="login-text password">PASSWORD</span>
     <div class="line login-line"></div>
     <div class="line login-line-second"></div>
 
     <script>
-        let fadeCompleted = false;
-
+        // Fix for cut-off issue
         function fixUsernameCutoff() {
             const usernameElement = document.querySelector('.username');
             if (usernameElement) {
-                usernameElement.style.visibility = 'hidden'; // Temporarily hide
-                usernameElement.style.transform = 'none'; // Reset transform
+                usernameElement.style.visibility = 'hidden';
+                usernameElement.style.transform = 'none';
                 setTimeout(() => {
-                    usernameElement.style.visibility = 'visible'; // Restore visibility
-                    usernameElement.style.transform = 'translateZ(0)'; // Reapply GPU rendering
-                }, 50); // Allow recalculation
+                    usernameElement.style.visibility = 'visible';
+                    usernameElement.style.transform = 'translateZ(0)';
+                }, 50);
             }
         }
 
-        document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement) {
-                fixUsernameCutoff(); // Fix username when exiting full-screen
-            }
-        });
-
+        // Full-screen edge click functionality
         document.addEventListener('click', (event) => {
-            const edgeThreshold = 10;
+            const edgeThreshold = 10; // Threshold for edge clicks
             const { clientX, clientY } = event;
             const { innerWidth, innerHeight } = window;
 
@@ -125,6 +89,13 @@
                 } else if (document.documentElement.msRequestFullscreen) {
                     document.documentElement.msRequestFullscreen();
                 }
+            }
+        });
+
+        // Listen for fullscreen exit and fix cut-off
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                fixUsernameCutoff(); // Apply fix on exiting full-screen
             }
         });
     </script>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IOUL</title>
+    <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <style>
         .login-text {
@@ -40,63 +41,191 @@
             height: 1px;
             background-color: rgba(230, 230, 230, 0.28);
         }
+
+        input.typing-input {
+            font-family: 'Distill Expanded', sans-serif;
+            font-size: 0.35rem;
+            color: #414141;
+            letter-spacing: 0.28vw;
+            border: none;
+            outline: none;
+            background-color: transparent;
+            position: absolute;
+            caret-color: #d1d1d1;
+            animation: blink-caret 1s step-end infinite;
+            width: calc(22.48vw + 4vw);
+        }
+
+        @keyframes blink-caret {
+            50% {
+                border-color: transparent;
+            }
+        }
     </style>
 </head>
-<body>
+<body class="non-fullscreen">
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
     <div class="line fourth"></div>
+    <div class="line dashed"></div>
+    <div class="line dashed second-dashed"></div>
+    <div class="line dashed third-dashed"></div>
+    <div class="line dashed fourth-dashed"></div>
     
+    <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+    <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+    <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+    <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+
     <span class="login-text username">USERnAME</span>
     <span class="login-text password">PASSWORD</span>
     <div class="line login-line"></div>
     <div class="line login-line-second"></div>
 
     <script>
-        // Fix for cut-off issue
-        function fixUsernameCutoff() {
-            const usernameElement = document.querySelector('.username');
-            if (usernameElement) {
-                usernameElement.style.visibility = 'hidden';
-                usernameElement.style.transform = 'none';
-                setTimeout(() => {
-                    usernameElement.style.visibility = 'visible';
-                    usernameElement.style.transform = 'translateZ(0)';
-                }, 50);
+        let fadeCompleted = false; 
+        let loginTriggered = false; 
+        let initialClickCompleted = false; 
+        let inactivityTimer; 
+
+        function hideLoginElements() {
+            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
+                el.classList.add('hidden'); 
+                el.classList.remove('visible'); 
+            });
+        }
+
+        function showLoginElements() {
+            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
+                el.classList.add('visible'); 
+                el.classList.remove('hidden'); 
+            });
+        }
+
+        function resetInactivityTimer() {
+            if (fadeCompleted) {
+                showLoginElements(); 
+                clearTimeout(inactivityTimer); 
+                inactivityTimer = setTimeout(hideLoginElements, 20000); 
             }
         }
 
-        // Full-screen edge click functionality
-        document.addEventListener('click', (event) => {
-            const edgeThreshold = 10; // Threshold for edge clicks
+        function isEdgeClick(event) {
+            const edgeThreshold = 10; // Clicks within 10px of edge trigger full-screen
             const { clientX, clientY } = event;
             const { innerWidth, innerHeight } = window;
 
-            const isEdgeClick =
-                clientX <= edgeThreshold ||
-                clientX >= innerWidth - edgeThreshold ||
-                clientY <= edgeThreshold ||
-                clientY >= innerHeight - edgeThreshold;
+            return (
+                clientX <= edgeThreshold || 
+                clientX >= innerWidth - edgeThreshold || 
+                clientY <= edgeThreshold || 
+                clientY >= innerHeight - edgeThreshold
+            );
+        }
 
-            if (isEdgeClick && !document.fullscreenElement) {
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
-                } else if (document.documentElement.webkitRequestFullscreen) {
-                    document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) {
-                    document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.msRequestFullscreen) {
-                    document.documentElement.msRequestFullscreen();
+        function fixUsernameCutoff() {
+            const usernameElement = document.querySelector('.username');
+            if (usernameElement) {
+                const parent = usernameElement.parentNode;
+                const temp = document.createElement('span'); // Temporary placeholder
+                parent.replaceChild(temp, usernameElement); // Remove "username" element
+                setTimeout(() => {
+                    parent.replaceChild(usernameElement, temp); // Reattach "username" element
+                }, 50); // Reattach after 50ms to force recalculation
+            }
+        }
+
+        document.addEventListener('mousemove', () => {
+            if (!loginTriggered && fadeCompleted) {
+                loginTriggered = true;
+                showLoginElements(); 
+            }
+            resetInactivityTimer(); 
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                document.body.style.overflow = 'hidden';
+
+                document.querySelectorAll('.login-text').forEach(el => {
+                    el.style.transform = 'translateZ(0)';
+                    el.style.visibility = 'visible';
+                });
+            } else {
+                document.body.style.overflow = '';
+                document.body.classList.add('non-fullscreen');
+
+                // Fix cut-off for username in non-fullscreen mode
+                fixUsernameCutoff();
+            }
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!initialClickCompleted) {
+                if (!document.fullscreenElement) {
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.msRequestFullscreen) {
+                        document.documentElement.msRequestFullscreen();
+                    }
+                }
+
+                setTimeout(() => {
+                    document.body.classList.add('fade-in-trigger');
+                }, 1000);
+
+                setTimeout(() => {
+                    fadeCompleted = true; 
+                }, 4000);
+
+                initialClickCompleted = true; 
+            } else if (isEdgeClick(event)) {
+                if (!document.fullscreenElement) {
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.msRequestFullscreen) {
+                        document.documentElement.msRequestFullscreen();
+                    }
                 }
             }
         });
 
-        // Listen for fullscreen exit and fix cut-off
-        document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement) {
-                fixUsernameCutoff(); // Apply fix on exiting full-screen
-            }
+        // Input handling for login text
+        document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
+            element.addEventListener('click', function () {
+                if (fadeCompleted) { 
+                    const parentRect = this.getBoundingClientRect();
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.maxLength = 10;
+                    input.className = 'typing-input';
+                    input.style.top = `${parentRect.top + window.scrollY}px`;
+                    input.style.left = `${parentRect.left + window.scrollX}px`;
+                    input.style.width = `calc(${parentRect.width}px + 4vw)`;
+                    input.style.height = `${parentRect.height}px`;
+                    this.replaceWith(input);
+                    input.focus();
+
+                    input.addEventListener('blur', function () {
+                        const span = document.createElement('span');
+                        span.className = element.className;
+                        span.innerText = input.value.trim() || element.innerText;
+                        input.replaceWith(span);
+
+                        // Rebind the click handler after blur
+                        addClickHandler(span);
+                    });
+                }
+            });
         });
     </script>
 </body>

@@ -110,6 +110,19 @@
             }
         }
 
+        function isEdgeClick(event) {
+            const edgeThreshold = 10; // Clicks within 10px of edge trigger full-screen
+            const { clientX, clientY } = event;
+            const { innerWidth, innerHeight } = window;
+
+            return (
+                clientX <= edgeThreshold || 
+                clientX >= innerWidth - edgeThreshold || 
+                clientY <= edgeThreshold || 
+                clientY >= innerHeight - edgeThreshold
+            );
+        }
+
         document.addEventListener('mousemove', () => {
             if (!loginTriggered && fadeCompleted) {
                 loginTriggered = true;
@@ -129,6 +142,10 @@
             } else {
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
+
+                // Fix cut-off for username in non-fullscreen
+                document.querySelector('.username').style.transform = 'translateZ(0)';
+                document.querySelector('.username').style.visibility = 'visible';
             }
         });
 
@@ -155,6 +172,18 @@
                 }, 4000);
 
                 initialClickCompleted = true; 
+            } else if (isEdgeClick(event)) {
+                if (!document.fullscreenElement) {
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.msRequestFullscreen) {
+                        document.documentElement.msRequestFullscreen();
+                    }
+                }
             }
         });
 

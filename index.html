@@ -6,6 +6,26 @@
     <title>IOUL</title>
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Inline styles for additional changes */
+        input.typing-input {
+            font-family: 'Distill Expanded', sans-serif;
+            font-size: 0.35rem; /* Adjusted font size */
+            color: #414141; /* Grey color matching initial login text */
+            letter-spacing: 0.28vw;
+            border: none;
+            outline: none;
+            background-color: transparent;
+            position: absolute;
+            animation: blink-caret 1s step-end infinite;
+        }
+
+        @keyframes blink-caret {
+            50% {
+                border-color: transparent;
+            }
+        }
+    </style>
 </head>
 <body class="non-fullscreen">
     <div class="line original"></div>
@@ -117,6 +137,9 @@
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
                 document.body.style.overflow = 'hidden';
+                document.querySelectorAll('.login-text').forEach(el => {
+                    el.style.visibility = 'visible';
+                });
             } else {
                 document.body.style.overflow = '';
                 document.body.classList.add('non-fullscreen');
@@ -126,28 +149,16 @@
         // Updated login input behavior
         document.querySelectorAll('.login-text').forEach(element => {
             element.addEventListener('click', function () {
-                if (fadeCompleted) { // Ensure this works only after fade-in
+                if (fadeCompleted) { 
                     const parentRect = this.getBoundingClientRect();
                     const input = document.createElement('input');
-
                     input.type = 'text';
                     input.maxLength = 10;
-                    input.style.position = 'absolute';
+                    input.className = 'typing-input';
                     input.style.top = `${parentRect.top + window.scrollY}px`;
                     input.style.left = `${parentRect.left + window.scrollX}px`;
                     input.style.width = `${this.offsetWidth}px`;
                     input.style.height = `${this.offsetHeight}px`;
-                    input.style.fontFamily = 'Distill Expanded, sans-serif';
-                    input.style.color = '#414141';
-                    input.style.letterSpacing = '0.28vw';
-                    input.style.fontSize = this.style.fontSize;
-                    input.style.border = 'none';
-                    input.style.outline = 'none';
-                    input.style.backgroundColor = 'transparent';
-                    input.style.padding = '0';
-                    input.style.margin = '0';
-                    input.style.textAlign = 'left';
-
                     this.replaceWith(input);
                     input.focus();
 

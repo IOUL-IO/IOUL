@@ -12,7 +12,6 @@
             left: 6.41vw;
             z-index: 10;
             transform: translateZ(0);
-            overflow: visible;
         }
 
         .username {
@@ -26,7 +25,7 @@
 
         .login-line {
             position: absolute;
-            top: 39.1vh; /* Updated for consistent spacing */
+            top: 39.1vh;
             left: 6.4vw;
             width: 22.48vw;
             height: 1px;
@@ -35,7 +34,7 @@
 
         .login-line-second {
             position: absolute;
-            top: 47.2vh; /* Updated for consistent spacing */
+            top: 47.2vh;
             left: 6.4vw;
             width: 22.48vw;
             height: 1px;
@@ -120,17 +119,13 @@
             const loginLineSecondElement = document.querySelector('.login-line-second');
 
             if (!document.fullscreenElement) {
-                // Adjust for non-fullscreen
-                usernameElement.style.top = '37.1vh'; // Added padding to prevent cut-off
-                loginLineElement.style.top = '39.5vh';
-                passwordElement.style.top = '45.2vh'; // Added padding to prevent cut-off
-                loginLineSecondElement.style.top = '47.5vh';
+                // Add slight padding to prevent cut-off
+                usernameElement.style.marginTop = '0.5vh';
+                passwordElement.style.marginTop = '0.5vh';
             } else {
-                // Adjust for fullscreen
-                usernameElement.style.top = '36.1vh';
-                loginLineElement.style.top = '39.1vh';
-                passwordElement.style.top = '44.2vh';
-                loginLineSecondElement.style.top = '47.2vh';
+                // Reset padding in fullscreen mode
+                usernameElement.style.marginTop = '0';
+                passwordElement.style.marginTop = '0';
             }
         });
 

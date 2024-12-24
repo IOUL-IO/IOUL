@@ -13,7 +13,7 @@
 }
 
 :root {
-    --username-top: 35.8vh; /* Adjusted to move username up */
+    --username-top: 34.8vh; /* Adjusted to move username up */
     --password-top: 44.2vh; /* Keep original position for password */
     --line-gap: 3.5vh; /* Standard gap for login lines */
 }

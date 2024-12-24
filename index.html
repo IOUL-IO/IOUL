@@ -85,139 +85,47 @@
 
     <script>
         let fadeCompleted = false;
-        let loginTriggered = false;
-        let initialClickCompleted = false;
-        let inactivityTimer;
-
-        function hideLoginElements() {
-            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
-                el.classList.add('hidden');
-                el.classList.remove('visible');
-            });
-        }
-
-        function showLoginElements() {
-            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
-                el.classList.add('visible');
-                el.classList.remove('hidden');
-            });
-        }
-
-        function resetInactivityTimer() {
-            if (fadeCompleted) {
-                showLoginElements();
-                clearTimeout(inactivityTimer);
-                inactivityTimer = setTimeout(hideLoginElements, 20000);
-            }
-        }
-
-        function isEdgeClick(event) {
-            const edgeThreshold = 10; // Clicks within 10px of edge trigger full-screen
-            const { clientX, clientY } = event;
-            const { innerWidth, innerHeight } = window;
-
-            return (
-                clientX <= edgeThreshold || 
-                clientX >= innerWidth - edgeThreshold || 
-                clientY <= edgeThreshold || 
-                clientY >= innerHeight - edgeThreshold
-            );
-        }
 
         function fixUsernameCutoff() {
             const usernameElement = document.querySelector('.username');
             if (usernameElement) {
                 usernameElement.style.visibility = 'hidden'; // Temporarily hide
                 usernameElement.style.transform = 'none'; // Reset transform
-                requestAnimationFrame(() => {
+                setTimeout(() => {
                     usernameElement.style.visibility = 'visible'; // Restore visibility
-                    usernameElement.style.transform = 'translateZ(0)'; // Apply GPU rendering
-                });
+                    usernameElement.style.transform = 'translateZ(0)'; // Reapply GPU rendering
+                }, 50); // Allow recalculation
             }
         }
 
-        document.addEventListener('mousemove', () => {
-            if (!loginTriggered && fadeCompleted) {
-                loginTriggered = true;
-                showLoginElements();
-            }
-            resetInactivityTimer();
-        });
-
         document.addEventListener('fullscreenchange', () => {
-            if (document.fullscreenElement) {
-                document.body.style.overflow = 'hidden'; // Prevent scrolling in full-screen mode
-            } else {
-                document.body.style.overflow = ''; // Restore default scrolling
-                fixUsernameCutoff(); // Fix cut-off issue for "username" when exiting full-screen
+            if (!document.fullscreenElement) {
+                fixUsernameCutoff(); // Fix username when exiting full-screen
             }
         });
 
         document.addEventListener('click', (event) => {
-            if (!initialClickCompleted) {
-                if (!document.fullscreenElement) {
-                    if (document.documentElement.requestFullscreen) {
-                        document.documentElement.requestFullscreen();
-                    } else if (document.documentElement.webkitRequestFullscreen) {
-                        document.documentElement.webkitRequestFullscreen();
-                    } else if (document.documentElement.mozRequestFullScreen) {
-                        document.documentElement.mozRequestFullScreen();
-                    } else if (document.documentElement.msRequestFullscreen) {
-                        document.documentElement.msRequestFullscreen();
-                    }
-                }
+            const edgeThreshold = 10;
+            const { clientX, clientY } = event;
+            const { innerWidth, innerHeight } = window;
 
-                setTimeout(() => {
-                    document.body.classList.add('fade-in-trigger');
-                }, 1000);
+            const isEdgeClick =
+                clientX <= edgeThreshold ||
+                clientX >= innerWidth - edgeThreshold ||
+                clientY <= edgeThreshold ||
+                clientY >= innerHeight - edgeThreshold;
 
-                setTimeout(() => {
-                    fadeCompleted = true;
-                }, 4000);
-
-                initialClickCompleted = true;
-            } else if (isEdgeClick(event)) {
-                if (!document.fullscreenElement) {
-                    if (document.documentElement.requestFullscreen) {
-                        document.documentElement.requestFullscreen();
-                    } else if (document.documentElement.webkitRequestFullscreen) {
-                        document.documentElement.webkitRequestFullscreen();
-                    } else if (document.documentElement.mozRequestFullScreen) {
-                        document.documentElement.mozRequestFullScreen();
-                    } else if (document.documentElement.msRequestFullscreen) {
-                        document.documentElement.msRequestFullscreen();
-                    }
+            if (isEdgeClick && !document.fullscreenElement) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) {
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                    document.documentElement.msRequestFullscreen();
                 }
             }
-        });
-
-        // Input handling for login text
-        document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
-            element.addEventListener('click', function () {
-                if (fadeCompleted) {
-                    const parentRect = this.getBoundingClientRect();
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.maxLength = 10;
-                    input.className = 'typing-input';
-                    input.style.top = `${parentRect.top + window.scrollY}px`;
-                    input.style.left = `${parentRect.left + window.scrollX}px`;
-                    input.style.width = `calc(${parentRect.width}px + 4vw)`;
-                    input.style.height = `${parentRect.height}px`;
-                    this.replaceWith(input);
-                    input.focus();
-
-                    input.addEventListener('blur', function () {
-                        const span = document.createElement('span');
-                        span.className = element.className;
-                        span.innerText = input.value.trim() || element.innerText;
-                        input.replaceWith(span);
-
-                        // Rebind the click handler after blur
-                        addClickHandler(span);
-                    });
-                }
-            });
         });
     </script>
 </body>

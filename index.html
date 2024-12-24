@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Additional styles to fix fade-in/out issues */
+        /* Additional styles to fix fade-in/out issues and input behavior */
         .login-text {
             position: relative;
             z-index: 10; /* Ensure login text is above other elements */
@@ -24,6 +24,26 @@
             opacity: 1 !important;
             visibility: visible !important;
             transition: opacity 0.5s ease-in-out, visibility 0s linear 0s;
+        }
+
+        input.typing-input {
+            font-family: 'Distill Expanded', sans-serif;
+            font-size: 0.35rem; /* Adjusted font size */
+            color: #414141; /* Grey color matching initial login text */
+            letter-spacing: 0.28vw;
+            border: none;
+            outline: none;
+            background-color: transparent;
+            position: absolute;
+            caret-color: #d1d1d1; /* Updated lighter gray caret color */
+            animation: blink-caret 1s step-end infinite;
+            width: calc(22.48vw + 4vw); /* Extended width to fit 10 characters comfortably */
+        }
+
+        @keyframes blink-caret {
+            50% {
+                border-color: transparent;
+            }
         }
     </style>
 </head>
@@ -122,6 +142,35 @@
 
                 initialClickCompleted = true; 
             }
+        });
+
+        // Input handling for login text
+        document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
+            element.addEventListener('click', function () {
+                if (fadeCompleted) { 
+                    const parentRect = this.getBoundingClientRect();
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.maxLength = 10;
+                    input.className = 'typing-input';
+                    input.style.top = `${parentRect.top + window.scrollY}px`;
+                    input.style.left = `${parentRect.left + window.scrollX}px`;
+                    input.style.width = `${this.offsetWidth + 50}px`; // Increase input width
+                    input.style.height = `${this.offsetHeight}px`;
+                    this.replaceWith(input);
+                    input.focus();
+
+                    input.addEventListener('blur', function () {
+                        const span = document.createElement('span');
+                        span.className = element.className;
+                        span.innerText = input.value.trim() || element.innerText;
+                        input.replaceWith(span);
+
+                        // Rebind the click handler after blur
+                        addClickHandler(span);
+                    });
+                }
+            });
         });
     </script>
 </body>

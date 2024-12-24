@@ -6,6 +6,62 @@
     <title>IOUL</title>
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .login-text {
+            position: absolute;
+            left: 6.41vw;
+            z-index: 10;
+            transform: translateZ(0);
+            overflow: visible;
+        }
+
+        .username {
+            top: 36.1vh;
+            visibility: visible;
+        }
+
+        .password {
+            top: 44.2vh;
+        }
+
+        .login-line {
+            position: absolute;
+            top: 38.9vh;
+            left: 6.4vw;
+            width: 22.48vw;
+            height: 1px;
+            background-color: rgba(230, 230, 230, 0.28);
+        }
+
+        .login-line-second {
+            position: absolute;
+            top: 47vh;
+            left: 6.4vw;
+            width: 22.48vw;
+            height: 1px;
+            background-color: rgba(230, 230, 230, 0.28);
+        }
+
+        input.typing-input {
+            font-family: 'Distill Expanded', sans-serif;
+            font-size: 0.35rem;
+            color: #414141;
+            letter-spacing: 0.28vw;
+            border: none;
+            outline: none;
+            background-color: transparent;
+            position: absolute;
+            caret-color: #d1d1d1;
+            animation: blink-caret 1s step-end infinite;
+            width: calc(22.48vw + 4vw);
+        }
+
+        @keyframes blink-caret {
+            50% {
+                border-color: transparent;
+            }
+        }
+    </style>
 </head>
 <body class="non-fullscreen">
     <div class="line original"></div>
@@ -29,96 +85,67 @@
 
     <script>
         let fadeCompleted = false; 
-        let loginTriggered = false; 
         let initialClickCompleted = false; 
-        let inactivityTimer; 
 
-        function hideLoginElements() {
-            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
-                el.classList.add('hidden'); 
-                el.classList.remove('visible'); 
-            });
-        }
+        function adjustSpacing() {
+            const isFullscreen = !!document.fullscreenElement;
 
-        function showLoginElements() {
-            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
-                el.classList.add('visible'); 
-                el.classList.remove('hidden'); 
-            });
-        }
-
-        function resetInactivityTimer() {
-            if (fadeCompleted) {
-                showLoginElements(); 
-                clearTimeout(inactivityTimer); 
-                inactivityTimer = setTimeout(hideLoginElements, 20000); 
+            if (isFullscreen) {
+                // Fullscreen mode spacing
+                document.querySelector('.username').style.top = '36.1vh';
+                document.querySelector('.login-line').style.top = '38.9vh';
+                document.querySelector('.password').style.top = '44.2vh';
+                document.querySelector('.login-line-second').style.top = '47vh';
+            } else {
+                // Non-fullscreen mode spacing
+                document.querySelector('.username').style.top = '36.6vh';
+                document.querySelector('.login-line').style.top = '39.4vh';
+                document.querySelector('.password').style.top = '44.7vh';
+                document.querySelector('.login-line-second').style.top = '47.5vh';
             }
         }
 
-        document.addEventListener('mousemove', resetInactivityTimer);
+        // Adjust spacing on fullscreen changes
+        document.addEventListener('fullscreenchange', adjustSpacing);
 
-        document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement) {
-                const usernameElement = document.querySelector('.username');
-                const passwordElement = document.querySelector('.password');
-                const loginLineElement = document.querySelector('.login-line');
-                const loginLineSecondElement = document.querySelector('.login-line-second');
-                
-                if (usernameElement && passwordElement && loginLineElement && loginLineSecondElement) {
-                    usernameElement.style.top = '36.1vh';
-                    passwordElement.style.top = '44.2vh';
-                    loginLineElement.style.top = '38.9vh';
-                    loginLineSecondElement.style.top = '47vh';
-                }
-            }
-        });
-
-        document.addEventListener('click', (event) => {
-            if (!initialClickCompleted) {
-                if (!document.fullscreenElement) {
-                    if (document.documentElement.requestFullscreen) {
-                        document.documentElement.requestFullscreen();
-                    }
-                }
-                setTimeout(() => {
-                    document.body.classList.add('fade-in-trigger');
-                }, 1000);
-
-                setTimeout(() => {
-                    fadeCompleted = true; 
-                }, 4000);
-
-                initialClickCompleted = true; 
-            }
-        });
+        // Initialize spacing on page load
+        document.addEventListener('DOMContentLoaded', adjustSpacing);
 
         // Input handling for login text
         document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
             element.addEventListener('click', function () {
-                if (fadeCompleted) { 
-                    const parentRect = this.getBoundingClientRect();
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.maxLength = 10;
-                    input.className = 'typing-input';
-                    input.style.top = `${parentRect.top + window.scrollY}px`;
-                    input.style.left = `${parentRect.left + window.scrollX}px`;
-                    input.style.width = `calc(${parentRect.width}px + 4vw)`;
-                    input.style.height = `${parentRect.height}px`;
-                    this.replaceWith(input);
-                    input.focus();
+                const parentRect = this.getBoundingClientRect();
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.maxLength = 10;
+                input.className = 'typing-input';
+                input.style.top = `${parentRect.top + window.scrollY}px`;
+                input.style.left = `${parentRect.left + window.scrollX}px`;
+                input.style.width = `calc(${parentRect.width}px + 4vw)`;
+                input.style.height = `${parentRect.height}px`;
+                this.replaceWith(input);
+                input.focus();
 
-                    input.addEventListener('blur', function () {
-                        const span = document.createElement('span');
-                        span.className = element.className;
-                        span.innerText = input.value.trim() || element.innerText;
-                        input.replaceWith(span);
+                input.addEventListener('blur', function () {
+                    const span = document.createElement('span');
+                    span.className = element.className;
+                    span.innerText = input.value.trim() || element.innerText;
+                    input.replaceWith(span);
 
-                        // Rebind the click handler after blur
-                        addClickHandler(span);
-                    });
-                }
+                    // Rebind the click handler after blur
+                    addClickHandler(span);
+                });
             });
+        });
+
+        // Handle initial fullscreen request on click
+        document.addEventListener('click', () => {
+            if (!initialClickCompleted && !document.fullscreenElement) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                }
+                initialClickCompleted = true;
+            }
         });
     </script>
 </body>

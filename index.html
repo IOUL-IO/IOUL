@@ -6,6 +6,70 @@
     <title>IOUL</title>
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .login-text {
+            position: absolute;
+            left: 6.41vw;
+            z-index: 10;
+            transform: translateZ(0);
+            overflow: visible;
+        }
+
+        .username {
+            top: 36.1vh;
+            visibility: visible;
+        }
+
+        .password {
+            top: 44.2vh;
+        }
+
+        .login-line {
+            position: absolute;
+            top: 38.9vh;
+            left: 6.4vw;
+            width: 22.48vw;
+            height: 1px;
+            background-color: rgba(230, 230, 230, 0.28);
+        }
+
+        .login-line-second {
+            position: absolute;
+            top: 47vh;
+            left: 6.4vw;
+            width: 22.48vw;
+            height: 1px;
+            background-color: rgba(230, 230, 230, 0.28);
+        }
+
+        input.typing-input {
+            font-family: 'Distill Expanded', sans-serif;
+            font-size: 0.35rem;
+            color: #414141;
+            letter-spacing: 0.28vw;
+            border: none;
+            outline: none;
+            background-color: transparent;
+            position: absolute;
+            caret-color: #d1d1d1;
+            animation: blink-caret 1s step-end infinite;
+            width: calc(22.48vw + 4vw);
+        }
+
+        @keyframes blink-caret {
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        body.non-fullscreen .username {
+            top: 36.6vh; /* Adjusted for non-fullscreen */
+        }
+
+        body.non-fullscreen .login-line {
+            top: 39.4vh; /* Consistent spacing in non-fullscreen mode */
+        }
+    </style>
 </head>
 <body class="non-fullscreen">
     <div class="line original"></div>

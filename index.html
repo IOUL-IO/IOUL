@@ -6,62 +6,6 @@
     <title>IOUL</title>
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .login-text {
-            position: absolute;
-            left: 6.41vw;
-            z-index: 10;
-            transform: translateZ(0);
-            overflow: visible;
-        }
-
-        .username {
-            top: 36.1vh;
-            visibility: visible;
-        }
-
-        .password {
-            top: 44.2vh;
-        }
-
-        .login-line {
-            position: absolute;
-            top: 38.9vh;
-            left: 6.4vw;
-            width: 22.48vw;
-            height: 1px;
-            background-color: rgba(230, 230, 230, 0.28);
-        }
-
-        .login-line-second {
-            position: absolute;
-            top: 47vh;
-            left: 6.4vw;
-            width: 22.48vw;
-            height: 1px;
-            background-color: rgba(230, 230, 230, 0.28);
-        }
-
-        input.typing-input {
-            font-family: 'Distill Expanded', sans-serif;
-            font-size: 0.35rem;
-            color: #414141;
-            letter-spacing: 0.28vw;
-            border: none;
-            outline: none;
-            background-color: transparent;
-            position: absolute;
-            caret-color: #d1d1d1;
-            animation: blink-caret 1s step-end infinite;
-            width: calc(22.48vw + 4vw);
-        }
-
-        @keyframes blink-caret {
-            50% {
-                border-color: transparent;
-            }
-        }
-    </style>
 </head>
 <body class="non-fullscreen">
     <div class="line original"></div>
@@ -78,7 +22,7 @@
     <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-    <span class="login-text username">USERnAME</span>
+    <span class="login-text username">USERNAME</span>
     <span class="login-text password">PASSWORD</span>
     <div class="line login-line"></div>
     <div class="line login-line-second"></div>
@@ -115,10 +59,9 @@
 
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
-                const usernameElement = document.querySelector('.username');
-                if (usernameElement) {
-                    usernameElement.style.top = '36.6vh'; // Adjust top offset for non-fullscreen
-                }
+                document.body.classList.add('non-fullscreen');
+            } else {
+                document.body.classList.remove('non-fullscreen');
             }
         });
 

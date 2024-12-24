@@ -7,10 +7,6 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <style>
-        body {
-            overflow: visible;
-        }
-
         .login-text {
             position: absolute;
             left: 6.41vw;
@@ -133,8 +129,9 @@
             if (usernameElement) {
                 const parent = usernameElement.parentNode;
                 const temp = usernameElement.cloneNode(true); // Clone the element
-                parent.removeChild(usernameElement); // Remove original element
-                parent.appendChild(temp); // Re-add the cloned element
+                parent.replaceChild(temp, usernameElement); // Replace with the clone
+                temp.style.transform = 'translateZ(0)'; // Reapply GPU rendering
+                temp.style.visibility = 'visible'; // Ensure visibility
             }
         }
 
@@ -155,8 +152,8 @@
                     el.style.visibility = 'visible';
                 });
             } else {
-                document.body.style.overflow = '';
-                fixUsernameCutoff(); // Trigger re-render on username
+                document.body.style.overflow = ''; // Restore default behavior
+                fixUsernameCutoff(); // Trigger re-render for "username"
             }
         });
 

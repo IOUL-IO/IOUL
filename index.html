@@ -12,21 +12,20 @@
             left: 6.41vw;
             z-index: 10;
             transform: translateZ(0);
-            overflow: visible; /* Ensures content is not clipped */
         }
 
         .username {
-            top: 36.1vh; /* Fullscreen top value */
+            top: 36.1vh; /* Correct top for fullscreen */
             visibility: visible;
         }
 
         .password {
-            top: 44.2vh; /* Fullscreen top value */
+            top: 44.2vh; /* Correct top for fullscreen */
         }
 
         .login-line {
             position: absolute;
-            top: 39.1vh; /* Updated for consistent spacing */
+            top: 38.9vh;
             left: 6.4vw;
             width: 22.48vw;
             height: 1px;
@@ -35,7 +34,7 @@
 
         .login-line-second {
             position: absolute;
-            top: 47.2vh; /* Updated for consistent spacing */
+            top: 47vh;
             left: 6.4vw;
             width: 22.48vw;
             height: 1px;
@@ -63,7 +62,7 @@
         }
     </style>
 </head>
-<body>
+<body class="non-fullscreen">
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -110,32 +109,26 @@
             }
         }
 
-        function adjustSpacing() {
+        function adjustCutoff() {
             const usernameElement = document.querySelector('.username');
             const passwordElement = document.querySelector('.password');
-            const loginLineElement = document.querySelector('.login-line');
-            const loginLineSecondElement = document.querySelector('.login-line-second');
 
             if (!document.fullscreenElement) {
-                // Non-fullscreen adjustments
+                // Non-fullscreen adjustments to prevent cutoff
                 usernameElement.style.top = '36.6vh';
-                loginLineElement.style.top = '39.4vh';
                 passwordElement.style.top = '44.7vh';
-                loginLineSecondElement.style.top = '47.5vh';
             } else {
-                // Fullscreen adjustments
+                // Fullscreen adjustments to prevent cutoff
                 usernameElement.style.top = '36.1vh';
-                loginLineElement.style.top = '39.1vh';
                 passwordElement.style.top = '44.2vh';
-                loginLineSecondElement.style.top = '47.2vh';
             }
         }
 
         document.addEventListener('mousemove', resetInactivityTimer);
 
-        document.addEventListener('fullscreenchange', adjustSpacing);
+        document.addEventListener('fullscreenchange', adjustCutoff);
 
-        document.addEventListener('DOMContentLoaded', adjustSpacing);
+        document.addEventListener('DOMContentLoaded', adjustCutoff);
 
         document.addEventListener('click', () => {
             if (!initialClickCompleted) {

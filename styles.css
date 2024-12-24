@@ -13,10 +13,9 @@
 }
 
 :root {
-    --username-top: 36.1vh; /* Base position for username */
-    --password-top: 44.2vh; /* Base position for password */
-    --username-line-gap: 3.6vh; /* Larger gap for username */
-    --password-line-gap: 3.2vh; /* Smaller gap for password */
+    --username-top: 35.8vh; /* Adjusted to move username up */
+    --password-top: 44.2vh; /* Keep original position for password */
+    --line-gap: 3.5vh; /* Standard gap for login lines */
 }
 
 body.non-fullscreen {
@@ -166,16 +165,16 @@ body.non-fullscreen .username {
 }
 
 .username {
-    top: var(--username-top);
+    top: var(--username-top); /* Move username up */
 }
 
 .password {
-    top: var(--password-top);
+    top: var(--password-top); /* Keep password position unchanged */
 }
 
 .login-line {
     position: absolute;
-    top: calc(var(--username-top) + var(--username-line-gap)); /* Larger gap for username */
+    top: calc(var(--username-top) + var(--line-gap)); /* Gap below username */
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
@@ -184,7 +183,7 @@ body.non-fullscreen .username {
 
 .login-line-second {
     position: absolute;
-    top: calc(var(--password-top) + var(--password-line-gap)); /* Smaller gap for password */
+    top: calc(var(--password-top) + var(--line-gap)); /* Larger gap for password */
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;

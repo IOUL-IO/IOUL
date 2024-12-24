@@ -124,17 +124,13 @@
             );
         }
 
-        function forceRepaint(element) {
-            element.style.transform = 'none'; // Temporarily remove transform
-            requestAnimationFrame(() => {
-                element.style.transform = 'translateZ(0)'; // Reapply transform to force repaint
-            });
-        }
-
         function fixUsernameCutoff() {
             const usernameElement = document.querySelector('.username');
-            forceRepaint(usernameElement);
-            usernameElement.style.visibility = 'visible';
+            usernameElement.style.visibility = 'hidden'; // Temporarily hide
+            setTimeout(() => {
+                usernameElement.style.visibility = 'visible'; // Show again to force recalculation
+                usernameElement.style.transform = 'translateZ(0)'; // Ensure GPU rendering
+            }, 50);
         }
 
         document.addEventListener('mousemove', () => {

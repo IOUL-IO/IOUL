@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IOUL</title>
     <link rel="icon" href="favicon.png" type="image/png">
-    <link rel="stylesheet" href="styles.css">
     <style>
         .login-text {
             position: absolute;
@@ -15,12 +14,12 @@
         }
 
         .username {
-            top: 36.1vh; /* Correct top for fullscreen */
+            top: 36.1vh; /* Fullscreen top value */
             visibility: visible;
         }
 
         .password {
-            top: 44.2vh; /* Correct top for fullscreen */
+            top: 44.2vh; /* Fullscreen top value */
         }
 
         .login-line {
@@ -62,7 +61,7 @@
         }
     </style>
 </head>
-<body class="non-fullscreen">
+<body>
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -109,28 +108,34 @@
             }
         }
 
-        function adjustCutoff() {
+        document.addEventListener('mousemove', resetInactivityTimer);
+
+        document.addEventListener('fullscreenchange', () => {
             const usernameElement = document.querySelector('.username');
             const passwordElement = document.querySelector('.password');
 
             if (!document.fullscreenElement) {
-                // Non-fullscreen adjustments to prevent cutoff
-                usernameElement.style.top = '36.6vh';
-                passwordElement.style.top = '44.7vh';
+                if (usernameElement) {
+                    usernameElement.style.top = '36.6vh';
+                    usernameElement.style.transform = 'none';
+                }
+                if (passwordElement) {
+                    passwordElement.style.top = '44.7vh';
+                    passwordElement.style.transform = 'none';
+                }
             } else {
-                // Fullscreen adjustments to prevent cutoff
-                usernameElement.style.top = '36.1vh';
-                passwordElement.style.top = '44.2vh';
+                if (usernameElement) {
+                    usernameElement.style.top = '36.1vh';
+                    usernameElement.style.transform = '';
+                }
+                if (passwordElement) {
+                    passwordElement.style.top = '44.2vh';
+                    passwordElement.style.transform = '';
+                }
             }
-        }
+        });
 
-        document.addEventListener('mousemove', resetInactivityTimer);
-
-        document.addEventListener('fullscreenchange', adjustCutoff);
-
-        document.addEventListener('DOMContentLoaded', adjustCutoff);
-
-        document.addEventListener('click', () => {
+        document.addEventListener('click', (event) => {
             if (!initialClickCompleted) {
                 if (!document.fullscreenElement) {
                     if (document.documentElement.requestFullscreen) {

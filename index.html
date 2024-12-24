@@ -63,7 +63,7 @@
         }
     </style>
 </head>
-<body>
+<body class="non-fullscreen">
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -145,14 +145,9 @@
 
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
-                document.body.style.overflow = 'hidden';
-
-                document.querySelectorAll('.login-text').forEach(el => {
-                    el.style.transform = 'translateZ(0)';
-                    el.style.visibility = 'visible';
-                });
+                document.body.style.overflow = 'hidden'; // Restore to prevent scroll issues
             } else {
-                document.body.style.overflow = ''; // Restore default behavior
+                document.body.style.overflow = ''; // Ensure normal scroll outside full-screen
                 fixUsernameCutoff(); // Trigger re-render for "username"
             }
         });

@@ -64,7 +64,6 @@
         let fadeCompleted = false;
         let initialClickCompleted = false;
 
-        // Function to hide login elements
         function hideLoginElements() {
             document.querySelectorAll('.username, .password, .login-line, .login-line-second').forEach(el => {
                 el.classList.add('hidden');
@@ -72,7 +71,6 @@
             });
         }
 
-        // Function to show login elements
         function showLoginElements() {
             document.querySelectorAll('.username, .password, .login-line, .login-line-second').forEach(el => {
                 el.classList.add('visible');
@@ -80,16 +78,14 @@
             });
         }
 
-        // Function to reset inactivity timer
         function resetInactivityTimer() {
             if (fadeCompleted) {
-                clearTimeout(inactivityTimer); // Clear the current timer
-                showLoginElements(); // Immediately show elements on mouse movement
-                inactivityTimer = setTimeout(hideLoginElements, 20000); // Set timer to hide elements after 20 seconds
+                clearTimeout(inactivityTimer); 
+                showLoginElements(); 
+                inactivityTimer = setTimeout(hideLoginElements, 20000); 
             }
         }
 
-        // Handle fullscreen change
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
                 document.body.classList.remove('fullscreen');
@@ -98,25 +94,22 @@
             }
         });
 
-        // Initial click to trigger fullscreen and fade-in
         document.addEventListener('click', (event) => {
-            const edgeThreshold = 10; // Threshold for detecting clicks near edges
+            const edgeThreshold = 10; 
             const { clientX, clientY } = event;
             const { innerWidth, innerHeight } = window;
 
-            // Check if the click is near any edge
             const isNearEdge =
-                clientX <= edgeThreshold || // Left edge
-                clientX >= innerWidth - edgeThreshold || // Right edge
-                clientY <= edgeThreshold || // Top edge
-                clientY >= innerHeight - edgeThreshold; // Bottom edge
+                clientX <= edgeThreshold || 
+                clientX >= innerWidth - edgeThreshold || 
+                clientY <= edgeThreshold || 
+                clientY >= innerHeight - edgeThreshold; 
 
             if (isNearEdge && !document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
                 return;
             }
 
-            // Normal click handling for initial fullscreen trigger
             if (!initialClickCompleted) {
                 if (!document.fullscreenElement) {
                     document.documentElement.requestFullscreen();
@@ -126,15 +119,14 @@
                 }, 1000);
 
                 setTimeout(() => {
-                    fadeCompleted = true; // Mark fade-in as complete
-                    inactivityTimer = setTimeout(hideLoginElements, 20000); // Start inactivity timer after fade-in is complete
+                    fadeCompleted = true; 
+                    inactivityTimer = setTimeout(hideLoginElements, 20000); 
                 }, 4000);
 
                 initialClickCompleted = true; 
             }
         });
 
-        // Attach event listeners for mouse movement
         document.addEventListener('mousemove', resetInactivityTimer);
 
         document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {

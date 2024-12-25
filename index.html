@@ -16,17 +16,17 @@
         }
 
         .username {
-            top: 36.1vh;
+            top: calc(var(--username-line-top) - var(--line-gap)); /* Adjusted dynamically */
             visibility: visible;
         }
 
         .password {
-            top: 44.2vh;
+            top: calc(var(--password-line-top) - var(--line-gap)); /* Adjusted dynamically */
         }
 
         .login-line {
             position: absolute;
-            top: 38.9vh;
+            top: var(--username-line-top); /* Below username */
             left: 6.4vw;
             width: 22.48vw;
             height: 1px;
@@ -35,7 +35,7 @@
 
         .login-line-second {
             position: absolute;
-            top: 47vh;
+            top: var(--password-line-top); /* Below password */
             left: 6.4vw;
             width: 22.48vw;
             height: 1px;
@@ -60,6 +60,18 @@
             50% {
                 border-color: transparent;
             }
+        }
+
+        body.non-fullscreen .username {
+            top: 36.6vh; /* Non-fullscreen adjustment */
+        }
+
+        .hidden {
+            opacity: 0;
+        }
+
+        .visible {
+            opacity: 1;
         }
     </style>
 </head>
@@ -114,11 +126,11 @@
         document.addEventListener('mousemove', resetInactivityTimer);
 
         document.addEventListener('fullscreenchange', () => {
+            const root = document.documentElement;
             if (!document.fullscreenElement) {
-                const usernameElement = document.querySelector('.username');
-                if (usernameElement) {
-                    usernameElement.style.top = '36.6vh'; // Adjust top offset for non-fullscreen
-                }
+                root.style.setProperty('--username-line-top', '39vh'); // Non-fullscreen adjustment
+            } else {
+                root.style.setProperty('--username-line-top', '38.9vh'); // Fullscreen adjustment
             }
         });
 

@@ -13,7 +13,7 @@
 }
 
 :root {
-    --username-line-top: 36.1vh; /* Top position for login-line below username */
+    --username-line-top: 38.9vh; /* Base position for username line */
     --password-line-top: 47vh;  /* Top position for login-line below password */
     --line-gap: 2.8vh; /* Exact gap between text and line */
 }
@@ -64,8 +64,9 @@ body.fade-in-trigger .time-text {
     background-color: #dadada;
 }
 
-body.non-fullscreen .username {
-    top: 33.4vh; /* Adjusted top offset to prevent cut-off in non-fullscreen */
+body.non-fullscreen .username,
+body.fullscreen .username {
+    top: calc(var(--username-line-top) - var(--line-gap) - 1vh); /* Move 1vh upwards */
     transform: none; /* Ensure no glitches */
 }
 
@@ -165,11 +166,11 @@ body.non-fullscreen .username {
 }
 
 .username {
-    top: calc(var(--username-line-top) - var(--line-gap)); /* 2.8vh above login-line */
+    top: calc(var(--username-line-top) - var(--line-gap) - 1vh); /* Adjusted top */
 }
 
 .password {
-    top: calc(var(--password-line-top) - var(--line-gap)); /* 2.8vh above login-line-second */
+    top: calc(var(--password-line-top) - var(--line-gap)); /* Unchanged */
 }
 
 .login-line {

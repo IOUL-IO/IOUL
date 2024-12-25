@@ -82,17 +82,12 @@
 
         // Function to reset inactivity timer
         function resetInactivityTimer() {
-            if (fadeCompleted && document.fullscreenElement) {
-                clearTimeout(inactivityTimer); // Clear the current timer
-                showLoginElements(); // Immediately show elements on mouse movement
-                inactivityTimer = setTimeout(hideLoginElements, 20000); // Set timer to hide elements after 20 seconds
-            }
+            clearTimeout(inactivityTimer); // Clear the current timer
+            showLoginElements(); // Immediately show elements on mouse movement
+            inactivityTimer = setTimeout(hideLoginElements, 20000); // Set timer to hide elements after 20 seconds
         }
 
-        // Attach event listeners for mouse movement
-        document.addEventListener('mousemove', resetInactivityTimer);
-
-        // Fullscreen change logic
+        // Handle fullscreen change
         document.addEventListener('fullscreenchange', () => {
             const usernameElement = document.querySelector('.username');
             const passwordElement = document.querySelector('.password');
@@ -125,6 +120,14 @@
 
                 initialClickCompleted = true; 
             }
+        });
+
+        // Attach event listeners for mouse movement
+        document.addEventListener('mousemove', resetInactivityTimer);
+
+        // Start the inactivity timer on page load
+        window.addEventListener('load', () => {
+            inactivityTimer = setTimeout(hideLoginElements, 20000);
         });
 
         document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {

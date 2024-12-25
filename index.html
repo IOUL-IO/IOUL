@@ -16,8 +16,7 @@
         }
 
         .username {
-            top: 36.1vh;
-            visibility: visible;
+            top: 35.8vh; /* Adjusted for fullscreen mode */
         }
 
         .password {
@@ -78,7 +77,7 @@
     <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-    <span class="login-text username">USERnAME</span>
+    <span class="login-text username">USERNAME</span>
     <span class="login-text password">PASSWORD</span>
     <div class="line login-line"></div>
     <div class="line login-line-second"></div>
@@ -117,7 +116,7 @@
             if (!document.fullscreenElement) {
                 const usernameElement = document.querySelector('.username');
                 if (usernameElement) {
-                    usernameElement.style.top = '36.6vh'; // Adjust top offset for non-fullscreen
+                    usernameElement.style.top = '35.5vh'; // Adjusted for non-fullscreen
                 }
             }
         });

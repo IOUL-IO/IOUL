@@ -67,7 +67,7 @@ body.fade-in-trigger .time-text {
 body.non-fullscreen .username,
 body.fullscreen .username {
     top: calc(var(--username-line-top) - var(--line-gap)); /* Keep base position */
-    transform: translateY(-1vh); /* Shift upwards visually */
+    transform: translateY(-1.1vh); /* Shift upwards visually */
 }
 
 .original {

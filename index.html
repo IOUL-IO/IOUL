@@ -13,6 +13,12 @@
             z-index: 10;
             transform: translateZ(0);
             overflow: visible;
+            font-family: 'Distill Expanded', sans-serif;
+            color: #414141;
+            letter-spacing: 0.28vw;
+            font-size: 0.4rem;
+            line-height: 1.2; /* Prevent text clipping */
+            padding: 0.1rem 0; /* Add padding for space around text */
         }
 
         .username {
@@ -44,7 +50,8 @@
 
         input.typing-input {
             font-family: 'Distill Expanded', sans-serif;
-            font-size: 0.35rem;
+            font-size: 0.4rem; /* Match the span font size */
+            line-height: 1.2; /* Prevent text clipping */
             color: #414141;
             letter-spacing: 0.28vw;
             border: none;
@@ -52,8 +59,10 @@
             background-color: transparent;
             position: absolute;
             caret-color: #d1d1d1;
-            animation: blink-caret 1s step-end infinite;
-            width: calc(22.48vw + 4vw);
+            padding: 0.1rem 0; /* Match the span padding */
+            width: calc(22.48vw + 4vw); /* Consistent width */
+            height: auto; /* Let the browser calculate based on content */
+            box-sizing: content-box; /* Ensure padding doesn't affect dimensions */
         }
 
         @keyframes blink-caret {

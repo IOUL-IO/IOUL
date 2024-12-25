@@ -25,12 +25,20 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
+body.non-fullscreen .username {
+    top: 35.5vh; /* Slightly raised for non-fullscreen */
+}
+
+body.non-fullscreen .password {
+    top: 43.5vh; /* Slightly raised for non-fullscreen */
+}
+
 body.fullscreen .username {
-    top: 35vh;
+    top: 36.5vh; /* Slightly lowered for fullscreen */
 }
 
 body.fullscreen .password {
-    top: 43vh;
+    top: 44.5vh; /* Slightly lowered for fullscreen */
 }
 
 body.fade-in-trigger {

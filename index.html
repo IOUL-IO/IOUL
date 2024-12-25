@@ -16,17 +16,17 @@
         }
 
         .username {
-            top: calc(var(--username-line-top) - var(--line-gap));
+            top: 36.6vh; /* Default position for non-fullscreen */
             visibility: visible;
         }
 
         .password {
-            top: calc(var(--password-line-top) - var(--line-gap));
+            top: 44.2vh; /* Default position for non-fullscreen */
         }
 
         .login-line {
             position: absolute;
-            top: var(--username-line-top);
+            top: 38.9vh;
             left: 6.4vw;
             width: 22.48vw;
             height: 1px;
@@ -35,7 +35,7 @@
 
         .login-line-second {
             position: absolute;
-            top: var(--password-line-top);
+            top: 47vh;
             left: 6.4vw;
             width: 22.48vw;
             height: 1px;
@@ -78,7 +78,7 @@
     <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-    <span class="login-text username">USERNAME</span>
+    <span class="login-text username">USERnAME</span>
     <span class="login-text password">PASSWORD</span>
     <div class="line login-line"></div>
     <div class="line login-line-second"></div>
@@ -115,12 +115,15 @@
 
         document.addEventListener('fullscreenchange', () => {
             const usernameElement = document.querySelector('.username');
-            if (usernameElement) {
-                if (!document.fullscreenElement) {
-                    usernameElement.style.top = 'calc(var(--username-line-top) - 1.5vh)'; // Non-fullscreen adjustment
-                } else {
-                    usernameElement.style.top = 'calc(var(--username-line-top) - var(--line-gap))'; // Full-screen adjustment
-                }
+            const passwordElement = document.querySelector('.password');
+            if (!document.fullscreenElement) {
+                document.body.classList.remove('fullscreen');
+                if (usernameElement) usernameElement.style.top = '36.6vh'; // Adjust non-fullscreen
+                if (passwordElement) passwordElement.style.top = '44.2vh'; // Adjust non-fullscreen
+            } else {
+                document.body.classList.add('fullscreen');
+                if (usernameElement) usernameElement.style.top = '35vh'; // Adjust fullscreen
+                if (passwordElement) passwordElement.style.top = '43vh'; // Adjust fullscreen
             }
         });
 
@@ -149,7 +152,7 @@
                 if (fadeCompleted) { 
                     const parentRect = this.getBoundingClientRect();
                     const input = document.createElement('input');
-                    input.type = 'text';
+                    input.type = this.classList.contains('password') ? 'password' : 'text';
                     input.maxLength = 10;
                     input.className = 'typing-input';
                     input.style.top = `${parentRect.top + window.scrollY}px`;

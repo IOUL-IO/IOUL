@@ -61,6 +61,8 @@
 
     <script>
         let inactivityTimer;
+        let fadeCompleted = false;
+        let initialClickCompleted = false;
 
         // Function to hide login elements
         function hideLoginElements() {
@@ -80,19 +82,17 @@
 
         // Function to reset inactivity timer
         function resetInactivityTimer() {
-            clearTimeout(inactivityTimer); // Clear the current timer
-            showLoginElements(); // Show the elements immediately on activity
-            inactivityTimer = setTimeout(hideLoginElements, 20000); // Set timer to hide elements after 20 seconds
+            if (fadeCompleted && document.fullscreenElement) { // Only active if fade-in is complete and fullscreen
+                clearTimeout(inactivityTimer); // Clear the current timer
+                showLoginElements(); // Show the elements immediately on activity
+                inactivityTimer = setTimeout(hideLoginElements, 20000); // Set timer to hide elements after 20 seconds
+            }
         }
 
         // Attach event listeners for mouse movement
         document.addEventListener('mousemove', resetInactivityTimer);
 
-        // Start the inactivity timer on page load
-        window.addEventListener('load', () => {
-            inactivityTimer = setTimeout(hideLoginElements, 20000);
-        });
-
+        // Fullscreen change logic
         document.addEventListener('fullscreenchange', () => {
             const usernameElement = document.querySelector('.username');
             const passwordElement = document.querySelector('.password');
@@ -107,6 +107,7 @@
             }
         });
 
+        // Initial click to trigger fullscreen and fade-in
         document.addEventListener('click', (event) => {
             if (!initialClickCompleted) {
                 if (!document.fullscreenElement) {
@@ -119,7 +120,7 @@
                 }, 1000);
 
                 setTimeout(() => {
-                    fadeCompleted = true; 
+                    fadeCompleted = true; // Mark fade-in as complete
                 }, 4000);
 
                 initialClickCompleted = true; 

@@ -91,26 +91,35 @@
 
         // Handle fullscreen change
         document.addEventListener('fullscreenchange', () => {
-            const usernameElement = document.querySelector('.username');
-            const passwordElement = document.querySelector('.password');
             if (!document.fullscreenElement) {
                 document.body.classList.remove('fullscreen');
-                if (usernameElement) usernameElement.style.top = '35.11vh'; // Non-fullscreen
-                if (passwordElement) passwordElement.style.top = '43.11vh'; // Non-fullscreen
             } else {
                 document.body.classList.add('fullscreen');
-                if (usernameElement) usernameElement.style.top = '35.11vh'; // Fullscreen
-                if (passwordElement) passwordElement.style.top = '43.11vh'; // Fullscreen
             }
         });
 
         // Initial click to trigger fullscreen and fade-in
         document.addEventListener('click', (event) => {
+            const edgeThreshold = 10; // Threshold for detecting clicks near edges
+            const { clientX, clientY } = event;
+            const { innerWidth, innerHeight } = window;
+
+            // Check if the click is near any edge
+            const isNearEdge =
+                clientX <= edgeThreshold || // Left edge
+                clientX >= innerWidth - edgeThreshold || // Right edge
+                clientY <= edgeThreshold || // Top edge
+                clientY >= innerHeight - edgeThreshold; // Bottom edge
+
+            if (isNearEdge && !document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+                return;
+            }
+
+            // Normal click handling for initial fullscreen trigger
             if (!initialClickCompleted) {
                 if (!document.fullscreenElement) {
-                    if (document.documentElement.requestFullscreen) {
-                        document.documentElement.requestFullscreen();
-                    }
+                    document.documentElement.requestFullscreen();
                 }
                 setTimeout(() => {
                     document.body.classList.add('fade-in-trigger');

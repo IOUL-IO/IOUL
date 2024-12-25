@@ -173,8 +173,7 @@ body.non-fullscreen .username {
 }
 
 .login-line {
-    position: absolute;
-    top: var(--username-line-top); /* Below username */
+    top: var(--username-line-top);
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
@@ -182,8 +181,7 @@ body.non-fullscreen .username {
 }
 
 .login-line-second {
-    position: absolute;
-    top: var(--password-line-top); /* Below password */
+    top: var(--password-line-top);
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;

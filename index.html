@@ -62,6 +62,7 @@
     <script>
         let fadeCompleted = false;
         let initialClickCompleted = false;
+        let inactivityTimer;
 
         function hideLoginElements() {
             document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
@@ -97,7 +98,7 @@
             } else {
                 document.body.classList.add('fullscreen');
                 if (usernameElement) usernameElement.style.top = '35.11vh'; // Fullscreen
-                if (passwordElement) passwordElement.style.top = '43.11vh'; // Fullscreen
+                if (passwordElement) usernameElement.style.top = '43.11vh'; // Fullscreen
             }
         });
 
@@ -114,6 +115,7 @@
 
                 setTimeout(() => {
                     fadeCompleted = true; 
+                    inactivityTimer = setTimeout(hideLoginElements, 20000); // Start fade-out timer after fade is complete
                 }, 4000);
 
                 initialClickCompleted = true; 

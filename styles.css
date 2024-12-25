@@ -13,7 +13,7 @@
 }
 
 :root {
-    --username-line-top: 38.9vh; /* Top position for login-line below username */
+    --username-line-top: 37.9vh; /* Top position for login-line below username */
     --password-line-top: 47vh;  /* Top position for login-line below password */
     --line-gap: 2.8vh; /* Exact gap between text and line */
 }
@@ -65,7 +65,7 @@ body.fade-in-trigger .time-text {
 }
 
 body.non-fullscreen .username {
-    top: 36.6vh; /* Adjusted top offset to prevent cut-off in non-fullscreen */
+    top: 35.6vh; /* Adjusted top offset to prevent cut-off in non-fullscreen */
     transform: none; /* Ensure no glitches */
 }
 

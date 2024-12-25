@@ -65,8 +65,11 @@ body.fade-in-trigger .time-text {
 }
 
 body.non-fullscreen .username {
-    top: 36.4vh; /* Adjusted further to push username upwards */
-    transform: none; /* Ensure no glitches */
+    top: 35.5vh; /* Further pushed up for non-fullscreen mode */
+}
+
+body.non-fullscreen .password {
+    top: calc(var(--password-line-top) - var(--line-gap)); /* Consistent for non-fullscreen */
 }
 
 .original {
@@ -165,7 +168,7 @@ body.non-fullscreen .username {
 }
 
 .username {
-    top: calc(var(--username-line-top) - 3vh); /* Pushed up slightly more */
+    top: calc(var(--username-line-top) - 3.1vh); /* Pushed up slightly more for fullscreen */
 }
 
 .password {

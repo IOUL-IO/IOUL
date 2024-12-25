@@ -165,11 +165,11 @@ body.non-fullscreen .username {
 }
 
 .username {
-    top: calc(var(--username-line-top) - var(--line-gap)); /* 2.8vh above login-line */
+    top: calc(var(--username-line-top) - var(--line-gap)); /* Adjusted to be 2.8vh above login-line */
 }
 
 .password {
-    top: calc(var(--password-line-top) - var(--line-gap)); /* 2.8vh above login-line-second */
+    top: calc(var(--password-line-top) - var(--line-gap)); /* Adjusted to be 2.8vh above login-line-second */
 }
 
 .login-line {

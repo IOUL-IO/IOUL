@@ -82,9 +82,9 @@
 
         // Function to reset inactivity timer
         function resetInactivityTimer() {
-            if (fadeCompleted && document.fullscreenElement) { // Only active if fade-in is complete and fullscreen
+            if (fadeCompleted && document.fullscreenElement) {
                 clearTimeout(inactivityTimer); // Clear the current timer
-                showLoginElements(); // Show the elements immediately on activity
+                showLoginElements(); // Immediately show elements on mouse movement
                 inactivityTimer = setTimeout(hideLoginElements, 20000); // Set timer to hide elements after 20 seconds
             }
         }

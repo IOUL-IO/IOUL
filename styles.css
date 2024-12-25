@@ -65,11 +65,11 @@ body.fade-in-trigger .time-text {
 }
 
 body.non-fullscreen .username {
-    top: 35.5vh; /* Further pushed up for non-fullscreen mode */
+    top: calc(var(--username-line-top) - 2.8vh); /* Raised slightly for non-fullscreen */
 }
 
 body.non-fullscreen .password {
-    top: calc(var(--password-line-top) - var(--line-gap)); /* Consistent for non-fullscreen */
+    top: calc(var(--password-line-top) - 2.8vh); /* Raised slightly for non-fullscreen */
 }
 
 .original {
@@ -168,11 +168,11 @@ body.non-fullscreen .password {
 }
 
 .username {
-    top: calc(var(--username-line-top) - 3.1vh); /* Pushed up slightly more for fullscreen */
+    top: calc(var(--username-line-top) - 2.8vh); /* Lowered slightly */
 }
 
 .password {
-    top: calc(var(--password-line-top) - var(--line-gap)); /* Consistent at 2.8vh above login-line-second */
+    top: calc(var(--password-line-top) - 2.8vh); /* Raised slightly */
 }
 
 .login-line {

@@ -60,32 +60,38 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let fadeCompleted = false;
-        let initialClickCompleted = false;
+        let inactivityTimer;
 
+        // Function to hide login elements
         function hideLoginElements() {
-            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
-                el.classList.add('hidden'); 
-                el.classList.remove('visible'); 
+            document.querySelectorAll('.username, .password, .login-line, .login-line-second').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('visible');
             });
         }
 
+        // Function to show login elements
         function showLoginElements() {
-            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
-                el.classList.add('visible'); 
-                el.classList.remove('hidden'); 
+            document.querySelectorAll('.username, .password, .login-line, .login-line-second').forEach(el => {
+                el.classList.add('visible');
+                el.classList.remove('hidden');
             });
         }
 
+        // Function to reset inactivity timer
         function resetInactivityTimer() {
-            if (fadeCompleted) {
-                showLoginElements(); 
-                clearTimeout(inactivityTimer); 
-                inactivityTimer = setTimeout(hideLoginElements, 20000); 
-            }
+            clearTimeout(inactivityTimer); // Clear the current timer
+            showLoginElements(); // Show the elements immediately on activity
+            inactivityTimer = setTimeout(hideLoginElements, 20000); // Set timer to hide elements after 20 seconds
         }
 
+        // Attach event listeners for mouse movement
         document.addEventListener('mousemove', resetInactivityTimer);
+
+        // Start the inactivity timer on page load
+        window.addEventListener('load', () => {
+            inactivityTimer = setTimeout(hideLoginElements, 20000);
+        });
 
         document.addEventListener('fullscreenchange', () => {
             const usernameElement = document.querySelector('.username');

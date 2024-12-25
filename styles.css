@@ -26,19 +26,19 @@ body.non-fullscreen {
 }
 
 body.non-fullscreen .username {
-    top: 34.99vh; /* Slightly raised for non-fullscreen */
+    top: 35.1vh; /* Slightly raised for non-fullscreen */
 }
 
 body.non-fullscreen .password {
-    top: 42.99vh; /* Slightly raised for non-fullscreen */
+    top: 43.1vh; /* Slightly raised for non-fullscreen */
 }
 
 body.fullscreen .username {
-    top: 34.99vh; /* Slightly lowered for fullscreen */
+    top: 35.1vh; /* Slightly lowered for fullscreen */
 }
 
 body.fullscreen .password {
-    top: 42.99vh; /* Slightly lowered for fullscreen */
+    top: 43.1vh; /* Slightly lowered for fullscreen */
 }
 
 body.fade-in-trigger {

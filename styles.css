@@ -13,9 +13,9 @@
 }
 
 :root {
-    --username-line-top: 38.9vh; /* Default for username-line top position */
-    --password-line-top: 47vh;  /* Default for password-line top position */
-    --line-gap: 2.5vh; /* Adjusted gap between text and line */
+    --username-line-top: 35vh; /* Adjusted top position */
+    --password-line-top: 47vh; /* Top position for login-line below password */
+    --line-gap: 2.8vh; /* Exact gap between text and line */
 }
 
 body.non-fullscreen {
@@ -65,8 +65,7 @@ body.fade-in-trigger .time-text {
 }
 
 body.non-fullscreen .username {
-    top: 36.6vh; /* Adjusted top offset to prevent cut-off in non-fullscreen */
-    transform: none; /* Ensure no glitches */
+    top: calc(var(--username-line-top) - 1.5vh); /* Adjusted for non-fullscreen */
 }
 
 .original {
@@ -165,16 +164,16 @@ body.non-fullscreen .username {
 }
 
 .username {
-    top: calc(var(--username-line-top) - var(--line-gap)); /* Positioned dynamically above login-line */
+    top: calc(var(--username-line-top) - var(--line-gap));
 }
 
 .password {
-    top: calc(var(--password-line-top) - var(--line-gap)); /* Positioned dynamically above login-line-second */
+    top: calc(var(--password-line-top) - var(--line-gap));
 }
 
 .login-line {
     position: absolute;
-    top: var(--username-line-top); /* Dynamically aligned below username */
+    top: var(--username-line-top);
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
@@ -183,7 +182,7 @@ body.non-fullscreen .username {
 
 .login-line-second {
     position: absolute;
-    top: var(--password-line-top); /* Dynamically aligned below password */
+    top: var(--password-line-top);
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;

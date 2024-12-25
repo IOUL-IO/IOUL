@@ -17,41 +17,14 @@
             color: #414141;
             letter-spacing: 0.28vw;
             font-size: 0.4rem;
-            line-height: 1.2; /* Prevent text clipping */
-            padding: 0.1rem 0; /* Add padding for space around text */
-        }
-
-        .username {
-            top: 36.6vh; /* Default position for non-fullscreen */
-            visibility: visible;
-        }
-
-        .password {
-            top: 44.2vh; /* Default position for non-fullscreen */
-        }
-
-        .login-line {
-            position: absolute;
-            top: 38.9vh;
-            left: 6.4vw;
-            width: 22.48vw;
-            height: 1px;
-            background-color: rgba(230, 230, 230, 0.28);
-        }
-
-        .login-line-second {
-            position: absolute;
-            top: 47vh;
-            left: 6.4vw;
-            width: 22.48vw;
-            height: 1px;
-            background-color: rgba(230, 230, 230, 0.28);
+            line-height: 1.2;
+            padding: 0.1rem 0;
         }
 
         input.typing-input {
             font-family: 'Distill Expanded', sans-serif;
-            font-size: 0.4rem; /* Match the span font size */
-            line-height: 1.2; /* Prevent text clipping */
+            font-size: 0.4rem;
+            line-height: 1.2;
             color: #414141;
             letter-spacing: 0.28vw;
             border: none;
@@ -59,16 +32,10 @@
             background-color: transparent;
             position: absolute;
             caret-color: #d1d1d1;
-            padding: 0.1rem 0; /* Match the span padding */
-            width: calc(22.48vw + 4vw); /* Consistent width */
-            height: auto; /* Let the browser calculate based on content */
-            box-sizing: content-box; /* Ensure padding doesn't affect dimensions */
-        }
-
-        @keyframes blink-caret {
-            50% {
-                border-color: transparent;
-            }
+            padding: 0.1rem 0;
+            width: calc(22.48vw + 4vw);
+            height: auto;
+            box-sizing: content-box;
         }
     </style>
 </head>
@@ -93,10 +60,8 @@
     <div class="line login-line-second"></div>
 
     <script>
-        let fadeCompleted = false; 
-        let loginTriggered = false; 
-        let initialClickCompleted = false; 
-        let inactivityTimer; 
+        let fadeCompleted = false;
+        let initialClickCompleted = false;
 
         function hideLoginElements() {
             document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
@@ -127,12 +92,12 @@
             const passwordElement = document.querySelector('.password');
             if (!document.fullscreenElement) {
                 document.body.classList.remove('fullscreen');
-                if (usernameElement) usernameElement.style.top = '36.6vh'; // Adjust non-fullscreen
-                if (passwordElement) passwordElement.style.top = '44.2vh'; // Adjust non-fullscreen
+                if (usernameElement) usernameElement.style.top = '35.5vh'; // Non-fullscreen
+                if (passwordElement) passwordElement.style.top = '43.5vh'; // Non-fullscreen
             } else {
                 document.body.classList.add('fullscreen');
-                if (usernameElement) usernameElement.style.top = '35vh'; // Adjust fullscreen
-                if (passwordElement) passwordElement.style.top = '43vh'; // Adjust fullscreen
+                if (usernameElement) usernameElement.style.top = '36.5vh'; // Fullscreen
+                if (passwordElement) passwordElement.style.top = '44.5vh'; // Fullscreen
             }
         });
 
@@ -155,7 +120,6 @@
             }
         });
 
-        // Input handling for login text
         document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
             element.addEventListener('click', function () {
                 if (fadeCompleted) { 
@@ -177,7 +141,6 @@
                         span.innerText = input.value.trim() || element.innerText;
                         input.replaceWith(span);
 
-                        // Rebind the click handler after blur
                         addClickHandler(span);
                     });
                 }

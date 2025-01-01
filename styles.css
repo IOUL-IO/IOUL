@@ -109,7 +109,7 @@ body.fade-in-trigger .time-text {
     height: 1px;
     top: 28.5vh;
     left: 36vw;
-    width: 52.17vw;
+    width: 52.19vw;
     background: linear-gradient(
         to right,
         #acacac 0,
@@ -123,25 +123,25 @@ body.fade-in-trigger .time-text {
 .second-dashed {
     top: 47vh;
     left: 36vw;
-    width: 52.17vw;
+    width: 52.19vw;
 }
 
 .third-dashed {
     top: 65.5vh;
     left: 36vw;
-    width: 52.17vw;
+    width: 52.19vw;
 }
 
 .fourth-dashed {
     top: 84vh;
     left: 36vw;
-    width: 52.17vw;
+    width: 52.19vw;
 }
 
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.281rem;
+    font-size: 0.272rem;
     color: #111111;
     letter-spacing: 0.20vw;
 }

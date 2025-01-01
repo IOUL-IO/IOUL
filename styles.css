@@ -112,8 +112,8 @@ body.fade-in-trigger .time-text {
     width: 52.4vw;
     background: linear-gradient(
         to right,
-        #a1a1a1 0,
-        #a1a1a1 5px, 
+        #acacac 0,
+        #acacac 5px, 
         #ffffff 5px,
         #ffffff 10px 
     );
@@ -142,7 +142,7 @@ body.fade-in-trigger .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     font-size: 0.272rem;
-    color: #000000;
+    color: #111111;
     letter-spacing: 0.20vw;
 }
 
@@ -169,7 +169,7 @@ body.fade-in-trigger .time-text {
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    color: #000000;
+    color: #111111;
     letter-spacing: 0.28vw;
     font-size: 0.4rem;
     left: 6.41vw;

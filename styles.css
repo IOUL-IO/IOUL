@@ -141,29 +141,29 @@ body.fade-in-trigger .time-text {
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.29rem;
+    font-size: 0.31rem;
     color: #111111;
     letter-spacing: 0.20vw;
 }
 
 .time-text {
     top: 28.5vh;
-    left: 89.71vw;
+    left: 89.61vw;
 }
 
 .second-time-text {
     top: 47vh;
-    left: 89.71vw;
+    left: 89.61vw;
 }
 
 .third-time-text {
     top: 65.5vh;
-    left: 89.71vw;
+    left: 89.61vw;
 }
 
 .fourth-time-text {
     top: 83.9vh;
-    left: 89.81vw;
+    left: 89.71vw;
 }
 
 .login-text {
@@ -171,7 +171,7 @@ body.fade-in-trigger .time-text {
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
     letter-spacing: 0.28vw;
-    font-size: 0.411rem;
+    font-size: 0.42rem;
     left: 6.41vw;
 }
 

@@ -101,7 +101,7 @@ body.fade-in-trigger .time-text {
 .fourth {
     top: 12.5vh;
     left: 34.99vw;
-    width: 58.2vw;
+    width: 58.4vw;
 }
 
 .dashed {
@@ -143,27 +143,27 @@ body.fade-in-trigger .time-text {
     font-family: 'Distill Expanded', sans-serif;
     font-size: 0.33rem;
     color: #111111;
-    letter-spacing: 0.241vw;
+    letter-spacing: 0.24vw;
 }
 
 .time-text {
     top: 28.5vh;
-    left: 89.71vw;
+    left: 89.61vw;
 }
 
 .second-time-text {
     top: 47.04vh;
-    left: 89.71vw;
+    left: 89.61vw;
 }
 
 .third-time-text {
     top: 65.51vh;
-    left: 89.71vw;
+    left: 89.61vw;
 }
 
 .fourth-time-text {
     top: 83.86vh;
-    left: 89.84vw;
+    left: 89.74vw;
 }
 
 .login-text {

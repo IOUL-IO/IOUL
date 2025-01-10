@@ -141,9 +141,9 @@ body.fade-in-trigger .time-text {
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.33rem;
+    font-size: 0.31rem;
     color: #111111;
-    letter-spacing: 0.22vw;
+    letter-spacing: 0.20vw;
 }
 
 .time-text {

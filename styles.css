@@ -82,34 +82,34 @@ body.fade-in-trigger .time-text {
 
 .original {
     top: 12.5vh; 
-    left: 6.38vw;
+    left: 6.28vw;
     width: 22.48vw; 
 }
 
 .second {
     top: 28.5vh;
-    left: 6.38vw;
+    left: 6.28vw;
     width: 22.48vw;
 }
 
 .third {
     top: 84vh;
-    left: 6.38vw;
+    left: 6.28vw;
     width: 22.48vw;
 }
 
 .fourth {
     top: 12.5vh;
-    left: 36vw;
-    width: 57.8vw;
+    left: 34.91vw;
+    width: 58.2vw;
 }
 
 .dashed {
     position: absolute;
     height: 1px;
     top: 28.5vh;
-    left: 36vw;
-    width: 52.4vw;
+    left: 34.91vw;
+    width: 52.8vw;
     background: linear-gradient(
         to right,
         #a1a1a1 0,
@@ -122,20 +122,20 @@ body.fade-in-trigger .time-text {
 
 .second-dashed {
     top: 47vh;
-    left: 36vw;
-    width: 52.4vw;
+    left: 34.91vw;
+    width: 52.8vw;
 }
 
 .third-dashed {
     top: 65.5vh;
-    left: 36vw;
-    width: 52.4vw;
+    left: 34.91vw;
+    width: 52.8vw;
 }
 
 .fourth-dashed {
     top: 84vh;
-    left: 36vw;
-    width: 52.4vw;
+    left: 34.91vw;
+    width: 52.8vw;
 }
 
 .time-text {
@@ -143,27 +143,27 @@ body.fade-in-trigger .time-text {
     font-family: 'Distill Expanded', sans-serif;
     font-size: 0.33rem;
     color: #111111;
-    letter-spacing: 0.271vw;
+    letter-spacing: 0.24vw;
 }
 
 .time-text {
     top: 28.5vh;
-    left: 89.81vw;
+    left: 89.71vw;
 }
 
 .second-time-text {
     top: 47.04vh;
-    left: 89.81vw;
+    left: 89.71vw;
 }
 
 .third-time-text {
     top: 65.51vh;
-    left: 89.81vw;
+    left: 89.71vw;
 }
 
 .fourth-time-text {
     top: 83.86vh;
-    left: 89.94vw;
+    left: 89.84vw;
 }
 
 .login-text {

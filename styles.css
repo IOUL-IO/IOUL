@@ -109,7 +109,7 @@ body.fade-in-trigger .time-text {
     height: 1px;
     top: 28.5vh;
     left: 34.99vw;
-    width: 54vw;
+    width: 53.4vw;
     background: linear-gradient(
         to right,
         #a1a1a1 0,
@@ -123,19 +123,19 @@ body.fade-in-trigger .time-text {
 .second-dashed {
     top: 47vh;
     left: 34.99vw;
-    width: 54vw;
+    width: 53.4vw;
 }
 
 .third-dashed {
     top: 65.5vh;
     left: 34.99vw;
-    width: 54vw;
+    width: 53.4vw;
 }
 
 .fourth-dashed {
     top: 84vh;
     left: 34.99vw;
-    width: 54vw;
+    width: 53.4vw;
 }
 
 .time-text {

@@ -112,8 +112,8 @@ body.fade-in-trigger .time-text {
     width: 52.4vw;
     background: linear-gradient(
         to right,
-        #a7a7a7 0,
-        #a7a7a7 5px, 
+        #acacac 0,
+        #acacac 5px, 
         #ffffff 5px,
         #ffffff 10px 
     );
@@ -163,7 +163,7 @@ body.fade-in-trigger .time-text {
 
 .fourth-time-text {
     top: 83.86vh;
-    left: 89.91vw;
+    left: 90.1vw;
 }
 
 .login-text {

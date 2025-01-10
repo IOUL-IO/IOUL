@@ -82,19 +82,19 @@ body.fade-in-trigger .time-text {
 
 .original {
     top: 12.5vh; 
-    left: 6.28vw;
+    left: 6.27vw;
     width: 22.48vw; 
 }
 
 .second {
     top: 28.5vh;
-    left: 6.28vw;
+    left: 6.27vw;
     width: 22.48vw;
 }
 
 .third {
     top: 84vh;
-    left: 6.28vw;
+    left: 6.27vw;
     width: 22.48vw;
 }
 
@@ -109,7 +109,7 @@ body.fade-in-trigger .time-text {
     height: 1px;
     top: 28.5vh;
     left: 34.99vw;
-    width: 52.8vw;
+    width: 54.1vw;
     background: linear-gradient(
         to right,
         #a1a1a1 0,
@@ -123,27 +123,27 @@ body.fade-in-trigger .time-text {
 .second-dashed {
     top: 47vh;
     left: 34.99vw;
-    width: 52.8vw;
+    width: 54.1vw;
 }
 
 .third-dashed {
     top: 65.5vh;
     left: 34.99vw;
-    width: 52.8vw;
+    width: 54.1vw;
 }
 
 .fourth-dashed {
     top: 84vh;
     left: 34.99vw;
-    width: 52.8vw;
+    width: 54.1vw;
 }
 
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.33rem;
+    font-size: 0.331rem;
     color: #111111;
-    letter-spacing: 0.24vw;
+    letter-spacing: 0.271vw;
 }
 
 .time-text {

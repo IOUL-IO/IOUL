@@ -101,7 +101,7 @@ body.fade-in-trigger .time-text {
 .fourth {
     top: 12.5vh;
     left: 34.99vw;
-    width: 58.4vw;
+    width: 58.8vw;
 }
 
 .dashed {
@@ -109,7 +109,7 @@ body.fade-in-trigger .time-text {
     height: 1px;
     top: 28.5vh;
     left: 34.99vw;
-    width: 52.8vw;
+    width: 54vw;
     background: linear-gradient(
         to right,
         #a1a1a1 0,
@@ -123,19 +123,19 @@ body.fade-in-trigger .time-text {
 .second-dashed {
     top: 47vh;
     left: 34.99vw;
-    width: 52.8vw;
+    width: 54vw;
 }
 
 .third-dashed {
     top: 65.5vh;
     left: 34.99vw;
-    width: 52.8vw;
+    width: 54vw;
 }
 
 .fourth-dashed {
     top: 84vh;
     left: 34.99vw;
-    width: 52.8vw;
+    width: 54vw;
 }
 
 .time-text {
@@ -148,22 +148,22 @@ body.fade-in-trigger .time-text {
 
 .time-text {
     top: 28.5vh;
-    left: 88.91vw;
+    left: 89.11vw;
 }
 
 .second-time-text {
     top: 47.04vh;
-    left: 88.91vw;
+    left: 89.11vw;
 }
 
 .third-time-text {
     top: 65.51vh;
-    left: 88.91vw;
+    left: 89.11vw;
 }
 
 .fourth-time-text {
     top: 83.86vh;
-    left: 89.04vw;
+    left: 89.24vw;
 }
 
 .login-text {

@@ -82,19 +82,19 @@ body.fade-in-trigger .time-text {
 
 .original {
     top: 12.5vh; 
-    left: 6.27vw;
+    left: 6.28vw;
     width: 22.48vw; 
 }
 
 .second {
     top: 28.5vh;
-    left: 6.27vw;
+    left: 6.28vw;
     width: 22.48vw;
 }
 
 .third {
     top: 84vh;
-    left: 6.27vw;
+    left: 6.28vw;
     width: 22.48vw;
 }
 
@@ -109,7 +109,7 @@ body.fade-in-trigger .time-text {
     height: 1px;
     top: 28.5vh;
     left: 34.99vw;
-    width: 54.1vw;
+    width: 52.8vw;
     background: linear-gradient(
         to right,
         #a1a1a1 0,
@@ -123,27 +123,27 @@ body.fade-in-trigger .time-text {
 .second-dashed {
     top: 47vh;
     left: 34.99vw;
-    width: 54.1vw;
+    width: 52.8vw;
 }
 
 .third-dashed {
     top: 65.5vh;
     left: 34.99vw;
-    width: 54.1vw;
+    width: 52.8vw;
 }
 
 .fourth-dashed {
     top: 84vh;
     left: 34.99vw;
-    width: 54.1vw;
+    width: 52.8vw;
 }
 
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.331rem;
+    font-size: 0.33rem;
     color: #111111;
-    letter-spacing: 0.271vw;
+    letter-spacing: 0.241vw;
 }
 
 .time-text {
@@ -186,7 +186,7 @@ body.fade-in-trigger .time-text {
 .login-line {
     position: absolute;
     top: var(--username-line-top); 
-    left: 6.4vw;
+    left: 6.28vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
@@ -195,7 +195,7 @@ body.fade-in-trigger .time-text {
 .login-line-second {
     position: absolute;
     top: var(--password-line-top); 
-    left: 6.4vw;
+    left: 6.28vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);

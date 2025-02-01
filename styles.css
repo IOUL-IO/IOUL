@@ -112,8 +112,8 @@ body.fade-in-trigger .time-text {
     width: 52.4vw;
     background: linear-gradient(
         to right,
-        #a1a1a1 0,
-        #a1a1a1 5px, 
+        #717171 0,
+        #717171 5px, 
         #ffffff 5px,
         #ffffff 10px 
     );
@@ -144,7 +144,7 @@ body.fade-in-trigger .time-text {
     font-size: 0.331rem;
     color: #111111;
     letter-spacing: 0.2vw;
-    text-shadow: 0.001rem 0 0 #cccccc, -0.001rem 0 0 #cccccc;
+    text-shadow: 0.001rem 0 0 #aaaaaa, -0.001rem 0 0 #aaaaaa;
 }
 
 .time-text {

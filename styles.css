@@ -225,23 +225,23 @@ body.fade-in-trigger .time-text {
 /* Non-fullscreen positions */
 body.non-fullscreen .open-text {
     top: 35.17vh; /* same as .username displayed top */
-    left: 24vw;   /* changed from 19vw to 24vw */
+    left: 26vw;   /* changed from 19vw to 24vw */
 }
 
 body.non-fullscreen .help-text {
     top: 43.17vh; /* same as .password displayed top */
-    left: 24vw;   /* changed from 19vw to 24vw */
+    left: 26vw;   /* changed from 19vw to 24vw */
 }
 
 /* Fullscreen positions (matching .username/.password in fullscreen) */
 body.fullscreen .open-text {
     top: 35.17vh;
-    left: 24vw;
+    left: 26vw;
 }
 
 body.fullscreen .help-text {
     top: 43.17vh;
-    left: 24vw;
+    left: 26vw;
 }
 
 /* 
@@ -251,7 +251,7 @@ body.fullscreen .help-text {
 */
 .open-text.visible,
 .help-text.visible {
-    opacity: 0.5 !important;
+    opacity: 0.2 !important;
 }
 
 /* Hover => 100% */

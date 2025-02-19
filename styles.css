@@ -167,6 +167,7 @@ body.fade-in-trigger .time-text {
     left: 90.1vw;
 }
 
+/* Existing login text */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -203,7 +204,7 @@ body.fade-in-trigger .time-text {
     background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* Styles for 'OPEN' and 'HELP' texts */
+/* NEW: 'OPEN' and 'HELP' match username/password top positions but left at 19vw */
 .open-text,
 .help-text {
     position: absolute;
@@ -216,18 +217,29 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Position them at 36.1vh and 44.2vh, left = 19vw */
-.open-text {
-    top: 36.1vh;
+/* Non-fullscreen positions */
+body.non-fullscreen .open-text {
+    top: 35.17vh; /* same as .username final displayed top */
     left: 19vw;
 }
 
-.help-text {
-    top: 44.2vh;
+body.non-fullscreen .help-text {
+    top: 43.17vh; /* same as .password final displayed top */
     left: 19vw;
 }
 
-/* Default to ~50% opacity once visible, then 100% on hover */
+/* Fullscreen positions (matching .username/.password in fullscreen) */
+body.fullscreen .open-text {
+    top: 35.17vh;
+    left: 19vw;
+}
+
+body.fullscreen .help-text {
+    top: 43.17vh;
+    left: 19vw;
+}
+
+/* Default to 50% opacity once visible, then 100% on hover */
 .open-text.visible:hover,
 .help-text.visible:hover {
     opacity: 1 !important;

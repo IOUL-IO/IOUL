@@ -59,7 +59,7 @@
     <span class="login-text username">USERnAME</span>
     <span class="login-text password">PASSWORD</span>
 
-    <!-- New elements for 'OPEN' and 'HELP' -->
+    <!-- Elements for 'OPEN' and 'HELP' -->
     <span class="login-text open-text hidden">OPEN</span>
     <span class="login-text help-text hidden">HELP</span>
 
@@ -73,11 +73,12 @@
         let lastMouseEvent = null;
 
         function hideLoginElements() {
-            document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
-                .forEach(el => {
-                    el.classList.add('hidden');
-                    el.classList.remove('visible');
-                });
+            document.querySelectorAll(
+                '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
+            ).forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('visible');
+            });
         }
 
         function showLoginElements() {
@@ -96,9 +97,9 @@
 
         function resetInactivityTimer() {
             if (fadeCompleted) {
-                clearTimeout(inactivityTimer); 
-                showLoginElements(); 
-                inactivityTimer = setTimeout(hideLoginElements, 20000); 
+                clearTimeout(inactivityTimer);
+                showLoginElements();
+                inactivityTimer = setTimeout(hideLoginElements, 20000);
             }
         }
 
@@ -120,6 +121,7 @@
             const boundingRight = 28;
 
             const { innerWidth, innerHeight } = window;
+            const { clientX, clientY } = event;
 
             // Convert bounding region to px
             const topPx = (boundingTop / 100) * innerHeight;
@@ -127,7 +129,6 @@
             const leftPx = (boundingLeft / 100) * innerWidth;
             const rightPx = (boundingRight / 100) * innerWidth;
 
-            const { clientX, clientY } = event;
             const isInRegion = (
                 clientY >= topPx &&
                 clientY <= bottomPx &&
@@ -156,17 +157,17 @@
             }
         });
 
-        document.addEventListener('click', (event) => {
-            const edgeThreshold = 10; 
+        document.addEventListener('click', event => {
+            const edgeThreshold = 10;
             const { clientX, clientY } = event;
             const { innerWidth, innerHeight } = window;
 
             // If user clicks near the edge and not in fullscreen, enter fullscreen
             const isNearEdge =
-                clientX <= edgeThreshold || 
-                clientX >= innerWidth - edgeThreshold || 
-                clientY <= edgeThreshold || 
-                clientY >= innerHeight - edgeThreshold; 
+                clientX <= edgeThreshold ||
+                clientX >= innerWidth - edgeThreshold ||
+                clientY <= edgeThreshold ||
+                clientY >= innerHeight - edgeThreshold;
 
             if (isNearEdge && !document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
@@ -183,15 +184,15 @@
                 }, 1000);
 
                 setTimeout(() => {
-                    fadeCompleted = true; 
-                    inactivityTimer = setTimeout(hideLoginElements, 20000); 
+                    fadeCompleted = true;
+                    inactivityTimer = setTimeout(hideLoginElements, 20000);
                 }, 4000);
 
-                initialClickCompleted = true; 
+                initialClickCompleted = true;
             }
         });
 
-        document.addEventListener('mousemove', (event) => {
+        document.addEventListener('mousemove', event => {
             lastMouseEvent = event;
             resetInactivityTimer();
             checkRegionAndShowOpenHelp(event);
@@ -200,7 +201,11 @@
         // Handle click-to-edit for USERnAME & PASSWORD only (not OPEN/HELP)
         document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
             element.addEventListener('click', function () {
-                if (fadeCompleted && (this.classList.contains('username') || this.classList.contains('password'))) {
+                // Only USERnAME or PASSWORD should trigger input replacement
+                if (
+                    fadeCompleted &&
+                    (this.classList.contains('username') || this.classList.contains('password'))
+                ) {
                     const parentRect = this.getBoundingClientRect();
                     const input = document.createElement('input');
                     input.type = this.classList.contains('password') ? 'password' : 'text';

@@ -59,7 +59,6 @@
     <span class="login-text username">USERnAME</span>
     <span class="login-text password">PASSWORD</span>
 
-    <!-- Elements for 'OPEN' and 'HELP' -->
     <span class="login-text open-text hidden">OPEn</span>
     <span class="login-text help-text hidden">HELP</span>
 
@@ -82,14 +81,12 @@
         }
 
         function showLoginElements() {
-            // Show username, password, and lines
             document.querySelectorAll('.username, .password, .login-line, .login-line-second')
                 .forEach(el => {
                     el.classList.add('visible');
                     el.classList.remove('hidden');
                 });
 
-            // Check mouse region again for OPEN and HELP
             if (lastMouseEvent) {
                 checkRegionAndShowOpenHelp(lastMouseEvent);
             }
@@ -109,21 +106,18 @@
             const openText = document.querySelector('.open-text');
             const helpText = document.querySelector('.help-text');
 
-            // If the login elements are hidden by inactivity, keep OPEN/HELP hidden too
             if (document.querySelector('.username').classList.contains('hidden')) {
                 return;
             }
 
-            // Define bounding region in vw/vh
             const boundingTop = 28.5;
             const boundingBottom = 84;
             const boundingLeft = 6.38;
-            const boundingRight = 29; // CHANGED from 28 to 29
+            const boundingRight = 29; 
 
             const { innerWidth, innerHeight } = window;
             const { clientX, clientY } = event;
 
-            // Convert bounding region to px
             const topPx = (boundingTop / 100) * innerHeight;
             const bottomPx = (boundingBottom / 100) * innerHeight;
             const leftPx = (boundingLeft / 100) * innerWidth;
@@ -162,7 +156,6 @@
             const { clientX, clientY } = event;
             const { innerWidth, innerHeight } = window;
 
-            // If user clicks near the edge and not in fullscreen, enter fullscreen
             const isNearEdge =
                 clientX <= edgeThreshold ||
                 clientX >= innerWidth - edgeThreshold ||
@@ -174,7 +167,6 @@
                 return;
             }
 
-            // First click triggers fade-in sequence
             if (!initialClickCompleted) {
                 if (!document.fullscreenElement) {
                     document.documentElement.requestFullscreen();
@@ -198,10 +190,8 @@
             checkRegionAndShowOpenHelp(event);
         });
 
-        // Handle click-to-edit for USERnAME & PASSWORD only (not OPEN/HELP)
         document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
             element.addEventListener('click', function () {
-                // Only USERnAME or PASSWORD should trigger input replacement
                 if (
                     fadeCompleted &&
                     (this.classList.contains('username') || this.classList.contains('password'))

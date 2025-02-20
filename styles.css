@@ -82,7 +82,7 @@ body.fade-in-trigger .time-text {
 .line {
     position: absolute;
     height: 1px;
-    background-color: #cecece;
+    background-color: #d1d1d1;
 }
 
 .original {
@@ -117,8 +117,8 @@ body.fade-in-trigger .time-text {
     width: 52.4vw;
     background: linear-gradient(
         to right,
-        #a1a1a1 0,
-        #a1a1a1 5px, 
+        #aaaaaa 0,
+        #aaaaaa 5px, 
         #ffffff 5px,
         #ffffff 10px 
     );
@@ -149,7 +149,7 @@ body.fade-in-trigger .time-text {
     font-size: 0.331rem;
     color: #111111;
     letter-spacing: 0.2vw;
-    text-shadow: 0.001rem 0 0 #acacac, -0.001rem 0 0 #acacac;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
 .time-text {

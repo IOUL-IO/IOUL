@@ -65,11 +65,6 @@ body.fade-in-trigger .time-text {
 }
 
 .visible {
-    /* 
-       By default .visible sets opacity to 1 with !important. 
-       However, we need 'OPEN' and 'HELP' at 50% unless hovered.
-       We'll do a custom rule below for .open-text.visible and .help-text.visible.
-    */
     opacity: 1 !important;
     transition: opacity 0.5s ease-in-out;
 }
@@ -209,7 +204,6 @@ body.fade-in-trigger .time-text {
     background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* 'OPEN' and 'HELP' match username/password top positions but left at 24vw */
 .open-text,
 .help-text {
     position: absolute;
@@ -222,39 +216,31 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Non-fullscreen positions */
 body.non-fullscreen .open-text {
-    top: 35.17vh; /* same as .username displayed top */
-    left: 25.8vw;   /* changed from 19vw to 24vw */
+    top: 35.17vh; 
+    left: 25.7vw;   
 }
 
 body.non-fullscreen .help-text {
-    top: 43.17vh; /* same as .password displayed top */
-    left: 25.8vw;   /* changed from 19vw to 24vw */
+    top: 43.17vh; 
+    left: 25.7vw;   
 }
 
-/* Fullscreen positions (matching .username/.password in fullscreen) */
 body.fullscreen .open-text {
     top: 35.17vh;
-    left: 25.8vw;
+    left: 25.7vw;
 }
 
 body.fullscreen .help-text {
     top: 43.17vh;
-    left: 25.8vw;
+    left: 25.7vw;
 }
 
-/* 
-   By default, .visible sets them to 1 with !important. 
-   We override that here for open-text/help-text specifically, 
-   so they're at 50% unless hovered. 
-*/
 .open-text.visible,
 .help-text.visible {
     opacity: 0.27 !important;
 }
 
-/* Hover => 100% */
 .open-text.visible:hover,
 .help-text.visible:hover {
     opacity: 1 !important;

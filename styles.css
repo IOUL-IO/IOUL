@@ -218,22 +218,22 @@ body.fade-in-trigger .time-text {
 
 body.non-fullscreen .open-text {
     top: 35.17vh; 
-    left: 25.7vw;   
+    left: 25.1vw;   
 }
 
 body.non-fullscreen .help-text {
     top: 43.17vh; 
-    left: 25.7vw;   
+    left: 25.1vw;   
 }
 
 body.fullscreen .open-text {
     top: 35.17vh;
-    left: 25.7vw;
+    left: 25.1vw;
 }
 
 body.fullscreen .help-text {
     top: 43.17vh;
-    left: 25.7vw;
+    left: 25.1vw;
 }
 
 .open-text.visible,

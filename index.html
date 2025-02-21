@@ -6,6 +6,7 @@
     <title>IOUL</title>
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
+
     <style>
         .login-text {
             position: absolute;
@@ -15,32 +16,41 @@
             overflow: visible;
             font-family: 'Distill Expanded', sans-serif;
             color: #111111;
-            letter-spacing: 0.34vw;
-            font-size: 0.46rem;
+            letter-spacing: 0.34vw;   /* <-- Notice you have 0.34vw in index.html, but 0.28vw in styles.css */
+            font-size: 0.46rem;       /* <-- Also see 0.46rem here vs. 0.47rem in styles.css */
             line-height: 1.2;
             padding: 0.1rem 0;
             text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
         }
 
-        /* Increase line-height/padding to avoid clipping,
-           and nudge the text up a bit with transform */
+        /*
+         * The crucial part: unify everything with .login-text from styles.css.
+         * According to your .login-text in styles.css, it has:
+         *   font-size: 0.47rem;
+         *   letter-spacing: 0.28vw;
+         * We'll match that EXACT style below for the input.
+         *
+         * If your final desired style is what's in styles.css,
+         * use those values. We'll assume 0.47rem + 0.28vw + line-height:1.2
+         */
         input.typing-input {
             font-family: 'Distill Expanded', sans-serif;
-            font-size: 0.46rem;
-            line-height: 1.4;            /* prevents letters from getting cut off */
+            font-size: 0.47rem;       /* MATCH .login-text in styles.css */
+            letter-spacing: 0.28vw;   /* MATCH .login-text in styles.css */
+            line-height: 1.2;         /* Same as placeholder's baseline assumption */
             color: #111111;
-            letter-spacing: 0.34vw;
+            text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+
+            /* The rest is the same as before */
             border: none;
             outline: none;
             background-color: transparent;
             position: absolute;
             caret-color: #d1d1d1;
-            padding: 0.2rem 0;           /* extra room for ascenders/descenders */
+            padding: 0.1rem 0;
             width: calc(22.48vw + 4vw);
             height: auto;
             box-sizing: content-box;
-            text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-            transform: translateY(-2px); /* <-- Move typed text up ~2px */
         }
     </style>
 </head>
@@ -208,8 +218,7 @@
                     input.style.left = `${parentRect.left + window.scrollX}px`;
                     input.style.width = `calc(${parentRect.width}px + 4vw)`;
 
-                    // Keep the scale factor so there's no clipping:
-                    // (Feel free to remove or adjust if you want auto-height.)
+                    // Give a bit more height to avoid clipping ascenders:
                     const scaleFactor = 1.2; 
                     input.style.height = `${parentRect.height * scaleFactor}px`;
 

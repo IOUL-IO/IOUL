@@ -22,11 +22,12 @@
             text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
         }
 
-        /* Updated the typing-input to have more line-height and padding */
+        /* Increase line-height/padding to avoid clipping,
+           and nudge the text up a bit with transform */
         input.typing-input {
             font-family: 'Distill Expanded', sans-serif;
             font-size: 0.46rem;
-            line-height: 1.4;        /* Increased to prevent ascenders/descenders clipping */
+            line-height: 1.4;            /* prevents letters from getting cut off */
             color: #111111;
             letter-spacing: 0.34vw;
             border: none;
@@ -34,11 +35,12 @@
             background-color: transparent;
             position: absolute;
             caret-color: #d1d1d1;
-            padding: 0.2rem 0;       /* Additional vertical padding */
+            padding: 0.2rem 0;           /* extra room for ascenders/descenders */
             width: calc(22.48vw + 4vw);
             height: auto;
             box-sizing: content-box;
             text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+            transform: translateY(-2px); /* <-- Move typed text up ~2px */
         }
     </style>
 </head>
@@ -206,7 +208,8 @@
                     input.style.left = `${parentRect.left + window.scrollX}px`;
                     input.style.width = `calc(${parentRect.width}px + 4vw)`;
 
-                    // Increased height slightly to avoid clipping ascenders/descenders
+                    // Keep the scale factor so there's no clipping:
+                    // (Feel free to remove or adjust if you want auto-height.)
                     const scaleFactor = 1.2; 
                     input.style.height = `${parentRect.height * scaleFactor}px`;
 

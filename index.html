@@ -226,10 +226,14 @@
                 ) {
                     const parentRect = this.getBoundingClientRect();
                     const input = document.createElement('input');
+
                     input.type = this.classList.contains('password') ? 'password' : 'text';
                     input.maxLength = 10;
                     input.className = 'typing-input';
-                    input.style.top = `${parentRect.top + window.scrollY}px`;
+
+                    // Shift input upward a little from the parentRect
+                    const offset = 4; // adjust this as needed
+                    input.style.top = `${parentRect.top + window.scrollY - offset}px`;
                     input.style.left = `${parentRect.left + window.scrollX}px`;
                     input.style.width = `calc(${parentRect.width}px + 4vw)`;
                     input.style.height = `${parentRect.height}px`;
@@ -251,7 +255,7 @@
                         // Show them again if mouse is in region
                         showOpenHelp();
 
-                        // Re-attach same click handler to the new span
+                        // Re-attach click handler to new span
                         addClickHandler(span);
                     });
 

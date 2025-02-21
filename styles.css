@@ -238,10 +238,10 @@ body.fullscreen .help-text {
 
 .open-text.visible,
 .help-text.visible {
-    opacity: 0.81 !important;
+    opacity: 1 !important;
 }
 
 .open-text.visible:hover,
 .help-text.visible:hover {
-    opacity: 1 !important;
+    opacity: 0.71 !important;
 }

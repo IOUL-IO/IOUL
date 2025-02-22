@@ -10,7 +10,8 @@
     <style>
         .login-text {
             position: absolute;
-            left: 6.41vw;
+            /* This ensures old items start at ~6.4vw so they can slide to 6.37vw */
+            left: 6.4vw;  
             z-index: 10;
             transform: translateZ(0);
             overflow: visible;
@@ -65,16 +66,17 @@
     <span class="login-text open-text hidden">OPEn</span>
     <span class="login-text help-text hidden">HELP</span>
 
+    <!-- Old login lines (start at left:6.4vw) -->
     <div class="line login-line"></div>
     <div class="line login-line-second"></div>
 
-    <!-- New lines (hidden from initial fade-in) -->
+    <!-- New lines (start off-screen at left:28.86vw, fully hidden) -->
     <div class="line new-line line1"></div>
     <div class="line new-line line2"></div>
     <div class="line new-line line3"></div>
     <div class="line new-line line4"></div>
 
-    <!-- New text labels (hidden from initial fade-in) -->
+    <!-- New text labels (start off-screen at left:28.86vw, fully hidden) -->
     <span class="login-text new-text text1">YOUR-EMAIL</span>
     <span class="login-text new-text text2">YOUR-USERNAME</span>
     <span class="login-text new-text text3">10-CHARACTER PASSWORD</span>
@@ -261,15 +263,15 @@
             });
         });
 
-        // When "OPEN" is clicked, first slide out old lines, then bring in new lines
+        // When "OPEN" is clicked, first slide out old lines, then slide in new lines
         const openTextElement = document.querySelector('.open-text');
         if (openTextElement) {
             openTextElement.addEventListener('click', () => {
-                // Step 1: Slide out old elements
+                // Step 1: Slide old items from 6.4vw to 6.37vw, fade out
                 document.body.classList.add('slide-out-old-lines');
 
-                // After ~1 second (matching the transition in CSS),
-                // slide IN the new lines.
+                // After the old items are done transitioning (1s),
+                // Step 2: Slide in new lines from left:28.86vw to left:6.4vw
                 setTimeout(() => {
                     document.body.classList.add('show-new-lines');
                 }, 1000);

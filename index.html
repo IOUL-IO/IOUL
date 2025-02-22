@@ -90,6 +90,7 @@
     let lastMouseEvent = null;
     let inputInFocus = false;
     let newMode = false; // tracks whether new mode is active
+    let transformationLock = false; // prevents reverse animation during transformation
 
     function hideLoginElements() {
       document.querySelectorAll(
@@ -182,8 +183,11 @@
       }
     });
 
-    // Document click: handles fullscreen on edge clicks and the initial click setup.
+    // Document click: handles fullscreen on edge clicks and initial click setup.
     document.addEventListener('click', event => {
+      // If a transformation is in progress, ignore reverse logic.
+      if (transformationLock) return;
+
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
@@ -214,6 +218,32 @@
 
         initialClickCompleted = true;
       }
+
+      // Reverse animation: if click is in reverse region and not on a new mode element.
+      if (event.target.closest('.new-text') || event.target.closest('.new-line') || event.target.classList.contains('typing-input')) {
+        return;
+      }
+      if (newMode) {
+        const leftBoundary = 0;
+        const rightBoundary = (6.37 / 100) * innerWidth;
+        const topBoundary = (28.5 / 100) * innerHeight;
+        const bottomBoundary = (84 / 100) * innerHeight;
+        if (clientX >= leftBoundary && clientX <= rightBoundary && clientY >= topBoundary && clientY <= bottomBoundary) {
+          document.querySelectorAll('.new-line, .new-text')
+            .forEach(el => {
+              el.classList.remove('visible');
+              el.classList.add('hidden');
+            });
+          setTimeout(() => {
+            document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
+              .forEach(el => {
+                el.classList.remove('hidden');
+                el.classList.add('visible');
+              });
+            newMode = false;
+          }, 500);
+        }
+      }
     });
 
     document.addEventListener('mousemove', event => {
@@ -225,25 +255,22 @@
     // Reusable function to transform a text element into an input.
     function addClickHandler(element) {
       element.addEventListener('click', function (event) {
-        // Prevent propagation so reverse animation isn't triggered.
         event.stopPropagation();
-
         // Do not allow transformation for open-text or help-text.
         if (this.classList.contains('open-text') || this.classList.contains('help-text')) {
           return;
         }
-
-        // If new mode is active, ignore clicks on original elements that are not new.
+        // If new mode is active, only allow transformation on new-text elements.
         if (newMode && !this.classList.contains('new-text')) {
           return;
         }
-        
-        // Transform the element into an input field.
+        // Begin transformation.
         if (fadeCompleted &&
-          (this.classList.contains('username') ||
-           this.classList.contains('password') ||
-           this.classList.contains('new-text'))
+            (this.classList.contains('username') ||
+             this.classList.contains('password') ||
+             this.classList.contains('new-text'))
         ) {
+          transformationLock = true;
           const parentRect = this.getBoundingClientRect();
           const input = document.createElement('input');
           let inputType = 'text';
@@ -258,8 +285,9 @@
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
 
+          // Prevent click from bubbling.
           input.addEventListener('click', e => {
-            e.stopPropagation(); // prevent reverse click
+            e.stopPropagation();
           });
 
           input.addEventListener('focus', function () {
@@ -279,6 +307,8 @@
 
           this.replaceWith(input);
           input.focus();
+          // Release the transformation lock after a short delay.
+          setTimeout(() => { transformationLock = false; }, 500);
         }
       });
     }
@@ -293,13 +323,11 @@
     document.querySelector('.open-text').addEventListener('click', function(event) {
       event.stopPropagation();
       if (fadeCompleted && !newMode) {
-        // Fade out original elements.
         document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
           .forEach(el => {
             el.classList.remove('visible');
             el.classList.add('hidden');
           });
-        // After fade-out delay, fade in the new mode elements.
         setTimeout(() => {
           document.querySelectorAll('.new-line, .new-text')
             .forEach(el => {
@@ -308,40 +336,6 @@
             });
           newMode = true;
         }, 500);
-      }
-    });
-
-    // Inverse animation: if you click within the region (left 0vw–6.37vw and top 28.5vh–84vh)
-    // and the click target is not part of new mode, then fade out new mode elements and restore original login elements.
-    document.addEventListener('click', function(event) {
-      // Do not trigger reverse if clicking on a new mode element or its input.
-      if (event.target.closest('.new-text') || event.target.closest('.new-line') || event.target.classList.contains('typing-input')) {
-        return;
-      }
-      if (newMode) {
-        const { clientX, clientY } = event;
-        const { innerWidth, innerHeight } = window;
-        const leftBoundary = 0;
-        const rightBoundary = (6.37 / 100) * innerWidth;
-        const topBoundary = (28.5 / 100) * innerHeight;
-        const bottomBoundary = (84 / 100) * innerHeight;
-        if (clientX >= leftBoundary && clientX <= rightBoundary && clientY >= topBoundary && clientY <= bottomBoundary) {
-          // Fade out new mode elements.
-          document.querySelectorAll('.new-line, .new-text')
-            .forEach(el => {
-              el.classList.remove('visible');
-              el.classList.add('hidden');
-            });
-          // After fade-out delay, fade in original login elements.
-          setTimeout(() => {
-            document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
-              .forEach(el => {
-                el.classList.remove('hidden');
-                el.classList.add('visible');
-              });
-            newMode = false;
-          }, 500);
-        }
       }
     });
   </script>

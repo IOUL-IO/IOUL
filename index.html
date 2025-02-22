@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="google" content="notranslate" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IOUL</title>
-    <link rel="icon" href="favicon.png" type="image/png" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body class="non-fullscreen">
-    <!-- Background lines (unchanged) -->
+    <!-- Your original background lines -->
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -20,66 +18,50 @@
     <div class="line dashed third-dashed"></div>
     <div class="line dashed fourth-dashed"></div>
     
-    <!-- Time labels (unchanged) -->
     <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
     <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
     <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-    <!-- 
-      Clip container on the left side, from 0->6.37vw,
-      so items sliding left behind that boundary become invisible.
-    -->
-    <div class="login-clip">
-        <div class="login-container">
-            <!-- Original login elements (no initial "hidden" class) -->
-            <span class="login-text username">USERnAME</span>
-            <span class="login-text password">PASSWORD</span>
+    <!-- Your original login text + lines (unchanged) -->
+    <span class="login-text username">USERnAME</span>
+    <span class="login-text password">PASSWORD</span>
 
-            <span class="login-text open-text">OPEN</span>
-            <span class="login-text help-text">HELP</span>
+    <span class="login-text open-text hidden">OPEn</span>
+    <span class="login-text help-text hidden">HELP</span>
 
-            <div class="line login-line"></div>
-            <div class="line login-line-second"></div>
-        </div>
-    </div>
+    <div class="line login-line"></div>
+    <div class="line login-line-second"></div>
 
     <!-- 
-      Clip container on the right side, from 28.86vw->36vw,
-      so items sliding in from the right appear at that boundary.
+      NEW SECTION:
+      These are the four new lines and four new text labels 
+      that will slide in from the right once "OPEN" is clicked.
+      They start hidden/off-screen, so they do NOT interfere 
+      with your existing layout until "OPEN" is clicked.
     -->
-    <div class="registration-clip">
-        <div class="registration-container">
-            <!-- Four new lines -->
-            <div class="line reg-line line1"></div>
-            <div class="line reg-line line2"></div>
-            <div class="line reg-line line3"></div>
-            <div class="line reg-line line4"></div>
+    <div class="new-lines-container hidden">
+      <div class="line new-line line1"></div>
+      <div class="line new-line line2"></div>
+      <div class="line new-line line3"></div>
+      <div class="line new-line line4"></div>
 
-            <!-- Four new text labels -->
-            <span class="login-text email-text">YOUR E-MAIL</span>
-            <span class="login-text adduser-text">ADD USERNAME</span>
-            <span class="login-text pass10-text">10-CHARACTER PASSWORD</span>
-            <span class="login-text confpass-text">CONFIRM PASSWORD</span>
-        </div>
+      <span class="login-text new-text email-text">YOUR E-MAIL</span>
+      <span class="login-text new-text adduser-text">ADD USERNAME</span>
+      <span class="login-text new-text pass10-text">10-CHARACTER PASSWORD</span>
+      <span class="login-text new-text confpass-text">CONFIRM PASSWORD</span>
     </div>
 
     <script>
+        /* ==================== Your Original JavaScript, Unchanged ==================== */
+
         let inactivityTimer;
         let fadeCompleted = false;
         let initialClickCompleted = false;
         let lastMouseEvent = null;
         let inputInFocus = false; 
 
-        // Grab references
-        const loginContainer = document.querySelector('.login-container');
-        const regContainer   = document.querySelector('.registration-container');
-        const openText       = document.querySelector('.open-text');
-
-        // ========== (1) EXISTING FUNCTIONS (Inactivity, region checks) ==========
-
         function hideLoginElements() {
-            // If you want to hide them after inactivity
             document.querySelectorAll(
                 '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
             ).forEach(el => {
@@ -89,7 +71,6 @@
         }
 
         function showLoginElements() {
-            // If you want to re-show them (e.g. on mouse move)
             document.querySelectorAll('.username, .password, .login-line, .login-line-second')
                 .forEach(el => {
                     el.classList.add('visible');
@@ -110,12 +91,12 @@
         }
 
         function hideOpenHelp() {
-            const oT = document.querySelector('.open-text');
-            const hT = document.querySelector('.help-text');
-            oT.classList.remove('visible');
-            oT.classList.add('hidden');
-            hT.classList.remove('visible');
-            hT.classList.add('hidden');
+            const openText = document.querySelector('.open-text');
+            const helpText = document.querySelector('.help-text');
+            openText.classList.remove('visible');
+            openText.classList.add('hidden');
+            helpText.classList.remove('visible');
+            helpText.classList.add('hidden');
         }
 
         function showOpenHelp() {
@@ -127,48 +108,46 @@
         function checkRegionAndShowOpenHelp(event) {
             if (!fadeCompleted || inputInFocus) return;
 
-            const oT = document.querySelector('.open-text');
-            const hT = document.querySelector('.help-text');
+            const openText = document.querySelector('.open-text');
+            const helpText = document.querySelector('.help-text');
 
-            // If the main login text is hidden, do nothing
             if (document.querySelector('.username').classList.contains('hidden')) {
                 return;
             }
 
-            // Region where "OPEN"/"HELP" appear
-            const boundingTop    = 28.5;
+            const boundingTop = 28.5;
             const boundingBottom = 84;
-            const boundingLeft   = 6.38;
-            const boundingRight  = 29; 
+            const boundingLeft = 6.38;
+            const boundingRight = 29; 
 
             const { innerWidth, innerHeight } = window;
             const { clientX, clientY } = event;
 
-            const topPx    = (boundingTop / 100)    * innerHeight;
+            const topPx = (boundingTop / 100) * innerHeight;
             const bottomPx = (boundingBottom / 100) * innerHeight;
-            const leftPx   = (boundingLeft / 100)   * innerWidth;
-            const rightPx  = (boundingRight / 100)  * innerWidth;
+            const leftPx = (boundingLeft / 100) * innerWidth;
+            const rightPx = (boundingRight / 100) * innerWidth;
 
-            const isInRegion =
+            const isInRegion = (
                 clientY >= topPx &&
                 clientY <= bottomPx &&
                 clientX >= leftPx &&
-                clientX <= rightPx;
+                clientX <= rightPx
+            );
 
             if (isInRegion) {
-                oT.classList.remove('hidden');
-                oT.classList.add('visible');
-                hT.classList.remove('hidden');
-                hT.classList.add('visible');
+                openText.classList.remove('hidden');
+                openText.classList.add('visible');
+                helpText.classList.remove('hidden');
+                helpText.classList.add('visible');
             } else {
-                oT.classList.remove('visible');
-                oT.classList.add('hidden');
-                hT.classList.remove('visible');
-                hT.classList.add('hidden');
+                openText.classList.remove('visible');
+                openText.classList.add('hidden');
+                helpText.classList.remove('visible');
+                helpText.classList.add('hidden');
             }
         }
 
-        // Fullscreen toggling
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
                 document.body.classList.remove('fullscreen');
@@ -177,7 +156,6 @@
             }
         });
 
-        // On first click, request fullscreen + fade in
         document.addEventListener('click', event => {
             const edgeThreshold = 10;
             const { clientX, clientY } = event;
@@ -189,13 +167,11 @@
                 clientY <= edgeThreshold ||
                 clientY >= innerHeight - edgeThreshold;
 
-            // If click near edge, attempt fullscreen
             if (isNearEdge && !document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
                 return;
             }
 
-            // Trigger fade-in sequence
             if (!initialClickCompleted) {
                 if (!document.fullscreenElement) {
                     document.documentElement.requestFullscreen();
@@ -206,7 +182,6 @@
 
                 setTimeout(() => {
                     fadeCompleted = true;
-                    // Start inactivity timer
                     inactivityTimer = setTimeout(hideLoginElements, 20000);
                 }, 4000);
 
@@ -220,28 +195,114 @@
             checkRegionAndShowOpenHelp(event);
         });
 
-        // ========== (2) TEXT->INPUT LOGIC ==========
-
-        function addClickHandler(element) {
+        document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
             element.addEventListener('click', function () {
-                // Convert to input if it's one of our text fields
                 if (
                     fadeCompleted &&
-                    (
-                        this.classList.contains('username') ||
-                        this.classList.contains('password') ||
-                        this.classList.contains('email-text') ||
-                        this.classList.contains('adduser-text') ||
-                        this.classList.contains('pass10-text') ||
-                        this.classList.contains('confpass-text')
-                    )
+                    (this.classList.contains('username') || this.classList.contains('password'))
+                ) {
+                    const parentRect = this.getBoundingClientRect();
+                    const input = document.createElement('input');
+                    input.type = this.classList.contains('password') ? 'password' : 'text';
+                    input.maxLength = 10;
+                    input.className = 'typing-input';
+                    input.style.top = `${parentRect.top + window.scrollY}px`;
+                    input.style.left = `${parentRect.left + window.scrollX}px`;
+                    input.style.width = `calc(${parentRect.width}px + 4vw)`;
+                    input.style.height = `${parentRect.height}px`;
+
+                    input.addEventListener('focus', function () {
+                        inputInFocus = true;
+                        hideOpenHelp();
+                    });
+
+                    input.addEventListener('blur', function () {
+                        inputInFocus = false;
+                        const span = document.createElement('span');
+                        span.className = element.className;
+                        span.innerText = input.value.trim() || element.innerText;
+                        input.replaceWith(span);
+                        showOpenHelp();
+
+                        // re-attach the click handler
+                        addClickHandler(span);
+                    });
+
+                    this.replaceWith(input);
+                    input.focus();
+                }
+            });
+        });
+
+        /* ==================== Minimal Additions for "OPEN" click ==================== */
+
+        // 1) On "OPEN" click: slide left the original login elements, 
+        //    slide in the new lines/text from the right
+        const openBtn = document.querySelector('.open-text');
+        const newLinesContainer = document.querySelector('.new-lines-container');
+
+        openBtn.addEventListener('click', () => {
+            // Slide out original login lines/text
+            document.querySelectorAll(
+                '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
+            ).forEach(el => {
+                el.classList.add('slide-left');
+            });
+
+            // Show the new lines container and let them slide in
+            newLinesContainer.classList.remove('hidden');
+            newLinesContainer.classList.add('slide-in');
+        });
+
+        // 2) Click in the white area on the right => inverse animation
+        document.addEventListener('click', (e) => {
+            // Region: left 28.86vw -> 36vw, top 28.5vh -> 84vh
+            const boundingLeft = 28.86;
+            const boundingRight = 36;
+            const boundingTop = 28.5;
+            const boundingBottom = 84;
+
+            const { innerWidth, innerHeight } = window;
+            const leftPx = (boundingLeft / 100) * innerWidth;
+            const rightPx = (boundingRight / 100) * innerWidth;
+            const topPx = (boundingTop / 100) * innerHeight;
+            const bottomPx = (boundingBottom / 100) * innerHeight;
+
+            // If the click is within that area, reverse
+            if (
+                e.clientX >= leftPx && e.clientX <= rightPx &&
+                e.clientY >= topPx && e.clientY <= bottomPx
+            ) {
+                // Remove the slide-left from the original login
+                document.querySelectorAll(
+                    '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
+                ).forEach(el => {
+                    el.classList.remove('slide-left');
+                });
+
+                // Hide the new lines container again
+                newLinesContainer.classList.remove('slide-in');
+                newLinesContainer.classList.add('hidden');
+            }
+        });
+
+        // 3) Make the new text fields also clickable => input
+        //    We must do the same approach as username/password
+        //    We'll re-use the existing function logic, 
+        //    just for the classes: email-text, adduser-text, pass10-text, confpass-text
+        document.querySelectorAll('.new-text').forEach(function addClickHandlerNew(el) {
+            el.addEventListener('click', function () {
+                if (
+                    fadeCompleted &&
+                    (this.classList.contains('email-text') ||
+                     this.classList.contains('adduser-text') ||
+                     this.classList.contains('pass10-text') ||
+                     this.classList.contains('confpass-text'))
                 ) {
                     const rect = this.getBoundingClientRect();
                     const input = document.createElement('input');
-
-                    // If password field
+                    // For pass text, type=password
                     if (
-                        this.classList.contains('password') ||
                         this.classList.contains('pass10-text') ||
                         this.classList.contains('confpass-text')
                     ) {
@@ -249,7 +310,6 @@
                     } else {
                         input.type = 'text';
                     }
-
                     input.maxLength = 25;
                     input.className = 'typing-input';
                     input.style.top  = `${rect.top + window.scrollY}px`;
@@ -261,53 +321,20 @@
                         inputInFocus = true;
                         hideOpenHelp();
                     });
-
                     input.addEventListener('blur', () => {
                         inputInFocus = false;
                         const span = document.createElement('span');
-                        span.className = element.className;
-                        span.innerText = input.value.trim() || element.innerText;
+                        span.className = this.className;
+                        span.innerText = input.value.trim() || this.innerText;
                         input.replaceWith(span);
                         showOpenHelp();
-                        addClickHandler(span);
+                        addClickHandlerNew(span);
                     });
 
                     this.replaceWith(input);
                     input.focus();
                 }
             });
-        }
-        document.querySelectorAll('.login-text').forEach(addClickHandler);
-
-        // ========== (3) SLIDE ANIMATION LOGIC ==========
-
-        // Click "OPEN" => old login slides left, new registration slides in
-        openText.addEventListener('click', () => {
-            loginContainer.classList.add('slide-left');
-            regContainer.classList.add('slide-in');
-        });
-
-        // Click in white area on the right => reverse
-        document.addEventListener('click', (e) => {
-            const boundingLeft   = 28.86;
-            const boundingRight  = 36;
-            const boundingTop    = 28.5;
-            const boundingBottom = 84;
-
-            const { innerWidth, innerHeight } = window;
-            const leftPx   = (boundingLeft / 100)   * innerWidth;
-            const rightPx  = (boundingRight / 100)  * innerWidth;
-            const topPx    = (boundingTop / 100)    * innerHeight;
-            const bottomPx = (boundingBottom / 100) * innerHeight;
-
-            if (
-                e.clientX >= leftPx && e.clientX <= rightPx &&
-                e.clientY >= topPx && e.clientY <= bottomPx
-            ) {
-                // Reverse
-                loginContainer.classList.remove('slide-left');
-                regContainer.classList.remove('slide-in');
-            }
         });
     </script>
 </body>

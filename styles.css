@@ -74,6 +74,7 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
+/* Original lines positions */
 .line {
     position: absolute;
     height: 1px;
@@ -167,15 +168,13 @@ body.fade-in-trigger .time-text {
     left: 90.1vw;
 }
 
-/* Original .login-text rule: now overshadowed by your inline style in index.html. 
-   We don't remove it, but it won't override the inline style. 
-*/
+/* Existing login text */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
-    letter-spacing: 0.28vw; /* overshadowed by 0.34vw inline */
-    font-size: 0.47rem;     /* overshadowed by 0.46rem inline */
+    letter-spacing: 0.28vw;
+    font-size: 0.47rem;
     left: 6.41vw;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
@@ -248,100 +247,70 @@ body.fullscreen .help-text {
     opacity: 1 !important;
 }
 
-/* ====================== NEW / MINIMAL ADDITIONS ====================== */
-
-/* 1) Hide lines that slide left beyond 6.37vw. 
-   We set top=0, height=100vh so "OPEN" isn't cut off. 
-   Overflow-x hidden ensures no horizontal spillage, 
-   but overflow-y visible so text isn't clipped vertically.
-*/
-.left-clip {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 6.37vw;
-  height: 100vh;
-  overflow-x: hidden;
-  overflow-y: visible;
-  z-index: 10; /* keep above background lines */
+/* ---------------------------------------------
+   Animation classes for sliding out old elements
+   --------------------------------------------- */
+.slide-out-old-lines .username,
+.slide-out-old-lines .password,
+.slide-out-old-lines .login-line,
+.slide-out-old-lines .login-line-second,
+.slide-out-old-lines .open-text,
+.slide-out-old-lines .help-text {
+    left: 6.37vw;     /* slides them slightly left */
+    opacity: 0;       /* fade out */
+    transition: left 1s ease, opacity 1s ease;
+    pointer-events: none;
 }
 
-.login-container {
-  position: absolute;
-  top: 0; 
-  left: 0;
-  width: 100vw; 
-  height: 100vh; 
-  transition: transform 0.8s ease;
-  transform: translateX(0);
+/* ---------------------------------------------
+   New lines (initially off to the right)
+   --------------------------------------------- */
+.new-line {
+    width: 22.48vw;
+    height: 1px;
+    background-color: rgba(230, 230, 230, 0.28);
+    position: absolute;
+    left: 28.86vw; /* start further right */
+    opacity: 0;
+    transition: left 1s ease, opacity 1s ease;
 }
 
-/* Slide everything left (behind left-clip at 6.37vw) */
-.slide-left {
-  transform: translateX(-40vw); 
-  /* tweak -40vw if you want them fully hidden */
+/* Position them vertically */
+.line1 { top: 38.9vh; }
+.line2 { top: 47vh; }
+.line3 { top: 55.1vh; }
+.line4 { top: 63.2vh; }
+
+/* ---------------------------------------------
+   New text (initially off to the right)
+   --------------------------------------------- */
+.new-text {
+    position: absolute;
+    left: 28.86vw; /* start further right */
+    opacity: 0;
+    transition: left 1s ease, opacity 1s ease;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #111111;
+    letter-spacing: 0.28vw;
+    font-size: 0.47rem;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
-/* 2) Hide lines that slide in from the right beyond 28.86vw. */
-.right-clip {
-  position: absolute;
-  top: 0;
-  left: 28.86vw;
-  width: calc(100vw - 28.86vw);
-  height: 100vh;
-  overflow-x: hidden;
-  overflow-y: visible;
-  z-index: 10;
+/* Position them vertically ~2.8vh above the line to lean near right edge */
+.text1 { top: 36.1vh; }
+.text2 { top: 44.2vh; }
+.text3 { top: 52.3vh; }
+.text4 { top: 60.4vh; }
+
+/* ---------------------------------------------
+   When showing new lines/elements
+   --------------------------------------------- */
+.show-new-lines .new-line {
+    left: 6.4vw;  /* slide into place */
+    opacity: 1;
 }
 
-/* 
-   The new lines + text start off at transform: translateX(100%),
-   so they are hidden behind the right boundary.
-*/
-.right-container {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  transform: translateX(100%);
-  transition: transform 0.8s ease;
+.show-new-lines .new-text {
+    left: 6.4vw;  /* slide into place */
+    opacity: 1;
 }
-
-/* .slide-in => transform: translateX(0), so they slide into view */
-.slide-in {
-  transform: translateX(0);
-}
-
-/* 3) The four new "reg-line" lines. 
-   Example positions at top=28.5vh, 47vh, 65.5vh, 84vh, or spaced by 8.1vh.
-*/
-.reg-line {
-  position: absolute;
-  background-color: rgba(230, 230, 230, 0.28);
-  height: 1px;
-  width: 22.48vw; 
-  left: 6.4vw; /* matches your login lines horizontally? Adjust as needed. */
-}
-
-.line1 { top: 28.5vh; }
-.line2 { top: 36.6vh; } /* 28.5 + 8.1 */
-.line3 { top: 44.7vh; } /* 36.6 + 8.1 */
-.line4 { top: 52.8vh; } /* 44.7 + 8.1 */
-
-/* 4) The new text fields. 
-   They have the "login-text" class plus "reg-text" 
-   so they share your font but are recognized as new items.
-*/
-.reg-text {
-  /* They also get overshadowed by your inline .login-text style (0.46rem, etc.) */
-  position: absolute;
-  z-index: 999;
-}
-
-/* Example positions near each line: 
-   tweak as desired so they line up exactly. 
-*/
-.email-text    { top: 25.17vh; left: 6.4vw; }
-.adduser-text  { top: 33.17vh; left: 6.4vw; }
-.pass10-text   { top: 41.17vh; left: 6.4vw; }
-.confpass-text { top: 49.17vh; left: 6.4vw; }

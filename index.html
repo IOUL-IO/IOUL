@@ -42,7 +42,7 @@
   </style>
 </head>
 <body class="non-fullscreen">
-  <!-- Existing lines -->
+  <!-- Existing background lines -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -66,15 +66,17 @@
   <div class="line login-line-second"></div>
   
   <!-- New mode elements (initially hidden) -->
+  <!-- New lines -->
   <div class="line new-line new-line-1 hidden" style="top: 38.9vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
   <div class="line new-line new-line-2 hidden" style="top: 47vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
   <div class="line new-line new-line-3 hidden" style="top: 55.1vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
-  <div class="line new-line new-line-4 hidden" style="top: 53.2vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
+  <div class="line new-line new-line-4 hidden" style="top: 63.3vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
 
-  <span class="login-text new-text new-text-1 hidden" style="top: 36.1vh; left: 6.4vw;">YOUR E-MAIL</span>
-  <span class="login-text new-text new-text-2 hidden" style="top: 44.2vh; left: 6.4vw;">ADD USERNAME</span>
-  <span class="login-text new-text new-text-3 hidden" style="top: 52.3vh; left: 6.4vw;" data-input-type="password">10-CHARACTER PASSWORD</span>
-  <span class="login-text new-text new-text-4 hidden" style="top: 60.4vh; left: 6.4vw;" data-input-type="password">CONFIRM PASSWORD</span>
+  <!-- New text labels -->
+  <span class="login-text new-text new-text-1 hidden" style="top: 35.1vh; left: 6.4vw;">YOUR E-MAIL</span>
+  <span class="login-text new-text new-text-2 hidden" style="top: 43.2vh; left: 6.4vw;">ADD USERNAME</span>
+  <span class="login-text new-text new-text-3 hidden" style="top: 51.3vh; left: 6.4vw;" data-input-type="password">10-CHARACTER PASSWORD</span>
+  <span class="login-text new-text new-text-4 hidden" style="top: 59.4vh; left: 6.4vw;" data-input-type="password">CONFIRM PASSWORD</span>
   
   <script>
     let inactivityTimer;
@@ -82,7 +84,7 @@
     let initialClickCompleted = false;
     let lastMouseEvent = null;
     let inputInFocus = false;
-    let newMode = false; // track if new mode is active
+    let newMode = false; // tracks whether new mode is active
 
     function hideLoginElements() {
       document.querySelectorAll(
@@ -94,19 +96,15 @@
     }
 
     function showLoginElements() {
-      document.querySelectorAll('.username, .password, .login-line, .login-line-second')
+      document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
         .forEach(el => {
           el.classList.add('visible');
           el.classList.remove('hidden');
         });
-
-      if (!inputInFocus && lastMouseEvent) {
-        checkRegionAndShowOpenHelp(lastMouseEvent);
-      }
     }
 
     function resetInactivityTimer() {
-      if (fadeCompleted) {
+      if (fadeCompleted && !newMode) {
         clearTimeout(inactivityTimer);
         showLoginElements();
         inactivityTimer = setTimeout(hideLoginElements, 20000);
@@ -129,7 +127,7 @@
     }
 
     function checkRegionAndShowOpenHelp(event) {
-      if (!fadeCompleted || inputInFocus) return;
+      if (!fadeCompleted || inputInFocus || newMode) return;
 
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
@@ -179,7 +177,7 @@
       }
     });
 
-    // Existing document click for fullscreen & initial click
+    // Document click: handles fullscreen on edge clicks and the initial click setup.
     document.addEventListener('click', event => {
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
@@ -219,15 +217,19 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // Define a reusable function for making login-text (and new-text) elements transform to inputs.
+    // Reusable function to make a login-text (or new-text) element transform to an input.
     function addClickHandler(element) {
       element.addEventListener('click', function (event) {
-        // Stop propagation so this click won’t trigger other document-level listeners
         event.stopPropagation();
-        if (
-          fadeCompleted &&
+        // When new mode is active, ignore clicks on original elements.
+        if (newMode && !this.classList.contains('new-text')) {
+          return;
+        }
+        if (fadeCompleted &&
           (this.classList.contains('username') ||
            this.classList.contains('password') ||
+           this.classList.contains('open-text') ||
+           this.classList.contains('help-text') ||
            this.classList.contains('new-text'))
         ) {
           const parentRect = this.getBoundingClientRect();
@@ -255,9 +257,7 @@
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
-
             showOpenHelp();
-
             addClickHandler(span);
           });
 
@@ -267,22 +267,23 @@
       });
     }
 
-    // Attach click handlers to all login-text elements (both original and new)
+    // Attach click handlers to all elements with class "login-text" (both original and new).
     document.querySelectorAll('.login-text').forEach(function (element) {
       addClickHandler(element);
     });
 
-    // When clicking the "OPEN" text, fade out the original login elements and fade in the new mode elements.
+    // Clicking the "OPEN" text: fade out original login elements and disable their functionality,
+    // then fade in the new mode elements.
     document.querySelector('.open-text').addEventListener('click', function(event) {
       event.stopPropagation();
       if (fadeCompleted && !newMode) {
-        // Fade out original login elements
+        // Fade out original elements.
         document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
           .forEach(el => {
             el.classList.remove('visible');
             el.classList.add('hidden');
           });
-        // After fade out, fade in new mode elements
+        // After fade-out delay, fade in the new mode elements.
         setTimeout(() => {
           document.querySelectorAll('.new-line, .new-text')
             .forEach(el => {
@@ -294,7 +295,8 @@
       }
     });
 
-    // Inverse animation: clicking in region (left 0vw to 6.37vw and top 28.5vh to 84vh) reverses the new mode.
+    // Inverse animation: if you click within the region (left 0vw–6.37vw and top 28.5vh–84vh),
+    // fade out new mode elements and fade back in original login elements (re-enabling functionality).
     document.addEventListener('click', function(event) {
       if (newMode) {
         const { clientX, clientY } = event;
@@ -304,13 +306,13 @@
         const topBoundary = (28.5 / 100) * innerHeight;
         const bottomBoundary = (84 / 100) * innerHeight;
         if (clientX >= leftBoundary && clientX <= rightBoundary && clientY >= topBoundary && clientY <= bottomBoundary) {
-          // Fade out new mode elements
+          // Fade out new mode elements.
           document.querySelectorAll('.new-line, .new-text')
             .forEach(el => {
               el.classList.remove('visible');
               el.classList.add('hidden');
             });
-          // After fade out, fade back in original login elements
+          // After fade-out delay, fade in original elements.
           setTimeout(() => {
             document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
               .forEach(el => {

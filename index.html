@@ -58,7 +58,7 @@
   </style>
 </head>
 <body class="non-fullscreen">
-  <!-- Background lines -->
+  <!-- Background elements -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -248,8 +248,8 @@
              this.classList.contains('new-text'))
         ) {
           transformationLock = true;
-          // Wait one frame to ensure layout is updated.
-          requestAnimationFrame(() => {
+          // Delay measurement slightly to ensure layout is updated.
+          setTimeout(() => {
             const parentRect = this.getBoundingClientRect();
             const input = document.createElement('input');
             let inputType = 'text';
@@ -280,7 +280,7 @@
             this.replaceWith(input);
             input.focus();
             setTimeout(() => { transformationLock = false; }, 500);
-          });
+          }, 50);
         }
       });
     }

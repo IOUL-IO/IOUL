@@ -88,7 +88,7 @@
     <div class="line new-line new-line-2 hidden" style="top: 47vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
     <div class="line new-line new-line-3 hidden" style="top: 55.1vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
     <div class="line new-line new-line-4 hidden" style="top: 63.3vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
-    <!-- New text labels with explicit width -->
+    <!-- New text labels (explicit width set) -->
     <span class="login-text new-text new-text-1 hidden" style="top: 35.1vh; left: 6.4vw; width: 22.48vw;">YOUR E-MAIL</span>
     <span class="login-text new-text new-text-2 hidden" style="top: 43.2vh; left: 6.4vw; width: 22.48vw;">ADD USERNAME</span>
     <span class="login-text new-text new-text-3 hidden" style="top: 51.3vh; left: 6.4vw; width: 22.48vw;" data-input-type="password">10-CHARACTER PASSWORD</span>
@@ -259,7 +259,7 @@
           input.className = 'typing-input';
           input.style.top = `${parentRect.top + window.scrollY}px`;
           input.style.left = `${parentRect.left + window.scrollX}px`;
-          // Here we remove the additional 4vw and use the exact width of the placeholder.
+          // Set width to exactly the measured width—no extra addition.
           input.style.width = `${parentRect.width}px`;
           input.style.height = `${parentRect.height}px`;
           input.addEventListener('click', e => { e.stopPropagation(); });

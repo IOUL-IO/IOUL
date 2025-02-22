@@ -34,7 +34,7 @@
       position: absolute;
       caret-color: #d1d1d1;
       padding: 0.1rem 0;
-      width: calc(22.48vw + 4vw);
+      /* width will be set dynamically */
       height: auto;
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
@@ -58,7 +58,7 @@
   </style>
 </head>
 <body class="non-fullscreen">
-  <!-- Background elements -->
+  <!-- Background lines -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -88,11 +88,11 @@
     <div class="line new-line new-line-2 hidden" style="top: 47vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
     <div class="line new-line new-line-3 hidden" style="top: 55.1vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
     <div class="line new-line new-line-4 hidden" style="top: 63.3vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
-    <!-- New text labels -->
-    <span class="login-text new-text new-text-1 hidden" style="top: 35.1vh; left: 6.4vw;">YOUR E-MAIL</span>
-    <span class="login-text new-text new-text-2 hidden" style="top: 43.2vh; left: 6.4vw;">ADD USERNAME</span>
-    <span class="login-text new-text new-text-3 hidden" style="top: 51.3vh; left: 6.4vw;" data-input-type="password">10-CHARACTER PASSWORD</span>
-    <span class="login-text new-text new-text-4 hidden" style="top: 59.4vh; left: 6.4vw;" data-input-type="password">CONFIRM PASSWORD</span>
+    <!-- New text labels with explicit width -->
+    <span class="login-text new-text new-text-1 hidden" style="top: 35.1vh; left: 6.4vw; width: 22.48vw;">YOUR E-MAIL</span>
+    <span class="login-text new-text new-text-2 hidden" style="top: 43.2vh; left: 6.4vw; width: 22.48vw;">ADD USERNAME</span>
+    <span class="login-text new-text new-text-3 hidden" style="top: 51.3vh; left: 6.4vw; width: 22.48vw;" data-input-type="password">10-CHARACTER PASSWORD</span>
+    <span class="login-text new-text new-text-4 hidden" style="top: 59.4vh; left: 6.4vw; width: 22.48vw;" data-input-type="password">CONFIRM PASSWORD</span>
   </div>
   
   <script>
@@ -197,7 +197,7 @@
         }, 4000);
         initialClickCompleted = true;
       }
-      // If click target is within an interactive element, do nothing.
+      // If the click target is within an interactive element, do nothing.
       if (event.target.closest('.typing-input') ||
           event.target.closest('.new-text') ||
           event.target.closest('.new-line')) {
@@ -248,36 +248,39 @@
              this.classList.contains('new-text'))
         ) {
           transformationLock = true;
-          const parentRect = this.getBoundingClientRect();
-          const input = document.createElement('input');
-          let inputType = 'text';
-          if (this.classList.contains('password') || this.getAttribute('data-input-type') === 'password') {
-            inputType = 'password';
-          }
-          input.type = inputType;
-          input.maxLength = 10;
-          input.className = 'typing-input';
-          input.style.top = `${parentRect.top + window.scrollY}px`;
-          input.style.left = `${parentRect.left + window.scrollX}px`;
-          input.style.width = `calc(${parentRect.width}px + 4vw)`;
-          input.style.height = `${parentRect.height}px`;
-          input.addEventListener('click', e => { e.stopPropagation(); });
-          input.addEventListener('focus', function() {
-            inputInFocus = true;
-            hideOpenHelp();
+          // Wait one frame to ensure layout is updated.
+          requestAnimationFrame(() => {
+            const parentRect = this.getBoundingClientRect();
+            const input = document.createElement('input');
+            let inputType = 'text';
+            if (this.classList.contains('password') || this.getAttribute('data-input-type') === 'password') {
+              inputType = 'password';
+            }
+            input.type = inputType;
+            input.maxLength = 10;
+            input.className = 'typing-input';
+            input.style.top = `${parentRect.top + window.scrollY}px`;
+            input.style.left = `${parentRect.left + window.scrollX}px`;
+            input.style.width = `${parentRect.width}px`;
+            input.style.height = `${parentRect.height}px`;
+            input.addEventListener('click', e => { e.stopPropagation(); });
+            input.addEventListener('focus', function() {
+              inputInFocus = true;
+              hideOpenHelp();
+            });
+            input.addEventListener('blur', function() {
+              inputInFocus = false;
+              const span = document.createElement('span');
+              span.className = element.className;
+              span.innerText = input.value.trim() || element.innerText;
+              input.replaceWith(span);
+              showOpenHelp();
+              addClickHandler(span);
+            });
+            this.replaceWith(input);
+            input.focus();
+            setTimeout(() => { transformationLock = false; }, 500);
           });
-          input.addEventListener('blur', function() {
-            inputInFocus = false;
-            const span = document.createElement('span');
-            span.className = element.className;
-            span.innerText = input.value.trim() || element.innerText;
-            input.replaceWith(span);
-            showOpenHelp();
-            addClickHandler(span);
-          });
-          this.replaceWith(input);
-          input.focus();
-          setTimeout(() => { transformationLock = false; }, 500);
         }
       });
     }

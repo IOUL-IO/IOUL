@@ -39,6 +39,11 @@
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
+
+    /* Force new lines to have zero transition delay */
+    .new-line {
+      transition-delay: 0s !important;
+    }
   </style>
 </head>
 <body class="non-fullscreen">
@@ -253,6 +258,10 @@
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
 
+          input.addEventListener('click', e => {
+            e.stopPropagation(); // prevent reverse click
+          });
+
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();
@@ -305,8 +314,8 @@
     // Inverse animation: if you click within the region (left 0vw–6.37vw and top 28.5vh–84vh)
     // and the click target is not part of new mode, then fade out new mode elements and restore original login elements.
     document.addEventListener('click', function(event) {
-      // Do not trigger reverse if clicking on a new mode element.
-      if (event.target.closest('.new-text') || event.target.closest('.new-line')) {
+      // Do not trigger reverse if clicking on a new mode element or its input.
+      if (event.target.closest('.new-text') || event.target.closest('.new-line') || event.target.classList.contains('typing-input')) {
         return;
       }
       if (newMode) {

@@ -1,48 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>IOUL</title>
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
-
-    <style>
-        .login-text {
-            position: absolute;
-            left: 6.41vw;
-            z-index: 10;
-            transform: translateZ(0);
-            overflow: visible;
-            font-family: 'Distill Expanded', sans-serif;
-            color: #111111;
-            letter-spacing: 0.34vw;
-            font-size: 0.46rem;
-            line-height: 1.2;
-            padding: 0.1rem 0;
-            text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-        }
-
-        input.typing-input {
-            font-family: 'Distill Expanded', sans-serif;
-            font-size: 0.46rem;
-            line-height: 1.2;
-            color: #111111;
-            letter-spacing: 0.34vw;
-            border: none;
-            outline: none;
-            background-color: transparent;
-            position: absolute;
-            caret-color: #d1d1d1;
-            padding: 0.1rem 0;
-            width: calc(22.48vw + 4vw);
-            height: auto;
-            box-sizing: content-box;
-            text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-        }
-    </style>
 </head>
 <body class="non-fullscreen">
+    <!-- Existing background lines -->
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -52,19 +18,40 @@
     <div class="line dashed third-dashed"></div>
     <div class="line dashed fourth-dashed"></div>
     
+    <!-- Existing time labels -->
     <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
     <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
     <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-    <span class="login-text username">USERnAME</span>
-    <span class="login-text password">PASSWORD</span>
+    <!-- 1) Container for original login elements -->
+    <div class="login-container">
+        <span class="login-text username">USERnAME</span>
+        <span class="login-text password">PASSWORD</span>
 
-    <span class="login-text open-text hidden">OPEn</span>
-    <span class="login-text help-text hidden">HELP</span>
+        <!-- “OPEN” and “HELP” text also belong here, so they slide out together -->
+        <span class="login-text open-text hidden">OPEN</span>
+        <span class="login-text help-text hidden">HELP</span>
 
-    <div class="line login-line"></div>
-    <div class="line login-line-second"></div>
+        <!-- The two login lines -->
+        <div class="line login-line"></div>
+        <div class="line login-line-second"></div>
+    </div>
+
+    <!-- 2) Container for the new registration elements -->
+    <div class="registration-container">
+        <!-- The four new lines -->
+        <div class="line reg-line line1"></div>
+        <div class="line reg-line line2"></div>
+        <div class="line reg-line line3"></div>
+        <div class="line reg-line line4"></div>
+
+        <!-- The four new text labels (can also become inputs on click) -->
+        <span class="login-text email-text">YOUR E-MAIL</span>
+        <span class="login-text adduser-text">ADD USERNAME</span>
+        <span class="login-text pass10-text">10-CHARACTER PASSWORD</span>
+        <span class="login-text confpass-text">CONFIRM PASSWORD</span>
+    </div>
 
     <script>
         let inactivityTimer;
@@ -73,6 +60,14 @@
         let lastMouseEvent = null;
         let inputInFocus = false; 
 
+        // Grab references to the two containers
+        const loginContainer = document.querySelector('.login-container');
+        const regContainer = document.querySelector('.registration-container');
+        const openText = document.querySelector('.open-text');
+
+        /**
+         * Existing code that hides/shows login elements after inactivity
+         */
         function hideLoginElements() {
             document.querySelectorAll(
                 '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
@@ -118,15 +113,18 @@
         }
 
         function checkRegionAndShowOpenHelp(event) {
+            // The region logic for showing "OPEN" / "HELP"
             if (!fadeCompleted || inputInFocus) return;
 
             const openText = document.querySelector('.open-text');
             const helpText = document.querySelector('.help-text');
 
+            // If the main login text is hidden, do nothing
             if (document.querySelector('.username').classList.contains('hidden')) {
                 return;
             }
 
+            // Region in which OPEN/HELP should appear
             const boundingTop = 28.5;
             const boundingBottom = 84;
             const boundingLeft = 6.38;
@@ -160,6 +158,7 @@
             }
         }
 
+        // Fullscreen toggling (unchanged)
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
                 document.body.classList.remove('fullscreen');
@@ -168,6 +167,7 @@
             }
         });
 
+        // On first click, go fullscreen + fade in
         document.addEventListener('click', event => {
             const edgeThreshold = 10;
             const { clientX, clientY } = event;
@@ -179,11 +179,13 @@
                 clientY <= edgeThreshold ||
                 clientY >= innerHeight - edgeThreshold;
 
+            // If user clicks near edge and not in fullscreen, request fullscreen
             if (isNearEdge && !document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
                 return;
             }
 
+            // Trigger fade-in sequence
             if (!initialClickCompleted) {
                 if (!document.fullscreenElement) {
                     document.documentElement.requestFullscreen();
@@ -201,22 +203,41 @@
             }
         });
 
+        // Track mouse movement for inactivity + region checks
         document.addEventListener('mousemove', event => {
             lastMouseEvent = event;
             resetInactivityTimer();
             checkRegionAndShowOpenHelp(event);
         });
 
-        document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
+        // Reuse your text->input logic for all text fields
+        function addClickHandler(element) {
             element.addEventListener('click', function () {
+                // Convert to input if fade is done and it’s one of our text fields
                 if (
                     fadeCompleted &&
-                    (this.classList.contains('username') || this.classList.contains('password'))
+                    (this.classList.contains('username') || 
+                     this.classList.contains('password') ||
+                     this.classList.contains('email-text') || 
+                     this.classList.contains('adduser-text') ||
+                     this.classList.contains('pass10-text') ||
+                     this.classList.contains('confpass-text'))
                 ) {
                     const parentRect = this.getBoundingClientRect();
                     const input = document.createElement('input');
-                    input.type = this.classList.contains('password') ? 'password' : 'text';
-                    input.maxLength = 10;
+                    
+                    // If it's one of the "password" fields, use type=password
+                    if (
+                      this.classList.contains('password') ||
+                      this.classList.contains('pass10-text') ||
+                      this.classList.contains('confpass-text')
+                    ) {
+                        input.type = 'password';
+                    } else {
+                        input.type = 'text';
+                    }
+
+                    input.maxLength = 25;
                     input.className = 'typing-input';
                     input.style.top = `${parentRect.top + window.scrollY}px`;
                     input.style.left = `${parentRect.left + window.scrollX}px`;
@@ -234,9 +255,7 @@
                         span.className = element.className;
                         span.innerText = input.value.trim() || element.innerText;
                         input.replaceWith(span);
-
                         showOpenHelp();
-
                         addClickHandler(span);
                     });
 
@@ -244,6 +263,39 @@
                     input.focus();
                 }
             });
+        }
+        document.querySelectorAll('.login-text').forEach(addClickHandler);
+
+        // 3) Animate out (login) and in (registration) when user clicks OPEN
+        openText.addEventListener('click', () => {
+            // Slide the .login-container to the left
+            loginContainer.classList.add('slide-left');
+            // Slide the .registration-container in from the right
+            regContainer.classList.add('slide-in');
+        });
+
+        // 4) Reverse animation if click in the "white area" on the right
+        document.addEventListener('click', (e) => {
+            // The bounding box for that white area: left 28.86vw -> 36vw, top 28.5vh -> 84vh
+            const boundingLeft = 28.86;
+            const boundingRight = 36;
+            const boundingTop = 28.5;
+            const boundingBottom = 84;
+
+            const { innerWidth, innerHeight } = window;
+            const leftPx = (boundingLeft / 100) * innerWidth;
+            const rightPx = (boundingRight / 100) * innerWidth;
+            const topPx = (boundingTop / 100) * innerHeight;
+            const bottomPx = (boundingBottom / 100) * innerHeight;
+
+            // If the click is inside that region, reverse the slide
+            if (
+                e.clientX >= leftPx && e.clientX <= rightPx &&
+                e.clientY >= topPx && e.clientY <= bottomPx
+            ) {
+                loginContainer.classList.remove('slide-left');
+                regContainer.classList.remove('slide-in');
+            }
         });
     </script>
 </body>

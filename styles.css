@@ -6,6 +6,7 @@
     font-style: normal;
 }
 
+/* Reset + box sizing */
 * {
     margin: 0;
     padding: 0;
@@ -13,12 +14,13 @@
 }
 
 :root {
-    /* These were in your original code */
+    /* Your original custom properties */
     --username-line-top: 38.9vh; 
     --password-line-top: 47vh;  
-    --line-gap: 2.8vh; 
+    --line-gap: 2.8vh;
 }
 
+/* Main layout: hide overflow, white background */
 body.non-fullscreen {
     background-color: #ffffff; 
     min-height: 100vh;
@@ -26,91 +28,73 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
-body.non-fullscreen .username {
-    top: 35.17vh; 
-}
+/* Fullscreen toggling from your script */
+body.fullscreen {}
 
-body.non-fullscreen .password {
-    top: 43.17vh; 
-}
-
-body.fullscreen .username {
-    top: 35.17vh; 
-}
-
-body.fullscreen .password {
-    top: 43.17vh;
-}
-
-/* Fade-in trigger from original code */
 body.fade-in-trigger {
     background-color: #ffffff; 
 }
 
-/* Let the background lines and time-text fade in after first click */
+/* 
+  Fade in your background lines and time-text
+  after first click triggers fade-in 
+*/
 .line:not(.login-line):not(.login-line-second),
 .time-text {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
-
 body.fade-in-trigger .line:not(.login-line):not(.login-line-second),
 body.fade-in-trigger .time-text {
     opacity: 1;
     transition-delay: 1s; 
 }
 
-/* Default login lines, texts are initially opacity 0 */
+/* 
+  The main login lines and text start hidden
+  (they become .visible after fadeCompleted / inactivity logic)
+*/
 .login-line,
 .login-line-second,
 .login-text {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
-
-/* .visible shows them */
 .visible {
     opacity: 1 !important;
     transition: opacity 0.5s ease-in-out;
 }
-
-/* .hidden hides them */
 .hidden {
     opacity: 0 !important;
     transition: opacity 0.5s ease-in-out;
 }
 
-/* The “background” lines from original code */
+/* Background lines from original code */
 .line {
     position: absolute;
     height: 1px;
     background-color: #cfcfcf;
 }
-
 .original {
     top: 12.5vh; 
     left: 6.38vw;
     width: 22.48vw; 
 }
-
 .second {
     top: 28.5vh;
     left: 6.38vw;
     width: 22.48vw;
 }
-
 .third {
     top: 84vh;
     left: 6.38vw;
     width: 22.48vw;
 }
-
 .fourth {
     top: 12.5vh;
     left: 36vw;
     width: 57.8vw;
 }
-
 .dashed {
     position: absolute;
     height: 1px;
@@ -126,26 +110,23 @@ body.fade-in-trigger .time-text {
     );
     background-size: 10px 1px;
 }
-
 .second-dashed {
     top: 47vh;
     left: 36vw;
     width: 52.4vw;
 }
-
 .third-dashed {
     top: 65.5vh;
     left: 36vw;
     width: 52.4vw;
 }
-
 .fourth-dashed {
     top: 84vh;
     left: 36vw;
     width: 52.4vw;
 }
 
-/* The time-text labels in top-right corners */
+/* Time labels in top-right corners */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -154,96 +135,113 @@ body.fade-in-trigger .time-text {
     letter-spacing: 0.2vw;
     text-shadow: 0.001rem 0 0 #acacac, -0.001rem 0 0 #acacac;
 }
-
 .time-text {
     top: 28.5vh;
     left: 89.81vw;
 }
-
 .second-time-text {
     top: 47.04vh;
     left: 89.91vw;
 }
-
 .third-time-text {
     top: 65.51vh;
     left: 89.87vw;
 }
-
 .fourth-time-text {
     top: 83.86vh;
     left: 90.1vw;
 }
 
-/* Existing login-text style */
+/* =============== ORIGINAL LOGIN ELEMENTS =============== */
+
+/* Clip container on the left side, from left=0 to left=6.37vw */
+.login-clip {
+    position: absolute;
+    top: 28.5vh;
+    left: 0;
+    width: 6.37vw;
+    height: calc(84vh - 28.5vh); 
+    overflow: hidden;  /* hide anything sliding beyond left boundary */
+    z-index: 10;       /* keep above background lines */
+}
+
+/* The container we actually move left with transform */
+.login-container {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100vw; /* big enough so text doesn't clip inside the container itself */
+    height: 100vh;
+    transition: transform 0.8s ease;
+    transform: translateX(0);
+    overflow: visible; /* let text like OPEN/HELP not get clipped at top */
+    z-index: 50;
+}
+
+/* 
+  Slide-left class: we push it left so that once the “USERNAME/PASSWORD”
+  pass beyond 6.37vw, they are hidden by .login-clip 
+*/
+.slide-left {
+    transform: translateX(-30vw); 
+    /* tweak -30vw if you want them to fully vanish behind the left boundary;
+       you might adjust to ensure the text goes far enough left to be hidden */
+}
+
+/* The "USERNAME" and "PASSWORD" text (unchanged positions) */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
-    letter-spacing: 0.28vw;
-    font-size: 0.47rem;
-    left: 6.41vw;
+    letter-spacing: 0.34vw; /* same as your original style in script */
+    font-size: 0.46rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
-
 .username {
-    top: calc(var(--username-line-top) - var(--line-gap)); 
+    top: 35.17vh; 
+    left: 6.41vw;
 }
-
 .password {
-    top: calc(var(--password-line-top) - var(--line-gap)); 
+    top: 43.17vh; 
+    left: 6.41vw;
 }
 
-/* The two login lines under USERNAME/PASSWORD */
+/* The lines under USERNAME/PASSWORD */
 .login-line {
     position: absolute;
-    top: var(--username-line-top); 
+    top: 38.9vh; 
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
-
 .login-line-second {
     position: absolute;
-    top: var(--password-line-top); 
+    top: 47vh; 
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* OPEN/HELP text (unchanged) */
-.open-text,
-.help-text {
+/* OPEN/HELP in same container */
+.open-text, .help-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
-    letter-spacing: 0.28vw;
-    font-size: 0.47rem;
+    letter-spacing: 0.34vw;
+    font-size: 0.46rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    opacity: 0;
     transition: opacity 0.5s ease-in-out;
+    z-index: 99; /* keep above everything */
 }
-
-body.non-fullscreen .open-text {
+.open-text {
     top: 35.17vh; 
     left: 25.57vw;   
 }
-body.non-fullscreen .help-text {
+.help-text {
     top: 43.17vh; 
     left: 25.57vw;   
 }
-
-body.fullscreen .open-text {
-    top: 35.17vh;
-    left: 25.57vw;
-}
-body.fullscreen .help-text {
-    top: 43.17vh;
-    left: 25.57vw;
-}
-
 .open-text.visible,
 .help-text.visible {
     opacity: 0.81 !important;
@@ -253,54 +251,97 @@ body.fullscreen .help-text {
     opacity: 1 !important;
 }
 
-/* 1) The two main containers we want to slide */
-.login-container, .registration-container {
+/* =============== REGISTRATION ELEMENTS =============== */
+
+/* 
+  The "clip" container on the right side, left=28.86vw->36vw
+  so the lines appear from behind that boundary.
+*/
+.registration-clip {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 28.5vh;
+    left: 28.86vw;
+    width: calc(36vw - 28.86vw); /* about 7.14vw */
+    height: calc(84vh - 28.5vh); /* leftover vertical space */
+    overflow: hidden;
+    z-index: 10;
+}
+
+/* 
+  The container we slide in from the right (relative to .registration-clip).
+  It starts at transform: translateX(100%), then we bring it to translateX(0) 
+  using .slide-in. 
+*/
+.registration-container {
+    position: absolute;
+    top: 0; left: 0;
     width: 100vw;
     height: 100vh;
     transition: transform 0.8s ease;
-    transform: translateX(0); /* default for .login-container */
+    transform: translateX(100%);
+    overflow: visible;
+    z-index: 50;
 }
 
-/* The registration container starts off to the far right */
-.registration-container {
-    left: 100vw; /* so it's hidden off-screen initially */
-}
-
-/* Slide login container to the left */
-.slide-left {
-    transform: translateX(-100%);
-}
-
-/* Slide registration container in from the right */
+/* Slide it into view from the right */
 .slide-in {
-    transform: translateX(-100vw);
+    transform: translateX(0);
 }
 
-/* 2) The new lines that appear for registration */
+/* The 4 new lines. Position them so they appear at 0 inside this container. */
 .reg-line {
     position: absolute;
-    background-color: rgba(230, 230, 230, 0.28);
+    left: 0; /* They will appear inside .registration-container's coordinate system */
+    width: 22.48vw; /* or tweak to your needs */
     height: 1px;
-    left: 6.4vw; /* Adjust as needed; you said lines might be near left 28.86vw, etc. */
-    width: 22.48vw; /* Adjust to your design */
+    background-color: rgba(230, 230, 230, 0.28);
+}
+/* 
+   Each line spaced by 8.1vh from top=0 
+   (But you said from top=28.5vh to 84vh, 
+    so let's place them to replicate that spacing 
+    within the .registration-container offset.)
+   We'll do line1 at 0, line2 at 8.1vh, etc.
+   So visually it lines up with the rest when it slides in.
+*/
+.line1 { top: 0; }
+.line2 { top: 8.1vh; }
+.line3 { top: 16.2vh; }
+.line4 { top: 24.3vh; }
+
+/* The 4 new text fields inside the registration container */
+.email-text, 
+.adduser-text, 
+.pass10-text, 
+.confpass-text {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #111111;
+    letter-spacing: 0.34vw;
+    font-size: 0.46rem;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
-/* Example: each line spaced by 8.1vh from top 28.5vh onward */
-.line1 { top: 28.5vh; }
-.line2 { top: calc(28.5vh + 8.1vh); }
-.line3 { top: calc(28.5vh + 2 * 8.1vh); }
-.line4 { top: calc(28.5vh + 3 * 8.1vh); }
+/* Positions that match the lines (top offset + ~6.67vh so they're above the lines).
+   Adjust as you like to line them up with each line. */
+.email-text {
+    top: 0.7vh;  /* slightly below line1, for example */
+    left: 0.3vw;
+}
+.adduser-text {
+    top: 8.8vh;  /* near line2 */
+    left: 0.3vw;
+}
+.pass10-text {
+    top: 16.9vh; /* near line3 */
+    left: 0.3vw;
+}
+.confpass-text {
+    top: 25vh;   /* near line4 */
+    left: 0.3vw;
+}
 
-/* The new text fields in registration container */
-.email-text    { top: 35.17vh; }
-.adduser-text  { top: 43.17vh; }
-.pass10-text   { top: 51.17vh; }
-.confpass-text { top: 59.17vh; }
-
-/* 3) The input styling when user clicks to type */
+/* =============== INPUT STYLE WHEN CLICKED =============== */
 input.typing-input {
     font-family: 'Distill Expanded', sans-serif;
     font-size: 0.46rem;

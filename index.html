@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="styles.css" />
   <style>
     .login-text {
+      display: inline-block; /* Ensures measurable box dimensions */
       position: absolute;
       left: 6.41vw;
       z-index: 10;
@@ -75,6 +76,7 @@
   <!-- Original login elements -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
+  <!-- OPEN and HELP remain as-is -->
   <span class="login-text open-text hidden">OPEn</span>
   <span class="login-text help-text hidden">HELP</span>
   <div class="line login-line"></div>
@@ -87,7 +89,7 @@
     <div class="line new-line new-line-2 hidden" style="top: 47vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
     <div class="line new-line new-line-3 hidden" style="top: 55.1vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
     <div class="line new-line new-line-4 hidden" style="top: 63.3vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
-    <!-- New text labels (explicit width set) -->
+    <!-- New text labels – note explicit inline width added -->
     <span class="login-text new-text new-text-1 hidden" style="top: 35.1vh; left: 6.4vw; width: 22.48vw;">YOUR E-MAIL</span>
     <span class="login-text new-text new-text-2 hidden" style="top: 43.2vh; left: 6.4vw; width: 22.48vw;">ADD USERNAME</span>
     <span class="login-text new-text new-text-3 hidden" style="top: 51.3vh; left: 6.4vw; width: 22.48vw;" data-input-type="password">10-CHARACTER PASSWORD</span>
@@ -173,23 +175,25 @@
       }
     });
     
-    // Document-level click handler.
+    // Document-level click handler (bubble-phase).
     document.addEventListener('click', event => {
       if (transitioning) return;
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
-      const isNearEdge = 
-            clientX <= edgeThreshold ||
-            clientX >= innerWidth - edgeThreshold ||
-            clientY <= edgeThreshold ||
-            clientY >= innerHeight - edgeThreshold;
+      const isNearEdge =
+        clientX <= edgeThreshold ||
+        clientX >= innerWidth - edgeThreshold ||
+        clientY <= edgeThreshold ||
+        clientY >= innerHeight - edgeThreshold;
       if (isNearEdge && !document.fullscreenElement) {
         document.documentElement.requestFullscreen();
         return;
       }
       if (!initialClickCompleted) {
-        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen();
+        }
         setTimeout(() => { document.body.classList.add('fade-in-trigger'); }, 1000);
         setTimeout(() => {
           fadeCompleted = true;
@@ -197,7 +201,7 @@
         }, 4000);
         initialClickCompleted = true;
       }
-      // If the click target is within an interactive element, do nothing.
+      // Do not process clicks originating from interactive new elements.
       if (event.target.closest('.typing-input') ||
           event.target.closest('.new-text') ||
           event.target.closest('.new-line')) {
@@ -235,7 +239,7 @@
       checkRegionAndShowOpenHelp(event);
     });
     
-    // Function to transform a text element into an input.
+    // addClickHandler: transforms a placeholder element into an input.
     function addClickHandler(element) {
       element.addEventListener('click', function(event) {
         event.preventDefault();
@@ -259,12 +263,11 @@
           }
           input.type = inputType;
           input.maxLength = 10;
-          // Prevent Safari autofill by turning autocomplete off.
           input.setAttribute("autocomplete", "off");
           input.className = 'typing-input';
           input.style.top = `${parentRect.top + window.scrollY}px`;
           input.style.left = `${parentRect.left + window.scrollX}px`;
-          // Use offsetWidth/offsetHeight so that we get pixel values.
+          // Use this element’s offsetWidth/offsetHeight for dimensions.
           input.style.width = `${this.offsetWidth}px`;
           input.style.height = `${this.offsetHeight}px`;
           input.addEventListener('click', e => {
@@ -298,7 +301,7 @@
       }
     });
     
-    // Attach separate click handler to OPEN (to trigger fade–out/in).
+    // OPEN element: triggers fade-out of original elements and fade-in of new mode elements.
     document.querySelector('.open-text').addEventListener('click', function(event) {
       event.stopPropagation();
       if (fadeCompleted && !newMode) {

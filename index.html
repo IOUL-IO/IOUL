@@ -217,19 +217,26 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // Reusable function to make a login-text (or new-text) element transform to an input.
+    // Reusable function to transform a text element into an input.
     function addClickHandler(element) {
       element.addEventListener('click', function (event) {
+        // Prevent propagation so reverse animation isn't triggered.
         event.stopPropagation();
-        // When new mode is active, ignore clicks on original elements.
+
+        // Do not allow transformation for open-text or help-text.
+        if (this.classList.contains('open-text') || this.classList.contains('help-text')) {
+          return;
+        }
+
+        // If new mode is active, ignore clicks on original elements that are not new.
         if (newMode && !this.classList.contains('new-text')) {
           return;
         }
+        
+        // Transform the element into an input field.
         if (fadeCompleted &&
           (this.classList.contains('username') ||
            this.classList.contains('password') ||
-           this.classList.contains('open-text') ||
-           this.classList.contains('help-text') ||
            this.classList.contains('new-text'))
         ) {
           const parentRect = this.getBoundingClientRect();
@@ -272,7 +279,7 @@
       addClickHandler(element);
     });
 
-    // Clicking the "OPEN" text: fade out original login elements and disable their functionality,
+    // Clicking the "OPEN" text: fade out original login elements (and disable their functions)
     // then fade in the new mode elements.
     document.querySelector('.open-text').addEventListener('click', function(event) {
       event.stopPropagation();
@@ -295,9 +302,13 @@
       }
     });
 
-    // Inverse animation: if you click within the region (left 0vw–6.37vw and top 28.5vh–84vh),
-    // fade out new mode elements and fade back in original login elements (re-enabling functionality).
+    // Inverse animation: if you click within the region (left 0vw–6.37vw and top 28.5vh–84vh)
+    // and the click target is not part of new mode, then fade out new mode elements and restore original login elements.
     document.addEventListener('click', function(event) {
+      // Do not trigger reverse if clicking on a new mode element.
+      if (event.target.closest('.new-text') || event.target.closest('.new-line')) {
+        return;
+      }
       if (newMode) {
         const { clientX, clientY } = event;
         const { innerWidth, innerHeight } = window;
@@ -312,7 +323,7 @@
               el.classList.remove('visible');
               el.classList.add('hidden');
             });
-          // After fade-out delay, fade in original elements.
+          // After fade-out delay, fade in original login elements.
           setTimeout(() => {
             document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
               .forEach(el => {

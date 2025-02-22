@@ -21,7 +21,7 @@
       padding: 0.1rem 0;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
-
+    
     input.typing-input {
       font-family: 'Distill Expanded', sans-serif;
       font-size: 0.46rem;
@@ -34,12 +34,11 @@
       position: absolute;
       caret-color: #d1d1d1;
       padding: 0.1rem 0;
-      width: calc(22.48vw + 4vw);
-      height: auto;
+      /* dimensions will be set dynamically */
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
-
+    
     /* Hidden elements are not interactive */
     .hidden {
       opacity: 0 !important;
@@ -72,10 +71,11 @@
   <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
-
+  
   <!-- Original login elements -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
+  <!-- OPEN and HELP texts must remain non–interactive for transformation -->
   <span class="login-text open-text hidden">OPEn</span>
   <span class="login-text help-text hidden">HELP</span>
   <div class="line login-line"></div>
@@ -88,11 +88,11 @@
     <div class="line new-line new-line-2 hidden" style="top: 47vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
     <div class="line new-line new-line-3 hidden" style="top: 55.1vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
     <div class="line new-line new-line-4 hidden" style="top: 63.3vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
-    <!-- New text labels -->
-    <span class="login-text new-text new-text-1 hidden" style="top: 35.1vh; left: 6.4vw;">YOUR E-MAIL</span>
-    <span class="login-text new-text new-text-2 hidden" style="top: 43.2vh; left: 6.4vw;">ADD USERNAME</span>
-    <span class="login-text new-text new-text-3 hidden" style="top: 51.3vh; left: 6.4vw;" data-input-type="password">10-CHARACTER PASSWORD</span>
-    <span class="login-text new-text new-text-4 hidden" style="top: 59.4vh; left: 6.4vw;" data-input-type="password">CONFIRM PASSWORD</span>
+    <!-- New text labels (explicit width set) -->
+    <span class="login-text new-text new-text-1 hidden" style="top: 35.1vh; left: 6.4vw; width: 22.48vw;">YOUR E-MAIL</span>
+    <span class="login-text new-text new-text-2 hidden" style="top: 43.2vh; left: 6.4vw; width: 22.48vw;">ADD USERNAME</span>
+    <span class="login-text new-text new-text-3 hidden" style="top: 51.3vh; left: 6.4vw; width: 22.48vw;" data-input-type="password">10-CHARACTER PASSWORD</span>
+    <span class="login-text new-text new-text-4 hidden" style="top: 59.4vh; left: 6.4vw; width: 22.48vw;" data-input-type="password">CONFIRM PASSWORD</span>
   </div>
   
   <script>
@@ -105,14 +105,13 @@
     let inputInFocus = false;
     let lastMouseEvent = null;
     let inactivityTimer;
-
+    
     function hideLoginElements() {
-      document.querySelectorAll(
-        '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
-      ).forEach(el => {
-        el.classList.add('hidden');
-        el.classList.remove('visible');
-      });
+      document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
+        .forEach(el => {
+          el.classList.add('hidden');
+          el.classList.remove('visible');
+        });
     }
     function showLoginElements() {
       document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
@@ -166,6 +165,7 @@
         helpText.classList.add('hidden');
       }
     }
+    
     document.addEventListener('fullscreenchange', () => {
       if (!document.fullscreenElement) {
         document.body.classList.remove('fullscreen');
@@ -173,23 +173,26 @@
         document.body.classList.add('fullscreen');
       }
     });
-    // Document-level click handler.
+    
+    // Document-level click handler (bubble phase).
     document.addEventListener('click', event => {
       if (transitioning) return;
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
-      const isNearEdge =
-        clientX <= edgeThreshold ||
-        clientX >= innerWidth - edgeThreshold ||
-        clientY <= edgeThreshold ||
-        clientY >= innerHeight - edgeThreshold;
+      const isNearEdge = 
+            clientX <= edgeThreshold ||
+            clientX >= innerWidth - edgeThreshold ||
+            clientY <= edgeThreshold ||
+            clientY >= innerHeight - edgeThreshold;
       if (isNearEdge && !document.fullscreenElement) {
         document.documentElement.requestFullscreen();
         return;
       }
       if (!initialClickCompleted) {
-        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen();
+        }
         setTimeout(() => { document.body.classList.add('fade-in-trigger'); }, 1000);
         setTimeout(() => {
           fadeCompleted = true;
@@ -197,13 +200,13 @@
         }, 4000);
         initialClickCompleted = true;
       }
-      // If click target is within an interactive element, do nothing.
+      // Do not process clicks from within interactive elements.
       if (event.target.closest('.typing-input') ||
           event.target.closest('.new-text') ||
           event.target.closest('.new-line')) {
         return;
       }
-      // Reverse animation (only in new mode).
+      // Reverse animation (only when in new mode).
       if (newMode) {
         const leftBoundary = 0,
               rightBoundary = (6.37 / 100) * innerWidth,
@@ -228,15 +231,16 @@
         }
       }
     });
+    
     document.addEventListener('mousemove', event => {
       lastMouseEvent = event;
       resetInactivityTimer();
       checkRegionAndShowOpenHelp(event);
     });
-    // Function to transform a text element into an input.
+    
+    // addClickHandler: transforms a placeholder text element into an input field.
     function addClickHandler(element) {
       element.addEventListener('click', function(event) {
-        if (transitioning) return;
         event.stopPropagation();
         // Do not transform OPEN or HELP.
         if (this.classList.contains('open-text') || this.classList.contains('help-text')) return;
@@ -259,9 +263,12 @@
           input.className = 'typing-input';
           input.style.top = `${parentRect.top + window.scrollY}px`;
           input.style.left = `${parentRect.left + window.scrollX}px`;
-          input.style.width = `calc(${parentRect.width}px + 4vw)`;
-          input.style.height = `${parentRect.height}px`;
-          input.addEventListener('click', e => { e.stopPropagation(); });
+          // Set dimensions using offsetWidth/offsetHeight (in pixels) to keep text in place.
+          input.style.width = `${this.offsetWidth}px`;
+          input.style.height = `${this.offsetHeight}px`;
+          input.addEventListener('click', e => {
+            e.stopPropagation();
+          });
           input.addEventListener('focus', function() {
             inputInFocus = true;
             hideOpenHelp();
@@ -281,13 +288,15 @@
         }
       });
     }
-    // Attach click handlers to interactive elements (except OPEN and HELP).
+    
+    // Attach click handlers to all interactive elements (except OPEN and HELP).
     document.querySelectorAll('.login-text').forEach(function(element) {
       if (!element.classList.contains('open-text') && !element.classList.contains('help-text')) {
         addClickHandler(element);
       }
     });
-    // Attach separate click handler to OPEN (to trigger fade-out/in).
+    
+    // OPEN element: triggers fade–out of original elements and fade–in of new account creation elements.
     document.querySelector('.open-text').addEventListener('click', function(event) {
       event.stopPropagation();
       if (fadeCompleted && !newMode) {

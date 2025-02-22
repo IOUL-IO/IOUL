@@ -1,46 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IOUL</title>
-    <link rel="icon" href="favicon.png" type="image/png">
-    <link rel="stylesheet" href="styles.css">
-
-    <style>
-        .login-text {
-            position: absolute;
-            left: 6.41vw;
-            z-index: 10;
-            transform: translateZ(0);
-            overflow: visible;
-            font-family: 'Distill Expanded', sans-serif;
-            color: #111111;
-            letter-spacing: 0.34vw;
-            font-size: 0.46rem;
-            line-height: 1.2;
-            padding: 0.1rem 0;
-            text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-        }
-
-        input.typing-input {
-            font-family: 'Distill Expanded', sans-serif;
-            font-size: 0.46rem;
-            line-height: 1.2;
-            color: #111111;
-            letter-spacing: 0.34vw;
-            border: none;
-            outline: none;
-            background-color: transparent;
-            position: absolute;
-            caret-color: #d1d1d1;
-            padding: 0.1rem 0;
-            width: calc(22.48vw + 4vw);
-            height: auto;
-            box-sizing: content-box;
-            text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IOUL</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* These inline styles (along with those in styles.css) add transitions for the login texts */
+    .login-text {
+      position: absolute;
+      left: 6.41vw;
+      z-index: 10;
+      transform: translateZ(0);
+      overflow: visible;
+      font-family: 'Distill Expanded', sans-serif;
+      color: #111111;
+      letter-spacing: 0.34vw;
+      font-size: 0.46rem;
+      line-height: 1.2;
+      padding: 0.1rem 0;
+      text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+      transition: left 0.8s ease-in-out, opacity 0.8s ease-in-out;
+    }
+    input.typing-input {
+      font-family: 'Distill Expanded', sans-serif;
+      font-size: 0.46rem;
+      line-height: 1.2;
+      color: #111111;
+      letter-spacing: 0.34vw;
+      border: none;
+      outline: none;
+      background-color: transparent;
+      position: absolute;
+      caret-color: #d1d1d1;
+      padding: 0.1rem 0;
+      width: calc(22.48vw + 4vw);
+      height: auto;
+      box-sizing: content-box;
+      text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    }
+    /* Slide-out class: moves elements from left:6.4vw to left:0vw and fades them */
+    .slide-out {
+      transition: left 0.8s ease-in-out, opacity 0.8s ease-in-out;
+      left: 0vw !important;
+      opacity: 0 !important;
+    }
+  </style>
 </head>
 <body class="non-fullscreen">
     <div class="line original"></div>
@@ -65,6 +71,18 @@
 
     <div class="line login-line"></div>
     <div class="line login-line-second"></div>
+    
+    <!-- New fields for the sliding in new login lines and texts -->
+    <div class="new-fields">
+        <div class="new-line new-line-1 initial"></div>
+        <span class="login-text new-text new-text-1 initial">YOUR E-MAIL</span>
+        <div class="new-line new-line-2 initial"></div>
+        <span class="login-text new-text new-text-2 initial">ADD USERNAME</span>
+        <div class="new-line new-line-3 initial"></div>
+        <span class="login-text new-text new-text-3 initial">10-CHARACTER PASSWORD</span>
+        <div class="new-line new-line-4 initial"></div>
+        <span class="login-text new-text new-text-4 initial">CONFIRM PASSWORD</span>
+    </div>
 
     <script>
         let inactivityTimer;
@@ -244,6 +262,29 @@
                     input.focus();
                 }
             });
+        });
+
+        // NEW: When clicking on the "OPEN" text, animate the old elements out and slide in the new fields.
+        document.querySelector('.open-text').addEventListener('click', function() {
+            // Slide out original elements (login texts, login lines, open and help texts)
+            document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
+                .forEach(el => {
+                    el.classList.add('slide-out');
+                });
+            // After the slide-out transition, hide these elements
+            setTimeout(() => {
+                document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
+                    .forEach(el => {
+                        el.style.display = 'none';
+                    });
+            }, 800);
+
+            // Slide in the new fields: remove their "initial" state and add "animate-in"
+            document.querySelectorAll('.new-line, .new-text')
+                .forEach(el => {
+                    el.classList.remove('initial');
+                    el.classList.add('animate-in');
+                });
         });
     </script>
 </body>

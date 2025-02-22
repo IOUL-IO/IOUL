@@ -167,7 +167,7 @@ body.fade-in-trigger .time-text {
     left: 90.1vw;
 }
 
-/* Existing login text */
+/* Existing login text styling */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -176,6 +176,7 @@ body.fade-in-trigger .time-text {
     font-size: 0.47rem;
     left: 6.41vw;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    transition: left 0.8s ease-in-out, opacity 0.8s ease-in-out;
 }
 
 .username {
@@ -245,3 +246,35 @@ body.fullscreen .help-text {
 .help-text.visible:hover {
     opacity: 1 !important;
 }
+
+/* ===== New Fields for the new login lines and texts ===== */
+
+/* New elements (lines and texts) start off positioned to the right (off-screen) and hidden */
+.new-line, .new-text {
+    position: absolute;
+    transition: left 0.8s ease-in-out, opacity 0.8s ease-in-out;
+    opacity: 0;
+}
+
+/* The "initial" class positions new elements off-screen to the right */
+.initial {
+    left: 36vw;
+}
+
+/* When we add "animate-in", new elements slide to left:6.4vw and become visible */
+.animate-in {
+    left: 6.4vw !important;
+    opacity: 1 !important;
+}
+
+/* Final positions for new lines */
+.new-line-1 { top: 38.9vh; width: 22.48vw; height: 1px; background-color: rgba(230, 230, 230, 0.28); }
+.new-line-2 { top: 47vh; width: 22.48vw; height: 1px; background-color: rgba(230, 230, 230, 0.28); }
+.new-line-3 { top: 55.1vh; width: 22.48vw; height: 1px; background-color: rgba(230, 230, 230, 0.28); }
+.new-line-4 { top: 53.2vh; width: 22.48vw; height: 1px; background-color: rgba(230, 230, 230, 0.28); }
+
+/* Final positions for new texts (keeping the login-text styling) */
+.new-text-1 { top: 36.1vh; }
+.new-text-2 { top: 44.2vh; }
+.new-text-3 { top: 52.3vh; }
+.new-text-4 { top: 60.4vh; }

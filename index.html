@@ -34,7 +34,7 @@
       position: absolute;
       caret-color: #d1d1d1;
       padding: 0.1rem 0;
-      width: calc(22.48vw + 4vw);
+      /* width will be set dynamically */
       height: auto;
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
@@ -197,7 +197,7 @@
         }, 4000);
         initialClickCompleted = true;
       }
-      // If click target is within an interactive element, do nothing.
+      // If the click target is within an interactive element, do nothing.
       if (event.target.closest('.typing-input') ||
           event.target.closest('.new-text') ||
           event.target.closest('.new-line')) {
@@ -257,9 +257,11 @@
           input.type = inputType;
           input.maxLength = 10;
           input.className = 'typing-input';
+          // Set the input position to exactly match the element.
           input.style.top = `${parentRect.top + window.scrollY}px`;
           input.style.left = `${parentRect.left + window.scrollX}px`;
-          input.style.width = `calc(${parentRect.width}px + 4vw)`;
+          // Use the exact width of the placeholder element.
+          input.style.width = `${parentRect.width}px`;
           input.style.height = `${parentRect.height}px`;
           input.addEventListener('click', e => { e.stopPropagation(); });
           input.addEventListener('focus', function() {

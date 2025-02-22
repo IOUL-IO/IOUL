@@ -34,7 +34,7 @@
       position: absolute;
       caret-color: #d1d1d1;
       padding: 0.1rem 0;
-      /* width and height will be set dynamically */
+      /* dimensions will be set dynamically */
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
@@ -235,8 +235,9 @@
     // Function to transform a text element into an input.
     function addClickHandler(element) {
       element.addEventListener('click', function(event) {
-        if (transitioning) return;
+        event.preventDefault();
         event.stopPropagation();
+        if (transitioning) return;
         // Do not transform OPEN or HELP.
         if (this.classList.contains('open-text') || this.classList.contains('help-text')) return;
         // In new mode, only allow transformation on new-text elements.
@@ -248,7 +249,6 @@
         ) {
           transformationLock = true;
           const parentRect = this.getBoundingClientRect();
-          const compStyle = window.getComputedStyle(this);
           const input = document.createElement('input');
           let inputType = 'text';
           if (this.classList.contains('password') || this.getAttribute('data-input-type') === 'password') {
@@ -259,10 +259,13 @@
           input.className = 'typing-input';
           input.style.top = `${parentRect.top + window.scrollY}px`;
           input.style.left = `${parentRect.left + window.scrollX}px`;
-          // Use computed style values for width and height to match the placeholder.
-          input.style.width = compStyle.width;
-          input.style.height = compStyle.height;
-          input.addEventListener('click', e => { e.stopPropagation(); });
+          // Use offsetWidth/offsetHeight to obtain pixel values.
+          input.style.width = `${this.offsetWidth}px`;
+          input.style.height = `${this.offsetHeight}px`;
+          input.addEventListener('click', e => { 
+            e.preventDefault();
+            e.stopPropagation(); 
+          });
           input.addEventListener('focus', function() {
             inputInFocus = true;
             hideOpenHelp();

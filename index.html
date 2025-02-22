@@ -51,7 +51,6 @@
       transition: opacity 0.5s ease-in-out;
       pointer-events: auto;
     }
-
     /* Ensure new lines have no extra delay */
     .new-line {
       transition-delay: 0s !important;
@@ -59,7 +58,7 @@
   </style>
 </head>
 <body class="non-fullscreen">
-  <!-- Existing background lines -->
+  <!-- Background elements -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -89,7 +88,6 @@
     <div class="line new-line new-line-2 hidden" style="top: 47vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
     <div class="line new-line new-line-3 hidden" style="top: 55.1vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
     <div class="line new-line new-line-4 hidden" style="top: 63.3vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
-
     <!-- New text labels -->
     <span class="login-text new-text new-text-1 hidden" style="top: 35.1vh; left: 6.4vw;">YOUR E-MAIL</span>
     <span class="login-text new-text new-text-2 hidden" style="top: 43.2vh; left: 6.4vw;">ADD USERNAME</span>
@@ -116,7 +114,6 @@
         el.classList.remove('visible');
       });
     }
-
     function showLoginElements() {
       document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
         .forEach(el => {
@@ -124,7 +121,6 @@
           el.classList.remove('hidden');
         });
     }
-
     function resetInactivityTimer() {
       if (fadeCompleted && !newMode) {
         clearTimeout(inactivityTimer);
@@ -132,7 +128,6 @@
         inactivityTimer = setTimeout(hideLoginElements, 20000);
       }
     }
-
     function hideOpenHelp() {
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
@@ -141,13 +136,11 @@
       helpText.classList.remove('visible');
       helpText.classList.add('hidden');
     }
-
     function showOpenHelp() {
       if (lastMouseEvent) {
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
     }
-
     function checkRegionAndShowOpenHelp(event) {
       if (!fadeCompleted || inputInFocus || newMode) return;
       const openText = document.querySelector('.open-text');
@@ -173,7 +166,6 @@
         helpText.classList.add('hidden');
       }
     }
-
     document.addEventListener('fullscreenchange', () => {
       if (!document.fullscreenElement) {
         document.body.classList.remove('fullscreen');
@@ -181,15 +173,74 @@
         document.body.classList.add('fullscreen');
       }
     });
-
-    // Use capturing for the interactive elements so their clicks don't bubble.
+    // Document-level click handler.
+    document.addEventListener('click', event => {
+      if (transitioning) return;
+      const edgeThreshold = 10;
+      const { clientX, clientY } = event;
+      const { innerWidth, innerHeight } = window;
+      const isNearEdge =
+        clientX <= edgeThreshold ||
+        clientX >= innerWidth - edgeThreshold ||
+        clientY <= edgeThreshold ||
+        clientY >= innerHeight - edgeThreshold;
+      if (isNearEdge && !document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+        return;
+      }
+      if (!initialClickCompleted) {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+        setTimeout(() => { document.body.classList.add('fade-in-trigger'); }, 1000);
+        setTimeout(() => {
+          fadeCompleted = true;
+          inactivityTimer = setTimeout(hideLoginElements, 20000);
+        }, 4000);
+        initialClickCompleted = true;
+      }
+      // If click target is within an interactive element, do nothing.
+      if (event.target.closest('.typing-input') ||
+          event.target.closest('.new-text') ||
+          event.target.closest('.new-line')) {
+        return;
+      }
+      // Reverse animation (only in new mode).
+      if (newMode) {
+        const leftBoundary = 0,
+              rightBoundary = (6.37 / 100) * innerWidth,
+              topBoundary = (28.5 / 100) * innerHeight,
+              bottomBoundary = (84 / 100) * innerHeight;
+        if (clientX >= leftBoundary && clientX <= rightBoundary &&
+            clientY >= topBoundary && clientY <= bottomBoundary) {
+          transitioning = true;
+          document.querySelectorAll('.new-line, .new-text').forEach(el => {
+            el.classList.remove('visible');
+            el.classList.add('hidden');
+          });
+          setTimeout(() => {
+            document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
+              .forEach(el => {
+                el.classList.remove('hidden');
+                el.classList.add('visible');
+              });
+            newMode = false;
+            transitioning = false;
+          }, 500);
+        }
+      }
+    });
+    document.addEventListener('mousemove', event => {
+      lastMouseEvent = event;
+      resetInactivityTimer();
+      checkRegionAndShowOpenHelp(event);
+    });
+    // Function to transform a text element into an input.
     function addClickHandler(element) {
-      element.addEventListener('click', function (event) {
+      element.addEventListener('click', function(event) {
         if (transitioning) return;
         event.stopPropagation();
-        // Prevent transformation for OPEN and HELP.
+        // Do not transform OPEN or HELP.
         if (this.classList.contains('open-text') || this.classList.contains('help-text')) return;
-        // In new mode, only allow transformation on elements marked new.
+        // In new mode, only allow transformation on new-text elements.
         if (newMode && !this.classList.contains('new-text')) return;
         if (fadeCompleted &&
             (this.classList.contains('username') ||
@@ -210,13 +261,12 @@
           input.style.left = `${parentRect.left + window.scrollX}px`;
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
-          // Use capture to stop the click event from bubbling.
-          input.addEventListener('click', e => { e.stopPropagation(); }, true);
-          input.addEventListener('focus', function () {
+          input.addEventListener('click', e => { e.stopPropagation(); });
+          input.addEventListener('focus', function() {
             inputInFocus = true;
             hideOpenHelp();
           });
-          input.addEventListener('blur', function () {
+          input.addEventListener('blur', function() {
             inputInFocus = false;
             const span = document.createElement('span');
             span.className = element.className;
@@ -229,77 +279,15 @@
           input.focus();
           setTimeout(() => { transformationLock = false; }, 500);
         }
-      }, true); // use capture
+      });
     }
-
-    // Attach click handlers to all login-text elements.
-    document.querySelectorAll('.login-text').forEach(function (element) {
-      addClickHandler(element);
-    });
-
-    // Document-level click handler (without capture) for fullscreen and reverse animation.
-    document.addEventListener('click', event => {
-      if (transitioning) return;
-      const edgeThreshold = 10;
-      const { clientX, clientY } = event;
-      const { innerWidth, innerHeight } = window;
-      const isNearEdge =
-        clientX <= edgeThreshold ||
-        clientX >= innerWidth - edgeThreshold ||
-        clientY <= edgeThreshold ||
-        clientY >= innerHeight - edgeThreshold;
-      if (isNearEdge && !document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-        return;
-      }
-      if (!initialClickCompleted) {
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen();
-        }
-        setTimeout(() => {
-          document.body.classList.add('fade-in-trigger');
-        }, 1000);
-        setTimeout(() => {
-          fadeCompleted = true;
-          inactivityTimer = setTimeout(hideLoginElements, 20000);
-        }, 4000);
-        initialClickCompleted = true;
-      }
-      // Do not trigger reverse if click came from an interactive new element (its listener uses capture).
-      if (newMode) {
-        const leftBoundary = 0,
-              rightBoundary = (6.37 / 100) * innerWidth,
-              topBoundary = (28.5 / 100) * innerHeight,
-              bottomBoundary = (84 / 100) * innerHeight;
-        // If click coordinates fall within reverse area, trigger reverse.
-        if (clientX >= leftBoundary && clientX <= rightBoundary &&
-            clientY >= topBoundary && clientY <= bottomBoundary) {
-          transitioning = true;
-          document.querySelectorAll('.new-line, .new-text')
-            .forEach(el => {
-              el.classList.remove('visible');
-              el.classList.add('hidden');
-            });
-          setTimeout(() => {
-            document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
-              .forEach(el => {
-                el.classList.remove('hidden');
-                el.classList.add('visible');
-              });
-            newMode = false;
-            transitioning = false;
-          }, 500);
-        }
+    // Attach click handlers to interactive elements (except OPEN and HELP).
+    document.querySelectorAll('.login-text').forEach(function(element) {
+      if (!element.classList.contains('open-text') && !element.classList.contains('help-text')) {
+        addClickHandler(element);
       }
     });
-
-    document.addEventListener('mousemove', event => {
-      lastMouseEvent = event;
-      resetInactivityTimer();
-      checkRegionAndShowOpenHelp(event);
-    });
-
-    // Clicking "OPEN": fade out original elements and fade in new mode elements.
+    // Attach separate click handler to OPEN (to trigger fade-out/in).
     document.querySelector('.open-text').addEventListener('click', function(event) {
       event.stopPropagation();
       if (fadeCompleted && !newMode) {
@@ -310,7 +298,6 @@
             el.classList.add('hidden');
           });
         setTimeout(() => {
-          // Fade in new mode elements.
           document.querySelectorAll('#new-mode-elements .new-line, #new-mode-elements .new-text')
             .forEach(el => {
               el.classList.remove('hidden');

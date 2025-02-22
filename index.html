@@ -68,13 +68,13 @@
     <div class="line login-line"></div>
     <div class="line login-line-second"></div>
 
-    <!-- New lines (initially off to the right) -->
+    <!-- New lines (hidden from initial fade-in) -->
     <div class="line new-line line1"></div>
     <div class="line new-line line2"></div>
     <div class="line new-line line3"></div>
     <div class="line new-line line4"></div>
 
-    <!-- New text labels (initially off to the right) -->
+    <!-- New text labels (hidden from initial fade-in) -->
     <span class="login-text new-text text1">YOUR-EMAIL</span>
     <span class="login-text new-text text2">YOUR-USERNAME</span>
     <span class="login-text new-text text3">10-CHARACTER PASSWORD</span>
@@ -261,14 +261,18 @@
             });
         });
 
-        // 1) Detect click on "OPEN"
+        // When "OPEN" is clicked, first slide out old lines, then bring in new lines
         const openTextElement = document.querySelector('.open-text');
         if (openTextElement) {
             openTextElement.addEventListener('click', () => {
-                // 2) Slide out old lines and fade them
+                // Step 1: Slide out old elements
                 document.body.classList.add('slide-out-old-lines');
-                // 3) Simultaneously slide in the new lines/text
-                document.body.classList.add('show-new-lines');
+
+                // After ~1 second (matching the transition in CSS),
+                // slide IN the new lines.
+                setTimeout(() => {
+                    document.body.classList.add('show-new-lines');
+                }, 1000);
             });
         }
     </script>

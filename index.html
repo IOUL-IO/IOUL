@@ -75,7 +75,6 @@
   <!-- Original login elements -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
-  <!-- OPEN and HELP texts must remain non–interactive for transformation -->
   <span class="login-text open-text hidden">OPEn</span>
   <span class="login-text help-text hidden">HELP</span>
   <div class="line login-line"></div>
@@ -174,7 +173,7 @@
       }
     });
     
-    // Document-level click handler (bubble phase).
+    // Document-level click handler.
     document.addEventListener('click', event => {
       if (transitioning) return;
       const edgeThreshold = 10;
@@ -190,9 +189,7 @@
         return;
       }
       if (!initialClickCompleted) {
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen();
-        }
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
         setTimeout(() => { document.body.classList.add('fade-in-trigger'); }, 1000);
         setTimeout(() => {
           fadeCompleted = true;
@@ -200,13 +197,13 @@
         }, 4000);
         initialClickCompleted = true;
       }
-      // Do not process clicks from within interactive elements.
+      // If the click target is within an interactive element, do nothing.
       if (event.target.closest('.typing-input') ||
           event.target.closest('.new-text') ||
           event.target.closest('.new-line')) {
         return;
       }
-      // Reverse animation (only when in new mode).
+      // Reverse animation (only in new mode).
       if (newMode) {
         const leftBoundary = 0,
               rightBoundary = (6.37 / 100) * innerWidth,
@@ -238,10 +235,12 @@
       checkRegionAndShowOpenHelp(event);
     });
     
-    // addClickHandler: transforms a placeholder text element into an input field.
+    // Function to transform a text element into an input.
     function addClickHandler(element) {
       element.addEventListener('click', function(event) {
+        event.preventDefault();
         event.stopPropagation();
+        if (transitioning) return;
         // Do not transform OPEN or HELP.
         if (this.classList.contains('open-text') || this.classList.contains('help-text')) return;
         // In new mode, only allow transformation on new-text elements.
@@ -260,13 +259,16 @@
           }
           input.type = inputType;
           input.maxLength = 10;
+          // Prevent Safari autofill by turning autocomplete off.
+          input.setAttribute("autocomplete", "off");
           input.className = 'typing-input';
           input.style.top = `${parentRect.top + window.scrollY}px`;
           input.style.left = `${parentRect.left + window.scrollX}px`;
-          // Set dimensions using offsetWidth/offsetHeight (in pixels) to keep text in place.
+          // Use offsetWidth/offsetHeight so that we get pixel values.
           input.style.width = `${this.offsetWidth}px`;
           input.style.height = `${this.offsetHeight}px`;
           input.addEventListener('click', e => {
+            e.preventDefault();
             e.stopPropagation();
           });
           input.addEventListener('focus', function() {
@@ -289,14 +291,14 @@
       });
     }
     
-    // Attach click handlers to all interactive elements (except OPEN and HELP).
+    // Attach click handlers to interactive elements (except OPEN and HELP).
     document.querySelectorAll('.login-text').forEach(function(element) {
       if (!element.classList.contains('open-text') && !element.classList.contains('help-text')) {
         addClickHandler(element);
       }
     });
     
-    // OPEN element: triggers fade–out of original elements and fade–in of new account creation elements.
+    // Attach separate click handler to OPEN (to trigger fade–out/in).
     document.querySelector('.open-text').addEventListener('click', function(event) {
       event.stopPropagation();
       if (fadeCompleted && !newMode) {

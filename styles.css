@@ -13,6 +13,7 @@
 }
 
 :root {
+    /* These were in your original code */
     --username-line-top: 38.9vh; 
     --password-line-top: 47vh;  
     --line-gap: 2.8vh; 
@@ -41,10 +42,12 @@ body.fullscreen .password {
     top: 43.17vh;
 }
 
+/* Fade-in trigger from original code */
 body.fade-in-trigger {
     background-color: #ffffff; 
 }
 
+/* Let the background lines and time-text fade in after first click */
 .line:not(.login-line):not(.login-line-second),
 .time-text {
     opacity: 0;
@@ -57,6 +60,7 @@ body.fade-in-trigger .time-text {
     transition-delay: 1s; 
 }
 
+/* Default login lines, texts are initially opacity 0 */
 .login-line,
 .login-line-second,
 .login-text {
@@ -64,16 +68,19 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
+/* .visible shows them */
 .visible {
     opacity: 1 !important;
     transition: opacity 0.5s ease-in-out;
 }
 
+/* .hidden hides them */
 .hidden {
     opacity: 0 !important;
     transition: opacity 0.5s ease-in-out;
 }
 
+/* The “background” lines from original code */
 .line {
     position: absolute;
     height: 1px;
@@ -138,6 +145,7 @@ body.fade-in-trigger .time-text {
     width: 52.4vw;
 }
 
+/* The time-text labels in top-right corners */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -167,7 +175,7 @@ body.fade-in-trigger .time-text {
     left: 90.1vw;
 }
 
-/* Existing login text */
+/* Existing login-text style */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -186,6 +194,7 @@ body.fade-in-trigger .time-text {
     top: calc(var(--password-line-top) - var(--line-gap)); 
 }
 
+/* The two login lines under USERNAME/PASSWORD */
 .login-line {
     position: absolute;
     top: var(--username-line-top); 
@@ -204,6 +213,7 @@ body.fade-in-trigger .time-text {
     background-color: rgba(230, 230, 230, 0.28);
 }
 
+/* OPEN/HELP text (unchanged) */
 .open-text,
 .help-text {
     position: absolute;
@@ -220,7 +230,6 @@ body.non-fullscreen .open-text {
     top: 35.17vh; 
     left: 25.57vw;   
 }
-
 body.non-fullscreen .help-text {
     top: 43.17vh; 
     left: 25.57vw;   
@@ -230,7 +239,6 @@ body.fullscreen .open-text {
     top: 35.17vh;
     left: 25.57vw;
 }
-
 body.fullscreen .help-text {
     top: 43.17vh;
     left: 25.57vw;
@@ -240,8 +248,71 @@ body.fullscreen .help-text {
 .help-text.visible {
     opacity: 0.81 !important;
 }
-
 .open-text.visible:hover,
 .help-text.visible:hover {
     opacity: 1 !important;
+}
+
+/* 1) The two main containers we want to slide */
+.login-container, .registration-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    transition: transform 0.8s ease;
+    transform: translateX(0); /* default for .login-container */
+}
+
+/* The registration container starts off to the far right */
+.registration-container {
+    left: 100vw; /* so it's hidden off-screen initially */
+}
+
+/* Slide login container to the left */
+.slide-left {
+    transform: translateX(-100%);
+}
+
+/* Slide registration container in from the right */
+.slide-in {
+    transform: translateX(-100vw);
+}
+
+/* 2) The new lines that appear for registration */
+.reg-line {
+    position: absolute;
+    background-color: rgba(230, 230, 230, 0.28);
+    height: 1px;
+    left: 6.4vw; /* Adjust as needed; you said lines might be near left 28.86vw, etc. */
+    width: 22.48vw; /* Adjust to your design */
+}
+
+/* Example: each line spaced by 8.1vh from top 28.5vh onward */
+.line1 { top: 28.5vh; }
+.line2 { top: calc(28.5vh + 8.1vh); }
+.line3 { top: calc(28.5vh + 2 * 8.1vh); }
+.line4 { top: calc(28.5vh + 3 * 8.1vh); }
+
+/* The new text fields in registration container */
+.email-text    { top: 35.17vh; }
+.adduser-text  { top: 43.17vh; }
+.pass10-text   { top: 51.17vh; }
+.confpass-text { top: 59.17vh; }
+
+/* 3) The input styling when user clicks to type */
+input.typing-input {
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.46rem;
+    line-height: 1.2;
+    color: #111111;
+    letter-spacing: 0.34vw;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    position: absolute;
+    caret-color: #d1d1d1;
+    padding: 0.1rem 0;
+    box-sizing: content-box;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }

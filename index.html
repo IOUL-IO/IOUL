@@ -248,6 +248,7 @@
         ) {
           transformationLock = true;
           const parentRect = this.getBoundingClientRect();
+          const compStyle = window.getComputedStyle(this);
           const input = document.createElement('input');
           let inputType = 'text';
           if (this.classList.contains('password') || this.getAttribute('data-input-type') === 'password') {
@@ -258,9 +259,9 @@
           input.className = 'typing-input';
           input.style.top = `${parentRect.top + window.scrollY}px`;
           input.style.left = `${parentRect.left + window.scrollX}px`;
-          // Set width to exactly the measured width.
-          input.style.width = `${parentRect.width}px`;
-          input.style.height = `${parentRect.height}px`;
+          // Use computed style values for width and height to match the placeholder.
+          input.style.width = compStyle.width;
+          input.style.height = compStyle.height;
           input.addEventListener('click', e => { e.stopPropagation(); });
           input.addEventListener('focus', function() {
             inputInFocus = true;

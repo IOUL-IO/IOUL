@@ -7,9 +7,9 @@
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
   <style>
-    /* Make sure placeholder spans are rendered as boxes with a measurable width */
+    /* Force placeholder spans to render as inline–block for measurable dimensions */
     .login-text {
-      display: inline-block; /* added to force a measurable box */
+      display: inline-block;
       position: absolute;
       left: 6.41vw;
       z-index: 10;
@@ -40,7 +40,7 @@
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
     
-    /* Hidden elements use pointer-events: none so that they don’t catch clicks */
+    /* Hidden elements use pointer-events: none so they won’t capture clicks */
     .hidden {
       opacity: 0 !important;
       transition: opacity 0.5s ease-in-out;
@@ -75,21 +75,19 @@
   <!-- Original login elements -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
-  <!-- OPEN and HELP are not meant to transform -->
   <span class="login-text open-text hidden">OPEn</span>
   <span class="login-text help-text hidden">HELP</span>
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
   
   <!-- New mode elements (initially hidden) -->
-  <!-- All new account creation elements are contained in their own container -->
   <div id="new-mode-elements">
     <!-- New lines -->
     <div class="line new-line new-line-1 hidden" style="top: 38.9vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
     <div class="line new-line new-line-2 hidden" style="top: 47vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
     <div class="line new-line new-line-3 hidden" style="top: 55.1vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
     <div class="line new-line new-line-4 hidden" style="top: 63.3vh; left: 6.4vw; width: 22.48vw; height: 1px; background-color: rgba(230,230,230,0.28);"></div>
-    <!-- New text labels – each now has an explicit inline width -->
+    <!-- New text labels – note explicit inline width so that offsetWidth is nonzero -->
     <span class="login-text new-text new-text-1 hidden" style="top: 35.1vh; left: 6.4vw; width: 22.48vw;">YOUR E-MAIL</span>
     <span class="login-text new-text new-text-2 hidden" style="top: 43.2vh; left: 6.4vw; width: 22.48vw;">ADD USERNAME</span>
     <span class="login-text new-text new-text-3 hidden" style="top: 51.3vh; left: 6.4vw; width: 22.48vw;" data-input-type="password">10-CHARACTER PASSWORD</span>
@@ -106,6 +104,11 @@
     let inputInFocus = false;
     let lastMouseEvent = null;
     let inactivityTimer;
+    
+    // Prevent clicks inside the new-mode container from bubbling up.
+    document.getElementById("new-mode-elements").addEventListener("click", function(e) {
+      e.stopPropagation();
+    });
     
     function hideLoginElements() {
       document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
@@ -175,12 +178,7 @@
       }
     });
     
-    // Add a click handler on the new-mode container to prevent clicks from bubbling up.
-    document.getElementById("new-mode-elements").addEventListener("click", function(e){
-      e.stopPropagation();
-    });
-    
-    // Document-level click handler.
+    // Document-level click handler (bubble-phase).
     document.addEventListener('click', event => {
       if (transitioning) return;
       const edgeThreshold = 10;
@@ -204,13 +202,13 @@
         }, 4000);
         initialClickCompleted = true;
       }
-      // Do not process clicks from within interactive new elements.
+      // If the click originates from interactive new-mode elements, do nothing.
       if (event.target.closest('.typing-input') ||
           event.target.closest('.new-text') ||
           event.target.closest('.new-line')) {
         return;
       }
-      // Reverse animation (only when in new mode).
+      // Reverse animation (only in new mode).
       if (newMode) {
         const leftBoundary = 0,
               rightBoundary = (6.37 / 100) * innerWidth,
@@ -270,7 +268,7 @@
           input.className = 'typing-input';
           input.style.top = `${parentRect.top + window.scrollY}px`;
           input.style.left = `${parentRect.left + window.scrollX}px`;
-          // Use the element’s offsetWidth/offsetHeight for precise pixel dimensions.
+          // Use offsetWidth/offsetHeight to size the input exactly.
           input.style.width = `${this.offsetWidth}px`;
           input.style.height = `${this.offsetHeight}px`;
           input.addEventListener('click', e => {
@@ -297,14 +295,14 @@
       });
     }
     
-    // Attach click handlers to all interactive placeholder elements (except OPEN and HELP).
+    // Attach click handlers to all interactive placeholders (except OPEN and HELP).
     document.querySelectorAll('.login-text').forEach(function(element) {
       if (!element.classList.contains('open-text') && !element.classList.contains('help-text')) {
         addClickHandler(element);
       }
     });
     
-    // OPEN element: triggers fade-out of original login elements and fade-in of new account creation elements.
+    // OPEN element: dedicated click handler to trigger fade-out of original elements and fade-in of new mode elements.
     document.querySelector('.open-text').addEventListener('click', function(event) {
       event.stopPropagation();
       if (fadeCompleted && !newMode) {

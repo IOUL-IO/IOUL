@@ -15,6 +15,7 @@
 :root {
     --username-line-top: 38.9vh; 
     --password-line-top: 47vh;  
+    /* This line-gap is for the old lines' text above them */
     --line-gap: 2.8vh; 
 }
 
@@ -45,7 +46,7 @@ body.fade-in-trigger {
     background-color: #ffffff; 
 }
 
-/* Hide new lines by default from the fade-in */
+/* Hide old lines, time texts initially */
 .line:not(.login-line):not(.login-line-second):not(.new-line),
 .time-text {
     opacity: 0;
@@ -65,6 +66,7 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
+/* Visible vs. hidden used by JS */
 .visible {
     opacity: 1 !important;
     transition: opacity 0.5s ease-in-out;
@@ -75,7 +77,9 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Original lines positions */
+/* ---------------------------
+   Original "background" lines
+   --------------------------- */
 .line {
     position: absolute;
     height: 1px;
@@ -140,6 +144,9 @@ body.fade-in-trigger .time-text {
     width: 52.4vw;
 }
 
+/* ---------------------------
+   Time text
+   --------------------------- */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -169,14 +176,17 @@ body.fade-in-trigger .time-text {
     left: 90.1vw;
 }
 
-/* Existing login text */
+/* ---------------------------
+   Old login text & lines
+   --------------------------- */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
-    left: 6.41vw;
+    /* We set the initial "old" items at left:6.4vw in index.html's inline style 
+       so they can slide to 6.37vw. */
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
@@ -191,6 +201,7 @@ body.fade-in-trigger .time-text {
 .login-line {
     position: absolute;
     top: var(--username-line-top); 
+    /* Start old lines at left:6.4vw so they can move to 6.37vw */
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
@@ -249,7 +260,7 @@ body.fullscreen .help-text {
 }
 
 /* ---------------------------------------------
-   Animation classes for sliding out old elements
+   Slide old items from left:6.4vw -> left:6.37vw, fade out
    --------------------------------------------- */
 .slide-out-old-lines .username,
 .slide-out-old-lines .password,
@@ -257,37 +268,37 @@ body.fullscreen .help-text {
 .slide-out-old-lines .login-line-second,
 .slide-out-old-lines .open-text,
 .slide-out-old-lines .help-text {
-    left: 6.37vw;    /* slides them slightly left */
-    opacity: 0;      /* fade out */
+    left: 6.37vw;     /* small shift to the left */
+    opacity: 0;       /* fade out */
     transition: left 1s ease, opacity 1s ease;
     pointer-events: none;
 }
 
 /* ---------------------------------------------
-   New lines (NEVER appear in the initial fade)
+   New lines (start off-screen at 28.86vw)
    --------------------------------------------- */
 .new-line {
+    position: absolute;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
-    position: absolute;
-    left: 28.86vw; /* start further right */
-    opacity: 0;
+    left: 28.86vw;  /* off-screen to the right */
+    opacity: 0;  
     transition: left 1s ease, opacity 1s ease;
 }
 
-/* Bump up gap for each text (use ~4vh above the line) */
+/* These new lines are your 4 lines, at specific top positions */
 .line1 { top: 38.9vh; }
 .line2 { top: 47vh; }
 .line3 { top: 55.1vh; }
 .line4 { top: 63.2vh; }
 
 /* ---------------------------------------------
-   New text (initially hidden)
+   New text (start off-screen at 28.86vw)
    --------------------------------------------- */
 .new-text {
     position: absolute;
-    left: 28.86vw; /* start further right */
+    left: 28.86vw;  /* off-screen to the right */
     opacity: 0;
     transition: left 1s ease, opacity 1s ease;
     font-family: 'Distill Expanded', sans-serif;
@@ -297,21 +308,21 @@ body.fullscreen .help-text {
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
-/* Each new text is ~4vh above the line */
+/* The text is ~some vh above the line below it */
 .text1 { top: 34.9vh; }
 .text2 { top: 43vh;   }
 .text3 { top: 51.1vh; }
 .text4 { top: 59.2vh; }
 
 /* ---------------------------------------------
-   When showing new lines/elements
+   When we add .show-new-lines, they slide to 6.4vw & fade in
    --------------------------------------------- */
 .show-new-lines .new-line {
-    left: 6.4vw;  /* slide into place */
+    left: 6.4vw;
     opacity: 1;
 }
 
 .show-new-lines .new-text {
-    left: 6.4vw;  /* slide into place */
+    left: 6.4vw;
     opacity: 1;
 }

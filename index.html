@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="google" content="notranslate" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IOUL</title>
-    <link rel="icon" href="favicon.png" type="image/png">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.png" type="image/png" />
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="non-fullscreen">
-    <!-- Existing background lines -->
+    <!-- Background lines (unchanged from original) -->
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -18,39 +20,48 @@
     <div class="line dashed third-dashed"></div>
     <div class="line dashed fourth-dashed"></div>
     
-    <!-- Existing time labels -->
+    <!-- Time labels (unchanged) -->
     <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
     <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
     <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-    <!-- 1) Container for original login elements -->
-    <div class="login-container">
-        <span class="login-text username">USERnAME</span>
-        <span class="login-text password">PASSWORD</span>
+    <!-- 
+      1) A “clip” container for your original login items, from left=0 to left=6.37vw.
+         Anything sliding left beyond 6.37vw disappears behind the white.
+         We keep your original elements EXACTLY, so they look the same.
+    -->
+    <div class="login-clip">
+      <div class="login-container">
+          <span class="login-text username">USERnAME</span>
+          <span class="login-text password">PASSWORD</span>
 
-        <!-- “OPEN” and “HELP” text also belong here, so they slide out together -->
-        <span class="login-text open-text hidden">OPEN</span>
-        <span class="login-text help-text hidden">HELP</span>
+          <span class="login-text open-text hidden">OPEN</span>
+          <span class="login-text help-text hidden">HELP</span>
 
-        <!-- The two login lines -->
-        <div class="line login-line"></div>
-        <div class="line login-line-second"></div>
+          <div class="line login-line"></div>
+          <div class="line login-line-second"></div>
+      </div>
     </div>
 
-    <!-- 2) Container for the new registration elements -->
-    <div class="registration-container">
-        <!-- The four new lines -->
-        <div class="line reg-line line1"></div>
-        <div class="line reg-line line2"></div>
-        <div class="line reg-line line3"></div>
-        <div class="line reg-line line4"></div>
+    <!-- 
+      2) A “clip” container for the new registration items, from left=28.86vw to left=36vw.
+         The .registration-container inside it starts off to the right and slides in.
+    -->
+    <div class="registration-clip">
+      <div class="registration-container">
+          <!-- Four new lines -->
+          <div class="line reg-line line1"></div>
+          <div class="line reg-line line2"></div>
+          <div class="line reg-line line3"></div>
+          <div class="line reg-line line4"></div>
 
-        <!-- The four new text labels (can also become inputs on click) -->
-        <span class="login-text email-text">YOUR E-MAIL</span>
-        <span class="login-text adduser-text">ADD USERNAME</span>
-        <span class="login-text pass10-text">10-CHARACTER PASSWORD</span>
-        <span class="login-text confpass-text">CONFIRM PASSWORD</span>
+          <!-- Four new text labels -->
+          <span class="login-text email-text">YOUR E-MAIL</span>
+          <span class="login-text adduser-text">ADD USERNAME</span>
+          <span class="login-text pass10-text">10-CHARACTER PASSWORD</span>
+          <span class="login-text confpass-text">CONFIRM PASSWORD</span>
+      </div>
     </div>
 
     <script>
@@ -60,14 +71,13 @@
         let lastMouseEvent = null;
         let inputInFocus = false; 
 
-        // Grab references to the two containers
+        // References to key elements
         const loginContainer = document.querySelector('.login-container');
         const regContainer = document.querySelector('.registration-container');
         const openText = document.querySelector('.open-text');
 
-        /**
-         * Existing code that hides/shows login elements after inactivity
-         */
+        // =============== EXISTING FUNCTIONS (Unchanged) ===============
+
         function hideLoginElements() {
             document.querySelectorAll(
                 '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
@@ -98,12 +108,12 @@
         }
 
         function hideOpenHelp() {
-            const openText = document.querySelector('.open-text');
-            const helpText = document.querySelector('.help-text');
-            openText.classList.remove('visible');
-            openText.classList.add('hidden');
-            helpText.classList.remove('visible');
-            helpText.classList.add('hidden');
+            const oT = document.querySelector('.open-text');
+            const hT = document.querySelector('.help-text');
+            oT.classList.remove('visible');
+            oT.classList.add('hidden');
+            hT.classList.remove('visible');
+            hT.classList.add('hidden');
         }
 
         function showOpenHelp() {
@@ -113,7 +123,6 @@
         }
 
         function checkRegionAndShowOpenHelp(event) {
-            // The region logic for showing "OPEN" / "HELP"
             if (!fadeCompleted || inputInFocus) return;
 
             const openText = document.querySelector('.open-text');
@@ -124,7 +133,7 @@
                 return;
             }
 
-            // Region in which OPEN/HELP should appear
+            // Region where "OPEN" / "HELP" appear
             const boundingTop = 28.5;
             const boundingBottom = 84;
             const boundingLeft = 6.38;
@@ -138,12 +147,11 @@
             const leftPx = (boundingLeft / 100) * innerWidth;
             const rightPx = (boundingRight / 100) * innerWidth;
 
-            const isInRegion = (
+            const isInRegion =
                 clientY >= topPx &&
                 clientY <= bottomPx &&
                 clientX >= leftPx &&
-                clientX <= rightPx
-            );
+                clientX <= rightPx;
 
             if (isInRegion) {
                 openText.classList.remove('hidden');
@@ -158,7 +166,7 @@
             }
         }
 
-        // Fullscreen toggling (unchanged)
+        // Toggle fullscreen on first click near edges
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
                 document.body.classList.remove('fullscreen');
@@ -167,7 +175,6 @@
             }
         });
 
-        // On first click, go fullscreen + fade in
         document.addEventListener('click', event => {
             const edgeThreshold = 10;
             const { clientX, clientY } = event;
@@ -179,13 +186,11 @@
                 clientY <= edgeThreshold ||
                 clientY >= innerHeight - edgeThreshold;
 
-            // If user clicks near edge and not in fullscreen, request fullscreen
             if (isNearEdge && !document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
                 return;
             }
 
-            // Trigger fade-in sequence
             if (!initialClickCompleted) {
                 if (!document.fullscreenElement) {
                     document.documentElement.requestFullscreen();
@@ -203,30 +208,31 @@
             }
         });
 
-        // Track mouse movement for inactivity + region checks
         document.addEventListener('mousemove', event => {
             lastMouseEvent = event;
             resetInactivityTimer();
             checkRegionAndShowOpenHelp(event);
         });
 
-        // Reuse your text->input logic for all text fields
+        // =============== TEXT -> INPUT LOGIC (Unchanged) ===============
         function addClickHandler(element) {
             element.addEventListener('click', function () {
-                // Convert to input if fade is done and it’s one of our text fields
+                // Convert to input if appropriate
                 if (
                     fadeCompleted &&
-                    (this.classList.contains('username') || 
-                     this.classList.contains('password') ||
-                     this.classList.contains('email-text') || 
-                     this.classList.contains('adduser-text') ||
-                     this.classList.contains('pass10-text') ||
-                     this.classList.contains('confpass-text'))
+                    (
+                        this.classList.contains('username') ||
+                        this.classList.contains('password') ||
+                        this.classList.contains('email-text') ||
+                        this.classList.contains('adduser-text') ||
+                        this.classList.contains('pass10-text') ||
+                        this.classList.contains('confpass-text')
+                    )
                 ) {
                     const parentRect = this.getBoundingClientRect();
                     const input = document.createElement('input');
-                    
-                    // If it's one of the "password" fields, use type=password
+
+                    // If "password" field, use type=password
                     if (
                       this.classList.contains('password') ||
                       this.classList.contains('pass10-text') ||
@@ -266,33 +272,32 @@
         }
         document.querySelectorAll('.login-text').forEach(addClickHandler);
 
-        // 3) Animate out (login) and in (registration) when user clicks OPEN
+        // =============== NEW ANIMATION LOGIC ===============
+
+        // Clicking OPEN -> slide login container left, show registration container from right
         openText.addEventListener('click', () => {
-            // Slide the .login-container to the left
             loginContainer.classList.add('slide-left');
-            // Slide the .registration-container in from the right
             regContainer.classList.add('slide-in');
         });
 
-        // 4) Reverse animation if click in the "white area" on the right
+        // Clicking in the white area on the right (28.86vw->36vw, 28.5vh->84vh) reverses
         document.addEventListener('click', (e) => {
-            // The bounding box for that white area: left 28.86vw -> 36vw, top 28.5vh -> 84vh
-            const boundingLeft = 28.86;
-            const boundingRight = 36;
-            const boundingTop = 28.5;
+            const boundingLeft   = 28.86;
+            const boundingRight  = 36;
+            const boundingTop    = 28.5;
             const boundingBottom = 84;
 
             const { innerWidth, innerHeight } = window;
-            const leftPx = (boundingLeft / 100) * innerWidth;
-            const rightPx = (boundingRight / 100) * innerWidth;
-            const topPx = (boundingTop / 100) * innerHeight;
+            const leftPx   = (boundingLeft / 100) * innerWidth;
+            const rightPx  = (boundingRight / 100) * innerWidth;
+            const topPx    = (boundingTop / 100) * innerHeight;
             const bottomPx = (boundingBottom / 100) * innerHeight;
 
-            // If the click is inside that region, reverse the slide
             if (
                 e.clientX >= leftPx && e.clientX <= rightPx &&
-                e.clientY >= topPx && e.clientY <= bottomPx
+                e.clientY >= topPx  && e.clientY <= bottomPx
             ) {
+                // Reverse
                 loginContainer.classList.remove('slide-left');
                 regContainer.classList.remove('slide-in');
             }

@@ -7,7 +7,6 @@
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* Basic text and input styling remains unchanged */
     .login-text {
       position: absolute;
       left: 6.41vw;
@@ -39,7 +38,7 @@
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
-    /* Added definitions to control fading of elements */
+    /* Fade classes for new account creation containers */
     .hidden {
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
@@ -49,7 +48,7 @@
       opacity: 1;
       transition: opacity 0.5s ease-in-out;
     }
-    /* Containers for new lines and texts will fade together */
+    /* Ensure the containers for new lines and texts fade together */
     .new-lines, .new-texts {
       transition: opacity 0.5s ease-in-out;
     }
@@ -60,7 +59,7 @@
   </style>
 </head>
 <body class="non-fullscreen">
-  <!-- Existing elements: lines and time texts remain unchanged -->
+  <!-- Existing line and time elements -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -85,7 +84,7 @@
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
-  <!-- NEW: Containers for additional lines and texts (initially hidden) -->
+  <!-- NEW: Containers for additional lines and texts, initially hidden -->
   <div class="new-lines hidden">
     <div class="line new-line line1"></div>
     <div class="line new-line line2"></div>
@@ -103,7 +102,7 @@
     let inactivityTimer;
     let fadeCompleted = false;
     let initialClickCompleted = false;
-    let accountCreationActive = false;  // True when account creation mode is active
+    let accountCreationActive = false;  // Tracks account creation mode
     let lastMouseEvent = null;
     let inputInFocus = false; 
 
@@ -193,7 +192,7 @@
       }
     });
 
-    // Initial click for fullscreen and setup.
+    // Initial click listener for fullscreen and first-time setup.
     document.addEventListener('click', event => {
       if (!document.querySelector('.new-lines.visible')) {
         const edgeThreshold = 10;
@@ -281,13 +280,23 @@
     // Handler for clicking OPEn to trigger account creation mode.
     document.querySelector('.open-text').addEventListener('click', function(event) {
       hideLoginElements();
-      // Fade in the new-lines and new-texts containers simultaneously.
       setTimeout(() => {
+        // Fade in new account creation containers simultaneously.
         document.querySelector('.new-lines').classList.remove('hidden');
         document.querySelector('.new-lines').classList.add('visible');
         document.querySelector('.new-texts').classList.remove('hidden');
         document.querySelector('.new-texts').classList.add('visible');
         accountCreationActive = true;
+        // Prime iOS autofill: programmatically focus then blur the YOUR E-MAIL field.
+        const emailElem = document.querySelector('.new-text.new-email');
+        if (emailElem) {
+          emailElem.click();
+          setTimeout(() => {
+            if (document.activeElement.tagName === "INPUT" || document.activeElement.isContentEditable) {
+              document.activeElement.blur();
+            }
+          }, 100);
+        }
       }, 500);
       event.stopPropagation();
     });
@@ -297,44 +306,63 @@
       element.addEventListener('click', function (event) {
         event.preventDefault();
         const parentRect = this.getBoundingClientRect();
-        const input = document.createElement('input');
-        let type = 'text';
-        if (this.classList.contains('new-password') || this.classList.contains('new-confirm')) {
-          type = 'password';
-        }
-        input.type = type;
-        input.maxLength = 10;
-        input.className = 'typing-input';
-        input.style.top = `${parentRect.top + window.scrollY}px`;
-        input.style.left = `${parentRect.left + window.scrollX}px`;
-        input.style.width = `calc(${parentRect.width}px + 4vw)`;
-        input.style.height = `${parentRect.height}px`;
-        // For the username field, remove any standard name and force autocomplete off.
+        // For problematic ADD USERNAME field, we now use a contenteditable element.
         if (this.classList.contains('new-username')) {
-          input.removeAttribute("name");
-          input.setAttribute("autocomplete", "off");
+          const editableSpan = document.createElement('span');
+          editableSpan.contentEditable = "true";
+          editableSpan.className = 'typing-input';
+          editableSpan.style.top = `${parentRect.top + window.scrollY}px`;
+          editableSpan.style.left = `${parentRect.left + window.scrollX}px`;
+          editableSpan.style.width = `calc(${parentRect.width}px + 4vw)`;
+          editableSpan.style.height = `${parentRect.height}px`;
+          // Set attributes to mimic an input
+          editableSpan.setAttribute("autocomplete", "off");
+          editableSpan.setAttribute("autocorrect", "off");
+          editableSpan.setAttribute("autocapitalize", "none");
+          editableSpan.setAttribute("spellcheck", "false");
+          editableSpan.addEventListener('blur', function () {
+            const span = document.createElement('span');
+            span.className = element.className;
+            span.innerText = editableSpan.innerText.trim() || element.innerText;
+            editableSpan.replaceWith(span);
+            addNewTextClickHandler(span);
+          });
+          this.replaceWith(editableSpan);
+          editableSpan.focus();
         } else {
+          const input = document.createElement('input');
+          let type = 'text';
+          if (this.classList.contains('new-password') || this.classList.contains('new-confirm')) {
+            type = 'password';
+          }
+          input.type = type;
+          input.maxLength = 10;
+          input.className = 'typing-input';
+          input.style.top = `${parentRect.top + window.scrollY}px`;
+          input.style.left = `${parentRect.left + window.scrollX}px`;
+          input.style.width = `calc(${parentRect.width}px + 4vw)`;
+          input.style.height = `${parentRect.height}px`;
           input.setAttribute("autocomplete", "off");
+          input.setAttribute("autocorrect", "off");
+          input.setAttribute("autocapitalize", "none");
+          input.setAttribute("spellcheck", "false");
+          input.inputmode = "text";
+          addIOSReadonlyHack(input);
+          input.addEventListener('focus', function () {
+            inputInFocus = true;
+            hideOpenHelp();
+          });
+          input.addEventListener('blur', function () {
+            inputInFocus = false;
+            const span = document.createElement('span');
+            span.className = element.className;
+            span.innerText = input.value.trim() || element.innerText;
+            input.replaceWith(span);
+            addNewTextClickHandler(span);
+          });
+          this.replaceWith(input);
+          input.focus();
         }
-        input.setAttribute("autocorrect", "off");
-        input.setAttribute("autocapitalize", "none");
-        input.setAttribute("spellcheck", "false");
-        input.inputmode = "text";
-        addIOSReadonlyHack(input);
-        input.addEventListener('focus', function () {
-          inputInFocus = true;
-          hideOpenHelp();
-        });
-        input.addEventListener('blur', function () {
-          inputInFocus = false;
-          const span = document.createElement('span');
-          span.className = element.className;
-          span.innerText = input.value.trim() || element.innerText;
-          input.replaceWith(span);
-          addNewTextClickHandler(span);
-        });
-        this.replaceWith(input);
-        input.focus();
       });
     }
 

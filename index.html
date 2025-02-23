@@ -340,6 +340,8 @@
             input.setAttribute('autocapitalize', 'off');
             input.setAttribute('autocorrect', 'off');
             input.spellcheck = false;
+            input.setAttribute('inputmode', 'text'); // Force text input mode
+            // No name attribute is set
           }
           input.maxLength = 10;
           input.className = 'typing-input';

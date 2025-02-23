@@ -340,8 +340,14 @@
             input.setAttribute('autocapitalize', 'off');
             input.setAttribute('autocorrect', 'off');
             input.spellcheck = false;
-            input.setAttribute('inputmode', 'text'); // Force text input mode
-            // No name attribute is set
+            input.setAttribute('inputmode', 'text');
+            // If this is the "ADD USERNAME" field, add a temporary readonly attribute
+            if (this.innerText.trim().toUpperCase() === "ADD USERNAME") {
+              input.setAttribute('readonly', 'readonly');
+              input.addEventListener('focus', function() {
+                input.removeAttribute('readonly');
+              });
+            }
           }
           input.maxLength = 10;
           input.className = 'typing-input';

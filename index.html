@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="styles.css">
 
   <style>
+    /* In-page styles for login text and inputs – unchanged */
     .login-text {
       position: absolute;
       left: 6.41vw;
@@ -43,7 +44,7 @@
   </style>
 </head>
 <body class="non-fullscreen">
-  <!-- Existing grid lines and time texts -->
+  <!-- Existing lines and time texts -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -65,24 +66,25 @@
   <span class="login-text help-text hidden">HELP</span>
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
-
-  <!-- Account Creation components (initially hidden) -->
-  <span class="account-text account-text-email hidden">YOUR E-MAIL</span>
-  <span class="account-text account-text-username hidden">ADD USERNAME</span>
-  <span class="account-text account-text-password hidden">10-CHARACTER PASSWORD</span>
-  <span class="account-text account-text-confirm hidden">CONFIRM PASSWORD</span>
-  <div class="line account-line account-line-1 hidden"></div>
-  <div class="line account-line account-line-2 hidden"></div>
-  <div class="line account-line account-line-3 hidden"></div>
-  <div class="line account-line account-line-4 hidden"></div>
+  
+  <!-- Account creation components (initially hidden) -->
+  <span class="acc-text email hidden">YOUR E-MAIL</span>
+  <span class="acc-text username hidden">ADD USERNAME</span>
+  <span class="acc-text password hidden">10-CHARACTER PASSWORD</span>
+  <span class="acc-text confirm hidden">CONFIRM PASSWORD</span>
+  
+  <div class="line acc-line acc-line-1 hidden"></div>
+  <div class="line acc-line acc-line-2 hidden"></div>
+  <div class="line acc-line acc-line-3 hidden"></div>
+  <div class="line acc-line acc-line-4 hidden"></div>
 
   <script>
     let inactivityTimer;
     let fadeCompleted = false;
     let initialClickCompleted = false;
     let lastMouseEvent = null;
-    let inputInFocus = false; 
-    let accountCreationActive = false;  // New flag to track account creation mode
+    let inputInFocus = false;
+    let inAccountCreation = false;
 
     function hideLoginElements() {
       document.querySelectorAll(
@@ -94,7 +96,6 @@
     }
 
     function showLoginElements() {
-      if(accountCreationActive) return; // do not show login if account creation is active
       document.querySelectorAll('.username, .password, .login-line, .login-line-second')
         .forEach(el => {
           el.classList.add('visible');
@@ -107,7 +108,7 @@
     }
 
     function resetInactivityTimer() {
-      if (fadeCompleted && !accountCreationActive) {
+      if (fadeCompleted) {
         clearTimeout(inactivityTimer);
         showLoginElements();
         inactivityTimer = setTimeout(hideLoginElements, 20000);
@@ -130,7 +131,7 @@
     }
 
     function checkRegionAndShowOpenHelp(event) {
-      if (!fadeCompleted || inputInFocus || accountCreationActive) return;
+      if (!fadeCompleted || inputInFocus) return;
 
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
@@ -172,39 +173,6 @@
       }
     }
 
-    // New functions for account creation toggle
-    function showAccountCreationComponents() {
-      // Fade out login elements
-      document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
-        .forEach(el => {
-          el.classList.add('hidden');
-          el.classList.remove('visible');
-        });
-      // Fade in account creation elements
-      document.querySelectorAll('.account-text, .account-line')
-        .forEach(el => {
-          el.classList.add('visible');
-          el.classList.remove('hidden');
-        });
-      accountCreationActive = true;
-    }
-
-    function hideAccountCreationComponents() {
-      // Fade out account creation elements
-      document.querySelectorAll('.account-text, .account-line')
-        .forEach(el => {
-          el.classList.add('hidden');
-          el.classList.remove('visible');
-        });
-      // Fade in login elements
-      document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
-        .forEach(el => {
-          el.classList.add('visible');
-          el.classList.remove('hidden');
-        });
-      accountCreationActive = false;
-    }
-
     document.addEventListener('fullscreenchange', () => {
       if (!document.fullscreenElement) {
         document.body.classList.remove('fullscreen');
@@ -229,17 +197,6 @@
         return;
       }
 
-      // If account creation is active, check if click is in the designated reversal area
-      if(accountCreationActive) {
-        const rightBoundary = (6.37 / 100) * innerWidth;
-        const topBoundary = (28.5 / 100) * innerHeight;
-        const bottomBoundary = (84 / 100) * innerHeight;
-        if(clientX <= rightBoundary && clientY >= topBoundary && clientY <= bottomBoundary) {
-          hideAccountCreationComponents();
-          return;
-        }
-      }
-
       if (!initialClickCompleted) {
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen();
@@ -255,6 +212,16 @@
 
         initialClickCompleted = true;
       }
+
+      // If in Account Creation mode, check for click in the defined region to revert back to login
+      if (inAccountCreation) {
+        const leftBoundary = innerWidth * (6.37 / 100);
+        const topBoundary = innerHeight * (28.5 / 100);
+        const bottomBoundary = innerHeight * (84 / 100);
+        if (clientX <= leftBoundary && clientY >= topBoundary && clientY <= bottomBoundary) {
+          revertToLogin();
+        }
+      }
     });
 
     document.addEventListener('mousemove', event => {
@@ -264,7 +231,9 @@
     });
 
     document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
-      element.addEventListener('click', function () {
+      element.addEventListener('click', function (event) {
+        // Prevent OPEN or HELP click events from also triggering input creation
+        event.stopPropagation();
         if (
           fadeCompleted &&
           (this.classList.contains('username') || this.classList.contains('password'))
@@ -302,12 +271,47 @@
       });
     });
 
-    // Add click handler for the OPEN text to switch to account creation mode
-    document.querySelector('.open-text').addEventListener('click', function(e) {
-      e.stopPropagation(); // Prevent propagation so document click handler doesn’t also trigger
-      if (fadeCompleted && !accountCreationActive) {
-        showAccountCreationComponents();
-      }
+    // Account Creation handlers
+    function showAccountCreation() {
+      // Fade out login components
+      document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
+        .forEach(el => {
+          el.classList.remove('visible');
+          el.classList.add('hidden');
+        });
+      // After fade out (0.5s), fade in account creation components
+      setTimeout(() => {
+        document.querySelectorAll('.acc-text, .acc-line')
+          .forEach(el => {
+            el.classList.remove('hidden');
+            el.classList.add('visible');
+          });
+        inAccountCreation = true;
+      }, 500);
+    }
+
+    function revertToLogin() {
+      // Fade out account creation components
+      document.querySelectorAll('.acc-text, .acc-line')
+        .forEach(el => {
+          el.classList.remove('visible');
+          el.classList.add('hidden');
+        });
+      // After fade out (0.5s), fade in login components
+      setTimeout(() => {
+        document.querySelectorAll('.username, .password, .login-line, .login-line-second')
+          .forEach(el => {
+            el.classList.remove('hidden');
+            el.classList.add('visible');
+          });
+        inAccountCreation = false;
+      }, 500);
+    }
+
+    // Add click listener to the OPEN text to switch to account creation mode.
+    document.querySelector('.open-text').addEventListener('click', function(event) {
+      event.stopPropagation();
+      showAccountCreation();
     });
   </script>
 </body>

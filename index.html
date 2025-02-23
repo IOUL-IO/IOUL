@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="styles.css">
 
   <style>
-    /* Existing login text and input styles remain */
     .login-text {
       position: absolute;
       left: 6.41vw;
@@ -36,14 +35,15 @@
       position: absolute;
       caret-color: #d1d1d1;
       padding: 0.1rem 0;
-      /* Width and height will be set dynamically */
+      width: calc(22.48vw + 4vw);
+      height: auto;
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
   </style>
 </head>
 <body class="non-fullscreen">
-  <!-- Existing elements -->
+  <!-- Existing line and time elements -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -58,6 +58,7 @@
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
+  <!-- Original login texts and lines -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
 
@@ -67,33 +68,30 @@
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
-  <!-- New Account Creation Elements (initially hidden) -->
-  <div id="account-creation" class="hidden">
-    <!-- Account creation lines -->
-    <div class="line account-line" id="account-line1" style="top: 38.9vh; left: 6.4vw; width: 22.48vw;"></div>
-    <div class="line account-line" id="account-line2" style="top: 47vh; left: 6.4vw; width: 22.48vw;"></div>
-    <div class="line account-line" id="account-line3" style="top: 55.1vh; left: 6.4vw; width: 22.48vw;"></div>
-    <div class="line account-line" id="account-line4" style="top: 63.2vh; left: 6.4vw; width: 22.48vw;"></div>
+  <!-- NEW: Additional lines for new login fields (hidden by default) -->
+  <div class="new-lines">
+    <div class="line new-line line1 hidden"></div>
+    <div class="line new-line line2 hidden"></div>
+    <div class="line new-line line3 hidden"></div>
+    <div class="line new-line line4 hidden"></div>
+  </div>
 
-    <!-- Account creation texts -->
-    <span class="account-text email-text" style="top: 34.9vh; left: 6.4vw;">YOUR E‑MAIL</span>
-    <span class="account-text username-text" style="top: 43vh; left: 6.4vw;">ADD USERNAME</span>
-    <span class="account-text password-text" style="top: 51.1vh; left: 6.4vw;">10-CHARACTER PASSWORD</span>
-    <span class="account-text confirm-text" style="top: 59.2vh; left: 6.4vw;">CONFIRM PASSWORD</span>
+  <!-- NEW: Additional texts for new login fields (hidden by default) -->
+  <div class="new-texts">
+    <span class="login-text new-text new-email hidden">YOUR E-MAIL</span>
+    <span class="login-text new-text new-username hidden">ADD USERNAME</span>
+    <span class="login-text new-text new-password hidden">10-CHARACTER PASSWORD</span>
+    <span class="login-text new-text new-confirm hidden">CONFIRM PASSWORD</span>
   </div>
 
   <script>
-    // Global state variables
     let inactivityTimer;
     let fadeCompleted = false;
     let initialClickCompleted = false;
     let lastMouseEvent = null;
     let inputInFocus = false; 
-    let accountCreationActive = false;
 
     function hideLoginElements() {
-      // Do not change login elements if account creation is active
-      if (accountCreationActive) return;
       document.querySelectorAll(
         '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
       ).forEach(el => {
@@ -103,19 +101,19 @@
     }
 
     function showLoginElements() {
-      if (accountCreationActive) return;
       document.querySelectorAll('.username, .password, .login-line, .login-line-second')
         .forEach(el => {
           el.classList.add('visible');
           el.classList.remove('hidden');
         });
+
       if (!inputInFocus && lastMouseEvent) {
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
     }
 
     function resetInactivityTimer() {
-      if (fadeCompleted && !accountCreationActive) {
+      if (fadeCompleted) {
         clearTimeout(inactivityTimer);
         showLoginElements();
         inactivityTimer = setTimeout(hideLoginElements, 20000);
@@ -132,34 +130,41 @@
     }
 
     function showOpenHelp() {
-      if (lastMouseEvent && !accountCreationActive) {
+      if (lastMouseEvent) {
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
     }
 
     function checkRegionAndShowOpenHelp(event) {
-      if (!fadeCompleted || inputInFocus || accountCreationActive) return;
+      if (!fadeCompleted || inputInFocus) return;
+
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
+
       if (document.querySelector('.username').classList.contains('hidden')) {
         return;
       }
+
       const boundingTop = 28.5;
       const boundingBottom = 84;
       const boundingLeft = 6.38;
       const boundingRight = 29; 
+
       const { innerWidth, innerHeight } = window;
       const { clientX, clientY } = event;
+
       const topPx = (boundingTop / 100) * innerHeight;
       const bottomPx = (boundingBottom / 100) * innerHeight;
       const leftPx = (boundingLeft / 100) * innerWidth;
       const rightPx = (boundingRight / 100) * innerWidth;
+
       const isInRegion = (
         clientY >= topPx &&
         clientY <= bottomPx &&
         clientX >= leftPx &&
         clientX <= rightPx
       );
+
       if (isInRegion) {
         openText.classList.remove('hidden');
         openText.classList.add('visible');
@@ -173,34 +178,6 @@
       }
     }
 
-    // Show account creation area (fade in new lines and texts)
-    function showAccountCreation() {
-      accountCreationActive = true;
-      const accountCreation = document.getElementById('account-creation');
-      accountCreation.classList.remove('hidden');
-      accountCreation.classList.add('visible');
-      document.querySelectorAll('#account-creation .account-line, #account-creation .account-text')
-        .forEach(el => {
-          el.classList.remove('hidden');
-          el.classList.add('visible');
-        });
-    }
-
-    // Hide account creation area and restore login elements
-    function hideAccountCreation() {
-      accountCreationActive = false;
-      document.querySelectorAll('#account-creation .account-line, #account-creation .account-text')
-        .forEach(el => {
-          el.classList.remove('visible');
-          el.classList.add('hidden');
-        });
-      setTimeout(() => {
-        document.getElementById('account-creation').classList.remove('visible');
-        document.getElementById('account-creation').classList.add('hidden');
-        showLoginElements();
-      }, 500);
-    }
-
     document.addEventListener('fullscreenchange', () => {
       if (!document.fullscreenElement) {
         document.body.classList.remove('fullscreen');
@@ -209,42 +186,39 @@
       }
     });
 
+    // Existing click listener for initial fullscreen and first click setup.
     document.addEventListener('click', event => {
-      const edgeThreshold = 10;
-      const { clientX, clientY } = event;
-      const { innerWidth, innerHeight } = window;
-      const isNearEdge =
-        clientX <= edgeThreshold ||
-        clientX >= innerWidth - edgeThreshold ||
-        clientY <= edgeThreshold ||
-        clientY >= innerHeight - edgeThreshold;
-      if (isNearEdge && !document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-        return;
-      }
-      // Initial click handling for fade-in trigger
-      if (!initialClickCompleted) {
-        if (!document.fullscreenElement) {
+      // Only process initial click if new elements are not visible.
+      if (!document.querySelector('.new-line.visible')) {
+        const edgeThreshold = 10;
+        const { clientX, clientY } = event;
+        const { innerWidth, innerHeight } = window;
+
+        const isNearEdge =
+          clientX <= edgeThreshold ||
+          clientX >= innerWidth - edgeThreshold ||
+          clientY <= edgeThreshold ||
+          clientY >= innerHeight - edgeThreshold;
+
+        if (isNearEdge && !document.fullscreenElement) {
           document.documentElement.requestFullscreen();
+          return;
         }
-        setTimeout(() => {
-          document.body.classList.add('fade-in-trigger');
-        }, 1000);
-        setTimeout(() => {
-          fadeCompleted = true;
-          inactivityTimer = setTimeout(hideLoginElements, 20000);
-        }, 4000);
-        initialClickCompleted = true;
-      }
-      // If account creation is active, check for click in the designated revert region
-      if (accountCreationActive) {
-        const leftBoundary = 0;
-        const rightBoundary = (6.37 / 100) * innerWidth;
-        const topBoundary = (28.5 / 100) * innerHeight;
-        const bottomBoundary = (84 / 100) * innerHeight;
-        if (clientX >= leftBoundary && clientX <= rightBoundary &&
-            clientY >= topBoundary && clientY <= bottomBoundary) {
-          hideAccountCreation();
+
+        if (!initialClickCompleted) {
+          if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+          }
+          setTimeout(() => {
+            document.body.classList.add('fade-in-trigger');
+          }, 1000);
+
+          setTimeout(() => {
+            fadeCompleted = true;
+            inactivityTimer = setTimeout(hideLoginElements, 20000);
+          }, 4000);
+
+          initialClickCompleted = true;
         }
       }
     });
@@ -255,10 +229,9 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // Original login text click handler: transforms text into an input field.
-    document.querySelectorAll('.login-text').forEach(function addLoginClickHandler(element) {
-      element.addEventListener('click', function (event) {
-        event.stopPropagation();
+    // Click handler for original login texts (for converting to input fields)
+    document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
+      element.addEventListener('click', function () {
         if (
           fadeCompleted &&
           (this.classList.contains('username') || this.classList.contains('password'))
@@ -268,76 +241,112 @@
           input.type = this.classList.contains('password') ? 'password' : 'text';
           input.maxLength = 10;
           input.className = 'typing-input';
-          input.style.top = `${parentRect.top}px`;
-          input.style.left = `${parentRect.left}px`;
-          input.style.width = `${parentRect.width}px`;
+          input.style.top = `${parentRect.top + window.scrollY}px`;
+          input.style.left = `${parentRect.left + window.scrollX}px`;
+          input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
-          input.addEventListener('click', e => e.stopPropagation());
+
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();
           });
+
           input.addEventListener('blur', function () {
             inputInFocus = false;
             const span = document.createElement('span');
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
-            addLoginClickHandler(span);
             showOpenHelp();
+            addClickHandler(span);
           });
+
           this.replaceWith(input);
           input.focus();
         }
       });
     });
 
-    // Account creation text click handler: transforms text into an input field.
-    function addAccountClickHandler(element) {
-      element.addEventListener('click', function accountClick(event) {
-        event.stopPropagation();
-        if (accountCreationActive) {
-          const parentRect = this.getBoundingClientRect();
-          const input = document.createElement('input');
-          if (this.classList.contains('password-text') || this.classList.contains('confirm-text')) {
-            input.type = 'password';
-            input.maxLength = 10;
-          } else {
-            input.type = 'text';
-            input.maxLength = 50;
-          }
-          input.className = 'typing-input';
-          input.style.top = `${parentRect.top}px`;
-          input.style.left = `${parentRect.left}px`;
-          input.style.width = `${parentRect.width}px`;
-          input.style.height = `${parentRect.height}px`;
-          input.addEventListener('click', e => e.stopPropagation());
-          input.addEventListener('focus', function () {
-            inputInFocus = true;
-          });
-          input.addEventListener('blur', function () {
-            inputInFocus = false;
-            const span = document.createElement('span');
-            span.className = element.className;
-            span.innerText = input.value.trim() || element.innerText;
-            input.replaceWith(span);
-            addAccountClickHandler(span);
-          });
-          this.replaceWith(input);
-          input.focus();
+    // NEW: Click handler for "OPEn" text to trigger the new animation.
+    document.querySelector('.open-text').addEventListener('click', function(event) {
+      // fade out original login elements
+      hideLoginElements();
+      // after fade out, fade in new lines and new texts
+      setTimeout(() => {
+        document.querySelectorAll('.new-line, .new-text').forEach(el => {
+          el.classList.remove('hidden');
+          el.classList.add('visible');
+        });
+      }, 500);
+      event.stopPropagation();
+    });
+
+    // NEW: Click handler for new texts (transforms into an input field)
+    function addNewTextClickHandler(element) {
+      element.addEventListener('click', function () {
+        const parentRect = this.getBoundingClientRect();
+        const input = document.createElement('input');
+        // Choose type based on which new field it is
+        let type = 'text';
+        if (this.classList.contains('new-password') || this.classList.contains('new-confirm')) {
+          type = 'password';
         }
+        input.type = type;
+        input.maxLength = 10;
+        input.className = 'typing-input';
+        input.style.top = `${parentRect.top + window.scrollY}px`;
+        input.style.left = `${parentRect.left + window.scrollX}px`;
+        input.style.width = `calc(${parentRect.width}px + 4vw)`;
+        input.style.height = `${parentRect.height}px`;
+
+        input.addEventListener('focus', function () {
+          inputInFocus = true;
+          hideOpenHelp();
+        });
+
+        input.addEventListener('blur', function () {
+          inputInFocus = false;
+          const span = document.createElement('span');
+          span.className = element.className;
+          span.innerText = input.value.trim() || element.innerText;
+          input.replaceWith(span);
+          addNewTextClickHandler(span);
+        });
+
+        this.replaceWith(input);
+        input.focus();
       });
     }
-    document.querySelectorAll('.account-text').forEach(addAccountClickHandler);
 
-    // Clicking the OPEn text triggers account creation (fade out login and fade in account creation)
-    document.querySelector('.open-text').addEventListener('click', (event) => {
-      event.stopPropagation();
-      if (fadeCompleted) {
-        hideLoginElements();
-        setTimeout(() => {
-          showAccountCreation();
-        }, 500);
+    document.querySelectorAll('.new-text').forEach(addNewTextClickHandler);
+
+    // NEW: Reverse animation when clicking inside the designated left region.
+    document.addEventListener('click', function(event) {
+      // Only proceed if new elements are currently visible.
+      if (document.querySelector('.new-line.visible')) {
+        const { innerWidth, innerHeight } = window;
+        const vw = innerWidth / 100;
+        const vh = innerHeight / 100;
+        const clickX = event.clientX;
+        const clickY = event.clientY;
+
+        if (
+          clickX >= 0 &&
+          clickX <= 6.37 * vw &&
+          clickY >= 28.5 * vh &&
+          clickY <= 84 * vh
+        ) {
+          // fade out new elements
+          document.querySelectorAll('.new-line, .new-text').forEach(el => {
+            el.classList.remove('visible');
+            el.classList.add('hidden');
+          });
+          // after fade out, fade in original login elements
+          setTimeout(() => {
+            showLoginElements();
+          }, 500);
+          event.stopPropagation();
+        }
       }
     });
   </script>

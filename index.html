@@ -69,10 +69,10 @@
   <div class="line login-line-second"></div>
 
   <!-- Account Creation Components (initially hidden) -->
-  <span class="login-text account-text email-text hidden">YOUR E-MA1L</span>
-  <span class="login-text account-text username-text hidden">YOUR USERnAME</span>
-  <span class="login-text account-text pass-text hidden">10-cHARAcTER PASSWORD</span>
-  <span class="login-text account-text confirm-text hidden">cOnF1RM PASSWORD</span>
+  <span class="login-text account-text email-text hidden">YOUR E-MAIL</span>
+  <span class="login-text account-text username-text hidden">ADD USERNAME</span>
+  <span class="login-text account-text pass-text hidden">10-CHARACTER PASSWORD</span>
+  <span class="login-text account-text confirm-text hidden">CONFIRM PASSWORD</span>
 
   <div class="line account-line acc-line-1 hidden"></div>
   <div class="line account-line acc-line-2 hidden"></div>
@@ -86,6 +86,7 @@
     let lastMouseEvent = null;
     let inputInFocus = false;
     let accountCreationActive = false;
+    let transitionInProgress = false;
 
     function hideLoginElements() {
       document.querySelectorAll(
@@ -97,20 +98,19 @@
     }
 
     function showLoginElements() {
-      if (accountCreationActive) return; // do not show login if account creation is active
+      if (accountCreationActive || transitionInProgress) return;
       document.querySelectorAll('.username, .password, .login-line, .login-line-second')
         .forEach(el => {
           el.classList.add('visible');
           el.classList.remove('hidden');
         });
-
       if (!inputInFocus && lastMouseEvent) {
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
     }
 
     function resetInactivityTimer() {
-      if (fadeCompleted && !accountCreationActive) {
+      if (fadeCompleted && !accountCreationActive && !transitionInProgress) {
         clearTimeout(inactivityTimer);
         showLoginElements();
         inactivityTimer = setTimeout(hideLoginElements, 20000);
@@ -133,7 +133,7 @@
     }
 
     function checkRegionAndShowOpenHelp(event) {
-      if (!fadeCompleted || inputInFocus || accountCreationActive) return;
+      if (!fadeCompleted || inputInFocus || accountCreationActive || transitionInProgress) return;
 
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
@@ -176,7 +176,8 @@
 
     // Switch to Account Creation view when "OPEn" is clicked
     function openAccountCreation() {
-      if (accountCreationActive) return;
+      if (accountCreationActive || transitionInProgress) return;
+      transitionInProgress = true;
       // Fade out login components
       document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
         .forEach(el => {
@@ -191,6 +192,7 @@
             el.classList.remove('hidden');
           });
         accountCreationActive = true;
+        transitionInProgress = false;
       }, 500);
     }
 
@@ -312,9 +314,7 @@
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
-
             showOpenHelp();
-
             addClickHandler(span);
           });
 
@@ -333,10 +333,13 @@
           // Determine input type based on text content
           if (this.innerText.includes('PASSWORD')) {
             input.type = 'password';
+            input.setAttribute('autocomplete', 'new-password');
           } else if (this.innerText.includes('E-MAIL')) {
             input.type = 'email';
+            input.setAttribute('autocomplete', 'off');
           } else {
             input.type = 'text';
+            input.setAttribute('autocomplete', 'off');
           }
           input.maxLength = 10;
           input.className = 'typing-input';
@@ -352,7 +355,6 @@
           input.addEventListener('blur', function () {
             inputInFocus = false;
             const span = document.createElement('span');
-            // Preserve account-text classes
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);

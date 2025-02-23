@@ -6,7 +6,6 @@
   <title>IOUL</title>
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="stylesheet" href="styles.css">
-
   <style>
     .login-text {
       position: absolute;
@@ -22,7 +21,6 @@
       padding: 0.1rem 0;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
-
     input.typing-input {
       font-family: 'Distill Expanded', sans-serif;
       font-size: 0.46rem;
@@ -39,6 +37,11 @@
       height: auto;
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    }
+    /* Force zero delay on new elements so that lines and texts fade simultaneously */
+    .new-lines .new-line,
+    .new-texts .new-text {
+      transition-delay: 0s !important;
     }
   </style>
 </head>
@@ -68,20 +71,20 @@
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
-  <!-- NEW: Additional lines for new login fields (hidden by default) -->
-  <div class="new-lines">
-    <div class="line new-line line1 hidden"></div>
-    <div class="line new-line line2 hidden"></div>
-    <div class="line new-line line3 hidden"></div>
-    <div class="line new-line line4 hidden"></div>
+  <!-- NEW: Container for additional lines for new login fields (hidden by default) -->
+  <div class="new-lines hidden">
+    <div class="line new-line line1"></div>
+    <div class="line new-line line2"></div>
+    <div class="line new-line line3"></div>
+    <div class="line new-line line4"></div>
   </div>
 
-  <!-- NEW: Additional texts for new login fields (hidden by default) -->
-  <div class="new-texts">
-    <span class="login-text new-text new-email hidden">YOUR E-MAIL</span>
-    <span class="login-text new-text new-username hidden">ADD USERNAME</span>
-    <span class="login-text new-text new-password hidden">10-CHARACTER PASSWORD</span>
-    <span class="login-text new-text new-confirm hidden">CONFIRM PASSWORD</span>
+  <!-- NEW: Container for additional texts for new login fields (hidden by default) -->
+  <div class="new-texts hidden">
+    <span class="login-text new-text new-email">YOUR E-MAIL</span>
+    <span class="login-text new-text new-username">ADD USERNAME</span>
+    <span class="login-text new-text new-password">10-CHARACTER PASSWORD</span>
+    <span class="login-text new-text new-confirm">CONFIRM PASSWORD</span>
   </div>
 
   <script>
@@ -189,7 +192,7 @@
 
     // Initial click listener for fullscreen and setup.
     document.addEventListener('click', event => {
-      if (!document.querySelector('.new-line.visible')) {
+      if (!document.querySelector('.new-lines.visible')) {
         const edgeThreshold = 10;
         const { clientX, clientY } = event;
         const { innerWidth, innerHeight } = window;
@@ -229,7 +232,7 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // Function to add the iOS workaround to prevent fullscreen exit.
+    // iOS readonly hack to keep fullscreen: make input readonly initially, then remove on touchstart.
     function addIOSReadonlyHack(input) {
       if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
         input.setAttribute('readonly', 'readonly');
@@ -239,7 +242,7 @@
       }
     }
 
-    // Click handler for original login texts (for converting to input fields)
+    // Click handler for original login texts (to convert them into input fields)
     document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
       element.addEventListener('click', function () {
         if (
@@ -256,6 +259,10 @@
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
           addIOSReadonlyHack(input);
+          input.setAttribute("autocomplete", "off");
+          input.setAttribute("autocorrect", "off");
+          input.setAttribute("autocapitalize", "none");
+          input.setAttribute("spellcheck", "false");
 
           input.addEventListener('focus', function () {
             inputInFocus = true;
@@ -278,20 +285,22 @@
       });
     });
 
-    // Click handler for "OPEn" text to trigger new account creation animation.
+    // Click handler for "OPEn" text to trigger the new account creation animation.
     document.querySelector('.open-text').addEventListener('click', function(event) {
+      // Fade out original login elements.
       hideLoginElements();
+      // Fade in both new lines and new texts at the same time by toggling the containers.
       setTimeout(() => {
-        document.querySelectorAll('.new-line, .new-text').forEach(el => {
-          el.classList.remove('hidden');
-          el.classList.add('visible');
-        });
+        document.querySelector('.new-lines').classList.remove('hidden');
+        document.querySelector('.new-lines').classList.add('visible');
+        document.querySelector('.new-texts').classList.remove('hidden');
+        document.querySelector('.new-texts').classList.add('visible');
         accountCreationActive = true;
       }, 500);
       event.stopPropagation();
     });
 
-    // Click handler for new texts (transforms into an input field)
+    // Click handler for new texts (transforms them into input fields).
     function addNewTextClickHandler(element) {
       element.addEventListener('click', function (event) {
         event.preventDefault();
@@ -308,10 +317,17 @@
         input.style.left = `${parentRect.left + window.scrollX}px`;
         input.style.width = `calc(${parentRect.width}px + 4vw)`;
         input.style.height = `${parentRect.height}px`;
-        // Prevent iOS from misidentifying the field as an email input.
-        input.setAttribute("autocomplete", "off");
+        // For fields not intended for email (like ADD USERNAME), assign a dummy name.
+        if (this.classList.contains('new-username')) {
+          input.name = "no_username";
+          input.setAttribute("autocomplete", "off");
+        } else {
+          input.setAttribute("autocomplete", "off");
+        }
         input.setAttribute("autocorrect", "off");
         input.setAttribute("autocapitalize", "none");
+        input.setAttribute("spellcheck", "false");
+        input.inputmode = "text";
         addIOSReadonlyHack(input);
 
         input.addEventListener('focus', function () {
@@ -335,9 +351,9 @@
 
     document.querySelectorAll('.new-text').forEach(addNewTextClickHandler);
 
-    // Reverse animation when clicking inside the designated left region.
+    // Reverse animation: clicking in the designated left region fades out new elements and restores original login elements.
     document.addEventListener('click', function(event) {
-      if (document.querySelector('.new-line.visible')) {
+      if (document.querySelector('.new-lines.visible')) {
         const { innerWidth, innerHeight } = window;
         const vw = innerWidth / 100;
         const vh = innerHeight / 100;
@@ -350,10 +366,11 @@
           clickY >= 28.5 * vh &&
           clickY <= 84 * vh
         ) {
-          document.querySelectorAll('.new-line, .new-text').forEach(el => {
-            el.classList.remove('visible');
-            el.classList.add('hidden');
-          });
+          // Fade out new elements by toggling the container classes.
+          document.querySelector('.new-lines').classList.remove('visible');
+          document.querySelector('.new-lines').classList.add('hidden');
+          document.querySelector('.new-texts').classList.remove('visible');
+          document.querySelector('.new-texts').classList.add('hidden');
           setTimeout(() => {
             accountCreationActive = false;
             showLoginElements();

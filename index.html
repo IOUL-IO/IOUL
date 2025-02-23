@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="styles.css">
 
   <style>
-    /* Existing styles for login texts and inputs are preserved here */
+    /* Existing styles for login texts and inputs are preserved */
     .login-text {
       position: absolute;
       left: 6.41vw;
@@ -84,7 +84,7 @@
   </div>
 
   <script>
-    // Global variables to control state
+    // Global state variables
     let inactivityTimer;
     let fadeCompleted = false;
     let initialClickCompleted = false;
@@ -93,6 +93,8 @@
     let accountCreationActive = false;
 
     function hideLoginElements() {
+      // Do not show/hide login elements if account creation is active
+      if (accountCreationActive) return;
       document.querySelectorAll(
         '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
       ).forEach(el => {
@@ -102,6 +104,7 @@
     }
 
     function showLoginElements() {
+      if (accountCreationActive) return;
       document.querySelectorAll('.username, .password, .login-line, .login-line-second')
         .forEach(el => {
           el.classList.add('visible');
@@ -113,7 +116,7 @@
     }
 
     function resetInactivityTimer() {
-      if (fadeCompleted) {
+      if (fadeCompleted && !accountCreationActive) {
         clearTimeout(inactivityTimer);
         showLoginElements();
         inactivityTimer = setTimeout(hideLoginElements, 20000);
@@ -130,13 +133,13 @@
     }
 
     function showOpenHelp() {
-      if (lastMouseEvent) {
+      if (lastMouseEvent && !accountCreationActive) {
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
     }
 
     function checkRegionAndShowOpenHelp(event) {
-      if (!fadeCompleted || inputInFocus) return;
+      if (!fadeCompleted || inputInFocus || accountCreationActive) return;
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
       if (document.querySelector('.username').classList.contains('hidden')) {
@@ -209,6 +212,7 @@
     });
 
     document.addEventListener('click', event => {
+      // Global click handler
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
@@ -235,7 +239,7 @@
         }, 4000);
         initialClickCompleted = true;
       }
-      // If account creation area is active, check for click in the revert region
+      // If account creation area is active, check for click in the designated revert region
       if (accountCreationActive) {
         const leftBoundary = 0;
         const rightBoundary = (6.37 / 100) * innerWidth;
@@ -255,8 +259,9 @@
     });
 
     // Original login text click handler (transforms text into an input field)
-    document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
-      element.addEventListener('click', function () {
+    document.querySelectorAll('.login-text').forEach(function addLoginClickHandler(element) {
+      element.addEventListener('click', function (event) {
+        event.stopPropagation();
         if (
           fadeCompleted &&
           (this.classList.contains('username') || this.classList.contains('password'))
@@ -280,8 +285,8 @@
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
+            addLoginClickHandler(span);
             showOpenHelp();
-            addClickHandler(span);
           });
           this.replaceWith(input);
           input.focus();
@@ -291,7 +296,8 @@
 
     // Function to add click handler for account creation texts
     function addAccountClickHandler(element) {
-      element.addEventListener('click', function accountClick() {
+      element.addEventListener('click', function accountClick(event) {
+        event.stopPropagation();
         if (accountCreationActive) {
           const parentRect = this.getBoundingClientRect();
           const input = document.createElement('input');
@@ -328,7 +334,8 @@
     document.querySelectorAll('.account-text').forEach(addAccountClickHandler);
 
     // Clicking the OPEn text triggers account creation animation (after fading out login elements)
-    document.querySelector('.open-text').addEventListener('click', () => {
+    document.querySelector('.open-text').addEventListener('click', (event) => {
+      event.stopPropagation();
       if (fadeCompleted) {
         hideLoginElements();
         setTimeout(() => {

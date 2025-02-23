@@ -6,6 +6,7 @@
   <title>IOUL</title>
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="stylesheet" href="styles.css">
+
   <style>
     .login-text {
       position: absolute;
@@ -42,6 +43,7 @@
   </style>
 </head>
 <body class="non-fullscreen">
+  <!-- Existing grid lines and time texts -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -56,27 +58,23 @@
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
+  <!-- Login components -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
-
   <span class="login-text open-text hidden">OPEn</span>
   <span class="login-text help-text hidden">HELP</span>
-
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
-  <!-- New elements (hidden by default) -->
-  <!-- New Lines -->
-  <div class="new-line new-line1 hidden" style="top: 38.9vh;"></div>
-  <div class="new-line new-line2 hidden" style="top: 47vh;"></div>
-  <div class="new-line new-line3 hidden" style="top: 55.1vh;"></div>
-  <div class="new-line new-line4 hidden" style="top: 63.2vh;"></div>
-
-  <!-- New Text Labels -->
-  <span class="new-text new-text1 hidden" style="top: 35.4vh; left: 6.4vw;">YOUR E-MAIL</span>
-  <span class="new-text new-text2 hidden" style="top: 43.5vh; left: 6.4vw;">ADD USERNAME</span>
-  <span class="new-text new-text3 hidden" style="top: 51.6vh; left: 6.4vw;">10-CHARACTER PASSWORD</span>
-  <span class="new-text new-text4 hidden" style="top: 59.7vh; left: 6.4vw;">CONFIRM PASSWORD</span>
+  <!-- Account Creation components (initially hidden) -->
+  <span class="account-text account-text-email hidden">YOUR E-MAIL</span>
+  <span class="account-text account-text-username hidden">ADD USERNAME</span>
+  <span class="account-text account-text-password hidden">10-CHARACTER PASSWORD</span>
+  <span class="account-text account-text-confirm hidden">CONFIRM PASSWORD</span>
+  <div class="line account-line account-line-1 hidden"></div>
+  <div class="line account-line account-line-2 hidden"></div>
+  <div class="line account-line account-line-3 hidden"></div>
+  <div class="line account-line account-line-4 hidden"></div>
 
   <script>
     let inactivityTimer;
@@ -84,6 +82,7 @@
     let initialClickCompleted = false;
     let lastMouseEvent = null;
     let inputInFocus = false; 
+    let accountCreationActive = false;  // New flag to track account creation mode
 
     function hideLoginElements() {
       document.querySelectorAll(
@@ -95,6 +94,7 @@
     }
 
     function showLoginElements() {
+      if(accountCreationActive) return; // do not show login if account creation is active
       document.querySelectorAll('.username, .password, .login-line, .login-line-second')
         .forEach(el => {
           el.classList.add('visible');
@@ -107,7 +107,7 @@
     }
 
     function resetInactivityTimer() {
-      if (fadeCompleted) {
+      if (fadeCompleted && !accountCreationActive) {
         clearTimeout(inactivityTimer);
         showLoginElements();
         inactivityTimer = setTimeout(hideLoginElements, 20000);
@@ -130,7 +130,7 @@
     }
 
     function checkRegionAndShowOpenHelp(event) {
-      if (!fadeCompleted || inputInFocus) return;
+      if (!fadeCompleted || inputInFocus || accountCreationActive) return;
 
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
@@ -172,6 +172,39 @@
       }
     }
 
+    // New functions for account creation toggle
+    function showAccountCreationComponents() {
+      // Fade out login elements
+      document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
+        .forEach(el => {
+          el.classList.add('hidden');
+          el.classList.remove('visible');
+        });
+      // Fade in account creation elements
+      document.querySelectorAll('.account-text, .account-line')
+        .forEach(el => {
+          el.classList.add('visible');
+          el.classList.remove('hidden');
+        });
+      accountCreationActive = true;
+    }
+
+    function hideAccountCreationComponents() {
+      // Fade out account creation elements
+      document.querySelectorAll('.account-text, .account-line')
+        .forEach(el => {
+          el.classList.add('hidden');
+          el.classList.remove('visible');
+        });
+      // Fade in login elements
+      document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
+        .forEach(el => {
+          el.classList.add('visible');
+          el.classList.remove('hidden');
+        });
+      accountCreationActive = false;
+    }
+
     document.addEventListener('fullscreenchange', () => {
       if (!document.fullscreenElement) {
         document.body.classList.remove('fullscreen');
@@ -194,6 +227,17 @@
       if (isNearEdge && !document.fullscreenElement) {
         document.documentElement.requestFullscreen();
         return;
+      }
+
+      // If account creation is active, check if click is in the designated reversal area
+      if(accountCreationActive) {
+        const rightBoundary = (6.37 / 100) * innerWidth;
+        const topBoundary = (28.5 / 100) * innerHeight;
+        const bottomBoundary = (84 / 100) * innerHeight;
+        if(clientX <= rightBoundary && clientY >= topBoundary && clientY <= bottomBoundary) {
+          hideAccountCreationComponents();
+          return;
+        }
       }
 
       if (!initialClickCompleted) {
@@ -258,23 +302,12 @@
       });
     });
 
-    // New event listener on OPEN to fade out login elements and fade in new ones
-    document.querySelector('.open-text').addEventListener('click', function () {
-      // Fade out login texts, lines, help, and any active input fields
-      document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text, .typing-input')
-        .forEach(el => {
-          el.classList.remove('visible');
-          el.classList.add('hidden');
-        });
-      
-      // After fade out transition (500ms), fade in new elements
-      setTimeout(() => {
-        document.querySelectorAll('.new-line, .new-text')
-          .forEach(el => {
-            el.classList.remove('hidden');
-            el.classList.add('visible');
-          });
-      }, 500);
+    // Add click handler for the OPEN text to switch to account creation mode
+    document.querySelector('.open-text').addEventListener('click', function(e) {
+      e.stopPropagation(); // Prevent propagation so document click handler doesn’t also trigger
+      if (fadeCompleted && !accountCreationActive) {
+        showAccountCreationComponents();
+      }
     });
   </script>
 </body>

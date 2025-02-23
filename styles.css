@@ -283,6 +283,11 @@ body.fullscreen .help-text {
     background-color: rgba(230, 230, 230, 0.28);
 }
 
+/* Override any inherited transition-delay for account creation lines */
+.account-line {
+  transition-delay: 0s !important;
+}
+
 /* Account Creation Texts */
 .email-text {
     top: 35.3vh;

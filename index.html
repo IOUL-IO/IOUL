@@ -7,6 +7,7 @@
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="stylesheet" href="styles.css">
   <style>
+    /* Basic text and input styling remains unchanged */
     .login-text {
       position: absolute;
       left: 6.41vw;
@@ -38,11 +39,20 @@
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
-    /* Ensure the new elements' containers fade in/out together */
+    /* Added definitions to control fading of elements */
+    .hidden {
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      pointer-events: none;
+    }
+    .visible {
+      opacity: 1;
+      transition: opacity 0.5s ease-in-out;
+    }
+    /* Containers for new lines and texts will fade together */
     .new-lines, .new-texts {
       transition: opacity 0.5s ease-in-out;
     }
-    /* Remove any delay on the children */
     .new-lines .new-line,
     .new-texts .new-text {
       transition-delay: 0s !important;
@@ -50,7 +60,7 @@
   </style>
 </head>
 <body class="non-fullscreen">
-  <!-- Existing line and time elements -->
+  <!-- Existing elements: lines and time texts remain unchanged -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -75,15 +85,13 @@
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
-  <!-- NEW: Container for additional lines (hidden by default) -->
+  <!-- NEW: Containers for additional lines and texts (initially hidden) -->
   <div class="new-lines hidden">
     <div class="line new-line line1"></div>
     <div class="line new-line line2"></div>
     <div class="line new-line line3"></div>
     <div class="line new-line line4"></div>
   </div>
-
-  <!-- NEW: Container for additional texts (hidden by default) -->
   <div class="new-texts hidden">
     <span class="login-text new-text new-email">YOUR E-MAIL</span>
     <span class="login-text new-text new-username">ADD USERNAME</span>
@@ -95,7 +103,7 @@
     let inactivityTimer;
     let fadeCompleted = false;
     let initialClickCompleted = false;
-    let accountCreationActive = false;  // Tracks account creation mode
+    let accountCreationActive = false;  // True when account creation mode is active
     let lastMouseEvent = null;
     let inputInFocus = false; 
 
@@ -185,7 +193,7 @@
       }
     });
 
-    // Initial click listener for fullscreen and first-time setup.
+    // Initial click for fullscreen and setup.
     document.addEventListener('click', event => {
       if (!document.querySelector('.new-lines.visible')) {
         const edgeThreshold = 10;
@@ -222,7 +230,7 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // iOS readonly hack: initially make input readonly then remove on touchstart.
+    // iOS readonly hack: set input readonly then remove on touchstart.
     function addIOSReadonlyHack(input) {
       if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
         input.setAttribute('readonly', 'readonly');
@@ -232,7 +240,7 @@
       }
     }
 
-    // Click handler for original login texts (to convert them into input fields)
+    // Handler for original login texts turning into inputs.
     document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
       element.addEventListener('click', function () {
         if (fadeCompleted &&
@@ -270,10 +278,10 @@
       });
     });
 
-    // Click handler for "OPEn" text to trigger new account creation.
+    // Handler for clicking OPEn to trigger account creation mode.
     document.querySelector('.open-text').addEventListener('click', function(event) {
       hideLoginElements();
-      // Fade in new-lines and new-texts simultaneously.
+      // Fade in the new-lines and new-texts containers simultaneously.
       setTimeout(() => {
         document.querySelector('.new-lines').classList.remove('hidden');
         document.querySelector('.new-lines').classList.add('visible');
@@ -284,7 +292,7 @@
       event.stopPropagation();
     });
 
-    // Click handler for new texts (converts them into input fields).
+    // Handler for new texts turning into inputs.
     function addNewTextClickHandler(element) {
       element.addEventListener('click', function (event) {
         event.preventDefault();
@@ -301,10 +309,10 @@
         input.style.left = `${parentRect.left + window.scrollX}px`;
         input.style.width = `calc(${parentRect.width}px + 4vw)`;
         input.style.height = `${parentRect.height}px`;
-        // For the new-username field, use a dummy name and set autocomplete to "nope"
+        // For the username field, remove any standard name and force autocomplete off.
         if (this.classList.contains('new-username')) {
-          input.name = "no_username";
-          input.setAttribute("autocomplete", "nope");
+          input.removeAttribute("name");
+          input.setAttribute("autocomplete", "off");
         } else {
           input.setAttribute("autocomplete", "off");
         }
@@ -332,7 +340,7 @@
 
     document.querySelectorAll('.new-text').forEach(addNewTextClickHandler);
 
-    // Reverse animation: clicking in the designated left region restores the original login elements.
+    // Reverse animation: clicking in the designated left region restores original login elements.
     document.addEventListener('click', function(event) {
       if (document.querySelector('.new-lines.visible')) {
         const { innerWidth, innerHeight } = window;

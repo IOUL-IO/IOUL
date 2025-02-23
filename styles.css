@@ -167,7 +167,7 @@ body.fade-in-trigger .time-text {
     left: 90.1vw;
 }
 
-/* Existing login text */
+/* Existing login text styles */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -257,7 +257,7 @@ body.fullscreen .help-text {
 
 .account-text {
     position: absolute;
-    display: inline-block;  /* Ensures correct bounding box for input conversion */
+    display: inline-block;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
     letter-spacing: 0.28vw;

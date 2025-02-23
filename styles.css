@@ -111,11 +111,11 @@ body.fade-in-trigger .time-text {
   left: 36vw;
   width: 52.4vw;
   background: linear-gradient(
-      to right,
-      #a1a1a1 0,
-      #a1a1a1 5px, 
-      #ffffff 5px,
-      #ffffff 10px 
+    to right,
+    #a1a1a1 0,
+    #a1a1a1 5px, 
+    #ffffff 5px,
+    #ffffff 10px 
   );
   background-size: 10px 1px;
 }
@@ -246,32 +246,20 @@ body.fullscreen .help-text {
   opacity: 1 !important;
 }
 
-/* NEW: Styles for the additional lines */
+/* New elements for post-OPEN state */
+
+/* New Lines */
 .new-line {
   position: absolute;
+  left: 6.4vw;
   width: 22.48vw;
   height: 1px;
   background-color: rgba(230, 230, 230, 0.28);
+  opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
-.new-line.line1 {
-  top: 38.9vh;
-  left: 6.4vw;
-}
-.new-line.line2 {
-  top: 47vh;
-  left: 6.4vw;
-}
-.new-line.line3 {
-  top: 55.1vh;
-  left: 6.4vw;
-}
-.new-line.line4 {
-  top: 63.2vh;
-  left: 6.4vw;
-}
 
-/* NEW: Styles for the additional texts */
+/* New Text Labels */
 .new-text {
   position: absolute;
   font-family: 'Distill Expanded', sans-serif;
@@ -279,21 +267,6 @@ body.fullscreen .help-text {
   letter-spacing: 0.28vw;
   font-size: 0.47rem;
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+  opacity: 0;
   transition: opacity 0.5s ease-in-out;
-}
-.new-text.new-email {
-  top: 35.4vh;
-  left: 6.4vw;
-}
-.new-text.new-username {
-  top: 43.5vh;
-  left: 6.4vw;
-}
-.new-text.new-password {
-  top: 51.6vh;
-  left: 6.4vw;
-}
-.new-text.new-confirm {
-  top: 59.7vh;
-  left: 6.4vw;
 }

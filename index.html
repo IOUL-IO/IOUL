@@ -333,19 +333,13 @@
           if (this.innerText.includes('PASSWORD')) {
             input.type = 'password';
             input.setAttribute('autocomplete', 'new-password');
-            input.name = "password";
           } else {
-            // For both YOUR E-MAIL and ADD USERNAME, use plain text input to avoid iOS "hide my email"
+            // For both "YOUR E-MAIL" and "ADD USERNAME", force a plain text input
             input.type = 'text';
             input.setAttribute('autocomplete', 'off');
-            input.setAttribute('autocapitalize', 'none');
+            input.setAttribute('autocapitalize', 'off');
             input.setAttribute('autocorrect', 'off');
             input.spellcheck = false;
-            if (this.innerText.includes('E-MAIL')) {
-              input.name = "email";
-            } else {
-              input.name = "username";
-            }
           }
           input.maxLength = 10;
           input.className = 'typing-input';

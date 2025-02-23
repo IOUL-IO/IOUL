@@ -330,22 +330,22 @@
         if (accountCreationActive) {
           const parentRect = this.getBoundingClientRect();
           const input = document.createElement('input');
-          // Determine input type based on text content
           if (this.innerText.includes('PASSWORD')) {
             input.type = 'password';
             input.setAttribute('autocomplete', 'new-password');
             input.name = "password";
-          } else if (this.innerText.includes('E-MAIL')) {
-            input.type = 'email';
-            input.setAttribute('autocomplete', 'off');
-            input.name = "email";
           } else {
+            // For both YOUR E-MAIL and ADD USERNAME, use plain text input to avoid iOS "hide my email"
             input.type = 'text';
             input.setAttribute('autocomplete', 'off');
             input.setAttribute('autocapitalize', 'none');
             input.setAttribute('autocorrect', 'off');
             input.spellcheck = false;
-            input.name = "username";
+            if (this.innerText.includes('E-MAIL')) {
+              input.name = "email";
+            } else {
+              input.name = "username";
+            }
           }
           input.maxLength = 10;
           input.className = 'typing-input';

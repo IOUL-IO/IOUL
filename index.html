@@ -21,6 +21,7 @@
       padding: 0.1rem 0;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
+
     input.typing-input {
       font-family: 'Distill Expanded', sans-serif;
       font-size: 0.46rem;
@@ -38,28 +39,9 @@
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
-    /* Fade classes for new account creation containers */
-    .hidden {
-      opacity: 0;
-      transition: opacity 0.5s ease-in-out;
-      pointer-events: none;
-    }
-    .visible {
-      opacity: 1;
-      transition: opacity 0.5s ease-in-out;
-    }
-    /* Ensure the containers for new lines and texts fade together */
-    .new-lines, .new-texts {
-      transition: opacity 0.5s ease-in-out;
-    }
-    .new-lines .new-line,
-    .new-texts .new-text {
-      transition-delay: 0s !important;
-    }
   </style>
 </head>
 <body class="non-fullscreen">
-  <!-- Existing line and time elements -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -74,7 +56,6 @@
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-  <!-- Original login texts and lines -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
 
@@ -84,25 +65,23 @@
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
-  <!-- NEW: Containers for additional lines and texts, initially hidden -->
-  <div class="new-lines hidden">
-    <div class="line new-line line1"></div>
-    <div class="line new-line line2"></div>
-    <div class="line new-line line3"></div>
-    <div class="line new-line line4"></div>
-  </div>
-  <div class="new-texts hidden">
-    <span class="login-text new-text new-email">YOUR E-MAIL</span>
-    <span class="login-text new-text new-username">ADD USERNAME</span>
-    <span class="login-text new-text new-password">10-CHARACTER PASSWORD</span>
-    <span class="login-text new-text new-confirm">CONFIRM PASSWORD</span>
-  </div>
+  <!-- New elements (hidden by default) -->
+  <!-- New Lines -->
+  <div class="new-line new-line1 hidden" style="top: 38.9vh;"></div>
+  <div class="new-line new-line2 hidden" style="top: 47vh;"></div>
+  <div class="new-line new-line3 hidden" style="top: 55.1vh;"></div>
+  <div class="new-line new-line4 hidden" style="top: 63.2vh;"></div>
+
+  <!-- New Text Labels -->
+  <span class="new-text new-text1 hidden" style="top: 35.4vh; left: 6.4vw;">YOUR E-MAIL</span>
+  <span class="new-text new-text2 hidden" style="top: 43.5vh; left: 6.4vw;">ADD USERNAME</span>
+  <span class="new-text new-text3 hidden" style="top: 51.6vh; left: 6.4vw;">10-CHARACTER PASSWORD</span>
+  <span class="new-text new-text4 hidden" style="top: 59.7vh; left: 6.4vw;">CONFIRM PASSWORD</span>
 
   <script>
     let inactivityTimer;
     let fadeCompleted = false;
     let initialClickCompleted = false;
-    let accountCreationActive = false;  // Tracks account creation mode
     let lastMouseEvent = null;
     let inputInFocus = false; 
 
@@ -116,19 +95,19 @@
     }
 
     function showLoginElements() {
-      if (accountCreationActive) return;
       document.querySelectorAll('.username, .password, .login-line, .login-line-second')
         .forEach(el => {
           el.classList.add('visible');
           el.classList.remove('hidden');
         });
+
       if (!inputInFocus && lastMouseEvent) {
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
     }
 
     function resetInactivityTimer() {
-      if (fadeCompleted && !accountCreationActive) {
+      if (fadeCompleted) {
         clearTimeout(inactivityTimer);
         showLoginElements();
         inactivityTimer = setTimeout(hideLoginElements, 20000);
@@ -145,32 +124,41 @@
     }
 
     function showOpenHelp() {
-      if (lastMouseEvent && !accountCreationActive) {
+      if (lastMouseEvent) {
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
     }
 
     function checkRegionAndShowOpenHelp(event) {
-      if (!fadeCompleted || inputInFocus || accountCreationActive) return;
+      if (!fadeCompleted || inputInFocus) return;
+
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
-      if (document.querySelector('.username').classList.contains('hidden')) return;
+
+      if (document.querySelector('.username').classList.contains('hidden')) {
+        return;
+      }
+
       const boundingTop = 28.5;
       const boundingBottom = 84;
       const boundingLeft = 6.38;
       const boundingRight = 29; 
+
       const { innerWidth, innerHeight } = window;
       const { clientX, clientY } = event;
+
       const topPx = (boundingTop / 100) * innerHeight;
       const bottomPx = (boundingBottom / 100) * innerHeight;
       const leftPx = (boundingLeft / 100) * innerWidth;
       const rightPx = (boundingRight / 100) * innerWidth;
+
       const isInRegion = (
         clientY >= topPx &&
         clientY <= bottomPx &&
         clientX >= leftPx &&
         clientX <= rightPx
       );
+
       if (isInRegion) {
         openText.classList.remove('hidden');
         openText.classList.add('visible');
@@ -192,34 +180,36 @@
       }
     });
 
-    // Initial click listener for fullscreen and first-time setup.
     document.addEventListener('click', event => {
-      if (!document.querySelector('.new-lines.visible')) {
-        const edgeThreshold = 10;
-        const { clientX, clientY } = event;
-        const { innerWidth, innerHeight } = window;
-        const isNearEdge =
-          clientX <= edgeThreshold ||
-          clientX >= innerWidth - edgeThreshold ||
-          clientY <= edgeThreshold ||
-          clientY >= innerHeight - edgeThreshold;
-        if (isNearEdge && !document.fullscreenElement) {
+      const edgeThreshold = 10;
+      const { clientX, clientY } = event;
+      const { innerWidth, innerHeight } = window;
+
+      const isNearEdge =
+        clientX <= edgeThreshold ||
+        clientX >= innerWidth - edgeThreshold ||
+        clientY <= edgeThreshold ||
+        clientY >= innerHeight - edgeThreshold;
+
+      if (isNearEdge && !document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+        return;
+      }
+
+      if (!initialClickCompleted) {
+        if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen();
-          return;
         }
-        if (!initialClickCompleted) {
-          if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen();
-          }
-          setTimeout(() => {
-            document.body.classList.add('fade-in-trigger');
-          }, 1000);
-          setTimeout(() => {
-            fadeCompleted = true;
-            inactivityTimer = setTimeout(hideLoginElements, 20000);
-          }, 4000);
-          initialClickCompleted = true;
-        }
+        setTimeout(() => {
+          document.body.classList.add('fade-in-trigger');
+        }, 1000);
+
+        setTimeout(() => {
+          fadeCompleted = true;
+          inactivityTimer = setTimeout(hideLoginElements, 20000);
+        }, 4000);
+
+        initialClickCompleted = true;
       }
     });
 
@@ -229,21 +219,12 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // iOS readonly hack: set input readonly then remove on touchstart.
-    function addIOSReadonlyHack(input) {
-      if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
-        input.setAttribute('readonly', 'readonly');
-        input.addEventListener('touchstart', function() {
-          this.removeAttribute('readonly');
-        });
-      }
-    }
-
-    // Handler for original login texts turning into inputs.
     document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
       element.addEventListener('click', function () {
-        if (fadeCompleted &&
-            (this.classList.contains('username') || this.classList.contains('password'))) {
+        if (
+          fadeCompleted &&
+          (this.classList.contains('username') || this.classList.contains('password'))
+        ) {
           const parentRect = this.getBoundingClientRect();
           const input = document.createElement('input');
           input.type = this.classList.contains('password') ? 'password' : 'text';
@@ -253,146 +234,47 @@
           input.style.left = `${parentRect.left + window.scrollX}px`;
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
-          addIOSReadonlyHack(input);
-          input.setAttribute("autocomplete", "off");
-          input.setAttribute("autocorrect", "off");
-          input.setAttribute("autocapitalize", "none");
-          input.setAttribute("spellcheck", "false");
+
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();
           });
+
           input.addEventListener('blur', function () {
             inputInFocus = false;
             const span = document.createElement('span');
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
+
             showOpenHelp();
+
             addClickHandler(span);
           });
+
           this.replaceWith(input);
           input.focus();
         }
       });
     });
 
-    // Handler for clicking OPEn to trigger account creation mode.
-    document.querySelector('.open-text').addEventListener('click', function(event) {
-      hideLoginElements();
+    // New event listener on OPEN to fade out login elements and fade in new ones
+    document.querySelector('.open-text').addEventListener('click', function () {
+      // Fade out login texts, lines, help, and any active input fields
+      document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text, .typing-input')
+        .forEach(el => {
+          el.classList.remove('visible');
+          el.classList.add('hidden');
+        });
+      
+      // After fade out transition (500ms), fade in new elements
       setTimeout(() => {
-        // Fade in new account creation containers simultaneously.
-        document.querySelector('.new-lines').classList.remove('hidden');
-        document.querySelector('.new-lines').classList.add('visible');
-        document.querySelector('.new-texts').classList.remove('hidden');
-        document.querySelector('.new-texts').classList.add('visible');
-        accountCreationActive = true;
-        // Prime iOS autofill: programmatically focus then blur the YOUR E-MAIL field.
-        const emailElem = document.querySelector('.new-text.new-email');
-        if (emailElem) {
-          emailElem.click();
-          setTimeout(() => {
-            if (document.activeElement.tagName === "INPUT" || document.activeElement.isContentEditable) {
-              document.activeElement.blur();
-            }
-          }, 100);
-        }
+        document.querySelectorAll('.new-line, .new-text')
+          .forEach(el => {
+            el.classList.remove('hidden');
+            el.classList.add('visible');
+          });
       }, 500);
-      event.stopPropagation();
-    });
-
-    // Handler for new texts turning into inputs.
-    function addNewTextClickHandler(element) {
-      element.addEventListener('click', function (event) {
-        event.preventDefault();
-        const parentRect = this.getBoundingClientRect();
-        // For problematic ADD USERNAME field, we now use a contenteditable element.
-        if (this.classList.contains('new-username')) {
-          const editableSpan = document.createElement('span');
-          editableSpan.contentEditable = "true";
-          editableSpan.className = 'typing-input';
-          editableSpan.style.top = `${parentRect.top + window.scrollY}px`;
-          editableSpan.style.left = `${parentRect.left + window.scrollX}px`;
-          editableSpan.style.width = `calc(${parentRect.width}px + 4vw)`;
-          editableSpan.style.height = `${parentRect.height}px`;
-          // Set attributes to mimic an input
-          editableSpan.setAttribute("autocomplete", "off");
-          editableSpan.setAttribute("autocorrect", "off");
-          editableSpan.setAttribute("autocapitalize", "none");
-          editableSpan.setAttribute("spellcheck", "false");
-          editableSpan.addEventListener('blur', function () {
-            const span = document.createElement('span');
-            span.className = element.className;
-            span.innerText = editableSpan.innerText.trim() || element.innerText;
-            editableSpan.replaceWith(span);
-            addNewTextClickHandler(span);
-          });
-          this.replaceWith(editableSpan);
-          editableSpan.focus();
-        } else {
-          const input = document.createElement('input');
-          let type = 'text';
-          if (this.classList.contains('new-password') || this.classList.contains('new-confirm')) {
-            type = 'password';
-          }
-          input.type = type;
-          input.maxLength = 10;
-          input.className = 'typing-input';
-          input.style.top = `${parentRect.top + window.scrollY}px`;
-          input.style.left = `${parentRect.left + window.scrollX}px`;
-          input.style.width = `calc(${parentRect.width}px + 4vw)`;
-          input.style.height = `${parentRect.height}px`;
-          input.setAttribute("autocomplete", "off");
-          input.setAttribute("autocorrect", "off");
-          input.setAttribute("autocapitalize", "none");
-          input.setAttribute("spellcheck", "false");
-          input.inputmode = "text";
-          addIOSReadonlyHack(input);
-          input.addEventListener('focus', function () {
-            inputInFocus = true;
-            hideOpenHelp();
-          });
-          input.addEventListener('blur', function () {
-            inputInFocus = false;
-            const span = document.createElement('span');
-            span.className = element.className;
-            span.innerText = input.value.trim() || element.innerText;
-            input.replaceWith(span);
-            addNewTextClickHandler(span);
-          });
-          this.replaceWith(input);
-          input.focus();
-        }
-      });
-    }
-
-    document.querySelectorAll('.new-text').forEach(addNewTextClickHandler);
-
-    // Reverse animation: clicking in the designated left region restores original login elements.
-    document.addEventListener('click', function(event) {
-      if (document.querySelector('.new-lines.visible')) {
-        const { innerWidth, innerHeight } = window;
-        const vw = innerWidth / 100;
-        const vh = innerHeight / 100;
-        const clickX = event.clientX;
-        const clickY = event.clientY;
-        if (
-          clickX >= 0 &&
-          clickX <= 6.37 * vw &&
-          clickY >= 28.5 * vh &&
-          clickY <= 84 * vh
-        ) {
-          document.querySelector('.new-lines').classList.remove('visible');
-          document.querySelector('.new-lines').classList.add('hidden');
-          document.querySelector('.new-texts').classList.remove('visible');
-          document.querySelector('.new-texts').classList.add('hidden');
-          setTimeout(() => {
-            accountCreationActive = false;
-            showLoginElements();
-          }, 500);
-          event.stopPropagation();
-        }
-      }
     });
   </script>
 </body>

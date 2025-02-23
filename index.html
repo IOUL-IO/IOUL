@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="styles.css">
 
   <style>
-    /* Existing styles for login texts and inputs are preserved */
+    /* Existing login text and input styles remain */
     .login-text {
       position: absolute;
       left: 6.41vw;
@@ -36,8 +36,7 @@
       position: absolute;
       caret-color: #d1d1d1;
       padding: 0.1rem 0;
-      width: calc(22.48vw + 4vw);
-      height: auto;
+      /* Width and height will be set dynamically */
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
@@ -93,7 +92,7 @@
     let accountCreationActive = false;
 
     function hideLoginElements() {
-      // Do not show/hide login elements if account creation is active
+      // Do not change login elements if account creation is active
       if (accountCreationActive) return;
       document.querySelectorAll(
         '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
@@ -180,7 +179,6 @@
       const accountCreation = document.getElementById('account-creation');
       accountCreation.classList.remove('hidden');
       accountCreation.classList.add('visible');
-      // Fade in individual account creation elements
       document.querySelectorAll('#account-creation .account-line, #account-creation .account-text')
         .forEach(el => {
           el.classList.remove('hidden');
@@ -212,7 +210,6 @@
     });
 
     document.addEventListener('click', event => {
-      // Global click handler
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
@@ -239,7 +236,7 @@
         }, 4000);
         initialClickCompleted = true;
       }
-      // If account creation area is active, check for click in the designated revert region
+      // If account creation is active, check for click in the designated revert region
       if (accountCreationActive) {
         const leftBoundary = 0;
         const rightBoundary = (6.37 / 100) * innerWidth;
@@ -258,7 +255,7 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // Original login text click handler (transforms text into an input field)
+    // Original login text click handler: transforms text into an input field.
     document.querySelectorAll('.login-text').forEach(function addLoginClickHandler(element) {
       element.addEventListener('click', function (event) {
         event.stopPropagation();
@@ -271,10 +268,11 @@
           input.type = this.classList.contains('password') ? 'password' : 'text';
           input.maxLength = 10;
           input.className = 'typing-input';
-          input.style.top = `${parentRect.top + window.scrollY}px`;
-          input.style.left = `${parentRect.left + window.scrollX}px`;
-          input.style.width = `calc(${parentRect.width}px + 4vw)`;
+          input.style.top = `${parentRect.top}px`;
+          input.style.left = `${parentRect.left}px`;
+          input.style.width = `${parentRect.width}px`;
           input.style.height = `${parentRect.height}px`;
+          input.addEventListener('click', e => e.stopPropagation());
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();
@@ -294,14 +292,13 @@
       });
     });
 
-    // Function to add click handler for account creation texts
+    // Account creation text click handler: transforms text into an input field.
     function addAccountClickHandler(element) {
       element.addEventListener('click', function accountClick(event) {
         event.stopPropagation();
         if (accountCreationActive) {
           const parentRect = this.getBoundingClientRect();
           const input = document.createElement('input');
-          // Use password input for password-related texts
           if (this.classList.contains('password-text') || this.classList.contains('confirm-text')) {
             input.type = 'password';
             input.maxLength = 10;
@@ -310,10 +307,11 @@
             input.maxLength = 50;
           }
           input.className = 'typing-input';
-          input.style.top = `${parentRect.top + window.scrollY}px`;
-          input.style.left = `${parentRect.left + window.scrollX}px`;
-          input.style.width = `calc(${parentRect.width}px + 4vw)`;
+          input.style.top = `${parentRect.top}px`;
+          input.style.left = `${parentRect.left}px`;
+          input.style.width = `${parentRect.width}px`;
           input.style.height = `${parentRect.height}px`;
+          input.addEventListener('click', e => e.stopPropagation());
           input.addEventListener('focus', function () {
             inputInFocus = true;
           });
@@ -330,10 +328,9 @@
         }
       });
     }
-    // Attach click handlers to all account creation texts
     document.querySelectorAll('.account-text').forEach(addAccountClickHandler);
 
-    // Clicking the OPEn text triggers account creation animation (after fading out login elements)
+    // Clicking the OPEn text triggers account creation (fade out login and fade in account creation)
     document.querySelector('.open-text').addEventListener('click', (event) => {
       event.stopPropagation();
       if (fadeCompleted) {

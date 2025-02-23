@@ -285,21 +285,21 @@ body.fullscreen .help-text {
 
 /* Account Creation Texts */
 .email-text {
-    top: 35.1vh;
+    top: 35.3vh;
     left: 6.4vw;
 }
 
 .username-text {
-    top: 43.2vh;
+    top: 43.4vh;
     left: 6.4vw;
 }
 
 .pass-text {
-    top: 51.3vh;
+    top: 51.5vh;
     left: 6.4vw;
 }
 
 .confirm-text {
-    top: 59.6vh;
+    top: 59.8vh;
     left: 6.4vw;
 }

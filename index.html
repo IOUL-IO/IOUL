@@ -69,10 +69,10 @@
   <div class="line login-line-second"></div>
 
   <!-- Account Creation Components (initially hidden) -->
-  <span class="login-text account-text email-text hidden">YOUR E-MA1L</span>
-  <span class="login-text account-text username-text hidden">ADD USERnAME</span>
-  <span class="login-text account-text pass-text hidden">10-cHARAcTER PASSWORD</span>
-  <span class="login-text account-text confirm-text hidden">cOnF1RM PASSWORD</span>
+  <span class="login-text account-text email-text hidden">YOUR E-MAIL</span>
+  <span class="login-text account-text username-text hidden">ADD USERNAME</span>
+  <span class="login-text account-text pass-text hidden">10-CHARACTER PASSWORD</span>
+  <span class="login-text account-text confirm-text hidden">CONFIRM PASSWORD</span>
 
   <div class="line account-line acc-line-1 hidden"></div>
   <div class="line account-line acc-line-2 hidden"></div>
@@ -184,7 +184,7 @@
           el.classList.add('hidden');
           el.classList.remove('visible');
         });
-      // After fade-out, fade in account creation components
+      // After fade-out, fade in account creation components (texts and lines together)
       setTimeout(() => {
         document.querySelectorAll('.account-text, .account-line')
           .forEach(el => {
@@ -334,12 +334,18 @@
           if (this.innerText.includes('PASSWORD')) {
             input.type = 'password';
             input.setAttribute('autocomplete', 'new-password');
+            input.name = "password";
           } else if (this.innerText.includes('E-MAIL')) {
             input.type = 'email';
             input.setAttribute('autocomplete', 'off');
+            input.name = "email";
           } else {
             input.type = 'text';
             input.setAttribute('autocomplete', 'off');
+            input.setAttribute('autocapitalize', 'none');
+            input.setAttribute('autocorrect', 'off');
+            input.spellcheck = false;
+            input.name = "username";
           }
           input.maxLength = 10;
           input.className = 'typing-input';

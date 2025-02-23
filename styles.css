@@ -257,6 +257,7 @@ body.fullscreen .help-text {
 
 .account-text {
     position: absolute;
+    display: inline-block;  /* Ensures correct bounding box for input conversion */
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
     letter-spacing: 0.28vw;

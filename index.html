@@ -88,7 +88,7 @@
     let inactivityTimer;
     let fadeCompleted = false;
     let initialClickCompleted = false;
-    let accountCreationActive = false;  // New flag to track mode
+    let accountCreationActive = false;  // Flag to track account creation mode
     let lastMouseEvent = null;
     let inputInFocus = false; 
 
@@ -102,7 +102,6 @@
     }
 
     function showLoginElements() {
-      // Only show if not in account creation mode.
       if (accountCreationActive) return;
       document.querySelectorAll('.username, .password, .login-line, .login-line-second')
         .forEach(el => {
@@ -115,7 +114,7 @@
     }
 
     function resetInactivityTimer() {
-      if (fadeCompleted && !accountCreationActive) { // only reset if not in account creation mode
+      if (fadeCompleted && !accountCreationActive) {
         clearTimeout(inactivityTimer);
         showLoginElements();
         inactivityTimer = setTimeout(hideLoginElements, 20000);
@@ -138,13 +137,11 @@
     }
 
     function checkRegionAndShowOpenHelp(event) {
-      // Do nothing if still in account creation mode
       if (!fadeCompleted || inputInFocus || accountCreationActive) return;
 
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
 
-      // If the original login is hidden, don't show open/help texts
       if (document.querySelector('.username').classList.contains('hidden')) {
         return;
       }
@@ -190,9 +187,8 @@
       }
     });
 
-    // Existing click listener for initial fullscreen and first click setup.
+    // Initial click listener for fullscreen and setup.
     document.addEventListener('click', event => {
-      // Only process initial click if new elements are not visible.
       if (!document.querySelector('.new-line.visible')) {
         const edgeThreshold = 10;
         const { clientX, clientY } = event;
@@ -233,6 +229,16 @@
       checkRegionAndShowOpenHelp(event);
     });
 
+    // Function to add the iOS workaround to prevent fullscreen exit.
+    function addIOSReadonlyHack(input) {
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+        input.setAttribute('readonly', 'readonly');
+        input.addEventListener('touchstart', function() {
+          this.removeAttribute('readonly');
+        });
+      }
+    }
+
     // Click handler for original login texts (for converting to input fields)
     document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
       element.addEventListener('click', function () {
@@ -249,6 +255,7 @@
           input.style.left = `${parentRect.left + window.scrollX}px`;
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
+          addIOSReadonlyHack(input);
 
           input.addEventListener('focus', function () {
             inputInFocus = true;
@@ -271,11 +278,9 @@
       });
     });
 
-    // NEW: Click handler for "OPEn" text to trigger the new animation.
+    // Click handler for "OPEn" text to trigger new account creation animation.
     document.querySelector('.open-text').addEventListener('click', function(event) {
-      // Fade out original login elements
       hideLoginElements();
-      // After fade out, fade in new lines and new texts
       setTimeout(() => {
         document.querySelectorAll('.new-line, .new-text').forEach(el => {
           el.classList.remove('hidden');
@@ -286,13 +291,12 @@
       event.stopPropagation();
     });
 
-    // NEW: Click handler for new texts (transforms into an input field)
+    // Click handler for new texts (transforms into an input field)
     function addNewTextClickHandler(element) {
       element.addEventListener('click', function (event) {
         event.preventDefault();
         const parentRect = this.getBoundingClientRect();
         const input = document.createElement('input');
-        // Choose type based on which new field it is
         let type = 'text';
         if (this.classList.contains('new-password') || this.classList.contains('new-confirm')) {
           type = 'password';
@@ -304,10 +308,11 @@
         input.style.left = `${parentRect.left + window.scrollX}px`;
         input.style.width = `calc(${parentRect.width}px + 4vw)`;
         input.style.height = `${parentRect.height}px`;
-        // Prevent iOS from misidentifying the field as an email input
+        // Prevent iOS from misidentifying the field as an email input.
         input.setAttribute("autocomplete", "off");
         input.setAttribute("autocorrect", "off");
         input.setAttribute("autocapitalize", "none");
+        addIOSReadonlyHack(input);
 
         input.addEventListener('focus', function () {
           inputInFocus = true;
@@ -330,9 +335,8 @@
 
     document.querySelectorAll('.new-text').forEach(addNewTextClickHandler);
 
-    // NEW: Reverse animation when clicking inside the designated left region.
+    // Reverse animation when clicking inside the designated left region.
     document.addEventListener('click', function(event) {
-      // Only proceed if new elements are currently visible.
       if (document.querySelector('.new-line.visible')) {
         const { innerWidth, innerHeight } = window;
         const vw = innerWidth / 100;
@@ -346,12 +350,10 @@
           clickY >= 28.5 * vh &&
           clickY <= 84 * vh
         ) {
-          // Fade out new elements
           document.querySelectorAll('.new-line, .new-text').forEach(el => {
             el.classList.remove('visible');
             el.classList.add('hidden');
           });
-          // After fade out, fade in original login elements
           setTimeout(() => {
             accountCreationActive = false;
             showLoginElements();

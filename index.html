@@ -298,6 +298,10 @@
         input.style.left = `${parentRect.left + window.scrollX}px`;
         input.style.width = `calc(${parentRect.width}px + 4vw)`;
         input.style.height = `${parentRect.height}px`;
+        // Prevent iOS from misidentifying the field as an email input
+        input.setAttribute("autocomplete", "off");
+        input.setAttribute("autocorrect", "off");
+        input.setAttribute("autocapitalize", "none");
 
         input.addEventListener('focus', function () {
           inputInFocus = true;

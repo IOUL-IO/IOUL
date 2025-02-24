@@ -52,51 +52,51 @@
   <div class="line dashed second-dashed"></div>
   <div class="line dashed third-dashed"></div>
   <div class="line dashed fourth-dashed"></div>
-
+  
   <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
   <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
-
+  
   <!-- Login Components -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
-
+  
   <span class="login-text open-text hidden">OPEn</span>
   <span class="login-text help-text hidden">HELP</span>
-
+  
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
-
+  
   <!-- Account Creation Components (initially hidden) -->
   <span class="login-text account-text email-text hidden">YOUR E-MA1L</span>
   <span class="login-text account-text username-text hidden">ADD USERnAME</span>
   <span class="login-text account-text pass-text hidden">10-LETTER PASSWORD</span>
   <span class="login-text account-text confirm-text hidden">cOnF1RM PASSWORD</span>
-
+  
   <div class="line account-line acc-line-1 hidden"></div>
   <div class="line account-line acc-line-2 hidden"></div>
   <div class="line account-line acc-line-3 hidden"></div>
   <div class="line account-line acc-line-4 hidden"></div>
-
+  
   <script>
     let inactivityTimer;
+    // We keep fadeCompleted as in the original logic.
     let fadeCompleted = false;
     let initialClickCompleted = false;
     let lastMouseEvent = null;
     let inputInFocus = false;
     let accountCreationActive = false;
     let transitionInProgress = false;
-
+    
     function hideLoginElements() {
-      document.querySelectorAll(
-        '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
-      ).forEach(el => {
-        el.classList.add('hidden');
-        el.classList.remove('visible');
-      });
+      document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
+        .forEach(el => {
+          el.classList.add('hidden');
+          el.classList.remove('visible');
+        });
     }
-
+    
     function showLoginElements() {
       if (accountCreationActive || transitionInProgress) return;
       document.querySelectorAll('.username, .password, .login-line, .login-line-second')
@@ -108,7 +108,7 @@
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
     }
-
+    
     function resetInactivityTimer() {
       if (fadeCompleted && !accountCreationActive && !transitionInProgress) {
         clearTimeout(inactivityTimer);
@@ -116,7 +116,7 @@
         inactivityTimer = setTimeout(hideLoginElements, 20000);
       }
     }
-
+    
     function hideOpenHelp() {
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
@@ -125,33 +125,26 @@
       helpText.classList.remove('visible');
       helpText.classList.add('hidden');
     }
-
+    
     function showOpenHelp() {
       if (lastMouseEvent) {
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
     }
-
+    
     function checkRegionAndShowOpenHelp(event) {
       if (!fadeCompleted || inputInFocus || accountCreationActive || transitionInProgress) return;
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
       if (document.querySelector('.username').classList.contains('hidden')) return;
-      const boundingTop = 28.5;
-      const boundingBottom = 84;
-      const boundingLeft = 6.38;
-      const boundingRight = 29;
+      const boundingTop = 28.5, boundingBottom = 84, boundingLeft = 6.38, boundingRight = 29;
       const { innerWidth, innerHeight } = window;
       const { clientX, clientY } = event;
       const topPx = (boundingTop / 100) * innerHeight;
       const bottomPx = (boundingBottom / 100) * innerHeight;
       const leftPx = (boundingLeft / 100) * innerWidth;
       const rightPx = (boundingRight / 100) * innerWidth;
-      const isInRegion =
-        clientY >= topPx &&
-        clientY <= bottomPx &&
-        clientX >= leftPx &&
-        clientX <= rightPx;
+      const isInRegion = clientY >= topPx && clientY <= bottomPx && clientX >= leftPx && clientX <= rightPx;
       if (isInRegion) {
         openText.classList.remove('hidden');
         openText.classList.add('visible');
@@ -164,7 +157,7 @@
         helpText.classList.add('hidden');
       }
     }
-
+    
     // Switch to Account Creation view when "OPEn" is clicked
     function openAccountCreation() {
       if (accountCreationActive || transitionInProgress) return;
@@ -184,7 +177,7 @@
         transitionInProgress = false;
       }, 500);
     }
-
+    
     // Revert back to Login view when clicking in the designated region
     function revertToLogin() {
       if (!accountCreationActive) return;
@@ -207,7 +200,7 @@
         accountCreationActive = false;
       }, 500);
     }
-
+    
     document.addEventListener('fullscreenchange', () => {
       if (!document.fullscreenElement) {
         document.body.classList.remove('fullscreen');
@@ -215,7 +208,7 @@
         document.body.classList.add('fullscreen');
       }
     });
-
+    
     document.addEventListener('click', event => {
       if (accountCreationActive) {
         const { innerWidth, innerHeight } = window;
@@ -233,7 +226,7 @@
           return;
         }
       }
-
+    
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
@@ -260,16 +253,19 @@
         initialClickCompleted = true;
       }
     });
-
+    
     document.addEventListener('mousemove', event => {
       lastMouseEvent = event;
       resetInactivityTimer();
       checkRegionAndShowOpenHelp(event);
     });
-
-    // Original Login Conversion Code – fadeCompleted check removed so conversion happens immediately
+    
+    // ORIGINAL Login Conversion Code – fadeCompleted check removed so conversion happens immediately
     document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
+      // Skip account creation elements
+      if (element.classList.contains('account-text')) return;
       element.addEventListener('click', function () {
+        // Always convert login fields on click
         if (this.classList.contains('username') || this.classList.contains('password')) {
           const parentRect = this.getBoundingClientRect();
           const input = document.createElement('input');
@@ -280,30 +276,30 @@
           input.style.left = `${parentRect.left + window.scrollX}px`;
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
-
+    
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();
           });
-
+    
           input.addEventListener('blur', function () {
             inputInFocus = false;
             const span = document.createElement('span');
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
-
+    
             showOpenHelp();
-
+    
             addClickHandler(span);
           });
-
+    
           this.replaceWith(input);
           input.focus();
         }
       });
     });
-
+    
     // Account Creation Conversion Code (unchanged)
     function addAccountClickHandler(element) {
       element.addEventListener('click', function () {
@@ -333,11 +329,11 @@
           input.style.left = `${parentRect.left + window.scrollX}px`;
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
-
+    
           input.addEventListener('focus', function () {
             inputInFocus = true;
           });
-
+    
           input.addEventListener('blur', function () {
             inputInFocus = false;
             const span = document.createElement('span');
@@ -346,17 +342,17 @@
             input.replaceWith(span);
             addAccountClickHandler(span);
           });
-
+    
           this.replaceWith(input);
           input.focus();
         }
       });
     }
-
+    
     document.querySelectorAll('.account-text').forEach(function (element) {
       addAccountClickHandler(element);
     });
-
+    
     document.querySelector('.open-text').addEventListener('click', function (e) {
       e.stopPropagation();
       openAccountCreation();

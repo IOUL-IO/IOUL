@@ -6,6 +6,7 @@
   <title>IOUL</title>
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
+
   <style>
     .login-text {
       position: absolute;
@@ -22,6 +23,7 @@
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
       cursor: pointer;
     }
+
     input.typing-input {
       font-family: 'Distill Expanded', sans-serif;
       font-size: 0.46rem;
@@ -79,7 +81,7 @@
   <div class="line account-line acc-line-4 hidden"></div>
   
   <script>
-    // Global state variables remain unchanged.
+    // Global state variables remain as before.
     let inactivityTimer;
     let fadeCompleted = false;
     let initialClickCompleted = false;
@@ -88,7 +90,7 @@
     let accountCreationActive = false;
     let transitionInProgress = false;
     
-    // --- Utility Functions (fade in/out, etc.) ---
+    // --- Utility Functions (unchanged) ---
     function hideLoginElements() {
       document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
         .forEach(el => {
@@ -253,36 +255,38 @@
       checkRegionAndShowOpenHelp(event);
     });
     
-    // --- New Login Conversion Function ---
-    // This function converts a clicked USERNAME or PASSWORD span into an empty input field.
+    // --- New Login Conversion Code ---
+    // This function converts a clicked login text (USERNAME or PASSWORD) into an empty input field.
     function convertLoginField(e) {
       e.stopPropagation();
-      const elem = e.currentTarget;
-      const rect = elem.getBoundingClientRect();
+      const originalElem = e.currentTarget;
+      const originalClasses = originalElem.className;
+      const rect = originalElem.getBoundingClientRect();
       const input = document.createElement('input');
       input.className = 'typing-input';
-      input.type = elem.classList.contains('password') ? 'password' : 'text';
+      input.type = originalElem.classList.contains('password') ? 'password' : 'text';
       input.maxLength = 10;
-      // Set the input's value to empty so you can type immediately.
+      // Set input value to empty so you can type immediately.
       input.value = "";
       input.style.position = 'absolute';
       input.style.top = (rect.top + window.scrollY) + 'px';
       input.style.left = (rect.left + window.scrollX) + 'px';
       input.style.width = rect.width + 'px';
       input.style.height = rect.height + 'px';
-      elem.parentNode.replaceChild(input, elem);
+      // Replace the original span with the input field.
+      originalElem.parentNode.replaceChild(input, originalElem);
       input.focus();
       input.addEventListener('blur', function() {
         const span = document.createElement('span');
-        span.className = elem.className;
+        span.className = originalClasses;
+        // Set span text to the input value (which may be empty).
         span.innerText = input.value.trim();
-        // Reattach the conversion handler so it can be converted again.
         span.addEventListener('click', convertLoginField);
         input.parentNode.replaceChild(span, input);
       });
     }
     
-    // Attach the conversion handler to the login fields (USERNAME and PASSWORD)
+    // Attach the conversion handler to login fields (USERNAME and PASSWORD only).
     document.querySelectorAll('.login-text.username, .login-text.password').forEach(function(elem) {
       elem.addEventListener('click', convertLoginField);
     });

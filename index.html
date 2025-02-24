@@ -7,36 +7,9 @@
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
   <style>
+    /* Minimal inline overrides; the bulk of styling remains in styles.css */
     .login-text {
-      position: absolute;
-      left: 6.41vw;
-      z-index: 10;
-      transform: translateZ(0);
-      overflow: visible;
-      font-family: 'Distill Expanded', sans-serif;
-      color: #111111;
-      letter-spacing: 0.34vw;
-      font-size: 0.46rem;
-      line-height: 1.2;
-      padding: 0.1rem 0;
-      text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    }
-    input.typing-input {
-      font-family: 'Distill Expanded', sans-serif;
-      font-size: 0.46rem;
-      line-height: 1.2;
-      color: #111111;
-      letter-spacing: 0.34vw;
-      border: none;
-      outline: none;
-      background-color: transparent;
-      position: absolute;
-      caret-color: #d1d1d1;
-      padding: 0.1rem 0;
-      width: calc(22.48vw + 4vw);
-      height: auto;
-      box-sizing: content-box;
-      text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -78,15 +51,18 @@
   <div class="line account-line acc-line-4 hidden"></div>
 
   <script>
-    let inactivityTimer;
+    // Global state variables
     let fadeCompleted = false;
     let initialClickCompleted = false;
-    let lastMouseEvent = null;
     let inputInFocus = false;
     let accountCreationActive = false;
     let transitionInProgress = false;
+    let inactivityTimer;
+    let lastMouseEvent = null;
 
-    // --- Fade-in/out Utility Functions ---
+    /* -------------------- Utility Functions -------------------- */
+
+    // Fade out login elements (login area spans and lines)
     function hideLoginElements() {
       document.querySelectorAll(
         '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
@@ -95,14 +71,17 @@
         el.classList.remove('visible');
       });
     }
+    // Fade in login elements
     function showLoginElements() {
       if (accountCreationActive || transitionInProgress) return;
-      document.querySelectorAll('.username, .password, .login-line, .login-line-second')
-        .forEach(el => {
-          el.classList.add('visible');
-          el.classList.remove('hidden');
-        });
+      document.querySelectorAll(
+        '.username, .password, .login-line, .login-line-second'
+      ).forEach(el => {
+        el.classList.add('visible');
+        el.classList.remove('hidden');
+      });
     }
+    // Reset inactivity timer (to auto-hide login elements)
     function resetInactivityTimer() {
       if (fadeCompleted && !accountCreationActive && !transitionInProgress && !inputInFocus) {
         clearTimeout(inactivityTimer);
@@ -110,27 +89,27 @@
         inactivityTimer = setTimeout(hideLoginElements, 20000);
       }
     }
+    // Hide the OPEn/HELP texts
     function hideOpenHelp() {
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
-      openText.classList.remove('visible');
       openText.classList.add('hidden');
-      helpText.classList.remove('visible');
+      openText.classList.remove('visible');
       helpText.classList.add('hidden');
+      helpText.classList.remove('visible');
     }
+    // Show OPEn/HELP texts based on mouse position
     function showOpenHelp() {
-      if (lastMouseEvent) {
-        checkRegionAndShowOpenHelp(lastMouseEvent);
-      }
+      if (lastMouseEvent) checkRegionAndShowOpenHelp(lastMouseEvent);
     }
-    function checkRegionAndShowOpenHelp(event) {
+    function checkRegionAndShowOpenHelp(e) {
       if (!fadeCompleted || inputInFocus || accountCreationActive || transitionInProgress) return;
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
       if (document.querySelector('.username').classList.contains('hidden')) return;
       const boundingTop = 28.5, boundingBottom = 84, boundingLeft = 6.38, boundingRight = 29;
       const { innerWidth, innerHeight } = window;
-      const { clientX, clientY } = event;
+      const { clientX, clientY } = e;
       const topPx = (boundingTop / 100) * innerHeight;
       const bottomPx = (boundingBottom / 100) * innerHeight;
       const leftPx = (boundingLeft / 100) * innerWidth;
@@ -148,17 +127,19 @@
         helpText.classList.add('hidden');
       }
     }
-    // --- End Fade-in/out Functions ---
 
-    // --- Account Creation View Functions ---
+    /* -------------------- Account Creation Functions -------------------- */
+
     function openAccountCreation() {
       if (accountCreationActive || transitionInProgress) return;
       transitionInProgress = true;
-      document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
-        .forEach(el => {
-          el.classList.add('hidden');
-          el.classList.remove('visible');
-        });
+      // Fade out login area elements
+      document.querySelectorAll(
+        '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
+      ).forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('visible');
+      });
       setTimeout(() => {
         document.querySelectorAll('.account-text, .account-line')
           .forEach(el => {
@@ -169,6 +150,7 @@
         transitionInProgress = false;
       }, 500);
     }
+
     function revertToLogin() {
       if (!accountCreationActive) return;
       document.querySelectorAll('.account-text, .account-line')
@@ -190,8 +172,10 @@
         accountCreationActive = false;
       }, 500);
     }
-    // --- End Account Creation Functions ---
 
+    /* -------------------- Global Event Handlers -------------------- */
+
+    // Fullscreen change listener
     document.addEventListener('fullscreenchange', () => {
       if (!document.fullscreenElement) {
         document.body.classList.remove('fullscreen');
@@ -199,30 +183,34 @@
         document.body.classList.add('fullscreen');
       }
     });
-    document.addEventListener('click', event => {
+
+    // Global click handler: handles initial fullscreen/fade-in and reversion from account creation
+    document.addEventListener('click', (e) => {
+      // If in account creation, check if click is within revert region
       if (accountCreationActive) {
         const { innerWidth, innerHeight } = window;
         const leftBoundary = 0, rightBoundary = (6.37 / 100) * innerWidth;
         const topBoundary = (28.5 / 100) * innerHeight, bottomBoundary = (84 / 100) * innerHeight;
-        if (event.clientX >= leftBoundary &&
-            event.clientX <= rightBoundary &&
-            event.clientY >= topBoundary &&
-            event.clientY <= bottomBoundary) {
+        if (e.clientX >= leftBoundary &&
+            e.clientX <= rightBoundary &&
+            e.clientY >= topBoundary &&
+            e.clientY <= bottomBoundary) {
           revertToLogin();
           return;
         }
       }
+      // Request fullscreen if clicking near edge
       const edgeThreshold = 10;
-      const { clientX, clientY } = event;
+      const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
-      const isNearEdge = clientX <= edgeThreshold ||
-                         clientX >= innerWidth - edgeThreshold ||
-                         clientY <= edgeThreshold ||
-                         clientY >= innerHeight - edgeThreshold;
-      if (isNearEdge && !document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
+      if (clientX <= edgeThreshold || clientX >= innerWidth - edgeThreshold ||
+          clientY <= edgeThreshold || clientY >= innerHeight - edgeThreshold) {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen();
+        }
         return;
       }
+      // Initial click triggers fullscreen and fade-in
       if (!initialClickCompleted) {
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen();
@@ -235,110 +223,111 @@
         initialClickCompleted = true;
       }
     });
-    document.addEventListener('mousemove', event => {
-      lastMouseEvent = event;
+
+    document.addEventListener('mousemove', (e) => {
+      lastMouseEvent = e;
       resetInactivityTimer();
-      checkRegionAndShowOpenHelp(event);
+      checkRegionAndShowOpenHelp(e);
     });
 
-    // --- Login Input Click Handler (for login area only) ---
+    /* -------------------- Login Input Handler -------------------- */
+
+    // When a login area span is clicked, replace it with an input field
     function attachLoginClickHandler(element) {
-      element.addEventListener('click', function (event) {
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-        // Convert this login span to an input field immediately
-        if (this.classList.contains('username') || this.classList.contains('password')) {
-          const parentRect = this.getBoundingClientRect();
-          const input = document.createElement('input');
-          input.type = this.classList.contains('password') ? 'password' : 'text';
-          input.maxLength = 10;
-          input.className = 'typing-input';
-          input.style.top = `${parentRect.top + window.scrollY}px`;
-          input.style.left = `${parentRect.left + window.scrollX}px`;
-          input.style.width = `calc(${parentRect.width}px + 4vw)`;
-          input.style.height = `${parentRect.height}px`;
-          input.addEventListener('focus', function () {
-            inputInFocus = true;
-            hideOpenHelp();
-          });
-          input.addEventListener('blur', function () {
-            inputInFocus = false;
-            const span = document.createElement('span');
-            span.className = element.className;
-            span.innerText = input.value.trim() || element.innerText;
-            input.replaceWith(span);
-            attachLoginClickHandler(span);
-            showOpenHelp();
-          });
-          this.replaceWith(input);
-          input.focus();
-        }
+      element.addEventListener('click', function(e) {
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        if (accountCreationActive || transitionInProgress) return;
+        const rect = this.getBoundingClientRect();
+        const input = document.createElement('input');
+        input.className = 'typing-input';
+        input.type = this.classList.contains('password') ? 'password' : 'text';
+        input.maxLength = 10;
+        input.style.top = (rect.top + window.scrollY) + 'px';
+        input.style.left = (rect.left + window.scrollX) + 'px';
+        input.style.width = `calc(${rect.width}px + 4vw)`;
+        input.style.height = rect.height + 'px';
+        // When the input gains focus, mark inputInFocus true
+        input.addEventListener('focus', function(e) {
+          inputInFocus = true;
+          hideOpenHelp();
+          e.stopPropagation();
+        });
+        // On blur, replace the input with a span that shows the typed text
+        input.addEventListener('blur', function() {
+          inputInFocus = false;
+          const span = document.createElement('span');
+          span.className = element.className;
+          span.textContent = input.value.trim() || element.textContent;
+          input.parentNode.replaceChild(span, input);
+          attachLoginClickHandler(span);
+          showOpenHelp();
+        });
+        this.parentNode.replaceChild(input, this);
+        input.focus();
       });
     }
-    // Attach login handler to login elements (excluding account creation ones)
     document.querySelectorAll('.login-text:not(.account-text)').forEach(attachLoginClickHandler);
-    // --- End Login Input Handler ---
 
-    // --- Account Creation Input Click Handler ---
+    /* -------------------- Account Creation Input Handler -------------------- */
+
+    // When an account creation span is clicked, convert it to an input field.
     function addAccountClickHandler(element) {
-      element.addEventListener('click', function (event) {
-        event.stopPropagation();
-        if (accountCreationActive) {
-          const parentRect = this.getBoundingClientRect();
-          const input = document.createElement('input');
-          if (this.innerText.includes('PASSWORD')) {
-            input.type = 'password';
-            input.setAttribute('autocomplete', 'new-password');
-          } else {
-            // For both "YOUR E-MAIL" and "ADD USERNAME", force plain text input
-            input.type = 'text';
-            input.setAttribute('autocomplete', 'off');
-            input.setAttribute('autocapitalize', 'off');
-            input.setAttribute('autocorrect', 'off');
-            input.spellcheck = false;
-            input.setAttribute('inputmode', 'text');
-            // For "ADD USERNAME", add temporary readonly hack to disable "Hide My Email"
-            if (this.innerText.trim().toUpperCase() === "ADD USERNAME") {
-              input.setAttribute('readonly', 'readonly');
-              input.addEventListener('focus', function () {
-                input.removeAttribute('readonly');
-              });
-            }
+      element.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (!accountCreationActive) return;
+        const rect = this.getBoundingClientRect();
+        const input = document.createElement('input');
+        input.className = 'typing-input';
+        if (this.textContent.includes('PASSWORD')) {
+          input.type = 'password';
+          input.setAttribute('autocomplete', 'new-password');
+        } else {
+          // For YOUR E-MAIL and ADD USERNAME, force plain text input.
+          input.type = 'text';
+          input.setAttribute('autocomplete', 'off');
+          input.setAttribute('autocapitalize', 'off');
+          input.setAttribute('autocorrect', 'off');
+          input.spellcheck = false;
+          input.setAttribute('inputmode', 'text');
+          // For "ADD USERNAME", add temporary readonly hack to prevent iOS "Hide My Email"
+          if (this.textContent.trim().toUpperCase() === "ADD USERNAME") {
+            input.setAttribute('readonly', 'readonly');
+            input.addEventListener('focus', function() {
+              input.removeAttribute('readonly');
+            });
           }
-          input.maxLength = 10;
-          input.className = 'typing-input';
-          input.style.top = `${parentRect.top + window.scrollY}px`;
-          input.style.left = `${parentRect.left + window.scrollX}px`;
-          input.style.width = `calc(${parentRect.width}px + 4vw)`;
-          input.style.height = `${parentRect.height}px`;
-          input.addEventListener('focus', function () {
-            inputInFocus = true;
-          });
-          input.addEventListener('blur', function () {
-            inputInFocus = false;
-            const span = document.createElement('span');
-            span.className = element.className;
-            span.innerText = input.value.trim() || element.innerText;
-            input.replaceWith(span);
-            addAccountClickHandler(span);
-          });
-          this.replaceWith(input);
-          input.focus();
         }
+        input.maxLength = 10;
+        input.style.top = (rect.top + window.scrollY) + 'px';
+        input.style.left = (rect.left + window.scrollX) + 'px';
+        input.style.width = `calc(${rect.width}px + 4vw)`;
+        input.style.height = rect.height + 'px';
+        input.addEventListener('focus', function(e) {
+          inputInFocus = true;
+          e.stopPropagation();
+        });
+        input.addEventListener('blur', function() {
+          inputInFocus = false;
+          const span = document.createElement('span');
+          span.className = element.className;
+          span.textContent = input.value.trim() || element.textContent;
+          input.parentNode.replaceChild(span, input);
+          addAccountClickHandler(span);
+        });
+        this.parentNode.replaceChild(input, this);
+        input.focus();
       });
     }
-    // Attach account creation handler to account creation elements
-    document.querySelectorAll('.account-text').forEach(function (element) {
-      addAccountClickHandler(element);
-    });
-    // --- End Account Creation Input Handler ---
+    document.querySelectorAll('.account-text').forEach(addAccountClickHandler);
 
-    // --- OPEn Click Handler ---
-    document.querySelector('.open-text').addEventListener('click', function (e) {
+    /* -------------------- OPEn Button Handler -------------------- */
+
+    document.querySelector('.open-text').addEventListener('click', function(e) {
       e.stopPropagation();
       openAccountCreation();
     });
-    // --- End OPEn Handler ---
+    /* -------------------- End OPEn Handler -------------------- */
   </script>
 </body>
 </html>

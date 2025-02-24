@@ -6,6 +6,7 @@
   <title>IOUL</title>
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
+
   <style>
     .login-text {
       position: absolute;
@@ -80,7 +81,7 @@
   <div class="line account-line acc-line-4 hidden"></div>
   
   <script>
-    // Global state variables (we keep these unchanged)
+    // Global state variables (unchanged)
     let inactivityTimer;
     let fadeCompleted = false;
     let initialClickCompleted = false;
@@ -89,7 +90,7 @@
     let accountCreationActive = false;
     let transitionInProgress = false;
     
-    // --- Utility Functions (unchanged) ---
+    // (All your existing functions for fade, fullscreen, account creation, etc. remain unchanged.)
     function hideLoginElements() {
       document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
         .forEach(el => {
@@ -105,6 +106,9 @@
           el.classList.add('visible');
           el.classList.remove('hidden');
         });
+      if (!inputInFocus && lastMouseEvent) {
+        checkRegionAndShowOpenHelp(lastMouseEvent);
+      }
     }
     
     function resetInactivityTimer() {
@@ -150,7 +154,7 @@
       }
     }
     
-    // --- Account Creation Functions (unchanged) ---
+    // (Account creation functions remain unchanged.)
     function openAccountCreation() {
       if (accountCreationActive || transitionInProgress) return;
       transitionInProgress = true;
@@ -251,48 +255,46 @@
       checkRegionAndShowOpenHelp(event);
     });
     
-    // NEW login conversion code: convert login field to input immediately on click
-    function convertLoginField(e) {
-      e.stopPropagation();
-      let elem = e.currentTarget;
-      let rect = elem.getBoundingClientRect();
-      let input = document.createElement('input');
-      input.className = 'typing-input';
-      input.type = elem.classList.contains('password') ? 'password' : 'text';
-      input.maxLength = 10;
-      // Set the input value to empty
-      input.value = "";
-      // Position the input exactly where the span was
-      input.style.position = 'absolute';
-      input.style.top = (rect.top + window.scrollY) + 'px';
-      input.style.left = (rect.left + window.scrollX) + 'px';
-      input.style.width = rect.width + 'px';
-      input.style.height = rect.height + 'px';
+    // NEW Approach: Use event delegation on document.body for login fields
+    document.body.addEventListener('click', function(e) {
+      // If account creation is active, ignore
+      if (accountCreationActive) return;
       
-      // Debug log:
-      console.log("Converting login field to input", elem);
-      
-      // Replace the span with the input and focus it.
-      elem.parentNode.replaceChild(input, elem);
-      input.focus();
-      
-      // On blur, convert back to a span
-      input.addEventListener('blur', function() {
-        let span = document.createElement('span');
-        span.className = elem.className;
-        // Use what the user typed (or leave empty if nothing)
-        span.innerText = input.value.trim();
-        span.addEventListener('click', convertLoginField, false);
-        input.parentNode.replaceChild(span, input);
-      }, false);
-    }
+      let target = e.target;
+      // Check if the clicked element is a login-text span with username or password.
+      if (target.classList.contains('login-text') &&
+          (target.classList.contains('username') || target.classList.contains('password'))) {
+        // Prevent the event from bubbling further.
+        e.stopPropagation();
+        // Get the bounding rectangle.
+        let rect = target.getBoundingClientRect();
+        // Create an input field.
+        let input = document.createElement('input');
+        input.className = 'typing-input';
+        input.type = target.classList.contains('password') ? 'password' : 'text';
+        input.maxLength = 10;
+        // Set input value to empty.
+        input.value = "";
+        input.style.position = 'absolute';
+        input.style.top = (rect.top + window.scrollY) + 'px';
+        input.style.left = (rect.left + window.scrollX) + 'px';
+        input.style.width = rect.width + 'px';
+        input.style.height = rect.height + 'px';
+        // Replace the span with the input.
+        target.parentNode.replaceChild(input, target);
+        input.focus();
+        input.addEventListener('blur', function() {
+          // On blur, create a new span with the entered text.
+          let span = document.createElement('span');
+          span.className = target.className;
+          span.innerText = input.value.trim();
+          input.parentNode.replaceChild(span, input);
+          // (No need to reattach listener because our delegation handles it.)
+        });
+      }
+    }, false);
     
-    // Attach the new conversion handler to login fields.
-    document.querySelectorAll('.login-text.username, .login-text.password').forEach(function(elem) {
-      elem.addEventListener('click', convertLoginField, false);
-    });
-    
-    // Account creation conversion code (unchanged)
+    // Account Creation Conversion Code (unchanged)
     function addAccountClickHandler(element) {
       element.addEventListener('click', function () {
         if (accountCreationActive) {
@@ -349,6 +351,7 @@
       e.stopPropagation();
       openAccountCreation();
     });
+    
   </script>
 </body>
 </html>

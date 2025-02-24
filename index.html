@@ -251,6 +251,7 @@
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
+
       const isNearEdge =
         clientX <= edgeThreshold ||
         clientX >= innerWidth - edgeThreshold ||
@@ -285,13 +286,11 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // --- Login Conversion Code (Original) ---
+    // Login input click handler (for USERnAME and PASSWORD)
     document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
       element.addEventListener('click', function () {
-        if (
-          fadeCompleted &&
-          (this.classList.contains('username') || this.classList.contains('password'))
-        ) {
+        // Removed fadeCompleted condition so the span becomes editable immediately
+        if (this.classList.contains('username') || this.classList.contains('password')) {
           const parentRect = this.getBoundingClientRect();
           const input = document.createElement('input');
           input.type = this.classList.contains('password') ? 'password' : 'text';
@@ -313,9 +312,7 @@
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
-
             showOpenHelp();
-
             addClickHandler(span);
           });
 
@@ -324,9 +321,8 @@
         }
       });
     });
-    // --- End Login Conversion Code ---
 
-    // --- Account Creation Conversion Code (Unchanged) ---
+    // Account creation input click handler (for YOUR E-MA1L, ADD USERnAME, etc.)
     function addAccountClickHandler(element) {
       element.addEventListener('click', function () {
         if (accountCreationActive) {
@@ -336,12 +332,14 @@
             input.type = 'password';
             input.setAttribute('autocomplete', 'new-password');
           } else {
+            // For both "YOUR E-MA1L" and "ADD USERnAME", force a plain text input
             input.type = 'text';
             input.setAttribute('autocomplete', 'off');
             input.setAttribute('autocapitalize', 'off');
             input.setAttribute('autocorrect', 'off');
             input.spellcheck = false;
             input.setAttribute('inputmode', 'text');
+            // If this is the "ADD USERnAME" field, add a temporary readonly attribute
             if (this.innerText.trim().toUpperCase() === "ADD USERnAME") {
               input.setAttribute('readonly', 'readonly');
               input.addEventListener('focus', function() {
@@ -374,11 +372,13 @@
         }
       });
     }
-    
+
+    // Attach account creation click handler to account texts
     document.querySelectorAll('.account-text').forEach(function (element) {
       addAccountClickHandler(element);
     });
-    
+
+    // Attach click handler for OPEn to open account creation view
     document.querySelector('.open-text').addEventListener('click', function (e) {
       e.stopPropagation();
       openAccountCreation();

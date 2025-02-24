@@ -6,7 +6,6 @@
   <title>IOUL</title>
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
-
   <style>
     .login-text {
       position: absolute;
@@ -80,7 +79,7 @@
   <div class="line account-line acc-line-4 hidden"></div>
   
   <script>
-    // Global state variables (unchanged)
+    // Global state variables remain unchanged.
     let inactivityTimer;
     let fadeCompleted = false;
     let initialClickCompleted = false;
@@ -89,7 +88,7 @@
     let accountCreationActive = false;
     let transitionInProgress = false;
     
-    // --- Utility Functions (unchanged) ---
+    // --- Utility Functions (fade in/out, etc.) ---
     function hideLoginElements() {
       document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
         .forEach(el => {
@@ -129,31 +128,17 @@
     
     function checkRegionAndShowOpenHelp(event) {
       if (!fadeCompleted || inputInFocus || accountCreationActive || transitionInProgress) return;
-    
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
-    
       if (document.querySelector('.username').classList.contains('hidden')) return;
-    
-      const boundingTop = 28.5;
-      const boundingBottom = 84;
-      const boundingLeft = 6.38;
-      const boundingRight = 29;
-    
+      const boundingTop = 28.5, boundingBottom = 84, boundingLeft = 6.38, boundingRight = 29;
       const { innerWidth, innerHeight } = window;
       const { clientX, clientY } = event;
-    
       const topPx = (boundingTop / 100) * innerHeight;
       const bottomPx = (boundingBottom / 100) * innerHeight;
       const leftPx = (boundingLeft / 100) * innerWidth;
       const rightPx = (boundingRight / 100) * innerWidth;
-    
-      const isInRegion =
-        clientY >= topPx &&
-        clientY <= bottomPx &&
-        clientX >= leftPx &&
-        clientX <= rightPx;
-    
+      const isInRegion = clientY >= topPx && clientY <= bottomPx && clientX >= leftPx && clientX <= rightPx;
       if (isInRegion) {
         openText.classList.remove('hidden');
         openText.classList.add('visible');
@@ -268,9 +253,9 @@
       checkRegionAndShowOpenHelp(event);
     });
     
-    // NEW Login Conversion Function
-    // This function converts a clicked login field (USERNAME or PASSWORD) into an empty input field.
-    function convertLoginHandler(e) {
+    // --- New Login Conversion Function ---
+    // This function converts a clicked USERNAME or PASSWORD span into an empty input field.
+    function convertLoginField(e) {
       e.stopPropagation();
       const elem = e.currentTarget;
       const rect = elem.getBoundingClientRect();
@@ -278,29 +263,28 @@
       input.className = 'typing-input';
       input.type = elem.classList.contains('password') ? 'password' : 'text';
       input.maxLength = 10;
-      // Make the input empty so you can type immediately.
+      // Set the input's value to empty so you can type immediately.
       input.value = "";
       input.style.position = 'absolute';
       input.style.top = (rect.top + window.scrollY) + 'px';
       input.style.left = (rect.left + window.scrollX) + 'px';
       input.style.width = rect.width + 'px';
       input.style.height = rect.height + 'px';
-      // Replace the element with the input and focus it.
       elem.parentNode.replaceChild(input, elem);
       input.focus();
       input.addEventListener('blur', function() {
         const span = document.createElement('span');
         span.className = elem.className;
-        // Set the span text to the entered value (or empty if nothing)
         span.innerText = input.value.trim();
-        span.addEventListener('click', convertLoginHandler);
+        // Reattach the conversion handler so it can be converted again.
+        span.addEventListener('click', convertLoginField);
         input.parentNode.replaceChild(span, input);
       });
     }
     
-    // Attach convertLoginHandler to login fields (only USERNAME and PASSWORD)
+    // Attach the conversion handler to the login fields (USERNAME and PASSWORD)
     document.querySelectorAll('.login-text.username, .login-text.password').forEach(function(elem) {
-      elem.addEventListener('click', convertLoginHandler);
+      elem.addEventListener('click', convertLoginField);
     });
     
     // --- Account Creation Conversion Code (unchanged) ---

@@ -178,13 +178,11 @@
     function openAccountCreation() {
       if (accountCreationActive || transitionInProgress) return;
       transitionInProgress = true;
-      // Fade out login components
       document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
         .forEach(el => {
           el.classList.add('hidden');
           el.classList.remove('visible');
         });
-      // After fade-out, fade in account creation components (texts and lines together)
       setTimeout(() => {
         document.querySelectorAll('.account-text, .account-line')
           .forEach(el => {
@@ -199,13 +197,11 @@
     // Revert back to Login view when clicking in the designated region
     function revertToLogin() {
       if (!accountCreationActive) return;
-      // Fade out account creation components
       document.querySelectorAll('.account-text, .account-line')
         .forEach(el => {
           el.classList.add('hidden');
           el.classList.remove('visible');
         });
-      // After fade-out, fade in login components
       setTimeout(() => {
         document.querySelectorAll('.username, .password, .login-line, .login-line-second')
           .forEach(el => {
@@ -230,7 +226,6 @@
     });
 
     document.addEventListener('click', event => {
-      // If in account creation view, check if click is in the revert region
       if (accountCreationActive) {
         const { innerWidth, innerHeight } = window;
         const leftBoundary = 0;
@@ -251,18 +246,15 @@
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
-
       const isNearEdge =
         clientX <= edgeThreshold ||
         clientX >= innerWidth - edgeThreshold ||
         clientY <= edgeThreshold ||
         clientY >= innerHeight - edgeThreshold;
-
       if (isNearEdge && !document.fullscreenElement) {
         document.documentElement.requestFullscreen();
         return;
       }
-
       if (!initialClickCompleted) {
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen();
@@ -270,12 +262,10 @@
         setTimeout(() => {
           document.body.classList.add('fade-in-trigger');
         }, 1000);
-
         setTimeout(() => {
           fadeCompleted = true;
           inactivityTimer = setTimeout(hideLoginElements, 20000);
         }, 4000);
-
         initialClickCompleted = true;
       }
     });
@@ -286,10 +276,10 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // Login input click handler (for USERnAME and PASSWORD)
+    // Original Login Conversion Code (fadeCompleted check removed)
     document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
       element.addEventListener('click', function () {
-        // Removed fadeCompleted condition so the span becomes editable immediately
+        // Remove fadeCompleted check so login fields convert immediately
         if (this.classList.contains('username') || this.classList.contains('password')) {
           const parentRect = this.getBoundingClientRect();
           const input = document.createElement('input');
@@ -312,7 +302,9 @@
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
+
             showOpenHelp();
+
             addClickHandler(span);
           });
 
@@ -322,7 +314,7 @@
       });
     });
 
-    // Account creation input click handler (for YOUR E-MA1L, ADD USERnAME, etc.)
+    // Account Creation Conversion Code (unchanged)
     function addAccountClickHandler(element) {
       element.addEventListener('click', function () {
         if (accountCreationActive) {
@@ -332,14 +324,12 @@
             input.type = 'password';
             input.setAttribute('autocomplete', 'new-password');
           } else {
-            // For both "YOUR E-MA1L" and "ADD USERnAME", force a plain text input
             input.type = 'text';
             input.setAttribute('autocomplete', 'off');
             input.setAttribute('autocapitalize', 'off');
             input.setAttribute('autocorrect', 'off');
             input.spellcheck = false;
             input.setAttribute('inputmode', 'text');
-            // If this is the "ADD USERnAME" field, add a temporary readonly attribute
             if (this.innerText.trim().toUpperCase() === "ADD USERnAME") {
               input.setAttribute('readonly', 'readonly');
               input.addEventListener('focus', function() {
@@ -372,13 +362,11 @@
         }
       });
     }
-
-    // Attach account creation click handler to account texts
+    
     document.querySelectorAll('.account-text').forEach(function (element) {
       addAccountClickHandler(element);
     });
-
-    // Attach click handler for OPEn to open account creation view
+    
     document.querySelector('.open-text').addEventListener('click', function (e) {
       e.stopPropagation();
       openAccountCreation();

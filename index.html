@@ -294,9 +294,11 @@
     function loginClickHandler(event) {
       event.stopPropagation();
       console.log("Login text clicked:", this.className);
-      const parentRect = this.getBoundingClientRect();
+      // Capture the original span element
+      const originalSpan = this;
+      const parentRect = originalSpan.getBoundingClientRect();
       const input = document.createElement('input');
-      input.type = this.classList.contains('password') ? 'password' : 'text';
+      input.type = originalSpan.classList.contains('password') ? 'password' : 'text';
       input.maxLength = 10;
       input.className = 'typing-input';
       input.style.top = `${parentRect.top + window.scrollY}px`;
@@ -309,17 +311,18 @@
         hideOpenHelp();
       });
 
-      input.addEventListener('blur', () => {
+      // Use a standard function so that we can refer to the captured originalSpan
+      input.addEventListener('blur', function () {
         inputInFocus = false;
         const span = document.createElement('span');
-        span.className = this.className;
-        span.innerText = input.value.trim() || this.innerText;
+        span.className = originalSpan.className;
+        span.innerText = input.value.trim() || originalSpan.innerText;
         input.replaceWith(span);
         showOpenHelp();
         attachLoginHandler(span);
       });
 
-      this.replaceWith(input);
+      originalSpan.replaceWith(input);
       input.focus();
     }
 

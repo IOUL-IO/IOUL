@@ -40,6 +40,19 @@
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
+
+    /* Modify hidden to also disable pointer events so hidden elements don’t intercept clicks */
+    .hidden {
+      opacity: 0 !important;
+      pointer-events: none;
+      transition: opacity 0.5s ease-in-out;
+    }
+    
+    .visible {
+      opacity: 1 !important;
+      pointer-events: auto;
+      transition: opacity 0.5s ease-in-out;
+    }
   </style>
 </head>
 <body class="non-fullscreen">
@@ -276,7 +289,6 @@
     });
 
     // --- Document-Level Click Handler ---
-    // Modified so that clicks on login-text elements are ignored
     document.addEventListener('click', event => {
       if (event.target.classList.contains('login-text')) {
         return; // Skip if the click is on a login field

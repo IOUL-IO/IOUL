@@ -286,44 +286,47 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // Login input click handler (for USERnAME and PASSWORD)
-    document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
-      element.addEventListener('click', function () {
-        console.log("Login text clicked: ", this.className);
-        // Removed fadeCompleted check so login inputs convert immediately upon click
-        if (this.classList.contains('username') || this.classList.contains('password')) {
-          const parentRect = this.getBoundingClientRect();
-          const input = document.createElement('input');
-          input.type = this.classList.contains('password') ? 'password' : 'text';
-          input.maxLength = 10;
-          input.className = 'typing-input';
-          input.style.top = `${parentRect.top + window.scrollY}px`;
-          input.style.left = `${parentRect.left + window.scrollX}px`;
-          input.style.width = `calc(${parentRect.width}px + 4vw)`;
-          input.style.height = `${parentRect.height}px`;
+    // --- Login Input Conversion Code ---
+    function attachLoginHandler(el) {
+      el.addEventListener('click', loginClickHandler);
+    }
 
-          input.addEventListener('focus', function () {
-            inputInFocus = true;
-            hideOpenHelp();
-          });
+    function loginClickHandler(event) {
+      event.stopPropagation();
+      console.log("Login text clicked:", this.className);
+      const parentRect = this.getBoundingClientRect();
+      const input = document.createElement('input');
+      input.type = this.classList.contains('password') ? 'password' : 'text';
+      input.maxLength = 10;
+      input.className = 'typing-input';
+      input.style.top = `${parentRect.top + window.scrollY}px`;
+      input.style.left = `${parentRect.left + window.scrollX}px`;
+      input.style.width = `calc(${parentRect.width}px + 4vw)`;
+      input.style.height = `${parentRect.height}px`;
 
-          input.addEventListener('blur', function () {
-            inputInFocus = false;
-            const span = document.createElement('span');
-            span.className = element.className;
-            span.innerText = input.value.trim() || element.innerText;
-            input.replaceWith(span);
-            showOpenHelp();
-            addClickHandler(span);
-          });
-
-          this.replaceWith(input);
-          input.focus();
-        }
+      input.addEventListener('focus', function () {
+        inputInFocus = true;
+        hideOpenHelp();
       });
-    });
 
-    // Account creation input click handler (for YOUR E-MAIL, ADD USERNAME, etc.)
+      input.addEventListener('blur', () => {
+        inputInFocus = false;
+        const span = document.createElement('span');
+        span.className = this.className;
+        span.innerText = input.value.trim() || this.innerText;
+        input.replaceWith(span);
+        showOpenHelp();
+        attachLoginHandler(span);
+      });
+
+      this.replaceWith(input);
+      input.focus();
+    }
+
+    // Attach login handler only to login elements
+    document.querySelectorAll('.username, .password').forEach(attachLoginHandler);
+
+    // --- Account Creation Input Conversion Code ---
     function addAccountClickHandler(element) {
       element.addEventListener('click', function () {
         if (accountCreationActive) {
@@ -333,14 +336,12 @@
             input.type = 'password';
             input.setAttribute('autocomplete', 'new-password');
           } else {
-            // For both "YOUR E-MA1L" and "ADD USERnAME", force a plain text input
             input.type = 'text';
             input.setAttribute('autocomplete', 'off');
             input.setAttribute('autocapitalize', 'off');
             input.setAttribute('autocorrect', 'off');
             input.spellcheck = false;
             input.setAttribute('inputmode', 'text');
-            // If this is the "ADD USERnAME" field, add a temporary readonly attribute
             if (this.innerText.trim().toUpperCase() === "ADD USERnAME") {
               input.setAttribute('readonly', 'readonly');
               input.addEventListener('focus', function() {
@@ -374,7 +375,6 @@
       });
     }
 
-    // Attach account creation click handler to account texts
     document.querySelectorAll('.account-text').forEach(function (element) {
       addAccountClickHandler(element);
     });

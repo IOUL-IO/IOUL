@@ -41,7 +41,6 @@
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
 
-    /* Modify hidden to also disable pointer events so hidden elements don’t intercept clicks */
     .hidden {
       opacity: 0 !important;
       pointer-events: none;
@@ -56,7 +55,6 @@
   </style>
 </head>
 <body class="non-fullscreen">
-  <!-- Existing Lines and Time Texts -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -71,7 +69,6 @@
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-  <!-- Login Components -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
 
@@ -81,11 +78,10 @@
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
-  <!-- Account Creation Components (initially hidden) -->
   <span class="login-text account-text email-text hidden">E-MA1L ADDRESS</span>
   <span class="login-text account-text username-text hidden">cREATE USERnAME</span>
-  <span class="login-text account-text pass-text hidden">10-LETTER PASSWORD</span>
-  <span class="login-text account-text confirm-text hidden">cOnF1RM PASSWORD</span>
+  <span class="login-text account-text pass-text hidden">10-S1gn PASSWORD</span>
+  <span class="login-text account-text confirm-text hidden">REPEAT PASSWORD</span>
 
   <div class="line account-line acc-line-1 hidden"></div>
   <div class="line account-line acc-line-2 hidden"></div>
@@ -187,13 +183,11 @@
       }
     }
 
-    // --- Login Conversion Code ---
     function attachLoginHandler(el) {
       el.addEventListener('click', loginClickHandler);
     }
 
     function loginClickHandler(event) {
-      // Prevent any other click handling (like fullscreen toggling)
       event.stopPropagation();
       console.log("Login text clicked:", this.className);
       const originalSpan = this;
@@ -226,10 +220,8 @@
       input.focus();
     }
 
-    // Attach login handler only to login elements
     document.querySelectorAll('.username, .password').forEach(attachLoginHandler);
 
-    // --- Account Creation Conversion Code ---
     function addAccountClickHandler(element) {
       element.addEventListener('click', function () {
         if (accountCreationActive) {
@@ -282,19 +274,16 @@
       addAccountClickHandler(element);
     });
 
-    // Attach click handler for OPEn to open account creation view
     document.querySelector('.open-text').addEventListener('click', function (e) {
       e.stopPropagation();
       openAccountCreation();
     });
 
-    // --- Document-Level Click Handler ---
     document.addEventListener('click', event => {
       if (event.target.classList.contains('login-text')) {
         return; // Skip if the click is on a login field
       }
       
-      // If in account creation view, check if click is in the revert region
       if (accountCreationActive) {
         const { innerWidth, innerHeight } = window;
         const leftBoundary = 0;
@@ -350,17 +339,14 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // --- Account Creation Functions ---
     function openAccountCreation() {
       if (accountCreationActive || transitionInProgress) return;
       transitionInProgress = true;
-      // Fade out login components
       document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
         .forEach(el => {
           el.classList.add('hidden');
           el.classList.remove('visible');
         });
-      // After fade-out, fade in account creation components
       setTimeout(() => {
         document.querySelectorAll('.account-text, .account-line')
           .forEach(el => {
@@ -374,13 +360,11 @@
 
     function revertToLogin() {
       if (!accountCreationActive) return;
-      // Fade out account creation components
       document.querySelectorAll('.account-text, .account-line')
         .forEach(el => {
           el.classList.add('hidden');
           el.classList.remove('visible');
         });
-      // After fade-out, fade in login components
       setTimeout(() => {
         document.querySelectorAll('.username, .password, .login-line, .login-line-second')
           .forEach(el => {

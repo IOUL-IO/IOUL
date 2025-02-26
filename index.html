@@ -311,9 +311,11 @@
         }
       });
     }
-    document.querySelectorAll('.password-reset-email-text, .password-reset-link-text').forEach(function (element) {
+    // Only attach the conversion handler to the email text, not the link text.
+    document.querySelectorAll('.password-reset-email-text').forEach(function (element) {
       addPasswordResetClickHandler(element);
     });
+    // The "password-reset-link-text" remains static.
 
     // --- Click Handlers for OPEN and HELP ---
     document.querySelector('.open-text').addEventListener('click', function (e) {

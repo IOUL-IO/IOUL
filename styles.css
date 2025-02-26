@@ -311,11 +311,15 @@ body.fullscreen .help-text {
 .password-reset-email-text {
     top: 35.2vh;
     left: 6.4vw;
+    white-space: nowrap;
+    z-index: 10;
 }
 
 .password-reset-link-text {
     top: 35.17vh;
     left: 25.57vw;
+    white-space: nowrap;
+    z-index: 20;
 }
 
 .password-reset-line {

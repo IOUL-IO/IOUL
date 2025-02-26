@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="styles.css" />
 
   <style>
-    /* Existing inline styles remain here */
     .login-text {
       position: absolute;
       left: 6.41vw;
@@ -53,7 +52,6 @@
   </style>
 </head>
 <body class="non-fullscreen">
-  <!-- Existing Lines and Time Texts -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -68,7 +66,6 @@
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-  <!-- Login Components -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
   <span class="login-text open-text hidden">OPEn</span>
@@ -76,7 +73,6 @@
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
-  <!-- Account Creation Components (existing) -->
   <span class="login-text account-text email-text hidden">E-MA1L ADDRESS</span>
   <span class="login-text account-text username-text hidden">cREATE USERnAME</span>
   <span class="login-text account-text pass-text hidden">10-S1gn PASSWORD</span>
@@ -86,7 +82,6 @@
   <div class="line account-line acc-line-3 hidden"></div>
   <div class="line account-line acc-line-4 hidden"></div>
 
-  <!-- Password Reset Components (new) -->
   <span class="login-text password-reset-email-text hidden">YOUR E-MA1L</span>
   <span class="login-text password-reset-link-text hidden">SEnD L1nK</span>
   <div class="line password-reset-line hidden"></div>
@@ -187,7 +182,6 @@
       }
     }
 
-    // --- Login Conversion Code ---
     function attachLoginHandler(el) {
       el.addEventListener('click', loginClickHandler);
     }
@@ -224,7 +218,6 @@
     }
     document.querySelectorAll('.username, .password').forEach(attachLoginHandler);
 
-    // --- Account Creation Conversion Code ---
     function addAccountClickHandler(element) {
       element.addEventListener('click', function () {
         if (accountCreationActive) {
@@ -275,7 +268,6 @@
       addAccountClickHandler(element);
     });
 
-    // --- Password Reset Conversion Code ---
     function addPasswordResetClickHandler(element) {
       element.addEventListener('click', function () {
         if (passwordResetActive) {
@@ -311,13 +303,10 @@
         }
       });
     }
-    // Only attach the conversion handler to the email text, not the link text.
     document.querySelectorAll('.password-reset-email-text').forEach(function (element) {
       addPasswordResetClickHandler(element);
     });
-    // The "password-reset-link-text" remains static.
 
-    // --- Click Handlers for OPEN and HELP ---
     document.querySelector('.open-text').addEventListener('click', function (e) {
       e.stopPropagation();
       openAccountCreation();
@@ -327,7 +316,6 @@
       openPasswordReset();
     });
 
-    // --- Document-Level Click Handler (for revert to login) ---
     document.addEventListener('click', event => {
       if (event.target.classList.contains('login-text')) {
         return;
@@ -382,7 +370,6 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // --- Functions for Opening/Closing Views ---
     function openAccountCreation() {
       if (accountCreationActive || transitionInProgress) return;
       transitionInProgress = true;

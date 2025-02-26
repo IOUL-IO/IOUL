@@ -66,11 +66,13 @@ body.fade-in-trigger .time-text {
 
 .visible {
     opacity: 1 !important;
+    pointer-events: auto;
     transition: opacity 0.5s ease-in-out;
 }
 
 .hidden {
     opacity: 0 !important;
+    pointer-events: none;
     transition: opacity 0.5s ease-in-out;
 }
 
@@ -303,4 +305,24 @@ body.fullscreen .help-text {
 .confirm-text {
     top: 59.5vh;
     left: 6.4vw;
+}
+
+/* New styles for Password Reset Area */
+.password-reset-email-text {
+    top: 35.2vh;
+    left: 6.4vw;
+}
+
+.password-reset-link-text {
+    top: 43.3vh;
+    left: 6.4vw;
+}
+
+.password-reset-line {
+    position: absolute;
+    top: 38.9vh;
+    left: 6.4vw;
+    width: 22.48vw;
+    height: 1px;
+    background-color: rgba(230, 230, 230, 0.28);
 }

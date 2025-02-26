@@ -332,7 +332,7 @@ body.fullscreen .help-text {
 }
 
 .password-reset-link-text.visible {
-    opacity: 0.6 !important;
+    opacity: 0.7 !important;
 }
 
 .password-reset-link-text.visible:hover {

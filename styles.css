@@ -315,9 +315,9 @@ body.fullscreen .help-text {
     z-index: 10;
 }
 
-.password-reset-link-text {
+.login-text.password-reset-link-text {
+    left: 25.57vw !important;
     top: 35.17vh;
-    left: 25.57vw;
     white-space: nowrap;
     z-index: 20;
 }

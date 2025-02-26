@@ -325,4 +325,13 @@ body.fullscreen .help-text {
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
+    transition-delay: 0s !important;
+}
+
+.password-reset-link-text.visible {
+    opacity: 0.6 !important;
+}
+
+.password-reset-link-text.visible:hover {
+    opacity: 1 !important;
 }

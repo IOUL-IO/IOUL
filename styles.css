@@ -307,7 +307,6 @@ body.fullscreen .help-text {
     left: 6.4vw;
 }
 
-/* New styles for Password Reset Area */
 .password-reset-email-text {
     top: 35.2vh;
     left: 6.4vw;
@@ -316,7 +315,7 @@ body.fullscreen .help-text {
 }
 
 .login-text.password-reset-link-text {
-    left: 22.17vw !important;
+    left: 22.22vw !important;
     top: 35.17vh;
     white-space: nowrap;
     z-index: 20;

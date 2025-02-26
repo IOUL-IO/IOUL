@@ -307,15 +307,14 @@ body.fullscreen .help-text {
     left: 6.4vw;
 }
 
-/* New styles for Password Reset Area */
 .password-reset-email-text {
-    top: 35.2vh;
+    top: 35.17vh;
     left: 6.4vw;
 }
 
 .password-reset-link-text {
-    top: 43.3vh;
-    left: 6.4vw;
+    top: 35.17vh;
+    left: 25.57vw;
 }
 
 .password-reset-line {

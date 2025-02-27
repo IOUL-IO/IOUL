@@ -241,7 +241,6 @@ body.fullscreen .help-text {
 .help-text.visible {
     opacity: 0.7 !important;
 }
-
 .open-text.visible:hover,
 .help-text.visible:hover {
     opacity: 1 !important;
@@ -255,7 +254,6 @@ body.fullscreen .help-text {
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
-
 .account-line.acc-line-2 {
     position: absolute;
     top: 47vh;
@@ -264,7 +262,6 @@ body.fullscreen .help-text {
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
-
 .account-line.acc-line-3 {
     position: absolute;
     top: 55.1vh;
@@ -273,7 +270,6 @@ body.fullscreen .help-text {
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
-
 .account-line.acc-line-4 {
     position: absolute;
     top: 63.2vh;
@@ -287,17 +283,14 @@ body.fullscreen .help-text {
     top: 35.2vh;
     left: 6.4vw;
 }
-
 .username-text {
     top: 43.3vh;
     left: 6.4vw;
 }
-
 .pass-text {
     top: 51.4vh;
     left: 6.4vw;
 }
-
 .confirm-text {
     top: 59.5vh;
     left: 6.4vw;
@@ -309,14 +302,12 @@ body.fullscreen .help-text {
     white-space: nowrap;
     z-index: 10;
 }
-
 .login-text.password-reset-link-text {
     left: 22.22vw !important;
     top: 35.17vh;
     white-space: nowrap;
     z-index: 20;
 }
-
 .password-reset-line {
     position: absolute;
     top: 38.9vh;
@@ -325,17 +316,15 @@ body.fullscreen .help-text {
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
-
 .password-reset-link-text.visible {
     opacity: 0.7 !important;
 }
-
 .password-reset-link-text.visible:hover {
     opacity: 1 !important;
 }
 
 /* ==============================
-   NEW: Container-based approach
+   Containers for sliding 
    ============================== */
 #login-area,
 #account-area,
@@ -345,14 +334,13 @@ body.fullscreen .help-text {
   width: 100vw;
   height: 100vh;
   transition: left 0.5s ease-in-out;
-  z-index: 10; /* below the covers, above the background */
+  z-index: 10; 
 }
-
-/* By default, the login area is at left:0 so that .login-text is at about 6.41vw from screen's edge */
+/* login area starts at left=0 (so text is at ~6.41vw) */
 #login-area {
   left: 0;
 }
-/* Keep account/password hidden to the right at 36vw */
+/* account/reset start at left=36vw, off to the right behind cover */
 #account-area {
   left: 36vw;
 }
@@ -361,7 +349,7 @@ body.fullscreen .help-text {
 }
 
 /* ==============================
-   WHITE COVERS
+   White covers
    ============================== */
 .white-cover-left {
   position: absolute;
@@ -370,14 +358,14 @@ body.fullscreen .help-text {
   width: 6.37vw;
   height: 100vh;
   background: #fff;
-  z-index: 9999; 
+  z-index: 9999;  /* on top of everything */
   pointer-events: none;
 }
 .white-cover-right {
   position: absolute;
   top: 0;
   left: 28.86vw;
-  width: calc(36vw - 28.86vw); /* ~7.14vw */
+  width: calc(36vw - 28.86vw);
   height: 100vh;
   background: #fff;
   z-index: 9999;

@@ -39,6 +39,8 @@
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
+    /* We no longer rely on simple fade for login/account creation,
+       so you’ll see changes in the JS and CSS to slide elements instead. */
     .hidden {
       opacity: 0 !important;
       pointer-events: none;
@@ -66,6 +68,12 @@
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
+  <!-- White layers added per your request -->
+  <div class="layer-one"></div>
+  <div class="layer-two"></div>
+  <!-- End of the new layers -->
+
+  <!-- Login elements -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
   <span class="login-text open-text hidden">OPEn</span>
@@ -73,15 +81,19 @@
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
-  <span class="login-text account-text email-text hidden">E-MA1L ADDRESS</span>
-  <span class="login-text account-text username-text hidden">cREATE USERnAME</span>
-  <span class="login-text account-text pass-text hidden">10-S1gn PASSWORD</span>
-  <span class="login-text account-text confirm-text hidden">REPEAT PASSWORD</span>
-  <div class="line account-line acc-line-1 hidden"></div>
-  <div class="line account-line acc-line-2 hidden"></div>
-  <div class="line account-line acc-line-3 hidden"></div>
-  <div class="line account-line acc-line-4 hidden"></div>
+  <!-- Account creation elements 
+       Removed "hidden" so they can slide in from behind layer two.
+       Instead, we’ll place them behind layer two by default in CSS. -->
+  <span class="login-text account-text email-text">E-MA1L ADDRESS</span>
+  <span class="login-text account-text username-text">cREATE USERnAME</span>
+  <span class="login-text account-text pass-text">10-S1gn PASSWORD</span>
+  <span class="login-text account-text confirm-text">REPEAT PASSWORD</span>
+  <div class="line account-line acc-line-1"></div>
+  <div class="line account-line acc-line-2"></div>
+  <div class="line account-line acc-line-3"></div>
+  <div class="line account-line acc-line-4"></div>
 
+  <!-- Password reset elements remain as they were -->
   <span class="login-text password-reset-email-text hidden">YOUR E-MA1L</span>
   <span class="login-text password-reset-link-text hidden">SEnD L1nK</span>
   <div class="line password-reset-line hidden"></div>
@@ -370,20 +382,25 @@
       checkRegionAndShowOpenHelp(event);
     });
 
+    // Modified to “slide” instead of fade out/in
     function openAccountCreation() {
       if (accountCreationActive || transitionInProgress) return;
       transitionInProgress = true;
+
+      // Slide login elements left, beneath layer one
       document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
         .forEach(el => {
-          el.classList.add('hidden');
-          el.classList.remove('visible');
+          el.classList.remove('visible', 'hidden');
+          el.classList.add('slide-left-l1');
         });
+
+      // Slide account-creation elements out from behind layer two
+      document.querySelectorAll('.account-text, .account-line')
+        .forEach(el => {
+          el.classList.remove('behind-layer-two'); // triggers CSS transition to final position
+        });
+
       setTimeout(() => {
-        document.querySelectorAll('.account-text, .account-line')
-          .forEach(el => {
-            el.classList.add('visible');
-            el.classList.remove('hidden');
-          });
         accountCreationActive = true;
         transitionInProgress = false;
       }, 500);
@@ -408,14 +425,17 @@
       }, 500);
     }
 
+    // Revert to login returns the login elements to original position
     function revertToLogin() {
       if (!accountCreationActive && !passwordResetActive) return;
+
       if (accountCreationActive) {
+        // Slide them back behind layer two
         document.querySelectorAll('.account-text, .account-line')
           .forEach(el => {
-            el.classList.add('hidden');
-            el.classList.remove('visible');
+            el.classList.add('behind-layer-two');
           });
+        accountCreationActive = false;
       }
       if (passwordResetActive) {
         document.querySelectorAll('.password-reset-email-text, .password-reset-link-text, .password-reset-line')
@@ -423,20 +443,22 @@
             el.classList.add('hidden');
             el.classList.remove('visible');
           });
+        passwordResetActive = false;
       }
+
+      // Give the slide a moment, then re-show login elements
       setTimeout(() => {
         document.querySelectorAll('.username, .password, .login-line, .login-line-second')
           .forEach(el => {
+            // Remove slide-left-l1 so it goes back to normal
+            el.classList.remove('slide-left-l1');
             el.classList.add('visible');
-            el.classList.remove('hidden');
           });
         document.querySelectorAll('.open-text, .help-text')
           .forEach(el => {
+            el.classList.remove('slide-left-l1');
             el.classList.add('visible');
-            el.classList.remove('hidden');
           });
-        accountCreationActive = false;
-        passwordResetActive = false;
       }, 500);
     }
   </script>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html
+<html 
   lang="en"
   translate="no"
   class="notranslate"
@@ -16,13 +16,13 @@
   <link rel="stylesheet" href="styles.css" />
 
   <!-- 
-    EXACT styling for login-text & input that you originally used.
-    Only .hidden/.visible remain for login inactivity fade.
+    Your original inline .login-text styling, 
+    plus input style. Exactly as you had it.
   -->
   <style>
     .login-text {
       position: absolute;
-      left: 6.41vw;
+      left: 6.41vw; 
       z-index: 10;
       transform: translateZ(0);
       overflow: visible;
@@ -51,7 +51,13 @@
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
-    /* Only login lines use these for inactivity fade */
+
+    /* 
+      .hidden/.visible => 
+      used ONLY for login inactivity fade. 
+      Account/password lines do not use these classes 
+      => no fade for them.
+    */
     .hidden {
       opacity: 0 !important;
       pointer-events: none;
@@ -66,7 +72,7 @@
 </head>
 
 <body class="non-fullscreen">
-  <!-- The lines & dashed lines, unchanged -->
+  <!-- Lines & dashed lines -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -82,46 +88,37 @@
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-  <!-- Two WHITE covers, left & right, so the sliding text is hidden behind them -->
+  <!-- White covers: left=0–6.37vw, right=28.86–36vw -->
   <div class="white-cover-left"></div>
   <div class="white-cover-right"></div>
 
-  <!-- 
-    LOGIN AREA
-    starts at left=0 (on-screen),
-    inactivity fade is used (username/password fade after 20s).
-  -->
+  <!-- LOGIN AREA: only fade for inactivity. 
+       This area starts at left=6.38vw so it's visible exactly as in original code. -->
   <div id="login-area">
     <span class="login-text username" style="top:35.17vh;">USERnAME</span>
     <span class="login-text password" style="top:43.17vh;">PASSWORD</span>
+    <!-- open/help text => fade only on inactivity; 
+         they appear after user moves mouse within bounding region -->
     <span class="login-text open-text hidden" style="top:35.17vh; left:25.57vw;">OPEn</span>
     <span class="login-text help-text hidden" style="top:43.17vh; left:25.57vw;">HELP</span>
     <div class="line login-line"></div>
     <div class="line login-line-second"></div>
   </div>
 
-  <!-- 
-    ACCOUNT CREATION AREA
-    no fade on switch,
-    starts way off to the right at left=100vw
-    so it's not “in the middle” at load. 
-  -->
+  <!-- ACCOUNT CREATION AREA: no fade, hidden behind right white layer (28.86–36vw) initially -->
   <div id="account-area">
-    <span class="login-text account-text" style="top:35.2vh;">E-MA1L ADDRESS</span>
-    <span class="login-text account-text" style="top:43.3vh;">cREATE USERnAME</span>
-    <span class="login-text account-text" style="top:51.4vh;">10-S1gn PASSWORD</span>
-    <span class="login-text account-text" style="top:59.5vh;">REPEAT PASSWORD</span>
+    <!-- No .hidden => no fade toggles -->
+    <span class="login-text account-text email-text" style="top:35.2vh;">E-MA1L ADDRESS</span>
+    <span class="login-text account-text username-text" style="top:43.3vh;">cREATE USERnAME</span>
+    <span class="login-text account-text pass-text" style="top:51.4vh;">10-S1gn PASSWORD</span>
+    <span class="login-text account-text confirm-text" style="top:59.5vh;">REPEAT PASSWORD</span>
     <div class="line account-line acc-line-1"></div>
     <div class="line account-line acc-line-2"></div>
     <div class="line account-line acc-line-3"></div>
     <div class="line account-line acc-line-4"></div>
   </div>
 
-  <!-- 
-    PASSWORD RESET AREA
-    also no fade,
-    starts off-screen at left=100vw
-  -->
+  <!-- PASSWORD RESET AREA: also no fade -->
   <div id="password-reset-area">
     <span class="login-text password-reset-email-text" style="top:35.2vh;">YOUR E-MA1L</span>
     <span class="login-text password-reset-link-text" style="top:35.17vh; left:22.22vw;">SEnD L1nK</span>
@@ -138,7 +135,7 @@
     let passwordResetActive = false;
     let transitionInProgress = false;
 
-    // --------- Inactivity fade for login text only ---------
+    // ----------------- 1) Inactivity Fade (login area only) -----------------
     function hideLoginElements() {
       document.querySelectorAll(
         '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
@@ -154,7 +151,9 @@
           el.classList.add('visible');
           el.classList.remove('hidden');
         });
-      if (!inputInFocus && lastMouseEvent) checkRegionAndShowOpenHelp(lastMouseEvent);
+      if (!inputInFocus && lastMouseEvent) {
+        checkRegionAndShowOpenHelp(lastMouseEvent);
+      }
     }
     function resetInactivityTimer() {
       if (fadeCompleted && !accountCreationActive && !passwordResetActive && !transitionInProgress) {
@@ -164,17 +163,18 @@
       }
     }
 
-    // --------- Show/Hide OPEN & HELP for login area ---------
+    // ----------------- 2) Show/Hide OPEN & HELP (mouse region) -----------------
     function hideOpenHelp() {
-      document.querySelector('.open-text').classList.add('hidden');
       document.querySelector('.open-text').classList.remove('visible');
-      document.querySelector('.help-text').classList.add('hidden');
+      document.querySelector('.open-text').classList.add('hidden');
       document.querySelector('.help-text').classList.remove('visible');
+      document.querySelector('.help-text').classList.add('hidden');
     }
-    function checkRegionAndShowOpenHelp(e) {
+    function checkRegionAndShowOpenHelp(event) {
       if (!fadeCompleted || inputInFocus || accountCreationActive || passwordResetActive || transitionInProgress) return;
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
+
       if (document.querySelector('.username').classList.contains('hidden')) return;
 
       const boundingTop = 28.5;
@@ -183,7 +183,7 @@
       const boundingRight = 29;
 
       const { innerWidth, innerHeight } = window;
-      const { clientX, clientY } = e;
+      const { clientX, clientY } = event;
 
       const topPx = (boundingTop / 100) * innerHeight;
       const bottomPx = (boundingBottom / 100) * innerHeight;
@@ -207,8 +207,8 @@
       }
     }
 
-    // --------- Click-to-edit for LOGIN fields ---------
-    function attachLoginEdit(span) {
+    // ----------------- 3) Click-to-edit for Login fields -----------------
+    function attachLoginHandler(span) {
       span.addEventListener('click', e => {
         e.stopPropagation();
         const rect = span.getBoundingClientRect();
@@ -232,16 +232,16 @@
           newSpan.innerText = input.value.trim() || span.innerText;
           input.replaceWith(newSpan);
           showLoginElements();
-          attachLoginEdit(newSpan);
+          attachLoginHandler(newSpan);
         });
         span.replaceWith(input);
         input.focus();
       });
     }
-    document.querySelectorAll('.username, .password').forEach(attachLoginEdit);
+    document.querySelectorAll('.username, .password').forEach(attachLoginHandler);
 
-    // --------- Click-to-edit for Account Creation ---------
-    function attachAccountEdit(span) {
+    // ----------------- 4) Click-to-edit for Account Creation (no fade) -----------------
+    function attachAccountHandler(span) {
       span.addEventListener('click', () => {
         if (accountCreationActive) {
           const rect = span.getBoundingClientRect();
@@ -269,19 +269,19 @@
             newSpan.className = span.className;
             newSpan.innerText = input.value.trim() || span.innerText;
             input.replaceWith(newSpan);
-            attachAccountEdit(newSpan);
+            attachAccountHandler(newSpan);
           });
-          input.addEventListener('focus', () => { inputInFocus = true; });
+          input.addEventListener('focus', () => (inputInFocus = true));
 
           span.replaceWith(input);
           input.focus();
         }
       });
     }
-    document.querySelectorAll('.account-text').forEach(attachAccountEdit);
+    document.querySelectorAll('.account-text').forEach(attachAccountHandler);
 
-    // --------- Click-to-edit for Password Reset ---------
-    function attachPasswordResetEdit(span) {
+    // ----------------- 5) Click-to-edit for Password Reset (no fade) -----------------
+    function attachResetHandler(span) {
       span.addEventListener('click', () => {
         if (passwordResetActive) {
           const rect = span.getBoundingClientRect();
@@ -305,18 +305,18 @@
             newSpan.className = span.className;
             newSpan.innerText = input.value.trim() || span.innerText;
             input.replaceWith(newSpan);
-            attachPasswordResetEdit(newSpan);
+            attachResetHandler(newSpan);
           });
-          input.addEventListener('focus', () => { inputInFocus = true; });
+          input.addEventListener('focus', () => (inputInFocus = true));
 
           span.replaceWith(input);
           input.focus();
         }
       });
     }
-    document.querySelectorAll('.password-reset-email-text, .password-reset-link-text').forEach(attachPasswordResetEdit);
+    document.querySelectorAll('.password-reset-email-text, .password-reset-link-text').forEach(attachResetHandler);
 
-    // --------- OPEN & HELP -------------
+    // ----------------- 6) OPEN & HELP triggers -----------------
     document.querySelector('.open-text').addEventListener('click', e => {
       e.stopPropagation();
       openAccountCreation();
@@ -326,11 +326,11 @@
       openPasswordReset();
     });
 
-    // --------- Document click => fullscreen or revertToLogin -------------
+    // ----------------- 7) Document click => fullscreen or revertToLogin -----------------
     document.addEventListener('click', event => {
       if (event.target.classList.contains('login-text')) return;
 
-      // if in account or password mode, check click in left strip => revert
+      // If in account or password area, check left strip => revert
       if (accountCreationActive || passwordResetActive) {
         const { innerWidth, innerHeight } = window;
         const leftBoundary = 0;
@@ -346,19 +346,22 @@
         }
       }
 
-      // check edges for fullscreen
+      // Check edges => go fullscreen
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
       const nearEdge =
-        clientX <= edgeThreshold || clientX >= innerWidth - edgeThreshold ||
-        clientY <= edgeThreshold || clientY >= innerHeight - edgeThreshold;
+        clientX <= edgeThreshold ||
+        clientX >= innerWidth - edgeThreshold ||
+        clientY <= edgeThreshold ||
+        clientY >= innerHeight - edgeThreshold;
+
       if (nearEdge && !document.fullscreenElement) {
         document.documentElement.requestFullscreen();
         return;
       }
 
-      // on first click, go fullscreen & fade in lines
+      // On first click, go fullscreen & fade lines
       if (!initialClickCompleted) {
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen();
@@ -374,26 +377,27 @@
       }
     });
 
-    // track mouse => inactivity fade & open/help
+    // track mouse => inactivity fade, open/help
     document.addEventListener('mousemove', e => {
       lastMouseEvent = e;
       resetInactivityTimer();
       checkRegionAndShowOpenHelp(e);
     });
 
-    // --------- Slide transitions (no fade for account/password) ---------
+    // ----------------- 8) Sliding Animations (no fade for account/password) -----------------
     function openAccountCreation() {
       if (transitionInProgress || accountCreationActive) return;
       transitionInProgress = true;
       accountCreationActive = true;
       passwordResetActive = false;
 
-      // Slide login area from left=0 => -6.37vw (behind left cover)
-      document.getElementById('login-area').style.left = '-6.37vw';
-      // Account area from left=100vw => 0 (on-screen).
-      document.getElementById('account-area').style.left = '0';
+      // Slide login area left behind 0–6.37 white cover
+      document.getElementById('login-area').style.left = '0vw';
+      // As soon as it crosses left=6.37, it's fully hidden
+      // Meanwhile, account area slides out from right cover (28.86–36vw)
+      document.getElementById('account-area').style.left = '6.38vw';
 
-      hideLoginElements(); // only hides login lines
+      hideLoginElements(); // no fade for account lines, only login lines
 
       setTimeout(() => {
         transitionInProgress = false;
@@ -406,12 +410,13 @@
       passwordResetActive = true;
       accountCreationActive = false;
 
-      // Slide login => behind left cover
-      document.getElementById('login-area').style.left = '-6.37vw';
-      // Slide password => from 100vw => 0
-      document.getElementById('password-reset-area').style.left = '0';
+      // Slide login area behind left cover
+      document.getElementById('login-area').style.left = '0vw';
+      // Slide password area out from right cover => 6.38vw
+      document.getElementById('password-reset-area').style.left = '6.38vw';
 
       hideLoginElements();
+
       setTimeout(() => {
         transitionInProgress = false;
       }, 500);
@@ -421,23 +426,22 @@
       if ((!accountCreationActive && !passwordResetActive) || transitionInProgress) return;
       transitionInProgress = true;
 
-      // login area => from left=-6.37vw => 0
-      document.getElementById('login-area').style.left = '0';
+      // Slide login area back to 6.38vw (its original on-screen coordinate)
+      document.getElementById('login-area').style.left = '6.38vw';
 
       if (accountCreationActive) {
         accountCreationActive = false;
-        // account => from 0 => 100vw (right off-screen)
-        document.getElementById('account-area').style.left = '100vw';
+        // Slide account area behind right cover => left=36vw
+        document.getElementById('account-area').style.left = '36vw';
       }
       if (passwordResetActive) {
         passwordResetActive = false;
-        // password => from 0 => 100vw
-        document.getElementById('password-reset-area').style.left = '100vw';
+        // Slide password area behind right cover => left=36vw
+        document.getElementById('password-reset-area').style.left = '36vw';
       }
 
       setTimeout(() => {
         transitionInProgress = false;
-        // login lines can fade in again if user moves mouse
         showLoginElements();
       }, 500);
     }

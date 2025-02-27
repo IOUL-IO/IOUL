@@ -13,28 +13,28 @@
 }
 
 :root {
-    --username-line-top: 38.9vh;
-    --password-line-top: 47vh;
-    --line-gap: 2.8vh;
+    --username-line-top: 38.9vh; 
+    --password-line-top: 47vh;  
+    --line-gap: 2.8vh; 
 }
 
 body.non-fullscreen {
-    background-color: #ffffff;
+    background-color: #ffffff; 
     min-height: 100vh;
     min-width: 100vw;
     overflow: hidden;
 }
 
 body.non-fullscreen .username {
-    top: 35.17vh;
+    top: 35.17vh; 
 }
 
 body.non-fullscreen .password {
-    top: 43.17vh;
+    top: 43.17vh; 
 }
 
 body.fullscreen .username {
-    top: 35.17vh;
+    top: 35.17vh; 
 }
 
 body.fullscreen .password {
@@ -42,9 +42,10 @@ body.fullscreen .password {
 }
 
 body.fade-in-trigger {
-    background-color: #ffffff;
+    background-color: #ffffff; 
 }
 
+/* LINES/TIME TEXT initially fade in after user clicks the first time */
 .line:not(.login-line):not(.login-line-second),
 .time-text {
     opacity: 0;
@@ -54,9 +55,10 @@ body.fade-in-trigger {
 body.fade-in-trigger .line:not(.login-line):not(.login-line-second),
 body.fade-in-trigger .time-text {
     opacity: 1;
-    transition-delay: 1s;
+    transition-delay: 1s; 
 }
 
+/* login lines/text start 0 opacity until fade completes */
 .login-line,
 .login-line-second,
 .login-text {
@@ -76,6 +78,7 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
+/* The basic lines positioning */
 .line {
     position: absolute;
     height: 1px;
@@ -83,9 +86,9 @@ body.fade-in-trigger .time-text {
 }
 
 .original {
-    top: 12.5vh;
+    top: 12.5vh; 
     left: 6.38vw;
-    width: 22.48vw;
+    width: 22.48vw; 
 }
 
 .second {
@@ -115,9 +118,9 @@ body.fade-in-trigger .time-text {
     background: linear-gradient(
         to right,
         #a1a1a1 0,
-        #a1a1a1 5px,
+        #a1a1a1 5px, 
         #ffffff 5px,
-        #ffffff 10px
+        #ffffff 10px 
     );
     background-size: 10px 1px;
 }
@@ -140,6 +143,7 @@ body.fade-in-trigger .time-text {
     width: 52.4vw;
 }
 
+/* Time text styling */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -169,6 +173,7 @@ body.fade-in-trigger .time-text {
     left: 90.1vw;
 }
 
+/* LOGIN TEXT LINES */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -177,35 +182,38 @@ body.fade-in-trigger .time-text {
     font-size: 0.47rem;
     left: 6.41vw;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    z-index: 10;
+    z-index: 10; 
 }
 
 .username {
-    top: calc(var(--username-line-top) - var(--line-gap));
+    top: calc(var(--username-line-top) - var(--line-gap)); 
 }
 
 .password {
-    top: calc(var(--password-line-top) - var(--line-gap));
+    top: calc(var(--password-line-top) - var(--line-gap)); 
 }
 
 .login-line {
     position: absolute;
-    top: var(--username-line-top);
+    top: var(--username-line-top); 
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
+    z-index: 10;
 }
 
 .login-line-second {
     position: absolute;
-    top: var(--password-line-top);
+    top: var(--password-line-top); 
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
+    z-index: 10;
 }
 
+/* OPEN and HELP */
 .open-text,
 .help-text {
     position: absolute;
@@ -216,16 +224,17 @@ body.fade-in-trigger .time-text {
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
+    z-index: 10;
 }
 
 body.non-fullscreen .open-text {
-    top: 35.17vh;
-    left: 25.57vw;
+    top: 35.17vh; 
+    left: 25.57vw;   
 }
 
 body.non-fullscreen .help-text {
-    top: 43.17vh;
-    left: 25.57vw;
+    top: 43.17vh; 
+    left: 25.57vw;   
 }
 
 body.fullscreen .open-text {
@@ -248,6 +257,7 @@ body.fullscreen .help-text {
     opacity: 1 !important;
 }
 
+/* ACCOUNT CREATION LINES */
 .account-line.acc-line-1 {
     position: absolute;
     top: 38.9vh;
@@ -285,7 +295,13 @@ body.fullscreen .help-text {
 }
 
 .account-line {
-  transition-delay: 0s !important;
+  transition: transform 1.5s ease-in-out; /* match the login transition */
+  z-index: 10;
+}
+
+.account-text {
+  transition: transform 1.5s ease-in-out; /* same as above */
+  z-index: 10;
 }
 
 .email-text {
@@ -308,6 +324,7 @@ body.fullscreen .help-text {
     left: 6.4vw;
 }
 
+/* PASSWORD RESET */
 .password-reset-email-text {
     top: 35.2vh;
     left: 6.4vw;
@@ -330,6 +347,7 @@ body.fullscreen .help-text {
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
     transition-delay: 0s !important;
+    z-index: 10;
 }
 
 .password-reset-link-text.visible {
@@ -340,39 +358,42 @@ body.fullscreen .help-text {
     opacity: 1 !important;
 }
 
-/* White layers */
-.white-layer {
-  position: absolute;
-  background-color: #ffffff;
-  pointer-events: none;
-  z-index: 100;
-}
-
+/* WHITE LAYERS */
 .layer-one {
+  position: absolute;
   top: 28.5vh;
   left: 0vw;
   width: 3.67vw;
   height: calc(84vh - 28.5vh);
+  background-color: #ffffff;
+  z-index: 50;
 }
 
 .layer-two {
+  position: absolute;
   top: 28.5vh;
   left: 28.87vw;
   width: calc(36vw - 28.87vw);
   height: calc(84vh - 28.5vh);
+  background-color: #ffffff;
+  z-index: 50;
 }
 
-/* Animation classes for sliding */
-.slide-out {
-  transition: transform 0.5s ease-in-out;
-  transform: translateX(-110vw) translateZ(0);
+/* ------------------------------------
+   SLIDE TRANSFORMS
+   ------------------------------------*/
+
+/* Slide the login area well behind layer-one. 
+   Increase or decrease 14vw as needed to ensure it's fully obscured. 
+   Also, up the transition duration above if you want it slower/faster. */
+.slide-left-l1 {
+  transform: translateX(-14vw);
+  transition: transform 1.5s ease-in-out;
 }
 
-.squished {
-  transform: translateX(29.6vw) translateZ(0);
-}
-
-.slide-in {
-  transition: transform 0.5s ease-in-out;
-  transform: translateX(0) translateZ(0);
+/* "behind-layer-two" => shift far right so it's hidden behind layer-two. 
+   20vw might be enough; adjust as needed to ensure it's not visible. */
+.behind-layer-two {
+  transform: translateX(20vw);
+  transition: transform 1.5s ease-in-out;
 }

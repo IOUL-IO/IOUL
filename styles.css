@@ -45,6 +45,7 @@ body.fade-in-trigger {
     background-color: #ffffff; 
 }
 
+/* The time-text (and other non-sliding elements) still use an opacity fade */
 .line:not(.login-line):not(.login-line-second),
 .time-text {
     opacity: 0;
@@ -57,23 +58,16 @@ body.fade-in-trigger .time-text {
     transition-delay: 1s; 
 }
 
-.login-line,
-.login-line-second,
-.login-text {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-.visible {
-    opacity: 1 !important;
-    pointer-events: auto;
-    transition: opacity 0.5s ease-in-out;
-}
-
-.hidden {
-    opacity: 0 !important;
+/* White layer covering the left 0-6.37vw area */
+.white-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6.37vw;
+    height: 100vh;
+    background: #ffffff;
+    z-index: 100;
     pointer-events: none;
-    transition: opacity 0.5s ease-in-out;
 }
 
 .line {
@@ -175,7 +169,7 @@ body.fade-in-trigger .time-text {
     color: #111111;
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
-    left: 6.41vw;
+    /* The left position is now controlled via inline styles for sliding */
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
@@ -190,7 +184,7 @@ body.fade-in-trigger .time-text {
 .login-line {
     position: absolute;
     top: var(--username-line-top); 
-    left: 6.4vw;
+    /* left is controlled inline */
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
@@ -199,7 +193,7 @@ body.fade-in-trigger .time-text {
 .login-line-second {
     position: absolute;
     top: var(--password-line-top); 
-    left: 6.4vw;
+    /* left is controlled inline */
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
@@ -212,45 +206,14 @@ body.fade-in-trigger .time-text {
     color: #111111;
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
+    /* left controlled inline */
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-body.non-fullscreen .open-text {
-    top: 35.17vh; 
-    left: 25.57vw;   
-}
-
-body.non-fullscreen .help-text {
-    top: 43.17vh; 
-    left: 25.57vw;   
-}
-
-body.fullscreen .open-text {
-    top: 35.17vh;
-    left: 25.57vw;
-}
-
-body.fullscreen .help-text {
-    top: 43.17vh;
-    left: 25.57vw;
-}
-
-.open-text.visible,
-.help-text.visible {
-    opacity: 0.7 !important;
-}
-
-.open-text.visible:hover,
-.help-text.visible:hover {
-    opacity: 1 !important;
 }
 
 .account-line.acc-line-1 {
     position: absolute;
     top: 38.9vh;
-    left: 6.4vw;
+    /* left controlled inline */
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
@@ -259,7 +222,7 @@ body.fullscreen .help-text {
 .account-line.acc-line-2 {
     position: absolute;
     top: 47vh;
-    left: 6.4vw;
+    /* left controlled inline */
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
@@ -268,7 +231,7 @@ body.fullscreen .help-text {
 .account-line.acc-line-3 {
     position: absolute;
     top: 55.1vh;
-    left: 6.4vw;
+    /* left controlled inline */
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
@@ -277,45 +240,40 @@ body.fullscreen .help-text {
 .account-line.acc-line-4 {
     position: absolute;
     top: 63.2vh;
-    left: 6.4vw;
+    /* left controlled inline */
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
 
-.account-line {
-  transition-delay: 0s !important;
-}
-
 .email-text {
     top: 35.2vh;
-    left: 6.4vw;
+    /* left controlled inline */
 }
 
 .username-text {
     top: 43.3vh;
-    left: 6.4vw;
+    /* left controlled inline */
 }
 
 .pass-text {
     top: 51.4vh;
-    left: 6.4vw;
+    /* left controlled inline */
 }
 
 .confirm-text {
     top: 59.5vh;
-    left: 6.4vw;
+    /* left controlled inline */
 }
 
 .password-reset-email-text {
     top: 35.2vh;
-    left: 6.4vw;
+    /* left controlled inline */
     white-space: nowrap;
     z-index: 10;
 }
 
-.login-text.password-reset-link-text {
-    left: 22.22vw !important;
+.password-reset-link-text {
     top: 35.17vh;
     white-space: nowrap;
     z-index: 20;
@@ -324,17 +282,8 @@ body.fullscreen .help-text {
 .password-reset-line {
     position: absolute;
     top: 38.9vh;
-    left: 6.4vw;
+    /* left controlled inline */
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
-    transition-delay: 0s !important;
-}
-
-.password-reset-link-text.visible {
-    opacity: 0.7 !important;
-}
-
-.password-reset-link-text.visible:hover {
-    opacity: 1 !important;
 }

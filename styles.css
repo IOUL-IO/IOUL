@@ -24,46 +24,41 @@ body.non-fullscreen {
     min-width: 100vw;
     overflow: hidden;
 }
-
 body.non-fullscreen .username {
     top: 35.17vh; 
 }
-
 body.non-fullscreen .password {
     top: 43.17vh; 
 }
-
 body.fullscreen .username {
     top: 35.17vh; 
 }
-
 body.fullscreen .password {
     top: 43.17vh;
 }
-
 body.fade-in-trigger {
     background-color: #ffffff; 
 }
-
 .line:not(.login-line):not(.login-line-second),
 .time-text {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
-
 body.fade-in-trigger .line:not(.login-line):not(.login-line-second),
 body.fade-in-trigger .time-text {
     opacity: 1;
     transition-delay: 1s; 
 }
-
 .login-line,
 .login-line-second,
 .login-text {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
-
+/* 
+   .visible/.hidden remain, used only for login inactivity 
+   (the code doesn't apply them to account or password lines).
+*/
 .visible {
     opacity: 1 !important;
     pointer-events: auto;
@@ -80,31 +75,26 @@ body.fade-in-trigger .time-text {
     height: 1px;
     background-color: #d1d1d1;
 }
-
 .original {
     top: 12.5vh; 
     left: 6.38vw;
     width: 22.48vw; 
 }
-
 .second {
     top: 28.5vh;
     left: 6.38vw;
     width: 22.48vw;
 }
-
 .third {
     top: 84vh;
     left: 6.38vw;
     width: 22.48vw;
 }
-
 .fourth {
     top: 12.5vh;
     left: 36vw;
     width: 57.8vw;
 }
-
 .dashed {
     position: absolute;
     height: 1px;
@@ -112,33 +102,29 @@ body.fade-in-trigger .time-text {
     left: 36vw;
     width: 52.4vw;
     background: linear-gradient(
-        to right,
-        #a1a1a1 0,
-        #a1a1a1 5px, 
-        #ffffff 5px,
-        #ffffff 10px 
+      to right,
+      #a1a1a1 0,
+      #a1a1a1 5px,
+      #ffffff 5px,
+      #ffffff 10px
     );
     background-size: 10px 1px;
 }
-
 .second-dashed {
     top: 47vh;
     left: 36vw;
     width: 52.4vw;
 }
-
 .third-dashed {
     top: 65.5vh;
     left: 36vw;
     width: 52.4vw;
 }
-
 .fourth-dashed {
     top: 84vh;
     left: 36vw;
     width: 52.4vw;
 }
-
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -147,22 +133,18 @@ body.fade-in-trigger .time-text {
     letter-spacing: 0.2vw;
     text-shadow: 0.001rem 0 0 #a1a1a1, -0.001rem 0 0 #a1a1a1;
 }
-
 .time-text {
     top: 28.5vh;
     left: 89.81vw;
 }
-
 .second-time-text {
     top: 47.04vh;
     left: 89.91vw;
 }
-
 .third-time-text {
     top: 65.51vh;
     left: 89.87vw;
 }
-
 .fourth-time-text {
     top: 83.86vh;
     left: 90.1vw;
@@ -177,15 +159,12 @@ body.fade-in-trigger .time-text {
     left: 6.41vw;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
-
 .username {
     top: calc(var(--username-line-top) - var(--line-gap)); 
 }
-
 .password {
     top: calc(var(--password-line-top) - var(--line-gap)); 
 }
-
 .login-line {
     position: absolute;
     top: var(--username-line-top); 
@@ -194,7 +173,6 @@ body.fade-in-trigger .time-text {
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
-
 .login-line-second {
     position: absolute;
     top: var(--password-line-top); 
@@ -203,7 +181,6 @@ body.fade-in-trigger .time-text {
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
-
 .open-text,
 .help-text {
     position: absolute;
@@ -215,7 +192,6 @@ body.fade-in-trigger .time-text {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
-
 body.non-fullscreen .open-text {
     top: 35.17vh; 
     left: 25.57vw;   
@@ -274,35 +250,6 @@ body.fullscreen .help-text {
     background-color: rgba(230, 230, 230, 0.28);
 }
 
-.email-text {
-    top: 35.2vh;
-    left: 6.4vw;
-}
-.username-text {
-    top: 43.3vh;
-    left: 6.4vw;
-}
-.pass-text {
-    top: 51.4vh;
-    left: 6.4vw;
-}
-.confirm-text {
-    top: 59.5vh;
-    left: 6.4vw;
-}
-
-.password-reset-email-text {
-    top: 35.2vh;
-    left: 6.4vw;
-    white-space: nowrap;
-    z-index: 10;
-}
-.login-text.password-reset-link-text {
-    left: 22.22vw !important;
-    top: 35.17vh;
-    white-space: nowrap;
-    z-index: 20;
-}
 .password-reset-line {
     position: absolute;
     top: 38.9vh;
@@ -312,7 +259,8 @@ body.fullscreen .help-text {
     background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* ============== Container-based approach ============== */
+/* Container-based approach for sliding all 3 areas.
+   No fade on area-switch, only 0.5s horizontal slide. */
 #login-area,
 #account-area,
 #password-reset-area {
@@ -320,23 +268,20 @@ body.fullscreen .help-text {
   top: 0;
   width: 100vw;
   height: 100vh;
-  /* We'll do a half-second slide. No fade for account/password lines. */
   transition: left 0.5s ease-in-out;
   z-index: 10;
 }
-/* Login starts at left=0 (so text is ~6.4vw from screen). */
 #login-area {
-  left: 0;
+  left: 0;   /* visible at first */
 }
-/* Account & password reset are off-screen to the right at left=36vw. */
 #account-area {
-  left: 36vw;
+  left: 36vw; /* offscreen to the right */
 }
 #password-reset-area {
-  left: 36vw;
+  left: 36vw; 
 }
 
-/* ============== White covers ============== */
+/* White covers. z-index=9999 so text slides under them. */
 .white-cover-left {
   position: absolute;
   top: 0;

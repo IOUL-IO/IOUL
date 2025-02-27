@@ -69,7 +69,6 @@ body.fade-in-trigger .time-text {
     pointer-events: auto;
     transition: opacity 0.5s ease-in-out;
 }
-
 .hidden {
     opacity: 0 !important;
     pointer-events: none;
@@ -221,22 +220,18 @@ body.non-fullscreen .open-text {
     top: 35.17vh; 
     left: 25.57vw;   
 }
-
 body.non-fullscreen .help-text {
     top: 43.17vh; 
     left: 25.57vw;   
 }
-
 body.fullscreen .open-text {
     top: 35.17vh;
     left: 25.57vw;
 }
-
 body.fullscreen .help-text {
     top: 43.17vh;
     left: 25.57vw;
 }
-
 .open-text.visible,
 .help-text.visible {
     opacity: 0.7 !important;
@@ -316,16 +311,8 @@ body.fullscreen .help-text {
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
-.password-reset-link-text.visible {
-    opacity: 0.7 !important;
-}
-.password-reset-link-text.visible:hover {
-    opacity: 1 !important;
-}
 
-/* ==============================
-   Containers for sliding 
-   ============================== */
+/* ============== Container-based approach ============== */
 #login-area,
 #account-area,
 #password-reset-area {
@@ -333,14 +320,15 @@ body.fullscreen .help-text {
   top: 0;
   width: 100vw;
   height: 100vh;
+  /* We'll do a half-second slide. No fade for account/password lines. */
   transition: left 0.5s ease-in-out;
-  z-index: 10; 
+  z-index: 10;
 }
-/* login area starts at left=0 (so text is at ~6.41vw) */
+/* Login starts at left=0 (so text is ~6.4vw from screen). */
 #login-area {
   left: 0;
 }
-/* account/reset start at left=36vw, off to the right behind cover */
+/* Account & password reset are off-screen to the right at left=36vw. */
 #account-area {
   left: 36vw;
 }
@@ -348,9 +336,7 @@ body.fullscreen .help-text {
   left: 36vw;
 }
 
-/* ==============================
-   White covers
-   ============================== */
+/* ============== White covers ============== */
 .white-cover-left {
   position: absolute;
   top: 0;
@@ -358,7 +344,7 @@ body.fullscreen .help-text {
   width: 6.37vw;
   height: 100vh;
   background: #fff;
-  z-index: 9999;  /* on top of everything */
+  z-index: 9999;
   pointer-events: none;
 }
 .white-cover-right {

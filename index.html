@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>IOUL</title>
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
@@ -22,6 +22,7 @@
       padding: 0.1rem 0;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
+
     input.typing-input {
       font-family: 'Distill Expanded', sans-serif;
       font-size: 0.46rem;
@@ -39,6 +40,7 @@
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
+
     .hidden {
       opacity: 0 !important;
       pointer-events: none;
@@ -52,7 +54,8 @@
   </style>
 </head>
 <body class="non-fullscreen">
-  <!-- Static lines and time texts remain unchanged -->
+
+  <!-- LINES, DASHED LINES, AND TIME TEXT -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -61,13 +64,16 @@
   <div class="line dashed second-dashed"></div>
   <div class="line dashed third-dashed"></div>
   <div class="line dashed fourth-dashed"></div>
-
   <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
   <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-  <!-- Login area elements (initially visible) -->
+  <!-- WHITE LAYERS -->
+  <div class="layer-one"></div>
+  <div class="layer-two"></div>
+
+  <!-- LOGIN ELEMENTS -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
   <span class="login-text open-text hidden">OPEn</span>
@@ -75,16 +81,18 @@
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
-  <!-- Account creation elements now use "squished" instead of "hidden" -->
-  <span class="login-text account-text email-text squished">E-MA1L ADDRESS</span>
-  <span class="login-text account-text username-text squished">cREATE USERnAME</span>
-  <span class="login-text account-text pass-text squished">10-S1gn PASSWORD</span>
-  <span class="login-text account-text confirm-text squished">REPEAT PASSWORD</span>
-  <div class="line account-line acc-line-1 squished"></div>
-  <div class="line account-line acc-line-2 squished"></div>
-  <div class="line account-line acc-line-3 squished"></div>
-  <div class="line account-line acc-line-4 squished"></div>
+  <!-- ACCOUNT CREATION ELEMENTS -->
+  <!-- Start HIDDEN and physically behind layer two -->
+  <span class="login-text account-text email-text hidden behind-layer-two">E-MA1L ADDRESS</span>
+  <span class="login-text account-text username-text hidden behind-layer-two">cREATE USERnAME</span>
+  <span class="login-text account-text pass-text hidden behind-layer-two">10-S1gn PASSWORD</span>
+  <span class="login-text account-text confirm-text hidden behind-layer-two">REPEAT PASSWORD</span>
+  <div class="line account-line acc-line-1 hidden behind-layer-two"></div>
+  <div class="line account-line acc-line-2 hidden behind-layer-two"></div>
+  <div class="line account-line acc-line-3 hidden behind-layer-two"></div>
+  <div class="line account-line acc-line-4 hidden behind-layer-two"></div>
 
+  <!-- PASSWORD RESET ELEMENTS -->
   <span class="login-text password-reset-email-text hidden">YOUR E-MA1L</span>
   <span class="login-text password-reset-link-text hidden">SEnD L1nK</span>
   <div class="line password-reset-line hidden"></div>
@@ -100,12 +108,14 @@
     let transitionInProgress = false;
 
     function hideLoginElements() {
-      document.querySelectorAll(
-        '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
-      ).forEach(el => {
-        el.classList.add('hidden');
-        el.classList.remove('visible');
-      });
+      if (!accountCreationActive && !passwordResetActive) {
+        document.querySelectorAll(
+          '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
+        ).forEach(el => {
+          el.classList.add('hidden');
+          el.classList.remove('visible');
+        });
+      }
     }
 
     function showLoginElements() {
@@ -114,8 +124,6 @@
         .forEach(el => {
           el.classList.add('visible');
           el.classList.remove('hidden');
-          el.style.transform = 'none';
-          el.classList.remove('slide-out');
         });
       if (!inputInFocus && lastMouseEvent) {
         checkRegionAndShowOpenHelp(lastMouseEvent);
@@ -147,20 +155,32 @@
 
     function checkRegionAndShowOpenHelp(event) {
       if (!fadeCompleted || inputInFocus || accountCreationActive || passwordResetActive || transitionInProgress) return;
-
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
 
-      if (document.querySelector('.username').classList.contains('hidden')) return;
+      if (document.querySelector('.username').classList.contains('hidden')) {
+        return;
+      }
 
-      const boundingTop = 28.5, boundingBottom = 84, boundingLeft = 6.38, boundingRight = 29;
+      const boundingTop = 28.5;
+      const boundingBottom = 84;
+      const boundingLeft = 6.38;
+      const boundingRight = 29;
+
       const { innerWidth, innerHeight } = window;
       const { clientX, clientY } = event;
+
       const topPx = (boundingTop / 100) * innerHeight;
       const bottomPx = (boundingBottom / 100) * innerHeight;
       const leftPx = (boundingLeft / 100) * innerWidth;
       const rightPx = (boundingRight / 100) * innerWidth;
-      const isInRegion = clientY >= topPx && clientY <= bottomPx && clientX >= leftPx && clientX <= rightPx;
+
+      const isInRegion =
+        clientY >= topPx &&
+        clientY <= bottomPx &&
+        clientX >= leftPx &&
+        clientX <= rightPx;
+
       if (isInRegion) {
         openText.classList.remove('hidden');
         openText.classList.add('visible');
@@ -224,12 +244,6 @@
             input.setAttribute('autocorrect', 'off');
             input.spellcheck = false;
             input.setAttribute('inputmode', 'text');
-            if (this.innerText.trim().toUpperCase() === "ADD USERnAME") {
-              input.setAttribute('readonly', 'readonly');
-              input.addEventListener('focus', function() {
-                input.removeAttribute('readonly');
-              });
-            }
           }
           input.maxLength = 10;
           input.className = 'typing-input';
@@ -255,7 +269,9 @@
         }
       });
     }
-    document.querySelectorAll('.account-text').forEach(addAccountClickHandler);
+    document.querySelectorAll('.account-text').forEach(function (element) {
+      addAccountClickHandler(element);
+    });
 
     function addPasswordResetClickHandler(element) {
       element.addEventListener('click', function () {
@@ -292,45 +308,67 @@
         }
       });
     }
-    document.querySelectorAll('.password-reset-email-text').forEach(addPasswordResetClickHandler);
+    document.querySelectorAll('.password-reset-email-text').forEach(function (element) {
+      addPasswordResetClickHandler(element);
+    });
 
+    // Clicking OPEN => Slide login left, reveal & slide out account creation
     document.querySelector('.open-text').addEventListener('click', function (e) {
       e.stopPropagation();
       openAccountCreation();
     });
+    // Clicking HELP => open password reset (fade approach)
     document.querySelector('.help-text').addEventListener('click', function (e) {
       e.stopPropagation();
       openPasswordReset();
     });
 
+    // Fullscreen + inactivity logic
     document.addEventListener('click', event => {
-      if (event.target.classList.contains('login-text')) return;
+      if (event.target.classList.contains('login-text')) {
+        return;
+      }
+
       if (accountCreationActive || passwordResetActive) {
+        // If user clicks inside left:0..6.37vw & top:28.5..84vh, revert to login
         const { innerWidth, innerHeight } = window;
         const leftBoundary = 0;
         const rightBoundary = (6.37 / 100) * innerWidth;
         const topBoundary = (28.5 / 100) * innerHeight;
         const bottomBoundary = (84 / 100) * innerHeight;
-        if (event.clientX >= leftBoundary && event.clientX <= rightBoundary &&
-            event.clientY >= topBoundary && event.clientY <= bottomBoundary) {
+        if (
+          event.clientX >= leftBoundary &&
+          event.clientX <= rightBoundary &&
+          event.clientY >= topBoundary &&
+          event.clientY <= bottomBoundary
+        ) {
           revertToLogin();
           return;
         }
       }
+
+      // If user clicks near edges, go fullscreen
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
-      const isNearEdge = clientX <= edgeThreshold || clientX >= innerWidth - edgeThreshold ||
-                         clientY <= edgeThreshold || clientY >= innerHeight - edgeThreshold;
+      const isNearEdge =
+        clientX <= edgeThreshold ||
+        clientX >= innerWidth - edgeThreshold ||
+        clientY <= edgeThreshold ||
+        clientY >= innerHeight - edgeThreshold;
       if (isNearEdge && !document.fullscreenElement) {
         document.documentElement.requestFullscreen();
         return;
       }
+
+      // First ever click => fade stuff in after 4s
       if (!initialClickCompleted) {
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen();
         }
-        setTimeout(() => { document.body.classList.add('fade-in-trigger'); }, 1000);
+        setTimeout(() => {
+          document.body.classList.add('fade-in-trigger');
+        }, 1000);
         setTimeout(() => {
           fadeCompleted = true;
           inactivityTimer = setTimeout(hideLoginElements, 20000);
@@ -344,34 +382,56 @@
       checkRegionAndShowOpenHelp(event);
     });
 
+    // -----------------------------------------
+    //  OPEN => Slide login left, show+slide account creation
+    // -----------------------------------------
     function openAccountCreation() {
       if (accountCreationActive || transitionInProgress) return;
       transitionInProgress = true;
-      // Slide login area left off-screen under white layer one
+
+      // 1) Keep login elements visible so we see them while they slide
       document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
         .forEach(el => {
-          el.classList.add('slide-out');
+          el.classList.remove('hidden');
+          el.classList.add('visible');
+          el.classList.add('slide-left-l1'); 
         });
+
+      // 2) Show account-creation (remove .hidden => becomes opacity:1),
+      //    but still physically behind layer-two.
+      document.querySelectorAll('.account-text, .account-line')
+        .forEach(el => {
+          el.classList.remove('hidden');  // let them become visible
+          el.classList.add('visible');
+        });
+
+      // 3) After a tiny delay, remove behind-layer-two => they slide left into place
       setTimeout(() => {
-        // Immediately slide in the account creation area from behind white layer two:
         document.querySelectorAll('.account-text, .account-line')
           .forEach(el => {
-            el.classList.add('slide-in');
-            el.classList.remove('squished');
+            el.classList.remove('behind-layer-two');
           });
+      }, 50);
+
+      setTimeout(() => {
         accountCreationActive = true;
         transitionInProgress = false;
-      }, 500);
+      }, 1600); // slightly longer than the CSS transition
     }
 
+    // Keep the existing fade approach for password reset
     function openPasswordReset() {
       if (passwordResetActive || transitionInProgress) return;
       transitionInProgress = true;
+
+      // Remove the slide if present, then hide login area
       document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
         .forEach(el => {
-          el.classList.add('hidden');
+          el.classList.remove('slide-left-l1');
           el.classList.remove('visible');
+          el.classList.add('hidden');
         });
+
       setTimeout(() => {
         document.querySelectorAll('.password-reset-email-text, .password-reset-link-text, .password-reset-line')
           .forEach(el => {
@@ -383,27 +443,46 @@
       }, 500);
     }
 
+    // -----------------------------------------
+    //  REVERT => Slide everything back to login
+    // -----------------------------------------
     function revertToLogin() {
       if (!accountCreationActive && !passwordResetActive) return;
-      document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
-        .forEach(el => {
-          el.classList.remove('slide-out');
-          el.style.transform = 'none';
-          el.classList.add('visible');
-        });
-      document.querySelectorAll('.account-text, .account-line')
-        .forEach(el => {
-          el.classList.remove('slide-in');
-          el.style.transform = 'none';
-          el.classList.add('squished');
-        });
-      accountCreationActive = false;
-      passwordResetActive = false;
+      transitionInProgress = true;
+
+      // If we were in account creation, push them back behind layer two, then hide
+      if (accountCreationActive) {
+        document.querySelectorAll('.account-text, .account-line')
+          .forEach(el => {
+            el.classList.add('behind-layer-two');
+            setTimeout(() => {
+              el.classList.add('hidden');
+              el.classList.remove('visible');
+            }, 600); // after they slide behind layer, hide them
+          });
+        accountCreationActive = false;
+      }
+      // If we were in password reset, just fade them out
+      if (passwordResetActive) {
+        document.querySelectorAll('.password-reset-email-text, .password-reset-link-text, .password-reset-line')
+          .forEach(el => {
+            el.classList.remove('visible');
+            el.classList.add('hidden');
+          });
+        passwordResetActive = false;
+      }
+
+      // Slide login elements back: remove slide-left-l1, keep them visible
+      setTimeout(() => {
+        document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
+          .forEach(el => {
+            el.classList.remove('slide-left-l1');
+            el.classList.remove('hidden');
+            el.classList.add('visible');
+          });
+        transitionInProgress = false;
+      }, 700);
     }
   </script>
-
-  <!-- White layers -->
-  <div class="white-layer layer-one"></div>
-  <div class="white-layer layer-two"></div>
 </body>
 </html>

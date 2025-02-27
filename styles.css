@@ -40,7 +40,6 @@ body.fade-in-trigger {
     background-color: #ffffff;
 }
 
-/* lines & time text fade on initial mouse, unchanged */
 .line:not(.login-line):not(.login-line-second),
 .time-text {
     opacity: 0;
@@ -52,14 +51,15 @@ body.fade-in-trigger .time-text {
     transition-delay: 1s;
 }
 
-/* login lines & text, default to 0 opacity => fade on user input */
+/* login lines & text => fade for inactivity or initial load */
 .login-line,
 .login-line-second,
 .login-text {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
-/* .visible/.hidden => only used for login lines inactivity fade. */
+
+/* .visible/.hidden => only used for those login items */
 .visible {
     opacity: 1 !important;
     pointer-events: auto;
@@ -220,7 +220,7 @@ body.fullscreen .help-text {
     opacity: 1 !important;
 }
 
-/* Account creation lines, no fade => no .hidden usage. */
+/* Account creation lines => no fade => not toggled with .hidden. */
 .account-line.acc-line-1 {
     position: absolute;
     top: 38.9vh;
@@ -253,8 +253,7 @@ body.fullscreen .help-text {
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
-
-/* Password reset line, no fade => always drawn. */
+/* Password reset => also no fade. */
 .password-reset-line {
     position: absolute;
     top: 38.9vh;
@@ -264,13 +263,12 @@ body.fullscreen .help-text {
     background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* ================= SLIDING CONTAINERS ================= */
+/* ================= Sliding containers ================= */
 /* 
-   login-area => left=6.38vw (on screen, as in original).
-   account-area => left=36vw or something? 
-   But you asked them to be hidden behind 28.86–36vw. 
-   We'll do left=36vw, or if you prefer them even more hidden, do left=36. 
-   Then the JS moves them to left=6.38. 
+   login-area => left=6.38vw on screen
+   account-area => left=36vw behind right cover
+   password-reset-area => left=36vw behind right cover
+   We slide them to 0 or 6.38 or 36, etc. in JS.
 */
 #login-area,
 #account-area,
@@ -283,15 +281,9 @@ body.fullscreen .help-text {
   z-index: 10;
 }
 
-/* By default, login is fully visible at left=6.38vw. */
 #login-area {
   left: 6.38vw;
 }
-
-/* Account & password start behind right layer => left=36vw. 
-   They remain fully visible inside the container but physically 
-   behind the cover from 28.86–36vw. 
-*/
 #account-area {
   left: 36vw;
 }
@@ -299,7 +291,7 @@ body.fullscreen .help-text {
   left: 36vw;
 }
 
-/* ================= WHITE COVERS ================= */
+/* ================= White covers ================= */
 .white-cover-left {
   position: absolute;
   top: 0;

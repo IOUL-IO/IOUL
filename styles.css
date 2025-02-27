@@ -334,10 +334,9 @@ body.fullscreen .help-text {
     opacity: 1 !important;
 }
 
-/* ====================================
+/* ==============================
    NEW: Container-based approach
-   for sliding all 3 areas
-   ==================================== */
+   ============================== */
 #login-area,
 #account-area,
 #password-reset-area {
@@ -346,17 +345,14 @@ body.fullscreen .help-text {
   width: 100vw;
   height: 100vh;
   transition: left 0.5s ease-in-out;
-  /* Make sure they're below the white covers. */
-  z-index: 10; 
+  z-index: 10; /* below the covers, above the background */
 }
 
-/* We start with the login area at left ~6.38vw so the text at left:6.41vw is visible. */
+/* By default, the login area is at left:0 so that .login-text is at about 6.41vw from screen's edge */
 #login-area {
-  left: 6.38vw;
+  left: 0;
 }
-
-/* Keep account & password reset out of sight initially (left=36vw or left=6.38vw doesn't matter
-   if you want them more to the right, set left=100vw. We'll just do 36vw consistent with your code. */
+/* Keep account/password hidden to the right at 36vw */
 #account-area {
   left: 36vw;
 }
@@ -364,12 +360,9 @@ body.fullscreen .help-text {
   left: 36vw;
 }
 
-/* ====================================
+/* ==============================
    WHITE COVERS
-   - left cover: 0vw to 6.37vw
-   - right cover: 28.86vw to 36vw
-   So anything sliding behind them becomes hidden.
-   ==================================== */
+   ============================== */
 .white-cover-left {
   position: absolute;
   top: 0;
@@ -377,14 +370,14 @@ body.fullscreen .help-text {
   width: 6.37vw;
   height: 100vh;
   background: #fff;
-  z-index: 9999;   /* above all sliding areas */
+  z-index: 9999; 
   pointer-events: none;
 }
 .white-cover-right {
   position: absolute;
   top: 0;
   left: 28.86vw;
-  width: calc(36vw - 28.86vw); /* about 7.14vw wide */
+  width: calc(36vw - 28.86vw); /* ~7.14vw */
   height: 100vh;
   background: #fff;
   z-index: 9999;

@@ -76,7 +76,6 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Lines */
 .line {
     position: absolute;
     height: 1px;
@@ -170,7 +169,6 @@ body.fade-in-trigger .time-text {
     left: 90.1vw;
 }
 
-/* Login text lines */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -179,6 +177,7 @@ body.fade-in-trigger .time-text {
     font-size: 0.47rem;
     left: 6.41vw;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    z-index: 10;
 }
 
 .username {
@@ -207,7 +206,6 @@ body.fade-in-trigger .time-text {
     background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* OPEN and HELP */
 .open-text,
 .help-text {
     position: absolute;
@@ -250,7 +248,6 @@ body.fullscreen .help-text {
     opacity: 1 !important;
 }
 
-/* Account creation lines */
 .account-line.acc-line-1 {
     position: absolute;
     top: 38.9vh;
@@ -311,7 +308,6 @@ body.fullscreen .help-text {
     left: 6.4vw;
 }
 
-/* Password reset */
 .password-reset-email-text {
     top: 35.2vh;
     left: 6.4vw;
@@ -344,47 +340,39 @@ body.fullscreen .help-text {
     opacity: 1 !important;
 }
 
-/* ------------------------------------- */
-/* New layers for your request           */
-/* ------------------------------------- */
-.layer-one {
+/* New white layers */
+.white-layer {
   position: absolute;
+  background-color: #ffffff;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.layer-one {
   top: 28.5vh;
   left: 0vw;
   width: 3.67vw;
   height: calc(84vh - 28.5vh);
-  background-color: #ffffff;
-  z-index: 50; /* above normal lines, so the sliding text goes behind it */
 }
 
 .layer-two {
-  position: absolute;
   top: 28.5vh;
   left: 28.87vw;
   width: calc(36vw - 28.87vw);
   height: calc(84vh - 28.5vh);
-  background-color: #ffffff;
-  z-index: 50;
 }
 
-/* ------------------------------------- */
-/* Slide animation classes               */
-/* ------------------------------------- */
-
-/* We remove hidden/visible from login elements and use transform instead. */
-.slide-left-l1 {
-  transform: translateX(-18vw);
+/* New animation classes */
+.slide-out {
   transition: transform 0.5s ease-in-out;
+  transform: translateX(-100vw);
 }
 
-/* For account creation: start them behind layer two, then slide to left:6.4vw */
-.behind-layer-two {
-  transform: translateX(28vw); /* Adjust so they're hidden behind .layer-two initially */
-  transition: transform 0.5s ease-in-out;
+.pre-slide-in {
+  transform: translateX(29.6vw);
 }
 
-/* We also ensure .account-text and .account-line can animate smoothly. */
-.account-text,
-.account-line {
+.slide-in {
   transition: transform 0.5s ease-in-out;
+  transform: translateX(0);
 }

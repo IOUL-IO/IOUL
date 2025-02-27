@@ -40,7 +40,7 @@ body.fade-in-trigger {
     background-color: #ffffff;
 }
 
-/* The lines, unchanged */
+/* lines & time text fade on initial mouse, unchanged */
 .line:not(.login-line):not(.login-line-second),
 .time-text {
     opacity: 0;
@@ -52,15 +52,14 @@ body.fade-in-trigger .time-text {
     transition-delay: 1s;
 }
 
-/* The login lines & text default to 0 opacity, 
-   but become .visible after fade or on mousemove. */
+/* login lines & text, default to 0 opacity => fade on user input */
 .login-line,
 .login-line-second,
 .login-text {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
-
+/* .visible/.hidden => only used for login lines inactivity fade. */
 .visible {
     opacity: 1 !important;
     pointer-events: auto;
@@ -104,11 +103,11 @@ body.fade-in-trigger .time-text {
     left: 36vw;
     width: 52.4vw;
     background: linear-gradient(
-        to right,
-        #a1a1a1 0,
-        #a1a1a1 5px,
-        #ffffff 5px,
-        #ffffff 10px
+      to right,
+      #a1a1a1 0,
+      #a1a1a1 5px,
+      #ffffff 5px,
+      #ffffff 10px
     );
     background-size: 10px 1px;
 }
@@ -162,15 +161,12 @@ body.fade-in-trigger .time-text {
     left: 6.41vw;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
-
 .username {
     top: calc(var(--username-line-top) - var(--line-gap));
 }
 .password {
     top: calc(var(--password-line-top) - var(--line-gap));
 }
-
-/* Lines for username/password */
 .login-line {
     position: absolute;
     top: var(--username-line-top);
@@ -188,7 +184,6 @@ body.fade-in-trigger .time-text {
     background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* OPEN/HELP, unchanged */
 .open-text,
 .help-text {
     position: absolute;
@@ -225,7 +220,7 @@ body.fullscreen .help-text {
     opacity: 1 !important;
 }
 
-/* Account creation lines, no hidden/fade. */
+/* Account creation lines, no fade => no .hidden usage. */
 .account-line.acc-line-1 {
     position: absolute;
     top: 38.9vh;
@@ -259,7 +254,7 @@ body.fullscreen .help-text {
     background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* Password reset line, also no fade. */
+/* Password reset line, no fade => always drawn. */
 .password-reset-line {
     position: absolute;
     top: 38.9vh;
@@ -269,12 +264,13 @@ body.fullscreen .help-text {
     background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* ===================== SLIDING CONTAINERS ======================= */
+/* ================= SLIDING CONTAINERS ================= */
 /* 
-   - login-area => left=0 (on screen)
-   - account-area => left=100vw (far right, off screen)
-   - password-reset-area => left=100vw (off screen)
-   => We slide from 100vw => 0 or vice versa in the JS.
+   login-area => left=6.38vw (on screen, as in original).
+   account-area => left=36vw or something? 
+   But you asked them to be hidden behind 28.86–36vw. 
+   We'll do left=36vw, or if you prefer them even more hidden, do left=36. 
+   Then the JS moves them to left=6.38. 
 */
 #login-area,
 #account-area,
@@ -286,22 +282,24 @@ body.fullscreen .help-text {
   transition: left 0.5s ease-in-out;
   z-index: 10;
 }
+
+/* By default, login is fully visible at left=6.38vw. */
 #login-area {
-  left: 0;
-}
-#account-area {
-  left: 100vw;
-}
-#password-reset-area {
-  left: 100vw;
+  left: 6.38vw;
 }
 
-/* ===================== WHITE COVERS ====================== */
-/* 
-   left cover: 0–6.37vw
-   right cover: 28.86–36vw
-   so text slides behind them with no fade.
+/* Account & password start behind right layer => left=36vw. 
+   They remain fully visible inside the container but physically 
+   behind the cover from 28.86–36vw. 
 */
+#account-area {
+  left: 36vw;
+}
+#password-reset-area {
+  left: 36vw;
+}
+
+/* ================= WHITE COVERS ================= */
 .white-cover-left {
   position: absolute;
   top: 0;

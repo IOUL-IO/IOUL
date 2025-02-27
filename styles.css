@@ -18,6 +18,7 @@
     --line-gap: 2.8vh; 
 }
 
+/* Basic body styling */
 body.non-fullscreen {
     background-color: #ffffff; 
     min-height: 100vh;
@@ -25,27 +26,13 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
-body.non-fullscreen .username {
-    top: 35.17vh; 
-}
-
-body.non-fullscreen .password {
-    top: 43.17vh; 
-}
-
-body.fullscreen .username {
-    top: 35.17vh; 
-}
-
-body.fullscreen .password {
-    top: 43.17vh;
-}
-
 body.fade-in-trigger {
     background-color: #ffffff; 
 }
 
-/* The time-text (and other non-sliding elements) still use an opacity fade */
+/************************************************
+ *  BACKGROUND LINES & TIME TEXT
+ ************************************************/
 .line:not(.login-line):not(.login-line-second),
 .time-text {
     opacity: 0;
@@ -58,48 +45,36 @@ body.fade-in-trigger .time-text {
     transition-delay: 1s; 
 }
 
-/* White layer covering the left 0-6.37vw area */
-.white-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 6.37vw;
-    height: 100vh;
-    background: #ffffff;
-    z-index: 100;
-    pointer-events: none;
-}
-
+/* Horizontal lines in background */
 .line {
     position: absolute;
     height: 1px;
     background-color: #d1d1d1;
 }
 
+/* Original lines positions */
 .original {
     top: 12.5vh; 
     left: 6.38vw;
     width: 22.48vw; 
 }
-
 .second {
     top: 28.5vh;
     left: 6.38vw;
     width: 22.48vw;
 }
-
 .third {
     top: 84vh;
     left: 6.38vw;
     width: 22.48vw;
 }
-
 .fourth {
     top: 12.5vh;
     left: 36vw;
     width: 57.8vw;
 }
 
+/* Dashed lines on the right side */
 .dashed {
     position: absolute;
     height: 1px;
@@ -115,25 +90,23 @@ body.fade-in-trigger .time-text {
     );
     background-size: 10px 1px;
 }
-
 .second-dashed {
     top: 47vh;
     left: 36vw;
     width: 52.4vw;
 }
-
 .third-dashed {
     top: 65.5vh;
     left: 36vw;
     width: 52.4vw;
 }
-
 .fourth-dashed {
     top: 84vh;
     left: 36vw;
     width: 52.4vw;
 }
 
+/* Time text positions */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -142,138 +115,181 @@ body.fade-in-trigger .time-text {
     letter-spacing: 0.2vw;
     text-shadow: 0.001rem 0 0 #a1a1a1, -0.001rem 0 0 #a1a1a1;
 }
-
 .time-text {
     top: 28.5vh;
     left: 89.81vw;
 }
-
 .second-time-text {
     top: 47.04vh;
     left: 89.91vw;
 }
-
 .third-time-text {
     top: 65.51vh;
     left: 89.87vw;
 }
-
 .fourth-time-text {
     top: 83.86vh;
     left: 90.1vw;
 }
 
+/************************************************
+ *  CONTAINERS FOR LOGIN / ACCOUNT / RESET
+ ************************************************/
+/* 
+   Each container is absolute at top:0. 
+   We position them horizontally by left property. 
+   Use transition on 'left' for sliding animation.
+*/
+.login-area-container,
+.account-creation-container,
+.password-reset-container {
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    transition: left 0.7s ease-in-out;
+    /* By default, we want login at 6.4vw, 
+       and the other two off-screen at 36vw. */
+    /* Adjust as needed. */
+}
+
+.login-area-container {
+    left: 6.4vw; 
+    z-index: 10;
+    opacity: 1;          /* we can fade it if we like */
+    pointer-events: auto;
+}
+
+.account-creation-container {
+    left: 36vw;
+    z-index: 10;
+}
+
+.password-reset-container {
+    left: 36vw;
+    z-index: 10;
+}
+
+/************************************************
+ *  TEXT & LINES WITHIN THE CONTAINERS
+ ************************************************/
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
-    /* The left position is now controlled via inline styles for sliding */
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    opacity: 1; /* We are controlling container's left property for main transitions */
 }
 
+/* USERNAME / PASSWORD in login container */
 .username {
     top: calc(var(--username-line-top) - var(--line-gap)); 
+    left: 6.4vw;
 }
-
 .password {
     top: calc(var(--password-line-top) - var(--line-gap)); 
+    left: 6.4vw;
 }
 
+/* The lines under username/password in login container */
 .login-line {
     position: absolute;
     top: var(--username-line-top); 
-    /* left is controlled inline */
+    left: 6.4vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
-
 .login-line-second {
     position: absolute;
     top: var(--password-line-top); 
-    /* left is controlled inline */
+    left: 6.4vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
 
+/* "OPEN" and "HELP" in login container */
 .open-text,
 .help-text {
     position: absolute;
+    left: 25.57vw;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
-    /* left controlled inline */
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    opacity: 0; /* initially hidden until hovered region */
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+.open-text {
+    top: 35.17vh;
+}
+.help-text {
+    top: 43.17vh;
 }
 
-.account-line.acc-line-1 {
-    position: absolute;
-    top: 38.9vh;
-    /* left controlled inline */
-    width: 22.48vw;
-    height: 1px;
-    background-color: rgba(230, 230, 230, 0.28);
+/* Hover effect so they appear solid on hover */
+.open-text:hover,
+.help-text:hover {
+    opacity: 1 !important;
 }
 
-.account-line.acc-line-2 {
-    position: absolute;
-    top: 47vh;
-    /* left controlled inline */
-    width: 22.48vw;
-    height: 1px;
-    background-color: rgba(230, 230, 230, 0.28);
-}
-
-.account-line.acc-line-3 {
-    position: absolute;
-    top: 55.1vh;
-    /* left controlled inline */
-    width: 22.48vw;
-    height: 1px;
-    background-color: rgba(230, 230, 230, 0.28);
-}
-
-.account-line.acc-line-4 {
-    position: absolute;
-    top: 63.2vh;
-    /* left controlled inline */
-    width: 22.48vw;
-    height: 1px;
-    background-color: rgba(230, 230, 230, 0.28);
-}
-
+/************************************************
+ *  ACCOUNT CREATION TEXT & LINES
+ ************************************************/
 .email-text {
     top: 35.2vh;
-    /* left controlled inline */
+    left: 6.4vw;
 }
-
 .username-text {
     top: 43.3vh;
-    /* left controlled inline */
+    left: 6.4vw;
 }
-
 .pass-text {
     top: 51.4vh;
-    /* left controlled inline */
+    left: 6.4vw;
 }
-
 .confirm-text {
     top: 59.5vh;
-    /* left controlled inline */
+    left: 6.4vw;
 }
 
+.account-line {
+    position: absolute;
+    left: 6.4vw;
+    width: 22.48vw;
+    height: 1px;
+    background-color: rgba(230, 230, 230, 0.28);
+    transition-delay: 0s !important;
+}
+.acc-line-1 {
+    top: 38.9vh;
+}
+.acc-line-2 {
+    top: 47vh;
+}
+.acc-line-3 {
+    top: 55.1vh;
+}
+.acc-line-4 {
+    top: 63.2vh;
+}
+
+/************************************************
+ *  PASSWORD RESET TEXT & LINE
+ ************************************************/
 .password-reset-email-text {
     top: 35.2vh;
-    /* left controlled inline */
+    left: 6.4vw;
     white-space: nowrap;
     z-index: 10;
 }
-
 .password-reset-link-text {
+    left: 22.22vw;
     top: 35.17vh;
     white-space: nowrap;
     z-index: 20;
@@ -282,8 +298,27 @@ body.fade-in-trigger .time-text {
 .password-reset-line {
     position: absolute;
     top: 38.9vh;
-    /* left controlled inline */
+    left: 6.4vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
+    transition-delay: 0s !important;
+}
+
+/************************************************
+ *  INPUT STYLE WHEN USER CLICKS TEXT
+ ************************************************/
+.typing-input {
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.46rem;
+    line-height: 1.2;
+    color: #111111;
+    letter-spacing: 0.34vw;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    caret-color: #d1d1d1;
+    padding: 0.1rem 0;
+    box-sizing: content-box;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }

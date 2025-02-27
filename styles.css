@@ -57,7 +57,6 @@ body.fade-in-trigger .time-text {
     transition-delay: 1s; 
 }
 
-/* For login lines/text: initially they're invisible until fade completes */
 .login-line,
 .login-line-second,
 .login-text {
@@ -77,7 +76,6 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Lines */
 .line {
     position: absolute;
     height: 1px;
@@ -171,7 +169,6 @@ body.fade-in-trigger .time-text {
     left: 90.1vw;
 }
 
-/* Login text lines */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -180,7 +177,7 @@ body.fade-in-trigger .time-text {
     font-size: 0.47rem;
     left: 6.41vw;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    z-index: 10; /* Below the layers which have z-index:50, so they can be hidden behind them */
+    z-index: 10;
 }
 
 .username {
@@ -198,7 +195,6 @@ body.fade-in-trigger .time-text {
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
-    z-index: 10;
 }
 
 .login-line-second {
@@ -208,10 +204,8 @@ body.fade-in-trigger .time-text {
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
-    z-index: 10;
 }
 
-/* OPEN and HELP */
 .open-text,
 .help-text {
     position: absolute;
@@ -222,7 +216,6 @@ body.fade-in-trigger .time-text {
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
-    z-index: 10;
 }
 
 body.non-fullscreen .open-text {
@@ -255,7 +248,6 @@ body.fullscreen .help-text {
     opacity: 1 !important;
 }
 
-/* Account creation lines */
 .account-line.acc-line-1 {
     position: absolute;
     top: 38.9vh;
@@ -293,15 +285,7 @@ body.fullscreen .help-text {
 }
 
 .account-line {
-  transition: transform 0.5s ease-in-out;
-  z-index: 10; 
-}
-
-/* Account text positions match final location (left:6.4vw...), but we
-   shift them horizontally so they're behind layer two until user clicks 'OPEN' */
-.account-text {
-  transition: transform 0.5s ease-in-out;
-  z-index: 10; 
+  transition-delay: 0s !important;
 }
 
 .email-text {
@@ -324,7 +308,6 @@ body.fullscreen .help-text {
     left: 6.4vw;
 }
 
-/* Password reset */
 .password-reset-email-text {
     top: 35.2vh;
     left: 6.4vw;
@@ -347,7 +330,6 @@ body.fullscreen .help-text {
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
     transition-delay: 0s !important;
-    z-index: 10;
 }
 
 .password-reset-link-text.visible {
@@ -358,42 +340,41 @@ body.fullscreen .help-text {
     opacity: 1 !important;
 }
 
-/* White layers: top 28.5vh to 84vh, etc. */
-.layer-one {
+/* White layers */
+.white-layer {
   position: absolute;
+  background-color: #ffffff;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.layer-one {
   top: 28.5vh;
   left: 0vw;
   width: 3.67vw;
   height: calc(84vh - 28.5vh);
-  background-color: #ffffff;
-  z-index: 50; /* on top so text can go underneath */
 }
 
 .layer-two {
-  position: absolute;
   top: 28.5vh;
   left: 28.87vw;
   width: calc(36vw - 28.87vw);
   height: calc(84vh - 28.5vh);
-  background-color: #ffffff;
-  z-index: 50;
 }
 
-/* -----------------------------
-   Slide animations 
-   ----------------------------- */
-
-/* For login elements: shift them enough that they fully disappear behind layer-one. 
-   Tweak -12vw if you need them to slide further or less. */
-.slide-left-l1 {
-  transform: translateX(-12vw);
+/* Animation classes for sliding */
+.slide-out {
   transition: transform 0.5s ease-in-out;
+  transform: translateX(-100vw) translateZ(0);
 }
 
-/* For account creation: start behind layer two, i.e. transform them right 
-   so they are literally behind that white block. Then .behind-layer-two is removed 
-   to let them slide left to position left:6.4vw. Adjust 22vw as needed. */
-.behind-layer-two {
-  transform: translateX(22vw); 
+.squished {
+  /* Account creation elements start here—positioned so that their effective left is 6.4vw + 29.6vw = 36vw,
+     i.e. hidden under white layer two */
+  transform: translateX(29.6vw) translateZ(0);
+}
+
+.slide-in {
   transition: transform 0.5s ease-in-out;
+  transform: translateX(0) translateZ(0);
 }

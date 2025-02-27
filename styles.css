@@ -13,28 +13,28 @@
 }
 
 :root {
-    --username-line-top: 38.9vh;
-    --password-line-top: 47vh;
-    --line-gap: 2.8vh;
+    --username-line-top: 38.9vh; 
+    --password-line-top: 47vh;  
+    --line-gap: 2.8vh; 
 }
 
 body.non-fullscreen {
-    background-color: #ffffff;
+    background-color: #ffffff; 
     min-height: 100vh;
     min-width: 100vw;
     overflow: hidden;
 }
 
 body.non-fullscreen .username {
-    top: 35.17vh;
+    top: 35.17vh; 
 }
 
 body.non-fullscreen .password {
-    top: 43.17vh;
+    top: 43.17vh; 
 }
 
 body.fullscreen .username {
-    top: 35.17vh;
+    top: 35.17vh; 
 }
 
 body.fullscreen .password {
@@ -42,7 +42,7 @@ body.fullscreen .password {
 }
 
 body.fade-in-trigger {
-    background-color: #ffffff;
+    background-color: #ffffff; 
 }
 
 .line:not(.login-line):not(.login-line-second),
@@ -64,7 +64,6 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Keep .visible / .hidden for inactivity fade on individual items */
 .visible {
     opacity: 1 !important;
     pointer-events: auto;
@@ -77,7 +76,6 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Basic lines (unchanged) */
 .line {
     position: absolute;
     height: 1px;
@@ -85,9 +83,9 @@ body.fade-in-trigger .time-text {
 }
 
 .original {
-    top: 12.5vh;
+    top: 12.5vh; 
     left: 6.38vw;
-    width: 22.48vw;
+    width: 22.48vw; 
 }
 
 .second {
@@ -117,9 +115,9 @@ body.fade-in-trigger .time-text {
     background: linear-gradient(
         to right,
         #a1a1a1 0,
-        #a1a1a1 5px,
+        #a1a1a1 5px, 
         #ffffff 5px,
-        #ffffff 10px
+        #ffffff 10px 
     );
     background-size: 10px 1px;
 }
@@ -182,16 +180,16 @@ body.fade-in-trigger .time-text {
 }
 
 .username {
-    top: calc(var(--username-line-top) - var(--line-gap));
+    top: calc(var(--username-line-top) - var(--line-gap)); 
 }
 
 .password {
-    top: calc(var(--password-line-top) - var(--line-gap));
+    top: calc(var(--password-line-top) - var(--line-gap)); 
 }
 
 .login-line {
     position: absolute;
-    top: var(--username-line-top);
+    top: var(--username-line-top); 
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
@@ -200,7 +198,7 @@ body.fade-in-trigger .time-text {
 
 .login-line-second {
     position: absolute;
-    top: var(--password-line-top);
+    top: var(--password-line-top); 
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
@@ -220,13 +218,13 @@ body.fade-in-trigger .time-text {
 }
 
 body.non-fullscreen .open-text {
-    top: 35.17vh;
-    left: 25.57vw;
+    top: 35.17vh; 
+    left: 25.57vw;   
 }
 
 body.non-fullscreen .help-text {
-    top: 43.17vh;
-    left: 25.57vw;
+    top: 43.17vh; 
+    left: 25.57vw;   
 }
 
 body.fullscreen .open-text {
@@ -248,10 +246,6 @@ body.fullscreen .help-text {
 .help-text.visible:hover {
     opacity: 1 !important;
 }
-
-/* =============================
-   ACCOUNT CREATION STYLES
-   ============================= */
 
 .account-line.acc-line-1 {
     position: absolute;
@@ -309,10 +303,6 @@ body.fullscreen .help-text {
     left: 6.4vw;
 }
 
-/* =============================
-   PASSWORD RESET STYLES
-   ============================= */
-
 .password-reset-email-text {
     top: 35.2vh;
     left: 6.4vw;
@@ -320,7 +310,7 @@ body.fullscreen .help-text {
     z-index: 10;
 }
 
-.password-reset-link-text {
+.login-text.password-reset-link-text {
     left: 22.22vw !important;
     top: 35.17vh;
     white-space: nowrap;
@@ -344,15 +334,9 @@ body.fullscreen .help-text {
     opacity: 1 !important;
 }
 
-/* =============================
-   NEW OR UPDATED:
-   Container-based approach 
-   for sliding animations
-   ============================= */
-
-/* The containers themselves; default positions:
-   - #login-area is initially at left:6.38vw (the "visible" position)
-   - #account-area and #password-reset-area start off to the right at 36vw */
+/* =============================================
+   NEW LINES AT THE BOTTOM (container approach)
+   ============================================= */
 #login-area,
 #account-area,
 #password-reset-area {
@@ -360,18 +344,19 @@ body.fullscreen .help-text {
   top: 0;
   width: 100vw;
   height: 100vh;
-  overflow: hidden; 
-  transition: left 0.5s ease-in-out; /* animate horizontal slides */
+  overflow: hidden;
+  transition: left 0.5s ease-in-out; /* slide horizontally */
 }
 
+/* #login-area is on-screen at left=0 (so your .login-text at 6.41vw remains visually the same) */
 #login-area {
-  left: 6.38vw; /* normal displayed position */
+  left: 0; 
 }
 
+/* #account-area & #password-reset-area start off to the right (36vw) */
 #account-area {
-  left: 36vw; /* off to the right (hidden) */
+  left: 36vw;
 }
-
 #password-reset-area {
-  left: 36vw; /* off to the right (hidden) */
+  left: 36vw;
 }

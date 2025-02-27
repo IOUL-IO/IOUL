@@ -13,32 +13,34 @@
 }
 
 :root {
-    --username-line-top: 38.9vh; 
-    --password-line-top: 47vh;  
-    --line-gap: 2.8vh; 
+    --username-line-top: 38.9vh;
+    --password-line-top: 47vh;
+    --line-gap: 2.8vh;
 }
 
 body.non-fullscreen {
-    background-color: #ffffff; 
+    background-color: #ffffff;
     min-height: 100vh;
     min-width: 100vw;
     overflow: hidden;
 }
 body.non-fullscreen .username {
-    top: 35.17vh; 
+    top: 35.17vh;
 }
 body.non-fullscreen .password {
-    top: 43.17vh; 
+    top: 43.17vh;
 }
 body.fullscreen .username {
-    top: 35.17vh; 
+    top: 35.17vh;
 }
 body.fullscreen .password {
     top: 43.17vh;
 }
 body.fade-in-trigger {
-    background-color: #ffffff; 
+    background-color: #ffffff;
 }
+
+/* The lines, unchanged */
 .line:not(.login-line):not(.login-line-second),
 .time-text {
     opacity: 0;
@@ -47,18 +49,18 @@ body.fade-in-trigger {
 body.fade-in-trigger .line:not(.login-line):not(.login-line-second),
 body.fade-in-trigger .time-text {
     opacity: 1;
-    transition-delay: 1s; 
+    transition-delay: 1s;
 }
+
+/* The login lines & text default to 0 opacity, 
+   but become .visible after fade or on mousemove. */
 .login-line,
 .login-line-second,
 .login-text {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
-/* 
-   .visible/.hidden remain, used only for login inactivity 
-   (the code doesn't apply them to account or password lines).
-*/
+
 .visible {
     opacity: 1 !important;
     pointer-events: auto;
@@ -76,9 +78,9 @@ body.fade-in-trigger .time-text {
     background-color: #d1d1d1;
 }
 .original {
-    top: 12.5vh; 
+    top: 12.5vh;
     left: 6.38vw;
-    width: 22.48vw; 
+    width: 22.48vw;
 }
 .second {
     top: 28.5vh;
@@ -102,11 +104,11 @@ body.fade-in-trigger .time-text {
     left: 36vw;
     width: 52.4vw;
     background: linear-gradient(
-      to right,
-      #a1a1a1 0,
-      #a1a1a1 5px,
-      #ffffff 5px,
-      #ffffff 10px
+        to right,
+        #a1a1a1 0,
+        #a1a1a1 5px,
+        #ffffff 5px,
+        #ffffff 10px
     );
     background-size: 10px 1px;
 }
@@ -125,6 +127,7 @@ body.fade-in-trigger .time-text {
     left: 36vw;
     width: 52.4vw;
 }
+
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -159,15 +162,18 @@ body.fade-in-trigger .time-text {
     left: 6.41vw;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
+
 .username {
-    top: calc(var(--username-line-top) - var(--line-gap)); 
+    top: calc(var(--username-line-top) - var(--line-gap));
 }
 .password {
-    top: calc(var(--password-line-top) - var(--line-gap)); 
+    top: calc(var(--password-line-top) - var(--line-gap));
 }
+
+/* Lines for username/password */
 .login-line {
     position: absolute;
-    top: var(--username-line-top); 
+    top: var(--username-line-top);
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
@@ -175,12 +181,14 @@ body.fade-in-trigger .time-text {
 }
 .login-line-second {
     position: absolute;
-    top: var(--password-line-top); 
+    top: var(--password-line-top);
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
+
+/* OPEN/HELP, unchanged */
 .open-text,
 .help-text {
     position: absolute;
@@ -193,12 +201,12 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 body.non-fullscreen .open-text {
-    top: 35.17vh; 
-    left: 25.57vw;   
+    top: 35.17vh;
+    left: 25.57vw;
 }
 body.non-fullscreen .help-text {
-    top: 43.17vh; 
-    left: 25.57vw;   
+    top: 43.17vh;
+    left: 25.57vw;
 }
 body.fullscreen .open-text {
     top: 35.17vh;
@@ -217,6 +225,7 @@ body.fullscreen .help-text {
     opacity: 1 !important;
 }
 
+/* Account creation lines, no hidden/fade. */
 .account-line.acc-line-1 {
     position: absolute;
     top: 38.9vh;
@@ -250,6 +259,7 @@ body.fullscreen .help-text {
     background-color: rgba(230, 230, 230, 0.28);
 }
 
+/* Password reset line, also no fade. */
 .password-reset-line {
     position: absolute;
     top: 38.9vh;
@@ -259,8 +269,13 @@ body.fullscreen .help-text {
     background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* Container-based approach for sliding all 3 areas.
-   No fade on area-switch, only 0.5s horizontal slide. */
+/* ===================== SLIDING CONTAINERS ======================= */
+/* 
+   - login-area => left=0 (on screen)
+   - account-area => left=100vw (far right, off screen)
+   - password-reset-area => left=100vw (off screen)
+   => We slide from 100vw => 0 or vice versa in the JS.
+*/
 #login-area,
 #account-area,
 #password-reset-area {
@@ -272,16 +287,21 @@ body.fullscreen .help-text {
   z-index: 10;
 }
 #login-area {
-  left: 0;   /* visible at first */
+  left: 0;
 }
 #account-area {
-  left: 36vw; /* offscreen to the right */
+  left: 100vw;
 }
 #password-reset-area {
-  left: 36vw; 
+  left: 100vw;
 }
 
-/* White covers. z-index=9999 so text slides under them. */
+/* ===================== WHITE COVERS ====================== */
+/* 
+   left cover: 0–6.37vw
+   right cover: 28.86–36vw
+   so text slides behind them with no fade.
+*/
 .white-cover-left {
   position: absolute;
   top: 0;

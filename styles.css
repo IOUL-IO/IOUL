@@ -13,99 +13,127 @@
 }
 
 :root {
-    --username-line-top: 38.9vh; 
-    --password-line-top: 47vh;  
-    --line-gap: 2.8vh; 
+    --username-line-top: 38.9vh;
+    --password-line-top: 47vh;
+    --line-gap: 2.8vh;
 }
 
+/* Body still starts non-fullscreen */
 body.non-fullscreen {
-    background-color: #ffffff; 
+    background-color: #ffffff;
     min-height: 100vh;
     min-width: 100vw;
     overflow: hidden;
 }
 
-body.non-fullscreen .username {
-    top: 35.17vh; 
-}
-
-body.non-fullscreen .password {
-    top: 43.17vh; 
-}
-
-body.fullscreen .username {
-    top: 35.17vh; 
-}
-
-body.fullscreen .password {
-    top: 43.17vh;
-}
-
 body.fade-in-trigger {
-    background-color: #ffffff; 
+    background-color: #ffffff;
 }
 
+/* Basic lines & text fade in after user clicks (unchanged from your original) */
 .line:not(.login-line):not(.login-line-second),
 .time-text {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
-
 body.fade-in-trigger .line:not(.login-line):not(.login-line-second),
 body.fade-in-trigger .time-text {
     opacity: 1;
-    transition-delay: 1s; 
+    transition-delay: 1s;
 }
 
+/* 
+   White cover: from left 0vw to ~6.37vw, top 28.5vh to 84vh 
+   This covers what's sliding behind it on the left
+*/
+.white-cover {
+    position: absolute;
+    top: 28.5vh;
+    left: 0;
+    width: 6.37vw;
+    height: calc(84vh - 28.5vh); /* ~55.5vh */
+    background: #fff;
+    z-index: 2;
+}
+
+/* 
+   Sliding wrapper: from left 6.38vw to ~28.85vw, top 28.5vh to 84vh
+   Overflow hidden so elements sliding beyond these boundaries become invisible
+*/
+.sliding-wrapper {
+    position: absolute;
+    top: 28.5vh;
+    left: 6.38vw;
+    width: calc(28.85vw - 6.38vw + 0.01vw); /* ~22.47vw */
+    height: calc(84vh - 28.5vh); /* ~55.5vh */
+    overflow: hidden;
+    z-index: 1;
+    background: transparent; /* can remain transparent */
+}
+
+/* Each group is absolutely positioned to fill .sliding-wrapper */
+.login-group,
+.account-group,
+.password-group {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* 
+       Start positions:
+         login-group:  translateX(0)    => shown by default
+         account-group: translateX(100%) => hidden off to the right
+         password-group:translateX(100%) => hidden off to the right
+       We'll animate them in/out with JS
+    */
+    transform: translateX(0);
+    transition: transform 0.7s ease-in-out;
+}
+
+/* Put account-group & password-group out of view by default */
+.account-group {
+    transform: translateX(100%);
+}
+.password-group {
+    transform: translateX(100%);
+}
+
+/* Lines for the login area */
 .login-line,
 .login-line-second,
 .login-text {
-    opacity: 0;
+    opacity: 1; /* Now visible by default (if they're in the viewport) */
     transition: opacity 0.5s ease-in-out;
 }
 
-.visible {
-    opacity: 1 !important;
-    pointer-events: auto;
-    transition: opacity 0.5s ease-in-out;
-}
-
-.hidden {
-    opacity: 0 !important;
-    pointer-events: none;
-    transition: opacity 0.5s ease-in-out;
-}
-
+/* Original lines outside the sliding region. 
+   They fade in after user clicks (like your original code). */
 .line {
     position: absolute;
     height: 1px;
     background-color: #d1d1d1;
 }
-
 .original {
-    top: 12.5vh; 
+    top: 12.5vh;
     left: 6.38vw;
-    width: 22.48vw; 
+    width: 22.48vw;
 }
-
 .second {
     top: 28.5vh;
     left: 6.38vw;
     width: 22.48vw;
 }
-
 .third {
     top: 84vh;
     left: 6.38vw;
     width: 22.48vw;
 }
-
 .fourth {
     top: 12.5vh;
     left: 36vw;
     width: 57.8vw;
 }
-
 .dashed {
     position: absolute;
     height: 1px;
@@ -113,33 +141,31 @@ body.fade-in-trigger .time-text {
     left: 36vw;
     width: 52.4vw;
     background: linear-gradient(
-        to right,
-        #a1a1a1 0,
-        #a1a1a1 5px, 
-        #ffffff 5px,
-        #ffffff 10px 
+      to right,
+      #a1a1a1 0,
+      #a1a1a1 5px,
+      #ffffff 5px,
+      #ffffff 10px
     );
     background-size: 10px 1px;
 }
-
 .second-dashed {
     top: 47vh;
     left: 36vw;
     width: 52.4vw;
 }
-
 .third-dashed {
     top: 65.5vh;
     left: 36vw;
     width: 52.4vw;
 }
-
 .fourth-dashed {
     top: 84vh;
     left: 36vw;
     width: 52.4vw;
 }
 
+/* Time text positions */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -147,194 +173,150 @@ body.fade-in-trigger .time-text {
     color: #111111;
     letter-spacing: 0.2vw;
     text-shadow: 0.001rem 0 0 #a1a1a1, -0.001rem 0 0 #a1a1a1;
-}
-
-.time-text {
     top: 28.5vh;
     left: 89.81vw;
 }
-
 .second-time-text {
     top: 47.04vh;
     left: 89.91vw;
 }
-
 .third-time-text {
     top: 65.51vh;
     left: 89.87vw;
 }
-
 .fourth-time-text {
     top: 83.86vh;
     left: 90.1vw;
 }
 
+/* Login group text & lines */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
-    left: 6.41vw;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    cursor: pointer; /* so user sees clickable text for input */
 }
-
 .username {
-    top: calc(var(--username-line-top) - var(--line-gap)); 
+    left: 0.01vw; /* relative to .login-group which is itself offset in .sliding-wrapper */
+    top: calc(var(--username-line-top) - var(--line-gap) - 28.5vh);
+    /* Explanation: 
+       The .login-group top=0 is actually at 28.5vh in the page.
+       So if we used your original top: 35.17vh in the entire page,
+       we subtract 28.5vh to place it correctly within the group. 
+       Adjust as needed so it lines up.
+    */
 }
-
 .password {
-    top: calc(var(--password-line-top) - var(--line-gap)); 
+    left: 0.01vw;
+    top: calc(var(--password-line-top) - var(--line-gap) - 28.5vh);
 }
-
 .login-line {
     position: absolute;
-    top: var(--username-line-top); 
-    left: 6.4vw;
+    top: calc(var(--username-line-top) - 28.5vh);
+    left: 0;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
-
 .login-line-second {
     position: absolute;
-    top: var(--password-line-top); 
-    left: 6.4vw;
+    top: calc(var(--password-line-top) - 28.5vh);
+    left: 0;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
 
-.open-text,
+.open-text {
+    top: calc(var(--username-line-top) - var(--line-gap) - 28.5vh);
+    left: 19vw; /* near the right side within the .login-group width */
+}
 .help-text {
-    position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    color: #111111;
-    letter-spacing: 0.28vw;
-    font-size: 0.47rem;
-    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    top: calc(var(--password-line-top) - var(--line-gap) - 28.5vh);
+    left: 19vw;
 }
 
-body.non-fullscreen .open-text {
-    top: 35.17vh; 
-    left: 25.57vw;   
-}
-
-body.non-fullscreen .help-text {
-    top: 43.17vh; 
-    left: 25.57vw;   
-}
-
-body.fullscreen .open-text {
-    top: 35.17vh;
-    left: 25.57vw;
-}
-
-body.fullscreen .help-text {
-    top: 43.17vh;
-    left: 25.57vw;
-}
-
-.open-text.visible,
-.help-text.visible {
-    opacity: 0.7 !important;
-}
-
-.open-text.visible:hover,
-.help-text.visible:hover {
-    opacity: 1 !important;
-}
-
-.account-line.acc-line-1 {
-    position: absolute;
-    top: 38.9vh;
-    left: 6.4vw;
-    width: 22.48vw;
-    height: 1px;
-    background-color: rgba(230, 230, 230, 0.28);
-}
-
-.account-line.acc-line-2 {
-    position: absolute;
-    top: 47vh;
-    left: 6.4vw;
-    width: 22.48vw;
-    height: 1px;
-    background-color: rgba(230, 230, 230, 0.28);
-}
-
-.account-line.acc-line-3 {
-    position: absolute;
-    top: 55.1vh;
-    left: 6.4vw;
-    width: 22.48vw;
-    height: 1px;
-    background-color: rgba(230, 230, 230, 0.28);
-}
-
-.account-line.acc-line-4 {
-    position: absolute;
-    top: 63.2vh;
-    left: 6.4vw;
-    width: 22.48vw;
-    height: 1px;
-    background-color: rgba(230, 230, 230, 0.28);
-}
-
+/* Account creation lines & text */
 .account-line {
-  transition-delay: 0s !important;
+    position: absolute;
+    background-color: rgba(230, 230, 230, 0.28);
 }
-
+.acc-line-1 {
+    top: calc(38.9vh - 28.5vh);
+    left: 0;
+    width: 22.48vw;
+    height: 1px;
+}
+.acc-line-2 {
+    top: calc(47vh - 28.5vh);
+    left: 0;
+    width: 22.48vw;
+    height: 1px;
+}
+.acc-line-3 {
+    top: calc(55.1vh - 28.5vh);
+    left: 0;
+    width: 22.48vw;
+    height: 1px;
+}
+.acc-line-4 {
+    top: calc(63.2vh - 28.5vh);
+    left: 0;
+    width: 22.48vw;
+    height: 1px;
+}
 .email-text {
-    top: 35.2vh;
-    left: 6.4vw;
+    left: 0.01vw;
+    top: calc(35.2vh - 28.5vh);
 }
-
 .username-text {
-    top: 43.3vh;
-    left: 6.4vw;
+    left: 0.01vw;
+    top: calc(43.3vh - 28.5vh);
 }
-
 .pass-text {
-    top: 51.4vh;
-    left: 6.4vw;
+    left: 0.01vw;
+    top: calc(51.4vh - 28.5vh);
 }
-
 .confirm-text {
-    top: 59.5vh;
-    left: 6.4vw;
+    left: 0.01vw;
+    top: calc(59.5vh - 28.5vh);
 }
 
-.password-reset-email-text {
-    top: 35.2vh;
-    left: 6.4vw;
-    white-space: nowrap;
-    z-index: 10;
-}
-
-.login-text.password-reset-link-text {
-    left: 22.22vw !important;
-    top: 35.17vh;
-    white-space: nowrap;
-    z-index: 20;
-}
-
+/* Password reset lines & text */
 .password-reset-line {
     position: absolute;
-    top: 38.9vh;
-    left: 6.4vw;
+    top: calc(38.9vh - 28.5vh);
+    left: 0;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
-    transition-delay: 0s !important;
+}
+.password-reset-email-text {
+    left: 0.01vw;
+    top: calc(35.2vh - 28.5vh);
+}
+.password-reset-link-text {
+    left: 14vw; /* offset so "SEND L1nK" is to the right */
+    top: calc(35.17vh - 28.5vh);
 }
 
-.password-reset-link-text.visible {
-    opacity: 0.7 !important;
-}
-
-.password-reset-link-text.visible:hover {
-    opacity: 1 !important;
+/* Input field that appears on span click. Absolutely placed on top of everything. */
+.typing-input {
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.46rem;
+    line-height: 1.2;
+    color: #111111;
+    letter-spacing: 0.34vw;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    position: absolute;
+    caret-color: #d1d1d1;
+    padding: 0.1rem 0;
+    box-sizing: content-box;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    z-index: 9999; /* So it appears on top when user clicks a label */
 }

@@ -1,274 +1,265 @@
-@font-face {
-    font-family: 'Distill Expanded';
-    src: url('font.woff2') format('woff2'),
-         url('font.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IOUL</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+  <style>
+    .login-text {
+      position: absolute;
+      left: 6.41vw;
+      z-index: 10;
+      transform: translateZ(0);
+      overflow: visible;
+      font-family: 'Distill Expanded', sans-serif;
+      color: #111111;
+      letter-spacing: 0.34vw;
+      font-size: 0.46rem;
+      line-height: 1.2;
+      padding: 0.1rem 0;
+      text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    }
 
-:root {
-    --username-line-top: 38.9vh; 
-    --password-line-top: 47vh;  
-    --line-gap: 2.8vh; 
-}
+    input.typing-input {
+      font-family: 'Distill Expanded', sans-serif;
+      font-size: 0.46rem;
+      line-height: 1.2;
+      color: #111111;
+      letter-spacing: 0.34vw;
+      border: none;
+      outline: none;
+      background-color: transparent;
+      position: absolute;
+      caret-color: #d1d1d1;
+      padding: 0.1rem 0;
+      width: calc(22.48vw + 4vw);
+      height: auto;
+      box-sizing: content-box;
+      text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    }
+  </style>
+</head>
+<body class="non-fullscreen">
+  <!-- White layer covering 0vw-6.37vw (left) and 0vh-100vh (top) -->
+  <div class="layer-one"></div>
 
-body.non-fullscreen {
-    background-color: #ffffff; 
-    min-height: 100vh;
-    min-width: 100vw;
-    overflow: hidden;
-}
+  <div class="line original"></div>
+  <div class="line second"></div>
+  <div class="line third"></div>
+  <div class="line fourth"></div>
+  <div class="line dashed"></div>
+  <div class="line dashed second-dashed"></div>
+  <div class="line dashed third-dashed"></div>
+  <div class="line dashed fourth-dashed"></div>
+  
+  <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+  <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+  <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+  <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-body.non-fullscreen .username {
-    top: 35.17vh; 
-}
+  <span class="login-text username">USERnAME</span>
+  <span class="login-text password">PASSWORD</span>
 
-body.non-fullscreen .password {
-    top: 43.17vh; 
-}
+  <span class="login-text open-text hidden">OPEn</span>
+  <span class="login-text help-text hidden">HELP</span>
 
-body.fullscreen .username {
-    top: 35.17vh; 
-}
+  <div class="line login-line"></div>
+  <div class="line login-line-second"></div>
 
-body.fullscreen .password {
-    top: 43.17vh;
-}
+  <script>
+    let inactivityTimer;
+    let fadeCompleted = false;
+    let initialClickCompleted = false;
+    let lastMouseEvent = null;
+    let inputInFocus = false; 
 
-body.fade-in-trigger {
-    background-color: #ffffff; 
-}
+    function hideLoginElements() {
+      document.querySelectorAll(
+        '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
+      ).forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('visible');
+      });
+    }
 
-.line:not(.login-line):not(.login-line-second),
-.time-text {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
+    function showLoginElements() {
+      document.querySelectorAll('.username, .password, .login-line, .login-line-second')
+        .forEach(el => {
+          el.classList.add('visible');
+          el.classList.remove('hidden');
+        });
 
-body.fade-in-trigger .line:not(.login-line):not(.login-line-second),
-body.fade-in-trigger .time-text {
-    opacity: 1;
-    transition-delay: 1s; 
-}
+      if (!inputInFocus && lastMouseEvent) {
+        checkRegionAndShowOpenHelp(lastMouseEvent);
+      }
+    }
 
-.login-line,
-.login-line-second,
-.login-text {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
+    function resetInactivityTimer() {
+      if (fadeCompleted) {
+        clearTimeout(inactivityTimer);
+        showLoginElements();
+        inactivityTimer = setTimeout(hideLoginElements, 20000);
+      }
+    }
 
-.visible {
-    opacity: 1 !important;
-    transition: opacity 0.5s ease-in-out;
-}
+    function hideOpenHelp() {
+      const openText = document.querySelector('.open-text');
+      const helpText = document.querySelector('.help-text');
+      openText.classList.remove('visible');
+      openText.classList.add('hidden');
+      helpText.classList.remove('visible');
+      helpText.classList.add('hidden');
+    }
 
-.hidden {
-    opacity: 0 !important;
-    transition: opacity 0.5s ease-in-out;
-}
+    function showOpenHelp() {
+      if (lastMouseEvent) {
+        checkRegionAndShowOpenHelp(lastMouseEvent);
+      }
+    }
 
-.line {
-    position: absolute;
-    height: 1px;
-    background-color: #d1d1d1;
-}
+    function checkRegionAndShowOpenHelp(event) {
+      if (!fadeCompleted || inputInFocus) return;
 
-.original {
-    top: 12.5vh; 
-    left: 6.38vw;
-    width: 22.48vw; 
-}
+      const openText = document.querySelector('.open-text');
+      const helpText = document.querySelector('.help-text');
 
-.second {
-    top: 28.5vh;
-    left: 6.38vw;
-    width: 22.48vw;
-}
+      // If login is hidden, do not show "OPEn"
+      if (document.querySelector('.username').classList.contains('hidden')) {
+        return;
+      }
 
-.third {
-    top: 84vh;
-    left: 6.38vw;
-    width: 22.48vw;
-}
+      // "OPEn" bounding region (28.5–84% height, 6.38–29% width)
+      const boundingTop = 28.5;
+      const boundingBottom = 84;
+      const boundingLeft = 6.38;
+      const boundingRight = 29; 
 
-.fourth {
-    top: 12.5vh;
-    left: 36vw;
-    width: 57.8vw;
-}
+      const { innerWidth, innerHeight } = window;
+      const { clientX, clientY } = event;
 
-.dashed {
-    position: absolute;
-    height: 1px;
-    top: 28.5vh;
-    left: 36vw;
-    width: 52.4vw;
-    background: linear-gradient(
-        to right,
-        #a1a1a1 0,
-        #a1a1a1 5px, 
-        #ffffff 5px,
-        #ffffff 10px 
-    );
-    background-size: 10px 1px;
-}
+      const topPx = (boundingTop / 100) * innerHeight;
+      const bottomPx = (boundingBottom / 100) * innerHeight;
+      const leftPx = (boundingLeft / 100) * innerWidth;
+      const rightPx = (boundingRight / 100) * innerWidth;
 
-.second-dashed {
-    top: 47vh;
-    left: 36vw;
-    width: 52.4vw;
-}
+      const isInRegion = (
+        clientY >= topPx &&
+        clientY <= bottomPx &&
+        clientX >= leftPx &&
+        clientX <= rightPx
+      );
 
-.third-dashed {
-    top: 65.5vh;
-    left: 36vw;
-    width: 52.4vw;
-}
+      if (isInRegion) {
+        openText.classList.remove('hidden');
+        openText.classList.add('visible');
+        helpText.classList.remove('hidden');
+        helpText.classList.add('visible');
+      } else {
+        openText.classList.remove('visible');
+        openText.classList.add('hidden');
+        helpText.classList.remove('visible');
+        helpText.classList.add('hidden');
+      }
+    }
 
-.fourth-dashed {
-    top: 84vh;
-    left: 36vw;
-    width: 52.4vw;
-}
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) {
+        document.body.classList.remove('fullscreen');
+      } else {
+        document.body.classList.add('fullscreen');
+      }
+    });
 
-.time-text {
-    position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.331rem;
-    color: #111111;
-    letter-spacing: 0.2vw;
-    text-shadow: 0.001rem 0 0 #a1a1a1, -0.001rem 0 0 #a1a1a1;
-}
+    document.addEventListener('click', event => {
+      const edgeThreshold = 10;
+      const { clientX, clientY } = event;
+      const { innerWidth, innerHeight } = window;
 
-/* Positions for each time text */
-.time-text {
-    top: 28.5vh;
-    left: 89.81vw;
-}
+      // If user clicks near the screen edge, request fullscreen
+      const isNearEdge =
+        clientX <= edgeThreshold ||
+        clientX >= innerWidth - edgeThreshold ||
+        clientY <= edgeThreshold ||
+        clientY >= innerHeight - edgeThreshold;
 
-.second-time-text {
-    top: 47.04vh;
-    left: 89.91vw;
-}
+      if (isNearEdge && !document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+        return;
+      }
 
-.third-time-text {
-    top: 65.51vh;
-    left: 89.87vw;
-}
+      // First click triggers fade-in
+      if (!initialClickCompleted) {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen();
+        }
+        setTimeout(() => {
+          document.body.classList.add('fade-in-trigger');
+        }, 1000);
 
-.fourth-time-text {
-    top: 83.86vh;
-    left: 90.1vw;
-}
+        setTimeout(() => {
+          fadeCompleted = true;
+          inactivityTimer = setTimeout(hideLoginElements, 20000);
+        }, 4000);
 
-/* Existing login text */
-.login-text {
-    position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    color: #111111;
-    letter-spacing: 0.28vw;
-    font-size: 0.47rem;
-    left: 6.41vw;
-    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-}
+        initialClickCompleted = true;
+      }
+    });
 
-.username {
-    top: calc(var(--username-line-top) - var(--line-gap)); 
-}
+    document.addEventListener('mousemove', event => {
+      lastMouseEvent = event;
+      resetInactivityTimer();
+      checkRegionAndShowOpenHelp(event);
+    });
 
-.password {
-    top: calc(var(--password-line-top) - var(--line-gap)); 
-}
+    // CLICK HANDLER FOR "OPEN" --> slide entire login area behind white layer
+    document.querySelector('.open-text').addEventListener('click', function() {
+      // Add .slide-left to EVERY piece of the login UI, including "OPEN" & "HELP"
+      document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
+        .forEach(el => {
+          el.classList.add('slide-left');
+        });
+    });
 
-.login-line {
-    position: absolute;
-    top: var(--username-line-top); 
-    left: 6.4vw;
-    width: 22.48vw;
-    height: 1px;
-    background-color: rgba(230, 230, 230, 0.28);
-}
+    // Restore text-input logic for username/password
+    document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
+      element.addEventListener('click', function () {
+        if (
+          fadeCompleted &&
+          (this.classList.contains('username') || this.classList.contains('password'))
+        ) {
+          const parentRect = this.getBoundingClientRect();
+          const input = document.createElement('input');
+          input.type = this.classList.contains('password') ? 'password' : 'text';
+          input.maxLength = 10;
+          input.className = 'typing-input';
+          input.style.top = `${parentRect.top + window.scrollY}px`;
+          input.style.left = `${parentRect.left + window.scrollX}px`;
+          input.style.width = `calc(${parentRect.width}px + 4vw)`;
+          input.style.height = `${parentRect.height}px`;
 
-.login-line-second {
-    position: absolute;
-    top: var(--password-line-top); 
-    left: 6.4vw;
-    width: 22.48vw;
-    height: 1px;
-    background-color: rgba(230, 230, 230, 0.28);
-}
+          input.addEventListener('focus', function () {
+            inputInFocus = true;
+            hideOpenHelp();
+          });
 
-.open-text,
-.help-text {
-    position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    color: #111111;
-    letter-spacing: 0.28vw;
-    font-size: 0.47rem;
-    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
+          input.addEventListener('blur', function () {
+            inputInFocus = false;
+            const span = document.createElement('span');
+            span.className = element.className;
+            span.innerText = input.value.trim() || element.innerText;
+            input.replaceWith(span);
+            showOpenHelp();
+            addClickHandler(span);
+          });
 
-/* Positions for OPEN / HELP in normal and fullscreen states */
-body.non-fullscreen .open-text {
-    top: 35.17vh; 
-    left: 25.57vw;   
-}
-
-body.non-fullscreen .help-text {
-    top: 43.17vh; 
-    left: 25.57vw;   
-}
-
-body.fullscreen .open-text {
-    top: 35.17vh;
-    left: 25.57vw;
-}
-
-body.fullscreen .help-text {
-    top: 43.17vh;
-    left: 25.57vw;
-}
-
-.open-text.visible,
-.help-text.visible {
-    opacity: 0.7 !important;
-}
-
-.open-text.visible:hover,
-.help-text.visible:hover {
-    opacity: 1 !important;
-}
-
-/* WHITE LAYER COVERING LEFT SIDE */
-.layer-one {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 6.37vw;
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 9999; 
-}
-
-/* TRANSITION & SLIDE-LEFT ANIMATION */
-.username, 
-.password,
-.login-line,
-.login-line-second,
-.open-text,
-.help-text {
-    transition: transform 0.7s ease-in-out;
-}
-
-.slide-left {
-    transform: translateX(-10vw);
-}
+          this.replaceWith(input);
+          input.focus();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

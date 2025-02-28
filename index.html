@@ -45,9 +45,9 @@
 </head>
 <body class="non-fullscreen">
 
-    <!-- NEW WHITE LAYER at 0–6.37vw -->
+    <!-- 1) White layer from left=0 to left=6.37vw -->
     <div class="layer-one"></div>
-    <!-- END NEW WHITE LAYER -->
+    <!-- End white layer -->
 
     <div class="line original"></div>
     <div class="line second"></div>
@@ -73,7 +73,9 @@
     <div class="line login-line-second"></div>
 
     <script>
-        /* ORIGINAL SCRIPT - only minimal changes at bottom to add the slide-left logic */
+        /* -------------------------------
+           ORIGINAL CODE + minimal changes
+         ------------------------------- */
 
         let inactivityTimer;
         let fadeCompleted = false;
@@ -215,15 +217,16 @@
             checkRegionAndShowOpenHelp(event);
         });
 
-        /* --- MINIMAL CHANGE #1: Clicking OPEN triggers the slide-left animation --- */
+        /* -----------------------------------
+           MINIMAL CHANGE #1: "OPEN" => SLIDE
+           ----------------------------------- */
         document.querySelector('.open-text').addEventListener('click', function() {
-            /* Add .slide-left to all login elements, including OPEN & HELP */
+            // Add .slide-left to all login elements so they move behind .layer-one
             document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
               .forEach(el => {
                 el.classList.add('slide-left');
               });
         });
-        /* --- END MINIMAL CHANGE #1 --- */
 
         /* Original text editing logic for username/password */
         document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {

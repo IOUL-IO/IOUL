@@ -41,6 +41,7 @@ body.fullscreen .password {
     top: 43.17vh;
 }
 
+/* Fade trigger ensures lines/time-text fade in */
 body.fade-in-trigger {
     background-color: #ffffff; 
 }
@@ -51,12 +52,14 @@ body.fade-in-trigger {
     transition: opacity 0.5s ease-in-out;
 }
 
+/* 1s after .fade-in-trigger, lines/time-text appear */
 body.fade-in-trigger .line:not(.login-line):not(.login-line-second),
 body.fade-in-trigger .time-text {
     opacity: 1;
     transition-delay: 1s; 
 }
 
+/* The login lines & texts start at opacity 0, become .visible if needed */
 .login-line,
 .login-line-second,
 .login-text {
@@ -74,6 +77,7 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
+/* Lines layout */
 .line {
     position: absolute;
     height: 1px;
@@ -85,19 +89,16 @@ body.fade-in-trigger .time-text {
     left: 6.38vw;
     width: 22.48vw; 
 }
-
 .second {
     top: 28.5vh;
     left: 6.38vw;
     width: 22.48vw;
 }
-
 .third {
     top: 84vh;
     left: 6.38vw;
     width: 22.48vw;
 }
-
 .fourth {
     top: 12.5vh;
     left: 36vw;
@@ -125,19 +126,18 @@ body.fade-in-trigger .time-text {
     left: 36vw;
     width: 52.4vw;
 }
-
 .third-dashed {
     top: 65.5vh;
     left: 36vw;
     width: 52.4vw;
 }
-
 .fourth-dashed {
     top: 84vh;
     left: 36vw;
     width: 52.4vw;
 }
 
+/* Time text positions */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -147,28 +147,24 @@ body.fade-in-trigger .time-text {
     text-shadow: 0.001rem 0 0 #a1a1a1, -0.001rem 0 0 #a1a1a1;
 }
 
-/* Positions for each time text */
 .time-text {
     top: 28.5vh;
     left: 89.81vw;
 }
-
 .second-time-text {
     top: 47.04vh;
     left: 89.91vw;
 }
-
 .third-time-text {
     top: 65.51vh;
     left: 89.87vw;
 }
-
 .fourth-time-text {
     top: 83.86vh;
     left: 90.1vw;
 }
 
-/* Existing login text */
+/* Login text positions */
 .login-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -182,7 +178,6 @@ body.fade-in-trigger .time-text {
 .username {
     top: calc(var(--username-line-top) - var(--line-gap)); 
 }
-
 .password {
     top: calc(var(--password-line-top) - var(--line-gap)); 
 }
@@ -195,7 +190,6 @@ body.fade-in-trigger .time-text {
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
 }
-
 .login-line-second {
     position: absolute;
     top: var(--password-line-top); 
@@ -205,6 +199,7 @@ body.fade-in-trigger .time-text {
     background-color: rgba(230, 230, 230, 0.28);
 }
 
+/* OPEN / HELP text */
 .open-text,
 .help-text {
     position: absolute;
@@ -222,17 +217,14 @@ body.non-fullscreen .open-text {
     top: 35.17vh; 
     left: 25.57vw;   
 }
-
 body.non-fullscreen .help-text {
     top: 43.17vh; 
     left: 25.57vw;   
 }
-
 body.fullscreen .open-text {
     top: 35.17vh;
     left: 25.57vw;
 }
-
 body.fullscreen .help-text {
     top: 43.17vh;
     left: 25.57vw;
@@ -242,13 +234,12 @@ body.fullscreen .help-text {
 .help-text.visible {
     opacity: 0.7 !important;
 }
-
 .open-text.visible:hover,
 .help-text.visible:hover {
     opacity: 1 !important;
 }
 
-/* WHITE LAYER COVERING LEFT SIDE */
+/* The white layer at left (z-index above background) */
 .layer-one {
     position: absolute;
     top: 0;
@@ -256,10 +247,10 @@ body.fullscreen .help-text {
     width: 6.37vw;
     height: 100vh;
     background-color: #ffffff;
-    z-index: 9999; 
+    z-index: 9999;
 }
 
-/* TRANSITION & SLIDE-LEFT ANIMATION */
+/* All login UI items get a transform transition */
 .username, 
 .password,
 .login-line,
@@ -270,9 +261,10 @@ body.fullscreen .help-text {
 }
 
 /*
-  Increase this to -30vw so the entire bounding box
-  slides fully behind the left white rectangle.
+  Slide-left: shift them far enough to be
+  completely behind the left layer at 0–6.37vw.
+  -40vw is usually enough to hide them fully.
 */
 .slide-left {
-    transform: translateX(-30vw);
+    transform: translateX(-40vw);
 }

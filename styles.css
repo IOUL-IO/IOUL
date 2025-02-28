@@ -18,6 +18,7 @@
     --line-gap: 2.8vh; 
 }
 
+/* Base body styling */
 body.non-fullscreen {
     background-color: #ffffff; 
     min-height: 100vh;
@@ -25,34 +26,35 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
+/* Positions for username/password in non-fullscreen */
 body.non-fullscreen .username {
     top: 35.17vh; 
 }
-
 body.non-fullscreen .password {
     top: 43.17vh; 
 }
 
+/* Positions in fullscreen (same in your original code) */
 body.fullscreen .username {
     top: 35.17vh; 
 }
-
 body.fullscreen .password {
     top: 43.17vh;
 }
 
-/* Fade trigger ensures lines/time-text fade in */
+/* Fading in after first click */
 body.fade-in-trigger {
     background-color: #ffffff; 
 }
 
+/* Lines (except login lines) and time-text start hidden, fade in */
 .line:not(.login-line):not(.login-line-second),
 .time-text {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
 
-/* 1s after .fade-in-trigger, lines/time-text appear */
+/* Appear 1s after .fade-in-trigger is applied */
 body.fade-in-trigger .line:not(.login-line):not(.login-line-second),
 body.fade-in-trigger .time-text {
     opacity: 1;
@@ -67,11 +69,11 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
+/* "visible" vs. "hidden" control login UI opacity */
 .visible {
     opacity: 1 !important;
     transition: opacity 0.5s ease-in-out;
 }
-
 .hidden {
     opacity: 0 !important;
     transition: opacity 0.5s ease-in-out;
@@ -84,6 +86,7 @@ body.fade-in-trigger .time-text {
     background-color: #d1d1d1;
 }
 
+/* Specific line positions */
 .original {
     top: 12.5vh; 
     left: 6.38vw;
@@ -104,7 +107,6 @@ body.fade-in-trigger .time-text {
     left: 36vw;
     width: 57.8vw;
 }
-
 .dashed {
     position: absolute;
     height: 1px;
@@ -120,7 +122,6 @@ body.fade-in-trigger .time-text {
     );
     background-size: 10px 1px;
 }
-
 .second-dashed {
     top: 47vh;
     left: 36vw;
@@ -146,7 +147,6 @@ body.fade-in-trigger .time-text {
     letter-spacing: 0.2vw;
     text-shadow: 0.001rem 0 0 #a1a1a1, -0.001rem 0 0 #a1a1a1;
 }
-
 .time-text {
     top: 28.5vh;
     left: 89.81vw;
@@ -174,14 +174,12 @@ body.fade-in-trigger .time-text {
     left: 6.41vw;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
-
 .username {
     top: calc(var(--username-line-top) - var(--line-gap)); 
 }
 .password {
     top: calc(var(--password-line-top) - var(--line-gap)); 
 }
-
 .login-line {
     position: absolute;
     top: var(--username-line-top); 
@@ -199,7 +197,7 @@ body.fade-in-trigger .time-text {
     background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* OPEN / HELP text */
+/* OPEN / HELP text (fade with same transitions as login-text) */
 .open-text,
 .help-text {
     position: absolute;
@@ -211,8 +209,7 @@ body.fade-in-trigger .time-text {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
-
-/* Positions for OPEN / HELP in normal and fullscreen states */
+/* Normal positions for OPEN / HELP */
 body.non-fullscreen .open-text {
     top: 35.17vh; 
     left: 25.57vw;   
@@ -221,6 +218,7 @@ body.non-fullscreen .help-text {
     top: 43.17vh; 
     left: 25.57vw;   
 }
+/* Fullscreen positions for OPEN / HELP */
 body.fullscreen .open-text {
     top: 35.17vh;
     left: 25.57vw;
@@ -230,16 +228,7 @@ body.fullscreen .help-text {
     left: 25.57vw;
 }
 
-.open-text.visible,
-.help-text.visible {
-    opacity: 0.7 !important;
-}
-.open-text.visible:hover,
-.help-text.visible:hover {
-    opacity: 1 !important;
-}
-
-/* The white layer at left (z-index above background) */
+/* White layer at left */
 .layer-one {
     position: absolute;
     top: 0;
@@ -250,7 +239,7 @@ body.fullscreen .help-text {
     z-index: 9999;
 }
 
-/* All login UI items get a transform transition */
+/* Transition group for sliding everything left */
 .username, 
 .password,
 .login-line,
@@ -260,11 +249,7 @@ body.fullscreen .help-text {
     transition: transform 0.7s ease-in-out;
 }
 
-/*
-  Slide-left: shift them far enough to be
-  completely behind the left layer at 0–6.37vw.
-  -40vw is usually enough to hide them fully.
-*/
+/* Move them -40vw so the entire bounding box is hidden behind the white layer */
 .slide-left {
     transform: translateX(-40vw);
 }

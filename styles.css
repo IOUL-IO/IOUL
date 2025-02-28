@@ -147,6 +147,7 @@ body.fade-in-trigger .time-text {
     text-shadow: 0.001rem 0 0 #a1a1a1, -0.001rem 0 0 #a1a1a1;
 }
 
+/* Positions for each time text */
 .time-text {
     top: 28.5vh;
     left: 89.81vw;
@@ -216,6 +217,7 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
+/* Positions for OPEN / HELP in normal and fullscreen states */
 body.non-fullscreen .open-text {
     top: 35.17vh; 
     left: 25.57vw;   
@@ -246,7 +248,7 @@ body.fullscreen .help-text {
     opacity: 1 !important;
 }
 
-/* NEW WHITE LAYER */
+/* WHITE LAYER COVERING LEFT SIDE */
 .layer-one {
     position: absolute;
     top: 0;
@@ -254,14 +256,16 @@ body.fullscreen .help-text {
     width: 6.37vw;
     height: 100vh;
     background-color: #ffffff;
-    z-index: 9999; /* Sits on top */
+    z-index: 9999; 
 }
 
-/* SLIDE-LEFT ANIMATION */
+/* TRANSITION & SLIDE-LEFT ANIMATION */
 .username, 
 .password,
 .login-line,
-.login-line-second {
+.login-line-second,
+.open-text,
+.help-text {
     transition: transform 0.7s ease-in-out;
 }
 

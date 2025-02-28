@@ -264,3 +264,14 @@ body.fullscreen .help-text {
   background-color: #ffffff;
   z-index: 100;
 }
+
+/* New layer two: white rectangle covering left 28.87vw–36vw */
+.layer-two {
+  position: fixed;
+  top: 0;
+  left: 28.87vw;
+  width: calc(36vw - 28.87vw);
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 100;
+}

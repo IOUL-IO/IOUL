@@ -6,7 +6,6 @@
   <title>IOUL</title>
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
-
   <style>
     .login-text {
       position: absolute;
@@ -66,19 +65,22 @@
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
-  <!-- Account Creation Container -->
-  <div class="account-creation-container hidden">
-    <span class="login-text account-text email-text hidden">E-MA1L ADDRESS</span>
-    <span class="login-text account-text username-text hidden">cREATE USERnAME</span>
-    <span class="login-text account-text pass-text hidden">10-S1gn PASSWORD</span>
-    <span class="login-text account-text confirm-text hidden">REPEAT PASSWORD</span>
-    <div class="line account-line acc-line-1 hidden"></div>
-    <div class="line account-line acc-line-2 hidden"></div>
-    <div class="line account-line acc-line-3 hidden"></div>
-    <div class="line account-line acc-line-4 hidden"></div>
+  <!-- Account Creation Wrapper (clipping container) -->
+  <div class="account-creation-wrapper hidden">
+    <!-- Account Creation Container (will slide left) -->
+    <div class="account-creation-container">
+      <span class="login-text account-text email-text hidden">E-MA1L ADDRESS</span>
+      <span class="login-text account-text username-text hidden">cREATE USERnAME</span>
+      <span class="login-text account-text pass-text hidden">10-S1gn PASSWORD</span>
+      <span class="login-text account-text confirm-text hidden">REPEAT PASSWORD</span>
+      <div class="line account-line acc-line-1 hidden"></div>
+      <div class="line account-line acc-line-2 hidden"></div>
+      <div class="line account-line acc-line-3 hidden"></div>
+      <div class="line account-line acc-line-4 hidden"></div>
+    </div>
   </div>
 
-  <!-- Password Reset -->
+  <!-- Password Reset (unchanged) -->
   <span class="login-text password-reset-email-text hidden">YOUR E-MA1L</span>
   <span class="login-text password-reset-link-text hidden">SEnD L1nK</span>
   <div class="line password-reset-line hidden"></div>
@@ -88,7 +90,7 @@
     let fadeCompleted = false;
     let initialClickCompleted = false;
     let lastMouseEvent = null;
-    let inputInFocus = false; 
+    let inputInFocus = false;
     let accountCreationActive = false;
     let passwordResetActive = false;
     let transitionInProgress = false;
@@ -141,7 +143,7 @@
       const boundingTop = 28.5;
       const boundingBottom = 84;
       const boundingLeft = 6.38;
-      const boundingRight = 29; 
+      const boundingRight = 29;
       const { innerWidth, innerHeight } = window;
       const { clientX, clientY } = event;
       const topPx = (boundingTop / 100) * innerHeight;
@@ -324,16 +326,16 @@
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
       });
-      // Reveal and slide account creation container
-      var accContainer = document.querySelector('.account-creation-container');
-      accContainer.classList.remove('hidden');
-      // Also remove hidden from its children so they become visible
+      // Remove hidden class from account creation wrapper (so its contents are clipped in place)
+      var accWrapper = document.querySelector('.account-creation-wrapper');
+      accWrapper.classList.remove('hidden');
+      // Ensure its children are visible
       document.querySelectorAll('.account-text, .account-line').forEach(function(el) {
         el.classList.remove('hidden');
         el.classList.add('visible');
       });
-      accContainer.classList.add('account-slide');
-      // Mark account creation active if needed
+      // Slide the account creation container into its final location
+      document.querySelector('.account-creation-container').classList.add('account-slide');
       accountCreationActive = true;
     });
     // Revert to login when clicking outside

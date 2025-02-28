@@ -66,7 +66,7 @@
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
-  <!-- Account Creation Container (initially hidden and squished under layer two) -->
+  <!-- Account Creation Container -->
   <div class="account-creation-container hidden">
     <span class="login-text account-text email-text hidden">E-MA1L ADDRESS</span>
     <span class="login-text account-text username-text hidden">cREATE USERnAME</span>
@@ -78,7 +78,7 @@
     <div class="line account-line acc-line-4 hidden"></div>
   </div>
 
-  <!-- Password Reset (unchanged) -->
+  <!-- Password Reset -->
   <span class="login-text password-reset-email-text hidden">YOUR E-MA1L</span>
   <span class="login-text password-reset-link-text hidden">SEnD L1nK</span>
   <div class="line password-reset-line hidden"></div>
@@ -281,7 +281,7 @@
     document.querySelectorAll('.account-text').forEach(function (element) {
       addAccountClickHandler(element);
     });
-    // Password reset conversion (if needed)
+    // Password reset conversion
     function addPasswordResetClickHandler(element) {
       element.addEventListener('click', function () {
         if (passwordResetActive) {
@@ -320,11 +320,105 @@
     });
     // OPEN button click event: slide login area and account creation container
     document.querySelector('.open-text').addEventListener('click', function() {
+      // Slide login area elements
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
       });
-      document.querySelector('.account-creation-container').classList.add('account-slide');
+      // Reveal and slide account creation container
+      var accContainer = document.querySelector('.account-creation-container');
+      accContainer.classList.remove('hidden');
+      // Also remove hidden from its children so they become visible
+      document.querySelectorAll('.account-text, .account-line').forEach(function(el) {
+        el.classList.remove('hidden');
+        el.classList.add('visible');
+      });
+      accContainer.classList.add('account-slide');
+      // Mark account creation active if needed
+      accountCreationActive = true;
     });
+    // Revert to login when clicking outside
+    document.addEventListener('click', event => {
+      if (event.target.classList.contains('login-text')) {
+        return;
+      }
+      if (accountCreationActive || passwordResetActive) {
+        const { innerWidth, innerHeight } = window;
+        const leftBoundary = 0;
+        const rightBoundary = (6.37 / 100) * innerWidth;
+        const topBoundary = (28.5 / 100) * innerHeight;
+        const bottomBoundary = (84 / 100) * innerHeight;
+        if (
+          event.clientX >= leftBoundary &&
+          event.clientX <= rightBoundary &&
+          event.clientY >= topBoundary &&
+          event.clientY <= bottomBoundary
+        ) {
+          revertToLogin();
+          return;
+        }
+      }
+      const edgeThreshold = 10;
+      const { clientX, clientY } = event;
+      const { innerWidth, innerHeight } = window;
+      const isNearEdge =
+        clientX <= edgeThreshold ||
+        clientX >= innerWidth - edgeThreshold ||
+        clientY <= edgeThreshold ||
+        clientY >= innerHeight - edgeThreshold;
+      if (isNearEdge && !document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+        return;
+      }
+      if (!initialClickCompleted) {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen();
+        }
+        setTimeout(() => {
+          document.body.classList.add('fade-in-trigger');
+        }, 1000);
+        setTimeout(() => {
+          fadeCompleted = true;
+          inactivityTimer = setTimeout(hideLoginElements, 20000);
+        }, 4000);
+        initialClickCompleted = true;
+      }
+    });
+    document.addEventListener('mousemove', event => {
+      lastMouseEvent = event;
+      resetInactivityTimer();
+      checkRegionAndShowOpenHelp(event);
+    });
+    function revertToLogin() {
+      if (!accountCreationActive && !passwordResetActive) return;
+      if (accountCreationActive) {
+        document.querySelectorAll('.account-text, .account-line')
+          .forEach(el => {
+            el.classList.add('hidden');
+            el.classList.remove('visible');
+          });
+      }
+      if (passwordResetActive) {
+        document.querySelectorAll('.password-reset-email-text, .password-reset-link-text, .password-reset-line')
+          .forEach(el => {
+            el.classList.add('hidden');
+            el.classList.remove('visible');
+          });
+      }
+      setTimeout(() => {
+        document.querySelectorAll('.username, .password, .login-line, .login-line-second')
+          .forEach(el => {
+            el.classList.add('visible');
+            el.classList.remove('hidden');
+          });
+        document.querySelectorAll('.open-text, .help-text')
+          .forEach(el => {
+            el.classList.add('visible');
+            el.classList.remove('hidden');
+          });
+        accountCreationActive = false;
+        passwordResetActive = false;
+      }, 500);
+    }
   </script>
   <!-- White layers -->
   <div class="layer-one"></div>

@@ -246,6 +246,14 @@ body.fullscreen .help-text {
   opacity: 1 !important;
 }
 
+/* New slide-left class for login area components */
+/* Using !important to override any inline transform */
+.slide-left {
+  transform: translateX(-30vw) !important;
+  transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
+  z-index: 0 !important;
+}
+
 /* New layer one: white rectangle covering left 0vw–6.37vw */
 .layer-one {
   position: fixed;
@@ -254,13 +262,5 @@ body.fullscreen .help-text {
   width: 6.37vw;
   height: 100vh;
   background-color: #ffffff;
-  z-index: 5;
-}
-
-/* New slide-left class for login area components */
-/* Added !important to force the transform to override .login-text's inline transform */
-.slide-left {
-  transform: translateX(-30vw) !important;
-  transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
-  z-index: 0 !important;
+  z-index: 100;
 }

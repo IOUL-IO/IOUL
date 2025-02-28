@@ -43,9 +43,10 @@
   </style>
 </head>
 <body class="non-fullscreen">
-  <!-- White layer covering 0vw-6.37vw (left) and 0vh-100vh (top) -->
+  <!-- White layer covering 0–6.37vw at the left side -->
   <div class="layer-one"></div>
 
+  <!-- Lines and times that fade in after the first click -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -60,12 +61,11 @@
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
+  <!-- Login elements -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
-
   <span class="login-text open-text hidden">OPEn</span>
   <span class="login-text help-text hidden">HELP</span>
-
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
@@ -76,6 +76,7 @@
     let lastMouseEvent = null;
     let inputInFocus = false; 
 
+    // Hide all login elements (including OPEN/HELP) after inactivity
     function hideLoginElements() {
       document.querySelectorAll(
         '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
@@ -85,6 +86,7 @@
       });
     }
 
+    // Show the main login elements (username/password/lines)
     function showLoginElements() {
       document.querySelectorAll('.username, .password, .login-line, .login-line-second')
         .forEach(el => {
@@ -92,11 +94,13 @@
           el.classList.remove('hidden');
         });
 
+      // If no input is focused, check if we should show OPEN/HELP 
       if (!inputInFocus && lastMouseEvent) {
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
     }
 
+    // Reset inactivity timer
     function resetInactivityTimer() {
       if (fadeCompleted) {
         clearTimeout(inactivityTimer);
@@ -105,6 +109,7 @@
       }
     }
 
+    // Hide OPEN/HELP
     function hideOpenHelp() {
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
@@ -114,12 +119,14 @@
       helpText.classList.add('hidden');
     }
 
+    // Show OPEN/HELP if in bounding region
     function showOpenHelp() {
       if (lastMouseEvent) {
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
     }
 
+    // Check if the mouse is in the bounding region for OPEN/HELP
     function checkRegionAndShowOpenHelp(event) {
       if (!fadeCompleted || inputInFocus) return;
 
@@ -165,6 +172,7 @@
       }
     }
 
+    // Fullscreen transitions
     document.addEventListener('fullscreenchange', () => {
       if (!document.fullscreenElement) {
         document.body.classList.remove('fullscreen');
@@ -173,6 +181,7 @@
       }
     });
 
+    // First click attempts fullscreen and triggers fade
     document.addEventListener('click', event => {
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
@@ -190,17 +199,20 @@
         return;
       }
 
-      // First click triggers fade-in
+      // If this is the first click, trigger fade-in after 1s
       if (!initialClickCompleted) {
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen();
         }
+        // 1s later, add fade-in-trigger to body
         setTimeout(() => {
           document.body.classList.add('fade-in-trigger');
         }, 1000);
 
+        // 4s later, fade completes, we set fadeCompleted = true
         setTimeout(() => {
           fadeCompleted = true;
+          // Start 20s inactivity timer
           inactivityTimer = setTimeout(hideLoginElements, 20000);
         }, 4000);
 
@@ -208,21 +220,23 @@
       }
     });
 
+    // On mouse move, reset inactivity timer & possibly show OPEN/HELP
     document.addEventListener('mousemove', event => {
       lastMouseEvent = event;
       resetInactivityTimer();
       checkRegionAndShowOpenHelp(event);
     });
 
-    // CLICK HANDLER FOR "OPEN" --> slide login elements (including OPEN & HELP)
+    // When "OPEN" is clicked, slide everything left behind the white layer
     document.querySelector('.open-text').addEventListener('click', function() {
+      // Add .slide-left to ALL login elements
       document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
         .forEach(el => {
           el.classList.add('slide-left');
         });
     });
 
-    // Restore text-input logic for username/password
+    // Handle user/password editing
     document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
       element.addEventListener('click', function () {
         if (

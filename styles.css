@@ -245,3 +245,26 @@ body.fullscreen .help-text {
 .help-text.visible:hover {
     opacity: 1 !important;
 }
+
+/* NEW WHITE LAYER */
+.layer-one {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6.37vw;
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 9999; /* Sits on top */
+}
+
+/* SLIDE-LEFT ANIMATION */
+.username, 
+.password,
+.login-line,
+.login-line-second {
+    transition: transform 0.7s ease-in-out;
+}
+
+.slide-left {
+    transform: translateX(-10vw);
+}

@@ -271,24 +271,33 @@ body.fullscreen .help-text {
    New Account Creation Area
    ------------------------- */
 
-/* Account Creation Container: initially positioned under layer two */
-.account-creation-container {
-  position: absolute;
+/* Account Creation Wrapper: clips the sliding account creation area */
+.account-creation-wrapper {
+  position: fixed;
   top: 0;
   left: 28.87vw;
   width: calc(36vw - 28.87vw);
   height: 100vh;
   overflow: hidden;
   z-index: 90;
+}
+
+/* Account Creation Container: positioned relative to the wrapper */
+.account-creation-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   transition: transform 0.5s ease-in-out;
 }
 
-/* When sliding, translate left by 22.47vw so container’s left becomes 6.4vw */
+/* When sliding, translate container left by 22.47vw so its global left becomes 6.4vw */
 .account-creation-container.account-slide {
   transform: translateX(-22.47vw) !important;
 }
 
-/* Inside the container, force account texts and lines to use left: 0 so they map to final left 6.4vw */
+/* Inside the container, force account texts and lines to use left: 0 */
 .account-creation-container .account-text {
   left: 0 !important;
 }

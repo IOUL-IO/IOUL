@@ -74,7 +74,6 @@ body.fade-in-trigger .time-text {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Original line positions */
 .line {
     position: absolute;
     height: 1px;
@@ -247,28 +246,20 @@ body.fullscreen .help-text {
     opacity: 1 !important;
 }
 
-/* 2) White layer covering 0–6.37vw top=0–100vh */
+/* New layer one: white rectangle covering left 0vw–6.37vw */
 .layer-one {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 6.37vw;
     height: 100vh;
     background-color: #ffffff;
-    z-index: 9999; 
+    z-index: 5;
 }
 
-/* MINIMAL CHANGE #2: Let them slide left */
-.username, 
-.password,
-.login-line,
-.login-line-second,
-.open-text,
-.help-text {
-    transition: transform 0.7s ease-in-out;
-}
-
-/* Slide them -40vw so all is hidden behind .layer-one */
+/* New slide-left class for login area components */
 .slide-left {
-    transform: translateX(-40vw);
+    transform: translateX(-30vw);
+    transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
+    z-index: 0 !important;
 }

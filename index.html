@@ -247,7 +247,7 @@
     });
 
     // Click event for OPEN: add .slide-left to all login area components.
-    // They will slide left; with their z-index set to 0 they will fall under the layer when they reach left 6.37vw.
+    // They will slide left and, with their z-index dropped to 0, pass beneath the white layers.
     document.querySelector('.open-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
@@ -255,7 +255,8 @@
     });
   </script>
 
-  <!-- Moved layer-one to the end so it renders on top -->
+  <!-- White layers: layer-one covers left 0vw–6.37vw, layer-two covers left 28.87vw–36vw -->
   <div class="layer-one"></div>
+  <div class="layer-two"></div>
 </body>
 </html>

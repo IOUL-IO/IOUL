@@ -297,7 +297,7 @@ body.fullscreen .help-text {
   width: 100% !important;
 }
 
-/* Final positions (for reference; these are applied once the container is moved)
+/* Final positions for account creation components (for reference):
 .email-text { top: 35.2vh; left: 6.4vw; }
 .username-text { top: 43.3vh; left: 6.4vw; }
 .pass-text { top: 51.4vh; left: 6.4vw; }

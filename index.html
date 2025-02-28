@@ -43,6 +43,11 @@
     </style>
 </head>
 <body class="non-fullscreen">
+
+    <!-- NEW WHITE LAYER -->
+    <div class="layer-one"></div>
+    <!-- END NEW WHITE LAYER -->
+
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -207,6 +212,15 @@
             checkRegionAndShowOpenHelp(event);
         });
 
+        // Click handler to slide login elements left when "OPEN" is clicked
+        document.querySelector('.open-text').addEventListener('click', function() {
+            document.querySelectorAll('.username, .password, .login-line, .login-line-second')
+                .forEach(el => {
+                    el.classList.add('slide-left');
+                });
+        });
+
+        // Restore the original text input mechanism
         document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
             element.addEventListener('click', function () {
                 if (
@@ -236,7 +250,6 @@
                         input.replaceWith(span);
 
                         showOpenHelp();
-
                         addClickHandler(span);
                     });
 

@@ -247,7 +247,6 @@ body.fullscreen .help-text {
 }
 
 /* New slide-left class for login area components */
-/* Using !important to override any inline transform */
 .slide-left {
   transform: translateX(-30vw) !important;
   transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
@@ -276,20 +275,29 @@ body.fullscreen .help-text {
   z-index: 100;
 }
 
-/* Account creation components initial styling with scaleX set to 0.1 */
-.account-text,
-.account-line {
-  position: absolute;
-  transform: scaleX(0.1);
-  transform-origin: left;
-  transition: transform 0.5s ease-in-out, left 0.5s ease-in-out;
+/* Account creation wrapper styling */
+.account-wrapper {
+  position: fixed;
+  top: 0;
+  left: 28.88vw; /* initial horizontal position behind layer two */
+  width: 22.48vw;
+  height: 100vh;
+  overflow: hidden;
+  transition: left 0.5s ease-in-out;
   z-index: 5;
 }
 
-/* Account creation texts positioning */
-.account-text.account-email {
-  top: 35.2vh;
-  left: 28.88vw;
+/* When active, slide the wrapper into view */
+.account-wrapper.active {
+  left: 6.41vw;
+}
+
+/* Account creation texts styling */
+/* Remove the earlier scaling and absolute left offsets.
+   The inner account texts will now be positioned relative to the wrapper. */
+.account-text {
+  position: absolute;
+  left: 0;
   font-family: 'Distill Expanded', sans-serif;
   color: #111111;
   letter-spacing: 0.34vw;
@@ -297,79 +305,45 @@ body.fullscreen .help-text {
   line-height: 1.2;
   padding: 0.1rem 0;
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+}
+
+.account-text.account-email {
+  top: 35.2vh;
 }
 
 .account-text.account-username {
   top: 43.3vh;
-  left: 28.88vw;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111111;
-  letter-spacing: 0.34vw;
-  font-size: 0.46rem;
-  line-height: 1.2;
-  padding: 0.1rem 0;
-  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
 .account-text.account-sign-password {
   top: 51.4vh;
-  left: 28.88vw;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111111;
-  letter-spacing: 0.34vw;
-  font-size: 0.46rem;
-  line-height: 1.2;
-  padding: 0.1rem 0;
-  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
 .account-text.account-repeat-password {
   top: 59.5vh;
-  left: 28.88vw;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111111;
-  letter-spacing: 0.34vw;
-  font-size: 0.46rem;
-  line-height: 1.2;
-  padding: 0.1rem 0;
-  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
 /* Account creation lines styling */
-.account-line.account-line1 {
-  top: 38.9vh;
-  left: 28.88vw;
+.account-line {
+  position: absolute;
+  left: 0;
   width: 22.48vw;
   height: 1px;
   background-color: rgba(230, 230, 230, 0.28);
+}
+
+.account-line.account-line1 {
+  top: 38.9vh;
 }
 
 .account-line.account-line2 {
   top: 47vh;
-  left: 28.88vw;
-  width: 22.48vw;
-  height: 1px;
-  background-color: rgba(230, 230, 230, 0.28);
 }
 
 .account-line.account-line3 {
   top: 55.1vh;
-  left: 28.88vw;
-  width: 22.48vw;
-  height: 1px;
-  background-color: rgba(230, 230, 230, 0.28);
 }
 
 .account-line.account-line4 {
   top: 63.2vh;
-  left: 28.88vw;
-  width: 22.48vw;
-  height: 1px;
-  background-color: rgba(230, 230, 230, 0.28);
-}
-
-/* When account creation components slide, remove scale and change left position */
-.account-slide {
-  transform: scaleX(1) !important;
-  left: 6.41vw !important;
 }

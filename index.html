@@ -22,6 +22,7 @@
       padding: 0.1rem 0;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
+
     input.typing-input {
       font-family: 'Distill Expanded', sans-serif;
       font-size: 0.46rem;
@@ -56,38 +57,36 @@
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-  <!-- Login Area Elements -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
+
   <span class="login-text open-text hidden">OPEn</span>
   <span class="login-text help-text hidden">HELP</span>
+
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
-  <!-- Account Creation Components:
-       They start with the class "account-init" so that they appear shrunk (via a transform)
-       behind layer two. Note: We removed the "hidden" class so they’re visible (albeit shrunk). -->
-  <span class="login-text account-text email-text account-init">E-MA1L ADDRESS</span>
-  <span class="login-text account-text username-text account-init">cREATE USERnAME</span>
-  <span class="login-text account-text pass-text account-init">10-S1gn PASSWORD</span>
-  <span class="login-text account-text confirm-text account-init">REPEAT PASSWORD</span>
-  <div class="line account-line acc-line-1 account-init"></div>
-  <div class="line account-line acc-line-2 account-init"></div>
-  <div class="line account-line acc-line-3 account-init"></div>
-  <div class="line account-line acc-line-4 account-init"></div>
-
-  <!-- New Layer Two: fixed container covering left 28.87vw to 36vw -->
+  <!-- New Layer Two -->
   <div class="layer-two"></div>
 
-  <!-- Layer One remains unchanged -->
-  <div class="layer-one"></div>
+  <!-- New Account Creation Components (initially squished under layer two) -->
+  <div class="account-creation">
+    <span class="login-text account-text email-text">E-MA1L ADDRESS</span>
+    <span class="login-text account-text username-text">cREATE USERnAME</span>
+    <span class="login-text account-text pass-text">10-S1gn PASSWORD</span>
+    <span class="login-text account-text confirm-text">REPEAT PASSWORD</span>
+    <div class="line account-line acc-line-1"></div>
+    <div class="line account-line acc-line-2"></div>
+    <div class="line account-line acc-line-3"></div>
+    <div class="line account-line acc-line-4"></div>
+  </div>
 
   <script>
     let inactivityTimer;
     let fadeCompleted = false;
     let initialClickCompleted = false;
     let lastMouseEvent = null;
-    let inputInFocus = false;
+    let inputInFocus = false; 
 
     function hideLoginElements() {
       document.querySelectorAll(
@@ -104,6 +103,7 @@
           el.classList.add('visible');
           el.classList.remove('hidden');
         });
+
       if (!inputInFocus && lastMouseEvent) {
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
@@ -134,27 +134,34 @@
 
     function checkRegionAndShowOpenHelp(event) {
       if (!fadeCompleted || inputInFocus) return;
+
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
+
       if (document.querySelector('.username').classList.contains('hidden')) {
         return;
       }
+
       const boundingTop = 28.5;
       const boundingBottom = 84;
       const boundingLeft = 6.38;
-      const boundingRight = 29;
+      const boundingRight = 29; 
+
       const { innerWidth, innerHeight } = window;
       const { clientX, clientY } = event;
+
       const topPx = (boundingTop / 100) * innerHeight;
       const bottomPx = (boundingBottom / 100) * innerHeight;
       const leftPx = (boundingLeft / 100) * innerWidth;
       const rightPx = (boundingRight / 100) * innerWidth;
+
       const isInRegion = (
         clientY >= topPx &&
         clientY <= bottomPx &&
         clientX >= leftPx &&
         clientX <= rightPx
       );
+
       if (isInRegion) {
         openText.classList.remove('hidden');
         openText.classList.add('visible');
@@ -180,15 +187,18 @@
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
+
       const isNearEdge =
         clientX <= edgeThreshold ||
         clientX >= innerWidth - edgeThreshold ||
         clientY <= edgeThreshold ||
         clientY >= innerHeight - edgeThreshold;
+
       if (isNearEdge && !document.fullscreenElement) {
         document.documentElement.requestFullscreen();
         return;
       }
+
       if (!initialClickCompleted) {
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen();
@@ -196,10 +206,12 @@
         setTimeout(() => {
           document.body.classList.add('fade-in-trigger');
         }, 1000);
+
         setTimeout(() => {
           fadeCompleted = true;
           inactivityTimer = setTimeout(hideLoginElements, 20000);
         }, 4000);
+
         initialClickCompleted = true;
       }
     });
@@ -225,39 +237,44 @@
           input.style.left = `${parentRect.left + window.scrollX}px`;
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
+
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();
           });
+
           input.addEventListener('blur', function () {
             inputInFocus = false;
             const span = document.createElement('span');
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
+
             showOpenHelp();
+
             addClickHandler(span);
           });
+
           this.replaceWith(input);
           input.focus();
         }
       });
     });
 
-    // OPEN click: slide login area left and animate account creation components.
+    // Click event for OPEN:
+    // – Slide login area components (excluding account creation ones)
+    // – Slide account creation components (added under layer two) from their squished state to final size/position.
     document.querySelector('.open-text').addEventListener('click', function() {
-      // Slide login area components left.
-      document.querySelectorAll('.login-text:not(.account-text), .login-line, .login-line-second')
-        .forEach(function(el) {
-          el.classList.add('slide-left');
-        });
-      // For account creation elements, remove the shrunk state ("account-init") and add "slide-in" so they expand.
-      const accountElements = document.querySelectorAll('.account-text, .account-line');
-      accountElements.forEach(function(el) {
-          el.classList.remove('account-init');
-          el.classList.add('slide-in');
+      document.querySelectorAll('.login-text:not(.account-text), .login-line, .login-line-second').forEach(function(el) {
+        el.classList.add('slide-left');
+      });
+      document.querySelectorAll('.account-text, .account-line').forEach(function(el) {
+        el.classList.add('slide-left-account');
       });
     });
   </script>
+
+  <!-- Moved layer-one to the end so it renders on top -->
+  <div class="layer-one"></div>
 </body>
 </html>

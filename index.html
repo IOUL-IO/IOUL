@@ -6,8 +6,8 @@
   <title>IOUL</title>
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
-
   <style>
+    /* Additional inline styles for login text and input */
     .login-text {
       position: absolute;
       left: 6.41vw;
@@ -22,7 +22,7 @@
       padding: 0.1rem 0;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
-
+    
     input.typing-input {
       font-family: 'Distill Expanded', sans-serif;
       font-size: 0.46rem;
@@ -43,6 +43,7 @@
   </style>
 </head>
 <body class="non-fullscreen">
+  <!-- Background lines and time texts -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -57,25 +58,27 @@
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
+  <!-- Login texts -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
-
   <span class="login-text open-text hidden">OPEn</span>
   <span class="login-text help-text hidden">HELP</span>
 
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
-  <!-- Account creation components -->
-  <span class="account-text account-email">E-MA1L ADDRESS</span>
-  <span class="account-text account-username">cREATE USERnAME</span>
-  <span class="account-text account-sign-password">10-S1gn PASSWORD</span>
-  <span class="account-text account-repeat-password">REPEAT PASSWORD</span>
+  <!-- Account creation wrapper -->
+  <div class="account-wrapper">
+    <span class="account-text account-email">E-MA1L ADDRESS</span>
+    <span class="account-text account-username">cREATE USERnAME</span>
+    <span class="account-text account-sign-password">10-S1gn PASSWORD</span>
+    <span class="account-text account-repeat-password">REPEAT PASSWORD</span>
 
-  <div class="account-line account-line1"></div>
-  <div class="account-line account-line2"></div>
-  <div class="account-line account-line3"></div>
-  <div class="account-line account-line4"></div>
+    <div class="account-line account-line1"></div>
+    <div class="account-line account-line2"></div>
+    <div class="account-line account-line3"></div>
+    <div class="account-line account-line4"></div>
+  </div>
 
   <script>
     let inactivityTimer;
@@ -262,16 +265,13 @@
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
       });
-      // Account creation components animate from scaleX(1) at left 6.41vw.
-      document.querySelectorAll('.account-text, .account-line').forEach(function(el) {
-        el.classList.add('account-slide');
-      });
+      // Slide the account wrapper into view.
+      document.querySelector('.account-wrapper').classList.add('active');
     });
   </script>
 
-  <!-- Moved layer-one to the end so it renders on top -->
+  <!-- Layers to mask the sliding elements -->
   <div class="layer-one"></div>
-  <!-- New layer-two covering left 28.87vw–36vw -->
   <div class="layer-two"></div>
 </body>
 </html>

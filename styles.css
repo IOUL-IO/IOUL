@@ -273,9 +273,11 @@ body.fullscreen .help-text {
   transition: transform 0.5s ease-in-out;
 }
 
-/* When sliding in, remove the transform so they move to their final location and scale */
+/* When sliding in, remove the transform so they move to their final location and scale,
+   and bring them to the front (above layer two) */
 .slide-in {
   transform: translateX(0) scale(1) !important;
+  z-index: 60 !important;
 }
 
 /* Layer one remains as before */

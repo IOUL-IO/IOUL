@@ -275,17 +275,16 @@ body.fullscreen .help-text {
   z-index: 100;
 }
 
-/* Account creation elements – instead of scaling, use clip-path to reveal.
-   Initially, each account element is positioned at left:28.88vw and clipped to show only 10% of its width.
-   When the OPEN button is clicked (and the account-slide class is added),
-   the left property animates to 6.41vw and the clip-path animates to show 100% of the element. */
+/* Account creation components initial styling.
+   They are rendered at full scale (no transform), with opacity: 0.
+   Their initial left position is 28.88vw. */
 .account-text,
 .account-line {
   position: absolute;
   left: 28.88vw;
-  /* Initially clip the element so that only 10% (roughly equivalent to scaleX(0.1)) is visible */
-  clip-path: inset(0 90% 0 0);
-  transition: left 0.5s ease-in-out, clip-path 0.5s ease-in-out;
+  opacity: 0;
+  transform: scale(1);
+  transition: left 0.5s ease-in-out, opacity 0.5s ease-in-out;
   z-index: 5;
 }
 
@@ -363,9 +362,9 @@ body.fullscreen .help-text {
   background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* When the OPEN button is clicked, add the account-slide class.
-   This animates left from 28.88vw to 6.41vw and clip-path from inset(0 90% 0 0) to inset(0 0 0 0) */
+/* When OPEN is clicked, add the account-slide class.
+   This changes the left property to 6.4vw and opacity to 1. */
 .account-slide {
-  left: 6.41vw !important;
-  clip-path: inset(0 0 0 0) !important;
+  left: 6.4vw !important;
+  opacity: 1 !important;
 }

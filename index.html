@@ -245,6 +245,8 @@
             const span = document.createElement('span');
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
+            // Propagate the slideComplete flag so conversion remains active.
+            span.dataset.slideComplete = "true";
             input.replaceWith(span);
 
             showOpenHelp();
@@ -258,55 +260,67 @@
       });
     });
 
-    // Account creation text conversion
+    // Account creation text conversion.
     function addAccountClickHandler(element) {
       element.addEventListener('click', function () {
-        if (fadeCompleted) {
-          const parentRect = this.getBoundingClientRect();
-          const input = document.createElement('input');
-          // Use password type for password fields, text otherwise.
-          if (this.classList.contains('account-sign-password') || this.classList.contains('account-repeat-password')) {
-            input.type = 'password';
-          } else {
-            input.type = 'text';
-          }
-          input.maxLength = 10;
-          input.className = 'typing-input';
-          input.style.top = `${parentRect.top + window.scrollY}px`;
-          input.style.left = `${parentRect.left + window.scrollX}px`;
-          input.style.width = `calc(${parentRect.width}px + 4vw)`;
-          input.style.height = `${parentRect.height}px`;
-
-          input.addEventListener('focus', function () {
-            inputInFocus = true;
-            hideOpenHelp();
-          });
-
-          input.addEventListener('blur', () => {
-            inputInFocus = false;
-            const span = document.createElement('span');
-            span.className = element.className;
-            span.innerText = input.value.trim() || element.innerText;
-            input.replaceWith(span);
-
-            showOpenHelp();
-
-            addAccountClickHandler(span);
-          });
-
-          this.replaceWith(input);
-          input.focus();
+        // Only allow conversion if sliding has completed.
+        if (!this.dataset.slideComplete || this.dataset.slideComplete !== "true") return;
+        const parentRect = this.getBoundingClientRect();
+        const input = document.createElement('input');
+        // Use password type for password fields, text otherwise.
+        if (this.classList.contains('account-sign-password') || this.classList.contains('account-repeat-password')) {
+          input.type = 'password';
+        } else {
+          input.type = 'text';
         }
+        input.maxLength = 10;
+        input.className = 'typing-input';
+        input.style.top = `${parentRect.top + window.scrollY}px`;
+        input.style.left = `${parentRect.left + window.scrollX}px`;
+        input.style.width = `calc(${parentRect.width}px + 4vw)`;
+        input.style.height = `${parentRect.height}px`;
+
+        input.addEventListener('focus', function () {
+          inputInFocus = true;
+          hideOpenHelp();
+        });
+
+        input.addEventListener('blur', () => {
+          inputInFocus = false;
+          const span = document.createElement('span');
+          span.className = element.className;
+          span.innerText = input.value.trim() || element.innerText;
+          // Mark the new element as ready for conversion.
+          span.dataset.slideComplete = "true";
+          input.replaceWith(span);
+
+          showOpenHelp();
+
+          addAccountClickHandler(span);
+        });
+
+        this.replaceWith(input);
+        input.focus();
       });
     }
     document.querySelectorAll('.account-text').forEach(addAccountClickHandler);
+
+    // Attach a transitionend listener to account creation texts so that once they finish sliding, they become clickable.
+    document.querySelectorAll('.account-text').forEach(function(el) {
+      el.addEventListener('transitionend', function(e) {
+        // When the transform transition completes, mark the element as having completed sliding.
+        if (e.propertyName === "transform") {
+          el.dataset.slideComplete = "true";
+        }
+      });
+    });
 
     // Click event for OPEN: slide login area and account creation components.
     document.querySelector('.open-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
       });
-      // Account creation components animate from scaleX(1) at left 6.41vw.
+      // Account creation components animate from scaleX(0.1) at left 28.88vw to full scale at left 6.41vw.
       document.querySelectorAll('.account-text, .account-line').forEach(function(el) {
         el.classList.add('account-slide');
       });

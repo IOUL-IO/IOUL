@@ -218,6 +218,7 @@
       checkRegionAndShowOpenHelp(event);
     });
 
+    // Login text conversion (existing code)
     document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
       element.addEventListener('click', function () {
         if (
@@ -256,6 +257,49 @@
         }
       });
     });
+
+    // Account creation text conversion
+    function addAccountClickHandler(element) {
+      element.addEventListener('click', function () {
+        if (fadeCompleted) {
+          const parentRect = this.getBoundingClientRect();
+          const input = document.createElement('input');
+          // Use password type for password fields, text otherwise.
+          if (this.classList.contains('account-sign-password') || this.classList.contains('account-repeat-password')) {
+            input.type = 'password';
+          } else {
+            input.type = 'text';
+          }
+          input.maxLength = 10;
+          input.className = 'typing-input';
+          input.style.top = `${parentRect.top + window.scrollY}px`;
+          input.style.left = `${parentRect.left + window.scrollX}px`;
+          input.style.width = `calc(${parentRect.width}px + 4vw)`;
+          input.style.height = `${parentRect.height}px`;
+
+          input.addEventListener('focus', function () {
+            inputInFocus = true;
+            hideOpenHelp();
+          });
+
+          input.addEventListener('blur', () => {
+            inputInFocus = false;
+            const span = document.createElement('span');
+            span.className = element.className;
+            span.innerText = input.value.trim() || element.innerText;
+            input.replaceWith(span);
+
+            showOpenHelp();
+
+            addAccountClickHandler(span);
+          });
+
+          this.replaceWith(input);
+          input.focus();
+        }
+      });
+    }
+    document.querySelectorAll('.account-text').forEach(addAccountClickHandler);
 
     // Click event for OPEN: slide login area and account creation components.
     document.querySelector('.open-text').addEventListener('click', function() {

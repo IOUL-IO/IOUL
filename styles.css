@@ -45,21 +45,10 @@ body.fade-in-trigger {
   background-color: #ffffff; 
 }
 
-.line:not(.login-line):not(.login-line-second),
-.time-text {
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-}
-
-body.fade-in-trigger .line:not(.login-line):not(.login-line-second),
-body.fade-in-trigger .time-text {
-  opacity: 1;
-  transition-delay: 1s; 
-}
-
+/* Hide default login elements until triggered */
 .login-line,
-.login-line-second,
-.login-text {
+.login-text,
+.login-line-second {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
@@ -167,7 +156,7 @@ body.fade-in-trigger .time-text {
   left: 90.1vw;
 }
 
-/* Specific account creation rules */
+/* Specific account creation positioning */
 .email-text {
   top: 35.2vh;
   left: 28.88vw;
@@ -188,7 +177,7 @@ body.fade-in-trigger .time-text {
   left: 28.88vw;
 }
 
-/* Login lines for account creation */
+/* Account creation lines */
 .account-line.acc-line-1 {
   position: absolute;
   top: 38.9vh;
@@ -233,7 +222,7 @@ body.fade-in-trigger .time-text {
   z-index: 101;
 }
 
-/* Add styling for account creation text */
+/* New styling for account creation text – ensuring visibility */
 .login-text.account-text {
   position: absolute;
   font-family: 'Distill Expanded', sans-serif;
@@ -243,6 +232,7 @@ body.fade-in-trigger .time-text {
   line-height: 1.2;
   padding: 0.1rem 0;
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+  opacity: 1 !important;
 }
 
 /* New layer one: white rectangle covering left 0vw–6.37vw */
@@ -261,7 +251,7 @@ body.fade-in-trigger .time-text {
   position: fixed;
   top: 0;
   left: 28.87vw;
-  width: calc(36vw - 28.87vw); /* equals 7.13vw */
+  width: calc(36vw - 28.87vw);
   height: 100vh;
   background-color: #ffffff;
   z-index: 100;

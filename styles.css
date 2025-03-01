@@ -66,13 +66,11 @@ body.fade-in-trigger .time-text {
 
 .visible {
   opacity: 1 !important;
-  pointer-events: auto;
   transition: opacity 0.5s ease-in-out;
 }
 
 .hidden {
   opacity: 0 !important;
-  pointer-events: none;
   transition: opacity 0.5s ease-in-out;
 }
 
@@ -169,7 +167,7 @@ body.fade-in-trigger .time-text {
   left: 90.1vw;
 }
 
-/* Existing login text */
+/* Existing login text styles */
 .login-text {
   position: absolute;
   font-family: 'Distill Expanded', sans-serif;
@@ -248,15 +246,39 @@ body.fullscreen .help-text {
   opacity: 1 !important;
 }
 
-/* New slide-left class for login area components */
-/* Using !important to override any inline transform */
+/* New slide-left rule for login area components */
 .slide-left {
   transform: translateX(-30vw) !important;
   transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
   z-index: 0 !important;
 }
 
-/* New layer one: white rectangle covering left 0vw–6.37vw */
+/* New layer two: fixed container from left 28.87vw to 36vw */
+.layer-two {
+  position: fixed;
+  top: 0;
+  left: 28.87vw;
+  width: calc(36vw - 28.87vw);
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 50;
+}
+
+/* Initial state for account creation components:
+   They are positioned as per CSS (left:6.4vw, etc.) but then shifted right by ~22.47vw and scaled to 0.8,
+   so they appear under layer two.
+*/
+.account-init {
+  transform: translateX(22.47vw) scale(0.8);
+  transition: transform 0.5s ease-in-out;
+}
+
+/* When sliding in, remove the transform so they move to their final location and scale */
+.slide-in {
+  transform: translateX(0) scale(1) !important;
+}
+
+/* Layer one remains as before */
 .layer-one {
   position: fixed;
   top: 0;
@@ -266,53 +288,3 @@ body.fullscreen .help-text {
   background-color: #ffffff;
   z-index: 100;
 }
-
-/* -------------------------
-   New Account Creation Area
-   ------------------------- */
-
-/* Account Creation Wrapper: clips the sliding account creation area */
-.account-creation-wrapper {
-  position: fixed;
-  top: 0;
-  left: 28.87vw;
-  width: calc(36vw - 28.87vw);
-  height: 100vh;
-  overflow: hidden;
-  z-index: 90;
-}
-
-/* Account Creation Container: positioned relative to the wrapper */
-.account-creation-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.5s ease-in-out;
-}
-
-/* When sliding, translate container left by 22.47vw so its global left becomes 6.4vw */
-.account-creation-container.account-slide {
-  transform: translateX(-22.47vw) !important;
-}
-
-/* Inside the container, force account texts and lines to use left: 0 */
-.account-creation-container .account-text {
-  left: 0 !important;
-}
-.account-creation-container .account-line {
-  left: 0 !important;
-  width: 100% !important;
-}
-
-/* Final positions for account creation components (for reference):
-.email-text { top: 35.2vh; left: 6.4vw; }
-.username-text { top: 43.3vh; left: 6.4vw; }
-.pass-text { top: 51.4vh; left: 6.4vw; }
-.confirm-text { top: 59.5vh; left: 6.4vw; }
-.account-line.acc-line-1 { top: 38.9vh; left: 6.4vw; width: 22.48vw; }
-.account-line.acc-line-2 { top: 47vh; left: 6.4vw; width: 22.48vw; }
-.account-line.acc-line-3 { top: 55.1vh; left: 6.4vw; width: 22.48vw; }
-.account-line.acc-line-4 { top: 63.2vh; left: 6.4vw; width: 22.48vw; }
-*/

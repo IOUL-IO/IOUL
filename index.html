@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="styles.css" />
 
   <style>
-    /* Existing inline styles for login texts (unchanged) */
     .login-text {
       position: absolute;
       left: 6.41vw;
@@ -23,7 +22,6 @@
       padding: 0.1rem 0;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
-
     input.typing-input {
       font-family: 'Distill Expanded', sans-serif;
       font-size: 0.46rem;
@@ -44,7 +42,7 @@
   </style>
 </head>
 <body class="non-fullscreen">
-  <!-- Existing login and line elements remain unchanged -->
+  <!-- Existing login and line elements (unchanged) -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -61,38 +59,22 @@
 
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
-
   <span class="login-text open-text hidden">OPEn</span>
   <span class="login-text help-text hidden">HELP</span>
 
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
-  <!-- Account creation components wrapped in containers -->
-  <div class="account-wrapper">
+  <!-- Account creation container wrapping texts and lines -->
+  <div class="account-creation">
     <span class="account-text account-email">E-MA1L ADDRESS</span>
-  </div>
-  <div class="account-wrapper">
     <span class="account-text account-username">cREATE USERnAME</span>
-  </div>
-  <div class="account-wrapper">
     <span class="account-text account-sign-password">10-S1gn PASSWORD</span>
-  </div>
-  <div class="account-wrapper">
     <span class="account-text account-repeat-password">REPEAT PASSWORD</span>
-  </div>
 
-  <!-- Account creation lines wrapped in containers -->
-  <div class="account-line-wrapper">
     <div class="account-line account-line1"></div>
-  </div>
-  <div class="account-line-wrapper">
     <div class="account-line account-line2"></div>
-  </div>
-  <div class="account-line-wrapper">
     <div class="account-line account-line3"></div>
-  </div>
-  <div class="account-line-wrapper">
     <div class="account-line account-line4"></div>
   </div>
 
@@ -257,22 +239,20 @@
       });
     });
 
-    // Account creation text conversion (like login area conversion)
-    // [You can add similar click-to-convert behavior for account elements here]
+    // (If desired, similar conversion logic can be added for account creation elements.)
 
     // Click event for OPEN: slide login area and account creation components.
     document.querySelector('.open-text').addEventListener('click', function() {
+      // Slide login area
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
       });
-      // Instead of adding the class on individual account elements, add it on their wrappers.
-      document.querySelectorAll('.account-wrapper, .account-line-wrapper').forEach(function(el) {
-        el.classList.add('account-slide');
-      });
+      // Slide account creation container
+      document.querySelector('.account-creation').classList.add('account-slide');
     });
   </script>
 
-  <!-- Existing layers -->
+  <!-- Layers remain unchanged -->
   <div class="layer-one"></div>
   <div class="layer-two"></div>
 </body>

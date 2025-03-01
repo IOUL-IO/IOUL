@@ -253,7 +253,7 @@ body.fullscreen .help-text {
   z-index: 0 !important;
 }
 
-/* New layer one: white rectangle covering left 0vw–6.37vw */
+/* Layer one: white rectangle covering left 0vw–6.37vw */
 .layer-one {
   position: fixed;
   top: 0;
@@ -264,7 +264,7 @@ body.fullscreen .help-text {
   z-index: 100;
 }
 
-/* New layer two: white rectangle covering left 28.87vw–36vw */
+/* Layer two: white rectangle covering left 28.87vw–36vw */
 .layer-two {
   position: fixed;
   top: 0;
@@ -275,26 +275,34 @@ body.fullscreen .help-text {
   z-index: 100;
 }
 
-/* Account creation wrapper styling */
+/* Account creation wrapper with initial clipping.
+   The clip hides any part of the account area that would extend beyond 36vw.
+   Calculation:
+     - Wrapper starts at left: 28.88vw.
+     - 36vw boundary is 7.12vw to the right of 28.88vw.
+     - 7.12vw is roughly 31.7% of the 22.48vw width.
+*/
 .account-wrapper {
   position: fixed;
   top: 0;
-  left: 28.88vw; /* initial horizontal position behind layer two */
+  left: 28.88vw;
   width: 22.48vw;
   height: 100vh;
-  overflow: hidden;
-  transition: left 0.5s ease-in-out;
+  /* Initially, only ~31.7% (7.12vw) is visible */
+  clip-path: inset(0 calc(100% - 31.7%) 0 0);
+  transition: left 0.5s ease-in-out, clip-path 0.5s ease-in-out;
   z-index: 5;
 }
 
-/* When active, slide the wrapper into view */
+/* When active, slide the wrapper into view and remove the clipping */
 .account-wrapper.active {
   left: 6.41vw;
+  clip-path: inset(0 0 0 0);
 }
 
-/* Account creation texts styling */
-/* Remove the earlier scaling and absolute left offsets.
-   The inner account texts will now be positioned relative to the wrapper. */
+/* Account creation texts styling.
+   Now positioned relative to the account-wrapper (left: 0) so they are full size.
+*/
 .account-text {
   position: absolute;
   left: 0;

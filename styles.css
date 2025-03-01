@@ -247,7 +247,6 @@ body.fullscreen .help-text {
 }
 
 /* New slide-left class for login area components */
-/* Using !important to override any inline transform */
 .slide-left {
   transform: translateX(-30vw) !important;
   transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
@@ -277,11 +276,12 @@ body.fullscreen .help-text {
 }
 
 /* Account creation components */
-/* Apply squish transform */
+/* Use squish transform and elevate z-index to appear above layer two */
 .account-text,
 .account-line {
-  transform: scaleX(1);
+  transform: scaleX(0.7);
   transform-origin: left;
+  z-index: 101;
 }
 
 .account-line.acc-line-1 {
@@ -320,22 +320,22 @@ body.fullscreen .help-text {
   background-color: rgba(230, 230, 230, 0.28);
 }
 
-.account-text.email-text {
+.email-text {
   top: 35.2vh;
   left: 28.88vw;
 }
 
-.account-text.username-text {
+.username-text {
   top: 43.3vh;
   left: 28.88vw;
 }
 
-.account-text.pass-text {
+.pass-text {
   top: 51.4vh;
   left: 28.88vw;
 }
 
-.account-text.confirm-text {
+.confirm-text {
   top: 59.5vh;
   left: 28.88vw;
 }

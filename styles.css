@@ -320,22 +320,22 @@ body.fullscreen .help-text {
   background-color: rgba(230, 230, 230, 0.28);
 }
 
-.email-text {
+.account-text.email-text {
   top: 35.2vh;
   left: 28.88vw;
 }
 
-.username-text {
+.account-text.username-text {
   top: 43.3vh;
   left: 28.88vw;
 }
 
-.pass-text {
+.account-text.pass-text {
   top: 51.4vh;
   left: 28.88vw;
 }
 
-.confirm-text {
+.account-text.confirm-text {
   top: 59.5vh;
   left: 28.88vw;
 }

@@ -47,22 +47,28 @@ body.fade-in-trigger {
 
 .line:not(.login-line):not(.login-line-second),
 .time-text {
-  opacity: 1;
+  opacity: 0;
   transition: opacity 0.5s ease-in-out;
+}
+
+body.fade-in-trigger .line:not(.login-line):not(.login-line-second),
+body.fade-in-trigger .time-text {
+  opacity: 1;
+  transition-delay: 1s; 
 }
 
 .login-line,
 .login-line-second,
 .login-text {
-  opacity: 1;
+  opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
 
-/* Utility classes */
 .visible {
   opacity: 1 !important;
   transition: opacity 0.5s ease-in-out;
 }
+
 .hidden {
   opacity: 0 !important;
   transition: opacity 0.5s ease-in-out;
@@ -161,7 +167,7 @@ body.fade-in-trigger {
   left: 90.1vw;
 }
 
-/* Existing login text styles */
+/* Existing login text */
 .login-text {
   position: absolute;
   font-family: 'Distill Expanded', sans-serif;
@@ -206,6 +212,7 @@ body.fade-in-trigger {
   letter-spacing: 0.28vw;
   font-size: 0.47rem;
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+  opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
 
@@ -239,41 +246,14 @@ body.fullscreen .help-text {
   opacity: 1 !important;
 }
 
-/* Slide-left rule for login area components */
+/* New slide-left class for login area components */
 .slide-left {
   transform: translateX(-30vw) !important;
   transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
   z-index: 0 !important;
 }
 
-/* New layer two: fixed container from left 28.87vw to 36vw */
-.layer-two {
-  position: fixed;
-  top: 0;
-  left: 28.87vw;
-  width: calc(36vw - 28.87vw);
-  height: 100vh;
-  background-color: #ffffff;
-  z-index: 50;
-}
-
-/* Initial state for account creation components:
-   They are shrunk (scaled to 0.8) and shifted right so that only a smaller version appears
-   behind layer two. */
-.account-init {
-  transform: translateX(22.47vw) scale(0.8);
-  transition: transform 0.3s ease-in-out;
-  z-index: 40;
-}
-
-/* When sliding in, they expand to their full size and move left into their final location */
-.slide-in {
-  transform: translateX(0) scale(1) !important;
-  transition: transform 0.3s ease-in-out;
-  z-index: 60 !important;
-}
-
-/* Layer one remains as before */
+/* New layer one: white rectangle covering left 0vw–6.37vw */
 .layer-one {
   position: fixed;
   top: 0;
@@ -282,4 +262,80 @@ body.fullscreen .help-text {
   height: 100vh;
   background-color: #ffffff;
   z-index: 100;
+}
+
+/* New Layer Two: white rectangle covering left 28.87vw–36vw */
+.layer-two {
+  position: fixed;
+  top: 0;
+  left: 28.87vw;
+  width: calc(36vw - 28.87vw);
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 80;
+}
+
+/* Account Creation Components Initial State */
+.account-text,
+.account-line {
+  left: 28.87vw;
+  transform: scale(0.8);
+  transition: left 0.5s ease-in-out, transform 0.5s ease-in-out;
+  z-index: 40;
+}
+
+/* Slide left for account creation components */
+.slide-left-account {
+  left: 6.4vw !important;
+  transform: scale(1) !important;
+}
+
+/* Final Positions for Account Creation Components */
+.account-line.acc-line-1 {
+  position: absolute;
+  top: 38.9vh;
+  width: 22.48vw;
+  height: 1px;
+  background-color: rgba(230, 230, 230, 0.28);
+}
+.account-line.acc-line-2 {
+  position: absolute;
+  top: 47vh;
+  width: 22.48vw;
+  height: 1px;
+  background-color: rgba(230, 230, 230, 0.28);
+}
+.account-line.acc-line-3 {
+  position: absolute;
+  top: 55.1vh;
+  width: 22.48vw;
+  height: 1px;
+  background-color: rgba(230, 230, 230, 0.28);
+}
+.account-line.acc-line-4 {
+  position: absolute;
+  top: 63.2vh;
+  width: 22.48vw;
+  height: 1px;
+  background-color: rgba(230, 230, 230, 0.28);
+}
+.email-text {
+  position: absolute;
+  top: 35.2vh;
+  left: 6.4vw;
+}
+.username-text {
+  position: absolute;
+  top: 43.3vh;
+  left: 6.4vw;
+}
+.pass-text {
+  position: absolute;
+  top: 51.4vh;
+  left: 6.4vw;
+}
+.confirm-text {
+  position: absolute;
+  top: 59.5vh;
+  left: 6.4vw;
 }

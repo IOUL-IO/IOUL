@@ -7,8 +7,9 @@
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
 
+  <!-- Updated inline style: now only non-account login-text uses left:6.41vw and z-index:10 -->
   <style>
-    .login-text {
+    .login-text:not(.account-text) {
       position: absolute;
       left: 6.41vw;
       z-index: 10;
@@ -20,24 +21,6 @@
       font-size: 0.46rem;
       line-height: 1.2;
       padding: 0.1rem 0;
-      text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    }
-
-    input.typing-input {
-      font-family: 'Distill Expanded', sans-serif;
-      font-size: 0.46rem;
-      line-height: 1.2;
-      color: #111111;
-      letter-spacing: 0.34vw;
-      border: none;
-      outline: none;
-      background-color: transparent;
-      position: absolute;
-      caret-color: #d1d1d1;
-      padding: 0.1rem 0;
-      width: calc(22.48vw + 4vw);
-      height: auto;
-      box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
   </style>
@@ -57,12 +40,11 @@
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
+  <!-- Login elements -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
-
   <span class="login-text open-text hidden">OPEn</span>
   <span class="login-text help-text hidden">HELP</span>
-
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
@@ -257,7 +239,6 @@
     });
 
     // Click event for OPEN: add .slide-left to all login area components.
-    // They will slide left; with their z-index set to 0 they will fall under the layer when they reach left 6.37vw.
     document.querySelector('.open-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');

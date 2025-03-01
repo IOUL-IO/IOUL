@@ -22,6 +22,7 @@
       padding: 0.1rem 0;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
+
     input.typing-input {
       font-family: 'Distill Expanded', sans-serif;
       font-size: 0.46rem;
@@ -42,7 +43,6 @@
   </style>
 </head>
 <body class="non-fullscreen">
-  <!-- Existing login and line elements (unchanged) -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -59,24 +59,23 @@
 
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
+
   <span class="login-text open-text hidden">OPEn</span>
   <span class="login-text help-text hidden">HELP</span>
 
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
-  <!-- Account creation container wrapping texts and lines -->
-  <div class="account-creation">
-    <span class="account-text account-email">E-MA1L ADDRESS</span>
-    <span class="account-text account-username">cREATE USERnAME</span>
-    <span class="account-text account-sign-password">10-S1gn PASSWORD</span>
-    <span class="account-text account-repeat-password">REPEAT PASSWORD</span>
+  <!-- Account creation components -->
+  <span class="account-text account-email">E-MA1L ADDRESS</span>
+  <span class="account-text account-username">cREATE USERnAME</span>
+  <span class="account-text account-sign-password">10-S1gn PASSWORD</span>
+  <span class="account-text account-repeat-password">REPEAT PASSWORD</span>
 
-    <div class="account-line account-line1"></div>
-    <div class="account-line account-line2"></div>
-    <div class="account-line account-line3"></div>
-    <div class="account-line account-line4"></div>
-  </div>
+  <div class="account-line account-line1"></div>
+  <div class="account-line account-line2"></div>
+  <div class="account-line account-line3"></div>
+  <div class="account-line account-line4"></div>
 
   <script>
     let inactivityTimer;
@@ -100,6 +99,7 @@
           el.classList.add('visible');
           el.classList.remove('hidden');
         });
+
       if (!inputInFocus && lastMouseEvent) {
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
@@ -130,25 +130,34 @@
 
     function checkRegionAndShowOpenHelp(event) {
       if (!fadeCompleted || inputInFocus) return;
+
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
-      if (document.querySelector('.username').classList.contains('hidden')) return;
+
+      if (document.querySelector('.username').classList.contains('hidden')) {
+        return;
+      }
+
       const boundingTop = 28.5;
       const boundingBottom = 84;
       const boundingLeft = 6.38;
-      const boundingRight = 29;
+      const boundingRight = 29; 
+
       const { innerWidth, innerHeight } = window;
       const { clientX, clientY } = event;
+
       const topPx = (boundingTop / 100) * innerHeight;
       const bottomPx = (boundingBottom / 100) * innerHeight;
       const leftPx = (boundingLeft / 100) * innerWidth;
       const rightPx = (boundingRight / 100) * innerWidth;
+
       const isInRegion = (
         clientY >= topPx &&
         clientY <= bottomPx &&
         clientX >= leftPx &&
         clientX <= rightPx
       );
+
       if (isInRegion) {
         openText.classList.remove('hidden');
         openText.classList.add('visible');
@@ -174,15 +183,18 @@
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
+
       const isNearEdge =
         clientX <= edgeThreshold ||
         clientX >= innerWidth - edgeThreshold ||
         clientY <= edgeThreshold ||
         clientY >= innerHeight - edgeThreshold;
+
       if (isNearEdge && !document.fullscreenElement) {
         document.documentElement.requestFullscreen();
         return;
       }
+
       if (!initialClickCompleted) {
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen();
@@ -190,10 +202,12 @@
         setTimeout(() => {
           document.body.classList.add('fade-in-trigger');
         }, 1000);
+
         setTimeout(() => {
           fadeCompleted = true;
           inactivityTimer = setTimeout(hideLoginElements, 20000);
         }, 4000);
+
         initialClickCompleted = true;
       }
     });
@@ -204,7 +218,6 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // Login text conversion (existing behavior)
     document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
       element.addEventListener('click', function () {
         if (
@@ -220,40 +233,45 @@
           input.style.left = `${parentRect.left + window.scrollX}px`;
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
+
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();
           });
+
           input.addEventListener('blur', function () {
             inputInFocus = false;
             const span = document.createElement('span');
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
+
             showOpenHelp();
+
             addClickHandler(span);
           });
+
           this.replaceWith(input);
           input.focus();
         }
       });
     });
 
-    // (If desired, similar conversion logic can be added for account creation elements.)
-
     // Click event for OPEN: slide login area and account creation components.
     document.querySelector('.open-text').addEventListener('click', function() {
-      // Slide login area
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
       });
-      // Slide account creation container
-      document.querySelector('.account-creation').classList.add('account-slide');
+      // Account creation components animate from scaleX(0.7) at left 28.88vw to normal scale and left 6.41vw.
+      document.querySelectorAll('.account-text, .account-line').forEach(function(el) {
+        el.classList.add('account-slide');
+      });
     });
   </script>
 
-  <!-- Layers remain unchanged -->
+  <!-- Moved layer-one to the end so it renders on top -->
   <div class="layer-one"></div>
+  <!-- New layer-two covering left 28.87vw–36vw -->
   <div class="layer-two"></div>
 </body>
 </html>

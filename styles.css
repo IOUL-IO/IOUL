@@ -167,7 +167,7 @@ body.fade-in-trigger .time-text {
   left: 90.1vw;
 }
 
-/* Existing login text */
+/* Existing login text styling */
 .login-text {
   position: absolute;
   font-family: 'Distill Expanded', sans-serif;
@@ -246,14 +246,14 @@ body.fullscreen .help-text {
   opacity: 1 !important;
 }
 
-/* New slide-left class for login area components */
+/* Slide-left for login area components */
 .slide-left {
   transform: translateX(-30vw) !important;
   transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
   z-index: 0 !important;
 }
 
-/* New layer one: white rectangle covering left 0vw–6.37vw */
+/* Layer one: white rectangle covering left 0vw–6.37vw */
 .layer-one {
   position: fixed;
   top: 0;
@@ -264,7 +264,7 @@ body.fullscreen .help-text {
   z-index: 100;
 }
 
-/* New layer two: white rectangle covering left 28.87vw–36vw */
+/* Layer two: white rectangle covering left 28.87vw–36vw */
 .layer-two {
   position: fixed;
   top: 0;
@@ -275,95 +275,20 @@ body.fullscreen .help-text {
   z-index: 100;
 }
 
-/* Account creation components initial styling.
-   They are rendered at full scale (no transform), with opacity: 0.
-   Their initial left position is 28.88vw. */
+/* Account creation components styling:
+   Rendered at full scale with no transform.
+   Initially positioned at left:28.88vw with opacity:0. */
 .account-text,
 .account-line {
   position: absolute;
   left: 28.88vw;
   opacity: 0;
-  transform: scale(1);
+  transform: none;
   transition: left 0.5s ease-in-out, opacity 0.5s ease-in-out;
   z-index: 5;
 }
 
-/* Account creation texts positioning */
-.account-text.account-email {
-  top: 35.2vh;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111111;
-  letter-spacing: 0.34vw;
-  font-size: 0.46rem;
-  line-height: 1.2;
-  padding: 0.1rem 0;
-  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-}
-
-.account-text.account-username {
-  top: 43.3vh;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111111;
-  letter-spacing: 0.34vw;
-  font-size: 0.46rem;
-  line-height: 1.2;
-  padding: 0.1rem 0;
-  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-}
-
-.account-text.account-sign-password {
-  top: 51.4vh;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111111;
-  letter-spacing: 0.34vw;
-  font-size: 0.46rem;
-  line-height: 1.2;
-  padding: 0.1rem 0;
-  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-}
-
-.account-text.account-repeat-password {
-  top: 59.5vh;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111111;
-  letter-spacing: 0.34vw;
-  font-size: 0.46rem;
-  line-height: 1.2;
-  padding: 0.1rem 0;
-  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-}
-
-/* Account creation lines positioning */
-.account-line.account-line1 {
-  top: 38.9vh;
-  width: 22.48vw;
-  height: 1px;
-  background-color: rgba(230, 230, 230, 0.28);
-}
-
-.account-line.account-line2 {
-  top: 47vh;
-  width: 22.48vw;
-  height: 1px;
-  background-color: rgba(230, 230, 230, 0.28);
-}
-
-.account-line.account-line3 {
-  top: 55.1vh;
-  width: 22.48vw;
-  height: 1px;
-  background-color: rgba(230, 230, 230, 0.28);
-}
-
-.account-line.account-line4 {
-  top: 63.2vh;
-  width: 22.48vw;
-  height: 1px;
-  background-color: rgba(230, 230, 230, 0.28);
-}
-
-/* When OPEN is clicked, add the account-slide class.
-   This changes the left property to 6.4vw and opacity to 1. */
+/* When OPEN is clicked (JS adds .account-slide), the account area slides to left:6.4vw and opacity becomes 1 */
 .account-slide {
   left: 6.4vw !important;
   opacity: 1 !important;

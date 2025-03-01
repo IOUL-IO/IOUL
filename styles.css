@@ -280,7 +280,7 @@ body.fullscreen .help-text {
 /* Apply squish transform */
 .account-text,
 .account-line {
-  transform: scaleX(0.7);
+  transform: scaleX(0.1);
   transform-origin: left;
 }
 

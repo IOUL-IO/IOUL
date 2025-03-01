@@ -167,123 +167,30 @@ body.fade-in-trigger .time-text {
   left: 90.1vw;
 }
 
-/* Existing login text */
-.login-text {
-  position: absolute;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111111;
-  letter-spacing: 0.28vw;
-  font-size: 0.47rem;
-  left: 6.41vw;
-  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+/* Existing login text for non-account elements is now set via the inline style in index.html */
+
+/* Specific account creation rules */
+.email-text {
+  top: 35.2vh;
+  left: 28.88vw;
 }
 
-.username {
-  top: calc(var(--username-line-top) - var(--line-gap)); 
+.username-text {
+  top: 43.3vh;
+  left: 28.88vw;
 }
 
-.password {
-  top: calc(var(--password-line-top) - var(--line-gap)); 
+.pass-text {
+  top: 51.4vh;
+  left: 28.88vw;
 }
 
-.login-line {
-  position: absolute;
-  top: var(--username-line-top); 
-  left: 6.4vw;
-  width: 22.48vw;
-  height: 1px;
-  background-color: rgba(230, 230, 230, 0.28);
+.confirm-text {
+  top: 59.5vh;
+  left: 28.88vw;
 }
 
-.login-line-second {
-  position: absolute;
-  top: var(--password-line-top); 
-  left: 6.4vw;
-  width: 22.48vw;
-  height: 1px;
-  background-color: rgba(230, 230, 230, 0.28);
-}
-
-.open-text,
-.help-text {
-  position: absolute;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111111;
-  letter-spacing: 0.28vw;
-  font-size: 0.47rem;
-  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-}
-
-body.non-fullscreen .open-text {
-  top: 35.17vh; 
-  left: 25.57vw;   
-}
-
-body.non-fullscreen .help-text {
-  top: 43.17vh; 
-  left: 25.57vw;   
-}
-
-body.fullscreen .open-text {
-  top: 35.17vh;
-  left: 25.57vw;
-}
-
-body.fullscreen .help-text {
-  top: 43.17vh;
-  left: 25.57vw;
-}
-
-.open-text.visible,
-.help-text.visible {
-  opacity: 0.7 !important;
-}
-
-.open-text.visible:hover,
-.help-text.visible:hover {
-  opacity: 1 !important;
-}
-
-/* New slide-left class for login area components */
-.slide-left {
-  transform: translateX(-30vw) !important;
-  transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
-  z-index: 0 !important;
-}
-
-/* New layer one: white rectangle covering left 0vw–6.37vw */
-.layer-one {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 6.37vw;
-  height: 100vh;
-  background-color: #ffffff;
-  z-index: 100;
-}
-
-/* New layer two: white rectangle covering left 28.87vw–36vw */
-.layer-two {
-  position: fixed;
-  top: 0;
-  left: 28.87vw;
-  width: calc(36vw - 28.87vw); /* equals 7.13vw */
-  height: 100vh;
-  background-color: #ffffff;
-  z-index: 100;
-}
-
-/* Account creation components */
-/* Use squish transform and elevate z-index to appear above layer two */
-.account-text,
-.account-line {
-  transform: scaleX(0.7);
-  transform-origin: left;
-  z-index: 101;
-}
-
+/* Login lines for account creation */
 .account-line.acc-line-1 {
   position: absolute;
   top: 38.9vh;
@@ -320,22 +227,32 @@ body.fullscreen .help-text {
   background-color: rgba(230, 230, 230, 0.28);
 }
 
-.email-text {
-  top: 35.2vh;
-  left: 28.88vw;
+/* Apply squish transform and ensure account components appear above layer two */
+.login-text.account-text,
+.account-line {
+  transform: scaleX(0.7);
+  transform-origin: left;
+  z-index: 101;
 }
 
-.username-text {
-  top: 43.3vh;
-  left: 28.88vw;
+/* New layer one: white rectangle covering left 0vw–6.37vw */
+.layer-one {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6.37vw;
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 100;
 }
 
-.pass-text {
-  top: 51.4vh;
-  left: 28.88vw;
-}
-
-.confirm-text {
-  top: 59.5vh;
-  left: 28.88vw;
+/* New layer two: white rectangle covering left 28.87vw–36vw */
+.layer-two {
+  position: fixed;
+  top: 0;
+  left: 28.87vw;
+  width: calc(36vw - 28.87vw); /* equals 7.13vw */
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 100;
 }

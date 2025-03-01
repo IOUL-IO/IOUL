@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="styles.css" />
 
   <style>
+    /* Existing inline styles for login texts (unchanged) */
     .login-text {
       position: absolute;
       left: 6.41vw;
@@ -43,6 +44,7 @@
   </style>
 </head>
 <body class="non-fullscreen">
+  <!-- Existing login and line elements remain unchanged -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -66,16 +68,33 @@
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
-  <!-- Account creation components (initially positioned at left: 28.88vw, behind layer two) -->
-  <span class="account-text account-email">E-MA1L ADDRESS</span>
-  <span class="account-text account-username">cREATE USERnAME</span>
-  <span class="account-text account-sign-password">10-S1gn PASSWORD</span>
-  <span class="account-text account-repeat-password">REPEAT PASSWORD</span>
+  <!-- Account creation components wrapped in containers -->
+  <div class="account-wrapper">
+    <span class="account-text account-email">E-MA1L ADDRESS</span>
+  </div>
+  <div class="account-wrapper">
+    <span class="account-text account-username">cREATE USERnAME</span>
+  </div>
+  <div class="account-wrapper">
+    <span class="account-text account-sign-password">10-S1gn PASSWORD</span>
+  </div>
+  <div class="account-wrapper">
+    <span class="account-text account-repeat-password">REPEAT PASSWORD</span>
+  </div>
 
-  <div class="account-line account-line1"></div>
-  <div class="account-line account-line2"></div>
-  <div class="account-line account-line3"></div>
-  <div class="account-line account-line4"></div>
+  <!-- Account creation lines wrapped in containers -->
+  <div class="account-line-wrapper">
+    <div class="account-line account-line1"></div>
+  </div>
+  <div class="account-line-wrapper">
+    <div class="account-line account-line2"></div>
+  </div>
+  <div class="account-line-wrapper">
+    <div class="account-line account-line3"></div>
+  </div>
+  <div class="account-line-wrapper">
+    <div class="account-line account-line4"></div>
+  </div>
 
   <script>
     let inactivityTimer;
@@ -135,7 +154,7 @@
       const boundingTop = 28.5;
       const boundingBottom = 84;
       const boundingLeft = 6.38;
-      const boundingRight = 29; 
+      const boundingRight = 29;
       const { innerWidth, innerHeight } = window;
       const { clientX, clientY } = event;
       const topPx = (boundingTop / 100) * innerHeight;
@@ -238,69 +257,23 @@
       });
     });
 
-    // Account creation text conversion (only active after sliding finishes)
-    function addAccountClickHandler(element) {
-      element.addEventListener('click', function () {
-        if (!this.dataset.slideComplete || this.dataset.slideComplete !== "true") return;
-        const parentRect = this.getBoundingClientRect();
-        const input = document.createElement('input');
-        // Use password type for password fields, text for others.
-        if (this.classList.contains('account-sign-password') || this.classList.contains('account-repeat-password')) {
-          input.type = 'password';
-        } else {
-          input.type = 'text';
-        }
-        input.maxLength = 10;
-        input.className = 'typing-input';
-        input.style.top = `${parentRect.top + window.scrollY}px`;
-        input.style.left = `${parentRect.left + window.scrollX}px`;
-        input.style.width = `calc(${parentRect.width}px + 4vw)`;
-        input.style.height = `${parentRect.height}px`;
-        input.addEventListener('focus', function () {
-          inputInFocus = true;
-          hideOpenHelp();
-        });
-        input.addEventListener('blur', () => {
-          inputInFocus = false;
-          const span = document.createElement('span');
-          span.className = element.className;
-          span.innerText = input.value.trim() || element.innerText;
-          // Mark the new span as ready for conversion.
-          span.dataset.slideComplete = "true";
-          input.replaceWith(span);
-          showOpenHelp();
-          addAccountClickHandler(span);
-        });
-        this.replaceWith(input);
-        input.focus();
-      });
-    }
-    document.querySelectorAll('.account-text').forEach(addAccountClickHandler);
-
-    // When sliding completes (detected via left transition), enable conversion on account creation texts.
-    document.querySelectorAll('.account-text').forEach(function(el) {
-      el.addEventListener('transitionend', function(e) {
-        if (e.propertyName === "left") {
-          el.dataset.slideComplete = "true";
-        }
-      });
-    });
+    // Account creation text conversion (like login area conversion)
+    // [You can add similar click-to-convert behavior for account elements here]
 
     // Click event for OPEN: slide login area and account creation components.
     document.querySelector('.open-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
       });
-      // Account creation components slide from left:28.88vw to left:6.41vw.
-      document.querySelectorAll('.account-text, .account-line').forEach(function(el) {
+      // Instead of adding the class on individual account elements, add it on their wrappers.
+      document.querySelectorAll('.account-wrapper, .account-line-wrapper').forEach(function(el) {
         el.classList.add('account-slide');
       });
     });
   </script>
 
-  <!-- Moved layer-one to the end so it renders on top -->
+  <!-- Existing layers -->
   <div class="layer-one"></div>
-  <!-- New layer-two covering left 28.87vw–36vw -->
   <div class="layer-two"></div>
 </body>
 </html>

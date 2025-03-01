@@ -247,7 +247,6 @@ body.fullscreen .help-text {
 }
 
 /* New slide-left class for login area components */
-/* Using !important to override any inline transform */
 .slide-left {
   transform: translateX(-30vw) !important;
   transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
@@ -368,8 +367,9 @@ body.fullscreen .help-text {
   background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* When account creation components slide, remove scale and change left position */
+/* Modified account-slide: animate left over 0.5s and change scale instantly after a 0.5s delay */
 .account-slide {
-  transform: scaleX(1) !important;
   left: 6.41vw !important;
+  transform: scaleX(1) !important;
+  transition: left 0.5s ease-in-out, transform 0s ease-in-out 0.5s !important;
 }

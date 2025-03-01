@@ -167,8 +167,6 @@ body.fade-in-trigger .time-text {
   left: 90.1vw;
 }
 
-/* Existing login text for non-account elements is now set via the inline style in index.html */
-
 /* Specific account creation rules */
 .email-text {
   top: 35.2vh;
@@ -233,6 +231,18 @@ body.fade-in-trigger .time-text {
   transform: scaleX(0.7);
   transform-origin: left;
   z-index: 101;
+}
+
+/* Add styling for account creation text */
+.login-text.account-text {
+  position: absolute;
+  font-family: 'Distill Expanded', sans-serif;
+  color: #111111;
+  letter-spacing: 0.34vw;
+  font-size: 0.46rem;
+  line-height: 1.2;
+  padding: 0.1rem 0;
+  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
 /* New layer one: white rectangle covering left 0vw–6.37vw */

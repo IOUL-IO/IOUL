@@ -247,7 +247,6 @@ body.fullscreen .help-text {
 }
 
 /* New slide-left class for login area components */
-/* Using !important to override any inline transform */
 .slide-left {
   transform: translateX(-30vw) !important;
   transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
@@ -276,13 +275,14 @@ body.fullscreen .help-text {
   z-index: 100;
 }
 
-/* Account creation components initial styling */
+/* Account creation components initial styling with scaleX set to 0.1 */
 .account-text,
 .account-line {
   position: absolute;
-  transform: scaleX(0.4);
+  transform: scaleX(0.1);
   transform-origin: left;
-  transition: transform 0.5s ease-in-out, left 0.5s ease-in-out;
+  /* Remove the transform transition since we'll use an animation */
+  transition: left 0.5s ease-in-out;
   z-index: 5;
 }
 
@@ -368,8 +368,26 @@ body.fullscreen .help-text {
   background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* When account creation components slide, remove scale and change left position */
+/* Use keyframes to animate the account creation elements:
+   For 99% of the duration, left transitions from 28.88vw to 6.41vw while scale remains 0.1.
+   In the final 1%, the scale instantly jumps to 1.
+*/
+@keyframes slideAccount {
+  0% {
+    left: 28.88vw;
+    transform: scaleX(0.1);
+  }
+  99% {
+    left: 6.41vw;
+    transform: scaleX(0.1);
+  }
+  100% {
+    left: 6.41vw;
+    transform: scaleX(1);
+  }
+}
+
+/* When the OPEN button is clicked, this class is added to account creation elements */
 .account-slide {
-  transform: scaleX(1) !important;
-  left: 6.41vw !important;
+  animation: slideAccount 0.5s ease-in-out forwards !important;
 }

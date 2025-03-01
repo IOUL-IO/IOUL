@@ -22,7 +22,6 @@
       padding: 0.1rem 0;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
-
     input.typing-input {
       font-family: 'Distill Expanded', sans-serif;
       font-size: 0.46rem;
@@ -75,7 +74,7 @@
   <div class="line account-line acc-line-3 hidden account-init"></div>
   <div class="line account-line acc-line-4 hidden account-init"></div>
 
-  <!-- New Layer Two: fixed region from left 28.87vw to 36vw -->
+  <!-- New Layer Two: fixed container from left 28.87vw to 36vw -->
   <div class="layer-two"></div>
 
   <!-- Moved layer one to the end so it renders on top -->
@@ -86,7 +85,7 @@
     let fadeCompleted = false;
     let initialClickCompleted = false;
     let lastMouseEvent = null;
-    let inputInFocus = false; 
+    let inputInFocus = false;
 
     function hideLoginElements() {
       document.querySelectorAll(
@@ -103,7 +102,6 @@
           el.classList.add('visible');
           el.classList.remove('hidden');
         });
-
       if (!inputInFocus && lastMouseEvent) {
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
@@ -145,7 +143,7 @@
       const boundingTop = 28.5;
       const boundingBottom = 84;
       const boundingLeft = 6.38;
-      const boundingRight = 29; 
+      const boundingRight = 29;
 
       const { innerWidth, innerHeight } = window;
       const { clientX, clientY } = event;
@@ -271,7 +269,7 @@
       const accountElements = document.querySelectorAll('.account-text, .account-line');
       accountElements.forEach(function(el) {
         el.classList.remove('hidden');
-        // Force reflow if needed.
+        // Force a reflow if needed.
         void el.offsetWidth;
         el.classList.add('slide-in');
       });

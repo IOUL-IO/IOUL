@@ -276,14 +276,14 @@ body.fullscreen .help-text {
 }
 
 /* Account creation components initial styling with scaleX set to 0.1 */
-/* Only the left property transitions over 0.5s.
-   The transform property is updated in a single step after 0.5s using steps(1,end). */
+/* The left property transitions over 0.5s, and the transform (scale) transition is delayed
+   to 0.45s and runs over 0.05s so that the scaling jump occurs almost instantly when nearly in place. */
 .account-text,
 .account-line {
   position: absolute;
   transform: scaleX(0.1);
   transform-origin: left;
-  transition: left 0.5s ease-in-out, transform 0.1s steps(1,end) 0.5s;
+  transition: left 0.5s ease-in-out, transform 0.05s ease-in-out 0.45s;
   z-index: 5;
 }
 
@@ -369,7 +369,8 @@ body.fullscreen .help-text {
   background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* When the OPEN button is clicked, the account-slide class is added */
+/* When the OPEN button is clicked, the account-slide class is added;
+   this sets left to 6.41vw and simultaneously (after a 0.45s delay) updates the scale to 1 */
 .account-slide {
   left: 6.41vw !important;
   transform: scaleX(1) !important;

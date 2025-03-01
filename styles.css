@@ -276,7 +276,7 @@ body.fullscreen .help-text {
   z-index: 100;
 }
 
-/* Account creation components initial styling with scaleX set to 0.1 */
+/* Account creation components initial styling */
 .account-text,
 .account-line {
   position: absolute;

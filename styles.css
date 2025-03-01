@@ -275,3 +275,67 @@ body.fullscreen .help-text {
   background-color: #ffffff;
   z-index: 100;
 }
+
+/* Account creation components */
+/* Apply squish transform */
+.account-text,
+.account-line {
+  transform: scaleX(0.7);
+  transform-origin: left;
+}
+
+.account-line.acc-line-1 {
+  position: absolute;
+  top: 38.9vh;
+  left: 28.88vw;
+  width: 22.48vw;
+  height: 1px;
+  background-color: rgba(230, 230, 230, 0.28);
+}
+
+.account-line.acc-line-2 {
+  position: absolute;
+  top: 47vh;
+  left: 28.88vw;
+  width: 22.48vw;
+  height: 1px;
+  background-color: rgba(230, 230, 230, 0.28);
+}
+
+.account-line.acc-line-3 {
+  position: absolute;
+  top: 55.1vh;
+  left: 28.88vw;
+  width: 22.48vw;
+  height: 1px;
+  background-color: rgba(230, 230, 230, 0.28);
+}
+
+.account-line.acc-line-4 {
+  position: absolute;
+  top: 63.2vh;
+  left: 28.88vw;
+  width: 22.48vw;
+  height: 1px;
+  background-color: rgba(230, 230, 230, 0.28);
+}
+
+.email-text {
+  top: 35.2vh;
+  left: 28.88vw;
+}
+
+.username-text {
+  top: 43.3vh;
+  left: 28.88vw;
+}
+
+.pass-text {
+  top: 51.4vh;
+  left: 28.88vw;
+}
+
+.confirm-text {
+  top: 59.5vh;
+  left: 28.88vw;
+}

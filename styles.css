@@ -47,28 +47,22 @@ body.fade-in-trigger {
 
 .line:not(.login-line):not(.login-line-second),
 .time-text {
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-}
-
-body.fade-in-trigger .line:not(.login-line):not(.login-line-second),
-body.fade-in-trigger .time-text {
   opacity: 1;
-  transition-delay: 1s; 
+  transition: opacity 0.5s ease-in-out;
 }
 
 .login-line,
 .login-line-second,
 .login-text {
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.5s ease-in-out;
 }
 
+/* Utility classes */
 .visible {
   opacity: 1 !important;
   transition: opacity 0.5s ease-in-out;
 }
-
 .hidden {
   opacity: 0 !important;
   transition: opacity 0.5s ease-in-out;
@@ -212,7 +206,6 @@ body.fade-in-trigger .time-text {
   letter-spacing: 0.28vw;
   font-size: 0.47rem;
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-  opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
 
@@ -246,7 +239,7 @@ body.fullscreen .help-text {
   opacity: 1 !important;
 }
 
-/* New slide-left rule for login area components */
+/* Slide-left rule for login area components */
 .slide-left {
   transform: translateX(-30vw) !important;
   transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
@@ -265,18 +258,18 @@ body.fullscreen .help-text {
 }
 
 /* Initial state for account creation components:
-   They are positioned as per CSS (left:6.4vw, etc.) but then shifted right by ~22.47vw and scaled to 0.8,
-   so they appear under layer two.
-*/
+   They are shrunk (scaled to 0.8) and shifted right so that only a smaller version appears
+   behind layer two. */
 .account-init {
   transform: translateX(22.47vw) scale(0.8);
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.3s ease-in-out;
+  z-index: 40;
 }
 
-/* When sliding in, remove the transform so they move to their final location and scale,
-   and bring them to the front (above layer two) */
+/* When sliding in, they expand to their full size and move left into their final location */
 .slide-in {
   transform: translateX(0) scale(1) !important;
+  transition: transform 0.3s ease-in-out;
   z-index: 60 !important;
 }
 

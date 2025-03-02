@@ -347,8 +347,8 @@ body.fullscreen .help-text {
 }
 
 /* Help area wrapper with initial masking.
-   It uses the same width as the account area.
-   Initially, only the left ~31.7% is visible (since 36vw - 28.88vw ≈ 7.12vw). */
+   It uses the same dimensions as the account area.
+   Initially, only the left ~31.7% is visible (i.e. up to 36vw). */
 .help-wrapper {
   position: fixed;
   top: 0;
@@ -366,8 +366,9 @@ body.fullscreen .help-text {
 }
 
 /* Help area texts styling.
-   Note: Positions are adjusted relative to the help-wrapper.
-   "YOUR EMA1L" appears at left:0 (originally at 28.88vw) and "SEND L1nK" at left:15.82vw (44.7vw - 28.88vw) */
+   The texts are positioned relative to the help-wrapper.
+   "YOUR EMA1L" appears at left: 0 (i.e. 28.88vw relative to viewport)
+   and "SEND L1nK" appears at left: 15.82vw (which equals 44.7vw - 28.88vw). */
 .help-text-area {
   position: absolute;
   font-family: 'Distill Expanded', sans-serif;

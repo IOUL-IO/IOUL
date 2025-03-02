@@ -12,7 +12,7 @@
       position: absolute;
       left: 6.41vw;
       z-index: 10;
-      /* No transform here so that external CSS controls the transform */
+      /* No transform here so that external CSS controls it */
       overflow: visible;
       font-family: 'Distill Expanded', sans-serif;
       color: #111111;
@@ -39,6 +39,7 @@
       height: auto;
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+      text-align: left;
     }
   </style>
 </head>
@@ -222,12 +223,11 @@
           const parentRect = this.getBoundingClientRect();
           const input = document.createElement('input');
           // For account texts, if class indicates a password field, set type accordingly
-          if (element.classList.contains('account-sign-password') || element.classList.contains('account-repeat-password')) {
+          if (this.classList.contains('account-sign-password') || this.classList.contains('account-repeat-password')) {
             input.type = 'password';
           } else {
             input.type = 'text';
           }
-          // For help texts, default to text
           input.maxLength = 10;
           input.className = 'typing-input';
           input.style.top = `${parentRect.top + window.scrollY}px`;
@@ -289,8 +289,8 @@
       addEditableHandler(element, '.account-wrapper');
     });
 
-    // Attach the editable handler to help area texts
-    document.querySelectorAll('.help-text-area').forEach(function(element) {
+    // Attach the editable handler to help area texts EXCEPT for the sendlink element.
+    document.querySelectorAll('.help-text-area:not(.sendlink)').forEach(function(element) {
       addEditableHandler(element, '.help-wrapper');
     });
 

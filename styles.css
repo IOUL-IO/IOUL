@@ -270,7 +270,7 @@ body.fullscreen .help-text {
 
 /* Slide-left class for opening login area */
 .slide-left {
-  transform: translateX(-30vw) !important;
+  transform: translateX(-30vw);
   transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
   z-index: 0 !important;
 }

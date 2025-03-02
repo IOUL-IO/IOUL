@@ -62,15 +62,28 @@ body.fade-in-trigger .time-text {
 .login-text {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
-  /* Explicitly set the starting transform so transitions occur */
-  transform: translateX(0);
+  transform: translateX(0); /* explicit base state */
 }
 
-/* Added transition for transform to enable sliding back animation */
+/* Transition for transform so slide animations occur */
 .login-text,
 .login-line,
 .login-line-second {
   transition: transform 0.5s ease-in-out;
+}
+
+/* Keyframe animation for reversing the slide */
+@keyframes reverseSlide {
+  from {
+    transform: translateX(-30vw);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.reverse-slide {
+  animation: reverseSlide 0.5s forwards;
 }
 
 .visible {
@@ -255,14 +268,14 @@ body.fullscreen .help-text {
   opacity: 1 !important;
 }
 
-/* New slide-left class for login area components */
+/* Slide-left class for opening login area */
 .slide-left {
   transform: translateX(-30vw) !important;
   transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
   z-index: 0 !important;
 }
 
-/* Layer one: white rectangle covering left 0vw–6.37vw */
+/* Layer one: white rectangle covering left 0–6.37vw */
 .layer-one {
   position: fixed;
   top: 0;
@@ -284,7 +297,7 @@ body.fullscreen .help-text {
   z-index: 100;
 }
 
-/* Account creation wrapper with initial masking */
+/* Account creation wrapper with masking */
 .account-wrapper {
   position: fixed;
   top: 0;
@@ -301,7 +314,7 @@ body.fullscreen .help-text {
   clip-path: inset(0 0 0 0);
 }
 
-/* Account creation texts styling */
+/* Account creation texts */
 .account-text {
   position: absolute;
   left: 0;
@@ -330,7 +343,7 @@ body.fullscreen .help-text {
   top: 59.5vh;
 }
 
-/* Account creation lines styling */
+/* Account creation lines */
 .account-line {
   position: absolute;
   left: 0;
@@ -355,7 +368,7 @@ body.fullscreen .help-text {
   top: 63.2vh;
 }
 
-/* Help area wrapper with initial masking */
+/* Help area wrapper with masking */
 .help-wrapper {
   position: fixed;
   top: 0;
@@ -372,7 +385,7 @@ body.fullscreen .help-text {
   clip-path: inset(0 0 0 0);
 }
 
-/* Help area texts styling */
+/* Help area texts */
 .help-text-area {
   position: absolute;
   font-family: 'Distill Expanded', sans-serif;
@@ -393,7 +406,7 @@ body.fullscreen .help-text {
   top: 35.17vh;
 }
 
-/* Help line styling */
+/* Help line */
 .help-line {
   position: absolute;
   top: 38.9vh;

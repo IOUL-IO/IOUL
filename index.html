@@ -6,40 +6,6 @@
   <title>IOUL</title>
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    /* Styles for login text and input editing */
-    .login-text {
-      position: absolute;
-      left: 6.41vw;
-      z-index: 10;
-      transform: translateZ(0);
-      overflow: visible;
-      font-family: 'Distill Expanded', sans-serif;
-      color: #111111;
-      letter-spacing: 0.34vw;
-      font-size: 0.46rem;
-      line-height: 1.2;
-      padding: 0.1rem 0;
-      text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    }
-    input.typing-input {
-      font-family: 'Distill Expanded', sans-serif;
-      font-size: 0.46rem;
-      line-height: 1.2;
-      color: #111111;
-      letter-spacing: 0.34vw;
-      border: none;
-      outline: none;
-      background-color: transparent;
-      position: absolute;
-      caret-color: #d1d1d1;
-      padding: 0.1rem 0;
-      width: calc(22.48vw + 4vw);
-      height: auto;
-      box-sizing: content-box;
-      text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    }
-  </style>
 </head>
 <body class="non-fullscreen">
   <!-- Background lines -->
@@ -68,7 +34,7 @@
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
   
-  <!-- Account creation wrapper (initially masked behind layer two) -->
+  <!-- Account creation wrapper -->
   <div class="account-wrapper">
     <span class="account-text account-email">E-MA1L ADDRESS</span>
     <span class="account-text account-username">cREATE USERnAME</span>
@@ -80,7 +46,7 @@
     <div class="account-line account-line4"></div>
   </div>
   
-  <!-- Help area wrapper (initially masked behind layer two) -->
+  <!-- Help area wrapper -->
   <div class="help-wrapper">
     <span class="help-text-area email">YOUR EMA1L</span>
     <span class="help-text-area sendlink">SEND L1nK</span>
@@ -149,7 +115,7 @@
       const bottomPx = (boundingBottom/100)*innerHeight;
       const leftPx = (boundingLeft/100)*innerWidth;
       const rightPx = (boundingRight/100)*innerWidth;
-      const isInRegion = (clientY >= topPx && clientY <= bottomPx && clientX >= leftPx && clientX <= rightPx);
+      const isInRegion = (clientY>= topPx && clientY<= bottomPx && clientX>= leftPx && clientX<= rightPx);
       if (isInRegion) {
         openText.classList.remove('hidden');
         openText.classList.add('visible');
@@ -175,8 +141,8 @@
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
-      const isNearEdge = (clientX <= edgeThreshold || clientX >= innerWidth - edgeThreshold ||
-                          clientY <= edgeThreshold || clientY >= innerHeight - edgeThreshold);
+      const isNearEdge = (clientX<= edgeThreshold || clientX>= innerWidth - edgeThreshold ||
+                          clientY<= edgeThreshold || clientY>= innerHeight - edgeThreshold);
       if (isNearEdge && !document.fullscreenElement) {
         document.documentElement.requestFullscreen();
         return;
@@ -255,6 +221,7 @@
         const accountActive = document.querySelector('.account-wrapper').classList.contains('active');
         const helpActive = document.querySelector('.help-wrapper').classList.contains('active');
         if (accountActive || helpActive) {
+          // Use requestAnimationFrame to ensure the removal is applied on the next frame
           requestAnimationFrame(() => {
             document.querySelectorAll('.login-text, .login-line, .login-line-second')
                     .forEach(el => { el.classList.remove('slide-left'); });
@@ -266,7 +233,7 @@
     });
   </script>
   
-  <!-- Layers (Masks) -->
+  <!-- Layers (masks) -->
   <div class="layer-one"></div>
   <div class="layer-two"></div>
 </body>

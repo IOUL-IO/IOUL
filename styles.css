@@ -69,7 +69,7 @@ body.fade-in-trigger {
 .username { top: calc(var(--username-line-top) - var(--line-gap)); }
 .password { top: calc(var(--password-line-top) - var(--line-gap)); }
 
-/* Login lines styling */
+/* Login lines */
 .login-line {
   position: absolute;
   top: var(--username-line-top);
@@ -90,7 +90,6 @@ body.fade-in-trigger {
 /* .slide-left moves login area out */
 .slide-left {
   transform: translateX(-30vw);
-  transition: transform 0.5s ease-in-out;
 }
 
 /* Account creation wrapper */

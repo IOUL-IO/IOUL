@@ -82,6 +82,9 @@
 
   <!-- Help area wrapper (masked initially) -->
   <div class="help-wrapper">
+    <!-- These positions are relative to the wrapper.
+         "YOUR EMA1L" appears at left: 0 (28.88vw relative to viewport) and
+         "SEND L1nK" at left: 15.82vw (i.e. 44.7vw - 28.88vw) -->
     <span class="help-text-area email">YOUR EMA1L</span>
     <span class="help-text-area sendlink">SEND L1nK</span>
     <div class="help-line"></div>
@@ -278,6 +281,7 @@
     });
 
     // Click event for HELP: slide the help area components into view.
+    // Note: This only triggers when HELP is clicked—not when OPEn is clicked.
     document.querySelector('.help-text').addEventListener('click', function() {
       document.querySelector('.help-wrapper').classList.add('active');
     });

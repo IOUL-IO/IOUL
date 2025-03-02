@@ -42,7 +42,7 @@
       text-align: left !important;
       direction: ltr;
       text-indent: 0;
-      padding-left: 0;
+      padding-left: 0 !important;
     }
   </style>
 </head>
@@ -251,8 +251,7 @@
           });
           this.replaceWith(input);
           input.focus();
-          // Force caret to start at position 0
-          input.setSelectionRange(0, 0);
+          setTimeout(() => { input.setSelectionRange(0, 0); }, 50);
         }
       });
     }
@@ -285,7 +284,7 @@
           });
           this.replaceWith(input);
           input.focus();
-          input.setSelectionRange(0, 0);
+          setTimeout(() => { input.setSelectionRange(0, 0); }, 50);
         }
       });
     });

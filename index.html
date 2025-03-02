@@ -27,7 +27,6 @@
       font-size: 0.46rem;
       line-height: 1.2;
       color: #111111;
-      /* Default letter spacing when text is present */
       letter-spacing: 0.34vw;
       border: none;
       outline: none;
@@ -155,15 +154,11 @@
       const rightPx = (boundingRight / 100) * innerWidth;
       const isInRegion = (clientY >= topPx && clientY <= bottomPx && clientX >= leftPx && clientX <= rightPx);
       if (isInRegion) {
-        openText.classList.remove('hidden');
-        openText.classList.add('visible');
-        helpText.classList.remove('hidden');
-        helpText.classList.add('visible');
+        openText.classList.remove('hidden'); openText.classList.add('visible');
+        helpText.classList.remove('hidden'); helpText.classList.add('visible');
       } else {
-        openText.classList.remove('visible');
-        openText.classList.add('hidden');
-        helpText.classList.remove('visible');
-        helpText.classList.add('hidden');
+        openText.classList.remove('visible'); openText.classList.add('hidden');
+        helpText.classList.remove('visible'); helpText.classList.add('hidden');
       }
     }
 
@@ -186,16 +181,9 @@
         return;
       }
       if (!initialClickCompleted) {
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen();
-        }
-        setTimeout(() => {
-          document.body.classList.add('fade-in-trigger');
-        }, 1000);
-        setTimeout(() => {
-          fadeCompleted = true;
-          inactivityTimer = setTimeout(hideLoginElements, 20000);
-        }, 4000);
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+        setTimeout(() => { document.body.classList.add('fade-in-trigger'); }, 1000);
+        setTimeout(() => { fadeCompleted = true; inactivityTimer = setTimeout(hideLoginElements, 20000); }, 4000);
         initialClickCompleted = true;
       }
     });
@@ -206,12 +194,16 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // Helper: adjust letter-spacing based on input content
+    // Use setProperty with "important" to force letter-spacing
     function adjustLetterSpacing(input) {
-      input.style.letterSpacing = input.value.trim() === "" ? "0" : "0.34vw";
+      if (input.value.trim() === "") {
+        input.style.setProperty("letter-spacing", "0", "important");
+      } else {
+        input.style.setProperty("letter-spacing", "0.34vw", "important");
+      }
     }
 
-    // Function to attach an editable handler to an element
+    // Function to attach an editable handler (converts element to input on click)
     function addEditableHandler(element, containerSelector) {
       element.addEventListener('click', function () {
         if (document.querySelector(containerSelector).classList.contains('active')) {
@@ -228,7 +220,7 @@
           input.style.left = `${parentRect.left + window.scrollX}px`;
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
-          input.style.letterSpacing = "0";  // force 0 initially
+          input.style.setProperty("letter-spacing", "0", "important");
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();
@@ -246,7 +238,6 @@
           });
           this.replaceWith(input);
           input.focus();
-          // If empty, prime the input by inserting a space and then clearing it
           if (input.value.trim() === "") {
             input.value = " ";
             setTimeout(() => {
@@ -273,7 +264,7 @@
           input.style.left = `${parentRect.left + window.scrollX}px`;
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
-          input.style.letterSpacing = "0";
+          input.style.setProperty("letter-spacing", "0", "important");
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();
@@ -305,24 +296,21 @@
       });
     });
 
-    // Attach editable handler to account creation texts
-    document.querySelectorAll('.account-text').forEach(function(element) {
+    // Attach editable handlers to account creation texts and help texts (excluding sendlink)
+    document.querySelectorAll('.account-text').forEach(element => {
       addEditableHandler(element, '.account-wrapper');
     });
-
-    // Attach editable handler to help area texts except for the sendlink element
-    document.querySelectorAll('.help-text-area:not(.sendlink)').forEach(function(element) {
+    document.querySelectorAll('.help-text-area:not(.sendlink)').forEach(element => {
       addEditableHandler(element, '.help-wrapper');
     });
 
-    // Click event for OPEn: slide login area and account creation components
+    // Click events for OPEn and HELP to slide in respective areas
     document.querySelector('.open-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second')
         .forEach(el => el.classList.add('slide-left'));
       document.querySelector('.account-wrapper').classList.add('active');
     });
 
-    // Click event for HELP: slide login area and help area components
     document.querySelector('.help-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second')
         .forEach(el => el.classList.add('slide-left'));
@@ -337,19 +325,20 @@
       const regionTop = window.innerHeight * (28.5 / 100);
       const regionBottom = window.innerHeight * (84 / 100);
       if (x >= 0 && x <= regionRight && y >= regionTop && y <= regionBottom) {
-          const accountActive = document.querySelector('.account-wrapper').classList.contains('active');
-          const helpActive = document.querySelector('.help-wrapper').classList.contains('active');
-          if (accountActive || helpActive) {
-              document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
-                  el.classList.add('reverse-slide');
-                  el.addEventListener('animationend', function() {
-                      el.classList.remove('reverse-slide');
-                      el.classList.remove('slide-left');
-                  }, {once: true});
-              });
-              document.querySelector('.account-wrapper').classList.remove('active');
-              document.querySelector('.help-wrapper').classList.remove('active');
-          }
+        const accountActive = document.querySelector('.account-wrapper').classList.contains('active');
+        const helpActive = document.querySelector('.help-wrapper').classList.contains('active');
+        if (accountActive || helpActive) {
+          document.querySelectorAll('.login-text, .login-line, .login-line-second')
+            .forEach(el => {
+              el.classList.add('reverse-slide');
+              el.addEventListener('animationend', function() {
+                el.classList.remove('reverse-slide');
+                el.classList.remove('slide-left');
+              }, {once: true});
+            });
+          document.querySelector('.account-wrapper').classList.remove('active');
+          document.querySelector('.help-wrapper').classList.remove('active');
+        }
       }
     });
   </script>

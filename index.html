@@ -73,7 +73,6 @@
     <span class="account-text account-username">cREATE USERnAME</span>
     <span class="account-text account-sign-password">10-S1gn PASSWORD</span>
     <span class="account-text account-repeat-password">REPEAT PASSWORD</span>
-
     <div class="account-line account-line1"></div>
     <div class="account-line account-line2"></div>
     <div class="account-line account-line3"></div>
@@ -82,9 +81,6 @@
 
   <!-- Help area wrapper (masked initially) -->
   <div class="help-wrapper">
-    <!-- Positions are relative to the wrapper.
-         "YOUR EMA1L" appears at left: 0 and 
-         "SEND L1nK" at left: 15.82vw (44.7vw - 28.88vw) -->
     <span class="help-text-area email">YOUR EMA1L</span>
     <span class="help-text-area sendlink">SEND L1nK</span>
     <div class="help-line"></div>
@@ -271,7 +267,7 @@
       document.querySelector('.help-wrapper').classList.add('active');
     });
 
-    // Click event on designated region to reverse animations.
+    // Reverse animation on click in designated region (0–6.37vw, 28.5vh–84vh)
     document.addEventListener('click', function(event) {
       if (!document.fullscreenElement) return;
       
@@ -284,9 +280,13 @@
         const accountActive = document.querySelector('.account-wrapper').classList.contains('active');
         const helpActive = document.querySelector('.help-wrapper').classList.contains('active');
         if (accountActive || helpActive) {
-          // Remove the slide-left class so login area transitions back.
+          // Instead of simply removing the class, add a reverse-slide animation
           document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
-            el.classList.remove('slide-left');
+            el.classList.add('reverse-slide');
+            el.addEventListener('animationend', function() {
+              el.classList.remove('reverse-slide');
+              el.classList.remove('slide-left');
+            }, {once: true});
           });
           // Reverse the account creation and help areas.
           document.querySelector('.account-wrapper').classList.remove('active');

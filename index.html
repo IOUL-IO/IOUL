@@ -84,7 +84,7 @@
   <div class="help-wrapper">
     <!-- Positions are relative to the wrapper.
          "YOUR EMA1L" appears at left: 0 (i.e. 28.88vw relative to viewport)
-         and "SEND L1nK" at left: 15.82vw (which equals 44.7vw - 28.88vw) -->
+         and "SEND L1nK" at left: 15.82vw (44.7vw - 28.88vw) -->
     <span class="help-text-area email">YOUR EMA1L</span>
     <span class="help-text-area sendlink">SEND L1nK</span>
     <div class="help-line"></div>
@@ -288,6 +288,33 @@
       });
       // Slide the help area into view.
       document.querySelector('.help-wrapper').classList.add('active');
+    });
+
+    // NEW: Click event on the designated region (left 0–6.37vw, top 28.5vh–84vh)
+    // When clicked while in fullscreen and if the login area is open, reverse the animation.
+    document.addEventListener('click', function(event) {
+      if (!document.fullscreenElement) return;
+      
+      const x = event.clientX, y = event.clientY;
+      const regionRight = window.innerWidth * (6.37 / 100);
+      const regionTop = window.innerHeight * (28.5 / 100);
+      const regionBottom = window.innerHeight * (84 / 100);
+      
+      // Check if click is within the designated region
+      if (x >= 0 && x <= regionRight && y >= regionTop && y <= regionBottom) {
+        // Only reverse if either account creation or help area is active
+        const accountActive = document.querySelector('.account-wrapper').classList.contains('active');
+        const helpActive = document.querySelector('.help-wrapper').classList.contains('active');
+        if (accountActive || helpActive) {
+          // Reverse the login area slide
+          document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
+            el.classList.remove('slide-left');
+          });
+          // Reverse the account creation and help areas
+          document.querySelector('.account-wrapper').classList.remove('active');
+          document.querySelector('.help-wrapper').classList.remove('active');
+        }
+      }
     });
   </script>
 

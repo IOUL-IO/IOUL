@@ -275,34 +275,24 @@ body.fullscreen .help-text {
   z-index: 100;
 }
 
-/* Account creation wrapper with initial clipping.
-   The clip hides any part of the account area that would extend beyond 36vw.
-   Calculation:
-     - Wrapper starts at left: 28.88vw.
-     - 36vw boundary is 7.12vw to the right of 28.88vw.
-     - 7.12vw is roughly 31.7% of the 22.48vw width.
-*/
+/* Account creation wrapper with initial masking */
 .account-wrapper {
   position: fixed;
   top: 0;
   left: 28.88vw;
   width: 22.48vw;
   height: 100vh;
-  /* Initially, only ~31.7% (7.12vw) is visible */
   clip-path: inset(0 calc(100% - 31.7%) 0 0);
   transition: left 0.5s ease-in-out, clip-path 0.5s ease-in-out;
   z-index: 5;
 }
 
-/* When active, slide the wrapper into view and remove the clipping */
 .account-wrapper.active {
   left: 6.41vw;
   clip-path: inset(0 0 0 0);
 }
 
-/* Account creation texts styling.
-   Now positioned relative to the account-wrapper (left: 0) so they are full size.
-*/
+/* Account creation texts styling */
 .account-text {
   position: absolute;
   left: 0;
@@ -354,4 +344,55 @@ body.fullscreen .help-text {
 
 .account-line.account-line4 {
   top: 63.2vh;
+}
+
+/* Help area wrapper with initial masking.
+   It uses the same width as the account area.
+   Initially, only the left ~31.7% is visible (since 36vw - 28.88vw ≈ 7.12vw). */
+.help-wrapper {
+  position: fixed;
+  top: 0;
+  left: 28.88vw;
+  width: 22.48vw;
+  height: 100vh;
+  clip-path: inset(0 calc(100% - 31.7%) 0 0);
+  transition: left 0.5s ease-in-out, clip-path 0.5s ease-in-out;
+  z-index: 5;
+}
+
+.help-wrapper.active {
+  left: 6.41vw;
+  clip-path: inset(0 0 0 0);
+}
+
+/* Help area texts styling.
+   Note: Positions are adjusted relative to the help-wrapper.
+   "YOUR EMA1L" appears at left:0 (originally at 28.88vw) and "SEND L1nK" at left:15.82vw (44.7vw - 28.88vw) */
+.help-text-area {
+  position: absolute;
+  font-family: 'Distill Expanded', sans-serif;
+  color: #111111;
+  letter-spacing: 0.34vw;
+  font-size: 0.47rem;
+  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+}
+
+.help-text-area.email {
+  left: 0;
+  top: 35.17vh;
+}
+
+.help-text-area.sendlink {
+  left: 15.82vw;
+  top: 35.17vh;
+}
+
+/* Help line styling */
+.help-line {
+  position: absolute;
+  top: 38.9vh;
+  left: 0;
+  width: 22.48vw;
+  height: 1px;
+  background-color: rgba(230, 230, 230, 0.28);
 }

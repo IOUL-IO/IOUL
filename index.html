@@ -73,6 +73,7 @@
     <span class="account-text account-username">cREATE USERnAME</span>
     <span class="account-text account-sign-password">10-S1gn PASSWORD</span>
     <span class="account-text account-repeat-password">REPEAT PASSWORD</span>
+
     <div class="account-line account-line1"></div>
     <div class="account-line account-line2"></div>
     <div class="account-line account-line3"></div>
@@ -265,10 +266,13 @@
         const accountActive = document.querySelector('.account-wrapper').classList.contains('active');
         const helpActive = document.querySelector('.help-wrapper').classList.contains('active');
         if (accountActive || helpActive) {
-          // Use requestAnimationFrame to remove the class so that the transition occurs smoothly.
+          // Use requestAnimationFrame to force a reflow before removing the class so that the transition occurs.
           requestAnimationFrame(() => {
-            document.querySelectorAll('.login-text, .login-line, .login-line-second')
-              .forEach(el => { el.classList.remove('slide-left'); });
+            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
+              el.style.transform = 'translateX(-30vw)'; // ensure current state is set
+              void el.offsetWidth; // force reflow
+              el.classList.remove('slide-left');
+            });
           });
           document.querySelector('.account-wrapper').classList.remove('active');
           document.querySelector('.help-wrapper').classList.remove('active');

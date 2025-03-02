@@ -110,7 +110,7 @@ body.fade-in-trigger {
   clip-path: inset(0 0 0 0);
 }
 
-/* Account creation texts */
+/* Account creation texts styling */
 .account-text {
   position: absolute;
   left: 0;
@@ -127,7 +127,7 @@ body.fade-in-trigger {
 .account-text.account-sign-password { top: 51.4vh; }
 .account-text.account-repeat-password { top: 59.5vh; }
 
-/* Account creation lines */
+/* Account creation lines styling */
 .account-line {
   position: absolute;
   left: 0;
@@ -156,7 +156,7 @@ body.fade-in-trigger {
   clip-path: inset(0 0 0 0);
 }
 
-/* Help area texts */
+/* Help area texts styling */
 .help-text-area {
   position: absolute;
   font-family: 'Distill Expanded', sans-serif;
@@ -179,7 +179,7 @@ body.fade-in-trigger {
   background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* Styling for login input element (restored) */
+/* Styling for login input element */
 input.typing-input {
   font-family: 'Distill Expanded', sans-serif;
   font-size: 0.46rem;

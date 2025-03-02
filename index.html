@@ -42,6 +42,7 @@
       text-align: left !important;
       direction: ltr;
       text-indent: 0;
+      padding-left: 0;
     }
   </style>
 </head>
@@ -250,6 +251,8 @@
           });
           this.replaceWith(input);
           input.focus();
+          // Force caret to start at position 0
+          input.setSelectionRange(0, 0);
         }
       });
     }
@@ -282,6 +285,7 @@
           });
           this.replaceWith(input);
           input.focus();
+          input.setSelectionRange(0, 0);
         }
       });
     });

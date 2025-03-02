@@ -43,6 +43,8 @@
       direction: ltr;
       text-indent: 0;
       padding-left: 0 !important;
+      /* Added to force simple left-to-right text rendering */
+      unicode-bidi: plaintext;
     }
   </style>
 </head>
@@ -251,7 +253,7 @@
           });
           this.replaceWith(input);
           input.focus();
-          setTimeout(() => { input.setSelectionRange(0, 0); }, 50);
+          setTimeout(() => { input.setSelectionRange(0, 0); }, 100);
         }
       });
     }
@@ -284,7 +286,7 @@
           });
           this.replaceWith(input);
           input.focus();
-          setTimeout(() => { input.setSelectionRange(0, 0); }, 50);
+          setTimeout(() => { input.setSelectionRange(0, 0); }, 100);
         }
       });
     });

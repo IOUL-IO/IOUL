@@ -12,8 +12,8 @@
       position: absolute;
       left: 6.41vw;
       z-index: 10;
-      /* Full initial transform */
-      transform: translateX(0) translateZ(0);
+      /* Removed the transform property so that the external stylesheet's
+         transform (translateX(0) translateZ(0)) takes effect */
       overflow: visible;
       font-family: 'Distill Expanded', sans-serif;
       color: #111111;
@@ -253,8 +253,6 @@
     // Click event for OPEn: slide login area and account creation components.
     document.querySelector('.open-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
-        // Force a reflow so that adding slide-left triggers a transition
-        void el.offsetWidth;
         el.classList.add('slide-left');
       });
       // Slide the account creation wrapper into view.
@@ -264,8 +262,6 @@
     // Click event for HELP: slide login area and help area components.
     document.querySelector('.help-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
-        // Force a reflow before adding the class
-        void el.offsetWidth;
         el.classList.add('slide-left');
       });
       // Slide the help area into view.

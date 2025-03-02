@@ -15,20 +15,20 @@
 
 /* CSS Variables */
 :root {
-  --username-line-top: 38.9vh;
-  --password-line-top: 47vh;
-  --line-gap: 2.8vh;
+  --username-line-top: 38.9vh; 
+  --password-line-top: 47vh;  
+  --line-gap: 2.8vh; 
 }
 
 /* Body */
 body.non-fullscreen {
-  background-color: #ffffff;
+  background-color: #ffffff; 
   min-height: 100vh;
   min-width: 100vw;
   overflow: hidden;
 }
 body.fade-in-trigger {
-  background-color: #ffffff;
+  background-color: #ffffff; 
 }
 
 /* Time texts */
@@ -69,34 +69,36 @@ body.fade-in-trigger {
 .username { top: calc(var(--username-line-top) - var(--line-gap)); }
 .password { top: calc(var(--password-line-top) - var(--line-gap)); }
 
-/* Login lines */
+/* Login lines styling */
 .login-line {
   position: absolute;
-  top: var(--username-line-top);
+  top: var(--username-line-top); 
   left: 6.4vw;
   width: 22.48vw;
   height: 1px;
-  background-color: rgba(230,230,230,0.28);
+  background-color: rgba(230, 230, 230, 0.28);
 }
 .login-line-second {
   position: absolute;
-  top: var(--password-line-top);
+  top: var(--password-line-top); 
   left: 6.4vw;
   width: 22.48vw;
   height: 1px;
-  background-color: rgba(230,230,230,0.28);
+  background-color: rgba(230, 230, 230, 0.28);
 }
 
 /* .slide-left moves login area out */
 .slide-left {
-  transform: translateX(-30vw);
+  transform: translateX(-30vw) !important;
+  transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
+  z-index: 0 !important;
 }
 
 /* Account creation wrapper */
 .account-wrapper {
   position: fixed;
   top: 0;
-  left: 28.88vw; /* Initially behind layer two */
+  left: 28.88vw;
   width: 22.48vw;
   height: 100vh;
   clip-path: inset(0 calc(100% - 31.7%) 0 0);
@@ -131,7 +133,7 @@ body.fade-in-trigger {
   left: 0;
   width: 22.48vw;
   height: 1px;
-  background-color: rgba(230,230,230,0.28);
+  background-color: rgba(230, 230, 230, 0.28);
 }
 .account-line.account-line1 { top: 38.9vh; }
 .account-line.account-line2 { top: 47vh; }
@@ -142,7 +144,7 @@ body.fade-in-trigger {
 .help-wrapper {
   position: fixed;
   top: 0;
-  left: 28.88vw; /* Initially behind layer two */
+  left: 28.88vw;
   width: 22.48vw;
   height: 100vh;
   clip-path: inset(0 calc(100% - 31.7%) 0 0);
@@ -167,14 +169,33 @@ body.fade-in-trigger {
 .help-text-area.email { left: 0; top: 35.17vh; }
 .help-text-area.sendlink { left: 15.82vw; top: 35.17vh; }
 
-/* Help line */
+/* Help line styling */
 .help-line {
   position: absolute;
   top: 38.9vh;
   left: 0;
   width: 22.48vw;
   height: 1px;
-  background-color: rgba(230,230,230,0.28);
+  background-color: rgba(230, 230, 230, 0.28);
+}
+
+/* Add styling for login input element */
+input.typing-input {
+  font-family: 'Distill Expanded', sans-serif;
+  font-size: 0.46rem;
+  line-height: 1.2;
+  color: #111111;
+  letter-spacing: 0.34vw;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  position: absolute;
+  caret-color: #d1d1d1;
+  padding: 0.1rem 0;
+  width: calc(22.48vw + 4vw);
+  height: auto;
+  box-sizing: content-box;
+  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
 /* Layers */

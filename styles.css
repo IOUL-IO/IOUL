@@ -62,7 +62,7 @@ body.fade-in-trigger .time-text {
 .login-text {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
-  /* Explicit initial transform */
+  /* Explicit initial transform (defined here in external CSS) */
   transform: translateX(0) translateZ(0);
 }
 

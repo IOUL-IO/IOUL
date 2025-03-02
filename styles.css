@@ -368,7 +368,8 @@ body.fullscreen .help-text {
 /* Help area texts styling.
    The texts are positioned relative to the help-wrapper.
    "YOUR EMA1L" appears at left: 0 (i.e. 28.88vw relative to viewport)
-   and "SEND L1nK" appears at left: 15.82vw (which equals 44.7vw - 28.88vw). */
+   and "SEND L1nK" appears at left: 15.82vw (which equals 44.7vw - 28.88vw).
+   Ensure the text remains on one line. */
 .help-text-area {
   position: absolute;
   font-family: 'Distill Expanded', sans-serif;
@@ -376,6 +377,7 @@ body.fullscreen .help-text {
   letter-spacing: 0.34vw;
   font-size: 0.47rem;
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+  white-space: nowrap;
 }
 
 .help-text-area.email {

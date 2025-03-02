@@ -80,6 +80,13 @@
     <div class="account-line account-line4"></div>
   </div>
 
+  <!-- Help area wrapper (masked initially) -->
+  <div class="help-wrapper">
+    <span class="help-text-area email">YOUR EMA1L</span>
+    <span class="help-text-area sendlink">SEND L1nK</span>
+    <div class="help-line"></div>
+  </div>
+
   <script>
     let inactivityTimer;
     let fadeCompleted = false;
@@ -221,6 +228,7 @@
       checkRegionAndShowOpenHelp(event);
     });
 
+    // Event listener for login text click (for username and password)
     document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
       element.addEventListener('click', function () {
         if (
@@ -260,13 +268,18 @@
       });
     });
 
-    // Click event for OPEN: slide login area and account creation components.
+    // Click event for OPEn: slide login area and account creation components.
     document.querySelector('.open-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
       });
-      // Slide the account wrapper into view
+      // Slide the account creation wrapper into view.
       document.querySelector('.account-wrapper').classList.add('active');
+    });
+
+    // Click event for HELP: slide the help area components into view.
+    document.querySelector('.help-text').addEventListener('click', function() {
+      document.querySelector('.help-wrapper').classList.add('active');
     });
   </script>
 

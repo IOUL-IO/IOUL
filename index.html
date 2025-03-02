@@ -28,7 +28,7 @@
       font-size: 0.46rem;
       line-height: 1.2;
       color: #111111;
-      letter-spacing: 0.34vw;
+      letter-spacing: 0.34vw;  /* Default letter spacing for visible text */
       border: none;
       outline: none;
       background-color: transparent;
@@ -43,7 +43,6 @@
       direction: ltr;
       text-indent: 0;
       padding-left: 0 !important;
-      /* Added to force simple left-to-right text rendering */
       unicode-bidi: plaintext;
     }
   </style>
@@ -220,6 +219,15 @@
       checkRegionAndShowOpenHelp(event);
     });
 
+    // Helper function to set letter-spacing based on content
+    function adjustLetterSpacing(input) {
+      if (input.value.trim() === "") {
+        input.style.letterSpacing = "0";
+      } else {
+        input.style.letterSpacing = "0.34vw";
+      }
+    }
+
     // Function to attach an editable handler (converts element to input on click)
     function addEditableHandler(element, containerSelector) {
       element.addEventListener('click', function () {
@@ -239,9 +247,14 @@
           input.style.left = `${parentRect.left + window.scrollX}px`;
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
+          // Initially force letter-spacing to 0 so caret aligns at left
+          input.style.letterSpacing = "0";
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();
+          });
+          input.addEventListener('input', function() {
+            adjustLetterSpacing(input);
           });
           input.addEventListener('blur', function () {
             inputInFocus = false;
@@ -253,7 +266,10 @@
           });
           this.replaceWith(input);
           input.focus();
-          setTimeout(() => { input.setSelectionRange(0, 0); }, 100);
+          setTimeout(() => { 
+            input.setSelectionRange(0, 0);
+            adjustLetterSpacing(input);
+          }, 100);
         }
       });
     }
@@ -271,9 +287,14 @@
           input.style.left = `${parentRect.left + window.scrollX}px`;
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
+          // Initially force letter-spacing to 0
+          input.style.letterSpacing = "0";
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();
+          });
+          input.addEventListener('input', function() {
+            adjustLetterSpacing(input);
           });
           input.addEventListener('blur', function () {
             inputInFocus = false;
@@ -286,7 +307,10 @@
           });
           this.replaceWith(input);
           input.focus();
-          setTimeout(() => { input.setSelectionRange(0, 0); }, 100);
+          setTimeout(() => { 
+            input.setSelectionRange(0, 0); 
+            adjustLetterSpacing(input);
+          }, 100);
         }
       });
     });

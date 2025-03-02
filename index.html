@@ -12,8 +12,7 @@
       position: absolute;
       left: 6.41vw;
       z-index: 10;
-      /* Removed the transform property so that the external stylesheet's
-         transform (translateX(0) translateZ(0)) takes effect */
+      /* No transform here so that external CSS controls the transform */
       overflow: visible;
       font-family: 'Distill Expanded', sans-serif;
       color: #111111;
@@ -83,7 +82,7 @@
   <!-- Help area wrapper (masked initially) -->
   <div class="help-wrapper">
     <span class="help-text-area email">YOUR EMA1L</span>
-    <span class="help-text-area sendlink">SEND L1nK</span>
+    <span class="help-text-area sendlink">SEnD L1nK</span>
     <div class="help-line"></div>
   </div>
 
@@ -215,13 +214,48 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // For username and password editing
-    document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
+    // Function to attach an editable handler (converts element to input on click)
+    function addEditableHandler(element, containerSelector) {
       element.addEventListener('click', function () {
-        if (
-          fadeCompleted &&
-          (this.classList.contains('username') || this.classList.contains('password'))
-        ) {
+        // Only allow editing if the parent container is active
+        if (document.querySelector(containerSelector).classList.contains('active')) {
+          const parentRect = this.getBoundingClientRect();
+          const input = document.createElement('input');
+          // For account texts, if class indicates a password field, set type accordingly
+          if (element.classList.contains('account-sign-password') || element.classList.contains('account-repeat-password')) {
+            input.type = 'password';
+          } else {
+            input.type = 'text';
+          }
+          // For help texts, default to text
+          input.maxLength = 10;
+          input.className = 'typing-input';
+          input.style.top = `${parentRect.top + window.scrollY}px`;
+          input.style.left = `${parentRect.left + window.scrollX}px`;
+          input.style.width = `calc(${parentRect.width}px + 4vw)`;
+          input.style.height = `${parentRect.height}px`;
+          input.addEventListener('focus', function () {
+            inputInFocus = true;
+            hideOpenHelp();
+          });
+          input.addEventListener('blur', function () {
+            inputInFocus = false;
+            const span = document.createElement('span');
+            span.className = element.className;
+            span.innerText = input.value.trim() || element.innerText;
+            input.replaceWith(span);
+            addEditableHandler(span, containerSelector);
+          });
+          this.replaceWith(input);
+          input.focus();
+        }
+      });
+    }
+
+    // Attach the editable handler to login texts (existing behavior)
+    document.querySelectorAll('.login-text').forEach(function addLoginClickHandler(element) {
+      element.addEventListener('click', function () {
+        if (fadeCompleted && (this.classList.contains('username') || this.classList.contains('password'))) {
           const parentRect = this.getBoundingClientRect();
           const input = document.createElement('input');
           input.type = this.classList.contains('password') ? 'password' : 'text';
@@ -241,13 +275,23 @@
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
+            addLoginClickHandler(span);
             showOpenHelp();
-            addClickHandler(span);
           });
           this.replaceWith(input);
           input.focus();
         }
       });
+    });
+
+    // Attach the editable handler to account creation texts
+    document.querySelectorAll('.account-text').forEach(function(element) {
+      addEditableHandler(element, '.account-wrapper');
+    });
+
+    // Attach the editable handler to help area texts
+    document.querySelectorAll('.help-text-area').forEach(function(element) {
+      addEditableHandler(element, '.help-wrapper');
     });
 
     // Click event for OPEn: slide login area and account creation components.

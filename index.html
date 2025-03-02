@@ -98,19 +98,20 @@
     let inputInFocus = false; 
 
     function hideLoginElements() {
-      document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
-              .forEach(el => {
-                el.classList.add('hidden');
-                el.classList.remove('visible');
-              });
+      document.querySelectorAll(
+        '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
+      ).forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('visible');
+      });
     }
 
     function showLoginElements() {
       document.querySelectorAll('.username, .password, .login-line, .login-line-second')
-              .forEach(el => {
-                el.classList.add('visible');
-                el.classList.remove('hidden');
-              });
+        .forEach(el => {
+          el.classList.add('visible');
+          el.classList.remove('hidden');
+        });
       if (!inputInFocus && lastMouseEvent) {
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
@@ -220,12 +221,10 @@
           input.style.left = `${parentRect.left + window.scrollX}px`;
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
-
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();
           });
-
           input.addEventListener('blur', function () {
             inputInFocus = false;
             const span = document.createElement('span');
@@ -235,7 +234,6 @@
             showOpenHelp();
             addClickHandler(span);
           });
-
           this.replaceWith(input);
           input.focus();
         }
@@ -259,21 +257,19 @@
     // Reverse (close) animation when clicking in designated region (layer one: left 0–6.37vw, top 28.5vh–84vh)
     document.addEventListener('click', function(event) {
       if (!document.fullscreenElement) return;
-      
       const x = event.clientX, y = event.clientY;
       const regionRight = window.innerWidth * (6.37 / 100);
       const regionTop = window.innerHeight * (28.5 / 100);
       const regionBottom = window.innerHeight * (84 / 100);
-      
       if (x >= 0 && x <= regionRight && y >= regionTop && y <= regionBottom) {
         const accountActive = document.querySelector('.account-wrapper').classList.contains('active');
         const helpActive = document.querySelector('.help-wrapper').classList.contains('active');
         if (accountActive || helpActive) {
-          // Force reflow via requestAnimationFrame before removing the class
-          requestAnimationFrame(() => {
+          // Wait a few milliseconds before removing the slide-left class to ensure a smooth transition.
+          setTimeout(() => {
             document.querySelectorAll('.login-text, .login-line, .login-line-second')
-                    .forEach(el => { void el.offsetWidth; el.classList.remove('slide-left'); });
-          });
+              .forEach(el => { el.classList.remove('slide-left'); });
+          }, 10);
           document.querySelector('.account-wrapper').classList.remove('active');
           document.querySelector('.help-wrapper').classList.remove('active');
         }

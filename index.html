@@ -82,9 +82,9 @@
 
   <!-- Help area wrapper (masked initially) -->
   <div class="help-wrapper">
-    <!-- These positions are relative to the wrapper.
-         "YOUR EMA1L" appears at left: 0 (28.88vw relative to viewport) and
-         "SEND L1nK" at left: 15.82vw (i.e. 44.7vw - 28.88vw) -->
+    <!-- Positions are relative to the wrapper.
+         "YOUR EMA1L" appears at left: 0 (i.e. 28.88vw relative to viewport)
+         and "SEND L1nK" at left: 15.82vw (which equals 44.7vw - 28.88vw) -->
     <span class="help-text-area email">YOUR EMA1L</span>
     <span class="help-text-area sendlink">SEND L1nK</span>
     <div class="help-line"></div>
@@ -280,9 +280,13 @@
       document.querySelector('.account-wrapper').classList.add('active');
     });
 
-    // Click event for HELP: slide the help area components into view.
-    // Note: This only triggers when HELP is clicked—not when OPEn is clicked.
+    // Click event for HELP: slide login area and help area components.
     document.querySelector('.help-text').addEventListener('click', function() {
+      // Slide the login area (same as with OPEn)
+      document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
+        el.classList.add('slide-left');
+      });
+      // Slide the help area into view.
       document.querySelector('.help-wrapper').classList.add('active');
     });
   </script>

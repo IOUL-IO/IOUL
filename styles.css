@@ -62,7 +62,8 @@ body.fade-in-trigger .time-text {
 .login-text {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
-  transform: translateX(0); /* explicit base state */
+  /* Set the explicit base state with both X and Z components */
+  transform: translateX(0) translateZ(0);
 }
 
 /* Transition for transform so slide animations occur */
@@ -198,6 +199,8 @@ body.fade-in-trigger .time-text {
   font-size: 0.47rem;
   left: 6.41vw;
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+  /* Ensure our login texts start with the full transform */
+  transform: translateX(0) translateZ(0);
 }
 
 .username {
@@ -270,9 +273,10 @@ body.fullscreen .help-text {
 
 /* Slide-left class for opening login area */
 .slide-left {
-  transform: translateX(-30vw);
+  /* Override the initial transform with the sliding transform */
+  transform: translateX(-30vw) translateZ(0);
   transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
-  z-index: 0 !important;
+  z-index: 0;
 }
 
 /* Layer one: white rectangle covering left 0–6.37vw */

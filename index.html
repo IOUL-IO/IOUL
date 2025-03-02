@@ -73,7 +73,6 @@
     <span class="account-text account-username">cREATE USERnAME</span>
     <span class="account-text account-sign-password">10-S1gn PASSWORD</span>
     <span class="account-text account-repeat-password">REPEAT PASSWORD</span>
-
     <div class="account-line account-line1"></div>
     <div class="account-line account-line2"></div>
     <div class="account-line account-line3"></div>
@@ -82,9 +81,6 @@
 
   <!-- Help area wrapper (masked initially) -->
   <div class="help-wrapper">
-    <!-- Positions are relative to the wrapper.
-         "YOUR EMA1L" appears at left: 0 (i.e. 28.88vw relative to viewport)
-         and "SEND L1nK" at left: 15.82vw (which equals 44.7vw - 28.88vw) -->
     <span class="help-text-area email">YOUR EMA1L</span>
     <span class="help-text-area sendlink">SEND L1nK</span>
     <div class="help-line"></div>
@@ -144,15 +140,25 @@
       if (!fadeCompleted || inputInFocus) return;
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
-      if (document.querySelector('.username').classList.contains('hidden')) return;
-      const boundingTop = 28.5, boundingBottom = 84, boundingLeft = 6.38, boundingRight = 29;
+      if (document.querySelector('.username').classList.contains('hidden')) {
+        return;
+      }
+      const boundingTop = 28.5;
+      const boundingBottom = 84;
+      const boundingLeft = 6.38;
+      const boundingRight = 29; 
       const { innerWidth, innerHeight } = window;
       const { clientX, clientY } = event;
-      const topPx = (boundingTop/100)*innerHeight;
-      const bottomPx = (boundingBottom/100)*innerHeight;
-      const leftPx = (boundingLeft/100)*innerWidth;
-      const rightPx = (boundingRight/100)*innerWidth;
-      const isInRegion = (clientY >= topPx && clientY <= bottomPx && clientX >= leftPx && clientX <= rightPx);
+      const topPx = (boundingTop / 100) * innerHeight;
+      const bottomPx = (boundingBottom / 100) * innerHeight;
+      const leftPx = (boundingLeft / 100) * innerWidth;
+      const rightPx = (boundingRight / 100) * innerWidth;
+      const isInRegion = (
+        clientY >= topPx &&
+        clientY <= bottomPx &&
+        clientX >= leftPx &&
+        clientX <= rightPx
+      );
       if (isInRegion) {
         openText.classList.remove('hidden');
         openText.classList.add('visible');
@@ -208,10 +214,13 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // For editing username/password
+    // For username and password editing
     document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
       element.addEventListener('click', function () {
-        if (fadeCompleted && (this.classList.contains('username') || this.classList.contains('password'))) {
+        if (
+          fadeCompleted &&
+          (this.classList.contains('username') || this.classList.contains('password'))
+        ) {
           const parentRect = this.getBoundingClientRect();
           const input = document.createElement('input');
           input.type = this.classList.contains('password') ? 'password' : 'text';
@@ -240,43 +249,53 @@
       });
     });
 
-    // Click event for OPEn: slide login area and account creation area.
+    // Click event for OPEn: slide login area and account creation components.
     document.querySelector('.open-text').addEventListener('click', function() {
-      document.querySelectorAll('.login-text, .login-line, .login-line-second')
-              .forEach(el => { el.classList.add('slide-left'); });
+      document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
+        el.classList.add('slide-left');
+      });
+      // Slide the account creation wrapper into view.
       document.querySelector('.account-wrapper').classList.add('active');
     });
 
-    // Click event for HELP: slide login area and help area.
+    // Click event for HELP: slide login area and help area components.
     document.querySelector('.help-text').addEventListener('click', function() {
-      document.querySelectorAll('.login-text, .login-line, .login-line-second')
-              .forEach(el => { el.classList.add('slide-left'); });
+      document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
+        el.classList.add('slide-left');
+      });
+      // Slide the help area into view.
       document.querySelector('.help-wrapper').classList.add('active');
     });
-    
-    // Reverse (close) animation when clicking in designated region (layer one: left 0–6.37vw, top 28.5vh–84vh)
+
+    // Reverse animation on click in designated region (0–6.37vw, 28.5vh–84vh)
     document.addEventListener('click', function(event) {
       if (!document.fullscreenElement) return;
+      
       const x = event.clientX, y = event.clientY;
       const regionRight = window.innerWidth * (6.37 / 100);
       const regionTop = window.innerHeight * (28.5 / 100);
       const regionBottom = window.innerHeight * (84 / 100);
+      
       if (x >= 0 && x <= regionRight && y >= regionTop && y <= regionBottom) {
         const accountActive = document.querySelector('.account-wrapper').classList.contains('active');
         const helpActive = document.querySelector('.help-wrapper').classList.contains('active');
         if (accountActive || helpActive) {
-          // Wait a few milliseconds before removing the slide-left class to ensure a smooth transition.
-          setTimeout(() => {
-            document.querySelectorAll('.login-text, .login-line, .login-line-second')
-              .forEach(el => { el.classList.remove('slide-left'); });
-          }, 10);
+          // Instead of simply removing the class, add a reverse-slide animation
+          document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
+            el.classList.add('reverse-slide');
+            el.addEventListener('animationend', function() {
+              el.classList.remove('reverse-slide');
+              el.classList.remove('slide-left');
+            }, {once: true});
+          });
+          // Reverse the account creation and help areas.
           document.querySelector('.account-wrapper').classList.remove('active');
           document.querySelector('.help-wrapper').classList.remove('active');
         }
       }
     });
   </script>
-  
+
   <!-- Layers to mask the sliding elements -->
   <div class="layer-one"></div>
   <div class="layer-two"></div>

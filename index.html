@@ -83,8 +83,8 @@
   <!-- Help area wrapper (masked initially) -->
   <div class="help-wrapper">
     <!-- Positions are relative to the wrapper.
-         "YOUR EMA1L" appears at left: 0 (i.e. 28.88vw relative to viewport)
-         and "SEND L1nK" at left: 15.82vw (44.7vw - 28.88vw) -->
+         "YOUR EMA1L" appears at left: 0 and 
+         "SEND L1nK" at left: 15.82vw (44.7vw - 28.88vw) -->
     <span class="help-text-area email">YOUR EMA1L</span>
     <span class="help-text-area sendlink">SEND L1nK</span>
     <div class="help-line"></div>
@@ -112,7 +112,6 @@
           el.classList.add('visible');
           el.classList.remove('hidden');
         });
-
       if (!inputInFocus && lastMouseEvent) {
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
@@ -143,34 +142,27 @@
 
     function checkRegionAndShowOpenHelp(event) {
       if (!fadeCompleted || inputInFocus) return;
-
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
-
       if (document.querySelector('.username').classList.contains('hidden')) {
         return;
       }
-
       const boundingTop = 28.5;
       const boundingBottom = 84;
       const boundingLeft = 6.38;
       const boundingRight = 29; 
-
       const { innerWidth, innerHeight } = window;
       const { clientX, clientY } = event;
-
       const topPx = (boundingTop / 100) * innerHeight;
       const bottomPx = (boundingBottom / 100) * innerHeight;
       const leftPx = (boundingLeft / 100) * innerWidth;
       const rightPx = (boundingRight / 100) * innerWidth;
-
       const isInRegion = (
         clientY >= topPx &&
         clientY <= bottomPx &&
         clientX >= leftPx &&
         clientX <= rightPx
       );
-
       if (isInRegion) {
         openText.classList.remove('hidden');
         openText.classList.add('visible');
@@ -196,18 +188,15 @@
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
-
       const isNearEdge =
         clientX <= edgeThreshold ||
         clientX >= innerWidth - edgeThreshold ||
         clientY <= edgeThreshold ||
         clientY >= innerHeight - edgeThreshold;
-
       if (isNearEdge && !document.fullscreenElement) {
         document.documentElement.requestFullscreen();
         return;
       }
-
       if (!initialClickCompleted) {
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen();
@@ -215,12 +204,10 @@
         setTimeout(() => {
           document.body.classList.add('fade-in-trigger');
         }, 1000);
-
         setTimeout(() => {
           fadeCompleted = true;
           inactivityTimer = setTimeout(hideLoginElements, 20000);
         }, 4000);
-
         initialClickCompleted = true;
       }
     });
@@ -231,7 +218,7 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // Event listener for login text click (for username and password)
+    // For username and password editing
     document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
       element.addEventListener('click', function () {
         if (
@@ -247,24 +234,19 @@
           input.style.left = `${parentRect.left + window.scrollX}px`;
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
-
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();
           });
-
           input.addEventListener('blur', function () {
             inputInFocus = false;
             const span = document.createElement('span');
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
-
             showOpenHelp();
-
             addClickHandler(span);
           });
-
           this.replaceWith(input);
           input.focus();
         }
@@ -282,7 +264,6 @@
 
     // Click event for HELP: slide login area and help area components.
     document.querySelector('.help-text').addEventListener('click', function() {
-      // Slide the login area (same as with OPEn)
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
       });
@@ -290,8 +271,7 @@
       document.querySelector('.help-wrapper').classList.add('active');
     });
 
-    // NEW: Click event on the designated region (left 0–6.37vw, top 28.5vh–84vh)
-    // When clicked while in fullscreen and if the login area is open, reverse the animation.
+    // Click event on designated region to reverse animations.
     document.addEventListener('click', function(event) {
       if (!document.fullscreenElement) return;
       
@@ -300,17 +280,15 @@
       const regionTop = window.innerHeight * (28.5 / 100);
       const regionBottom = window.innerHeight * (84 / 100);
       
-      // Check if click is within the designated region
       if (x >= 0 && x <= regionRight && y >= regionTop && y <= regionBottom) {
-        // Only reverse if either account creation or help area is active
         const accountActive = document.querySelector('.account-wrapper').classList.contains('active');
         const helpActive = document.querySelector('.help-wrapper').classList.contains('active');
         if (accountActive || helpActive) {
-          // Reverse the login area slide with a transition
+          // Remove the slide-left class so login area transitions back.
           document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
             el.classList.remove('slide-left');
           });
-          // Reverse the account creation and help areas
+          // Reverse the account creation and help areas.
           document.querySelector('.account-wrapper').classList.remove('active');
           document.querySelector('.help-wrapper').classList.remove('active');
         }

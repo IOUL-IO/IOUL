@@ -6,41 +6,6 @@
   <title>IOUL</title>
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    /* Inline styles for login text and input */
-    .login-text {
-      position: absolute;
-      left: 6.41vw;
-      z-index: 10;
-      transform: translateZ(0);
-      overflow: visible;
-      font-family: 'Distill Expanded', sans-serif;
-      color: #111111;
-      letter-spacing: 0.34vw;
-      font-size: 0.46rem;
-      line-height: 1.2;
-      padding: 0.1rem 0;
-      text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    }
-    
-    input.typing-input {
-      font-family: 'Distill Expanded', sans-serif;
-      font-size: 0.46rem;
-      line-height: 1.2;
-      color: #111111;
-      letter-spacing: 0.34vw;
-      border: none;
-      outline: none;
-      background-color: transparent;
-      position: absolute;
-      caret-color: #d1d1d1;
-      padding: 0.1rem 0;
-      width: calc(22.48vw + 4vw);
-      height: auto;
-      box-sizing: content-box;
-      text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    }
-  </style>
 </head>
 <body class="non-fullscreen">
   <!-- Background lines and time texts -->
@@ -267,7 +232,7 @@
       document.querySelector('.help-wrapper').classList.add('active');
     });
 
-    // Reverse animation on click in designated region (0–6.37vw, 28.5vh–84vh)
+    // Reverse animation on click in designated region (left 0–6.37vw, top 28.5vh–84vh)
     document.addEventListener('click', function(event) {
       if (!document.fullscreenElement) return;
       
@@ -280,13 +245,11 @@
         const accountActive = document.querySelector('.account-wrapper').classList.contains('active');
         const helpActive = document.querySelector('.help-wrapper').classList.contains('active');
         if (accountActive || helpActive) {
-          // Instead of simply removing the class, add a reverse-slide animation
+          // Remove the slide-left class to trigger CSS transition (forcing reflow)
           document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
-            el.classList.add('reverse-slide');
-            el.addEventListener('animationend', function() {
-              el.classList.remove('reverse-slide');
-              el.classList.remove('slide-left');
-            }, {once: true});
+            // Force reflow
+            void el.offsetWidth;
+            el.classList.remove('slide-left');
           });
           // Reverse the account creation and help areas.
           document.querySelector('.account-wrapper').classList.remove('active');

@@ -12,7 +12,7 @@
       position: absolute;
       left: 6.41vw;
       z-index: 10;
-      /* Set the full initial transform (including X-axis) */
+      /* Full initial transform */
       transform: translateX(0) translateZ(0);
       overflow: visible;
       font-family: 'Distill Expanded', sans-serif;
@@ -253,6 +253,8 @@
     // Click event for OPEn: slide login area and account creation components.
     document.querySelector('.open-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
+        // Force a reflow so that adding slide-left triggers a transition
+        void el.offsetWidth;
         el.classList.add('slide-left');
       });
       // Slide the account creation wrapper into view.
@@ -262,6 +264,8 @@
     // Click event for HELP: slide login area and help area components.
     document.querySelector('.help-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
+        // Force a reflow before adding the class
+        void el.offsetWidth;
         el.classList.add('slide-left');
       });
       // Slide the help area into view.
@@ -281,7 +285,7 @@
         const accountActive = document.querySelector('.account-wrapper').classList.contains('active');
         const helpActive = document.querySelector('.help-wrapper').classList.contains('active');
         if (accountActive || helpActive) {
-          // Instead of simply removing the class, add a reverse-slide animation
+          // Add reverse-slide animation and then remove slide-left after animation ends.
           document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
             el.classList.add('reverse-slide');
             el.addEventListener('animationend', function() {

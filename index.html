@@ -54,21 +54,21 @@
   <div class="line dashed second-dashed"></div>
   <div class="line dashed third-dashed"></div>
   <div class="line dashed fourth-dashed"></div>
-
+  
   <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
   <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
-
+  
   <!-- Login texts -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
   <span class="login-text open-text hidden">OPEn</span>
   <span class="login-text help-text hidden">HELP</span>
-
+  
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
-
+  
   <!-- Account creation wrapper (masked initially) -->
   <div class="account-wrapper">
     <span class="account-text account-email">E-MA1L ADDRESS</span>
@@ -80,14 +80,14 @@
     <div class="account-line account-line3"></div>
     <div class="account-line account-line4"></div>
   </div>
-
+  
   <!-- Help area wrapper (masked initially) -->
   <div class="help-wrapper">
     <span class="help-text-area email">YOUR EMA1L</span>
     <span class="help-text-area sendlink">SEnD L1nK</span>
     <div class="help-line"></div>
   </div>
-
+  
   <script>
     let inactivityTimer;
     let fadeCompleted = false;
@@ -200,6 +200,8 @@
     });
     
     // Unified editing handler for all fields.
+    // This version uses a dummy character hack: when the input is empty on focus,
+    // we set its value to a period (".") and then immediately remove it to force a reflow.
     function addClickHandler(element) {
       element.addEventListener('click', function () {
         if (fadeCompleted && (this.classList.contains('username') ||
@@ -225,16 +227,14 @@
             inputInFocus = true;
             hideOpenHelp();
             this.style.textAlign = "left";
-            // If the field is empty, force a dummy character and then remove it
-            if (this.value.trim() === "") {
-              let temp = this.value;
-              this.value = temp + "a";
-              // Force caret at beginning and then remove the dummy char
-              this.setSelectionRange(0, 0);
+            // If empty, force a dummy character to reflow and reposition caret
+            if (this.value === "") {
+              this.value = ".";
+              this.setSelectionRange(0, 1);
               setTimeout(() => {
-                this.value = temp;
+                this.value = "";
                 this.setSelectionRange(0, 0);
-              }, 10);
+              }, 0);
             }
           });
           input.addEventListener('blur', function () {
@@ -253,11 +253,9 @@
       });
     }
     
-    // Attach unified editing handler to login texts
+    // Attach unified editing handler to login texts, account texts, and help texts (excluding sendlink)
     document.querySelectorAll('.login-text').forEach(addClickHandler);
-    // Attach unified editing handler to account creation texts
     document.querySelectorAll('.account-text').forEach(addClickHandler);
-    // Attach unified editing handler to help area texts (excluding sendlink)
     document.querySelectorAll('.help-text-area:not(.sendlink)').forEach(addClickHandler);
     
     // OPEn button: slide login area and reveal account creation area.

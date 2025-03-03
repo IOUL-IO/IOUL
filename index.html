@@ -215,16 +215,23 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // For username and password editing
-    document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
+    // Make text clickable to become an input (login area, account area, help area)
+    function addClickHandler(element) {
       element.addEventListener('click', function () {
-        if (
-          fadeCompleted &&
-          (this.classList.contains('username') || this.classList.contains('password'))
-        ) {
+        // Only do this once fadeCompleted is true
+        if (fadeCompleted) {
+          // Decide if it becomes a password or text input
+          let inputType = 'text';
+          if (
+            this.classList.contains('password') ||
+            this.classList.contains('account-sign-password') ||
+            this.classList.contains('account-repeat-password')
+          ) {
+            inputType = 'password';
+          }
           const parentRect = this.getBoundingClientRect();
           const input = document.createElement('input');
-          input.type = this.classList.contains('password') ? 'password' : 'text';
+          input.type = inputType;
           input.maxLength = 10;
           input.className = 'typing-input';
           input.style.top = `${parentRect.top + window.scrollY}px`;
@@ -235,20 +242,24 @@
             inputInFocus = true;
             hideOpenHelp();
           });
-          input.addEventListener('blur', function () {
+          input.addEventListener('blur', () => {
             inputInFocus = false;
             const span = document.createElement('span');
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
             showOpenHelp();
+            // reattach click-to-input
             addClickHandler(span);
           });
           this.replaceWith(input);
           input.focus();
         }
       });
-    });
+    }
+
+    // Attach to all login, account, and help area texts
+    document.querySelectorAll('.login-text, .account-text, .help-text-area').forEach(addClickHandler);
 
     // Click event for OPEn: slide login area and account creation components.
     document.querySelector('.open-text').addEventListener('click', function() {
@@ -268,10 +279,8 @@
       document.querySelector('.help-wrapper').classList.add('active');
     });
 
-    // Reverse animation on click in designated region (0–6.37vw, 28.5vh–84vh)
+    // Reverse animation on click in designated region (0–6.37vw, 28.5vh–84vh), now works in both fullscreen and non-fullscreen
     document.addEventListener('click', function(event) {
-      if (!document.fullscreenElement) return;
-      
       const x = event.clientX, y = event.clientY;
       const regionRight = window.innerWidth * (6.37 / 100);
       const regionTop = window.innerHeight * (28.5 / 100);

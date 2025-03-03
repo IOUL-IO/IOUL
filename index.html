@@ -7,7 +7,7 @@
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
   <style>
-    /* Inline styles for login text and input – these are unchanged from your original working version */
+    /* Inline styles for login text and input – exactly as in your original working login area */
     .login-text {
       position: absolute;
       left: 6.41vw;
@@ -39,7 +39,7 @@
       height: auto;
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-      /* No extra modifications – the login inputs in your original code behaved correctly */
+      /* No extra modifications – login inputs worked as desired */
     }
   </style>
 </head>
@@ -88,21 +88,20 @@
   </div>
 
   <script>
-    // Global variables (unchanged)
+    // Global variables
     let inactivityTimer;
     let fadeCompleted = false;
     let initialClickCompleted = false;
     let lastMouseEvent = null;
     let inputInFocus = false;
 
-    // These functions (hideLoginElements, showLoginElements, resetInactivityTimer, hideOpenHelp, showOpenHelp, checkRegionAndShowOpenHelp)
-    // are identical to your original code.
     function hideLoginElements() {
-      document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
-        .forEach(el => {
-          el.classList.add('hidden');
-          el.classList.remove('visible');
-        });
+      document.querySelectorAll(
+        '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
+      ).forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('visible');
+      });
     }
 
     function showLoginElements() {
@@ -162,24 +161,36 @@
     }
 
     document.addEventListener('fullscreenchange', () => {
-      if (!document.fullscreenElement) document.body.classList.remove('fullscreen');
-      else document.body.classList.add('fullscreen');
+      if (!document.fullscreenElement)
+        document.body.classList.remove('fullscreen');
+      else
+        document.body.classList.add('fullscreen');
     });
 
     document.addEventListener('click', event => {
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
-      const isNearEdge = clientX <= edgeThreshold || clientX >= innerWidth - edgeThreshold ||
-                         clientY <= edgeThreshold || clientY >= innerHeight - edgeThreshold;
+      const isNearEdge =
+        clientX <= edgeThreshold ||
+        clientX >= innerWidth - edgeThreshold ||
+        clientY <= edgeThreshold ||
+        clientY >= innerHeight - edgeThreshold;
       if (isNearEdge && !document.fullscreenElement) {
         document.documentElement.requestFullscreen();
         return;
       }
       if (!initialClickCompleted) {
-        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-        setTimeout(() => { document.body.classList.add('fade-in-trigger'); }, 1000);
-        setTimeout(() => { fadeCompleted = true; inactivityTimer = setTimeout(hideLoginElements, 20000); }, 4000);
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen();
+        }
+        setTimeout(() => {
+          document.body.classList.add('fade-in-trigger');
+        }, 1000);
+        setTimeout(() => {
+          fadeCompleted = true;
+          inactivityTimer = setTimeout(hideLoginElements, 20000);
+        }, 4000);
         initialClickCompleted = true;
       }
     });
@@ -190,30 +201,29 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // Simple editing handler identical to the original login-text editing code.
+    // Editing handler that worked originally for login texts
     function addClickHandler(element) {
       element.addEventListener('click', function () {
-        // Only allow editing if fadeCompleted is true (as in your original logic)
-        if (fadeCompleted &&
-            (element.classList.contains('username') || element.classList.contains('password') ||
-             element.classList.contains('account-text') || element.classList.contains('help-text-area'))) {
-          const parentRect = element.getBoundingClientRect();
+        if (fadeCompleted) {
+          const parentRect = this.getBoundingClientRect();
           const input = document.createElement('input');
-          // Set type based on whether the element is a password field
-          if (element.classList.contains('password') ||
-              element.classList.contains('account-sign-password') ||
-              element.classList.contains('account-repeat-password'))
+          // Determine input type based on element class
+          if (this.classList.contains('password') ||
+              this.classList.contains('account-sign-password') ||
+              this.classList.contains('account-repeat-password')) {
             input.type = 'password';
-          else
+          } else {
             input.type = 'text';
+          }
           input.maxLength = 10;
           input.className = 'typing-input';
-          input.style.top = `${parentRect.top + window.scrollY}px`;
-          input.style.left = `${parentRect.left + window.scrollX}px`;
+          input.style.top = (parentRect.top + window.scrollY) + "px";
+          input.style.left = (parentRect.left + window.scrollX) + "px";
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
-          input.style.height = `${parentRect.height}px`;
+          input.style.height = parentRect.height + "px";
           input.addEventListener('focus', function () {
             inputInFocus = true;
+            hideOpenHelp();
           });
           input.addEventListener('blur', function () {
             inputInFocus = false;
@@ -222,34 +232,36 @@
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
             addClickHandler(span);
+            showOpenHelp();
           });
-          element.replaceWith(input);
+          this.replaceWith(input);
           input.focus();
-          // Immediately set caret at beginning
+          // Set caret at beginning immediately
           input.setSelectionRange(0, 0);
         }
       });
     }
 
-    // Attach the editing handler to login texts, account creation texts, and help texts (excluding the sendlink)
+    // Attach editing handler to login texts, account creation texts, and help area texts (excluding sendlink)
     document.querySelectorAll('.login-text').forEach(addClickHandler);
     document.querySelectorAll('.account-text').forEach(addClickHandler);
     document.querySelectorAll('.help-text-area:not(.sendlink)').forEach(addClickHandler);
 
-    // Click events for OPEn and HELP remain unchanged
+    // Click event for OPEn: slide login area and account creation components.
     document.querySelector('.open-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second')
         .forEach(el => el.classList.add('slide-left'));
       document.querySelector('.account-wrapper').classList.add('active');
     });
 
+    // Click event for HELP: slide login area and help area components.
     document.querySelector('.help-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second')
         .forEach(el => el.classList.add('slide-left'));
       document.querySelector('.help-wrapper').classList.add('active');
     });
 
-    // Reverse animation on click in designated region remains unchanged
+    // Reverse animation on click in designated region (0–6.37vw, 28.5vh–84vh)
     document.addEventListener('click', function(event) {
       if (!document.fullscreenElement) return;
       const x = event.clientX, y = event.clientY;

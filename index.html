@@ -12,8 +12,6 @@
       position: absolute;
       left: 6.41vw;
       z-index: 10;
-      /* Removed the transform property so that the external stylesheet's
-         transform (translateX(0) translateZ(0)) takes effect */
       overflow: visible;
       font-family: 'Distill Expanded', sans-serif;
       color: #111111;
@@ -215,8 +213,10 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // For username and password editing
-    document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
+    // ---------------------------
+    // Login Area Conversion (remains as before)
+    // ---------------------------
+    document.querySelectorAll('.login-text').forEach(function addLoginClickHandler(element) {
       element.addEventListener('click', function () {
         if (
           fadeCompleted &&
@@ -224,6 +224,7 @@
         ) {
           const parentRect = this.getBoundingClientRect();
           const input = document.createElement('input');
+          // For login area, preserve password masking if needed.
           input.type = this.classList.contains('password') ? 'password' : 'text';
           input.maxLength = 10;
           input.className = 'typing-input';
@@ -242,7 +243,7 @@
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
-            addClickHandler(span);
+            addLoginClickHandler(span);
           });
           this.replaceWith(input);
           input.focus();
@@ -251,28 +252,22 @@
     });
 
     // ---------------------------
-    // New Code for Account & Help Areas
+    // New Conversion for Account Creation and Help Areas
+    // These functions do a simple in-place replacement without recalculating absolute positions.
+    // They always force type "text" so that even password-related texts remain unmasked.
     // ---------------------------
-    // This function converts a span into an input field using similar styling.
-    function convertSpanToInput(span) {
+    function convertWrapperSpanToInput(span) {
       if (span.tagName.toLowerCase() !== 'span') return;
-      const rect = span.getBoundingClientRect();
       const input = document.createElement('input');
-      // Set type to password if the span text includes "PASSWORD"
-      if (span.innerText.toUpperCase().includes("PASSWORD")) {
-        input.type = "password";
-      } else {
-        input.type = "text";
-      }
+      input.type = "text";
       input.maxLength = 10;
-      input.className = 'typing-input';
-      input.style.position = 'absolute';
-      input.style.top = `${rect.top + window.scrollY}px`;
-      input.style.left = `${rect.left + window.scrollX}px`;
-      input.style.width = `calc(${rect.width}px + 4vw)`;
-      input.style.height = `${rect.height}px`;
-      // Set the input's value so the text is preserved
+      // Use the same classes so the CSS for account-text or help-text-area applies
+      input.className = span.className;
       input.value = span.innerText;
+      // Set minimal inline styles to mimic the span's appearance
+      input.style.border = "none";
+      input.style.backgroundColor = "transparent";
+      input.style.outline = "none";
       input.addEventListener('focus', function () {
         inputInFocus = true;
         hideOpenHelp();
@@ -283,31 +278,23 @@
         newSpan.className = span.className;
         newSpan.innerText = input.value.trim() || span.innerText;
         input.replaceWith(newSpan);
-        addEditableHandler(newSpan);
+        addWrapperEditableHandler(newSpan);
       });
       span.replaceWith(input);
     }
 
-    // Adds a click handler to allow re-editing of the converted field.
-    function addEditableHandler(element) {
+    function addWrapperEditableHandler(element) {
       element.addEventListener('click', function () {
         const parent = element.closest('.account-wrapper, .help-wrapper');
         if (parent && parent.classList.contains('active')) {
-          const rect = element.getBoundingClientRect();
           const input = document.createElement('input');
-          if (element.innerText.toUpperCase().includes("PASSWORD")) {
-            input.type = "password";
-          } else {
-            input.type = "text";
-          }
+          input.type = "text";
           input.maxLength = 10;
-          input.className = 'typing-input';
-          input.style.position = 'absolute';
-          input.style.top = `${rect.top + window.scrollY}px`;
-          input.style.left = `${rect.left + window.scrollX}px`;
-          input.style.width = `calc(${rect.width}px + 4vw)`;
-          input.style.height = `${rect.height}px`;
+          input.className = element.className;
           input.value = element.innerText;
+          input.style.border = "none";
+          input.style.backgroundColor = "transparent";
+          input.style.outline = "none";
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();
@@ -318,7 +305,7 @@
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
-            addEditableHandler(span);
+            addWrapperEditableHandler(span);
           });
           element.replaceWith(input);
           input.focus();
@@ -326,11 +313,11 @@
       });
     }
 
-    // Attach click handlers for account and help texts for subsequent editing
-    document.querySelectorAll('.account-text').forEach(addEditableHandler);
-    document.querySelectorAll('.help-text-area').forEach(addEditableHandler);
+    // Attach initial editable handlers for account and help texts
+    document.querySelectorAll('.account-text').forEach(addWrapperEditableHandler);
+    document.querySelectorAll('.help-text-area').forEach(addWrapperEditableHandler);
 
-    // Instead of using transitionend events, use a delay after clicking OPEN or HELP.
+    // Trigger conversion after a delay once the slide-in is complete.
     document.querySelector('.open-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
@@ -338,8 +325,8 @@
       const accountWrapper = document.querySelector('.account-wrapper');
       accountWrapper.classList.add('active');
       setTimeout(() => {
-         accountWrapper.querySelectorAll('.account-text').forEach(convertSpanToInput);
-      }, 600);
+         accountWrapper.querySelectorAll('.account-text').forEach(convertWrapperSpanToInput);
+      }, 700);
     });
 
     document.querySelector('.help-text').addEventListener('click', function() {
@@ -349,8 +336,8 @@
       const helpWrapper = document.querySelector('.help-wrapper');
       helpWrapper.classList.add('active');
       setTimeout(() => {
-         helpWrapper.querySelectorAll('.help-text-area').forEach(convertSpanToInput);
-      }, 600);
+         helpWrapper.querySelectorAll('.help-text-area').forEach(convertWrapperSpanToInput);
+      }, 700);
     });
 
     // Reverse animation on click in designated region (0–6.37vw, 28.5vh–84vh)
@@ -366,7 +353,6 @@
         const accountActive = document.querySelector('.account-wrapper').classList.contains('active');
         const helpActive = document.querySelector('.help-wrapper').classList.contains('active');
         if (accountActive || helpActive) {
-          // Add reverse-slide animation and then remove slide-left after animation ends.
           document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
             el.classList.add('reverse-slide');
             el.addEventListener('animationend', function() {
@@ -374,7 +360,6 @@
               el.classList.remove('slide-left');
             }, {once: true});
           });
-          // Reverse the account creation and help areas.
           document.querySelector('.account-wrapper').classList.remove('active');
           document.querySelector('.help-wrapper').classList.remove('active');
         }

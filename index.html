@@ -7,13 +7,12 @@
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
   <style>
-    /* Inline styles for login text and input */
+    /* Inline styles for login text and input – exactly as in your original working version */
     .login-text {
       position: absolute;
       left: 6.41vw;
       z-index: 10;
-      /* Removed the transform property so that the external stylesheet's
-         transform (translateX(0) translateZ(0)) takes effect */
+      /* No transform here so that external CSS controls it */
       overflow: visible;
       font-family: 'Distill Expanded', sans-serif;
       color: #111111;
@@ -40,7 +39,9 @@
       height: auto;
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-      text-align: left; /* Ensures caret starts at the left */
+      text-align: left !important;
+      direction: ltr;
+      text-indent: 0;
     }
   </style>
 </head>
@@ -54,21 +55,21 @@
   <div class="line dashed second-dashed"></div>
   <div class="line dashed third-dashed"></div>
   <div class="line dashed fourth-dashed"></div>
-
+  
   <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
   <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
-
+  
   <!-- Login texts -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
   <span class="login-text open-text hidden">OPEn</span>
   <span class="login-text help-text hidden">HELP</span>
-
+  
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
-
+  
   <!-- Account creation wrapper (masked initially) -->
   <div class="account-wrapper">
     <span class="account-text account-email">E-MA1L ADDRESS</span>
@@ -80,21 +81,21 @@
     <div class="account-line account-line3"></div>
     <div class="account-line account-line4"></div>
   </div>
-
+  
   <!-- Help area wrapper (masked initially) -->
   <div class="help-wrapper">
     <span class="help-text-area email">YOUR EMA1L</span>
-    <span class="help-text-area sendlink">SEND L1nK</span>
+    <span class="help-text-area sendlink">SEnD L1nK</span>
     <div class="help-line"></div>
   </div>
-
+  
   <script>
     let inactivityTimer;
     let fadeCompleted = false;
     let initialClickCompleted = false;
     let lastMouseEvent = null;
-    let inputInFocus = false; 
-
+    let inputInFocus = false;
+    
     function hideLoginElements() {
       document.querySelectorAll(
         '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
@@ -103,7 +104,7 @@
         el.classList.remove('visible');
       });
     }
-
+    
     function showLoginElements() {
       document.querySelectorAll('.username, .password, .login-line, .login-line-second')
         .forEach(el => {
@@ -114,7 +115,7 @@
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
     }
-
+    
     function resetInactivityTimer() {
       if (fadeCompleted) {
         clearTimeout(inactivityTimer);
@@ -122,7 +123,7 @@
         inactivityTimer = setTimeout(hideLoginElements, 20000);
       }
     }
-
+    
     function hideOpenHelp() {
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
@@ -131,49 +132,35 @@
       helpText.classList.remove('visible');
       helpText.classList.add('hidden');
     }
-
+    
     function showOpenHelp() {
       if (lastMouseEvent) {
         checkRegionAndShowOpenHelp(lastMouseEvent);
       }
     }
-
+    
     function checkRegionAndShowOpenHelp(event) {
       if (!fadeCompleted || inputInFocus) return;
       const openText = document.querySelector('.open-text');
       const helpText = document.querySelector('.help-text');
-      if (document.querySelector('.username').classList.contains('hidden')) {
-        return;
-      }
-      const boundingTop = 28.5;
-      const boundingBottom = 84;
-      const boundingLeft = 6.38;
-      const boundingRight = 29; 
+      if (document.querySelector('.username').classList.contains('hidden')) return;
+      const boundingTop = 28.5, boundingBottom = 84, boundingLeft = 6.38, boundingRight = 29;
       const { innerWidth, innerHeight } = window;
       const { clientX, clientY } = event;
       const topPx = (boundingTop / 100) * innerHeight;
       const bottomPx = (boundingBottom / 100) * innerHeight;
       const leftPx = (boundingLeft / 100) * innerWidth;
       const rightPx = (boundingRight / 100) * innerWidth;
-      const isInRegion = (
-        clientY >= topPx &&
-        clientY <= bottomPx &&
-        clientX >= leftPx &&
-        clientX <= rightPx
-      );
+      const isInRegion = (clientY >= topPx && clientY <= bottomPx && clientX >= leftPx && clientX <= rightPx);
       if (isInRegion) {
-        openText.classList.remove('hidden');
-        openText.classList.add('visible');
-        helpText.classList.remove('hidden');
-        helpText.classList.add('visible');
+        openText.classList.remove('hidden'); openText.classList.add('visible');
+        helpText.classList.remove('hidden'); helpText.classList.add('visible');
       } else {
-        openText.classList.remove('visible');
-        openText.classList.add('hidden');
-        helpText.classList.remove('visible');
-        helpText.classList.add('hidden');
+        openText.classList.remove('visible'); openText.classList.add('hidden');
+        helpText.classList.remove('visible'); helpText.classList.add('hidden');
       }
     }
-
+    
     document.addEventListener('fullscreenchange', () => {
       if (!document.fullscreenElement) {
         document.body.classList.remove('fullscreen');
@@ -181,7 +168,7 @@
         document.body.classList.add('fullscreen');
       }
     });
-
+    
     document.addEventListener('click', event => {
       const edgeThreshold = 10;
       const { clientX, clientY } = event;
@@ -199,9 +186,7 @@
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen();
         }
-        setTimeout(() => {
-          document.body.classList.add('fade-in-trigger');
-        }, 1000);
+        setTimeout(() => { document.body.classList.add('fade-in-trigger'); }, 1000);
         setTimeout(() => {
           fadeCompleted = true;
           inactivityTimer = setTimeout(hideLoginElements, 20000);
@@ -209,72 +194,56 @@
         initialClickCompleted = true;
       }
     });
-
+    
     document.addEventListener('mousemove', event => {
       lastMouseEvent = event;
       resetInactivityTimer();
       checkRegionAndShowOpenHelp(event);
     });
-
-    // For username and password editing
-    document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
+    
+    // Unified editing handler for all fields.
+    function addClickHandler(element) {
       element.addEventListener('click', function () {
-        if (
-          fadeCompleted &&
-          (this.classList.contains('username') || this.classList.contains('password'))
-        ) {
+        if (fadeCompleted && (this.classList.contains('username') ||
+            this.classList.contains('password') ||
+            this.classList.contains('account-text') ||
+            this.classList.contains('help-text-area'))) {
           const parentRect = this.getBoundingClientRect();
           const input = document.createElement('input');
-          input.type = this.classList.contains('password') ? 'password' : 'text';
-          input.maxLength = 10;
-          input.className = 'typing-input';
-          input.style.top = `${parentRect.top + window.scrollY}px`;
-          input.style.left = `${parentRect.left + window.scrollX}px`;
-          input.style.width = `calc(${parentRect.width}px + 4vw)`;
-          input.style.height = `${parentRect.height}px`;
-          input.addEventListener('focus', function () {
-            inputInFocus = true;
-            hideOpenHelp();
-          });
-          input.addEventListener('blur', function () {
-            inputInFocus = false;
-            const span = document.createElement('span');
-            span.className = element.className;
-            span.innerText = input.value.trim() || element.innerText;
-            input.replaceWith(span);
-            showOpenHelp();
-            addClickHandler(span);
-          });
-          this.replaceWith(input);
-          input.focus();
-        }
-      });
-    });
-
-    // For account creation editing
-    document.querySelectorAll('.account-text').forEach(function addAccountClickHandler(element) {
-      element.addEventListener('click', function () {
-        if (fadeCompleted) {
-          const parentRect = this.getBoundingClientRect();
-          const input = document.createElement('input');
-          
-          // Set input type based on the field (password fields if necessary)
-          if (this.classList.contains('account-sign-password') || this.classList.contains('account-repeat-password')) {
+          if (this.classList.contains('password') ||
+              this.classList.contains('account-sign-password') ||
+              this.classList.contains('account-repeat-password')) {
             input.type = 'password';
           } else {
             input.type = 'text';
           }
-          
-          input.maxLength = 10;  // Adjust if needed
+          input.maxLength = 10;
           input.className = 'typing-input';
-          input.style.top = `${parentRect.top + window.scrollY}px`;
-          input.style.left = `${parentRect.left + window.scrollX}px`;
+          input.style.top = (parentRect.top + window.scrollY) + "px";
+          input.style.left = (parentRect.left + window.scrollX) + "px";
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
-          input.style.height = `${parentRect.height}px`;
-          
+          input.style.height = parentRect.height + "px";
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();
+            this.style.textAlign = "left";
+            // If the input is empty, insert a non-breaking space then clear it to force the caret left.
+            if (this.value.trim() === "") {
+              this.value = "\u00A0";
+              setTimeout(() => {
+                this.setSelectionRange(0, 0);
+                if (this.value === "\u00A0") this.value = "";
+              }, 10);
+            }
+            else {
+              this.style.letterSpacing = "0.28vw";
+            }
+          });
+          input.addEventListener('keydown', function () {
+            // Remove non-breaking space if present on keydown.
+            if (this.value.indexOf("\u00A0") !== -1) {
+              this.value = this.value.replace("\u00A0", "");
+            }
           });
           input.addEventListener('blur', function () {
             inputInFocus = false;
@@ -282,34 +251,37 @@
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
+            addClickHandler(span);
             showOpenHelp();
-            addAccountClickHandler(span);
           });
-          
           this.replaceWith(input);
           input.focus();
+          input.setSelectionRange(0, 0);
         }
       });
-    });
-
-    // Click event for OPEn: slide login area and account creation components.
+    }
+    
+    // Attach unified editing handler to login texts, account texts, and help texts (excluding sendlink)
+    document.querySelectorAll('.login-text').forEach(addClickHandler);
+    document.querySelectorAll('.account-text').forEach(addClickHandler);
+    document.querySelectorAll('.help-text-area:not(.sendlink)').forEach(addClickHandler);
+    
+    // OPEn button: slide login area and reveal account creation area.
     document.querySelector('.open-text').addEventListener('click', function() {
-      document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
+      document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
         el.classList.add('slide-left');
       });
-      // Slide the account creation wrapper into view.
       document.querySelector('.account-wrapper').classList.add('active');
     });
-
-    // Click event for HELP: slide login area and help area components.
+    
+    // HELP button: slide login area and reveal help area.
     document.querySelector('.help-text').addEventListener('click', function() {
-      document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
+      document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
         el.classList.add('slide-left');
       });
-      // Slide the help area into view.
       document.querySelector('.help-wrapper').classList.add('active');
     });
-
+    
     // Reverse animation on click in designated region (0–6.37vw, 28.5vh–84vh)
     document.addEventListener('click', function(event) {
       if (!document.fullscreenElement) return;
@@ -323,22 +295,21 @@
         const accountActive = document.querySelector('.account-wrapper').classList.contains('active');
         const helpActive = document.querySelector('.help-wrapper').classList.contains('active');
         if (accountActive || helpActive) {
-          // Add reverse-slide animation and then remove slide-left after animation ends.
-          document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
+          document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(el => {
             el.classList.add('reverse-slide');
             el.addEventListener('animationend', function() {
               el.classList.remove('reverse-slide');
               el.classList.remove('slide-left');
             }, {once: true});
           });
-          // Reverse the account creation and help areas.
           document.querySelector('.account-wrapper').classList.remove('active');
           document.querySelector('.help-wrapper').classList.remove('active');
         }
       }
     });
+    // End of Global Script
   </script>
-
+  
   <!-- Layers to mask the sliding elements -->
   <div class="layer-one"></div>
   <div class="layer-two"></div>

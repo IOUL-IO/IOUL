@@ -24,9 +24,11 @@ body.non-fullscreen {
   min-width: 100vw;
   overflow: hidden;
 }
+
 body.non-fullscreen .username {
   top: 35.17vh;
 }
+
 body.non-fullscreen .password {
   top: 43.17vh;
 }
@@ -34,6 +36,7 @@ body.non-fullscreen .password {
 body.fullscreen .username {
   top: 35.17vh;
 }
+
 body.fullscreen .password {
   top: 43.17vh;
 }
@@ -47,23 +50,23 @@ body.fade-in-trigger {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
-/* After fade-in-trigger, lines/time appear with delay */
+
 body.fade-in-trigger .line:not(.login-line):not(.login-line-second),
 body.fade-in-trigger .time-text {
   opacity: 1;
   transition-delay: 1s;
 }
 
-/* Username, password, lines, etc. start hidden; fade in with .visible */
 .login-line,
 .login-line-second,
 .login-text {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
+  /* Explicit initial transform (defined here in external CSS) */
   transform: translateX(0) translateZ(0);
 }
 
-/* Animate transform changes (slide-left, reverse-slide) */
+/* Transition for transform so slide animations occur */
 .login-text,
 .login-line,
 .login-line-second {
@@ -79,6 +82,7 @@ body.fade-in-trigger .time-text {
     transform: translateX(0) translateZ(0);
   }
 }
+
 .reverse-slide {
   animation: reverseSlide 0.5s forwards;
 }
@@ -87,6 +91,7 @@ body.fade-in-trigger .time-text {
   opacity: 1 !important;
   transition: opacity 0.5s ease-in-out;
 }
+
 .hidden {
   opacity: 0 !important;
   transition: opacity 0.5s ease-in-out;
@@ -97,21 +102,25 @@ body.fade-in-trigger .time-text {
   height: 1px;
   background-color: #d1d1d1;
 }
+
 .original {
   top: 12.5vh;
   left: 6.38vw;
   width: 22.48vw;
 }
+
 .second {
   top: 28.5vh;
   left: 6.38vw;
   width: 22.48vw;
 }
+
 .third {
   top: 84vh;
   left: 6.38vw;
   width: 22.48vw;
 }
+
 .fourth {
   top: 12.5vh;
   left: 36vw;
@@ -133,16 +142,19 @@ body.fade-in-trigger .time-text {
   );
   background-size: 10px 1px;
 }
+
 .second-dashed {
   top: 47vh;
   left: 36vw;
   width: 52.4vw;
 }
+
 .third-dashed {
   top: 65.5vh;
   left: 36vw;
   width: 52.4vw;
 }
+
 .fourth-dashed {
   top: 84vh;
   left: 36vw;
@@ -157,24 +169,28 @@ body.fade-in-trigger .time-text {
   letter-spacing: 0.2vw;
   text-shadow: 0.001rem 0 0 #a1a1a1, -0.001rem 0 0 #a1a1a1;
 }
+
 .time-text {
   top: 28.5vh;
   left: 89.81vw;
 }
+
 .second-time-text {
   top: 47.04vh;
   left: 89.91vw;
 }
+
 .third-time-text {
   top: 65.51vh;
   left: 89.87vw;
 }
+
 .fourth-time-text {
   top: 83.86vh;
   left: 90.1vw;
 }
 
-/* username & password (login) */
+/* Existing login text */
 .login-text {
   position: absolute;
   font-family: 'Distill Expanded', sans-serif;
@@ -185,9 +201,11 @@ body.fade-in-trigger .time-text {
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
   transform: translateX(0) translateZ(0);
 }
+
 .username {
   top: calc(var(--username-line-top) - var(--line-gap));
 }
+
 .password {
   top: calc(var(--password-line-top) - var(--line-gap));
 }
@@ -200,6 +218,7 @@ body.fade-in-trigger .time-text {
   height: 1px;
   background-color: rgba(230, 230, 230, 0.28);
 }
+
 .login-line-second {
   position: absolute;
   top: var(--password-line-top);
@@ -209,7 +228,6 @@ body.fade-in-trigger .time-text {
   background-color: rgba(230, 230, 230, 0.28);
 }
 
-/* OPEN + HELP in the login screen fade in only on hover */
 .open-text,
 .help-text {
   position: absolute;
@@ -218,38 +236,48 @@ body.fade-in-trigger .time-text {
   letter-spacing: 0.28vw;
   font-size: 0.47rem;
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-  /* We set them to be 0 opacity by default, 
-     then rely on .visible + :hover to fade them in */
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
 
-/* Same top/left in both fullscreen and non-fullscreen 
-   but remain at 0 until hovered */
-.open-text {
+body.non-fullscreen .open-text {
   top: 35.17vh;
   left: 25.57vw;
 }
-.help-text {
+
+body.non-fullscreen .help-text {
   top: 43.17vh;
   left: 25.57vw;
 }
 
-/* Only on hover do they become visible 
-   (and they must have .visible as well to not be hidden by JS inactivity) */
-.open-text.visible:hover,
-.help-text.visible:hover {
-  opacity: 0.8 !important;
+body.fullscreen .open-text {
+  top: 35.17vh;
+  left: 25.57vw;
 }
 
-/* Slide-left animation for opening the login text group */
+body.fullscreen .help-text {
+  top: 43.17vh;
+  left: 25.57vw;
+}
+
+.open-text.visible,
+.help-text.visible {
+  opacity: 0.7 !important;
+}
+
+.open-text.visible:hover,
+.help-text.visible:hover {
+  opacity: 1 !important;
+}
+
+/* Slide-left class for opening login area */
 .slide-left {
   transform: translateX(-30vw) translateZ(0);
   transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
   z-index: 0;
 }
 
-/* White layer on left to mask sliding login text, but no pointer events so we can click behind it. */
+/* Layer one: white rectangle covering left 0–6.37vw */
 .layer-one {
   position: fixed;
   top: 0;
@@ -258,9 +286,9 @@ body.fade-in-trigger .time-text {
   height: 100vh;
   background-color: #ffffff;
   z-index: 100;
-  pointer-events: none;
 }
-/* White layer in the middle, also pointer-events: none so we can click text behind it. */
+
+/* Layer two: white rectangle covering left 28.87vw–36vw */
 .layer-two {
   position: fixed;
   top: 0;
@@ -269,7 +297,6 @@ body.fade-in-trigger .time-text {
   height: 100vh;
   background-color: #ffffff;
   z-index: 100;
-  pointer-events: none;
 }
 
 /* Account creation wrapper with masking */
@@ -283,10 +310,12 @@ body.fade-in-trigger .time-text {
   transition: left 0.5s ease-in-out, clip-path 0.5s ease-in-out;
   z-index: 5;
 }
+
 .account-wrapper.active {
   left: 6.41vw;
   clip-path: inset(0 0 0 0);
 }
+
 /* Account creation texts */
 .account-text {
   position: absolute;
@@ -299,19 +328,23 @@ body.fade-in-trigger .time-text {
   padding: 0.1rem 0;
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
+
 .account-text.account-email {
   top: 35.2vh;
 }
+
 .account-text.account-username {
   top: 43.3vh;
 }
+
 .account-text.account-sign-password {
   top: 51.4vh;
 }
+
 .account-text.account-repeat-password {
   top: 59.5vh;
 }
-/* Account creation lines */
+
 .account-line {
   position: absolute;
   left: 0;
@@ -319,15 +352,19 @@ body.fade-in-trigger .time-text {
   height: 1px;
   background-color: rgba(230, 230, 230, 0.28);
 }
+
 .account-line.account-line1 {
   top: 38.9vh;
 }
+
 .account-line.account-line2 {
   top: 47vh;
 }
+
 .account-line.account-line3 {
   top: 55.1vh;
 }
+
 .account-line.account-line4 {
   top: 63.2vh;
 }
@@ -343,11 +380,12 @@ body.fade-in-trigger .time-text {
   transition: left 0.5s ease-in-out, clip-path 0.5s ease-in-out;
   z-index: 5;
 }
+
 .help-wrapper.active {
   left: 6.41vw;
   clip-path: inset(0 0 0 0);
 }
-/* Help texts */
+
 .help-text-area {
   position: absolute;
   font-family: 'Distill Expanded', sans-serif;
@@ -357,18 +395,17 @@ body.fade-in-trigger .time-text {
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
   white-space: nowrap;
 }
+
 .help-text-area.email {
   left: 0;
   top: 35.17vh;
 }
-/* You wanted 'SEND L1nK' near center? Or left? 
-   If you'd like it at 6.4vw, just do: left: 6.4vw; 
-   For now, let's keep as originally set at left: 15.82vw, top: 35.17vh. */
+
 .help-text-area.sendlink {
   left: 15.82vw;
   top: 35.17vh;
 }
-/* Help line */
+
 .help-line {
   position: absolute;
   top: 38.9vh;

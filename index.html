@@ -22,7 +22,6 @@
       padding: 0.1rem 0;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
-    
     input.typing-input {
       font-family: 'Distill Expanded', sans-serif;
       font-size: 0.46rem;
@@ -55,21 +54,21 @@
   <div class="line dashed second-dashed"></div>
   <div class="line dashed third-dashed"></div>
   <div class="line dashed fourth-dashed"></div>
-  
+
   <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
   <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
-  
+
   <!-- Login texts -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
   <span class="login-text open-text hidden">OPEn</span>
   <span class="login-text help-text hidden">HELP</span>
-  
+
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
-  
+
   <!-- Account creation wrapper (masked initially) -->
   <div class="account-wrapper">
     <span class="account-text account-email">E-MA1L ADDRESS</span>
@@ -81,14 +80,14 @@
     <div class="account-line account-line3"></div>
     <div class="account-line account-line4"></div>
   </div>
-  
+
   <!-- Help area wrapper (masked initially) -->
   <div class="help-wrapper">
     <span class="help-text-area email">YOUR EMA1L</span>
     <span class="help-text-area sendlink">SEnD L1nK</span>
     <div class="help-line"></div>
   </div>
-  
+
   <script>
     let inactivityTimer;
     let fadeCompleted = false;
@@ -97,12 +96,11 @@
     let inputInFocus = false;
     
     function hideLoginElements() {
-      document.querySelectorAll(
-        '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
-      ).forEach(el => {
-        el.classList.add('hidden');
-        el.classList.remove('visible');
-      });
+      document.querySelectorAll('.username, .password, .login-line, .login-line-second, .open-text, .help-text')
+        .forEach(el => {
+          el.classList.add('hidden');
+          el.classList.remove('visible');
+        });
     }
     
     function showLoginElements() {
@@ -227,22 +225,16 @@
             inputInFocus = true;
             hideOpenHelp();
             this.style.textAlign = "left";
-            // If the input is empty, insert a non-breaking space then clear it to force the caret left.
+            // If the field is empty, force a dummy character and then remove it
             if (this.value.trim() === "") {
-              this.value = "\u00A0";
+              let temp = this.value;
+              this.value = temp + "a";
+              // Force caret at beginning and then remove the dummy char
+              this.setSelectionRange(0, 0);
               setTimeout(() => {
+                this.value = temp;
                 this.setSelectionRange(0, 0);
-                if (this.value === "\u00A0") this.value = "";
               }, 10);
-            }
-            else {
-              this.style.letterSpacing = "0.28vw";
-            }
-          });
-          input.addEventListener('keydown', function () {
-            // Remove non-breaking space if present on keydown.
-            if (this.value.indexOf("\u00A0") !== -1) {
-              this.value = this.value.replace("\u00A0", "");
             }
           });
           input.addEventListener('blur', function () {
@@ -261,9 +253,11 @@
       });
     }
     
-    // Attach unified editing handler to login texts, account texts, and help texts (excluding sendlink)
+    // Attach unified editing handler to login texts
     document.querySelectorAll('.login-text').forEach(addClickHandler);
+    // Attach unified editing handler to account creation texts
     document.querySelectorAll('.account-text').forEach(addClickHandler);
+    // Attach unified editing handler to help area texts (excluding sendlink)
     document.querySelectorAll('.help-text-area:not(.sendlink)').forEach(addClickHandler);
     
     // OPEn button: slide login area and reveal account creation area.
@@ -285,12 +279,10 @@
     // Reverse animation on click in designated region (0–6.37vw, 28.5vh–84vh)
     document.addEventListener('click', function(event) {
       if (!document.fullscreenElement) return;
-      
       const x = event.clientX, y = event.clientY;
       const regionRight = window.innerWidth * (6.37 / 100);
       const regionTop = window.innerHeight * (28.5 / 100);
       const regionBottom = window.innerHeight * (84 / 100);
-      
       if (x >= 0 && x <= regionRight && y >= regionTop && y <= regionBottom) {
         const accountActive = document.querySelector('.account-wrapper').classList.contains('active');
         const helpActive = document.querySelector('.help-wrapper').classList.contains('active');

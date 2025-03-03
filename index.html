@@ -83,11 +83,6 @@
   <!-- Help area wrapper (masked initially) -->
   <div class="help-wrapper">
     <span class="help-text-area email">YOUR EMA1L</span>
-    <!-- 
-      This next line is the 'SEND L1nK' text 
-      which now also becomes an input on click 
-      (with caretaker placed where the text is).
-    -->
     <span class="help-text-area sendlink">SEND L1nK</span>
     <div class="help-line"></div>
   </div>
@@ -220,51 +215,38 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // CHANGED: Now we attach a click handler to *both* .login-text, .account-text, and .help-text-area
-    document.querySelectorAll('.login-text, .account-text, .help-text-area').forEach(function addClickHandler(element) {
+    // For username and password editing (login area)
+    document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
       element.addEventListener('click', function () {
-        if (!fadeCompleted) return;
-
-        // Skip if user clicked the "OPEn" or "HELP" in login area:
-        if (this.classList.contains('open-text') || this.classList.contains('help-text')) {
-          return;
+        if (
+          fadeCompleted &&
+          (this.classList.contains('username') || this.classList.contains('password'))
+        ) {
+          const parentRect = this.getBoundingClientRect();
+          const input = document.createElement('input');
+          input.type = this.classList.contains('password') ? 'password' : 'text';
+          input.maxLength = 10;
+          input.className = 'typing-input';
+          input.style.top = `${parentRect.top + window.scrollY}px`;
+          input.style.left = `${parentRect.left + window.scrollX}px`;
+          input.style.width = `calc(${parentRect.width}px + 4vw)`;
+          input.style.height = `${parentRect.height}px`;
+          input.addEventListener('focus', function () {
+            inputInFocus = true;
+            hideOpenHelp();
+          });
+          input.addEventListener('blur', function () {
+            inputInFocus = false;
+            const span = document.createElement('span');
+            span.className = element.className;
+            span.innerText = input.value.trim() || element.innerText;
+            input.replaceWith(span);
+            showOpenHelp();
+            addClickHandler(span);
+          });
+          this.replaceWith(input);
+          input.focus();
         }
-
-        // This block now also handles .account-text & .help-text-area (like "SEND L1nK") 
-        // so they become inputs in the same bounding rect as the text.
-
-        // If it's a password-type line, use password input
-        const isPasswordLike = this.classList.contains('password')
-                            || this.classList.contains('account-sign-password')
-                            || this.classList.contains('account-repeat-password');
-        const input = document.createElement('input');
-        input.type = isPasswordLike ? 'password' : 'text';
-        input.maxLength = 10;
-        input.className = 'typing-input';
-
-        // Position the input exactly where the original text was
-        const parentRect = this.getBoundingClientRect();
-        input.style.top = `${parentRect.top + window.scrollY}px`;
-        input.style.left = `${parentRect.left + window.scrollX}px`;
-        input.style.width = `calc(${parentRect.width}px + 4vw)`;
-        input.style.height = `${parentRect.height}px`;
-
-        input.addEventListener('focus', function () {
-          inputInFocus = true;
-          hideOpenHelp();
-        });
-        input.addEventListener('blur', () => {
-          inputInFocus = false;
-          const span = document.createElement('span');
-          span.className = element.className;
-          span.innerText = input.value.trim() || element.innerText;
-          input.replaceWith(span);
-          showOpenHelp();
-          addClickHandler(span); // reattach click
-        });
-
-        this.replaceWith(input);
-        input.focus();
       });
     });
 
@@ -287,9 +269,9 @@
     });
 
     // Reverse animation on click in designated region (0–6.37vw, 28.5vh–84vh)
-    // (Works both fullscreen and non-fullscreen, as it originally did in your code)
     document.addEventListener('click', function(event) {
-      // Notice we did NOT "return if not fullscreen" so it also works outside fullscreen
+      if (!document.fullscreenElement) return;
+      
       const x = event.clientX, y = event.clientY;
       const regionRight = window.innerWidth * (6.37 / 100);
       const regionTop = window.innerHeight * (28.5 / 100);
@@ -299,6 +281,7 @@
         const accountActive = document.querySelector('.account-wrapper').classList.contains('active');
         const helpActive = document.querySelector('.help-wrapper').classList.contains('active');
         if (accountActive || helpActive) {
+          // Add reverse-slide animation and then remove slide-left after animation ends.
           document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
             el.classList.add('reverse-slide');
             el.addEventListener('animationend', function() {
@@ -306,10 +289,61 @@
               el.classList.remove('slide-left');
             }, {once: true});
           });
+          // Reverse the account creation and help areas.
           document.querySelector('.account-wrapper').classList.remove('active');
           document.querySelector('.help-wrapper').classList.remove('active');
         }
       }
+    });
+
+    /*
+      NEW CODE BELOW: for making account creation text editable 
+      once the account area is active (i.e., after clicking OPEn).
+    */
+    document.querySelectorAll('.account-text').forEach(function addAccountClickHandler(element) {
+      element.addEventListener('click', function() {
+        // Only switch to input if the account creation wrapper is currently active (slid in)
+        if (document.querySelector('.account-wrapper').classList.contains('active')) {
+          const parentRect = element.getBoundingClientRect();
+          const input = document.createElement('input');
+
+          // Decide if it's text or password
+          if (
+            element.classList.contains('account-sign-password') ||
+            element.classList.contains('account-repeat-password')
+          ) {
+            input.type = 'password';
+          } else {
+            input.type = 'text';
+          }
+
+          input.maxLength = 20; // Adjust if needed
+          input.className = 'typing-input';
+          input.style.top = `${parentRect.top + window.scrollY}px`;
+          input.style.left = `${parentRect.left + window.scrollX}px`;
+          input.style.width = `calc(${parentRect.width}px + 4vw)`;
+          input.style.height = `${parentRect.height}px`;
+
+          input.addEventListener('focus', function() {
+            inputInFocus = true;
+            hideOpenHelp();
+          });
+
+          input.addEventListener('blur', function() {
+            inputInFocus = false;
+            const span = document.createElement('span');
+            span.className = element.className;
+            span.innerText = input.value.trim() || element.innerText;
+            input.replaceWith(span);
+            // Reattach the same handler so newly inserted span remains clickable
+            addAccountClickHandler(span);
+            showOpenHelp();
+          });
+
+          element.replaceWith(input);
+          input.focus();
+        }
+      });
     });
   </script>
 

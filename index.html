@@ -92,7 +92,6 @@
   </div>
 
   <script>
-    // Global variables
     let inactivityTimer;
     let fadeCompleted = false;
     let initialClickCompleted = false;
@@ -192,14 +191,14 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // Adjust letter-spacing and text-indent based on input content
+    // Adjust letter-spacing and text-indent based on content
     function adjustLetterSpacing(input) {
       if (input.value.trim() === "") {
         input.style.setProperty("letter-spacing", "0px", "important");
-        input.style.setProperty("text-indent", "-0.3vw", "important");
+        input.style.setProperty("text-indent", "-10px", "important");
       } else {
         input.style.setProperty("letter-spacing", "0.34vw", "important");
-        input.style.setProperty("text-indent", "0", "important");
+        input.style.setProperty("text-indent", "0px", "important");
       }
     }
 
@@ -220,9 +219,9 @@
           input.style.left = `${parentRect.left + window.scrollX}px`;
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
-          // Force letter-spacing to 0 and text-indent negative initially
+          // Force letter-spacing to 0 and text-indent to -10px initially
           input.style.setProperty("letter-spacing", "0px", "important");
-          input.style.setProperty("text-indent", "-0.3vw", "important");
+          input.style.setProperty("text-indent", "-10px", "important");
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();
@@ -240,7 +239,6 @@
           });
           this.replaceWith(input);
           input.focus();
-          // Prime the input if empty
           if (input.value.trim() === "") {
             input.value = " ";
             setTimeout(() => {
@@ -268,7 +266,7 @@
           input.style.width = `calc(${parentRect.width}px + 4vw)`;
           input.style.height = `${parentRect.height}px`;
           input.style.setProperty("letter-spacing", "0px", "important");
-          input.style.setProperty("text-indent", "-0.3vw", "important");
+          input.style.setProperty("text-indent", "-10px", "important");
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();

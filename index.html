@@ -22,6 +22,7 @@
       padding: 0.1rem 0;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
+    
     input.typing-input {
       font-family: 'Distill Expanded', sans-serif;
       font-size: 0.46rem;
@@ -54,17 +55,21 @@
   <div class="line dashed second-dashed"></div>
   <div class="line dashed third-dashed"></div>
   <div class="line dashed fourth-dashed"></div>
+
   <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
   <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+
   <!-- Login texts -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
   <span class="login-text open-text hidden">OPEn</span>
   <span class="login-text help-text hidden">HELP</span>
+
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
+
   <!-- Account creation wrapper (masked initially) -->
   <div class="account-wrapper">
     <span class="account-text account-email">E-MA1L ADDRESS</span>
@@ -76,12 +81,14 @@
     <div class="account-line account-line3"></div>
     <div class="account-line account-line4"></div>
   </div>
+
   <!-- Help area wrapper (masked initially) -->
   <div class="help-wrapper">
     <span class="help-text-area email">YOUR EMA1L</span>
     <span class="help-text-area sendlink">SEnD L1nK</span>
     <div class="help-line"></div>
   </div>
+
   <script>
     let inactivityTimer;
     let fadeCompleted = false;
@@ -193,7 +200,10 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // Unified editing handler (same as the login editing handler)
+    // Unified editing handler (using the same code as for login texts)
+    // For account creation and help texts, we add a focus tweak:
+    // When the input is empty, we prime it with a zero-width space and then clear it,
+    // forcing letter-spacing to 0 and causing the caret to appear at the left.
     function addClickHandler(element) {
       element.addEventListener('click', function () {
         if (fadeCompleted && (this.classList.contains('username') ||
@@ -218,6 +228,18 @@
           input.addEventListener('focus', function () {
             inputInFocus = true;
             hideOpenHelp();
+            this.style.textAlign = "left";
+            // If the input is empty, prime it with a zero-width space then clear it
+            if (this.value.trim() === "") {
+              this.value = "\u200B";
+              setTimeout(() => {
+                if (this.value === "\u200B") this.value = "";
+                this.setSelectionRange(0, 0);
+              }, 10);
+            }
+            else {
+              this.style.letterSpacing = "0.28vw";
+            }
           });
           input.addEventListener('blur', function () {
             inputInFocus = false;
@@ -230,7 +252,7 @@
           });
           this.replaceWith(input);
           input.focus();
-          // The following line is intended to place the caret at the left.
+          input.offsetWidth;
           input.setSelectionRange(0, 0);
         }
       });

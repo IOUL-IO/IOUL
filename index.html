@@ -12,6 +12,7 @@
       position: absolute;
       left: 6.41vw;
       z-index: 10;
+      /* Not transforming here, transform is in external CSS */
       overflow: visible;
       font-family: 'Distill Expanded', sans-serif;
       color: #111111;
@@ -20,7 +21,6 @@
       line-height: 1.2;
       padding: 0.1rem 0;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-      /* transform is handled in external styles.css */
     }
     
     input.typing-input {
@@ -35,10 +35,9 @@
       position: absolute;
       caret-color: #d1d1d1;
       padding: 0.1rem 0;
-      width: calc(22.48vw + 4vw);
-      height: auto;
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+      /* Width/height set dynamically in JS so it lines up with text */
     }
   </style>
 </head>
@@ -61,8 +60,14 @@
   <!-- Login texts -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
-  <span class="login-text open-text hidden">OPEn</span>
-  <span class="login-text help-text hidden">HELP</span>
+
+  <!-- 
+    OPEN + HELP are still .login-text but:
+    1) They do NOT become inputs (skipped in JS below).
+    2) They only show fully on hover (handled by CSS).
+  -->
+  <span class="login-text open-text">OPEn</span>
+  <span class="login-text help-text">HELP</span>
 
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
@@ -82,6 +87,10 @@
   <!-- Help area wrapper (masked initially) -->
   <div class="help-wrapper">
     <span class="help-text-area email">YOUR EMA1L</span>
+    <!-- 
+      SEND L1nK: skip from input conversion 
+      (since you said "SEND L1nK text in help area shouldn’t convert to input") 
+    -->
     <span class="help-text-area sendlink">SEND L1nK</span>
     <div class="help-line"></div>
   </div>
@@ -90,10 +99,10 @@
     let inactivityTimer;
     let fadeCompleted = false;
     let initialClickCompleted = false;
-    let lastMouseEvent = null;
     let inputInFocus = false;
 
     function hideLoginElements() {
+      // Hides username, password, plus open/help
       document.querySelectorAll(
         '.username, .password, .login-line, .login-line-second, .open-text, .help-text'
       ).forEach(el => {
@@ -103,14 +112,18 @@
     }
 
     function showLoginElements() {
+      // Show username/password lines
       document.querySelectorAll('.username, .password, .login-line, .login-line-second')
         .forEach(el => {
           el.classList.add('visible');
           el.classList.remove('hidden');
         });
-      if (!inputInFocus && lastMouseEvent) {
-        checkRegionAndShowOpenHelp(lastMouseEvent);
-      }
+      // Show "OPEn" + "HELP" in a 'visible' state, 
+      // but final opacity is now governed by CSS hover
+      document.querySelectorAll('.open-text, .help-text').forEach(el => {
+        el.classList.add('visible');
+        el.classList.remove('hidden');
+      });
     }
 
     function resetInactivityTimer() {
@@ -118,57 +131,6 @@
         clearTimeout(inactivityTimer);
         showLoginElements();
         inactivityTimer = setTimeout(hideLoginElements, 20000);
-      }
-    }
-
-    function hideOpenHelp() {
-      const openText = document.querySelector('.open-text');
-      const helpText = document.querySelector('.help-text');
-      openText.classList.remove('visible');
-      openText.classList.add('hidden');
-      helpText.classList.remove('visible');
-      helpText.classList.add('hidden');
-    }
-
-    function showOpenHelp() {
-      if (lastMouseEvent) {
-        checkRegionAndShowOpenHelp(lastMouseEvent);
-      }
-    }
-
-    function checkRegionAndShowOpenHelp(event) {
-      if (!fadeCompleted || inputInFocus) return;
-      const openText = document.querySelector('.open-text');
-      const helpText = document.querySelector('.help-text');
-      if (document.querySelector('.username').classList.contains('hidden')) {
-        return;
-      }
-      const boundingTop = 28.5;
-      const boundingBottom = 84;
-      const boundingLeft = 6.38;
-      const boundingRight = 29; 
-      const { innerWidth, innerHeight } = window;
-      const { clientX, clientY } = event;
-      const topPx = (boundingTop / 100) * innerHeight;
-      const bottomPx = (boundingBottom / 100) * innerHeight;
-      const leftPx = (boundingLeft / 100) * innerWidth;
-      const rightPx = (boundingRight / 100) * innerWidth;
-      const isInRegion = (
-        clientY >= topPx &&
-        clientY <= bottomPx &&
-        clientX >= leftPx &&
-        clientX <= rightPx
-      );
-      if (isInRegion) {
-        openText.classList.remove('hidden');
-        openText.classList.add('visible');
-        helpText.classList.remove('hidden');
-        helpText.classList.add('visible');
-      } else {
-        openText.classList.remove('visible');
-        openText.classList.add('hidden');
-        helpText.classList.remove('visible');
-        helpText.classList.add('hidden');
       }
     }
 
@@ -189,10 +151,13 @@
         clientX >= innerWidth - edgeThreshold ||
         clientY <= edgeThreshold ||
         clientY >= innerHeight - edgeThreshold;
+
+      // Enter fullscreen if user clicks near the edge
       if (isNearEdge && !document.fullscreenElement) {
         document.documentElement.requestFullscreen();
         return;
       }
+      // First click sets up fade in
       if (!initialClickCompleted) {
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen();
@@ -208,96 +173,124 @@
       }
     });
 
-    document.addEventListener('mousemove', event => {
-      lastMouseEvent = event;
+    document.addEventListener('mousemove', () => {
+      // When user moves mouse, reset inactivity
       resetInactivityTimer();
-      checkRegionAndShowOpenHelp(event);
     });
 
-    // Make text clickable to become an input (login area, account area, help area)
+    // Make text in login/account/help areas clickable to become input,
+    // BUT skip open-text, help-text, or sendlink as requested.
     function addClickHandler(element) {
       element.addEventListener('click', function () {
-        if (fadeCompleted) {
-          // Decide if it becomes a password or text input
-          let inputType = 'text';
-          if (
-            this.classList.contains('password') ||
-            this.classList.contains('account-sign-password') ||
-            this.classList.contains('account-repeat-password')
-          ) {
-            inputType = 'password';
-          }
-          const parentRect = this.getBoundingClientRect();
-          const input = document.createElement('input');
-          input.type = inputType;
-          input.maxLength = 10;
-          input.className = 'typing-input';
-          input.style.top = `${parentRect.top + window.scrollY}px`;
-          input.style.left = `${parentRect.left + window.scrollX}px`;
-          input.style.width = `calc(${parentRect.width}px + 4vw)`;
-          input.style.height = `${parentRect.height}px`;
-          input.addEventListener('focus', function () {
-            inputInFocus = true;
-            hideOpenHelp();
-          });
-          input.addEventListener('blur', () => {
-            inputInFocus = false;
-            const span = document.createElement('span');
-            span.className = element.className;
-            span.innerText = input.value.trim() || element.innerText;
-            input.replaceWith(span);
-            showOpenHelp();
-            // reattach click-to-input
-            addClickHandler(span);
-          });
-          this.replaceWith(input);
-          input.focus();
+        if (!fadeCompleted) return;
+
+        // 1) Skip if it has .open-text or .help-text (the login ones)
+        // 2) Skip if it has .sendlink
+        if (
+          this.classList.contains('open-text') ||
+          this.classList.contains('help-text') ||
+          this.classList.contains('sendlink')
+        ) {
+          return;
         }
+
+        // Decide if it becomes a password or text
+        let inputType = 'text';
+        if (
+          this.classList.contains('password') ||
+          this.classList.contains('account-sign-password') ||
+          this.classList.contains('account-repeat-password')
+        ) {
+          inputType = 'password';
+        }
+
+        // Create input
+        const input = document.createElement('input');
+        input.type = inputType;
+        input.maxLength = 10;
+        input.className = 'typing-input';
+
+        // If it's a .account-text or .help-text-area, position at 6.4vw from left
+        if (
+          this.classList.contains('account-text') ||
+          this.classList.contains('help-text-area')
+        ) {
+          const topFromCSS = window.getComputedStyle(this).top; // read the .top of the span
+          const heightFromCSS = window.getComputedStyle(this).height;
+
+          // Use the same 'top' but left = 6.4vw
+          input.style.top = topFromCSS;
+          input.style.left = '6.4vw';
+          input.style.width = 'calc(22.48vw + 4vw)';
+          input.style.height = heightFromCSS;
+        } 
+        // Otherwise (login username/password), place it exactly where the text is
+        else {
+          const rect = this.getBoundingClientRect();
+          input.style.top = `${rect.top + window.scrollY}px`;
+          input.style.left = `${rect.left + window.scrollX}px`;
+          input.style.width = `calc(${rect.width}px + 4vw)`;
+          input.style.height = `${rect.height}px`;
+        }
+
+        input.addEventListener('focus', () => {
+          inputInFocus = true;
+        });
+        input.addEventListener('blur', () => {
+          inputInFocus = false;
+          // Once user leaves input, revert to <span>
+          const span = document.createElement('span');
+          span.className = element.className;
+          span.innerText = input.value.trim() || element.innerText;
+          input.replaceWith(span);
+          addClickHandler(span); // reattach
+        });
+
+        // Replace the clicked text with input
+        this.replaceWith(input);
+        input.focus();
       });
     }
 
-    // Attach to all login, account, and help area texts
+    // Attach to all login, account, and help area text
     document.querySelectorAll('.login-text, .account-text, .help-text-area').forEach(addClickHandler);
 
-    // Click event for OPEn: slide login area and account creation components.
+    // Click OPEn: slide login text and lines left, show account wrapper
     document.querySelector('.open-text').addEventListener('click', function() {
-      document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
-        el.classList.add('slide-left');
-      });
-      // Slide the account creation wrapper into view.
+      document.querySelectorAll('.login-text, .login-line, .login-line-second')
+        .forEach(el => el.classList.add('slide-left'));
       document.querySelector('.account-wrapper').classList.add('active');
     });
 
-    // Click event for HELP: slide login area and help area components.
+    // Click HELP: slide login text and lines left, show help wrapper
     document.querySelector('.help-text').addEventListener('click', function() {
-      document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
-        el.classList.add('slide-left');
-      });
-      // Slide the help area into view.
+      document.querySelectorAll('.login-text, .login-line, .login-line-second')
+        .forEach(el => el.classList.add('slide-left'));
       document.querySelector('.help-wrapper').classList.add('active');
     });
 
-    // Reverse animation on click in designated region (0–6.37vw, 28.5vh–84vh) in BOTH fullscreen and non-fullscreen
-    document.addEventListener('click', function(event) {
+    // Reverse animation on click in left strip (0–6.37vw, 28.5vh–84vh), 
+    // whether fullscreen or not.
+    document.addEventListener('click', (event) => {
       const x = event.clientX, y = event.clientY;
       const regionRight = window.innerWidth * (6.37 / 100);
       const regionTop = window.innerHeight * (28.5 / 100);
       const regionBottom = window.innerHeight * (84 / 100);
-      
-      // If within the left strip, reverse the slide if account/help is active
+
       if (x >= 0 && x <= regionRight && y >= regionTop && y <= regionBottom) {
         const accountActive = document.querySelector('.account-wrapper').classList.contains('active');
         const helpActive = document.querySelector('.help-wrapper').classList.contains('active');
         if (accountActive || helpActive) {
-          // Add reverse-slide animation and then remove slide-left after animation ends.
-          document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
-            el.classList.add('reverse-slide');
-            el.addEventListener('animationend', function() {
-              el.classList.remove('reverse-slide');
-              el.classList.remove('slide-left');
-            }, {once: true});
-          });
-          // Reverse the account creation and help areas.
+          // Reverse slide
+          document.querySelectorAll('.login-text, .login-line, .login-line-second')
+            .forEach(el => {
+              el.classList.add('reverse-slide');
+              el.addEventListener('animationend', () => {
+                el.classList.remove('reverse-slide');
+                el.classList.remove('slide-left');
+              }, { once: true });
+            });
+          // Hide account/help wrappers
           document.querySelector('.account-wrapper').classList.remove('active');
           document.querySelector('.help-wrapper').classList.remove('active');
         }
@@ -305,8 +298,7 @@
     });
   </script>
 
-  <!-- Layers to mask the sliding elements -->
-  <!-- Added pointer-events: none in styles.css so that clicks go through -->
+  <!-- Layers to mask the sliding elements (pointer-events: none in CSS) -->
   <div class="layer-one"></div>
   <div class="layer-two"></div>
 </body>

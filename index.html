@@ -12,8 +12,6 @@
       position: absolute;
       left: 6.41vw;
       z-index: 10;
-      /* Removed the transform property so that the external stylesheet's
-         transform (translateX(0) translateZ(0)) takes effect */
       overflow: visible;
       font-family: 'Distill Expanded', sans-serif;
       color: #111111;
@@ -22,6 +20,7 @@
       line-height: 1.2;
       padding: 0.1rem 0;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+      /* transform is handled in external styles.css */
     }
     
     input.typing-input {
@@ -92,7 +91,7 @@
     let fadeCompleted = false;
     let initialClickCompleted = false;
     let lastMouseEvent = null;
-    let inputInFocus = false; 
+    let inputInFocus = false;
 
     function hideLoginElements() {
       document.querySelectorAll(
@@ -218,7 +217,6 @@
     // Make text clickable to become an input (login area, account area, help area)
     function addClickHandler(element) {
       element.addEventListener('click', function () {
-        // Only do this once fadeCompleted is true
         if (fadeCompleted) {
           // Decide if it becomes a password or text input
           let inputType = 'text';
@@ -279,13 +277,14 @@
       document.querySelector('.help-wrapper').classList.add('active');
     });
 
-    // Reverse animation on click in designated region (0–6.37vw, 28.5vh–84vh), now works in both fullscreen and non-fullscreen
+    // Reverse animation on click in designated region (0–6.37vw, 28.5vh–84vh) in BOTH fullscreen and non-fullscreen
     document.addEventListener('click', function(event) {
       const x = event.clientX, y = event.clientY;
       const regionRight = window.innerWidth * (6.37 / 100);
       const regionTop = window.innerHeight * (28.5 / 100);
       const regionBottom = window.innerHeight * (84 / 100);
       
+      // If within the left strip, reverse the slide if account/help is active
       if (x >= 0 && x <= regionRight && y >= regionTop && y <= regionBottom) {
         const accountActive = document.querySelector('.account-wrapper').classList.contains('active');
         const helpActive = document.querySelector('.help-wrapper').classList.contains('active');
@@ -307,6 +306,7 @@
   </script>
 
   <!-- Layers to mask the sliding elements -->
+  <!-- Added pointer-events: none in styles.css so that clicks go through -->
   <div class="layer-one"></div>
   <div class="layer-two"></div>
 </body>

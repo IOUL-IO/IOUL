@@ -62,6 +62,7 @@ body.fade-in-trigger .time-text {
 .login-text {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
+  /* Explicit initial transform (defined here in external CSS) */
   transform: translateX(0) translateZ(0);
 }
 
@@ -198,6 +199,7 @@ body.fade-in-trigger .time-text {
   font-size: 0.47rem;
   left: 6.41vw;
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+  /* Ensure our login texts start with the full transform */
   transform: translateX(0) translateZ(0);
 }
 
@@ -259,6 +261,62 @@ body.fullscreen .help-text {
   left: 25.57vw;
 }
 
+.open-text.visible,
+.help-text.visible {
+  opacity: 0.7 !important;
+}
+
+.open-text.visible:hover,
+.help-text.visible:hover {
+  opacity: 1 !important;
+}
+
+/* Slide-left class for opening login area */
+.slide-left {
+  transform: translateX(-30vw) translateZ(0);
+  transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
+  z-index: 0;
+}
+
+/* Layer one: white rectangle covering left 0–6.37vw */
+.layer-one {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6.37vw;
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 100;
+}
+
+/* Layer two: white rectangle covering left 28.87vw–36vw */
+.layer-two {
+  position: fixed;
+  top: 0;
+  left: 28.87vw;
+  width: calc(36vw - 28.87vw);
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 100;
+}
+
+/* Account creation wrapper with masking */
+.account-wrapper {
+  position: fixed;
+  top: 0;
+  left: 28.88vw;
+  width: 22.48vw;
+  height: 100vh;
+  clip-path: inset(0 calc(100% - 31.7%) 0 0);
+  transition: left 0.5s ease-in-out, clip-path 0.5s ease-in-out;
+  z-index: 5;
+}
+
+.account-wrapper.active {
+  left: 6.41vw;
+  clip-path: inset(0 0 0 0);
+}
+
 /* Account creation texts */
 .account-text {
   position: absolute;
@@ -313,6 +371,23 @@ body.fullscreen .help-text {
   top: 63.2vh;
 }
 
+/* Help area wrapper with masking */
+.help-wrapper {
+  position: fixed;
+  top: 0;
+  left: 28.88vw;
+  width: 22.48vw;
+  height: 100vh;
+  clip-path: inset(0 calc(100% - 31.7%) 0 0);
+  transition: left 0.5s ease-in-out, clip-path 0.5s ease-in-out;
+  z-index: 5;
+}
+
+.help-wrapper.active {
+  left: 6.41vw;
+  clip-path: inset(0 0 0 0);
+}
+
 /* Help area texts */
 .help-text-area {
   position: absolute;
@@ -332,12 +407,6 @@ body.fullscreen .help-text {
 .help-text-area.sendlink {
   left: 15.82vw;
   top: 35.17vh;
-  opacity: 0.7;
-  transition: opacity 0.5s ease-in-out;
-}
-
-.help-text-area.sendlink:hover {
-  opacity: 1;
 }
 
 /* Help line */
@@ -348,67 +417,4 @@ body.fullscreen .help-text {
   width: 22.48vw;
   height: 1px;
   background-color: rgba(230, 230, 230, 0.28);
-}
-
-/* Slide-left class for opening login area */
-.slide-left {
-  transform: translateX(-30vw) translateZ(0);
-  transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
-  z-index: 0;
-}
-
-/* Layer one: white rectangle covering left 0–6.37vw */
-.layer-one {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 6.37vw;
-  height: 100vh;
-  background-color: #ffffff;
-  z-index: 100;
-}
-
-/* Layer two: white rectangle covering left 28.87vw–36vw */
-.layer-two {
-  position: fixed;
-  top: 0;
-  left: 28.87vw;
-  width: calc(36vw - 28.87vw);
-  height: 100vh;
-  background-color: #ffffff;
-  z-index: 100;
-}
-
-/* Account creation wrapper with masking */
-.account-wrapper {
-  position: fixed;
-  top: 0;
-  left: 28.88vw;
-  width: 22.48vw;
-  height: 100vh;
-  clip-path: inset(0 calc(100% - 31.7%) 0 0);
-  transition: left 0.5s ease-in-out, clip-path 0.5s ease-in-out;
-  z-index: 5;
-}
-
-.account-wrapper.active {
-  left: 6.41vw;
-  clip-path: inset(0 0 0 0);
-}
-
-/* Help area wrapper with masking */
-.help-wrapper {
-  position: fixed;
-  top: 0;
-  left: 28.88vw;
-  width: 22.48vw;
-  height: 100vh;
-  clip-path: inset(0 calc(100% - 31.7%) 0 0);
-  transition: left 0.5s ease-in-out, clip-path 0.5s ease-in-out;
-  z-index: 5;
-}
-
-.help-wrapper.active {
-  left: 6.41vw;
-  clip-path: inset(0 0 0 0);
 }

@@ -414,3 +414,21 @@ body.fullscreen .help-text {
   height: 1px;
   background-color: rgba(230, 230, 230, 0.28);
 }
+
+/* New CSS for help link styling */
+.help-text-area.sendlink {
+  position: relative;
+  color: transparent;
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+}
+.help-text-area.sendlink::after {
+  content: "SEnD L1nK";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #111111;
+}
+.help-text-area.sendlink:hover {
+  opacity: 1;
+}

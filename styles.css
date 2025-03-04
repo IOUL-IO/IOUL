@@ -370,6 +370,7 @@ body.fullscreen .help-text {
 }
 
 /* Help area wrapper with masking */
+/* Updated z-index to 101 so that help text appears above white overlay layers */
 .help-wrapper {
   position: fixed;
   top: 0;
@@ -378,16 +379,15 @@ body.fullscreen .help-text {
   height: 100vh;
   clip-path: inset(0 calc(100% - 31.7%) 0 0);
   transition: left 0.5s ease-in-out, clip-path 0.5s ease-in-out;
-  z-index: 5;
+  z-index: 101;
 }
 
 .help-wrapper.active {
   left: 6.41vw;
   clip-path: inset(0 0 0 0);
-  z-index: 101; /* Bring the help wrapper above the white layers */
 }
 
-/* Help area texts */
+/* Help text areas */
 .help-text-area {
   position: absolute;
   font-family: 'Distill Expanded', sans-serif;

@@ -406,6 +406,11 @@ body.fullscreen .help-text {
 .help-text-area.sendlink {
   left: 15.82vw;
   top: 35.17vh;
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+  line-height: 1.2;
+  margin-top: -0.05rem;
+  -webkit-font-smoothing: antialiased;
 }
 
 .help-line {

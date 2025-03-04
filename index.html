@@ -322,22 +322,21 @@
 
     /*
       NEW APPROACH for editing account and help texts:
-      We compute the final absolute position manually by using the sliding wrapper’s
-      bounding rectangle plus the element’s own CSS “left” and “top” (which are defined
-      in the final CSS). This bypasses any transitional values.
+      Instead of using getBoundingClientRect (which might return transitional values),
+      we assume the final left is 6.41vw. We compute the absolute left in pixels as:
+          window.innerWidth * 6.41 / 100.
+      And for the top, we use the element’s offsetTop (which is relative to its fixed parent).
+      This guarantees the input appears immediately at the final position.
     */
     function addAccountClickHandler(element) {
       element.addEventListener('click', function() {
-        // Identify the relevant parent wrapper.
+        // Determine if element is inside the account or help wrapper.
+        const isAccountText = element.classList.contains('account-text');
+        const isHelpText = element.classList.contains('help-text-area');
         const parent = element.closest('.account-wrapper, .help-wrapper');
-        const isAccount = parent.classList.contains('account-wrapper');
-        const isHelp = parent.classList.contains('help-wrapper');
-        
-        // Allow editing only if the parent is active and its transition has completed.
-        if ((isAccount && parent.classList.contains('active') && accountTransitionComplete) ||
-            (isHelp && parent.classList.contains('active') && helpTransitionComplete)) {
-          
+        if (parent && parent.classList.contains('active')) {
           const input = document.createElement('input');
+          // Set input type based on element.
           if (
             element.classList.contains('account-sign-password') ||
             element.classList.contains('account-repeat-password')
@@ -348,25 +347,12 @@
           }
           input.maxLength = 20;
           input.className = 'typing-input';
-          
-          // Get the parent’s final position.
-          const parentRect = parent.getBoundingClientRect();
-          const elementStyle = window.getComputedStyle(element);
-          // element's "left" (if defined in CSS) is relative to its parent.
-          const elemLeft = parseFloat(elementStyle.left) || 0;
-          const elemTop = parseFloat(elementStyle.top) || 0;
-          let computedLeft, computedTop;
-          if (isAccount) {
-            // Account texts have left:0 relative to the wrapper.
-            computedLeft = parentRect.left; 
-          } else if (isHelp) {
-            // For help texts, add the element's left offset.
-            computedLeft = parentRect.left + elemLeft;
-          }
-          computedTop = parentRect.top + elemTop;
-          
-          input.style.left = computedLeft + "px";
-          input.style.top = computedTop + "px";
+          // Final left is fixed: 6.41vw converted to pixels.
+          const finalLeft = window.innerWidth * 6.41 / 100;
+          // The top is taken from the element's offsetTop.
+          const finalTop = element.offsetTop;
+          input.style.left = finalLeft + "px";
+          input.style.top = finalTop + "px";
           input.style.width = element.offsetWidth + "px";
           input.style.height = element.offsetHeight + "px";
 
@@ -391,7 +377,7 @@
       });
     }
 
-    // Attach the editing handler to all account and help text elements.
+    // Attach the editing handler to all account creation and help text elements.
     document.querySelectorAll('.account-text, .help-text-area').forEach(addAccountClickHandler);
   </script>
 

@@ -383,9 +383,8 @@
       });
     }
 
-    // Attach the editing handler to all account creation and help text elements,
-    // but exclude the one with the 'sendlink' class so that it doesn’t become editable.
-    document.querySelectorAll('.account-text, .help-text-area:not(.sendlink)').forEach(addAccountClickHandler);
+    // Attach the editing handler to all account creation and help text elements.
+    document.querySelectorAll('.account-text, .help-text-area').forEach(addAccountClickHandler);
   </script>
 
   <!-- Layers to mask the sliding elements -->

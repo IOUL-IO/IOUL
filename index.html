@@ -94,7 +94,7 @@
   <!-- Help area wrapper (masked initially) -->
   <div class="help-wrapper">
     <span class="help-text-area email">YOUR EMA1L</span>
-    <!-- Updated text here -->
+    <!-- This text is no longer editable on click -->
     <span class="help-text-area sendlink">SEnD L1nK</span>
     <div class="help-line"></div>
   </div>
@@ -248,96 +248,9 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // For login area editing (unchanged)
-    document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
-      element.addEventListener('click', function () {
-        if (
-          fadeCompleted &&
-          (this.classList.contains('username') || this.classList.contains('password'))
-        ) {
-          const parentRect = this.getBoundingClientRect();
-          const input = document.createElement('input');
-          input.type = this.classList.contains('password') ? 'password' : 'text';
-          input.maxLength = 10;
-          input.className = 'typing-input';
-          input.style.top = `${parentRect.top + window.scrollY}px`;
-          input.style.left = `${parentRect.left + window.scrollX}px`;
-          input.style.width = `calc(${parentRect.width}px + 4vw)`;
-          input.style.height = `${parentRect.height}px`;
-          input.addEventListener('focus', function () {
-            inputInFocus = true;
-            hideOpenHelp();
-          });
-          input.addEventListener('blur', function () {
-            inputInFocus = false;
-            const span = document.createElement('span');
-            span.className = element.className;
-            span.innerText = input.value.trim() || element.innerText;
-            input.replaceWith(span);
-            showOpenHelp();
-            addClickHandler(span);
-          });
-          this.replaceWith(input);
-          setTimeout(() => {
-            input.focus();
-          }, 50);
-        }
-      });
-    });
-
-    // OPEn click event: slide login area and account creation components.
-    document.querySelector('.open-text').addEventListener('click', function() {
-      document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
-        el.classList.add('slide-left');
-      });
-      accountWrapper.classList.add('active');
-      accountTransitionComplete = false;
-    });
-
-    // HELP click event: slide login area and help area components.
-    document.querySelector('.help-text').addEventListener('click', function() {
-      document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
-        el.classList.add('slide-left');
-      });
-      helpWrapper.classList.add('active');
-      helpTransitionComplete = false;
-    });
-
-    // Reverse slide: works regardless of fullscreen mode.
-    document.addEventListener('click', function(event) {
-      const x = event.clientX, y = event.clientY;
-      const regionRight = window.innerWidth * (6.37 / 100);
-      const regionTop = window.innerHeight * (28.5 / 100);
-      const regionBottom = window.innerHeight * (84 / 100);
-      
-      if (x >= 0 && x <= regionRight && y >= regionTop && y <= regionBottom) {
-        const accountActive = accountWrapper.classList.contains('active');
-        const helpActive = helpWrapper.classList.contains('active');
-        if (accountActive || helpActive) {
-          document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
-            el.classList.add('reverse-slide');
-            el.addEventListener('animationend', function() {
-              el.classList.remove('reverse-slide');
-              el.classList.remove('slide-left');
-            }, {once: true});
-          });
-          accountWrapper.classList.remove('active');
-          helpWrapper.classList.remove('active');
-          accountTransitionComplete = false;
-          helpTransitionComplete = false;
-        }
-      }
-    });
-
-    /*
-      NEW APPROACH for editing account and help texts:
-      Instead of trying to calculate an absolute position in viewport units,
-      we simply replace the span with an input inside its own (fixed) parent.
-      We copy the computed CSS left, top, width, and height from the span so that
-      the input appears exactly where the text was.
-    */
+    // For login area editing (only for account texts)
     function addAccountClickHandler(element) {
-      element.addEventListener('click', function() {
+      element.addEventListener('click', function () {
         // Allow editing only if the parent wrapper is active and its transition has completed.
         const parent = element.parentNode;
         if (parent.classList.contains('account-wrapper') && !accountTransitionComplete) return;
@@ -383,8 +296,52 @@
       });
     }
 
-    // Attach the editing handler to all account creation and help text elements.
-    document.querySelectorAll('.account-text, .help-text-area').forEach(addAccountClickHandler);
+    // Attach the editing handler only to account creation texts (not help texts)
+    document.querySelectorAll('.account-text').forEach(addAccountClickHandler);
+
+    // OPEn click event: slide login area and account creation components.
+    document.querySelector('.open-text').addEventListener('click', function() {
+      document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
+        el.classList.add('slide-left');
+      });
+      accountWrapper.classList.add('active');
+      accountTransitionComplete = false;
+    });
+
+    // HELP click event: slide login area and help area components.
+    document.querySelector('.help-text').addEventListener('click', function() {
+      document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
+        el.classList.add('slide-left');
+      });
+      helpWrapper.classList.add('active');
+      helpTransitionComplete = false;
+    });
+
+    // Reverse slide: works regardless of fullscreen mode.
+    document.addEventListener('click', function(event) {
+      const x = event.clientX, y = event.clientY;
+      const regionRight = window.innerWidth * (6.37 / 100);
+      const regionTop = window.innerHeight * (28.5 / 100);
+      const regionBottom = window.innerHeight * (84 / 100);
+      
+      if (x >= 0 && x <= regionRight && y >= regionTop && y <= regionBottom) {
+        const accountActive = accountWrapper.classList.contains('active');
+        const helpActive = helpWrapper.classList.contains('active');
+        if (accountActive || helpActive) {
+          document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
+            el.classList.add('reverse-slide');
+            el.addEventListener('animationend', function() {
+              el.classList.remove('reverse-slide');
+              el.classList.remove('slide-left');
+            }, {once: true});
+          });
+          accountWrapper.classList.remove('active');
+          helpWrapper.classList.remove('active');
+          accountTransitionComplete = false;
+          helpTransitionComplete = false;
+        }
+      }
+    });
   </script>
 
   <!-- Layers to mask the sliding elements -->

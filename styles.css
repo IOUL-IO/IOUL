@@ -417,18 +417,28 @@ body.fullscreen .help-text {
 
 /* New CSS for help link styling */
 .help-text-area.sendlink {
-  position: relative;
-  color: transparent;
+  position: absolute;
+  left: 15.82vw;
+  top: 35.17vh;
   opacity: 0.7;
   transition: opacity 0.3s ease-in-out;
+  font-family: 'Distill Expanded', sans-serif;
+  font-size: 0.47rem;
+  line-height: 1;
+  color: transparent;
 }
+
 .help-text-area.sendlink::after {
   content: "SEnD L1nK";
   position: absolute;
   left: 0;
   top: 0;
   color: #111111;
+  font-family: 'Distill Expanded', sans-serif;
+  font-size: 0.47rem;
+  line-height: 1;
 }
+
 .help-text-area.sendlink:hover {
   opacity: 1;
 }

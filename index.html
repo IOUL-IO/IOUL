@@ -37,6 +37,7 @@
       position: absolute;
       caret-color: #d1d1d1;
       padding: 0.1rem 0;
+      /* Note: this width is only used if not overridden */
       width: calc(22.48vw + 4vw);
       height: auto;
       box-sizing: content-box;
@@ -322,58 +323,55 @@
 
     /*
       NEW APPROACH for editing account and help texts:
-      Instead of using getBoundingClientRect (which might return transitional values),
-      we assume the final left is 6.41vw. We compute the absolute left in pixels as:
-          window.innerWidth * 6.41 / 100.
-      And for the top, we use the element’s offsetTop (which is relative to its fixed parent).
-      This guarantees the input appears immediately at the final position.
+      Instead of trying to calculate an absolute position in viewport units,
+      we simply replace the span with an input inside its own (fixed) parent.
+      We copy the computed CSS left, top, width, and height from the span so that
+      the input appears exactly where the text was.
     */
     function addAccountClickHandler(element) {
       element.addEventListener('click', function() {
-        // Determine if element is inside the account or help wrapper.
-        const isAccountText = element.classList.contains('account-text');
-        const isHelpText = element.classList.contains('help-text-area');
-        const parent = element.closest('.account-wrapper, .help-wrapper');
-        if (parent && parent.classList.contains('active')) {
-          const input = document.createElement('input');
-          // Set input type based on element.
-          if (
-            element.classList.contains('account-sign-password') ||
-            element.classList.contains('account-repeat-password')
-          ) {
-            input.type = 'password';
-          } else {
-            input.type = 'text';
-          }
-          input.maxLength = 20;
-          input.className = 'typing-input';
-          // Final left is fixed: 6.41vw converted to pixels.
-          const finalLeft = window.innerWidth * 6.41 / 100;
-          // The top is taken from the element's offsetTop.
-          const finalTop = element.offsetTop;
-          input.style.left = finalLeft + "px";
-          input.style.top = finalTop + "px";
-          input.style.width = element.offsetWidth + "px";
-          input.style.height = element.offsetHeight + "px";
-
-          input.addEventListener('focus', function() {
-            inputInFocus = true;
-            hideOpenHelp();
-          });
-
-          input.addEventListener('blur', function() {
-            inputInFocus = false;
-            const span = document.createElement('span');
-            span.className = element.className;
-            span.innerText = input.value.trim() || element.innerText;
-            input.replaceWith(span);
-            addAccountClickHandler(span);
-            showOpenHelp();
-          });
-
-          element.replaceWith(input);
-          input.focus();
+        // Allow editing only if the parent wrapper is active and its transition has completed.
+        const parent = element.parentNode;
+        if (parent.classList.contains('account-wrapper') && !accountTransitionComplete) return;
+        if (parent.classList.contains('help-wrapper') && !helpTransitionComplete) return;
+        
+        const computedStyle = window.getComputedStyle(element);
+        const input = document.createElement('input');
+        // Set input type based on the element.
+        if (
+          element.classList.contains('account-sign-password') ||
+          element.classList.contains('account-repeat-password')
+        ) {
+          input.type = 'password';
+        } else {
+          input.type = 'text';
         }
+        input.maxLength = 20;
+        input.className = 'typing-input';
+        // Position the input exactly as the span is positioned within its parent.
+        input.style.position = 'absolute';
+        input.style.left = computedStyle.left;
+        input.style.top = computedStyle.top;
+        input.style.width = computedStyle.width;
+        input.style.height = computedStyle.height;
+
+        input.addEventListener('focus', function() {
+          inputInFocus = true;
+          hideOpenHelp();
+        });
+
+        input.addEventListener('blur', function() {
+          inputInFocus = false;
+          const span = document.createElement('span');
+          span.className = element.className;
+          span.innerText = input.value.trim() || element.innerText;
+          parent.replaceChild(span, input);
+          addAccountClickHandler(span);
+          showOpenHelp();
+        });
+
+        parent.replaceChild(input, element);
+        input.focus();
       });
     }
 

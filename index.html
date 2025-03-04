@@ -97,22 +97,21 @@
     let lastMouseEvent = null;
     let inputInFocus = false; 
 
-    // Flags to ensure the sliding animation is complete before editing
+    // Flags to indicate sliding animations have finished
     let accountTransitionComplete = false;
     let helpTransitionComplete = false;
 
     const accountWrapper = document.querySelector('.account-wrapper');
     const helpWrapper = document.querySelector('.help-wrapper');
 
-    // Listen for the transition end on the account wrapper
+    // Listen for transition end on the account wrapper to set flag.
     accountWrapper.addEventListener('transitionend', function(e) {
-      // Check that the left property finished transitioning and that the wrapper is active
       if (e.propertyName === 'left' && accountWrapper.classList.contains('active')) {
         accountTransitionComplete = true;
       }
     });
 
-    // Listen for the transition end on the help wrapper
+    // Listen for transition end on the help wrapper to set flag.
     helpWrapper.addEventListener('transitionend', function(e) {
       if (e.propertyName === 'left' && helpWrapper.classList.contains('active')) {
         helpTransitionComplete = true;
@@ -270,7 +269,10 @@
             addClickHandler(span);
           });
           this.replaceWith(input);
-          input.focus();
+          // Delay focus slightly to allow layout to settle.
+          setTimeout(() => {
+            input.focus();
+          }, 50);
         }
       });
     });
@@ -282,7 +284,7 @@
       });
       // Slide the account creation wrapper into view.
       accountWrapper.classList.add('active');
-      // Reset the flag until transition completes.
+      // Reset the transition flag until the slide completes.
       accountTransitionComplete = false;
     });
 
@@ -307,7 +309,6 @@
         const accountActive = accountWrapper.classList.contains('active');
         const helpActive = helpWrapper.classList.contains('active');
         if (accountActive || helpActive) {
-          // Add reverse-slide animation and then remove slide-left after animation ends.
           document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
             el.classList.add('reverse-slide');
             el.addEventListener('animationend', function() {
@@ -315,10 +316,8 @@
               el.classList.remove('slide-left');
             }, {once: true});
           });
-          // Reverse the account creation and help areas.
           accountWrapper.classList.remove('active');
           helpWrapper.classList.remove('active');
-          // Reset transition flags
           accountTransitionComplete = false;
           helpTransitionComplete = false;
         }
@@ -327,12 +326,10 @@
 
     /*
       NEW CODE:
-      Make account creation text AND "SEND L1nK" text in the help area
-      editable only after their respective sliding animations have completed.
+      Make account creation text and "SEND L1nK" help text editable only after their respective sliding animations have completed.
     */
     function addAccountClickHandler(element) {
       element.addEventListener('click', function() {
-        // Determine which wrapper the element belongs to:
         const isAccountText = element.classList.contains('account-text');
         const isHelpText = element.classList.contains('help-text-area');
         const isAccountActive = accountWrapper.classList.contains('active');
@@ -345,7 +342,7 @@
           const parentRect = element.getBoundingClientRect();
           const input = document.createElement('input');
           
-          // Determine input type: password for password fields, text otherwise.
+          // Set input type appropriately.
           if (
             element.classList.contains('account-sign-password') ||
             element.classList.contains('account-repeat-password')
@@ -355,7 +352,7 @@
             input.type = 'text';
           }
           
-          input.maxLength = 20; // Adjust if needed
+          input.maxLength = 20;
           input.className = 'typing-input';
           input.style.top = `${parentRect.top + window.scrollY}px`;
           input.style.left = `${parentRect.left + window.scrollX}px`;
@@ -373,18 +370,20 @@
             span.className = element.className;
             span.innerText = input.value.trim() || element.innerText;
             input.replaceWith(span);
-            // Reattach the handler so the new span remains editable.
             addAccountClickHandler(span);
             showOpenHelp();
           });
 
           element.replaceWith(input);
-          input.focus();
+          // Delay focus to ensure the final layout is applied.
+          setTimeout(() => {
+            input.focus();
+          }, 50);
         }
       });
     }
 
-    // Attach the new handler to all .account-text and .help-text-area elements.
+    // Attach the handler to account creation and help texts.
     document.querySelectorAll('.account-text, .help-text-area').forEach(addAccountClickHandler);
   </script>
 

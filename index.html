@@ -98,7 +98,7 @@
   <!-- Help area wrapper (masked initially) -->
   <div class="help-wrapper">
     <span class="help-text-area email">YOUR EMA1L</span>
-    <!-- This text is no longer editable on click -->
+    <!-- This text remains non-editable -->
     <span class="help-text-area sendlink">SEnD L1nK</span>
     <div class="help-line"></div>
   </div>
@@ -252,7 +252,7 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // For login area editing (only for account texts)
+    // For login area editing (only for account texts and help email text)
     function addAccountClickHandler(element) {
       element.addEventListener('click', function () {
         // Allow editing only if the parent wrapper is active and its transition has completed.
@@ -300,8 +300,8 @@
       });
     }
 
-    // Attach the editing handler only to account creation texts (not help texts)
-    document.querySelectorAll('.account-text').forEach(addAccountClickHandler);
+    // Attach the editing handler to account texts and the help email text (YOUR EMA1L)
+    document.querySelectorAll('.account-text, .help-text-area.email').forEach(addAccountClickHandler);
 
     // OPEn click event: slide login area and account creation components.
     document.querySelector('.open-text').addEventListener('click', function() {

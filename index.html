@@ -24,7 +24,7 @@
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
     
-    /* Added text-align: left so the caret is at the left edge */
+    /* Ensure the caret is aligned left */
     input.typing-input {
       font-family: 'Distill Expanded', sans-serif;
       font-size: 0.46rem;
@@ -41,7 +41,7 @@
       height: auto;
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-      text-align: left; /* Ensures caret is at left edge */
+      text-align: left;
     }
   </style>
 </head>
@@ -85,7 +85,7 @@
   <!-- Help area wrapper (masked initially) -->
   <div class="help-wrapper">
     <span class="help-text-area email">YOUR EMA1L</span>
-    <!-- "SEND L1nK" text we want to convert to input as well -->
+    <!-- "SEND L1nK" text -->
     <span class="help-text-area sendlink">SEND L1nK</span>
     <div class="help-line"></div>
   </div>
@@ -104,14 +104,14 @@
     const accountWrapper = document.querySelector('.account-wrapper');
     const helpWrapper = document.querySelector('.help-wrapper');
 
-    // Listen for transition end on the account wrapper to set flag.
+    // Listen for transition end on account wrapper
     accountWrapper.addEventListener('transitionend', function(e) {
       if (e.propertyName === 'left' && accountWrapper.classList.contains('active')) {
         accountTransitionComplete = true;
       }
     });
 
-    // Listen for transition end on the help wrapper to set flag.
+    // Listen for transition end on help wrapper
     helpWrapper.addEventListener('transitionend', function(e) {
       if (e.propertyName === 'left' && helpWrapper.classList.contains('active')) {
         helpTransitionComplete = true;
@@ -239,7 +239,7 @@
       checkRegionAndShowOpenHelp(event);
     });
 
-    // For username and password editing (login area)
+    // For login area editing (unchanged)
     document.querySelectorAll('.login-text').forEach(function addClickHandler(element) {
       element.addEventListener('click', function () {
         if (
@@ -269,7 +269,6 @@
             addClickHandler(span);
           });
           this.replaceWith(input);
-          // Delay focus slightly to allow layout to settle.
           setTimeout(() => {
             input.focus();
           }, 50);
@@ -277,28 +276,25 @@
       });
     });
 
-    // Click event for OPEn: slide login area and account creation components.
+    // OPEn click event: slide login area and account creation components.
     document.querySelector('.open-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
       });
-      // Slide the account creation wrapper into view.
       accountWrapper.classList.add('active');
-      // Reset the transition flag until the slide completes.
       accountTransitionComplete = false;
     });
 
-    // Click event for HELP: slide login area and help area components.
+    // HELP click event: slide login area and help area components.
     document.querySelector('.help-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
       });
-      // Slide the help area into view.
       helpWrapper.classList.add('active');
       helpTransitionComplete = false;
     });
 
-    // Reverse animation on click in designated region (0–6.37vw, 28.5vh–84vh)
+    // Reverse slide: works regardless of fullscreen mode.
     document.addEventListener('click', function(event) {
       const x = event.clientX, y = event.clientY;
       const regionRight = window.innerWidth * (6.37 / 100);
@@ -325,8 +321,11 @@
     });
 
     /*
-      NEW CODE:
-      Make account creation text and "SEND L1nK" help text editable only after their respective sliding animations have completed.
+      NEW APPROACH for account creation & help text editing:
+      Instead of using getBoundingClientRect (which gives a transitional value),
+      we use the known final positions. For account and help texts,
+      we assume the final left is given by the wrapper’s computed left (which is 6.41vw in active state),
+      and the top value is obtained from the element’s computed style.
     */
     function addAccountClickHandler(element) {
       element.addEventListener('click', function() {
@@ -335,14 +334,13 @@
         const isAccountActive = accountWrapper.classList.contains('active');
         const isHelpActive = helpWrapper.classList.contains('active');
         
-        // Only proceed if the corresponding wrapper's transition is complete.
+        // Only allow editing if the corresponding wrapper is active and (preferably) the transition is complete.
         if ((isAccountText && isAccountActive && accountTransitionComplete) ||
             (isHelpText && isHelpActive && helpTransitionComplete)) {
           
-          const parentRect = element.getBoundingClientRect();
           const input = document.createElement('input');
           
-          // Set input type appropriately.
+          // Determine input type based on the element.
           if (
             element.classList.contains('account-sign-password') ||
             element.classList.contains('account-repeat-password')
@@ -354,10 +352,19 @@
           
           input.maxLength = 20;
           input.className = 'typing-input';
-          input.style.top = `${parentRect.top + window.scrollY}px`;
-          input.style.left = `${parentRect.left + window.scrollX}px`;
-          input.style.width = `calc(${parentRect.width}px + 4vw)`;
-          input.style.height = `${parentRect.height}px`;
+          
+          // Instead of getBoundingClientRect, use the final intended values:
+          if (isAccountText) {
+            // Final left is the account-wrapper's left.
+            input.style.left = getComputedStyle(accountWrapper).left;
+          } else if (isHelpText) {
+            input.style.left = getComputedStyle(helpWrapper).left;
+          }
+          // Use the computed top of the element.
+          input.style.top = getComputedStyle(element).top;
+          // Use the element's dimensions.
+          input.style.width = element.offsetWidth + "px";
+          input.style.height = element.offsetHeight + "px";
 
           input.addEventListener('focus', function() {
             inputInFocus = true;
@@ -375,15 +382,13 @@
           });
 
           element.replaceWith(input);
-          // Delay focus to ensure the final layout is applied.
-          setTimeout(() => {
-            input.focus();
-          }, 50);
+          // Focus immediately—now the input is at the final position.
+          input.focus();
         }
       });
     }
 
-    // Attach the handler to account creation and help texts.
+    // Attach editing handler for account creation and help texts.
     document.querySelectorAll('.account-text, .help-text-area').forEach(addAccountClickHandler);
   </script>
 

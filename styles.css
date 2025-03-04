@@ -66,14 +66,12 @@ body.fade-in-trigger .time-text {
   transform: translateX(0) translateZ(0);
 }
 
-/* Transition for transform so slide animations occur */
 .login-text,
 .login-line,
 .login-line-second {
   transition: transform 0.5s ease-in-out;
 }
 
-/* Keyframe animation for reversing the slide */
 @keyframes reverseSlide {
   from {
     transform: translateX(-30vw) translateZ(0);
@@ -190,7 +188,6 @@ body.fade-in-trigger .time-text {
   left: 90.1vw;
 }
 
-/* Existing login text */
 .login-text {
   position: absolute;
   font-family: 'Distill Expanded', sans-serif;
@@ -270,14 +267,12 @@ body.fullscreen .help-text {
   opacity: 1 !important;
 }
 
-/* Slide-left class for opening login area */
 .slide-left {
   transform: translateX(-30vw) translateZ(0);
   transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
   z-index: 0;
 }
 
-/* Layer one: white rectangle covering left 0–6.37vw */
 .layer-one {
   position: fixed;
   top: 0;
@@ -288,7 +283,6 @@ body.fullscreen .help-text {
   z-index: 100;
 }
 
-/* Layer two: white rectangle covering left 28.87vw–36vw */
 .layer-two {
   position: fixed;
   top: 0;
@@ -299,7 +293,6 @@ body.fullscreen .help-text {
   z-index: 100;
 }
 
-/* Account creation wrapper with masking */
 .account-wrapper {
   position: fixed;
   top: 0;
@@ -316,7 +309,6 @@ body.fullscreen .help-text {
   clip-path: inset(0 0 0 0);
 }
 
-/* Account creation texts */
 .account-text {
   position: absolute;
   left: 0;
@@ -369,7 +361,6 @@ body.fullscreen .help-text {
   top: 63.2vh;
 }
 
-/* Help area wrapper with masking */
 .help-wrapper {
   position: fixed;
   top: 0;
@@ -381,13 +372,11 @@ body.fullscreen .help-text {
   z-index: 5;
 }
 
-/* When active, remove clipping entirely so that the upper parts of the text are visible */
 .help-wrapper.active {
   left: 6.41vw;
   clip-path: inset(0);
 }
 
-/* Help text areas */
 .help-text-area {
   position: absolute;
   font-family: 'Distill Expanded', sans-serif;

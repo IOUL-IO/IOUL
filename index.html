@@ -7,6 +7,7 @@
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
   <style>
+    /* Inline styles for login text and input */
     .login-text {
       position: absolute;
       left: 6.41vw;
@@ -21,6 +22,7 @@
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     }
     
+    /* Ensure the caret is aligned left */
     input.typing-input {
       font-family: 'Distill Expanded', sans-serif;
       font-size: 0.46rem;
@@ -40,11 +42,12 @@
       text-align: left;
     }
     
+    /* New CSS for help text styling */
     .help-text-area.sendlink {
       opacity: 0.7;
       transition: opacity 0.3s ease-in-out;
       line-height: 1.2;
-      padding-top: 0.05rem;
+      margin-top: -0.05rem;
       -webkit-font-smoothing: antialiased;
     }
     .help-text-area.sendlink:hover {
@@ -53,6 +56,7 @@
   </style>
 </head>
 <body class="non-fullscreen">
+  <!-- Background lines and time texts -->
   <div class="line original"></div>
   <div class="line second"></div>
   <div class="line third"></div>
@@ -67,6 +71,7 @@
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
+  <!-- Login texts -->
   <span class="login-text username">USERnAME</span>
   <span class="login-text password">PASSWORD</span>
   <span class="login-text open-text hidden">OPEn</span>
@@ -75,6 +80,7 @@
   <div class="line login-line"></div>
   <div class="line login-line-second"></div>
 
+  <!-- Account creation wrapper (masked initially) -->
   <div class="account-wrapper">
     <span class="account-text account-email">E-MA1L ADDRESS</span>
     <span class="account-text account-username">cREATE USERnAME</span>
@@ -86,8 +92,10 @@
     <div class="account-line account-line4"></div>
   </div>
 
+  <!-- Help area wrapper (masked initially) -->
   <div class="help-wrapper">
     <span class="help-text-area email">YOUR EMA1L</span>
+    <!-- This text remains non-editable -->
     <span class="help-text-area sendlink">SEnD L1nK</span>
     <div class="help-line"></div>
   </div>
@@ -99,18 +107,21 @@
     let lastMouseEvent = null;
     let inputInFocus = false; 
 
+    // Flags to indicate sliding animations have finished
     let accountTransitionComplete = false;
     let helpTransitionComplete = false;
 
     const accountWrapper = document.querySelector('.account-wrapper');
     const helpWrapper = document.querySelector('.help-wrapper');
 
+    // Listen for transition end on account wrapper
     accountWrapper.addEventListener('transitionend', function(e) {
       if (e.propertyName === 'left' && accountWrapper.classList.contains('active')) {
         accountTransitionComplete = true;
       }
     });
 
+    // Listen for transition end on help wrapper
     helpWrapper.addEventListener('transitionend', function(e) {
       if (e.propertyName === 'left' && helpWrapper.classList.contains('active')) {
         helpTransitionComplete = true;
@@ -238,8 +249,45 @@
       checkRegionAndShowOpenHelp(event);
     });
 
+    // --- Login area editing for USERnAME and PASSWORD ---
+    function addLoginClickHandler(element) {
+      element.addEventListener('click', function() {
+        if (fadeCompleted && (this.classList.contains('username') || this.classList.contains('password'))) {
+          const parentRect = this.getBoundingClientRect();
+          const input = document.createElement('input');
+          input.type = this.classList.contains('password') ? 'password' : 'text';
+          input.maxLength = 10;
+          input.className = 'typing-input';
+          input.style.top = `${parentRect.top + window.scrollY}px`;
+          input.style.left = `${parentRect.left + window.scrollX}px`;
+          input.style.width = `calc(${parentRect.width}px + 4vw)`;
+          input.style.height = `${parentRect.height}px`;
+          input.addEventListener('focus', function () {
+            inputInFocus = true;
+            hideOpenHelp();
+          });
+          input.addEventListener('blur', function () {
+            inputInFocus = false;
+            const span = document.createElement('span');
+            span.className = element.className;
+            span.innerText = input.value.trim() || element.innerText;
+            input.replaceWith(span);
+            addLoginClickHandler(span);
+            showOpenHelp();
+          });
+          this.replaceWith(input);
+          setTimeout(() => {
+            input.focus();
+          }, 50);
+        }
+      });
+    }
+    document.querySelectorAll('.login-text.username, .login-text.password').forEach(addLoginClickHandler);
+
+    // --- Editing for account creation texts and help email (YOUR EMA1L) ---
     function addAccountClickHandler(element) {
       element.addEventListener('click', function () {
+        // Allow editing only if the parent wrapper is active and its transition has completed.
         const parent = element.parentNode;
         if (parent.classList.contains('account-wrapper') && !accountTransitionComplete) return;
         if (parent.classList.contains('help-wrapper') && !helpTransitionComplete) return;
@@ -281,9 +329,10 @@
         input.focus();
       });
     }
-
+    // Attach to account texts and help email text only.
     document.querySelectorAll('.account-text, .help-text-area.email').forEach(addAccountClickHandler);
 
+    // OPEn click event: slide login area and account creation components.
     document.querySelector('.open-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
@@ -292,6 +341,7 @@
       accountTransitionComplete = false;
     });
 
+    // HELP click event: slide login area and help area components.
     document.querySelector('.help-text').addEventListener('click', function() {
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
@@ -300,6 +350,7 @@
       helpTransitionComplete = false;
     });
 
+    // Reverse slide: works regardless of fullscreen mode.
     document.addEventListener('click', function(event) {
       const x = event.clientX, y = event.clientY;
       const regionRight = window.innerWidth * (6.37 / 100);
@@ -326,6 +377,7 @@
     });
   </script>
 
+  <!-- Layers to mask the sliding elements -->
   <div class="layer-one"></div>
   <div class="layer-two"></div>
 </body>

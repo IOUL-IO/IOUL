@@ -37,12 +37,20 @@
       position: absolute;
       caret-color: #d1d1d1;
       padding: 0.1rem 0;
-      /* Note: this width is only used if not overridden */
       width: calc(22.48vw + 4vw);
       height: auto;
       box-sizing: content-box;
       text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
       text-align: left;
+    }
+    
+    /* New CSS for help text styling */
+    .help-text-area.sendlink {
+      opacity: 0.7;
+      transition: opacity 0.3s ease-in-out;
+    }
+    .help-text-area.sendlink:hover {
+      opacity: 1;
     }
   </style>
 </head>
@@ -86,8 +94,8 @@
   <!-- Help area wrapper (masked initially) -->
   <div class="help-wrapper">
     <span class="help-text-area email">YOUR EMA1L</span>
-    <!-- "SEND L1nK" text -->
-    <span class="help-text-area sendlink">SEND L1nK</span>
+    <!-- Updated text here -->
+    <span class="help-text-area sendlink">SEnD L1nK</span>
     <div class="help-line"></div>
   </div>
 

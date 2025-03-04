@@ -406,13 +406,9 @@ body.fullscreen .help-text {
   top: 35.17vh;
 }
 
-.help-line {
-  position: absolute;
-  top: 38.9vh;
-  left: 0;
-  width: 22.48vw;
-  height: 1px;
-  background-color: rgba(230, 230, 230, 0.28);
+/* Prevent the sendlink text from converting to input */
+.help-text-area.sendlink {
+  pointer-events: none;
 }
 
 /* New CSS for help link styling */
@@ -426,19 +422,28 @@ body.fullscreen .help-text {
   font-size: 0.47rem;
   line-height: 1;
   color: transparent;
+  pointer-events: none; /* Block clicks so it won't convert to input */
 }
-
 .help-text-area.sendlink::after {
   content: "SEnD L1nK";
   position: absolute;
   left: 0;
-  top: 0;
+  top: -0.05rem; /* Adjusted upward to prevent cut-off */
   color: #111111;
   font-family: 'Distill Expanded', sans-serif;
   font-size: 0.47rem;
   line-height: 1;
+  pointer-events: auto; /* Allow hover on the pseudo-element */
 }
-
 .help-text-area.sendlink:hover {
   opacity: 1;
+}
+
+.help-line {
+  position: absolute;
+  top: 38.9vh;
+  left: 0;
+  width: 22.48vw;
+  height: 1px;
+  background-color: rgba(230, 230, 230, 0.28);
 }

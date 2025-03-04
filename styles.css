@@ -384,8 +384,10 @@ body.fullscreen .help-text {
 .help-wrapper.active {
   left: 6.41vw;
   clip-path: inset(0 0 0 0);
+  z-index: 101; /* Bring the help wrapper above the white layers */
 }
 
+/* Help area texts */
 .help-text-area {
   position: absolute;
   font-family: 'Distill Expanded', sans-serif;

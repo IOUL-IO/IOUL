@@ -48,6 +48,10 @@
     .help-text-area.sendlink {
       opacity: 0.7;
       transition: opacity 0.3s ease-in-out;
+      /* Added properties to ensure full rendering immediately */
+      line-height: 1.2;
+      padding-top: 0.05rem;
+      -webkit-font-smoothing: antialiased;
     }
     .help-text-area.sendlink:hover {
       opacity: 1;

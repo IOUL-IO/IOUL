@@ -165,10 +165,10 @@ body.fade-in-trigger .time-text {
   color: #111111;
   letter-spacing: 0.2vw;
   text-shadow:
-    0.01rem 0.01rem 0 #000,
-    -0.01rem 0.01rem 0 #000,
-    0.01rem -0.01rem 0 #000,
-    -0.01rem -0.01rem 0 #000;
+    0.001rem 0.001rem 0 #000,
+    -0.001rem 0.001rem 0 #000,
+    0.001rem -0.001rem 0 #000,
+    -0.001rem -0.001rem 0 #000;
 }
 
 .time-text {

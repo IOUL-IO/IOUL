@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IOUL</title>
   <link rel="icon" href="favicon.png" type="image/png" />
-  <!-- Reference external CSS -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="non-fullscreen">
@@ -31,44 +30,48 @@
     let initialClickCompleted = false;
     let lastMouseEvent = null;
     let inactivityTimer;
-    const EDGE_MARGIN = 11; // The 11px zone from each edge
+    const EDGE_MARGIN = 11; // "Near edge" threshold
 
-    document.addEventListener('click', event => {
-      // 1. If not clicked yet, handle the fade-in logic
+    document.addEventListener('click', (event) => {
+      // If this is the very first click anywhere on the page:
       if (!initialClickCompleted) {
-        // Try to go fullscreen (if not already)
+        initialClickCompleted = true;
+
+        // 1) Request fullscreen (if not already)
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen();
         }
+
+        // 2) Trigger fade-in animation
         setTimeout(() => {
           document.body.classList.add('fade-in-trigger');
         }, 1000);
+
+        // Mark fade completion after 4 seconds (adjust as needed)
         setTimeout(() => {
           fadeCompleted = true;
         }, 4000);
+      } else {
+        // For *subsequent* clicks, only go fullscreen if we're near an edge
+        const x = event.clientX;
+        const y = event.clientY;
+        const width = window.innerWidth;
+        const height = window.innerHeight;
 
-        initialClickCompleted = true;
-      }
+        const nearLeft = x <= EDGE_MARGIN;
+        const nearRight = x >= width - EDGE_MARGIN;
+        const nearTop = y <= EDGE_MARGIN;
+        const nearBottom = y >= height - EDGE_MARGIN;
 
-      // 2. Always check if the click is within 11px of an edge
-      const x = event.clientX;
-      const y = event.clientY;
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-
-      const nearLeft = x <= EDGE_MARGIN;
-      const nearRight = x >= width - EDGE_MARGIN;
-      const nearTop = y <= EDGE_MARGIN;
-      const nearBottom = y >= height - EDGE_MARGIN;
-
-      // If near any edge and not in fullscreen, request fullscreen
-      if (!document.fullscreenElement && (nearLeft || nearRight || nearTop || nearBottom)) {
-        document.documentElement.requestFullscreen();
+        // If near any edge and not fullscreen, request fullscreen
+        if (!document.fullscreenElement && (nearLeft || nearRight || nearTop || nearBottom)) {
+          document.documentElement.requestFullscreen();
+        }
       }
     });
 
-    // Track mouse movements if needed (for future inactivity logic, etc.)
-    document.addEventListener('mousemove', event => {
+    // Mousemove logic (optional, for future inactivity logic or expansions)
+    document.addEventListener('mousemove', (event) => {
       lastMouseEvent = event;
       // Additional inactivity logic can be added here if needed.
     });

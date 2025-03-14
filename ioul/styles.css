@@ -88,6 +88,16 @@ body.fade-in-trigger {
     width: 52.4vw;
 }
 
+/* New line (.chat-line) */
+.chat-line {
+    position: absolute;
+    top: 77vh;
+    left: 6.4vw;
+    width: 22.48vw;
+    height: 1px;
+    background-color: rgba(230, 230, 230, 0.28);
+}
+
 /* Time Texts */
 .time-text {
     position: absolute;
@@ -113,4 +123,16 @@ body.fade-in-trigger {
 .fourth-time-text {
     top: 83.86vh;
     left: 90.1vw;
+}
+
+/* New ellipsis text */
+.ellipsis {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    top: 74.2vh;
+    left: 6.41vw;
+    color: #111111;
+    letter-spacing: 0.28vw;
+    font-size: 0.47rem;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }

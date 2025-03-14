@@ -17,6 +17,8 @@
   <div class="line dashed second-dashed"></div>
   <div class="line dashed third-dashed"></div>
   <div class="line dashed fourth-dashed"></div>
+  <!-- New chat-line element -->
+  <div class="line chat-line"></div>
 
   <!-- Time Texts -->
   <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
@@ -33,11 +35,11 @@
     const EDGE_MARGIN = 11; // "Near edge" threshold
 
     document.addEventListener('click', (event) => {
-      // If this is the very first click anywhere on the page:
+      // If this is the very first click:
       if (!initialClickCompleted) {
         initialClickCompleted = true;
 
-        // 1) Request fullscreen (if not already)
+        // 1) Request fullscreen if not already
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen();
         }
@@ -47,12 +49,12 @@
           document.body.classList.add('fade-in-trigger');
         }, 1000);
 
-        // Mark fade completion after 4 seconds (adjust as needed)
+        // Mark fade completion after 4 seconds
         setTimeout(() => {
           fadeCompleted = true;
         }, 4000);
       } else {
-        // For *subsequent* clicks, only go fullscreen if we're near an edge
+        // For subsequent clicks, only go fullscreen if near an edge
         const x = event.clientX;
         const y = event.clientY;
         const width = window.innerWidth;
@@ -63,17 +65,16 @@
         const nearTop = y <= EDGE_MARGIN;
         const nearBottom = y >= height - EDGE_MARGIN;
 
-        // If near any edge and not fullscreen, request fullscreen
         if (!document.fullscreenElement && (nearLeft || nearRight || nearTop || nearBottom)) {
           document.documentElement.requestFullscreen();
         }
       }
     });
 
-    // Mousemove logic (optional, for future inactivity logic or expansions)
+    // Mousemove logic (optional for further inactivity expansions)
     document.addEventListener('mousemove', (event) => {
       lastMouseEvent = event;
-      // Additional inactivity logic can be added here if needed.
+      // Additional inactivity logic could go here
     });
   </script>
 </body>

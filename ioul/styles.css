@@ -1,0 +1,116 @@
+@font-face {
+    font-family: 'Distill Expanded';
+    src: url('font.woff2') format('woff2'),
+         url('font.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body.non-fullscreen {
+    background-color: #ffffff;
+    min-height: 100vh;
+    min-width: 100vw;
+    overflow: hidden;
+}
+
+body.fade-in-trigger {
+    background-color: #ffffff;
+}
+
+/* Decorative Lines */
+.line {
+    position: absolute;
+    height: 1px;
+    background-color: #cfcfcf;
+}
+
+.original {
+    top: 12.5vh;
+    left: 6.38vw;
+    width: 22.48vw;
+}
+
+.second {
+    top: 28.5vh;
+    left: 6.38vw;
+    width: 22.48vw;
+}
+
+.third {
+    top: 84vh;
+    left: 6.38vw;
+    width: 22.48vw;
+}
+
+.fourth {
+    top: 12.5vh;
+    left: 36vw;
+    width: 57.8vw;
+}
+
+.dashed {
+    position: absolute;
+    height: 1px;
+    top: 28.5vh;
+    left: 36vw;
+    width: 52.4vw;
+    background: linear-gradient(
+        to right,
+        #919191 0,
+        #919191 5px,
+        #ffffff 5px,
+        #ffffff 10px
+    );
+    background-size: 10px 1px;
+}
+
+.second-dashed {
+    top: 47vh;
+    left: 36vw;
+    width: 52.4vw;
+}
+
+.third-dashed {
+    top: 65.5vh;
+    left: 36vw;
+    width: 52.4vw;
+}
+
+.fourth-dashed {
+    top: 84vh;
+    left: 36vw;
+    width: 52.4vw;
+}
+
+/* Time Texts */
+.time-text {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.331rem;
+    color: #111111;
+    letter-spacing: 0.2vw;
+    text-shadow: 0.011rem 0 0 #919191, -0.011rem 0 0 #919191;
+    top: 28.5vh;
+    left: 89.81vw;
+}
+
+.second-time-text {
+    top: 47.04vh;
+    left: 89.91vw;
+}
+
+.third-time-text {
+    top: 65.51vh;
+    left: 89.87vw;
+}
+
+.fourth-time-text {
+    top: 83.86vh;
+    left: 90.1vw;
+}

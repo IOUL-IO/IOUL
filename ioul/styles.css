@@ -55,7 +55,6 @@ body.fade-in-trigger {
 }
 
 .dashed {
-    position: absolute;
     height: 1px;
     top: 28.5vh;
     left: 36vw;
@@ -70,6 +69,7 @@ body.fade-in-trigger {
     background-size: 10px 1px;
 }
 
+/* Additional dashed lines */
 .second-dashed {
     top: 47vh;
     left: 36vw;
@@ -113,4 +113,13 @@ body.fade-in-trigger {
 .fourth-time-text {
     top: 83.86vh;
     left: 90.1vw;
+}
+
+/* New chat-line */
+.chat-line {
+    top: 77vh;
+    left: 6.4vw;
+    width: 22.48vw;
+    height: 1px;
+    background-color: rgba(230, 230, 230, 0.28);
 }

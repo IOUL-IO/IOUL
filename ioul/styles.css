@@ -115,34 +115,11 @@ body.fade-in-trigger {
     left: 90.1vw;
 }
 
-/* Fading Container 
-   This occupies the old "hover-detect" area:
-   top: 28.5vh → 84vh (≈ 55.5vh tall)
-   left: 6.41vw → 28.86vw (≈ 22.45vw wide)
-*/
-.fading-container {
-    position: absolute;
-    top: 28.5vh;
-    left: 6.41vw;
-    width: 22.45vw;
-    height: 55.5vh;
-    
-    /* Initially invisible */
-    opacity: 0;
-    transition: opacity 0.5s;
-    /* If you want it to receive :hover styles, you can set background or pointer events, 
-       but here it's transparent. */
-}
-
-/* The text (and any future elements) inside the container */
+/* CHAT Text */
 .chat-text {
     position: absolute;
-    /* For example, near the bottom? If you want the text in the same place 
-       it used to be in the full screen, you can adjust accordingly.
-       The container is 55.5vh tall, so let's place it somewhere inside. 
-    */
-    top: 48%; /* adjust as needed */
-    left: 0;
+    top: 77vh;
+    left: 6.41vw;
     font-family: 'Distill Expanded', sans-serif;
     color: #717171;
     letter-spacing: 0.28vw;

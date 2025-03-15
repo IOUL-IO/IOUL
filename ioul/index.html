@@ -8,35 +8,38 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="non-fullscreen">
-  <!-- Decorative Lines -->
-  <div class="line original"></div>
-  <div class="line second"></div>
-  <div class="line third"></div>
-  <div class="line fourth"></div>
-  <div class="line dashed"></div>
-  <div class="line dashed second-dashed"></div>
-  <div class="line dashed third-dashed"></div>
-  <div class="line dashed fourth-dashed"></div>
+  <!-- We wrap all visible components in a container so we can hide/fade them together -->
+  <div class="page-content">
+    <!-- Decorative Lines -->
+    <div class="line original"></div>
+    <div class="line second"></div>
+    <div class="line third"></div>
+    <div class="line fourth"></div>
+    <div class="line dashed"></div>
+    <div class="line dashed second-dashed"></div>
+    <div class="line dashed third-dashed"></div>
+    <div class="line dashed fourth-dashed"></div>
 
-  <!-- Time Texts -->
-  <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-  <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-  <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
-  <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+    <!-- Time Texts -->
+    <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+    <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+    <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+    <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-  <!-- The bounding box we want to detect mouse entry -->
-  <div class="hover-area"></div>
+    <!-- Hover Area (to trigger chat text) -->
+    <div class="hover-area"></div>
 
-  <!-- CHAT Text -->
-  <span class="chat-text" id="chatText">cHAT . . .</span>
+    <!-- CHAT Text -->
+    <span class="chat-text" id="chatText">cHAT . . .</span>
+  </div>
 
   <script>
-    // === Page Fullscreen + Fade Setup ===
+    // === Fullscreen Setup ===
     let initialClickCompleted = false;
-    const EDGE_MARGIN = 11; // "Near edge" threshold for fullscreen
+    const EDGE_MARGIN = 11; // "Near edge" threshold for requesting fullscreen
 
     document.addEventListener('click', (event) => {
-      // If this is the first click anywhere on the page:
+      // If this is the very first click anywhere on the page:
       if (!initialClickCompleted) {
         initialClickCompleted = true;
 
@@ -44,13 +47,8 @@
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen();
         }
-
-        // 2) (Optional) Trigger any "fade-in" for the overall page
-        setTimeout(() => {
-          document.body.classList.add('fade-in-trigger');
-        }, 1000);
       } else {
-        // For subsequent clicks, go fullscreen if near an edge
+        // For subsequent clicks, only go fullscreen if near an edge
         const x = event.clientX;
         const y = event.clientY;
         const width = window.innerWidth;
@@ -67,26 +65,43 @@
       }
     });
 
-    // === Show the "cHAT . . ." text once the user enters hover-area ===
+    // === Fade in the entire page-content on first mouse move ===
+    const pageContent = document.querySelector('.page-content');
+    let pageFadedIn = false;
+
+    function fadeInPage() {
+      pageContent.style.opacity = '1'; // triggers CSS transition
+      pageFadedIn = true;
+    }
+
+    document.addEventListener('mousemove', function onFirstMouseMove() {
+      if (!pageFadedIn) {
+        fadeInPage();
+      }
+      // Remove this event listener so we don't keep calling fadeInPage
+      document.removeEventListener('mousemove', onFirstMouseMove);
+    });
+
+    // === Show chat text when hovering over the designated area ===
     const chatText = document.getElementById('chatText');
-    let textShownOnce = false;
+    let chatShownOnce = false;
 
     const hoverArea = document.querySelector('.hover-area');
     hoverArea.addEventListener('mouseenter', () => {
-      if (!textShownOnce) {
-        chatText.style.opacity = '1';   // fade in
-        textShownOnce = true;           // stay visible henceforth
+      if (!chatShownOnce && pageFadedIn) {
+        // Only show chat if the page is already faded in
+        chatText.style.opacity = '1';
+        chatShownOnce = true;
       }
     });
 
-    // === Replace "cHAT . . ." with an input on click ===
+    // === Replace "cHAT . . ." text with input on click ===
     chatText.addEventListener('click', () => {
-      // Create a new input
       const chatInput = document.createElement('input');
       chatInput.type = 'text';
       chatInput.classList.add('chat-input');
 
-      // Insert the new input right after chatText
+      // Insert input after the chat text
       chatText.insertAdjacentElement('afterend', chatInput);
 
       // Remove the original text

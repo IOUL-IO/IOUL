@@ -34,37 +34,6 @@
   </div>
 
   <script>
-    // === Fullscreen Setup ===
-    let initialClickCompleted = false;
-    const EDGE_MARGIN = 11; // "Near edge" threshold for requesting fullscreen
-
-    document.addEventListener('click', (event) => {
-      // If this is the very first click anywhere on the page:
-      if (!initialClickCompleted) {
-        initialClickCompleted = true;
-
-        // 1) Request fullscreen (if not already)
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen();
-        }
-      } else {
-        // For subsequent clicks, only go fullscreen if near an edge
-        const x = event.clientX;
-        const y = event.clientY;
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-
-        const nearLeft = x <= EDGE_MARGIN;
-        const nearRight = x >= width - EDGE_MARGIN;
-        const nearTop = y <= EDGE_MARGIN;
-        const nearBottom = y >= height - EDGE_MARGIN;
-
-        if (!document.fullscreenElement && (nearLeft || nearRight || nearTop || nearBottom)) {
-          document.documentElement.requestFullscreen();
-        }
-      }
-    });
-
     // === Fade in the entire page-content on first mouse move ===
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
@@ -74,6 +43,7 @@
       pageFadedIn = true;
     }
 
+    // Once the user moves the mouse anywhere, fade in .page-content
     document.addEventListener('mousemove', function onFirstMouseMove() {
       if (!pageFadedIn) {
         fadeInPage();
@@ -89,7 +59,6 @@
     const hoverArea = document.querySelector('.hover-area');
     hoverArea.addEventListener('mouseenter', () => {
       if (!chatShownOnce && pageFadedIn) {
-        // Only show chat if the page is already faded in
         chatText.style.opacity = '1';
         chatShownOnce = true;
       }
@@ -101,7 +70,7 @@
       chatInput.type = 'text';
       chatInput.classList.add('chat-input');
 
-      // Insert input after the chat text
+      // Insert input right after the chat text
       chatText.insertAdjacentElement('afterend', chatInput);
 
       // Remove the original text

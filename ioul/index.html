@@ -24,17 +24,19 @@
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
+  <!-- The bounding box we want to detect mouse entry -->
+  <div class="hover-area"></div>
+
   <!-- CHAT Text -->
   <span class="chat-text" id="chatText">cHAT . . .</span>
 
   <script>
-    // === Fullscreen + Fade-In Setup ===
-    let fadeCompleted = false;
+    // === Page Fullscreen + Fade Setup ===
     let initialClickCompleted = false;
-    const EDGE_MARGIN = 11; // "Near edge" threshold
+    const EDGE_MARGIN = 11; // "Near edge" threshold for fullscreen
 
     document.addEventListener('click', (event) => {
-      // If this is the very first click anywhere on the page:
+      // If this is the first click anywhere on the page:
       if (!initialClickCompleted) {
         initialClickCompleted = true;
 
@@ -43,17 +45,12 @@
           document.documentElement.requestFullscreen();
         }
 
-        // 2) Trigger fade-in animation for the page (not the text)
+        // 2) (Optional) Trigger any "fade-in" for the overall page
         setTimeout(() => {
           document.body.classList.add('fade-in-trigger');
         }, 1000);
-
-        // Mark fade completion after 4 seconds (adjust as needed)
-        setTimeout(() => {
-          fadeCompleted = true;
-        }, 4000);
       } else {
-        // For subsequent clicks, only go fullscreen if we're near an edge
+        // For subsequent clicks, go fullscreen if near an edge
         const x = event.clientX;
         const y = event.clientY;
         const width = window.innerWidth;
@@ -70,42 +67,32 @@
       }
     });
 
-    // === "cHAT . . ." Show-once Logic ===
+    // === Show the "cHAT . . ." text once the user enters hover-area ===
     const chatText = document.getElementById('chatText');
-    let textShownOnce = false; // keeps track if we've shown the text before
+    let textShownOnce = false;
 
-    document.addEventListener('mousemove', (event) => {
+    const hoverArea = document.querySelector('.hover-area');
+    hoverArea.addEventListener('mouseenter', () => {
       if (!textShownOnce) {
-        // Calculate position as a % of viewport
-        const xPercent = (event.clientX / window.innerWidth) * 100;
-        const yPercent = (event.clientY / window.innerHeight) * 100;
-
-        // If mouse enters bounding box, show the text
-        if (
-          xPercent >= 6.4 && xPercent <= 28.86 &&
-          yPercent >= 28.5 && yPercent <= 84
-        ) {
-          chatText.style.opacity = '1';
-          textShownOnce = true; // so we don't hide it again
-        }
+        chatText.style.opacity = '1';   // fade in
+        textShownOnce = true;           // stay visible henceforth
       }
-      // Once shownOnce = true, we do nothing else—text stays visible.
     });
 
     // === Replace "cHAT . . ." with an input on click ===
     chatText.addEventListener('click', () => {
-      // 1) Create a new input
+      // Create a new input
       const chatInput = document.createElement('input');
       chatInput.type = 'text';
       chatInput.classList.add('chat-input');
 
-      // 2) Insert the new input right after chatText
+      // Insert the new input right after chatText
       chatText.insertAdjacentElement('afterend', chatInput);
 
-      // 3) Remove the original text
+      // Remove the original text
       chatText.remove();
 
-      // 4) Focus the new input
+      // Focus the new input
       chatInput.focus();
     });
   </script>

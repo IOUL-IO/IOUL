@@ -115,21 +115,35 @@ body.fade-in-trigger {
     left: 90.1vw;
 }
 
-/* Hover Area */
-.hover-area {
+/* Fading Container 
+   - This container holds the hover-detect region + the text, 
+     and starts off invisible (opacity=0). 
+*/
+.fading-container {
     position: absolute;
-    /* This covers the area:
-       - from left 6.41vw to 28.86vw (width ≈ 22.45vw)
-       - from top 28.5vh to 84vh (height ≈ 55.5vh)
-    */
-    top: 28.5vh;
-    left: 6.41vw;
-    width: 22.45vw;
-    height: 55.5vh;
-    /* No visible styling required; it's just an invisible hover region. */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    /* Start hidden; transitions for a smooth fade */
+    opacity: 0;
+    transition: opacity 0.5s;
 }
 
-/* CHAT Text */
+/* The hover-detect area for first-time fade-in 
+   from left: 6.41vw to ~28.86vw,
+   and top: 28.5vh to 84vh.
+*/
+.hover-detect {
+    position: absolute;
+    top: 28.5vh;
+    left: 6.41vw;
+    width: 22.45vw; /* 28.86 - 6.41 = ~22.45 */
+    height: 55.5vh; /* 84 - 28.5 = 55.5 */
+}
+
+/* Chat Text inside the container */
 .chat-text {
     position: absolute;
     top: 77vh;
@@ -139,11 +153,5 @@ body.fade-in-trigger {
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
-
-/* Hover -> Reveal the text */
-.hover-area:hover ~ .chat-text {
-    opacity: 1;
+    /* No separate opacity required since we fade the container itself now */
 }

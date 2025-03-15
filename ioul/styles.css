@@ -115,7 +115,17 @@ body.fade-in-trigger {
     left: 90.1vw;
 }
 
-/* CHAT Text */
+/* The invisible bounding box that triggers text to appear once hovered */
+.hover-area {
+    position: absolute;
+    top: 28.5vh;
+    left: 6.4vw;
+    width: calc(28.86vw - 6.4vw); /* ~22.46vw */
+    height: calc(84vh - 28.5vh);  /* ~55.5vh */
+    /* No background, so it's invisible. If debugging, temporarily set background-color: rgba(255,0,0,0.1) */
+}
+
+/* CHAT Text - hidden until user hovers over .hover-area the first time */
 .chat-text {
     position: absolute;
     top: 77vh;
@@ -127,12 +137,11 @@ body.fade-in-trigger {
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     cursor: pointer;
 
-    /* Start hidden */
-    opacity: 0;
+    opacity: 0;            /* Start hidden */
     transition: opacity 0.3s ease;
 }
 
-/* New Input styling */
+/* Input that replaces the text on click */
 .chat-input {
     position: absolute;
     top: 77vh;

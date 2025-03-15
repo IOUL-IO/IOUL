@@ -24,21 +24,15 @@
   <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
-  <!-- 
-    Fading Container:
-    Spans left: 6.41vw -> ~28.86vw, top: 28.5vh -> 84vh,
-    so width ~ 22.45vw, height ~ 55.5vh.
-    All elements inside it will fade in/out together.
-  -->
-  <div class="fading-container">
-    <!-- Your text (and any future elements) go here -->
-    <span class="chat-text">cHAT . . .</span>
-  </div>
+  <!-- CHAT Text -->
+  <span class="chat-text">cHAT . . .</span>
 
   <script>
     // === Fullscreen + Fade-In Setup ===
     let fadeCompleted = false;
     let initialClickCompleted = false;
+    let lastMouseEvent = null;
+    let inactivityTimer;
     const EDGE_MARGIN = 11; // "Near edge" threshold
 
     document.addEventListener('click', (event) => {
@@ -61,7 +55,7 @@
           fadeCompleted = true;
         }, 4000);
       } else {
-        // For *subsequent* clicks, only go fullscreen if we're near an edge
+        // For *subsequent* clicks, only go fullscreen if we’re near an edge
         const x = event.clientX;
         const y = event.clientY;
         const width = window.innerWidth;
@@ -79,52 +73,10 @@
       }
     });
 
-    // === Container Fade-In/Out Logic ===
-    const container = document.querySelector('.fading-container');
-    let containerShownOnce = false;
-    let inactivityTimer = null;
-
-    // Fade the container in
-    function showContainer() {
-      container.style.opacity = '1';
-    }
-
-    // Fade the container out
-    function hideContainer() {
-      container.style.opacity = '0';
-    }
-
-    // Reset inactivity timer
-    function resetInactivityTimer() {
-      // Clear any existing timer
-      if (inactivityTimer) {
-        clearTimeout(inactivityTimer);
-      }
-
-      // If it's been revealed before, ensure it’s visible
-      if (containerShownOnce) {
-        showContainer();
-      }
-
-      // After 60s of no mouse movement, fade out (if shown at least once)
-      inactivityTimer = setTimeout(() => {
-        if (containerShownOnce) {
-          hideContainer();
-        }
-      }, 60 * 1000);
-    }
-
-    // On first mouseenter into the container area -> fade in and remain visible
-    container.addEventListener('mouseenter', () => {
-      if (!containerShownOnce) {
-        containerShownOnce = true;
-        showContainer();
-      }
-    });
-
-    // On any mouse movement anywhere on screen -> reset inactivity timer
-    document.addEventListener('mousemove', () => {
-      resetInactivityTimer();
+    // Mousemove logic (optional, for future expansions)
+    document.addEventListener('mousemove', (event) => {
+      lastMouseEvent = event;
+      // Additional inactivity logic can be added here if needed.
     });
   </script>
 </body>

@@ -34,6 +34,9 @@
   </div>
 
   <script>
+    // === Constants ===
+    const EDGE_MARGIN = 11; // 11px from any edge triggers fullscreen
+
     // === Fade in the entire page-content on first mouse move ===
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
@@ -52,12 +55,30 @@
       document.removeEventListener('mousemove', onFirstMouseMove);
     });
 
+    // === Fullscreen trigger if user clicks near any edge (within 11px) ===
+    document.addEventListener('click', (event) => {
+      const x = event.clientX;
+      const y = event.clientY;
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      const nearLeft = x <= EDGE_MARGIN;
+      const nearRight = x >= width - EDGE_MARGIN;
+      const nearTop = y <= EDGE_MARGIN;
+      const nearBottom = y >= height - EDGE_MARGIN;
+
+      if (!document.fullscreenElement && (nearLeft || nearRight || nearTop || nearBottom)) {
+        document.documentElement.requestFullscreen();
+      }
+    });
+
     // === Show chat text when hovering over the designated area ===
     const chatText = document.getElementById('chatText');
     let chatShownOnce = false;
 
     const hoverArea = document.querySelector('.hover-area');
     hoverArea.addEventListener('mouseenter', () => {
+      // Only reveal chat if page is already faded in and it hasn't been shown before
       if (!chatShownOnce && pageFadedIn) {
         chatText.style.opacity = '1';
         chatShownOnce = true;

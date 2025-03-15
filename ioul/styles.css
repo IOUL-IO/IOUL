@@ -115,6 +115,20 @@ body.fade-in-trigger {
     left: 90.1vw;
 }
 
+/* Hover Area */
+.hover-area {
+    position: absolute;
+    /* This covers the area:
+       - from left 6.41vw to 28.86vw (width ≈ 22.45vw)
+       - from top 28.5vh to 84vh (height ≈ 55.5vh)
+    */
+    top: 28.5vh;
+    left: 6.41vw;
+    width: 22.45vw;
+    height: 55.5vh;
+    /* No visible styling required; it's just an invisible hover region. */
+}
+
 /* CHAT Text */
 .chat-text {
     position: absolute;
@@ -125,4 +139,11 @@ body.fade-in-trigger {
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Hover -> Reveal the text */
+.hover-area:hover ~ .chat-text {
+    opacity: 1;
 }

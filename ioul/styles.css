@@ -115,7 +115,7 @@ body.fade-in-trigger {
     left: 90.1vw;
 }
 
-/* CHAT Text */
+/* Original CHAT Text */
 .chat-text {
     position: absolute;
     top: 77vh;
@@ -125,4 +125,23 @@ body.fade-in-trigger {
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    cursor: pointer; /* So user knows it’s clickable */
+}
+
+/* New Input styling */
+.chat-input {
+    position: absolute;
+    top: 77vh;
+    left: 6.41vw;
+    width: 20vw; /* Adjust as needed */
+    
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.47rem;
+    letter-spacing: 0.28vw;
+    color: #717171;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+
+    border: none;       /* Remove default input borders */
+    outline: none;      /* Remove default focus outline */
+    background: #fff;   /* Or any background color you prefer */
 }

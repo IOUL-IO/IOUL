@@ -116,42 +116,36 @@ body.fade-in-trigger {
 }
 
 /* Fading Container 
-   - This container holds the hover-detect region + the text, 
-     and starts off invisible (opacity=0). 
+   This occupies the old "hover-detect" area:
+   top: 28.5vh → 84vh (≈ 55.5vh tall)
+   left: 6.41vw → 28.86vw (≈ 22.45vw wide)
 */
 .fading-container {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-
-    /* Start hidden; transitions for a smooth fade */
-    opacity: 0;
-    transition: opacity 0.5s;
-}
-
-/* The hover-detect area for first-time fade-in 
-   from left: 6.41vw to ~28.86vw,
-   and top: 28.5vh to 84vh.
-*/
-.hover-detect {
-    position: absolute;
     top: 28.5vh;
     left: 6.41vw;
-    width: 22.45vw; /* 28.86 - 6.41 = ~22.45 */
-    height: 55.5vh; /* 84 - 28.5 = 55.5 */
+    width: 22.45vw;
+    height: 55.5vh;
+    
+    /* Initially invisible */
+    opacity: 0;
+    transition: opacity 0.5s;
+    /* If you want it to receive :hover styles, you can set background or pointer events, 
+       but here it's transparent. */
 }
 
-/* Chat Text inside the container */
+/* The text (and any future elements) inside the container */
 .chat-text {
     position: absolute;
-    top: 77vh;
-    left: 6.41vw;
+    /* For example, near the bottom? If you want the text in the same place 
+       it used to be in the full screen, you can adjust accordingly.
+       The container is 55.5vh tall, so let's place it somewhere inside. 
+    */
+    top: 48%; /* adjust as needed */
+    left: 0;
     font-family: 'Distill Expanded', sans-serif;
     color: #717171;
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    /* No separate opacity required since we fade the container itself now */
 }

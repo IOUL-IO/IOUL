@@ -25,14 +25,12 @@
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
   <!-- CHAT Text -->
-  <span class="chat-text">cHAT . . .</span>
+  <span class="chat-text" id="chatText">cHAT . . .</span>
 
   <script>
     // === Fullscreen + Fade-In Setup ===
     let fadeCompleted = false;
     let initialClickCompleted = false;
-    let lastMouseEvent = null;
-    let inactivityTimer;
     const EDGE_MARGIN = 11; // "Near edge" threshold
 
     document.addEventListener('click', (event) => {
@@ -55,7 +53,7 @@
           fadeCompleted = true;
         }, 4000);
       } else {
-        // For *subsequent* clicks, only go fullscreen if we’re near an edge
+        // For *subsequent* clicks, only go fullscreen if we're near an edge
         const x = event.clientX;
         const y = event.clientY;
         const width = window.innerWidth;
@@ -73,10 +71,31 @@
       }
     });
 
-    // Mousemove logic (optional, for future expansions)
+    // Optionally track mouse movement for expansions
     document.addEventListener('mousemove', (event) => {
-      lastMouseEvent = event;
-      // Additional inactivity logic can be added here if needed.
+      // ...
+    });
+
+    // === Replace the "cHAT . . ." text with an input on click ===
+    const chatText = document.getElementById('chatText');
+    chatText.addEventListener('click', () => {
+      // 1) Create a new input
+      const chatInput = document.createElement('input');
+      chatInput.type = 'text';
+      chatInput.classList.add('chat-input');
+      // Optionally, you can set a placeholder or initial value
+      // chatInput.placeholder = 'Type here...';
+
+      // 2) Insert the new input into the DOM (in place of chat-text)
+      //    We'll place it *before* removing chatText, so it occupies
+      //    the same parent location in the DOM.
+      chatText.insertAdjacentElement('afterend', chatInput);
+
+      // 3) Remove the original chat text
+      chatText.remove();
+
+      // 4) Optionally focus the input immediately
+      chatInput.focus();
     });
   </script>
 </body>

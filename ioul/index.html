@@ -25,14 +25,13 @@
   <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
 
   <!-- 
-    CONTAINER that holds anything you want to fade in/out. 
-    It also contains the 'hover-detect' area plus the actual text (and possibly more elements in the future).
+    Fading Container:
+    Spans left: 6.41vw -> ~28.86vw, top: 28.5vh -> 84vh,
+    so width ~ 22.45vw, height ~ 55.5vh.
+    All elements inside it will fade in/out together.
   -->
   <div class="fading-container">
-    <!-- HOVER DETECTION AREA -->
-    <div class="hover-detect"></div>
-    
-    <!-- Chat Text (and any future elements) -->
+    <!-- Your text (and any future elements) go here -->
     <span class="chat-text">cHAT . . .</span>
   </div>
 
@@ -82,54 +81,48 @@
 
     // === Container Fade-In/Out Logic ===
     const container = document.querySelector('.fading-container');
-    const hoverDetect = document.querySelector('.hover-detect');
-    
-    // We only fade in automatically the *first* time you hover over the designated area
     let containerShownOnce = false;
-    
-    // We'll track inactivity with a timer
     let inactivityTimer = null;
 
-    // Fade container in
+    // Fade the container in
     function showContainer() {
       container.style.opacity = '1';
     }
 
-    // Fade container out
+    // Fade the container out
     function hideContainer() {
       container.style.opacity = '0';
     }
 
     // Reset inactivity timer
     function resetInactivityTimer() {
-      // If there's an existing timer, clear it
+      // Clear any existing timer
       if (inactivityTimer) {
         clearTimeout(inactivityTimer);
       }
 
-      // If container has already been shown, make sure it's visible
+      // If it's been revealed before, ensure it’s visible
       if (containerShownOnce) {
         showContainer();
       }
 
-      // Set a new timer for 60s of inactivity
+      // After 60s of no mouse movement, fade out (if shown at least once)
       inactivityTimer = setTimeout(() => {
-        // If it has been shown once before, fade out after inactivity
         if (containerShownOnce) {
           hideContainer();
         }
       }, 60 * 1000);
     }
 
-    // When mouse first enters the hover-detect area, show the container
-    hoverDetect.addEventListener('mouseenter', () => {
+    // On first mouseenter into the container area -> fade in and remain visible
+    container.addEventListener('mouseenter', () => {
       if (!containerShownOnce) {
         containerShownOnce = true;
         showContainer();
       }
     });
 
-    // On any mouse movement, reset inactivity timer
+    // On any mouse movement anywhere on screen -> reset inactivity timer
     document.addEventListener('mousemove', () => {
       resetInactivityTimer();
     });

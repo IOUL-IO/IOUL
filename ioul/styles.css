@@ -118,7 +118,7 @@ body.fade-in-trigger {
 /* CHAT Text */
 .chat-text {
     position: absolute;
-    top: 77.11vh;
+    top: 77vh;
     left: 6.41vw;
     font-family: 'Distill Expanded', sans-serif;
     color: #717171;

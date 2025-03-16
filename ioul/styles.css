@@ -46,8 +46,8 @@ body.non-fullscreen {
 .layer-three {
     position: fixed;
     top: 0;
-    left: 94.11vw;
-    width: calc(100vw - 94.11vw);
+    left: 94.17vw;
+    width: calc(100vw - 94.17vw);
     height: 100vh;
     background-color: #ffffff;
     z-index: 100;

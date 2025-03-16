@@ -8,6 +8,11 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="non-fullscreen">
+  <!-- White layers (z-index: 100) -->
+  <div class="layer-one"></div>
+  <div class="layer-two"></div>
+  <div class="layer-three"></div>
+
   <!-- We wrap all visible components in a container so we can hide/fade them together -->
   <div class="page-content">
     <!-- Decorative Lines -->
@@ -78,7 +83,7 @@
 
     const hoverArea = document.querySelector('.hover-area');
     hoverArea.addEventListener('mouseenter', () => {
-      // Only reveal chat if page is already faded in and we haven't shown it before
+      // Only reveal chat if page is already faded in and not shown yet
       if (!chatShownOnce && pageFadedIn) {
         chatText.style.opacity = '1';
         chatShownOnce = true;

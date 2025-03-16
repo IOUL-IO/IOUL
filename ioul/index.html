@@ -78,7 +78,7 @@
 
     const hoverArea = document.querySelector('.hover-area');
     hoverArea.addEventListener('mouseenter', () => {
-      // Only reveal chat if page is already faded in and it hasn't been shown before
+      // Only reveal chat if page is already faded in and we haven't shown it before
       if (!chatShownOnce && pageFadedIn) {
         chatText.style.opacity = '1';
         chatShownOnce = true;

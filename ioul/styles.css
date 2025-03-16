@@ -19,6 +19,41 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
+/* Three fixed white layers with z-index=100 */
+
+/* 1) Left 0 → 6.37vw */
+.layer-one {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 6.37vw;
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 100;
+}
+
+/* 2) Left 28.87vw → 36vw */
+.layer-two {
+    position: fixed;
+    top: 0;
+    left: 28.87vw;
+    width: calc(36vw - 28.87vw);
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 100;
+}
+
+/* 3) Left 93.8vw → 100vw */
+.layer-three {
+    position: fixed;
+    top: 0;
+    left: 93.8vw;
+    width: calc(100vw - 93.8vw);
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 100;
+}
+
 /* We'll fade in the entire .page-content once the user moves the mouse.
    Start hidden (opacity=0). */
 .page-content {

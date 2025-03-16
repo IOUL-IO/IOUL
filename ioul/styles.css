@@ -43,12 +43,11 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* 3) Left 93.8vw → 100vw */
 .layer-three {
     position: fixed;
     top: 0;
-    left: 93.8vw;
-    width: calc(100vw - 93.8vw);
+    left: 94.11vw;
+    width: calc(100vw - 94.11vw);
     height: 100vh;
     background-color: #ffffff;
     z-index: 100;

@@ -219,7 +219,7 @@ body.non-fullscreen {
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
-/* SHIFTED UP 1vh from earlier versions, and each left is 0.1vw less than the previous code */
+/* SHIFTED UP 1vh from earlier versions, and each left is 0.1vw less than the version before that */
 .num1  { top: 27.5vh; left: 49.8vw; }
 .num2  { top: 27.5vh; left: 64.3vw; }
 .num3  { top: 27.5vh; left: 78.8vw; }
@@ -240,11 +240,11 @@ body.non-fullscreen {
 .num15 { top: 82.5vh; left: 78.8vw; }
 .num16 { top: 82.5vh; left: 93.3vw; }
 
-/* Dashed lines: now 11.9vw wide (down from 12vw) */
+/* Dashed lines: now 11.8vw wide (down from 11.9vw) */
 .grid-dashed {
   position: absolute;
   height: 1px;
-  width: 11.9vw; /* 0.1vw less than 12vw */
+  width: 11.8vw; /* 0.1vw less than 11.9vw */
   background: linear-gradient(
     to right,
     #919191 0,
@@ -271,7 +271,7 @@ body.non-fullscreen {
 .dashed11 { top: 64.5vh; left: 66.5vw; }
 .dashed12 { top: 64.5vh; left: 81vw;   }
 
-.dashed13 { top: 83vh;   left: 36vw; } /* from 84 => 83 earlier */
+.dashed13 { top: 83vh;   left: 36vw; }
 .dashed14 { top: 83vh;   left: 51vw; }
 .dashed15 { top: 83vh;   left: 66.5vw; }
 .dashed16 { top: 83vh;   left: 81vw;   }

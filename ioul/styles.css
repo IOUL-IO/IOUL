@@ -231,14 +231,14 @@ body.non-fullscreen {
 .num8  { top: 46vh;   left: 93.3vw; }
 
 .num9   { top: 64.5vh; left: 49.8vw; }
-.num10  { top: 64.5vh; left: 64.3vw; }
-.num11  { top: 64.5vh; left: 78.8vw; }
-.num12  { top: 64.5vh; left: 93.3vw; }
+.num10  { top: 64.5vh; left: 64.1vw; }
+.num11  { top: 64.5vh; left: 78.6vw; }
+.num12  { top: 64.5vh; left: 93.1vw; }
 
-.num13 { top: 82.5vh; left: 49.8vw; }
-.num14 { top: 82.5vh; left: 64.3vw; }
-.num15 { top: 82.5vh; left: 78.8vw; }
-.num16 { top: 82.5vh; left: 93.3vw; }
+.num13 { top: 82.5vh; left: 49.6vw; }
+.num14 { top: 82.5vh; left: 64.1vw; }
+.num15 { top: 82.5vh; left: 78.6vw; }
+.num16 { top: 82.5vh; left: 93.1vw; }
 
 /* Dashed lines: now 11.8vw wide (down from 11.9vw) */
 .grid-dashed {

@@ -220,9 +220,9 @@ body.non-fullscreen {
 }
 
 /* SHIFTED UP 1vh from earlier versions, and each left is 0.1vw less than the version before that */
-.num1  { top: 27.5vh; left: 49.8vw; }
-.num2  { top: 27.5vh; left: 64.3vw; }
-.num3  { top: 27.5vh; left: 78.8vw; }
+.num1  { top: 27.5vh; left: 49.2vw; }
+.num2  { top: 27.5vh; left: 63.9vw; }
+.num3  { top: 27.5vh; left: 78.6vw; }
 .num4  { top: 27.5vh; left: 93.3vw; }
 
 .num5  { top: 46vh;   left: 49.8vw; }
@@ -257,9 +257,9 @@ body.non-fullscreen {
 
 /* SHIFTED UP 1vh from original positions */
 .dashed01 { top: 27.5vh; left: 36vw; }
-.dashed02 { top: 27.5vh; left: 52vw; }
-.dashed03 { top: 27.5vh; left: 66.5vw; }
-.dashed04 { top: 27.5vh; left: 81vw;   }
+.dashed02 { top: 27.5vh; left: 51.4vw; }
+.dashed03 { top: 27.5vh; left: 66.1vw; }
+.dashed04 { top: 27.5vh; left: 80.9vw;   }
 
 .dashed05 { top: 46vh;   left: 36vw; }
 .dashed06 { top: 46vh;   left: 52vw; }

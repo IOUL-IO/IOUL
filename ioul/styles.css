@@ -220,35 +220,34 @@ body.non-fullscreen {
 }
 
 /* 
-  SHIFTED UP BY 1vh, 
-  AND LEFT minus 1vw from last version 
+  SHIFTED UP 1vh from earlier versions, 
+  +0.4vw to left from last version 
 */
-.num1  { top: 27.5vh; left: 49.5vw; }
-.num2  { top: 27.5vh; left: 64vw;   }
-.num3  { top: 27.5vh; left: 78.5vw; }
-.num4  { top: 27.5vh; left: 93vw;   }
+.num1  { top: 27.5vh; left: 49.9vw; }
+.num2  { top: 27.5vh; left: 64.4vw; }
+.num3  { top: 27.5vh; left: 78.9vw; }
+.num4  { top: 27.5vh; left: 93.4vw; }
 
-.num5  { top: 46vh;   left: 49.5vw; }
-.num6  { top: 46vh;   left: 64vw;   }
-.num7  { top: 46vh;   left: 78.5vw; }
-.num8  { top: 46vh;   left: 93vw;   }
+.num5  { top: 46vh;   left: 49.9vw; }
+.num6  { top: 46vh;   left: 64.4vw; }
+.num7  { top: 46vh;   left: 78.9vw; }
+.num8  { top: 46vh;   left: 93.4vw; }
 
-.num9   { top: 64.5vh; left: 49.5vw; }
-.num10  { top: 64.5vh; left: 64vw;   }
-.num11  { top: 64.5vh; left: 78.5vw; }
-.num12  { top: 64.5vh; left: 93vw;   }
+.num9   { top: 64.5vh; left: 49.9vw; }
+.num10  { top: 64.5vh; left: 64.4vw; }
+.num11  { top: 64.5vh; left: 78.9vw; }
+.num12  { top: 64.5vh; left: 93.4vw; }
 
-.num13 { top: 82.5vh; left: 49.5vw; }
-.num14 { top: 82.5vh; left: 64vw;   }
-.num15 { top: 82.5vh; left: 78.5vw; }
-.num16 { top: 82.5vh; left: 93vw;   }
+.num13 { top: 82.5vh; left: 49.9vw; }
+.num14 { top: 82.5vh; left: 64.4vw; }
+.num15 { top: 82.5vh; left: 78.9vw; }
+.num16 { top: 82.5vh; left: 93.4vw; }
 
-/* Common style for the 16 new dashed lines */
+/* Dashed lines: now 12vw wide (down from 14vw) */
 .grid-dashed {
   position: absolute;
   height: 1px;
-  /* width was 10vw => now 14vw */
-  width: 14vw;
+  width: 12vw; /* lowered from 14vw */
   background: linear-gradient(
     to right,
     #919191 0,
@@ -259,7 +258,7 @@ body.non-fullscreen {
   background-size: 10px 1px;
 }
 
-/* SHIFTED UP BY 1vh (top - 1), width is now 14vw */
+/* SHIFTED UP BY 1vh (top - 1) from the original positions */
 .dashed01 { top: 27.5vh; left: 36vw; }
 .dashed02 { top: 27.5vh; left: 51vw; }
 .dashed03 { top: 27.5vh; left: 66.5vw; }
@@ -275,7 +274,7 @@ body.non-fullscreen {
 .dashed11 { top: 64.5vh; left: 66.5vw; }
 .dashed12 { top: 64.5vh; left: 81vw;   }
 
-.dashed13 { top: 83vh;   left: 36vw; } /* 84 => 83 */
+.dashed13 { top: 83vh;   left: 36vw; } /* from 84 => 83 earlier */
 .dashed14 { top: 83vh;   left: 51vw; }
 .dashed15 { top: 83vh;   left: 66.5vw; }
 .dashed16 { top: 83vh;   left: 81vw;   }

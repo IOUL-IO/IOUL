@@ -1,209 +1,277 @@
 @font-face {
-    font-family: 'Distill Expanded';
-    src: url('font.woff2') format('woff2'),
-         url('font.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Distill Expanded';
+  src: url('font.woff2') format('woff2'),
+       url('font.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body.non-fullscreen {
-    background-color: #ffffff;
-    min-height: 100vh;
-    min-width: 100vw;
-    overflow: hidden;
+  background-color: #ffffff;
+  min-height: 100vh;
+  min-width: 100vw;
+  overflow: hidden;
 }
 
 /* Three fixed white layers with z-index=100 */
 
 /* 1) Left 0 → 6.37vw */
 .layer-one {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 6.37vw;
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6.37vw;
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 100;
 }
 
 /* 2) Left 28.87vw → 36vw */
 .layer-two {
-    position: fixed;
-    top: 0;
-    left: 28.87vw;
-    width: calc(36vw - 28.87vw);
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 28.87vw;
+  width: calc(36vw - 28.87vw);
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 100;
 }
 
+/* 3) Left 94.17vw → 100vw */
 .layer-three {
-    position: fixed;
-    top: 0;
-    left: 94.17vw;
-    width: calc(100vw - 94.17vw);
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 94.17vw;
+  width: calc(100vw - 94.17vw);
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 100;
 }
 
 /* We'll fade in the entire .page-content once the user moves the mouse.
    Start hidden (opacity=0). */
 .page-content {
-    opacity: 0;
-    transition: opacity 0.6s ease;
+  opacity: 0;
+  transition: opacity 0.6s ease;
 }
 
 /* Decorative Lines */
 .line {
-    position: absolute;
-    height: 1px;
-    background-color: #cfcfcf;
+  position: absolute;
+  height: 1px;
+  background-color: #cfcfcf;
 }
 
 .original {
-    top: 12.5vh;
-    left: 6.38vw;
-    width: 22.48vw;
+  top: 12.5vh;
+  left: 6.38vw;
+  width: 22.48vw;
 }
 
 .second {
-    top: 28.5vh;
-    left: 6.38vw;
-    width: 22.48vw;
+  top: 28.5vh;
+  left: 6.38vw;
+  width: 22.48vw;
 }
 
 .third {
-    top: 84vh;
-    left: 6.38vw;
-    width: 22.48vw;
+  top: 84vh;
+  left: 6.38vw;
+  width: 22.48vw;
 }
 
 .fourth {
-    top: 12.5vh;
-    left: 36vw;
-    width: 57.8vw;
+  top: 12.5vh;
+  left: 36vw;
+  width: 57.8vw;
 }
 
 .dashed {
-    position: absolute;
-    height: 1px;
-    top: 28.5vh;
-    left: 36vw;
-    width: 52.4vw;
-    background: linear-gradient(
-        to right,
-        #919191 0,
-        #919191 5px,
-        #ffffff 5px,
-        #ffffff 10px
-    );
-    background-size: 10px 1px;
+  position: absolute;
+  height: 1px;
+  top: 28.5vh;
+  left: 36vw;
+  width: 52.4vw;
+  background: linear-gradient(
+    to right,
+    #919191 0,
+    #919191 5px,
+    #ffffff 5px,
+    #ffffff 10px
+  );
+  background-size: 10px 1px;
 }
 
 .second-dashed {
-    top: 47vh;
-    left: 36vw;
-    width: 52.4vw;
+  top: 47vh;
+  left: 36vw;
+  width: 52.4vw;
 }
 
 .third-dashed {
-    top: 65.5vh;
-    left: 36vw;
-    width: 52.4vw;
+  top: 65.5vh;
+  left: 36vw;
+  width: 52.4vw;
 }
 
 .fourth-dashed {
-    top: 84vh;
-    left: 36vw;
-    width: 52.4vw;
+  top: 84vh;
+  left: 36vw;
+  width: 52.4vw;
 }
 
 /* Time Texts */
 .time-text {
-    position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.331rem;
-    color: #111111;
-    letter-spacing: 0.2vw;
-    text-shadow: 0.011rem 0 0 #919191, -0.011rem 0 0 #919191;
-    top: 28.5vh;
-    left: 89.81vw;
+  position: absolute;
+  font-family: 'Distill Expanded', sans-serif;
+  font-size: 0.331rem;
+  color: #111111;
+  letter-spacing: 0.2vw;
+  text-shadow: 0.011rem 0 0 #919191, -0.011rem 0 0 #919191;
+  top: 28.5vh;
+  left: 89.81vw;
 }
 
 .second-time-text {
-    top: 47.04vh;
-    left: 89.91vw;
+  top: 47.04vh;
+  left: 89.91vw;
 }
 
 .third-time-text {
-    top: 65.51vh;
-    left: 89.87vw;
+  top: 65.51vh;
+  left: 89.87vw;
 }
 
 .fourth-time-text {
-    top: 83.86vh;
-    left: 90.1vw;
+  top: 83.86vh;
+  left: 90.1vw;
 }
 
 /* Hover area (to reveal chat-text) */
 .hover-area {
-    position: absolute;
-    top: 28.5vh;
-    left: 6.4vw;
-    width: calc(28.86vw - 6.4vw); /* ~22.46vw */
-    height: calc(84vh - 28.5vh);  /* ~55.5vh */
-    /* Invisible bounding region */
+  position: absolute;
+  top: 28.5vh;
+  left: 6.4vw;
+  width: calc(28.86vw - 6.4vw); /* ~22.46vw */
+  height: calc(84vh - 28.5vh);  /* ~55.5vh */
+  /* Invisible bounding region */
 }
 
 /* Chat Text */
 .chat-text {
-    position: absolute;
-    top: 77vh;
-    left: 6.41vw;
-    display: inline-block;
+  position: absolute;
+  top: 77vh;
+  left: 6.41vw;
+  display: inline-block;
 
-    font-family: 'Distill Expanded', sans-serif;
-    color: #717171;
-    letter-spacing: 0.28vw;
-    font-size: 0.47rem;
-    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    cursor: pointer;
+  font-family: 'Distill Expanded', sans-serif;
+  color: #717171;
+  letter-spacing: 0.28vw;
+  font-size: 0.47rem;
+  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+  cursor: pointer;
 
-    /* Start hidden; fade in only after page fade + hover */
-    opacity: 0;
-    transition: opacity 0.3s ease;
+  /* Start hidden; fade in only after page fade + hover */
+  opacity: 0;
+  transition: opacity 0.3s ease;
 
-    /* Helps avoid clipping top of letters */
-    line-height: 1.3;
-    padding-top: 0.1rem;
+  /* Helps avoid clipping top of letters */
+  line-height: 1.3;
+  padding-top: 0.1rem;
 }
 
 /* Input that replaces the text on click */
 .chat-input {
-    position: absolute;
-    top: 77vh;
-    left: 6.41vw;
-    width: 22.17vw;
+  position: absolute;
+  top: 77vh;
+  left: 6.41vw;
+  width: 22.17vw;
 
-    font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.47rem;
-    letter-spacing: 0.28vw;
-    color: #111111;
-    caret-color: #d1d1d1;
-    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+  font-family: 'Distill Expanded', sans-serif;
+  font-size: 0.47rem;
+  letter-spacing: 0.28vw;
+  color: #111111;
+  caret-color: #d1d1d1;
+  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 
-    line-height: 1.2;
-    padding: 0.2rem 0;
+  line-height: 1.2;
+  padding: 0.2rem 0;
 
-    border: none;
-    outline: none;
-    background: #ffffff;
-    cursor: text;
+  border: none;
+  outline: none;
+  background: #ffffff;
+  cursor: text;
 }
+
+/* NEW: Common styling for all 16 numbered items */
+.grid-number {
+  position: absolute;
+  font-family: 'Distill Expanded', sans-serif;
+  color: #111111;
+  font-size: 0.47rem;
+  letter-spacing: 0.28vw;
+  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+}
+
+/* Position each number individually */
+.num1  { top: 28.5vh; left: 47.6vw; }
+.num2  { top: 28.5vh; left: 59.2vw; }
+.num3  { top: 28.5vh; left: 70.8vw; }
+.num4  { top: 28.5vh; left: 82.4vw; }
+
+.num5  { top: 47vh;   left: 47.6vw; }
+.num6  { top: 47vh;   left: 59.2vw; }
+.num7  { top: 47vh;   left: 70.8vw; }
+.num8  { top: 47vh;   left: 82.4vw; }
+
+.num9   { top: 65.5vh; left: 47.6vw; }
+.num10  { top: 65.5vh; left: 59.2vw; }
+.num11  { top: 65.5vh; left: 70.8vw; }
+.num12  { top: 65.5vh; left: 82.4vw; }
+
+.num13 { top: 83.5vh; left: 47.6vw; }
+.num14 { top: 83.5vh; left: 59.2vw; }
+.num15 { top: 83.5vh; left: 70.8vw; }
+.num16 { top: 83.5vh; left: 82.4vw; }
+
+/* NEW: Common style for the 16 new dashed lines */
+.grid-dashed {
+  position: absolute;
+  height: 1px;
+  width: 10vw; /* as requested */
+  background: linear-gradient(
+    to right,
+    #919191 0,
+    #919191 5px,
+    #ffffff 5px,
+    #ffffff 10px
+  );
+  background-size: 10px 1px;
+}
+
+/* Each line placed at the specified top/left (in vh/vw) */
+.dashed01 { top: 28.5vh; left: 36vw; }
+.dashed02 { top: 28.5vh; left: 60.8vw; }
+.dashed03 { top: 28.5vh; left: 72.4vw; }
+.dashed04 { top: 28.5vh; left: 84vw;   }
+
+.dashed05 { top: 47vh;   left: 36vw; }
+.dashed06 { top: 47vh;   left: 60.8vw; }
+.dashed07 { top: 47vh;   left: 72.4vw; }
+.dashed08 { top: 47vh;   left: 84vw;   }
+
+.dashed09 { top: 65.5vh; left: 36vw; }
+.dashed10 { top: 65.5vh; left: 60.8vw; }
+.dashed11 { top: 65.5vh; left: 72.4vw; }
+.dashed12 { top: 65.5vh; left: 84vw;   }
+
+.dashed13 { top: 84vh;   left: 36vw; }
+.dashed14 { top: 84vh;   left: 60.8vw; }
+.dashed15 { top: 84vh;   left: 72.4vw; }
+.dashed16 { top: 84vh;   left: 84vw;   }

@@ -219,32 +219,36 @@ body.non-fullscreen {
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
-/* SHIFTED UP BY 1vh (top - 1) from the previous version */
-.num1  { top: 27.5vh; left: 50.5vw; }
-.num2  { top: 27.5vh; left: 65vw;   }
-.num3  { top: 27.5vh; left: 79.5vw; }
-.num4  { top: 27.5vh; left: 94vw;   }
+/* 
+  SHIFTED UP BY 1vh, 
+  AND LEFT minus 1vw from last version 
+*/
+.num1  { top: 27.5vh; left: 49.5vw; }
+.num2  { top: 27.5vh; left: 64vw;   }
+.num3  { top: 27.5vh; left: 78.5vw; }
+.num4  { top: 27.5vh; left: 93vw;   }
 
-.num5  { top: 46vh;   left: 50.5vw; }
-.num6  { top: 46vh;   left: 65vw;   }
-.num7  { top: 46vh;   left: 79.5vw; }
-.num8  { top: 46vh;   left: 94vw;   }
+.num5  { top: 46vh;   left: 49.5vw; }
+.num6  { top: 46vh;   left: 64vw;   }
+.num7  { top: 46vh;   left: 78.5vw; }
+.num8  { top: 46vh;   left: 93vw;   }
 
-.num9   { top: 64.5vh; left: 50.5vw; }
-.num10  { top: 64.5vh; left: 65vw;   }
-.num11  { top: 64.5vh; left: 79.5vw; }
-.num12  { top: 64.5vh; left: 94vw;   }
+.num9   { top: 64.5vh; left: 49.5vw; }
+.num10  { top: 64.5vh; left: 64vw;   }
+.num11  { top: 64.5vh; left: 78.5vw; }
+.num12  { top: 64.5vh; left: 93vw;   }
 
-.num13 { top: 82.5vh; left: 50.5vw; }
-.num14 { top: 82.5vh; left: 65vw;   }
-.num15 { top: 82.5vh; left: 79.5vw; }
-.num16 { top: 82.5vh; left: 94vw;   }
+.num13 { top: 82.5vh; left: 49.5vw; }
+.num14 { top: 82.5vh; left: 64vw;   }
+.num15 { top: 82.5vh; left: 78.5vw; }
+.num16 { top: 82.5vh; left: 93vw;   }
 
 /* Common style for the 16 new dashed lines */
 .grid-dashed {
   position: absolute;
   height: 1px;
-  width: 10vw; /* as requested */
+  /* width was 10vw => now 14vw */
+  width: 14vw;
   background: linear-gradient(
     to right,
     #919191 0,
@@ -255,7 +259,7 @@ body.non-fullscreen {
   background-size: 10px 1px;
 }
 
-/* SHIFTED UP BY 1vh (top - 1) from the previous version */
+/* SHIFTED UP BY 1vh (top - 1), width is now 14vw */
 .dashed01 { top: 27.5vh; left: 36vw; }
 .dashed02 { top: 27.5vh; left: 51vw; }
 .dashed03 { top: 27.5vh; left: 66.5vw; }

@@ -219,35 +219,32 @@ body.non-fullscreen {
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
-/* 
-  SHIFTED UP 1vh from earlier versions, 
-  +0.4vw to left from last version 
-*/
-.num1  { top: 27.5vh; left: 49.9vw; }
-.num2  { top: 27.5vh; left: 64.4vw; }
-.num3  { top: 27.5vh; left: 78.9vw; }
-.num4  { top: 27.5vh; left: 93.4vw; }
+/* SHIFTED UP 1vh from earlier versions, and each left is 0.1vw less than the previous code */
+.num1  { top: 27.5vh; left: 49.8vw; }
+.num2  { top: 27.5vh; left: 64.3vw; }
+.num3  { top: 27.5vh; left: 78.8vw; }
+.num4  { top: 27.5vh; left: 93.3vw; }
 
-.num5  { top: 46vh;   left: 49.9vw; }
-.num6  { top: 46vh;   left: 64.4vw; }
-.num7  { top: 46vh;   left: 78.9vw; }
-.num8  { top: 46vh;   left: 93.4vw; }
+.num5  { top: 46vh;   left: 49.8vw; }
+.num6  { top: 46vh;   left: 64.3vw; }
+.num7  { top: 46vh;   left: 78.8vw; }
+.num8  { top: 46vh;   left: 93.3vw; }
 
-.num9   { top: 64.5vh; left: 49.9vw; }
-.num10  { top: 64.5vh; left: 64.4vw; }
-.num11  { top: 64.5vh; left: 78.9vw; }
-.num12  { top: 64.5vh; left: 93.4vw; }
+.num9   { top: 64.5vh; left: 49.8vw; }
+.num10  { top: 64.5vh; left: 64.3vw; }
+.num11  { top: 64.5vh; left: 78.8vw; }
+.num12  { top: 64.5vh; left: 93.3vw; }
 
-.num13 { top: 82.5vh; left: 49.9vw; }
-.num14 { top: 82.5vh; left: 64.4vw; }
-.num15 { top: 82.5vh; left: 78.9vw; }
-.num16 { top: 82.5vh; left: 93.4vw; }
+.num13 { top: 82.5vh; left: 49.8vw; }
+.num14 { top: 82.5vh; left: 64.3vw; }
+.num15 { top: 82.5vh; left: 78.8vw; }
+.num16 { top: 82.5vh; left: 93.3vw; }
 
-/* Dashed lines: now 12vw wide (down from 14vw) */
+/* Dashed lines: now 11.9vw wide (down from 12vw) */
 .grid-dashed {
   position: absolute;
   height: 1px;
-  width: 12vw; /* lowered from 14vw */
+  width: 11.9vw; /* 0.1vw less than 12vw */
   background: linear-gradient(
     to right,
     #919191 0,
@@ -258,7 +255,7 @@ body.non-fullscreen {
   background-size: 10px 1px;
 }
 
-/* SHIFTED UP BY 1vh (top - 1) from the original positions */
+/* SHIFTED UP 1vh from original positions */
 .dashed01 { top: 27.5vh; left: 36vw; }
 .dashed02 { top: 27.5vh; left: 51vw; }
 .dashed03 { top: 27.5vh; left: 66.5vw; }

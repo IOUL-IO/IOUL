@@ -19,7 +19,7 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
-/* Three fixed white layers with z-index=100 */
+/* Fixed white layers */
 .layer-one {
     position: fixed;
     top: 0;
@@ -48,14 +48,14 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* Fade in .page-content on first mouse move */
+/* Fade-in for page-content */
 .page-content {
     opacity: 0;
     transition: opacity 0.6s ease;
     position: relative;
 }
 
-/* Decorative static lines */
+/* Static decorative lines */
 .line {
     position: absolute;
     height: 1px;
@@ -83,7 +83,7 @@ body.non-fullscreen {
 }
 
 /* --- Set A: Dashed lines and time texts --- */
-/* This container now spans the full viewport and clips anything left of 28.86vw */
+/* The container spans full viewport and clips content left of 28.86vw */
 .slide-container {
     position: absolute;
     top: 0;
@@ -92,34 +92,32 @@ body.non-fullscreen {
     height: 100vh;
     clip-path: inset(0 0 0 28.86vw);
 }
-
-/* Dashed lines (retain original positioning from uploaded code) */
+/* Adjusted dashed lines: left now 7.14vw (36vw - 28.86vw) and width as original */
 .dashed {
     position: absolute;
     height: 1px;
     top: 28.5vh;
-    left: 36vw;
+    left: 7.14vw;
     width: 52.4vw;
     background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
     background-size: 10px 1px;
 }
 .second-dashed {
     top: 47vh;
-    left: 36vw;
+    left: 7.14vw;
     width: 52.4vw;
 }
 .third-dashed {
     top: 65.51vh;
-    left: 36vw;
+    left: 7.14vw;
     width: 52.4vw;
 }
 .fourth-dashed {
     top: 84vh;
-    left: 36vw;
+    left: 7.14vw;
     width: 52.4vw;
 }
-
-/* Time texts (retain original positions) */
+/* Adjusted time texts: subtract 28.86vw from original left values */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -128,19 +126,19 @@ body.non-fullscreen {
     letter-spacing: 0.2vw;
     text-shadow: 0.011rem 0 0 #919191, -0.011rem 0 0 #919191;
     top: 28.5vh;
-    left: 89.81vw;
+    left: 60.95vw;  /* 89.81 - 28.86 */
 }
 .second-time-text {
     top: 47.04vh;
-    left: 89.91vw;
+    left: 61.05vw;  /* 89.91 - 28.86 */
 }
 .third-time-text {
     top: 65.51vh;
-    left: 89.87vw;
+    left: 61.01vw;  /* 89.87 - 28.86 */
 }
 .fourth-time-text {
     top: 83.86vh;
-    left: 90.1vw;
+    left: 61.24vw;  /* 90.1 - 28.86 */
 }
 
 /* --- Hover area for chat --- */
@@ -169,8 +167,6 @@ body.non-fullscreen {
     line-height: 1.3;
     padding-top: 0.1rem;
 }
-
-/* Input replacing chat text */
 .chat-input {
     position: absolute;
     top: 77vh;
@@ -191,7 +187,7 @@ body.non-fullscreen {
 }
 
 /* --- Set B: Grid numbers and dashed lines --- */
-/* Initial positions are lowered by 19vw */
+/* Lower initial positions by 19vw as requested */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -259,7 +255,7 @@ body.non-fullscreen {
     transform: translateX(-91vw);
 }
 
-/* Slide trigger: invisible clickable area within designated range */
+/* Slide trigger area remains unchanged */
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
@@ -271,7 +267,7 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-/* Set B: Animate grid numbers and grid dashed lines (slide to final positions) with a 0.7s transition */
+/* Set B: Animate grid numbers and grid dashed lines to final positions with a 0.7s transition */
 .page-content.animate-grid .grid-number.num1  { left: 48.8vw;  transition: left 0.7s ease; }
 .page-content.animate-grid .grid-number.num2  { left: 63.7vw;  transition: left 0.7s ease; }
 .page-content.animate-grid .grid-number.num3  { left: 78.5vw;  transition: left 0.7s ease; }

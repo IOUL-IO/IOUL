@@ -54,8 +54,7 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* We'll fade in the entire .page-content on first mouse move.
-   Start hidden (opacity=0). */
+/* Fade in .page-content on first mouse move */
 .page-content {
     opacity: 0;
     transition: opacity 0.6s ease;
@@ -93,7 +92,19 @@ body.non-fullscreen {
     width: 57.8vw;
 }
 
-/* Dashed lines (Set A) inside the slide container */
+/* --- Set A: Dashed lines and time texts --- */
+/* These 8 components are wrapped in .slide-container so that when they slide, any part
+   past left 28.86vw is clipped */
+.slide-container {
+    position: absolute;
+    top: 0;
+    left: 28.86vw;
+    width: calc(100vw - 28.86vw);
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Dashed lines inside .slide-container */
 .slide-container .line.dashed {
     position: absolute;
     height: 1px;
@@ -105,16 +116,6 @@ body.non-fullscreen {
         #ffffff 10px
     );
     background-size: 10px 1px;
-}
-
-.second-dashed {
-    /* positioning inherited from original .line dashed, if needed can override */
-}
-
-.third-dashed {
-}
-
-.fourth-dashed {
 }
 
 /* Time Texts */
@@ -144,7 +145,7 @@ body.non-fullscreen {
     left: 90.1vw;
 }
 
-/* Hover area (to reveal chat-text) */
+/* --- Hover area for chat --- */
 .hover-area {
     position: absolute;
     top: 28.5vh;
@@ -171,7 +172,7 @@ body.non-fullscreen {
     padding-top: 0.1rem;
 }
 
-/* Input that replaces the text on click */
+/* Input replacing chat text */
 .chat-input {
     position: absolute;
     top: 77vh;
@@ -191,7 +192,8 @@ body.non-fullscreen {
     cursor: text;
 }
 
-/* Common styling for all 16 numbered items (Set B) */
+/* --- Set B: Grid numbers and dashed lines --- */
+/* Grid numbers initial positions (off-screen to the right) */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -201,7 +203,6 @@ body.non-fullscreen {
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
-/* Original positions for grid numbers (off-screen to right) */
 .num1  { top: 28.5vh; left: 119.8vw; }
 .num2  { top: 28.5vh; left: 134.7vw; }
 .num3  { top: 28.5vh; left: 149.5vw; }
@@ -214,12 +215,12 @@ body.non-fullscreen {
 .num10  { top: 65.5vh; left: 134.3vw; }
 .num11  { top: 65.5vh; left: 149.3vw; }
 .num12  { top: 65.5vh; left: 163.9vw; }
-.num13 { top: 83.5vh; left: 119.4vw; }
-.num14 { top: 83.5vh; left: 134.3vw; }
-.num15 { top: 83.5vh; left: 149.1vw; }
-.num16 { top: 83.5vh; left: 92.9vw; } /* Note: original .num16 appeared twice; only the first definition is used. */
+.num13  { top: 83.5vh; left: 119.4vw; }
+.num14  { top: 83.5vh; left: 134.3vw; }
+.num15  { top: 83.5vh; left: 149.1vw; }
+.num16  { top: 83.5vh; left: 163.9vw; }  /* Corrected initial left for num16 */
 
-/* Original positions for grid dashed lines (Set B) */
+/* Grid dashed lines initial positions */
 .grid-dashed {
     position: absolute;
     height: 1px;
@@ -251,19 +252,10 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 136.9vw; }
 .dashed16 { top: 84vh;   left: 151.8vw; }
 
-/* === New CSS for sliding animation === */
+/* --- New CSS for sliding animations --- */
 
-/* The slide-container (wrapping Set A) is clipped at left 28.86vw */
-.slide-container {
-    position: absolute;
-    top: 0;
-    left: 28.86vw;
-    width: calc(100vw - 28.86vw);
-    height: 100vh;
-    overflow: hidden;
-}
-
-/* Ensure the children in slide-container transition on transform */
+/* For Set A: slide dashed lines and time texts left by 91vw.
+   The container (.slide-container) clips content past left 28.86vw */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -272,16 +264,15 @@ body.non-fullscreen {
     transition: transform 0.6s ease;
 }
 
-/* When animate-slide is added, slide all Set A elements left by 71vw */
 .slide-container.animate-slide > .line.dashed,
 .slide-container.animate-slide > .time-text,
 .slide-container.animate-slide > .time-text.second-time-text,
 .slide-container.animate-slide > .time-text.third-time-text,
 .slide-container.animate-slide > .time-text.fourth-time-text {
-    transform: translateX(-71vw);
+    transform: translateX(-91vw);
 }
 
-/* The slide-trigger is an invisible clickable area in the specified range */
+/* The slide-trigger: invisible clickable area within designated range */
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
@@ -293,38 +284,38 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-/* New positions for grid numbers (Set B) when animate-grid is active */
-.page-content.animate-grid .grid-number.num1 { left: 48.8vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-number.num2 { left: 63.7vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-number.num3 { left: 78.5vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-number.num4 { left: 93.3vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-number.num5 { left: 48.8vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-number.num6 { left: 63.7vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-number.num7 { left: 78.5vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-number.num8 { left: 93.3vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-number.num9 { left: 48.8vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-number.num10 { left: 63.3vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-number.num11 { left: 78.3vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-number.num12 { left: 92.9vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-number.num13 { left: 48.4vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-number.num14 { left: 63.3vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-number.num15 { left: 78.1vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-number.num16 { left: 92.9vw; transition: left 0.6s ease; }
+/* For Set B: animate grid numbers and dashed lines to slide left by 71vw.
+   Their final positions are defined as final left = initial left - 71vw. */
+.page-content.animate-grid .grid-number.num1  { left: 48.8vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num2  { left: 63.7vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num3  { left: 78.5vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num4  { left: 93.3vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num5  { left: 48.8vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num6  { left: 63.7vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num7  { left: 78.5vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num8  { left: 93.3vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num9  { left: 48.8vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num10 { left: 63.3vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num11 { left: 78.3vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num12 { left: 92.9vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num13 { left: 48.4vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num14 { left: 63.3vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num15 { left: 78.1vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num16 { left: 92.9vw;  transition: left 0.6s ease; }
 
-/* New positions for grid dashed lines (Set B) when animate-grid is active */
-.page-content.animate-grid .grid-dashed.dashed01 { left: 36vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-dashed.dashed02 { left: 51vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed01 { left: 36vw;   transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed02 { left: 51vw;   transition: left 0.6s ease; }
 .page-content.animate-grid .grid-dashed.dashed03 { left: 65.9vw; transition: left 0.6s ease; }
 .page-content.animate-grid .grid-dashed.dashed04 { left: 80.8vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-dashed.dashed05 { left: 36vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-dashed.dashed06 { left: 51vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed05 { left: 36vw;   transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed06 { left: 51vw;   transition: left 0.6s ease; }
 .page-content.animate-grid .grid-dashed.dashed07 { left: 65.9vw; transition: left 0.6s ease; }
 .page-content.animate-grid .grid-dashed.dashed08 { left: 80.8vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-dashed.dashed09 { left: 36vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-dashed.dashed10 { left: 51vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed09 { left: 36vw;   transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed10 { left: 51vw;   transition: left 0.6s ease; }
 .page-content.animate-grid .grid-dashed.dashed11 { left: 65.9vw; transition: left 0.6s ease; }
 .page-content.animate-grid .grid-dashed.dashed12 { left: 80.8vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-dashed.dashed13 { left: 36vw; transition: left 0.6s ease; }
-.page-content.animate-grid .grid-dashed.dashed14 { left: 51vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed13 { left: 36vw;   transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed14 { left: 51vw;   transition: left 0.6s ease; }
 .page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; transition: left 0.6s ease; }
 .page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; transition: left 0.6s ease; }

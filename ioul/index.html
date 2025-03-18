@@ -13,39 +13,36 @@
   <div class="layer-two"></div>
   <div class="layer-three"></div>
 
-  <!-- All visible components wrapped for fade/animation -->
+  <!-- We wrap all visible components in a container so we can hide/fade them together -->
   <div class="page-content">
-    <!-- Decorative static lines -->
+    <!-- Decorative Lines (static) -->
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
     <div class="line fourth"></div>
 
-    <!-- Set A: Container for dashed lines and time texts.
-         This container is positioned at left:28.86vw so that when we add the original offsets (e.g. 36vw) and subtract 28.86vw we get the original layout.
-         It uses overflow:hidden so that when we later slide its contents left, anything left of 28.86vw is hidden. -->
+    <!-- Container for Set A: dashed lines and time texts.
+         This container spans the full viewport but clips any content to the left of 28.86vw -->
     <div class="slide-container">
-      <!-- Inside, the dashed lines are now positioned at left: 36vw – 28.86vw = 7.14vw -->
       <div class="line dashed"></div>
       <div class="line dashed second-dashed"></div>
       <div class="line dashed third-dashed"></div>
       <div class="line dashed fourth-dashed"></div>
 
-      <!-- Time texts are repositioned similarly:
-           e.g. original left 89.81vw becomes 89.81vw – 28.86vw = 60.95vw -->
+      <!-- Time Texts -->
       <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
       <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
       <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     </div>
 
-    <!-- Hover area (to trigger chat text) -->
+    <!-- Hover Area (to trigger chat text) -->
     <div class="hover-area"></div>
 
     <!-- CHAT Text -->
     <span class="chat-text" id="chatText">cHAT . . .</span>
 
-    <!-- Set B: Grid Numbers -->
+    <!-- Grid Numbers (Set B) -->
     <span class="grid-number num1">1</span>
     <span class="grid-number num2">2</span>
     <span class="grid-number num3">3</span>
@@ -63,7 +60,7 @@
     <span class="grid-number num15">15</span>
     <span class="grid-number num16">16</span>
 
-    <!-- Set B: Grid Dashed Lines -->
+    <!-- Grid Dashed Lines (Set B) -->
     <div class="grid-dashed dashed01"></div>
     <div class="grid-dashed dashed02"></div>
     <div class="grid-dashed dashed03"></div>
@@ -81,40 +78,59 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- Invisible slide trigger area -->
+    <!-- Slide Trigger Area (invisible clickable zone) -->
     <div class="slide-trigger"></div>
   </div>
 
   <script>
-    // === Fade-in and fullscreen behavior (unchanged) ===
-    const EDGE_MARGIN = 11;
+    // === Constants ===
+    const EDGE_MARGIN = 11; // 11px from any edge triggers fullscreen
+
+    // === Fade in the entire page-content on first mouse move ===
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
+
     function fadeInPage() {
-      pageContent.style.opacity = '1';
+      pageContent.style.opacity = '1'; // triggers CSS transition
       pageFadedIn = true;
     }
+
+    // Fade in on first mouse move
     document.addEventListener('mousemove', function onFirstMouseMove() {
-      if (!pageFadedIn) { fadeInPage(); }
+      if (!pageFadedIn) {
+        fadeInPage();
+      }
       document.removeEventListener('mousemove', onFirstMouseMove);
     });
+
+    // === Fullscreen trigger if user clicks near any edge (within 11px) ===
     document.addEventListener('click', (event) => {
-      const { clientX: x, clientY: y } = event;
-      const { innerWidth: width, innerHeight: height } = window;
-      if (!document.fullscreenElement &&
-         (x <= EDGE_MARGIN || x >= width - EDGE_MARGIN ||
-          y <= EDGE_MARGIN || y >= height - EDGE_MARGIN)) {
+      const x = event.clientX;
+      const y = event.clientY;
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      const nearLeft = x <= EDGE_MARGIN;
+      const nearRight = x >= width - EDGE_MARGIN;
+      const nearTop = y <= EDGE_MARGIN;
+      const nearBottom = y >= height - EDGE_MARGIN;
+
+      if (!document.fullscreenElement && (nearLeft || nearRight || nearTop || nearBottom)) {
         document.documentElement.requestFullscreen();
       }
     });
+
     // === Slide animation trigger for designated area ===
     const slideTrigger = document.querySelector('.slide-trigger');
     slideTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
+      // Animate Set A (dashed lines and time texts)
       document.querySelector('.slide-container').classList.add('animate-slide');
+      // Animate Set B (grid numbers and grid dashed lines)
       document.querySelector('.page-content').classList.add('animate-grid');
     });
-    // === Chat text behavior ===
+
+    // === Show chat text on hover ===
     const chatText = document.getElementById('chatText');
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
@@ -124,6 +140,8 @@
         chatShownOnce = true;
       }
     });
+
+    // === Replace "cHAT . . ." text with input on click ===
     chatText.addEventListener('click', () => {
       const chatInput = document.createElement('input');
       chatInput.type = 'text';

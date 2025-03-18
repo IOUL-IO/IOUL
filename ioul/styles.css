@@ -55,7 +55,7 @@ body.non-fullscreen {
     position: relative;
 }
 
-/* Static decorative lines */
+/* Static decorative lines (unchanged) */
 .line {
     position: absolute;
     height: 1px;
@@ -83,16 +83,17 @@ body.non-fullscreen {
 }
 
 /* --- Set A: Dashed lines and time texts --- */
-/* The container spans full viewport and clips content left of 28.86vw */
+/* The slide-container is positioned exactly at left:28.86vw and has overflow:hidden */
 .slide-container {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100vw;
+    left: 28.86vw;
+    width: calc(100vw - 28.86vw);
     height: 100vh;
-    clip-path: inset(0 0 0 28.86vw);
+    overflow: hidden;
 }
-/* Adjusted dashed lines: left now 7.14vw (36vw - 28.86vw) and width as original */
+/* Inside this container, we recalculate positions by subtracting 28.86vw from original values.
+   Dashed lines: originally left:36vw becomes 36 - 28.86 = 7.14vw, width remains 52.4vw. */
 .dashed {
     position: absolute;
     height: 1px;
@@ -117,7 +118,7 @@ body.non-fullscreen {
     left: 7.14vw;
     width: 52.4vw;
 }
-/* Adjusted time texts: subtract 28.86vw from original left values */
+/* Time texts: subtract 28.86vw from their original left positions */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -126,7 +127,7 @@ body.non-fullscreen {
     letter-spacing: 0.2vw;
     text-shadow: 0.011rem 0 0 #919191, -0.011rem 0 0 #919191;
     top: 28.5vh;
-    left: 60.95vw;  /* 89.81 - 28.86 */
+    left: 60.95vw;  /* 89.81vw - 28.86vw */
 }
 .second-time-text {
     top: 47.04vh;
@@ -186,60 +187,8 @@ body.non-fullscreen {
     cursor: text;
 }
 
-/* --- Set B: Grid numbers and dashed lines --- */
-/* Lower initial positions by 19vw as requested */
-.grid-number {
-    position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    color: #111111;
-    font-size: 0.47rem;
-    letter-spacing: 0.28vw;
-    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-}
-.num1  { top: 28.5vh; left: 100.8vw; }
-.num2  { top: 28.5vh; left: 115.7vw; }
-.num3  { top: 28.5vh; left: 130.5vw; }
-.num4  { top: 28.5vh; left: 145.3vw; }
-.num5  { top: 47vh;   left: 100.8vw; }
-.num6  { top: 47vh;   left: 115.7vw; }
-.num7  { top: 47vh;   left: 130.5vw; }
-.num8  { top: 47vh;   left: 145.3vw; }
-.num9   { top: 65.5vh; left: 100.8vw; }
-.num10  { top: 65.5vh; left: 115.3vw; }
-.num11  { top: 65.5vh; left: 130.3vw; }
-.num12  { top: 65.5vh; left: 144.9vw; }
-.num13  { top: 83.5vh; left: 100.4vw; }
-.num14  { top: 83.5vh; left: 115.3vw; }
-.num15  { top: 83.5vh; left: 130.1vw; }
-.num16  { top: 83.5vh; left: 144.9vw; }
-
-/* Grid dashed lines initial positions, lowered by 19vw */
-.grid-dashed {
-    position: absolute;
-    height: 1px;
-    width: 11.8vw;
-    background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
-    background-size: 10px 1px;
-}
-.dashed01 { top: 28.5vh; left: 88vw; }
-.dashed02 { top: 28.5vh; left: 103vw; }
-.dashed03 { top: 28.5vh; left: 117.9vw; }
-.dashed04 { top: 28.5vh; left: 132.8vw; }
-.dashed05 { top: 47vh;   left: 88vw; }
-.dashed06 { top: 47vh;   left: 103vw; }
-.dashed07 { top: 47vh;   left: 117.9vw; }
-.dashed08 { top: 47vh;   left: 132.8vw; }
-.dashed09 { top: 65.5vh; left: 88vw; }
-.dashed10 { top: 65.5vh; left: 103vw; }
-.dashed11 { top: 65.5vh; left: 117.9vw; }
-.dashed12 { top: 65.5vh; left: 132.8vw; }
-.dashed13 { top: 84vh;   left: 88vw; }
-.dashed14 { top: 84vh;   left: 103vw; }
-.dashed15 { top: 84vh;   left: 117.9vw; }
-.dashed16 { top: 84vh;   left: 132.8vw; }
-
-/* --- New CSS for sliding animations --- */
-/* Set A: Animate dashed lines and time texts to slide left by 91vw with a 0.7s transition */
+/* --- Set A Animation --- */
+/* On trigger, slide Set A content left by 91vw */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -255,19 +204,63 @@ body.non-fullscreen {
     transform: translateX(-91vw);
 }
 
-/* Slide trigger area remains unchanged */
-.slide-trigger {
+/* --- Set B: Grid Numbers and Dashed Lines --- */
+/* These elements are positioned relative to .page-content.
+   We set their initial left positions to be their final value plus an offset (70vw)
+   so they are entirely off-screen. */
+.grid-number {
     position: absolute;
-    top: 28.5vh;
-    left: 32.43vw;
-    width: calc(36vw - 32.43vw);
-    height: calc(84vh - 28.5vh);
-    background: transparent;
-    z-index: 101;
-    cursor: pointer;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #111111;
+    font-size: 0.47rem;
+    letter-spacing: 0.28vw;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
+/* Initial positions (final value + 70vw) */
+.num1  { top: 28.5vh; left: calc(48.8vw + 70vw); }    /* 118.8vw */
+.num2  { top: 28.5vh; left: calc(63.7vw + 70vw); }    /* 133.7vw */
+.num3  { top: 28.5vh; left: calc(78.5vw + 70vw); }    /* 148.5vw */
+.num4  { top: 28.5vh; left: calc(93.3vw + 70vw); }    /* 163.3vw */
+.num5  { top: 47vh;   left: calc(48.8vw + 70vw); }
+.num6  { top: 47vh;   left: calc(63.7vw + 70vw); }
+.num7  { top: 47vh;   left: calc(78.5vw + 70vw); }
+.num8  { top: 47vh;   left: calc(93.3vw + 70vw); }
+.num9   { top: 65.5vh; left: calc(48.8vw + 70vw); }
+.num10  { top: 65.5vh; left: calc(63.3vw + 70vw); }
+.num11  { top: 65.5vh; left: calc(78.3vw + 70vw); }
+.num12  { top: 65.5vh; left: calc(92.9vw + 70vw); }
+.num13  { top: 83.5vh; left: calc(48.4vw + 70vw); }
+.num14  { top: 83.5vh; left: calc(63.3vw + 70vw); }
+.num15  { top: 83.5vh; left: calc(78.1vw + 70vw); }
+.num16  { top: 83.5vh; left: calc(92.9vw + 70vw); }
 
-/* Set B: Animate grid numbers and grid dashed lines to final positions with a 0.7s transition */
+/* For grid dashed lines, initial left = final left + 70vw */
+.grid-dashed {
+    position: absolute;
+    height: 1px;
+    width: 11.8vw;
+    background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
+    background-size: 10px 1px;
+}
+.dashed01 { top: 28.5vh; left: calc(36vw + 70vw); }    /* 106vw */
+.dashed02 { top: 28.5vh; left: calc(51vw + 70vw); }    /* 121vw */
+.dashed03 { top: 28.5vh; left: calc(65.9vw + 70vw); }  /* 135.9vw */
+.dashed04 { top: 28.5vh; left: calc(80.8vw + 70vw); }  /* 150.8vw */
+.dashed05 { top: 47vh;   left: calc(36vw + 70vw); }
+.dashed06 { top: 47vh;   left: calc(51vw + 70vw); }
+.dashed07 { top: 47vh;   left: calc(65.9vw + 70vw); }
+.dashed08 { top: 47vh;   left: calc(80.8vw + 70vw); }
+.dashed09 { top: 65.5vh; left: calc(36vw + 70vw); }
+.dashed10 { top: 65.5vh; left: calc(51vw + 70vw); }
+.dashed11 { top: 65.5vh; left: calc(65.9vw + 70vw); }
+.dashed12 { top: 65.5vh; left: calc(80.8vw + 70vw); }
+.dashed13 { top: 84vh;   left: calc(36vw + 70vw); }
+.dashed14 { top: 84vh;   left: calc(51vw + 70vw); }
+.dashed15 { top: 84vh;   left: calc(65.9vw + 70vw); }
+.dashed16 { top: 84vh;   left: calc(80.8vw + 70vw); }
+
+/* --- Set B Animation --- */
+/* When .animate-grid is added, animate grid numbers and dashed lines to their final positions */
 .page-content.animate-grid .grid-number.num1  { left: 48.8vw;  transition: left 0.7s ease; }
 .page-content.animate-grid .grid-number.num2  { left: 63.7vw;  transition: left 0.7s ease; }
 .page-content.animate-grid .grid-number.num3  { left: 78.5vw;  transition: left 0.7s ease; }

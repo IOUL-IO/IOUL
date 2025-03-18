@@ -21,7 +21,8 @@
     <div class="line third"></div>
     <div class="line fourth"></div>
 
-    <!-- Slide Container for Set A elements (dashed lines and time texts) -->
+    <!-- Container for Set A: dashed lines and time texts.
+         This container spans the full viewport but clips any content to the left of 28.86vw -->
     <div class="slide-container">
       <div class="line dashed"></div>
       <div class="line dashed second-dashed"></div>
@@ -94,12 +95,11 @@
       pageFadedIn = true;
     }
 
-    // Once the user moves the mouse anywhere, fade in .page-content
+    // Fade in on first mouse move
     document.addEventListener('mousemove', function onFirstMouseMove() {
       if (!pageFadedIn) {
         fadeInPage();
       }
-      // Remove this event listener so we don't keep calling fadeInPage
       document.removeEventListener('mousemove', onFirstMouseMove);
     });
 
@@ -120,23 +120,21 @@
       }
     });
 
-    // === Slide animation trigger for specific area ===
+    // === Slide animation trigger for designated area ===
     const slideTrigger = document.querySelector('.slide-trigger');
     slideTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
-      // Trigger animation for Set A elements (dashed lines and time texts)
+      // Animate Set A (dashed lines and time texts)
       document.querySelector('.slide-container').classList.add('animate-slide');
-      // Trigger animation for grid elements (Set B)
+      // Animate Set B (grid numbers and grid dashed lines)
       document.querySelector('.page-content').classList.add('animate-grid');
     });
 
-    // === Show chat text when hovering over the designated area ===
+    // === Show chat text on hover ===
     const chatText = document.getElementById('chatText');
     let chatShownOnce = false;
-
     const hoverArea = document.querySelector('.hover-area');
     hoverArea.addEventListener('mouseenter', () => {
-      // Only reveal chat if page is already faded in and not shown yet
       if (!chatShownOnce && pageFadedIn) {
         chatText.style.opacity = '1';
         chatShownOnce = true;
@@ -148,14 +146,8 @@
       const chatInput = document.createElement('input');
       chatInput.type = 'text';
       chatInput.classList.add('chat-input');
-
-      // Insert input right after the chat text
       chatText.insertAdjacentElement('afterend', chatInput);
-
-      // Remove the original text
       chatText.remove();
-
-      // Focus the new input
       chatInput.focus();
     });
   </script>

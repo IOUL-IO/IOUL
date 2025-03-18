@@ -19,9 +19,7 @@ body.non-fullscreen {
   overflow: hidden;
 }
 
-/* Three fixed white layers with z-index=100 */
-
-/* 1) Left 0 → 6.37vw */
+/* LAYER ONE & LAYER TWO remain as before */
 .layer-one {
   position: fixed;
   top: 0;
@@ -31,8 +29,6 @@ body.non-fullscreen {
   background-color: #ffffff;
   z-index: 100;
 }
-
-/* 2) Left 28.87vw → 36vw */
 .layer-two {
   position: fixed;
   top: 0;
@@ -43,7 +39,7 @@ body.non-fullscreen {
   z-index: 100;
 }
 
-/* 3) Left 94.17vw → 100vw */
+/* LAYER THREE: now also holds the numbers & dashed lines off-screen. */
 .layer-three {
   position: fixed;
   top: 0;
@@ -54,44 +50,38 @@ body.non-fullscreen {
   z-index: 100;
 }
 
-/* We'll fade in the entire .page-content once the user moves the mouse.
-   Start hidden (opacity=0). */
+/* page-content fade in */
 .page-content {
   opacity: 0;
   transition: opacity 0.6s ease;
 }
 
-/* Decorative Lines */
+/* Example “original” lines in page-content, time texts, etc. */
 .line {
   position: absolute;
   height: 1px;
   background-color: #cfcfcf;
 }
-
 .original {
   top: 12.5vh;
   left: 6.38vw;
   width: 22.48vw;
 }
-
 .second {
   top: 28.5vh;
   left: 6.38vw;
   width: 22.48vw;
 }
-
 .third {
   top: 84vh;
   left: 6.38vw;
   width: 22.48vw;
 }
-
 .fourth {
   top: 12.5vh;
   left: 36vw;
   width: 57.8vw;
 }
-
 .dashed {
   position: absolute;
   height: 1px;
@@ -107,19 +97,16 @@ body.non-fullscreen {
   );
   background-size: 10px 1px;
 }
-
 .second-dashed {
   top: 47vh;
   left: 36vw;
   width: 52.4vw;
 }
-
 .third-dashed {
   top: 65.5vh;
   left: 36vw;
   width: 52.4vw;
 }
-
 .fourth-dashed {
   top: 84vh;
   left: 36vw;
@@ -134,33 +121,31 @@ body.non-fullscreen {
   color: #111111;
   letter-spacing: 0.2vw;
   text-shadow: 0.011rem 0 0 #919191, -0.011rem 0 0 #919191;
-  top: 28.5vh;
+}
+.time-text {
+  top: 28.5vh; 
   left: 89.81vw;
 }
-
 .second-time-text {
   top: 47.04vh;
   left: 89.91vw;
 }
-
 .third-time-text {
   top: 65.51vh;
   left: 89.87vw;
 }
-
 .fourth-time-text {
   top: 83.86vh;
   left: 90.1vw;
 }
 
-/* Hover area (to reveal chat-text) */
+/* Hover area to reveal chat text */
 .hover-area {
   position: absolute;
   top: 28.5vh;
   left: 6.4vw;
-  width: calc(28.86vw - 6.4vw); /* ~22.46vw */
-  height: calc(84vh - 28.5vh);  /* ~55.5vh */
-  /* Invisible bounding region */
+  width: calc(28.86vw - 6.4vw);
+  height: calc(84vh - 28.5vh);
 }
 
 /* Chat Text */
@@ -169,49 +154,47 @@ body.non-fullscreen {
   top: 77vh;
   left: 6.41vw;
   display: inline-block;
-
   font-family: 'Distill Expanded', sans-serif;
   color: #717171;
   letter-spacing: 0.28vw;
   font-size: 0.47rem;
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
   cursor: pointer;
-
-  /* Start hidden; fade in only after page fade + hover */
-  opacity: 0;
+  opacity: 0; /* hidden initially; fade in once hovered */
   transition: opacity 0.3s ease;
-
-  /* Helps avoid clipping top of letters */
   line-height: 1.3;
   padding-top: 0.1rem;
 }
-
-/* Input that replaces the text on click */
+/* Input replaces cHAT . . . on click */
 .chat-input {
   position: absolute;
   top: 77vh;
   left: 6.41vw;
   width: 22.17vw;
-
   font-family: 'Distill Expanded', sans-serif;
   font-size: 0.47rem;
   letter-spacing: 0.28vw;
   color: #111111;
   caret-color: #d1d1d1;
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-
   line-height: 1.2;
   padding: 0.2rem 0;
-
   border: none;
   outline: none;
   background: #ffffff;
   cursor: text;
 }
 
-/* Common styling for all 16 numbered items */
+/* ======================================================== */
+/* 
+   NUMBERS & DASHED LINES placed inside .layer-three 
+   at “off-screen” positions (old left + 91). 
+   SHIFT 91vw from your original positions. 
+*/
+
+/* Common styling for 16 numbered items */
 .grid-number {
-  position: absolute;
+  position: absolute; /* relative to .layer-three (fixed) */
   font-family: 'Distill Expanded', sans-serif;
   color: #111111;
   font-size: 0.47rem;
@@ -219,31 +202,32 @@ body.non-fullscreen {
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
-.num1  { top: 28.5vh; left: 48.8vw; }
-.num2  { top: 28.5vh; left: 63.7vw; }
-.num3  { top: 28.5vh; left: 78.5vw; }
-.num4  { top: 28.5vh; left: 93.3vw; }
+/* SHIFT = old + 91 => e.g. old 36 => 127 */
+.num1  { top: 28.5vh; left: calc(48.8vw + 91vw); }
+.num2  { top: 28.5vh; left: calc(63.7vw + 91vw); }
+.num3  { top: 28.5vh; left: calc(78.5vw + 91vw); }
+.num4  { top: 28.5vh; left: calc(93.3vw + 91vw); }
 
-.num5  { top: 47vh;   left: 48.8vw; }
-.num6  { top: 47vh;   left: 63.7vw; }
-.num7  { top: 47vh;   left: 78.5vw; }
-.num8  { top: 47vh;   left: 93.3vw; }
+.num5  { top: 47vh;   left: calc(48.8vw + 91vw); }
+.num6  { top: 47vh;   left: calc(63.7vw + 91vw); }
+.num7  { top: 47vh;   left: calc(78.5vw + 91vw); }
+.num8  { top: 47vh;   left: calc(93.3vw + 91vw); }
 
-.num9   { top: 65.5vh; left: 48.8vw; }
-.num10  { top: 65.5vh; left: 63.3vw; }
-.num11  { top: 65.5vh; left: 78.3vw; }
-.num12  { top: 65.5vh; left: 92.9vw; }
+.num9   { top: 65.5vh; left: calc(48.8vw + 91vw); }
+.num10  { top: 65.5vh; left: calc(63.3vw + 91vw); }
+.num11  { top: 65.5vh; left: calc(78.3vw + 91vw); }
+.num12  { top: 65.5vh; left: calc(92.9vw + 91vw); }
 
-.num13 { top: 83.5vh; left: 48.4vw; }
-.num14 { top: 83.5vh; left: 63.3vw; }
-.num15 { top: 83.5vh; left: 78.1vw; }
-.num16 { top: 83.5vh; left: 92.9vw; }
+.num13 { top: 83.5vh; left: calc(48.4vw + 91vw); }
+.num14 { top: 83.5vh; left: calc(63.3vw + 91vw); }
+.num15 { top: 83.5vh; left: calc(78.1vw + 91vw); }
+.num16 { top: 83.5vh; left: calc(92.9vw + 91vw); }
 
-/* Dashed lines: now 11.8vw wide (down from 11.9vw) */
+/* Dashed lines: width 11.8vw as before */
 .grid-dashed {
-  position: absolute;
+  position: absolute; /* relative to .layer-three */
   height: 1px;
-  width: 11.8vw; /* 0.1vw less than 11.9vw */
+  width: 11.8vw;
   background: linear-gradient(
     to right,
     #919191 0,
@@ -254,22 +238,23 @@ body.non-fullscreen {
   background-size: 10px 1px;
 }
 
-.dashed01 { top: 28.5vh; left: 36vw; }
-.dashed02 { top: 28.5vh; left: 51vw; }
-.dashed03 { top: 28.5vh; left: 65.9vw; }
-.dashed04 { top: 28.5vh; left: 80.8vw; }
+/* SHIFT each dashed line left: old + 91 => e.g. 36 => 127 */
+.dashed01 { top: 28.5vh; left: calc(36vw + 91vw); }
+.dashed02 { top: 28.5vh; left: calc(51vw + 91vw); }
+.dashed03 { top: 28.5vh; left: calc(65.9vw + 91vw); }
+.dashed04 { top: 28.5vh; left: calc(80.8vw + 91vw); }
 
-.dashed05 { top: 47vh;   left: 36vw; }
-.dashed06 { top: 47vh;   left: 51vw; }
-.dashed07 { top: 47vh;   left: 65.9vw; }
-.dashed08 { top: 47vh;   left: 80.8vw; }
+.dashed05 { top: 47vh;   left: calc(36vw + 91vw); }
+.dashed06 { top: 47vh;   left: calc(51vw + 91vw); }
+.dashed07 { top: 47vh;   left: calc(65.9vw + 91vw); }
+.dashed08 { top: 47vh;   left: calc(80.8vw + 91vw); }
 
-.dashed09 { top: 65.5vh; left: 36vw; }
-.dashed10 { top: 65.5vh; left: 51vw; }
-.dashed11 { top: 65.5vh; left: 65.9vw; }
-.dashed12 { top: 65.5vh; left: 80.8vw; }
+.dashed09 { top: 65.5vh; left: calc(36vw + 91vw); }
+.dashed10 { top: 65.5vh; left: calc(51vw + 91vw); }
+.dashed11 { top: 65.5vh; left: calc(65.9vw + 91vw); }
+.dashed12 { top: 65.5vh; left: calc(80.8vw + 91vw); }
 
-.dashed13 { top: 84vh;   left: 36vw; }
-.dashed14 { top: 84vh;   left: 51vw; }
-.dashed15 { top: 84vh;   left: 65.9vw; }
-.dashed16 { top: 84vh;   left: 80.8vw; }
+.dashed13 { top: 84vh;   left: calc(36vw + 91vw); }
+.dashed14 { top: 84vh;   left: calc(51vw + 91vw); }
+.dashed15 { top: 84vh;   left: calc(65.9vw + 91vw); }
+.dashed16 { top: 84vh;   left: calc(80.8vw + 91vw); }

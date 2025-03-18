@@ -22,22 +22,24 @@
     <div class="line fourth"></div>
 
     <!-- Set A: Container for dashed lines and time texts.
-         This container spans the full viewport and clips anything left of 28.86vw -->
+         This container is positioned at left:28.86vw so that when we add the original offsets (e.g. 36vw) and subtract 28.86vw we get the original layout.
+         It uses overflow:hidden so that when we later slide its contents left, anything left of 28.86vw is hidden. -->
     <div class="slide-container">
-      <!-- Adjusted dashed lines: left is now 7.14vw so that (7.14 + 28.86 = 36vw) -->
+      <!-- Inside, the dashed lines are now positioned at left: 36vw – 28.86vw = 7.14vw -->
       <div class="line dashed"></div>
       <div class="line dashed second-dashed"></div>
       <div class="line dashed third-dashed"></div>
       <div class="line dashed fourth-dashed"></div>
 
-      <!-- Adjusted time texts: subtract 28.86vw from their original left values -->
+      <!-- Time texts are repositioned similarly:
+           e.g. original left 89.81vw becomes 89.81vw – 28.86vw = 60.95vw -->
       <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
       <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
       <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     </div>
 
-    <!-- Hover area for chat -->
+    <!-- Hover area (to trigger chat text) -->
     <div class="hover-area"></div>
 
     <!-- CHAT Text -->
@@ -79,12 +81,12 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- Invisible slide trigger -->
+    <!-- Invisible slide trigger area -->
     <div class="slide-trigger"></div>
   </div>
 
   <script>
-    // Fade-in and fullscreen behavior remain unchanged.
+    // === Fade-in and fullscreen behavior (unchanged) ===
     const EDGE_MARGIN = 11;
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
@@ -105,14 +107,14 @@
         document.documentElement.requestFullscreen();
       }
     });
-    // Slide animation trigger
+    // === Slide animation trigger for designated area ===
     const slideTrigger = document.querySelector('.slide-trigger');
     slideTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
       document.querySelector('.slide-container').classList.add('animate-slide');
       document.querySelector('.page-content').classList.add('animate-grid');
     });
-    // Chat text behavior
+    // === Chat text behavior ===
     const chatText = document.getElementById('chatText');
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');

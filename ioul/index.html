@@ -15,21 +15,25 @@
 
   <!-- We wrap all visible components in a container so we can hide/fade them together -->
   <div class="page-content">
-    <!-- Decorative Lines -->
+    <!-- Decorative Lines (static) -->
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
     <div class="line fourth"></div>
-    <div class="line dashed"></div>
-    <div class="line dashed second-dashed"></div>
-    <div class="line dashed third-dashed"></div>
-    <div class="line dashed fourth-dashed"></div>
 
-    <!-- Time Texts -->
-    <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-    <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-    <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
-    <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+    <!-- Slide Container for Set A elements (dashed lines and time texts) -->
+    <div class="slide-container">
+      <div class="line dashed"></div>
+      <div class="line dashed second-dashed"></div>
+      <div class="line dashed third-dashed"></div>
+      <div class="line dashed fourth-dashed"></div>
+
+      <!-- Time Texts -->
+      <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+      <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+      <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+      <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+    </div>
 
     <!-- Hover Area (to trigger chat text) -->
     <div class="hover-area"></div>
@@ -37,47 +41,44 @@
     <!-- CHAT Text -->
     <span class="chat-text" id="chatText">cHAT . . .</span>
 
-    <!-- NUMBERED SPANS (1–16) -->
+    <!-- Grid Numbers (1–16) -->
     <span class="grid-number num1">1</span>
     <span class="grid-number num2">2</span>
     <span class="grid-number num3">3</span>
     <span class="grid-number num4">4</span>
-
     <span class="grid-number num5">5</span>
     <span class="grid-number num6">6</span>
     <span class="grid-number num7">7</span>
     <span class="grid-number num8">8</span>
-
     <span class="grid-number num9">9</span>
     <span class="grid-number num10">10</span>
     <span class="grid-number num11">11</span>
     <span class="grid-number num12">12</span>
-
     <span class="grid-number num13">13</span>
     <span class="grid-number num14">14</span>
     <span class="grid-number num15">15</span>
     <span class="grid-number num16">16</span>
 
-    <!-- DASHED LINES (1–16) -->
+    <!-- Grid Dashed Lines (1–16) -->
     <div class="grid-dashed dashed01"></div>
     <div class="grid-dashed dashed02"></div>
     <div class="grid-dashed dashed03"></div>
     <div class="grid-dashed dashed04"></div>
-
     <div class="grid-dashed dashed05"></div>
     <div class="grid-dashed dashed06"></div>
     <div class="grid-dashed dashed07"></div>
     <div class="grid-dashed dashed08"></div>
-
     <div class="grid-dashed dashed09"></div>
     <div class="grid-dashed dashed10"></div>
     <div class="grid-dashed dashed11"></div>
     <div class="grid-dashed dashed12"></div>
-
     <div class="grid-dashed dashed13"></div>
     <div class="grid-dashed dashed14"></div>
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
+
+    <!-- Slide Trigger Area (invisible clickable zone) -->
+    <div class="slide-trigger"></div>
   </div>
 
   <script>
@@ -117,6 +118,16 @@
       if (!document.fullscreenElement && (nearLeft || nearRight || nearTop || nearBottom)) {
         document.documentElement.requestFullscreen();
       }
+    });
+
+    // === Slide animation trigger for specific area ===
+    const slideTrigger = document.querySelector('.slide-trigger');
+    slideTrigger.addEventListener('click', (event) => {
+      event.stopPropagation();
+      // Trigger animation for slide-container (set A elements)
+      document.querySelector('.slide-container').classList.add('animate-slide');
+      // Trigger animation for grid elements (set B elements)
+      document.querySelector('.page-content').classList.add('animate-grid');
     });
 
     // === Show chat text when hovering over the designated area ===

@@ -191,6 +191,7 @@ body.non-fullscreen {
 }
 
 /* --- Set B: Grid numbers and dashed lines --- */
+/* Initial positions are lowered by 19vw */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -199,24 +200,24 @@ body.non-fullscreen {
     letter-spacing: 0.28vw;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
-.num1  { top: 28.5vh; left: 119.8vw; }
-.num2  { top: 28.5vh; left: 134.7vw; }
-.num3  { top: 28.5vh; left: 149.5vw; }
-.num4  { top: 28.5vh; left: 164.3vw; }
-.num5  { top: 47vh;   left: 119.8vw; }
-.num6  { top: 47vh;   left: 134.7vw; }
-.num7  { top: 47vh;   left: 149.5vw; }
-.num8  { top: 47vh;   left: 164.3vw; }
-.num9   { top: 65.5vh; left: 119.8vw; }
-.num10  { top: 65.5vh; left: 134.3vw; }
-.num11  { top: 65.5vh; left: 149.3vw; }
-.num12  { top: 65.5vh; left: 163.9vw; }
-.num13  { top: 83.5vh; left: 119.4vw; }
-.num14  { top: 83.5vh; left: 134.3vw; }
-.num15  { top: 83.5vh; left: 149.1vw; }
-.num16  { top: 83.5vh; left: 163.9vw; }
+.num1  { top: 28.5vh; left: 100.8vw; }
+.num2  { top: 28.5vh; left: 115.7vw; }
+.num3  { top: 28.5vh; left: 130.5vw; }
+.num4  { top: 28.5vh; left: 145.3vw; }
+.num5  { top: 47vh;   left: 100.8vw; }
+.num6  { top: 47vh;   left: 115.7vw; }
+.num7  { top: 47vh;   left: 130.5vw; }
+.num8  { top: 47vh;   left: 145.3vw; }
+.num9   { top: 65.5vh; left: 100.8vw; }
+.num10  { top: 65.5vh; left: 115.3vw; }
+.num11  { top: 65.5vh; left: 130.3vw; }
+.num12  { top: 65.5vh; left: 144.9vw; }
+.num13  { top: 83.5vh; left: 100.4vw; }
+.num14  { top: 83.5vh; left: 115.3vw; }
+.num15  { top: 83.5vh; left: 130.1vw; }
+.num16  { top: 83.5vh; left: 144.9vw; }
 
-/* Grid dashed lines initial positions */
+/* Grid dashed lines initial positions, lowered by 19vw */
 .grid-dashed {
     position: absolute;
     height: 1px;
@@ -224,31 +225,31 @@ body.non-fullscreen {
     background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
     background-size: 10px 1px;
 }
-.dashed01 { top: 28.5vh; left: 107vw; }
-.dashed02 { top: 28.5vh; left: 122vw; }
-.dashed03 { top: 28.5vh; left: 136.9vw; }
-.dashed04 { top: 28.5vh; left: 151.8vw; }
-.dashed05 { top: 47vh;   left: 107vw; }
-.dashed06 { top: 47vh;   left: 122vw; }
-.dashed07 { top: 47vh;   left: 136.9vw; }
-.dashed08 { top: 47vh;   left: 151.8vw; }
-.dashed09 { top: 65.5vh; left: 107vw; }
-.dashed10 { top: 65.5vh; left: 122vw; }
-.dashed11 { top: 65.5vh; left: 136.9vw; }
-.dashed12 { top: 65.5vh; left: 151.8vw; }
-.dashed13 { top: 84vh;   left: 107vw; }
-.dashed14 { top: 84vh;   left: 122vw; }
-.dashed15 { top: 84vh;   left: 136.9vw; }
-.dashed16 { top: 84vh;   left: 151.8vw; }
+.dashed01 { top: 28.5vh; left: 88vw; }
+.dashed02 { top: 28.5vh; left: 103vw; }
+.dashed03 { top: 28.5vh; left: 117.9vw; }
+.dashed04 { top: 28.5vh; left: 132.8vw; }
+.dashed05 { top: 47vh;   left: 88vw; }
+.dashed06 { top: 47vh;   left: 103vw; }
+.dashed07 { top: 47vh;   left: 117.9vw; }
+.dashed08 { top: 47vh;   left: 132.8vw; }
+.dashed09 { top: 65.5vh; left: 88vw; }
+.dashed10 { top: 65.5vh; left: 103vw; }
+.dashed11 { top: 65.5vh; left: 117.9vw; }
+.dashed12 { top: 65.5vh; left: 132.8vw; }
+.dashed13 { top: 84vh;   left: 88vw; }
+.dashed14 { top: 84vh;   left: 103vw; }
+.dashed15 { top: 84vh;   left: 117.9vw; }
+.dashed16 { top: 84vh;   left: 132.8vw; }
 
 /* --- New CSS for sliding animations --- */
-/* Set A: Animate dashed lines and time texts to slide left by 91vw with a 1s transition */
+/* Set A: Animate dashed lines and time texts to slide left by 91vw with a 0.7s transition */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
 .slide-container > .time-text.third-time-text,
 .slide-container > .time-text.fourth-time-text {
-    transition: transform 1s ease;
+    transition: transform 0.7s ease;
 }
 .slide-container.animate-slide > .line.dashed,
 .slide-container.animate-slide > .time-text,
@@ -270,37 +271,37 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-/* Set B: Animate grid numbers and grid dashed lines (slide left to final positions) with a 1s transition */
-.page-content.animate-grid .grid-number.num1  { left: 48.8vw;  transition: left 1s ease; }
-.page-content.animate-grid .grid-number.num2  { left: 63.7vw;  transition: left 1s ease; }
-.page-content.animate-grid .grid-number.num3  { left: 78.5vw;  transition: left 1s ease; }
-.page-content.animate-grid .grid-number.num4  { left: 93.3vw;  transition: left 1s ease; }
-.page-content.animate-grid .grid-number.num5  { left: 48.8vw;  transition: left 1s ease; }
-.page-content.animate-grid .grid-number.num6  { left: 63.7vw;  transition: left 1s ease; }
-.page-content.animate-grid .grid-number.num7  { left: 78.5vw;  transition: left 1s ease; }
-.page-content.animate-grid .grid-number.num8  { left: 93.3vw;  transition: left 1s ease; }
-.page-content.animate-grid .grid-number.num9  { left: 48.8vw;  transition: left 1s ease; }
-.page-content.animate-grid .grid-number.num10 { left: 63.3vw;  transition: left 1s ease; }
-.page-content.animate-grid .grid-number.num11 { left: 78.3vw;  transition: left 1s ease; }
-.page-content.animate-grid .grid-number.num12 { left: 92.9vw;  transition: left 1s ease; }
-.page-content.animate-grid .grid-number.num13 { left: 48.4vw;  transition: left 1s ease; }
-.page-content.animate-grid .grid-number.num14 { left: 63.3vw;  transition: left 1s ease; }
-.page-content.animate-grid .grid-number.num15 { left: 78.1vw;  transition: left 1s ease; }
-.page-content.animate-grid .grid-number.num16 { left: 92.9vw;  transition: left 1s ease; }
+/* Set B: Animate grid numbers and grid dashed lines (slide to final positions) with a 0.7s transition */
+.page-content.animate-grid .grid-number.num1  { left: 48.8vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num2  { left: 63.7vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num3  { left: 78.5vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num4  { left: 93.3vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num5  { left: 48.8vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num6  { left: 63.7vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num7  { left: 78.5vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num8  { left: 93.3vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num9  { left: 48.8vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num10 { left: 63.3vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num11 { left: 78.3vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num12 { left: 92.9vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num13 { left: 48.4vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num14 { left: 63.3vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num15 { left: 78.1vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num16 { left: 92.9vw;  transition: left 0.7s ease; }
 
-.page-content.animate-grid .grid-dashed.dashed01 { left: 36vw;   transition: left 1s ease; }
-.page-content.animate-grid .grid-dashed.dashed02 { left: 51vw;   transition: left 1s ease; }
-.page-content.animate-grid .grid-dashed.dashed03 { left: 65.9vw; transition: left 1s ease; }
-.page-content.animate-grid .grid-dashed.dashed04 { left: 80.8vw; transition: left 1s ease; }
-.page-content.animate-grid .grid-dashed.dashed05 { left: 36vw;   transition: left 1s ease; }
-.page-content.animate-grid .grid-dashed.dashed06 { left: 51vw;   transition: left 1s ease; }
-.page-content.animate-grid .grid-dashed.dashed07 { left: 65.9vw; transition: left 1s ease; }
-.page-content.animate-grid .grid-dashed.dashed08 { left: 80.8vw; transition: left 1s ease; }
-.page-content.animate-grid .grid-dashed.dashed09 { left: 36vw;   transition: left 1s ease; }
-.page-content.animate-grid .grid-dashed.dashed10 { left: 51vw;   transition: left 1s ease; }
-.page-content.animate-grid .grid-dashed.dashed11 { left: 65.9vw; transition: left 1s ease; }
-.page-content.animate-grid .grid-dashed.dashed12 { left: 80.8vw; transition: left 1s ease; }
-.page-content.animate-grid .grid-dashed.dashed13 { left: 36vw;   transition: left 1s ease; }
-.page-content.animate-grid .grid-dashed.dashed14 { left: 51vw;   transition: left 1s ease; }
-.page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; transition: left 1s ease; }
-.page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; transition: left 1s ease; }
+.page-content.animate-grid .grid-dashed.dashed01 { left: 36vw;   transition: left 0.7s ease; }
+.page-content.animate-grid .grid-dashed.dashed02 { left: 51vw;   transition: left 0.7s ease; }
+.page-content.animate-grid .grid-dashed.dashed03 { left: 65.9vw; transition: left 0.7s ease; }
+.page-content.animate-grid .grid-dashed.dashed04 { left: 80.8vw; transition: left 0.7s ease; }
+.page-content.animate-grid .grid-dashed.dashed05 { left: 36vw;   transition: left 0.7s ease; }
+.page-content.animate-grid .grid-dashed.dashed06 { left: 51vw;   transition: left 0.7s ease; }
+.page-content.animate-grid .grid-dashed.dashed07 { left: 65.9vw; transition: left 0.7s ease; }
+.page-content.animate-grid .grid-dashed.dashed08 { left: 80.8vw; transition: left 0.7s ease; }
+.page-content.animate-grid .grid-dashed.dashed09 { left: 36vw;   transition: left 0.7s ease; }
+.page-content.animate-grid .grid-dashed.dashed10 { left: 51vw;   transition: left 0.7s ease; }
+.page-content.animate-grid .grid-dashed.dashed11 { left: 65.9vw; transition: left 0.7s ease; }
+.page-content.animate-grid .grid-dashed.dashed12 { left: 80.8vw; transition: left 0.7s ease; }
+.page-content.animate-grid .grid-dashed.dashed13 { left: 36vw;   transition: left 0.7s ease; }
+.page-content.animate-grid .grid-dashed.dashed14 { left: 51vw;   transition: left 0.7s ease; }
+.page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; transition: left 0.7s ease; }
+.page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; transition: left 0.7s ease; }

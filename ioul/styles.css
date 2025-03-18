@@ -189,7 +189,7 @@ body.non-fullscreen {
 }
 
 /* --- Set B: Grid numbers and dashed lines --- */
-/* Default grid numbers with transition added so changes animate both forward and reverse */
+/* Lower the left positions by 11vw */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -199,7 +199,6 @@ body.non-fullscreen {
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     transition: left 0.7s ease;
 }
-/* Lower the left positions by 11vw */
 .num1  { top: 28.5vh; left: 108.8vw; }
 .num2  { top: 28.5vh; left: 123.7vw; }
 .num3  { top: 28.5vh; left: 138.5vw; }
@@ -212,12 +211,13 @@ body.non-fullscreen {
 .num10  { top: 65.5vh; left: 123.3vw; }
 .num11  { top: 65.5vh; left: 138.3vw; }
 .num12  { top: 65.5vh; left: 152.9vw; }
-.num13  { top: 83.5vh; left: 108.4vw; }
-.num14  { top: 83.5vh; left: 123.3vw; }
-.num15  { top: 83.5vh; left: 138.1vw; }
-.num16  { top: 83.5vh; left: 152.9vw; }
+/* For numbers 13-16, add 0.1 to top */
+.num13  { top: 83.6vh; left: 108.3vw; }
+.num14  { top: 83.6vh; left: 123.2vw; }
+.num15  { top: 83.6vh; left: 138.0vw; }
+.num16  { top: 83.6vh; left: 152.8vw; }
 
-/* Default grid dashed lines with transition added */
+/* Grid dashed lines */
 .grid-dashed {
     position: absolute;
     height: 1px;
@@ -297,10 +297,10 @@ body.non-fullscreen {
 .page-content.animate-grid .grid-number.num10 { left: 63.3vw;  transition: left 0.7s ease; }
 .page-content.animate-grid .grid-number.num11 { left: 78.3vw;  transition: left 0.7s ease; }
 .page-content.animate-grid .grid-number.num12 { left: 92.9vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num13 { left: 48.4vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num14 { left: 63.3vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num15 { left: 78.1vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num16 { left: 92.9vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num13 { left: 48.3vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num14 { left: 63.2vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num15 { left: 78.0vw;  transition: left 0.7s ease; }
+.page-content.animate-grid .grid-number.num16 { left: 92.8vw;  transition: left 0.7s ease; }
 
 .page-content.animate-grid .grid-dashed.dashed01 { left: 36vw;   transition: left 0.7s ease; }
 .page-content.animate-grid .grid-dashed.dashed02 { left: 51vw;   transition: left 0.7s ease; }

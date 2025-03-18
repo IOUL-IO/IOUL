@@ -219,26 +219,25 @@ body.non-fullscreen {
   text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
-/* SHIFTED UP 1vh from earlier versions, and each left is 0.1vw less than the version before that */
-.num1  { top: 27.5vh; left: 48.8vw; }
-.num2  { top: 27.5vh; left: 63.7vw; }
-.num3  { top: 27.5vh; left: 78.5vw; }
-.num4  { top: 27.5vh; left: 93.3vw; }
+.num1  { top: 28.5vh; left: 48.8vw; }
+.num2  { top: 28.5vh; left: 63.7vw; }
+.num3  { top: 28.5vh; left: 78.5vw; }
+.num4  { top: 28.5vh; left: 93.3vw; }
 
-.num5  { top: 46vh;   left: 48.8vw; }
-.num6  { top: 46vh;   left: 63.7vw; }
-.num7  { top: 46vh;   left: 78.5vw; }
-.num8  { top: 46vh;   left: 93.3vw; }
+.num5  { top: 47vh;   left: 48.8vw; }
+.num6  { top: 47vh;   left: 63.7vw; }
+.num7  { top: 47vh;   left: 78.5vw; }
+.num8  { top: 47vh;   left: 93.3vw; }
 
-.num9   { top: 64.5vh; left: 48.8vw; }
-.num10  { top: 64.5vh; left: 63.3vw; }
-.num11  { top: 64.5vh; left: 78.3vw; }
-.num12  { top: 64.5vh; left: 92.9vw; }
+.num9   { top: 65.5vh; left: 48.8vw; }
+.num10  { top: 65.5vh; left: 63.3vw; }
+.num11  { top: 65.5vh; left: 78.3vw; }
+.num12  { top: 65.5vh; left: 92.9vw; }
 
-.num13 { top: 82.5vh; left: 48.4vw; }
-.num14 { top: 82.5vh; left: 63.3vw; }
-.num15 { top: 82.5vh; left: 78.1vw; }
-.num16 { top: 82.5vh; left: 92.9vw; }
+.num13 { top: 83.5vh; left: 48.4vw; }
+.num14 { top: 83.5vh; left: 63.3vw; }
+.num15 { top: 83.5vh; left: 78.1vw; }
+.num16 { top: 83.5vh; left: 92.9vw; }
 
 /* Dashed lines: now 11.8vw wide (down from 11.9vw) */
 .grid-dashed {
@@ -255,23 +254,22 @@ body.non-fullscreen {
   background-size: 10px 1px;
 }
 
-/* SHIFTED UP 1vh from original positions */
-.dashed01 { top: 27.5vh; left: 36vw; }
-.dashed02 { top: 27.5vh; left: 51vw; }
-.dashed03 { top: 27.5vh; left: 65.9vw; }
-.dashed04 { top: 27.5vh; left: 80.8vw; }
+.dashed01 { top: 28.5vh; left: 36vw; }
+.dashed02 { top: 28.5vh; left: 51vw; }
+.dashed03 { top: 28.5vh; left: 65.9vw; }
+.dashed04 { top: 28.5vh; left: 80.8vw; }
 
-.dashed05 { top: 46vh;   left: 36vw; }
-.dashed06 { top: 46vh;   left: 51vw; }
-.dashed07 { top: 46vh;   left: 65.9vw; }
-.dashed08 { top: 46vh;   left: 80.8vw; }
+.dashed05 { top: 47vh;   left: 36vw; }
+.dashed06 { top: 47vh;   left: 51vw; }
+.dashed07 { top: 47vh;   left: 65.9vw; }
+.dashed08 { top: 47vh;   left: 80.8vw; }
 
-.dashed09 { top: 64.5vh; left: 36vw; }
-.dashed10 { top: 64.5vh; left: 51vw; }
-.dashed11 { top: 64.5vh; left: 65.9vw; }
-.dashed12 { top: 64.5vh; left: 80.8vw; }
+.dashed09 { top: 65.5vh; left: 36vw; }
+.dashed10 { top: 65.5vh; left: 51vw; }
+.dashed11 { top: 65.5vh; left: 65.9vw; }
+.dashed12 { top: 65.5vh; left: 80.8vw; }
 
-.dashed13 { top: 83vh;   left: 36vw; }
-.dashed14 { top: 83vh;   left: 51vw; }
-.dashed15 { top: 83vh;   left: 65.9vw; }
-.dashed16 { top: 83vh;   left: 80.8vw; }
+.dashed13 { top: 84vh;   left: 36vw; }
+.dashed14 { top: 84vh;   left: 51vw; }
+.dashed15 { top: 84vh;   left: 65.9vw; }
+.dashed16 { top: 84vh;   left: 80.8vw; }

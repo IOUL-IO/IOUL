@@ -212,10 +212,10 @@ body.non-fullscreen {
 .num11  { top: 65.5vh; left: 138.3vw; }
 .num12  { top: 65.5vh; left: 152.9vw; }
 /* For numbers 13-16, add 0.1 to top */
-.num13  { top: 83.6vh; left: 108.3vw; }
-.num14  { top: 83.6vh; left: 123.2vw; }
-.num15  { top: 83.6vh; left: 138.0vw; }
-.num16  { top: 83.6vh; left: 152.8vw; }
+.num13  { top: 83.7vh; left: 108.3vw; }
+.num14  { top: 83.7vh; left: 123.2vw; }
+.num15  { top: 83.7vh; left: 138.0vw; }
+.num16  { top: 83.7vh; left: 152.8vw; }
 
 /* Grid dashed lines */
 .grid-dashed {

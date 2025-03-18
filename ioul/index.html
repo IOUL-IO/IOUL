@@ -13,36 +13,36 @@
   <div class="layer-two"></div>
   <div class="layer-three"></div>
 
-  <!-- Main container for all content -->
+  <!-- We wrap all visible components in a container so we can hide/fade them together -->
   <div class="page-content">
-    <!-- Decorative static lines -->
+    <!-- Decorative Lines (static) -->
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
     <div class="line fourth"></div>
 
-    <!-- Set A: Container for dashed lines and time texts.
-         This container spans the full viewport and clips anything left of 28.86vw -->
+    <!-- Container for Set A: dashed lines and time texts.
+         This container spans the full viewport but clips any content to the left of 28.86vw -->
     <div class="slide-container">
       <div class="line dashed"></div>
       <div class="line dashed second-dashed"></div>
       <div class="line dashed third-dashed"></div>
       <div class="line dashed fourth-dashed"></div>
 
-      <!-- Time texts -->
+      <!-- Time Texts -->
       <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
       <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
       <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     </div>
 
-    <!-- Hover area for chat -->
+    <!-- Hover Area (to trigger chat text) -->
     <div class="hover-area"></div>
 
-    <!-- CHAT text -->
+    <!-- CHAT Text -->
     <span class="chat-text" id="chatText">cHAT . . .</span>
 
-    <!-- Set B: Grid Numbers -->
+    <!-- Grid Numbers (Set B) -->
     <span class="grid-number num1">1</span>
     <span class="grid-number num2">2</span>
     <span class="grid-number num3">3</span>
@@ -60,7 +60,7 @@
     <span class="grid-number num15">15</span>
     <span class="grid-number num16">16</span>
 
-    <!-- Set B: Grid Dashed Lines -->
+    <!-- Grid Dashed Lines (Set B) -->
     <div class="grid-dashed dashed01"></div>
     <div class="grid-dashed dashed02"></div>
     <div class="grid-dashed dashed03"></div>
@@ -78,14 +78,15 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- Slide Trigger Area (for forward animation) -->
+    <!-- Slide Trigger Areas -->
+    <!-- Now the inverse trigger area is assigned to the region originally for forward animation -->
     <div class="slide-trigger"></div>
-    <!-- New: Inverse Trigger Area for reverse animation -->
+    <!-- And the forward trigger area is assigned to the region originally for inverse animation -->
     <div class="slide-trigger-reverse"></div>
   </div>
 
   <script>
-    // === Fade in page content on first mouse move ===
+    // Fade in page content on first mouse move
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -97,13 +98,11 @@
       document.removeEventListener('mousemove', onFirstMouseMove);
     });
 
-    // === Fullscreen trigger when clicking near any edge ===
+    // Fullscreen trigger when clicking near any edge
     const EDGE_MARGIN = 11;
     document.addEventListener('click', (event) => {
-      const x = event.clientX;
-      const y = event.clientY;
-      const width = window.innerWidth;
-      const height = window.innerHeight;
+      const { clientX: x, clientY: y } = event;
+      const { innerWidth: width, innerHeight: height } = window;
       if (!document.fullscreenElement &&
           (x <= EDGE_MARGIN || x >= width - EDGE_MARGIN ||
            y <= EDGE_MARGIN || y >= height - EDGE_MARGIN)) {
@@ -111,23 +110,27 @@
       }
     });
 
-    // === Forward Animation Trigger (Set A and Set B slide in) ===
-    const slideTrigger = document.querySelector('.slide-trigger');
-    slideTrigger.addEventListener('click', (event) => {
+    // --- Inverse of the previous designated triggers ---
+    // Now, clicking the area originally designated as the forward trigger (i.e. .slide-trigger)
+    // will trigger the inverse animation.
+    const inverseTrigger = document.querySelector('.slide-trigger');
+    inverseTrigger.addEventListener('click', (event) => {
+      event.stopPropagation();
+      // Remove classes to trigger inverse (slide-out) animation:
+      document.querySelector('.slide-container').classList.remove('animate-slide');
+      document.querySelector('.page-content').classList.remove('animate-grid');
+    });
+
+    // And clicking the area originally designated as the reverse trigger (i.e. .slide-trigger-reverse)
+    // will now trigger the forward (slide-in) animation.
+    const forwardTrigger = document.querySelector('.slide-trigger-reverse');
+    forwardTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
       document.querySelector('.slide-container').classList.add('animate-slide');
       document.querySelector('.page-content').classList.add('animate-grid');
     });
 
-    // === Reverse Animation Trigger (inverse animation) ===
-    const reverseTrigger = document.querySelector('.slide-trigger-reverse');
-    reverseTrigger.addEventListener('click', (event) => {
-      event.stopPropagation();
-      document.querySelector('.slide-container').classList.remove('animate-slide');
-      document.querySelector('.page-content').classList.remove('animate-grid');
-    });
-
-    // === Chat text behavior ===
+    // Chat text behavior
     const chatText = document.getElementById('chatText');
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');

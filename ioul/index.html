@@ -41,7 +41,7 @@
     <!-- CHAT Text -->
     <span class="chat-text" id="chatText">cHAT . . .</span>
 
-    <!-- Grid Numbers (1–16) -->
+    <!-- Grid Numbers (Set B) -->
     <span class="grid-number num1">1</span>
     <span class="grid-number num2">2</span>
     <span class="grid-number num3">3</span>
@@ -59,7 +59,7 @@
     <span class="grid-number num15">15</span>
     <span class="grid-number num16">16</span>
 
-    <!-- Grid Dashed Lines (1–16) -->
+    <!-- Grid Dashed Lines (Set B) -->
     <div class="grid-dashed dashed01"></div>
     <div class="grid-dashed dashed02"></div>
     <div class="grid-dashed dashed03"></div>
@@ -124,9 +124,9 @@
     const slideTrigger = document.querySelector('.slide-trigger');
     slideTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
-      // Trigger animation for slide-container (set A elements)
+      // Trigger animation for Set A elements (dashed lines and time texts)
       document.querySelector('.slide-container').classList.add('animate-slide');
-      // Trigger animation for grid elements (set B elements)
+      // Trigger animation for grid elements (Set B)
       document.querySelector('.page-content').classList.add('animate-grid');
     });
 

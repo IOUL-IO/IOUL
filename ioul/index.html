@@ -2,149 +2,273 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IOUL</title>
-  <link rel="icon" href="favicon.png" type="image/png" />
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Full Code Example</title>
+  <style>
+    /* -- Basic resets -- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #f0f0f0;
+      font-family: sans-serif;
+    }
+
+    /* -- The layer containers you already have -- */
+    .layer-one,
+    .layer-two {
+      position: fixed;
+      top: 0;
+      height: 100vh;
+      background: #ffffff;
+      z-index: 100;
+    }
+    .layer-one {
+      left: 0;
+      width: 6.37vw;
+    }
+    .layer-two {
+      left: 28.87vw; 
+      width: calc(36vw - 28.87vw);
+    }
+
+    /* 
+      We want to place the old lines/time texts and the new lines/numbers 
+      inside a "clip container" that starts at left: 28.86vw,
+      so anything that slides beyond (less than) that left boundary is clipped.
+    */
+    .clip-region {
+      position: absolute;
+      top: 0;
+      left: 28.86vw;  /* Everything left of 28.86vw gets clipped. */
+      width: calc(100vw - 28.86vw);
+      height: 100vh;
+      overflow: hidden; 
+      z-index: 101; /* On top of layer-two if desired */
+    }
+
+    /* 
+      We'll have two groups inside: 
+        - .old-group (the old lines/time texts),
+        - .new-group (the new lines/numbers).
+      Each group can shift left or right with transform to animate.
+    */
+    .old-group,
+    .new-group {
+      position: absolute; 
+      top: 0;
+      left: 0;  /* 0 inside the clip region */
+      width: 200vw; /* large so items don't wrap */
+      height: 100vh;
+      transition: transform 0.6s ease-in-out; /* animate on transform changes */
+    }
+
+    /* 
+      By default, .new-group is off-screen to the right by +91vw 
+      so it's invisible initially. 
+    */
+    .new-group {
+      transform: translateX(91vw); 
+    }
+
+    /* 
+      We'll add a "swap-active" class to .clip-region 
+      to trigger the simultaneous slide:
+        - old-group => transformX(-91vw)
+        - new-group => transformX(0)
+    */
+    .swap-active .old-group {
+      transform: translateX(-91vw);
+    }
+    .swap-active .new-group {
+      transform: translateX(0);
+    }
+
+    /* 
+      Now define your old lines/time texts:
+      .dashed, .second-dashed, .third-dashed, .fourth-dashed, .time-text 
+      all in .old-group at their normal positions. 
+      For the example, let's place them absolutely with the final left coords.
+    */
+    .dashed,
+    .second-dashed,
+    .third-dashed,
+    .fourth-dashed,
+    .time-text {
+      position: absolute;
+    }
+    /* Example positions for old lines/time texts: 
+       (These are just placeholders. Adjust as needed.) 
+    */
+    .dashed {
+      top: 28.5vh; left: 36vw; width: 10vw; background: #aaa; height: 1px;
+    }
+    .second-dashed {
+      top: 47vh; left: 36vw; width: 10vw; background: #aaa; height: 1px;
+    }
+    .third-dashed {
+      top: 65.5vh; left: 36vw; width: 10vw; background: #aaa; height: 1px;
+    }
+    .fourth-dashed {
+      top: 84vh; left: 36vw; width: 10vw; background: #aaa; height: 1px;
+    }
+
+    /* Time texts example */
+    .time-text {
+      font-size: 1.2rem;
+      color: #111;
+      top: 28.5vh; left: 50vw;
+    }
+    .second-time-text {
+      top: 47vh; left: 50vw;
+    }
+    .third-time-text {
+      top: 65.5vh; left: 50vw;
+    }
+    .fourth-time-text {
+      top: 84vh; left: 50vw;
+    }
+
+    /* Now define the 16 numbers & dashed lines in .new-group 
+       at the final positions you specified. 
+    */
+    .grid-number,
+    .grid-dashed {
+      position: absolute;
+      font-family: sans-serif;
+    }
+
+    /* The 16 numbers */
+    .num1  { top: 28.5vh; left: 48.8vw; }
+    .num2  { top: 28.5vh; left: 63.7vw; }
+    .num3  { top: 28.5vh; left: 78.5vw; }
+    .num4  { top: 28.5vh; left: 93.3vw; }
+
+    .num5  { top: 47vh;   left: 48.8vw; }
+    .num6  { top: 47vh;   left: 63.7vw; }
+    .num7  { top: 47vh;   left: 78.5vw; }
+    .num8  { top: 47vh;   left: 93.3vw; }
+
+    .num9   { top: 65.5vh; left: 48.8vw; }
+    .num10  { top: 65.5vh; left: 63.3vw; }
+    .num11  { top: 65.5vh; left: 78.3vw; }
+    .num12  { top: 65.5vh; left: 92.9vw; }
+
+    .num13 { top: 83.5vh; left: 48.4vw; }
+    .num14 { top: 83.5vh; left: 63.3vw; }
+    .num15 { top: 83.5vh; left: 78.1vw; }
+    .num16 { top: 83.5vh; left: 92.9vw; }
+
+    /* The 16 dashed lines (new set) */
+    .dashed01 { top: 28.5vh; left: 36vw; width: 10vw; background: #f55; height: 1px; }
+    .dashed02 { top: 28.5vh; left: 51vw; width: 10vw; background: #f55; height: 1px; }
+    .dashed03 { top: 28.5vh; left: 65.9vw; width: 10vw; background: #f55; height: 1px; }
+    .dashed04 { top: 28.5vh; left: 80.8vw; width: 10vw; background: #f55; height: 1px; }
+
+    .dashed05 { top: 47vh;   left: 36vw; width: 10vw; background: #f55; height: 1px; }
+    .dashed06 { top: 47vh;   left: 51vw; width: 10vw; background: #f55; height: 1px; }
+    .dashed07 { top: 47vh;   left: 65.9vw; width: 10vw; background: #f55; height: 1px; }
+    .dashed08 { top: 47vh;   left: 80.8vw; width: 10vw; background: #f55; height: 1px; }
+
+    .dashed09 { top: 65.5vh; left: 36vw; width: 10vw; background: #f55; height: 1px; }
+    .dashed10 { top: 65.5vh; left: 51vw; width: 10vw; background: #f55; height: 1px; }
+    .dashed11 { top: 65.5vh; left: 65.9vw; width: 10vw; background: #f55; height: 1px; }
+    .dashed12 { top: 65.5vh; left: 80.8vw; width: 10vw; background: #f55; height: 1px; }
+
+    .dashed13 { top: 84vh;   left: 36vw; width: 10vw; background: #f55; height: 1px; }
+    .dashed14 { top: 84vh;   left: 51vw; width: 10vw; background: #f55; height: 1px; }
+    .dashed15 { top: 84vh;   left: 65.9vw; width: 10vw; background: #f55; height: 1px; }
+    .dashed16 { top: 84vh;   left: 80.8vw; width: 10vw; background: #f55; height: 1px; }
+  </style>
 </head>
-<body class="non-fullscreen">
-  <!-- Layer One & Layer Two remain as before -->
+<body>
+
+  <!-- Two existing layers -->
   <div class="layer-one"></div>
   <div class="layer-two"></div>
 
-  <!-- LAYER THREE: Now contains the lines & numbers “off-screen” (shifted +91vw) -->
-  <div class="layer-three">
-    <!-- 16 NUMBERED SPANS -->
-    <span class="grid-number num1">1</span>
-    <span class="grid-number num2">2</span>
-    <span class="grid-number num3">3</span>
-    <span class="grid-number num4">4</span>
+  <!-- The CLIP region from left:28.86vw to right edge, overflow hidden. -->
+  <div class="clip-region">
 
-    <span class="grid-number num5">5</span>
-    <span class="grid-number num6">6</span>
-    <span class="grid-number num7">7</span>
-    <span class="grid-number num8">8</span>
+    <!-- old-group: old dashed lines/time texts -->
+    <div class="old-group">
+      <!-- Example old lines/time texts that will slide left by 91vw -->
+      <div class="dashed"></div>
+      <div class="second-dashed"></div>
+      <div class="third-dashed"></div>
+      <div class="fourth-dashed"></div>
 
-    <span class="grid-number num9">9</span>
-    <span class="grid-number num10">10</span>
-    <span class="grid-number num11">11</span>
-    <span class="grid-number num12">12</span>
+      <span class="time-text">10:00 AM</span>
+      <span class="time-text second-time-text">11:00 AM</span>
+      <span class="time-text third-time-text">12:00 PM</span>
+      <span class="time-text fourth-time-text">1:00 PM</span>
+    </div>
 
-    <span class="grid-number num13">13</span>
-    <span class="grid-number num14">14</span>
-    <span class="grid-number num15">15</span>
-    <span class="grid-number num16">16</span>
+    <!-- new-group: the new lines & numbers, initially transform:translateX(91vw) -->
+    <div class="new-group">
+      <!-- 16 numbers -->
+      <span class="grid-number num1">1</span>
+      <span class="grid-number num2">2</span>
+      <span class="grid-number num3">3</span>
+      <span class="grid-number num4">4</span>
+      <span class="grid-number num5">5</span>
+      <span class="grid-number num6">6</span>
+      <span class="grid-number num7">7</span>
+      <span class="grid-number num8">8</span>
+      <span class="grid-number num9">9</span>
+      <span class="grid-number num10">10</span>
+      <span class="grid-number num11">11</span>
+      <span class="grid-number num12">12</span>
+      <span class="grid-number num13">13</span>
+      <span class="grid-number num14">14</span>
+      <span class="grid-number num15">15</span>
+      <span class="grid-number num16">16</span>
 
-    <!-- 16 DASHED LINES -->
-    <div class="grid-dashed dashed01"></div>
-    <div class="grid-dashed dashed02"></div>
-    <div class="grid-dashed dashed03"></div>
-    <div class="grid-dashed dashed04"></div>
-
-    <div class="grid-dashed dashed05"></div>
-    <div class="grid-dashed dashed06"></div>
-    <div class="grid-dashed dashed07"></div>
-    <div class="grid-dashed dashed08"></div>
-
-    <div class="grid-dashed dashed09"></div>
-    <div class="grid-dashed dashed10"></div>
-    <div class="grid-dashed dashed11"></div>
-    <div class="grid-dashed dashed12"></div>
-
-    <div class="grid-dashed dashed13"></div>
-    <div class="grid-dashed dashed14"></div>
-    <div class="grid-dashed dashed15"></div>
-    <div class="grid-dashed dashed16"></div>
+      <!-- 16 dashed lines -->
+      <div class="grid-dashed dashed01"></div>
+      <div class="grid-dashed dashed02"></div>
+      <div class="grid-dashed dashed03"></div>
+      <div class="grid-dashed dashed04"></div>
+      <div class="grid-dashed dashed05"></div>
+      <div class="grid-dashed dashed06"></div>
+      <div class="grid-dashed dashed07"></div>
+      <div class="grid-dashed dashed08"></div>
+      <div class="grid-dashed dashed09"></div>
+      <div class="grid-dashed dashed10"></div>
+      <div class="grid-dashed dashed11"></div>
+      <div class="grid-dashed dashed12"></div>
+      <div class="grid-dashed dashed13"></div>
+      <div class="grid-dashed dashed14"></div>
+      <div class="grid-dashed dashed15"></div>
+      <div class="grid-dashed dashed16"></div>
+    </div>
   </div>
 
-  <!-- PAGE CONTENT: everything else (e.g. lines, times, chat text, etc.) -->
-  <div class="page-content">
-    <!-- Decorative Lines (original), Time Texts, etc. -->
-    <div class="line original"></div>
-    <div class="line second"></div>
-    <div class="line third"></div>
-    <div class="line fourth"></div>
-    <div class="line dashed"></div>
-    <div class="line dashed second-dashed"></div>
-    <div class="line dashed third-dashed"></div>
-    <div class="line dashed fourth-dashed"></div>
-
-    <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-    <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-    <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
-    <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
-
-    <!-- Hover Area (to trigger chat text) -->
-    <div class="hover-area"></div>
-    <!-- CHAT Text -->
-    <span class="chat-text" id="chatText">cHAT . . .</span>
+  <!-- Remainder of your content (chat text, etc.) can go outside or wherever needed. -->
+  <div style="position:absolute; top:0; left:0; color:#444;">
+    <p>Extra page content or layers here...</p>
   </div>
 
   <script>
-    // === Constants ===
-    const EDGE_MARGIN = 11; // 11px from any edge triggers fullscreen
+    // On click, check if it's within left:32.43-36vw & top:28.5-84vh:
+    document.addEventListener('click', (e) => {
+      const xPercent = (e.clientX / window.innerWidth) * 100;
+      const yPercent = (e.clientY / window.innerHeight) * 100;
 
-    // === Fade in the entire page-content on first mouse move ===
-    const pageContent = document.querySelector('.page-content');
-    let pageFadedIn = false;
-
-    function fadeInPage() {
-      pageContent.style.opacity = '1'; // triggers CSS transition
-      pageFadedIn = true;
-    }
-
-    // Once user moves mouse anywhere, fade in .page-content
-    document.addEventListener('mousemove', function onFirstMouseMove() {
-      if (!pageFadedIn) {
-        fadeInPage();
+      if (
+        xPercent >= 32.43 && xPercent <= 36 &&
+        yPercent >= 28.5 && yPercent <= 84
+      ) {
+        // Add swap-active to .clip-region => triggers .old-group transformX(-91vw),
+        // and .new-group transformX(0)
+        document.querySelector('.clip-region').classList.add('swap-active');
       }
-      document.removeEventListener('mousemove', onFirstMouseMove);
-    });
-
-    // === Fullscreen trigger if user clicks near any edge (within 11px) ===
-    document.addEventListener('click', (event) => {
-      const x = event.clientX;
-      const y = event.clientY;
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-
-      const nearLeft = x <= EDGE_MARGIN;
-      const nearRight = x >= width - EDGE_MARGIN;
-      const nearTop = y <= EDGE_MARGIN;
-      const nearBottom = y >= height - EDGE_MARGIN;
-
-      if (!document.fullscreenElement && (nearLeft || nearRight || nearTop || nearBottom)) {
-        document.documentElement.requestFullscreen();
-      }
-    });
-
-    // === Show chat text when hovering over the designated area ===
-    const chatText = document.getElementById('chatText');
-    let chatShownOnce = false;
-
-    const hoverArea = document.querySelector('.hover-area');
-    hoverArea.addEventListener('mouseenter', () => {
-      // Only reveal chat if page is already faded in and hasn't shown yet
-      if (!chatShownOnce && pageFadedIn) {
-        chatText.style.opacity = '1';
-        chatShownOnce = true;
-      }
-    });
-
-    // === Replace "cHAT . . ." text with input on click ===
-    chatText.addEventListener('click', () => {
-      const chatInput = document.createElement('input');
-      chatInput.type = 'text';
-      chatInput.classList.add('chat-input');
-
-      // Insert input after the chat text
-      chatText.insertAdjacentElement('afterend', chatInput);
-
-      // Remove the original text
-      chatText.remove();
-
-      // Focus the new input
-      chatInput.focus();
     });
   </script>
 </body>

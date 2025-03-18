@@ -20,8 +20,6 @@ body.non-fullscreen {
 }
 
 /* Three fixed white layers with z-index=100 */
-
-/* 1) Left 0 → 6.37vw */
 .layer-one {
     position: fixed;
     top: 0;
@@ -31,8 +29,6 @@ body.non-fullscreen {
     background-color: #ffffff;
     z-index: 100;
 }
-
-/* 2) Left 28.87vw → 36vw */
 .layer-two {
     position: fixed;
     top: 0;
@@ -42,8 +38,6 @@ body.non-fullscreen {
     background-color: #ffffff;
     z-index: 100;
 }
-
-/* 3) Left 94.17vw → 100vw */
 .layer-three {
     position: fixed;
     top: 0;
@@ -58,34 +52,30 @@ body.non-fullscreen {
 .page-content {
     opacity: 0;
     transition: opacity 0.6s ease;
-    position: relative; /* to position children absolutely */
+    position: relative;
 }
 
-/* Decorative Lines */
+/* Decorative static lines */
 .line {
     position: absolute;
     height: 1px;
     background-color: #cfcfcf;
 }
-
 .original {
     top: 12.5vh;
     left: 6.38vw;
     width: 22.48vw;
 }
-
 .second {
     top: 28.5vh;
     left: 6.38vw;
     width: 22.48vw;
 }
-
 .third {
     top: 84vh;
     left: 6.38vw;
     width: 22.48vw;
 }
-
 .fourth {
     top: 12.5vh;
     left: 36vw;
@@ -93,32 +83,43 @@ body.non-fullscreen {
 }
 
 /* --- Set A: Dashed lines and time texts --- */
-/* These 8 components are wrapped in .slide-container so that when they slide, any part
-   past left 28.86vw is clipped */
+/* This container now spans the full viewport and clips anything left of 28.86vw */
 .slide-container {
     position: absolute;
     top: 0;
-    left: 28.86vw;
-    width: calc(100vw - 28.86vw);
+    left: 0;
+    width: 100vw;
     height: 100vh;
-    overflow: hidden;
+    clip-path: inset(0 0 0 28.86vw);
 }
 
-/* Dashed lines inside .slide-container */
-.slide-container .line.dashed {
+/* Dashed lines (retain original positioning from uploaded code) */
+.dashed {
     position: absolute;
     height: 1px;
-    background: linear-gradient(
-        to right,
-        #919191 0,
-        #919191 5px,
-        #ffffff 5px,
-        #ffffff 10px
-    );
+    top: 28.5vh;
+    left: 36vw;
+    width: 52.4vw;
+    background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
     background-size: 10px 1px;
 }
+.second-dashed {
+    top: 47vh;
+    left: 36vw;
+    width: 52.4vw;
+}
+.third-dashed {
+    top: 65.5vh;
+    left: 36vw;
+    width: 52.4vw;
+}
+.fourth-dashed {
+    top: 84vh;
+    left: 36vw;
+    width: 52.4vw;
+}
 
-/* Time Texts */
+/* Time texts (retain original positions) */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -129,17 +130,14 @@ body.non-fullscreen {
     top: 28.5vh;
     left: 89.81vw;
 }
-
 .second-time-text {
     top: 47.04vh;
     left: 89.91vw;
 }
-
 .third-time-text {
     top: 65.51vh;
     left: 89.87vw;
 }
-
 .fourth-time-text {
     top: 83.86vh;
     left: 90.1vw;
@@ -154,7 +152,7 @@ body.non-fullscreen {
     height: calc(84vh - 28.5vh);
 }
 
-/* CHAT Text */
+/* CHAT text styling */
 .chat-text {
     position: absolute;
     top: 77vh;
@@ -193,7 +191,6 @@ body.non-fullscreen {
 }
 
 /* --- Set B: Grid numbers and dashed lines --- */
-/* Grid numbers initial positions (off-screen to the right) */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -202,7 +199,6 @@ body.non-fullscreen {
     letter-spacing: 0.28vw;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
-
 .num1  { top: 28.5vh; left: 119.8vw; }
 .num2  { top: 28.5vh; left: 134.7vw; }
 .num3  { top: 28.5vh; left: 149.5vw; }
@@ -218,23 +214,16 @@ body.non-fullscreen {
 .num13  { top: 83.5vh; left: 119.4vw; }
 .num14  { top: 83.5vh; left: 134.3vw; }
 .num15  { top: 83.5vh; left: 149.1vw; }
-.num16  { top: 83.5vh; left: 163.9vw; }  /* Corrected initial left for num16 */
+.num16  { top: 83.5vh; left: 163.9vw; }
 
 /* Grid dashed lines initial positions */
 .grid-dashed {
     position: absolute;
     height: 1px;
-    width: 11.8vw; 
-    background: linear-gradient(
-      to right,
-      #919191 0,
-      #919191 5px,
-      #ffffff 5px,
-      #ffffff 10px
-    );
+    width: 11.8vw;
+    background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
     background-size: 10px 1px;
 }
-
 .dashed01 { top: 28.5vh; left: 107vw; }
 .dashed02 { top: 28.5vh; left: 122vw; }
 .dashed03 { top: 28.5vh; left: 136.9vw; }
@@ -253,9 +242,7 @@ body.non-fullscreen {
 .dashed16 { top: 84vh;   left: 151.8vw; }
 
 /* --- New CSS for sliding animations --- */
-
-/* For Set A: slide dashed lines and time texts left by 91vw.
-   The container (.slide-container) clips content past left 28.86vw */
+/* Set A: Animate dashed lines and time texts to slide left by 91vw */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -263,7 +250,6 @@ body.non-fullscreen {
 .slide-container > .time-text.fourth-time-text {
     transition: transform 0.6s ease;
 }
-
 .slide-container.animate-slide > .line.dashed,
 .slide-container.animate-slide > .time-text,
 .slide-container.animate-slide > .time-text.second-time-text,
@@ -272,20 +258,19 @@ body.non-fullscreen {
     transform: translateX(-91vw);
 }
 
-/* The slide-trigger: invisible clickable area within designated range */
+/* Slide trigger: invisible clickable area within designated range */
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
     left: 32.43vw;
-    width: calc(36vw - 32.43vw); /* 3.57vw */
-    height: calc(84vh - 28.5vh);  /* 55.5vh */
+    width: calc(36vw - 32.43vw);
+    height: calc(84vh - 28.5vh);
     background: transparent;
     z-index: 101;
     cursor: pointer;
 }
 
-/* For Set B: animate grid numbers and dashed lines to slide left by 71vw.
-   Their final positions are defined as final left = initial left - 71vw. */
+/* Set B: Animate grid numbers and grid dashed lines (slide left by 71vw to their final positions) */
 .page-content.animate-grid .grid-number.num1  { left: 48.8vw;  transition: left 0.6s ease; }
 .page-content.animate-grid .grid-number.num2  { left: 63.7vw;  transition: left 0.6s ease; }
 .page-content.animate-grid .grid-number.num3  { left: 78.5vw;  transition: left 0.6s ease; }

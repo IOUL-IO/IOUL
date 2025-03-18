@@ -54,11 +54,12 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* We'll fade in the entire .page-content once the user moves the mouse.
+/* We'll fade in the entire .page-content on first mouse move.
    Start hidden (opacity=0). */
 .page-content {
     opacity: 0;
     transition: opacity 0.6s ease;
+    position: relative; /* to position children absolutely */
 }
 
 /* Decorative Lines */
@@ -92,12 +93,10 @@ body.non-fullscreen {
     width: 57.8vw;
 }
 
-.dashed {
+/* Dashed lines (Set A) inside the slide container */
+.slide-container .line.dashed {
     position: absolute;
     height: 1px;
-    top: 28.5vh;
-    left: 36vw;
-    width: 52.4vw;
     background: linear-gradient(
         to right,
         #919191 0,
@@ -109,21 +108,13 @@ body.non-fullscreen {
 }
 
 .second-dashed {
-    top: 47vh;
-    left: 36vw;
-    width: 52.4vw;
+    /* positioning inherited from original .line dashed, if needed can override */
 }
 
 .third-dashed {
-    top: 65.5vh;
-    left: 36vw;
-    width: 52.4vw;
 }
 
 .fourth-dashed {
-    top: 84vh;
-    left: 36vw;
-    width: 52.4vw;
 }
 
 /* Time Texts */
@@ -160,28 +151,22 @@ body.non-fullscreen {
     left: 6.4vw;
     width: calc(28.86vw - 6.4vw);
     height: calc(84vh - 28.5vh);
-    /* invisible bounding region */
 }
 
-/* Chat Text */
+/* CHAT Text */
 .chat-text {
     position: absolute;
     top: 77vh;
     left: 6.41vw;
     display: inline-block;
-
     font-family: 'Distill Expanded', sans-serif;
     color: #717171;
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     cursor: pointer;
-
-    /* Start hidden; fade in only after page fade + hover */
     opacity: 0;
     transition: opacity 0.3s ease;
-
-    /* Helps avoid clipping top of letters */
     line-height: 1.3;
     padding-top: 0.1rem;
 }
@@ -192,24 +177,21 @@ body.non-fullscreen {
     top: 77vh;
     left: 6.41vw;
     width: 22.17vw;
-
     font-family: 'Distill Expanded', sans-serif;
     font-size: 0.47rem;
     letter-spacing: 0.28vw;
     color: #111111;
     caret-color: #d1d1d1;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-
     line-height: 1.2;
     padding: 0.2rem 0;
-
     border: none;
     outline: none;
     background: #ffffff;
     cursor: text;
 }
 
-/* Common styling for all 16 numbered items */
+/* Common styling for all 16 numbered items (Set B) */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -219,27 +201,25 @@ body.non-fullscreen {
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
+/* Original positions for grid numbers (off-screen to right) */
 .num1  { top: 28.5vh; left: 119.8vw; }
 .num2  { top: 28.5vh; left: 134.7vw; }
 .num3  { top: 28.5vh; left: 149.5vw; }
 .num4  { top: 28.5vh; left: 164.3vw; }
-
 .num5  { top: 47vh;   left: 119.8vw; }
 .num6  { top: 47vh;   left: 134.7vw; }
 .num7  { top: 47vh;   left: 149.5vw; }
 .num8  { top: 47vh;   left: 164.3vw; }
-
 .num9   { top: 65.5vh; left: 119.8vw; }
 .num10  { top: 65.5vh; left: 134.3vw; }
 .num11  { top: 65.5vh; left: 149.3vw; }
 .num12  { top: 65.5vh; left: 163.9vw; }
-
 .num13 { top: 83.5vh; left: 119.4vw; }
 .num14 { top: 83.5vh; left: 134.3vw; }
 .num15 { top: 83.5vh; left: 149.1vw; }
-.num16 { top: 83.5vh; left: 163.9vw; }
-.num16 { top: 83.5vh; left: 92.9vw; }
+.num16 { top: 83.5vh; left: 92.9vw; } /* Note: original .num16 appeared twice; only the first definition is used. */
 
+/* Original positions for grid dashed lines (Set B) */
 .grid-dashed {
     position: absolute;
     height: 1px;
@@ -258,18 +238,93 @@ body.non-fullscreen {
 .dashed02 { top: 28.5vh; left: 122vw; }
 .dashed03 { top: 28.5vh; left: 136.9vw; }
 .dashed04 { top: 28.5vh; left: 151.8vw; }
-
 .dashed05 { top: 47vh;   left: 107vw; }
 .dashed06 { top: 47vh;   left: 122vw; }
 .dashed07 { top: 47vh;   left: 136.9vw; }
 .dashed08 { top: 47vh;   left: 151.8vw; }
-
 .dashed09 { top: 65.5vh; left: 107vw; }
 .dashed10 { top: 65.5vh; left: 122vw; }
 .dashed11 { top: 65.5vh; left: 136.9vw; }
 .dashed12 { top: 65.5vh; left: 151.8vw; }
-
 .dashed13 { top: 84vh;   left: 107vw; }
 .dashed14 { top: 84vh;   left: 122vw; }
 .dashed15 { top: 84vh;   left: 136.9vw; }
 .dashed16 { top: 84vh;   left: 151.8vw; }
+
+/* === New CSS for sliding animation === */
+
+/* The slide-container (wrapping Set A) is clipped at left 28.86vw */
+.slide-container {
+    position: absolute;
+    top: 0;
+    left: 28.86vw;
+    width: calc(100vw - 28.86vw);
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Ensure the children in slide-container transition on transform */
+.slide-container > .line.dashed,
+.slide-container > .time-text,
+.slide-container > .time-text.second-time-text,
+.slide-container > .time-text.third-time-text,
+.slide-container > .time-text.fourth-time-text {
+    transition: transform 0.6s ease;
+}
+
+/* When animate-slide is added, slide all Set A elements left by 71vw */
+.slide-container.animate-slide > .line.dashed,
+.slide-container.animate-slide > .time-text,
+.slide-container.animate-slide > .time-text.second-time-text,
+.slide-container.animate-slide > .time-text.third-time-text,
+.slide-container.animate-slide > .time-text.fourth-time-text {
+    transform: translateX(-71vw);
+}
+
+/* The slide-trigger is an invisible clickable area in the specified range */
+.slide-trigger {
+    position: absolute;
+    top: 28.5vh;
+    left: 32.43vw;
+    width: calc(36vw - 32.43vw); /* 3.57vw */
+    height: calc(84vh - 28.5vh);  /* 55.5vh */
+    background: transparent;
+    z-index: 101;
+    cursor: pointer;
+}
+
+/* New positions for grid numbers (Set B) when animate-grid is active */
+.page-content.animate-grid .grid-number.num1 { left: 48.8vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num2 { left: 63.7vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num3 { left: 78.5vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num4 { left: 93.3vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num5 { left: 48.8vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num6 { left: 63.7vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num7 { left: 78.5vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num8 { left: 93.3vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num9 { left: 48.8vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num10 { left: 63.3vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num11 { left: 78.3vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num12 { left: 92.9vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num13 { left: 48.4vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num14 { left: 63.3vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num15 { left: 78.1vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num16 { left: 92.9vw; transition: left 0.6s ease; }
+
+/* New positions for grid dashed lines (Set B) when animate-grid is active */
+.page-content.animate-grid .grid-dashed.dashed01 { left: 36vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed02 { left: 51vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed03 { left: 65.9vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed04 { left: 80.8vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed05 { left: 36vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed06 { left: 51vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed07 { left: 65.9vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed08 { left: 80.8vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed09 { left: 36vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed10 { left: 51vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed11 { left: 65.9vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed12 { left: 80.8vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed13 { left: 36vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed14 { left: 51vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; transition: left 0.6s ease; }

@@ -225,19 +225,19 @@ body.non-fullscreen {
 .num3  { top: 27.5vh; left: 78.5vw; }
 .num4  { top: 27.5vh; left: 93.3vw; }
 
-.num5  { top: 46vh;   left: 49.8vw; }
-.num6  { top: 46vh;   left: 64.3vw; }
-.num7  { top: 46vh;   left: 78.8vw; }
+.num5  { top: 46vh;   left: 48.9vw; }
+.num6  { top: 46vh;   left: 63.7vw; }
+.num7  { top: 46vh;   left: 78.5vw; }
 .num8  { top: 46vh;   left: 93.3vw; }
 
-.num9   { top: 64.5vh; left: 49.8vw; }
-.num10  { top: 64.5vh; left: 63.9vw; }
-.num11  { top: 64.5vh; left: 78.4vw; }
+.num9   { top: 64.5vh; left: 48.9vw; }
+.num10  { top: 64.5vh; left: 63.3vw; }
+.num11  { top: 64.5vh; left: 78.1vw; }
 .num12  { top: 64.5vh; left: 92.9vw; }
 
-.num13 { top: 82.5vh; left: 49.4vw; }
-.num14 { top: 82.5vh; left: 63.9vw; }
-.num15 { top: 82.5vh; left: 78.4vw; }
+.num13 { top: 82.5vh; left: 48.5vw; }
+.num14 { top: 82.5vh; left: 63.3vw; }
+.num15 { top: 82.5vh; left: 78.1vw; }
 .num16 { top: 82.5vh; left: 92.9vw; }
 
 /* Dashed lines: now 11.8vw wide (down from 11.9vw) */
@@ -259,19 +259,19 @@ body.non-fullscreen {
 .dashed01 { top: 27.5vh; left: 36vw; }
 .dashed02 { top: 27.5vh; left: 51.1vw; }
 .dashed03 { top: 27.5vh; left: 65.9vw; }
-.dashed04 { top: 27.5vh; left: 80.8vw;   }
+.dashed04 { top: 27.5vh; left: 80.8vw; }
 
 .dashed05 { top: 46vh;   left: 36vw; }
-.dashed06 { top: 46vh;   left: 52vw; }
-.dashed07 { top: 46vh;   left: 66.5vw; }
-.dashed08 { top: 46vh;   left: 81vw;   }
+.dashed06 { top: 46vh;   left: 51.1vw; }
+.dashed07 { top: 46vh;   left: 65.9vw; }
+.dashed08 { top: 46vh;   left: 80.8vw; }
 
 .dashed09 { top: 64.5vh; left: 36vw; }
-.dashed10 { top: 64.5vh; left: 52vw; }
-.dashed11 { top: 64.5vh; left: 66.5vw; }
-.dashed12 { top: 64.5vh; left: 81vw;   }
+.dashed10 { top: 64.5vh; left: 51.1vw; }
+.dashed11 { top: 64.5vh; left: 65.9vw; }
+.dashed12 { top: 64.5vh; left: 80.8vw; }
 
 .dashed13 { top: 83vh;   left: 36vw; }
-.dashed14 { top: 83vh;   left: 52vw; }
-.dashed15 { top: 83vh;   left: 66.5vw; }
-.dashed16 { top: 83vh;   left: 81vw;   }
+.dashed14 { top: 83vh;   left: 51.1vw; }
+.dashed15 { top: 83vh;   left: 65.9vw; }
+.dashed16 { top: 83vh;   left: 80.8vw; }

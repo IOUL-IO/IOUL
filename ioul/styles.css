@@ -19,7 +19,7 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
-/* Fixed white layers */
+/* Three fixed white layers with z-index=100 */
 .layer-one {
     position: fixed;
     top: 0;
@@ -48,14 +48,14 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* Fade-in for page-content */
+/* Fade in .page-content on first mouse move */
 .page-content {
     opacity: 0;
     transition: opacity 0.6s ease;
     position: relative;
 }
 
-/* Static decorative lines (unchanged) */
+/* Decorative static lines */
 .line {
     position: absolute;
     height: 1px;
@@ -83,42 +83,43 @@ body.non-fullscreen {
 }
 
 /* --- Set A: Dashed lines and time texts --- */
-/* The slide-container is positioned exactly at left:28.86vw and has overflow:hidden */
+/* This container now spans the full viewport and clips anything left of 28.86vw */
 .slide-container {
     position: absolute;
     top: 0;
-    left: 28.86vw;
-    width: calc(100vw - 28.86vw);
+    left: 0;
+    width: 100vw;
     height: 100vh;
-    overflow: hidden;
+    clip-path: inset(0 0 0 28.86vw);
 }
-/* Inside this container, we recalculate positions by subtracting 28.86vw from original values.
-   Dashed lines: originally left:36vw becomes 36 - 28.86 = 7.14vw, width remains 52.4vw. */
+
+/* Dashed lines (retain original positioning from uploaded code) */
 .dashed {
     position: absolute;
     height: 1px;
     top: 28.5vh;
-    left: 7.14vw;
+    left: 36vw;
     width: 52.4vw;
     background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
     background-size: 10px 1px;
 }
 .second-dashed {
     top: 47vh;
-    left: 7.14vw;
+    left: 36vw;
     width: 52.4vw;
 }
 .third-dashed {
-    top: 65.51vh;
-    left: 7.14vw;
+    top: 65.5vh;
+    left: 36vw;
     width: 52.4vw;
 }
 .fourth-dashed {
     top: 84vh;
-    left: 7.14vw;
+    left: 36vw;
     width: 52.4vw;
 }
-/* Time texts: subtract 28.86vw from their original left positions */
+
+/* Time texts (retain original positions) */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -127,19 +128,19 @@ body.non-fullscreen {
     letter-spacing: 0.2vw;
     text-shadow: 0.011rem 0 0 #919191, -0.011rem 0 0 #919191;
     top: 28.5vh;
-    left: 60.95vw;  /* 89.81vw - 28.86vw */
+    left: 89.81vw;
 }
 .second-time-text {
     top: 47.04vh;
-    left: 61.05vw;  /* 89.91 - 28.86 */
+    left: 89.91vw;
 }
 .third-time-text {
     top: 65.51vh;
-    left: 61.01vw;  /* 89.87 - 28.86 */
+    left: 89.87vw;
 }
 .fourth-time-text {
     top: 83.86vh;
-    left: 61.24vw;  /* 90.1 - 28.86 */
+    left: 90.1vw;
 }
 
 /* --- Hover area for chat --- */
@@ -168,6 +169,8 @@ body.non-fullscreen {
     line-height: 1.3;
     padding-top: 0.1rem;
 }
+
+/* Input replacing chat text */
 .chat-input {
     position: absolute;
     top: 77vh;
@@ -187,14 +190,65 @@ body.non-fullscreen {
     cursor: text;
 }
 
-/* --- Set A Animation --- */
-/* On trigger, slide Set A content left by 91vw */
+/* --- Set B: Grid numbers and dashed lines --- */
+.grid-number {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #111111;
+    font-size: 0.47rem;
+    letter-spacing: 0.28vw;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+}
+.num1  { top: 28.5vh; left: 119.8vw; }
+.num2  { top: 28.5vh; left: 134.7vw; }
+.num3  { top: 28.5vh; left: 149.5vw; }
+.num4  { top: 28.5vh; left: 164.3vw; }
+.num5  { top: 47vh;   left: 119.8vw; }
+.num6  { top: 47vh;   left: 134.7vw; }
+.num7  { top: 47vh;   left: 149.5vw; }
+.num8  { top: 47vh;   left: 164.3vw; }
+.num9   { top: 65.5vh; left: 119.8vw; }
+.num10  { top: 65.5vh; left: 134.3vw; }
+.num11  { top: 65.5vh; left: 149.3vw; }
+.num12  { top: 65.5vh; left: 163.9vw; }
+.num13  { top: 83.5vh; left: 119.4vw; }
+.num14  { top: 83.5vh; left: 134.3vw; }
+.num15  { top: 83.5vh; left: 149.1vw; }
+.num16  { top: 83.5vh; left: 163.9vw; }
+
+/* Grid dashed lines initial positions */
+.grid-dashed {
+    position: absolute;
+    height: 1px;
+    width: 11.8vw;
+    background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
+    background-size: 10px 1px;
+}
+.dashed01 { top: 28.5vh; left: 107vw; }
+.dashed02 { top: 28.5vh; left: 122vw; }
+.dashed03 { top: 28.5vh; left: 136.9vw; }
+.dashed04 { top: 28.5vh; left: 151.8vw; }
+.dashed05 { top: 47vh;   left: 107vw; }
+.dashed06 { top: 47vh;   left: 122vw; }
+.dashed07 { top: 47vh;   left: 136.9vw; }
+.dashed08 { top: 47vh;   left: 151.8vw; }
+.dashed09 { top: 65.5vh; left: 107vw; }
+.dashed10 { top: 65.5vh; left: 122vw; }
+.dashed11 { top: 65.5vh; left: 136.9vw; }
+.dashed12 { top: 65.5vh; left: 151.8vw; }
+.dashed13 { top: 84vh;   left: 107vw; }
+.dashed14 { top: 84vh;   left: 122vw; }
+.dashed15 { top: 84vh;   left: 136.9vw; }
+.dashed16 { top: 84vh;   left: 151.8vw; }
+
+/* --- New CSS for sliding animations --- */
+/* Set A: Animate dashed lines and time texts to slide left by 91vw */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
 .slide-container > .time-text.third-time-text,
 .slide-container > .time-text.fourth-time-text {
-    transition: transform 0.7s ease;
+    transition: transform 0.6s ease;
 }
 .slide-container.animate-slide > .line.dashed,
 .slide-container.animate-slide > .time-text,
@@ -204,93 +258,49 @@ body.non-fullscreen {
     transform: translateX(-91vw);
 }
 
-/* --- Set B: Grid Numbers and Dashed Lines --- */
-/* These elements are positioned relative to .page-content.
-   We set their initial left positions to be their final value plus an offset (70vw)
-   so they are entirely off-screen. */
-.grid-number {
+/* Slide trigger: invisible clickable area within designated range */
+.slide-trigger {
     position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    color: #111111;
-    font-size: 0.47rem;
-    letter-spacing: 0.28vw;
-    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    top: 28.5vh;
+    left: 32.43vw;
+    width: calc(36vw - 32.43vw);
+    height: calc(84vh - 28.5vh);
+    background: transparent;
+    z-index: 101;
+    cursor: pointer;
 }
-/* Initial positions (final value + 70vw) */
-.num1  { top: 28.5vh; left: calc(48.8vw + 70vw); }    /* 118.8vw */
-.num2  { top: 28.5vh; left: calc(63.7vw + 70vw); }    /* 133.7vw */
-.num3  { top: 28.5vh; left: calc(78.5vw + 70vw); }    /* 148.5vw */
-.num4  { top: 28.5vh; left: calc(93.3vw + 70vw); }    /* 163.3vw */
-.num5  { top: 47vh;   left: calc(48.8vw + 70vw); }
-.num6  { top: 47vh;   left: calc(63.7vw + 70vw); }
-.num7  { top: 47vh;   left: calc(78.5vw + 70vw); }
-.num8  { top: 47vh;   left: calc(93.3vw + 70vw); }
-.num9   { top: 65.5vh; left: calc(48.8vw + 70vw); }
-.num10  { top: 65.5vh; left: calc(63.3vw + 70vw); }
-.num11  { top: 65.5vh; left: calc(78.3vw + 70vw); }
-.num12  { top: 65.5vh; left: calc(92.9vw + 70vw); }
-.num13  { top: 83.5vh; left: calc(48.4vw + 70vw); }
-.num14  { top: 83.5vh; left: calc(63.3vw + 70vw); }
-.num15  { top: 83.5vh; left: calc(78.1vw + 70vw); }
-.num16  { top: 83.5vh; left: calc(92.9vw + 70vw); }
 
-/* For grid dashed lines, initial left = final left + 70vw */
-.grid-dashed {
-    position: absolute;
-    height: 1px;
-    width: 11.8vw;
-    background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
-    background-size: 10px 1px;
-}
-.dashed01 { top: 28.5vh; left: calc(36vw + 70vw); }    /* 106vw */
-.dashed02 { top: 28.5vh; left: calc(51vw + 70vw); }    /* 121vw */
-.dashed03 { top: 28.5vh; left: calc(65.9vw + 70vw); }  /* 135.9vw */
-.dashed04 { top: 28.5vh; left: calc(80.8vw + 70vw); }  /* 150.8vw */
-.dashed05 { top: 47vh;   left: calc(36vw + 70vw); }
-.dashed06 { top: 47vh;   left: calc(51vw + 70vw); }
-.dashed07 { top: 47vh;   left: calc(65.9vw + 70vw); }
-.dashed08 { top: 47vh;   left: calc(80.8vw + 70vw); }
-.dashed09 { top: 65.5vh; left: calc(36vw + 70vw); }
-.dashed10 { top: 65.5vh; left: calc(51vw + 70vw); }
-.dashed11 { top: 65.5vh; left: calc(65.9vw + 70vw); }
-.dashed12 { top: 65.5vh; left: calc(80.8vw + 70vw); }
-.dashed13 { top: 84vh;   left: calc(36vw + 70vw); }
-.dashed14 { top: 84vh;   left: calc(51vw + 70vw); }
-.dashed15 { top: 84vh;   left: calc(65.9vw + 70vw); }
-.dashed16 { top: 84vh;   left: calc(80.8vw + 70vw); }
+/* Set B: Animate grid numbers and grid dashed lines (slide left by 71vw to their final positions) */
+.page-content.animate-grid .grid-number.num1  { left: 48.8vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num2  { left: 63.7vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num3  { left: 78.5vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num4  { left: 93.3vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num5  { left: 48.8vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num6  { left: 63.7vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num7  { left: 78.5vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num8  { left: 93.3vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num9  { left: 48.8vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num10 { left: 63.3vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num11 { left: 78.3vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num12 { left: 92.9vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num13 { left: 48.4vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num14 { left: 63.3vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num15 { left: 78.1vw;  transition: left 0.6s ease; }
+.page-content.animate-grid .grid-number.num16 { left: 92.9vw;  transition: left 0.6s ease; }
 
-/* --- Set B Animation --- */
-/* When .animate-grid is added, animate grid numbers and dashed lines to their final positions */
-.page-content.animate-grid .grid-number.num1  { left: 48.8vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num2  { left: 63.7vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num3  { left: 78.5vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num4  { left: 93.3vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num5  { left: 48.8vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num6  { left: 63.7vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num7  { left: 78.5vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num8  { left: 93.3vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num9  { left: 48.8vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num10 { left: 63.3vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num11 { left: 78.3vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num12 { left: 92.9vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num13 { left: 48.4vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num14 { left: 63.3vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num15 { left: 78.1vw;  transition: left 0.7s ease; }
-.page-content.animate-grid .grid-number.num16 { left: 92.9vw;  transition: left 0.7s ease; }
-
-.page-content.animate-grid .grid-dashed.dashed01 { left: 36vw;   transition: left 0.7s ease; }
-.page-content.animate-grid .grid-dashed.dashed02 { left: 51vw;   transition: left 0.7s ease; }
-.page-content.animate-grid .grid-dashed.dashed03 { left: 65.9vw; transition: left 0.7s ease; }
-.page-content.animate-grid .grid-dashed.dashed04 { left: 80.8vw; transition: left 0.7s ease; }
-.page-content.animate-grid .grid-dashed.dashed05 { left: 36vw;   transition: left 0.7s ease; }
-.page-content.animate-grid .grid-dashed.dashed06 { left: 51vw;   transition: left 0.7s ease; }
-.page-content.animate-grid .grid-dashed.dashed07 { left: 65.9vw; transition: left 0.7s ease; }
-.page-content.animate-grid .grid-dashed.dashed08 { left: 80.8vw; transition: left 0.7s ease; }
-.page-content.animate-grid .grid-dashed.dashed09 { left: 36vw;   transition: left 0.7s ease; }
-.page-content.animate-grid .grid-dashed.dashed10 { left: 51vw;   transition: left 0.7s ease; }
-.page-content.animate-grid .grid-dashed.dashed11 { left: 65.9vw; transition: left 0.7s ease; }
-.page-content.animate-grid .grid-dashed.dashed12 { left: 80.8vw; transition: left 0.7s ease; }
-.page-content.animate-grid .grid-dashed.dashed13 { left: 36vw;   transition: left 0.7s ease; }
-.page-content.animate-grid .grid-dashed.dashed14 { left: 51vw;   transition: left 0.7s ease; }
-.page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; transition: left 0.7s ease; }
-.page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; transition: left 0.7s ease; }
+.page-content.animate-grid .grid-dashed.dashed01 { left: 36vw;   transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed02 { left: 51vw;   transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed03 { left: 65.9vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed04 { left: 80.8vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed05 { left: 36vw;   transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed06 { left: 51vw;   transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed07 { left: 65.9vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed08 { left: 80.8vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed09 { left: 36vw;   transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed10 { left: 51vw;   transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed11 { left: 65.9vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed12 { left: 80.8vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed13 { left: 36vw;   transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed14 { left: 51vw;   transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; transition: left 0.6s ease; }
+.page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; transition: left 0.6s ease; }

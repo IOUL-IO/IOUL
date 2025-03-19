@@ -354,12 +354,12 @@ body.non-fullscreen {
 }
 
 .page-content.animate-grid .grid-dashed.dashed02 {
-    left: 51vw;
+    left: 50.6vw;
     transition: left 0.7s ease;
 }
 
 .page-content.animate-grid .grid-dashed.dashed03 {
-    left: 65.9vw;
+    left: 65.6vw;
     transition: left 0.7s ease;
 }
 

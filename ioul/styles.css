@@ -208,7 +208,7 @@ body.non-fullscreen {
 .grid-dashed {
     position: absolute;
     height: 1px;
-    width: 11.8vw;
+    width: 12.4vw;
     background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
     background-size: 10px 1px;
     transition: left 0.7s ease;

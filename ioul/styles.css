@@ -268,17 +268,17 @@ body.non-fullscreen {
 }
 
 .page-content.animate-grid .grid-number.num1 {
-    left: 48.8vw;
+    left: 49.7vw;
     transition: left 0.7s ease;
 }
 
 .page-content.animate-grid .grid-number.num2 {
-    left: 63.7vw;
+    left: 64.3vw;
     transition: left 0.7s ease;
 }
 
 .page-content.animate-grid .grid-number.num3 {
-    left: 78.5vw;
+    left: 78.8vw;
     transition: left 0.7s ease;
 }
 
@@ -364,7 +364,7 @@ body.non-fullscreen {
 }
 
 .page-content.animate-grid .grid-dashed.dashed04 {
-    left: 80.8vw;
+    left: 79.7vw;
     transition: left 0.7s ease;
 }
 
@@ -384,7 +384,7 @@ body.non-fullscreen {
 }
 
 .page-content.animate-grid .grid-dashed.dashed08 {
-    left: 80.8vw;
+    left: 79.7vw;
     transition: left 0.7s ease;
 }
 
@@ -404,7 +404,7 @@ body.non-fullscreen {
 }
 
 .page-content.animate-grid .grid-dashed.dashed12 {
-    left: 80.8vw;
+    left: 79.7vw;
     transition: left 0.7s ease;
 }
 
@@ -424,7 +424,7 @@ body.non-fullscreen {
 }
 
 .page-content.animate-grid .grid-dashed.dashed16 {
-    left: 80.8vw;
+    left: 79.7vw;
     transition: left 0.7s ease;
 }
 

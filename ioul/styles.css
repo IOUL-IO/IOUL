@@ -183,7 +183,7 @@ body.non-fullscreen {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
-    font-size: 0.417rem;
+    font-size: 0.411rem;
     letter-spacing: 0.28vw;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     transition: left 0.7s ease;

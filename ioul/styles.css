@@ -325,7 +325,7 @@ body.non-fullscreen {
 /* Custom line at top 54.5vh */
 .custom-line {
     position: absolute;
-    top: 48.4vh; /* Changed to top 55vh as requested */
+    top: 48.1vh; /* Changed to top 55vh as requested */
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;

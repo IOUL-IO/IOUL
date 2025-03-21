@@ -280,7 +280,7 @@ body.non-fullscreen {
 /* Custom line at top 56vh */
 .custom-line {
     position: absolute;
-    top: 56vh;
+    top: 53.5vh;
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;

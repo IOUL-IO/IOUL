@@ -267,7 +267,7 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-/* New custom text styling */
+/* Custom text styling */
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -277,7 +277,7 @@ body.non-fullscreen {
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
-/* New custom line with updated top position */
+/* Custom line at top 53.7vh */
 .custom-line {
     position: absolute;
     top: 53.7vh;

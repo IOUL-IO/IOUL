@@ -239,7 +239,7 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
-/* Animate grid when .animate-grid is added to .page-content */
+/* Animate grid when .animate-grid is added */
 .page-content.animate-grid .grid-number.num1 { left: 48.8vw; }
 .page-content.animate-grid .grid-number.num2 { left: 63.7vw; }
 .page-content.animate-grid .grid-number.num3 { left: 78.5vw; }
@@ -290,7 +290,7 @@ body.non-fullscreen {
     transform: translateX(-91vw);
 }
 
-/* Slide trigger styles */
+/* Slide trigger styling */
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
@@ -322,10 +322,10 @@ body.non-fullscreen {
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
-/* Custom line */
+/* Custom line at top 54.5vh */
 .custom-line {
     position: absolute;
-    top: 54.5vh;
+    top: 55vh; /* Changed to top 55vh as requested */
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;

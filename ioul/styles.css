@@ -56,7 +56,7 @@ body.non-fullscreen {
 .line {
     position: absolute;
     height: 1px;
-    background-color: #c1c1c1;
+    background-color: #cfcfcf;
 }
 .original {
     top: 12.5vh;

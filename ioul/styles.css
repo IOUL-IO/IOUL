@@ -277,10 +277,10 @@ body.non-fullscreen {
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
-/* Custom line at top 53.7vh */
+/* Custom line at top 54vh */
 .custom-line {
     position: absolute;
-    top: 53.7vh;
+    top: 54vh;
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;

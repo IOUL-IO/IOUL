@@ -34,6 +34,7 @@
 
     <span class="chat-text" id="chatText">cHAT . . .</span>
 
+    <!-- Grid numbers 1-16 (they will slide in when .animate-grid is added) -->
     <span class="grid-number num1">1</span>
     <span class="grid-number num2">2</span>
     <span class="grid-number num3">3</span>
@@ -51,6 +52,7 @@
     <span class="grid-number num15">15</span>
     <span class="grid-number num16">16</span>
 
+    <!-- Grid dashed lines 1-16 (they also slide in) -->
     <div class="grid-dashed dashed01"></div>
     <div class="grid-dashed dashed02"></div>
     <div class="grid-dashed dashed03"></div>
@@ -69,9 +71,9 @@
     <div class="grid-dashed dashed16"></div>
 
     <!-- Updated text elements -->
-    <span class="custom-text" style="top: 33.7vh; left: 6.41vw;">USERnAME</span>
+    <span class="custom-text" style="top: 33.7vh; left: 6.41vw;">JOnATHAn-ALTMAn</span>
     <span class="custom-text" style="top: 38.9vh; left: 6.41vw;">YOUR nAME</span>
-    <span class="custom-text" style="top: 33.7vh; left: 21.12vw;">icHAT: OPEn</span>
+    <span class="custom-text" style="top: 33.7vh; left: 21.12vw;">1cHAT: OPEn</span>
     <span class="custom-text" style="top: 38.9vh; left: 21.12vw;">1-MA1L:  OPEn</span>
     <span class="custom-text" style="top: 44.1vh; left: 6.41vw;">USER B1O: TYPE HERE TO ADD A B1O</span>
     <span class="custom-text" style="top: 49.3vh; left: 6.41vw;">USER L1nK: ADD YOUR WEBS1TE L1nK</span>
@@ -84,14 +86,16 @@
     <span class="custom-text" style="top: 70.1vh; left: 25.57vw;">OPEn</span>
     <span class="custom-text" style="top: 75.3vh; left: 25.57vw;">OPEn</span>
 
-    <!-- Custom line moved to top 54.5vh -->
+    <!-- Custom line at top 55vh (adjusted to 55 if that was the original; change to 54.5 if needed) -->
     <div class="custom-line"></div>
 
+    <!-- Slide triggers -->
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
   </div>
 
   <script>
+    // Fade in page on first mouse move
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -103,6 +107,7 @@
       document.removeEventListener('mousemove', onFirstMouseMove);
     });
 
+    // Fullscreen on click near edge
     const EDGE_MARGIN = 11;
     document.addEventListener('click', (event) => {
       const { clientX: x, clientY: y } = event;
@@ -114,6 +119,8 @@
       }
     });
 
+    // Slide trigger: when clicking designated area above layer three,
+    // both the original dashed lines/time text slide out and the grid numbers/dashed lines slide in.
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -128,6 +135,7 @@
       document.querySelector('.page-content').classList.add('animate-grid');
     });
 
+    // Chat text behavior
     const chatText = document.getElementById('chatText');
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');

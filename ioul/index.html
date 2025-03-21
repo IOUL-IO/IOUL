@@ -34,7 +34,7 @@
 
     <span class="chat-text" id="chatText">cHAT . . .</span>
 
-    <!-- Grid numbers 1-16 (they will slide in when .animate-grid is added) -->
+    <!-- Grid numbers (will slide in when .animate-grid is added) -->
     <span class="grid-number num1">1</span>
     <span class="grid-number num2">2</span>
     <span class="grid-number num3">3</span>
@@ -52,7 +52,7 @@
     <span class="grid-number num15">15</span>
     <span class="grid-number num16">16</span>
 
-    <!-- Grid dashed lines 1-16 (they also slide in) -->
+    <!-- Grid dashed lines (also slide in) -->
     <div class="grid-dashed dashed01"></div>
     <div class="grid-dashed dashed02"></div>
     <div class="grid-dashed dashed03"></div>
@@ -70,23 +70,23 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- Updated text elements -->
-    <span class="custom-text" style="top: 33.7vh; left: 6.41vw;">JOnATHAn-ALTMAn</span>
-    <span class="custom-text" style="top: 38.9vh; left: 6.41vw;">YOUR nAME</span>
-    <span class="custom-text" style="top: 33.7vh; left: 21.12vw;">1cHAT: OPEn</span>
-    <span class="custom-text" style="top: 38.9vh; left: 21.12vw;">1-MA1L:  OPEn</span>
-    <span class="custom-text" style="top: 44.1vh; left: 6.41vw;">USER B1O: TYPE HERE TO ADD A B1O</span>
-    <span class="custom-text" style="top: 49.3vh; left: 6.41vw;">USER L1nK: ADD YOUR WEBS1TE L1nK</span>
-    <span class="custom-text" style="top: 59.7vh; left: 6.41vw;">YOUR L1ST</span>
-    <span class="custom-text" style="top: 64.9vh; left: 6.41vw;">cHAnnELS</span>
-    <span class="custom-text" style="top: 70.1vh; left: 6.41vw;">OFFER HUB</span>
-    <span class="custom-text" style="top: 75.3vh; left: 6.41vw;">YOUR JOBS</span>
-    <span class="custom-text" style="top: 59.7vh; left: 25.57vw;">OPEn</span>
-    <span class="custom-text" style="top: 64.9vh; left: 25.57vw;">OPEn</span>
-    <span class="custom-text" style="top: 70.1vh; left: 25.57vw;">OPEn</span>
-    <span class="custom-text" style="top: 75.3vh; left: 25.57vw;">OPEn</span>
+    <!-- Updated text elements with new content and positions -->
+    <span class="custom-text" style="top: 33.8vh; left: 6.41vw;">JOnATHAn-ALTMAn</span>
+    <span class="custom-text" style="top: 39.1vh; left: 6.41vw;">JOnATHAn ALTMAn</span>
+    <span class="custom-text" style="top: 33.8vh; left: 21.12vw;">1cHAT: OPEn</span>
+    <span class="custom-text" style="top: 39.1vh; left: 21.12vw;">1-MA1L:  OPEn</span>
+    <span class="custom-text" style="top: 44.4vh; left: 6.41vw;">USER 1nFO - cL1cK TO LEARn MORE</span>
+    <span class="custom-text" style="top: 49.7vh; left: 6.41vw;">USER L1nK - cL1cK TO CHECK L1nKS</span>
+    <span class="custom-text" style="top: 60.3vh; left: 6.41vw;">YOUR L1ST</span>
+    <span class="custom-text" style="top: 65.6vh; left: 6.41vw;">cHAnnELS</span>
+    <span class="custom-text" style="top: 70.9vh; left: 6.41vw;">OFFER HUB</span>
+    <span class="custom-text" style="top: 76.2vh; left: 6.41vw;">YOUR JOBS</span>
+    <span class="custom-text" style="top: 60.3vh; left: 25.57vw;">OPEn</span>
+    <span class="custom-text" style="top: 65.6vh; left: 25.57vw;">OPEn</span>
+    <span class="custom-text" style="top: 70.9vh; left: 25.57vw;">OPEn</span>
+    <span class="custom-text" style="top: 76.2vh; left: 25.57vw;">OPEn</span>
 
-    <!-- Custom line at top 55vh (adjusted to 55 if that was the original; change to 54.5 if needed) -->
+    <!-- Custom line moved to top 55vh -->
     <div class="custom-line"></div>
 
     <!-- Slide triggers -->
@@ -107,7 +107,7 @@
       document.removeEventListener('mousemove', onFirstMouseMove);
     });
 
-    // Fullscreen on click near edge
+    // Fullscreen when clicking near edge
     const EDGE_MARGIN = 11;
     document.addEventListener('click', (event) => {
       const { clientX: x, clientY: y } = event;
@@ -119,8 +119,9 @@
       }
     });
 
-    // Slide trigger: when clicking designated area above layer three,
-    // both the original dashed lines/time text slide out and the grid numbers/dashed lines slide in.
+    // Slide trigger behavior: when clicking the designated area,
+    // the forward trigger adds both .animate-slide (for dashed lines and time text)
+    // and .animate-grid (for grid numbers and grid dashed lines)
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();

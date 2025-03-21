@@ -357,10 +357,10 @@ body.non-fullscreen {
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
-/* New custom line */
+/* New custom line with updated top position */
 .custom-line {
     position: absolute;
-    top: 49.7vh;
+    top: 48.1vh;
     left: 6.4vw;
     width: 22.48vw;
     height: 1px;

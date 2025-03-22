@@ -141,19 +141,6 @@
       chatInput.focus();
     });
 
-    // Add a transitionend listener to .chat-text so it fades out/in after sliding
-    chatText.addEventListener('transitionend', (event) => {
-      if (event.propertyName === "transform") {
-        if (chatText.classList.contains("chat-slide")) {
-          // After sliding out, fade out the chat text
-          chatText.style.opacity = "0";
-        } else {
-          // After sliding back, fade it in
-          chatText.style.opacity = "1";
-        }
-      }
-    });
-
     // Forward sliding: clicking in area (0–6.37vw, 28.5–84vh)
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
@@ -166,6 +153,8 @@
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
           chatTextEl.classList.add('chat-slide');
+          // Start fading out immediately when sliding out begins
+          chatTextEl.style.opacity = "0";
         }
         const chatInputEl = document.querySelector('.chat-input');
         if (chatInputEl) {
@@ -195,6 +184,8 @@
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
           chatTextEl.classList.remove('chat-slide');
+          // Fade back in immediately once sliding in begins
+          chatTextEl.style.opacity = "1";
         }
         const chatInputEl = document.querySelector('.chat-input');
         if (chatInputEl) {

@@ -314,14 +314,15 @@ body.non-fullscreen {
     overflow: visible;
 }
 
-/* Adjusted custom-line position */
+/* Adjusted custom-line: left value lowered by 10vw and included in sliding */
 .custom-line {
     position: absolute;
     top: 47.8vh; /* Changed to top 55vh as requested */
-    left: -22.59vw;
+    left: -32.59vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
+    transition: transform 0.5s ease;
 }
 
 /* Classes to slide elements */

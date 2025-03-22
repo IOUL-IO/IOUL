@@ -19,7 +19,6 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
-/* Layers */
 .layer-one {
     position: fixed;
     top: 0;
@@ -48,14 +47,12 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* Page content */
 .page-content {
     opacity: 0;
     transition: opacity 0.6s ease;
     position: relative;
 }
 
-/* Lines */
 .line {
     position: absolute;
     height: 1px;
@@ -82,7 +79,6 @@ body.non-fullscreen {
     width: 57.8vw;
 }
 
-/* Slide container with clip-path */
 .slide-container {
     position: absolute;
     top: 0;
@@ -92,7 +88,6 @@ body.non-fullscreen {
     clip-path: inset(0 0 0 28.86vw);
 }
 
-/* Dashed lines for slide container */
 .dashed {
     position: absolute;
     height: 1px;
@@ -118,7 +113,6 @@ body.non-fullscreen {
     width: 52.4vw;
 }
 
-/* Time text styling */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -142,7 +136,6 @@ body.non-fullscreen {
     left: 90.1vw;
 }
 
-/* Hover area */
 .hover-area {
     position: absolute;
     top: 28.5vh;
@@ -151,7 +144,6 @@ body.non-fullscreen {
     height: calc(84vh - 28.5vh);
 }
 
-/* Chat text */
 .chat-text {
     position: absolute;
     top: 77vh;
@@ -187,7 +179,6 @@ body.non-fullscreen {
     cursor: text;
 }
 
-/* Grid numbers and grid dashed lines (initial positions) */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -239,7 +230,6 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
-/* Animate grid when .animate-grid is added */
 .page-content.animate-grid .grid-number.num1 { left: 48.8vw; }
 .page-content.animate-grid .grid-number.num2 { left: 63.7vw; }
 .page-content.animate-grid .grid-number.num3 { left: 78.5vw; }
@@ -274,7 +264,6 @@ body.non-fullscreen {
 .page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; }
 .page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; }
 
-/* Slide container animations for dashed lines and time text */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -290,7 +279,6 @@ body.non-fullscreen {
     transform: translateX(-91vw);
 }
 
-/* Slide trigger styling */
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
@@ -312,7 +300,6 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-/* Custom text styling */
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -322,11 +309,10 @@ body.non-fullscreen {
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
-/* Custom line at top 54.5vh */
 .custom-line {
     position: absolute;
     top: 47.8vh; /* Changed to top 55vh as requested */
-    left: 6.4vw;
+    left: -22.59vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);

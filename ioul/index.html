@@ -66,7 +66,7 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- .custom-text inline values: already lowered by 10vw become lowered by another 10vw -->
+    <!-- .custom-text elements: their inline left values are as before -->
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.83vw;">i-cHAT - OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -28.83vw;">i-POST - OPEn</span>
@@ -80,7 +80,7 @@
     <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
 
-    <!-- .custom-line inline left is lowered by another 10vw -->
+    <!-- .custom-line has its left value lowered by 10vw as well -->
     <div class="custom-line"></div>
 
     <div class="slide-trigger"></div>
@@ -160,12 +160,15 @@
         if (chatInputEl) {
           chatInputEl.classList.add('chat-slide');
         }
+        // For each .custom-text, set a slower transition (1s) for sliding out
         const customTextEls = document.querySelectorAll('.custom-text');
         customTextEls.forEach(el => {
+          el.style.transition = "transform 1s ease";
           el.classList.add('custom-slide');
         });
         const customLineEl = document.querySelector('.custom-line');
         if (customLineEl) {
+          customLineEl.style.transition = "transform 1s ease";
           customLineEl.classList.add('custom-slide');
         }
       }
@@ -195,13 +198,16 @@
         if (chatInputEl) {
           chatInputEl.classList.remove('chat-slide');
         }
+        // For each .custom-text, remove the slide class and reset transition to original speed (0.7s)
         const customTextEls = document.querySelectorAll('.custom-text');
         customTextEls.forEach(el => {
           el.classList.remove('custom-slide');
+          el.style.transition = "transform 0.7s ease";
         });
         const customLineEl = document.querySelector('.custom-line');
         if (customLineEl) {
           customLineEl.classList.remove('custom-slide');
+          customLineEl.style.transition = "transform 0.7s ease";
         }
       }
     });

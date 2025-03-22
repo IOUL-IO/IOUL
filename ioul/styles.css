@@ -329,5 +329,6 @@ body.non-fullscreen {
     transform: translateX(24vw);
 }
 .custom-slide {
-    transform: translateX(29vw);
+    /* Updated so that final slide-in location is unchanged */
+    transform: translateX(39vw);
 }

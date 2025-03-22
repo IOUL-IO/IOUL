@@ -153,7 +153,7 @@
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
           chatTextEl.classList.add('chat-slide');
-          // Start fading out immediately when sliding out begins
+          // Immediately start fading out when sliding out begins
           chatTextEl.style.opacity = "0";
         }
         const chatInputEl = document.querySelector('.chat-input');
@@ -184,8 +184,12 @@
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
           chatTextEl.classList.remove('chat-slide');
-          // Fade back in immediately once sliding in begins
-          chatTextEl.style.opacity = "1";
+          // After sliding in, wait for the transform transition to end before fading in
+          chatTextEl.addEventListener('transitionend', (e) => {
+            if (e.propertyName === "transform") {
+              chatTextEl.style.opacity = "1";
+            }
+          }, { once: true });
         }
         const chatInputEl = document.querySelector('.chat-input');
         if (chatInputEl) {

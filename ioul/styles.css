@@ -314,11 +314,11 @@ body.non-fullscreen {
     overflow: visible;
 }
 
-/* Adjusted custom-line: left value lowered by 10vw and included in sliding */
+/* Adjusted custom-line: left lowered by 10vw (now –42.59vw) and included in sliding */
 .custom-line {
     position: absolute;
     top: 47.8vh; /* Changed to top 55vh as requested */
-    left: -32.59vw;
+    left: -42.59vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
@@ -330,6 +330,8 @@ body.non-fullscreen {
     transform: translateX(24vw);
 }
 .custom-slide {
-    /* Updated so that final slide-in location is unchanged */
-    transform: translateX(39vw);
+    /* Updated so that final slide-in location is unchanged:
+       Previously, with additional 12vw lowering, we used translateX(51vw).
+       Now with additional 10vw, we use translateX(39vw + 10vw) = translateX(49vw). */
+    transform: translateX(49vw);
 }

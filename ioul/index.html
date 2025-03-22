@@ -66,7 +66,6 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- .custom-text elements with their inline left values lowered by 10vw twice -->
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.83vw;">i-cHAT - OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -28.83vw;">i-POST - OPEn</span>
@@ -80,7 +79,6 @@
     <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
 
-    <!-- .custom-line's inline left value is lowered by 10vw as well -->
     <div class="custom-line"></div>
 
     <div class="slide-trigger"></div>
@@ -141,7 +139,6 @@
       chatInput.focus();
     });
 
-    // Forward sliding: clicking in area (0–6.37vw, 28.5–84vh)
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -153,14 +150,12 @@
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
           chatTextEl.classList.add('chat-slide');
-          // Immediately fade out when sliding out begins
           chatTextEl.style.opacity = "0";
         }
         const chatInputEl = document.querySelector('.chat-input');
         if (chatInputEl) {
           chatInputEl.classList.add('chat-slide');
         }
-        // For forward sliding, simply add the slide class (CSS transition is 0.7s as defined)
         const customTextEls = document.querySelectorAll('.custom-text');
         customTextEls.forEach(el => {
           el.classList.add('custom-slide');
@@ -172,7 +167,6 @@
       }
     });
 
-    // Inverse sliding: clicking in area (28.87–32.44vw, 28.5–84vh)
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -185,7 +179,6 @@
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
           chatTextEl.classList.remove('chat-slide');
-          // Wait for sliding (transform) to finish before fading in
           chatTextEl.addEventListener('transitionend', (e) => {
             if (e.propertyName === "transform") {
               chatTextEl.style.opacity = "1";

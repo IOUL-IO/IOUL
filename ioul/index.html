@@ -66,6 +66,7 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
+    <!-- Custom Text Elements (initially under layer one) -->
     <span class="custom-text" style="top: 35.4vh; left: -22.59vw;">AcT1V1TY 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -8.83vw;">i-cHAT - OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -8.83vw;">i-POST - OPEn</span>
@@ -86,6 +87,7 @@
   </div>
 
   <script>
+    // Fade in page on first mouse movement
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -97,6 +99,7 @@
       document.removeEventListener('mousemove', onFirstMouseMove);
     });
 
+    // Request fullscreen if clicking near the viewport edge
     const EDGE_MARGIN = 11;
     document.addEventListener('click', (event) => {
       const { clientX: x, clientY: y } = event;
@@ -108,6 +111,7 @@
       }
     });
 
+    // Slide trigger for existing slide animations
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -121,6 +125,7 @@
       document.querySelector('.page-content').classList.add('animate-grid');
     });
 
+    // Chat input replacement on click
     const chatText = document.getElementById('chatText');
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
@@ -137,6 +142,49 @@
       chatText.insertAdjacentElement('afterend', chatInput);
       chatText.remove();
       chatInput.focus();
+    });
+
+    // NEW FUNCTIONALITY:
+    // When clicking in the area (left: 0–6.37vw, top: 28.5–84vh), slide the chat element
+    // and custom text elements to their new positions.
+    document.addEventListener('click', function(e) {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      // Calculate boundaries in pixels
+      const leftBoundaryMax = 0.0637 * vw; // 6.37vw in pixels
+      const topBoundaryMin = 0.285 * vh;   // 28.5vh in pixels
+      const bottomBoundaryMax = 0.84 * vh; // 84vh in pixels
+
+      // Check if the click is within the specified area
+      if (e.clientX <= leftBoundaryMax && e.clientY >= topBoundaryMin && e.clientY <= bottomBoundaryMax) {
+        // Slide the chat element (or its input field) right by increasing its left by 24vw
+        let chatEl = document.getElementById('chatText') || document.querySelector('.chat-input');
+        if (chatEl) {
+          // Set left to 6.41vw + 24vw = 30.41vw
+          chatEl.style.left = "30.41vw";
+        }
+        // Slide custom text elements to their new positions (in the order they appear)
+        const newPositions = [
+          "6.41vw",   // AcT1V1TY 1nFO
+          "20.17vw",  // i-cHAT - OPEn
+          "20.17vw",  // i-POST - OPEn
+          "6.41vw",   // AccOUnT 1nFO
+          "6.41vw",   // YOUR L1ST
+          "6.41vw",   // cHAnnELS
+          "6.41vw",   // OFFER HUB
+          "6.41vw",   // YOUR JOBS
+          "25.71vw",  // OPEn
+          "25.71vw",  // OPEn
+          "25.71vw",  // OPEn
+          "25.71vw"   // OPEn
+        ];
+        const customTexts = document.querySelectorAll('.custom-text');
+        customTexts.forEach((el, index) => {
+          if (newPositions[index]) {
+            el.style.left = newPositions[index];
+          }
+        });
+      }
     });
   </script>
 </body>

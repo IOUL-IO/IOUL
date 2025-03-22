@@ -66,7 +66,7 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- .custom-text elements with inline left values lowered by 10vw twice -->
+    <!-- .custom-text elements (with their inline left values lowered by 10vw twice) -->
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.83vw;">i-cHAT - OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -28.83vw;">i-POST - OPEn</span>
@@ -152,10 +152,10 @@
           event.clientY >= yMin && event.clientY <= yMax) {
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
-          // First, quickly fade out .chat-text before starting the slide-out
+          // First, quickly fade out .chat-text (0.1s)
           chatTextEl.style.transition = "opacity 0.1s ease";
           chatTextEl.style.opacity = "0";
-          // After a short delay, add the sliding class to start the transform transition
+          // Then, after a short delay, add the sliding class to start transform transition
           setTimeout(() => {
             chatTextEl.classList.add('chat-slide');
           }, 110);
@@ -188,13 +188,10 @@
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
           chatTextEl.classList.remove('chat-slide');
-          // Wait for sliding (transform) to finish then fade in
-          chatTextEl.addEventListener('transitionend', (e) => {
-            if (e.propertyName === "transform") {
-              chatTextEl.style.transition = "opacity 0.3s ease";
-              chatTextEl.style.opacity = "1";
-            }
-          }, { once: true });
+          // Wait for sliding (transform transition) to complete (0.7s), then fade in
+          setTimeout(() => {
+            chatTextEl.style.opacity = "1";
+          }, 700);
         }
         const chatInputEl = document.querySelector('.chat-input');
         if (chatInputEl) {

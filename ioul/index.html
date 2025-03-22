@@ -138,6 +138,32 @@
       chatText.remove();
       chatInput.focus();
     });
+
+    // New event listener: when clicking in the left area (0–6.37vw, 28.5–84vh)
+    document.addEventListener('click', (event) => {
+      const vwUnit = window.innerWidth / 100;
+      const vhUnit = window.innerHeight / 100;
+      const xLimit = 6.37 * vwUnit;
+      const yMin = 28.5 * vhUnit;
+      const yMax = 84 * vhUnit;
+      if (event.clientX >= 0 && event.clientX <= xLimit &&
+          event.clientY >= yMin && event.clientY <= yMax) {
+        // Slide .chat-text and .chat-input by moving 24vw to the right
+        const chatTextEl = document.querySelector('.chat-text');
+        if (chatTextEl) {
+          chatTextEl.classList.add('chat-slide');
+        }
+        const chatInputEl = document.querySelector('.chat-input');
+        if (chatInputEl) {
+          chatInputEl.classList.add('chat-slide');
+        }
+        // Slide all .custom-text elements by moving 29vw to the right
+        const customTextEls = document.querySelectorAll('.custom-text');
+        customTextEls.forEach(el => {
+          el.classList.add('custom-slide');
+        });
+      }
+    });
   </script>
 </body>
 </html>

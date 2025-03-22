@@ -314,10 +314,9 @@ body.non-fullscreen {
     overflow: visible;
 }
 
-/* Adjusted custom-line: left lowered by 10vw (now –42.59vw) and included in sliding */
 .custom-line {
     position: absolute;
-    top: 47.8vh; /* Changed to top 55vh as requested */
+    top: 47.8vh; 
     left: -42.59vw;
     width: 22.48vw;
     height: 1px;
@@ -325,7 +324,6 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* Classes to slide elements */
 .chat-slide {
     transform: translateX(24vw);
 }

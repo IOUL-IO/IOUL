@@ -1,195 +1,330 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IOUL</title>
-  <link rel="icon" href="favicon.png" type="image/png" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body class="non-fullscreen">
-  <div class="layer-one"></div>
-  <div class="layer-two"></div>
-  <div class="layer-three"></div>
+@font-face {
+    font-family: 'Distill Expanded';
+    src: url('font.woff2') format('woff2'),
+         url('font.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 
-  <div class="page-content">
-    <div class="line original"></div>
-    <div class="line second"></div>
-    <div class="line third"></div>
-    <div class="line fourth"></div>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    <div class="slide-container">
-      <div class="line dashed"></div>
-      <div class="line dashed second-dashed"></div>
-      <div class="line dashed third-dashed"></div>
-      <div class="line dashed fourth-dashed"></div>
-      <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-      <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-      <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
-      <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
-    </div>
+body.non-fullscreen {
+    background-color: #ffffff;
+    min-height: 100vh;
+    min-width: 100vw;
+    overflow: hidden;
+}
 
-    <div class="hover-area"></div>
-    <span class="chat-text" id="chatText">cHAT . . .</span>
+.layer-one {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 6.37vw;
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 100;
+}
+.layer-two {
+    position: fixed;
+    top: 0;
+    left: 28.87vw;
+    width: calc(36vw - 28.87vw);
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 100;
+}
+.layer-three {
+    position: fixed;
+    top: 0;
+    left: 94.17vw;
+    width: calc(100vw - 94.17vw);
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 100;
+}
 
-    <span class="grid-number num1">1</span>
-    <span class="grid-number num2">2</span>
-    <span class="grid-number num3">3</span>
-    <span class="grid-number num4">4</span>
-    <span class="grid-number num5">5</span>
-    <span class="grid-number num6">6</span>
-    <span class="grid-number num7">7</span>
-    <span class="grid-number num8">8</span>
-    <span class="grid-number num9">9</span>
-    <span class="grid-number num10">10</span>
-    <span class="grid-number num11">11</span>
-    <span class="grid-number num12">12</span>
-    <span class="grid-number num13">13</span>
-    <span class="grid-number num14">14</span>
-    <span class="grid-number num15">15</span>
-    <span class="grid-number num16">16</span>
+.page-content {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    position: relative;
+}
 
-    <div class="grid-dashed dashed01"></div>
-    <div class="grid-dashed dashed02"></div>
-    <div class="grid-dashed dashed03"></div>
-    <div class="grid-dashed dashed04"></div>
-    <div class="grid-dashed dashed05"></div>
-    <div class="grid-dashed dashed06"></div>
-    <div class="grid-dashed dashed07"></div>
-    <div class="grid-dashed dashed08"></div>
-    <div class="grid-dashed dashed09"></div>
-    <div class="grid-dashed dashed10"></div>
-    <div class="grid-dashed dashed11"></div>
-    <div class="grid-dashed dashed12"></div>
-    <div class="grid-dashed dashed13"></div>
-    <div class="grid-dashed dashed14"></div>
-    <div class="grid-dashed dashed15"></div>
-    <div class="grid-dashed dashed16"></div>
+.line {
+    position: absolute;
+    height: 1px;
+    background-color: #cfcfcf;
+}
+.original {
+    top: 12.5vh;
+    left: 6.38vw;
+    width: 22.48vw;
+}
+.second {
+    top: 28.5vh;
+    left: 6.38vw;
+    width: 22.48vw;
+}
+.third {
+    top: 84vh;
+    left: 6.38vw;
+    width: 22.48vw;
+}
+.fourth {
+    top: 12.5vh;
+    left: 36vw;
+    width: 57.8vw;
+}
 
-    <span class="custom-text" style="top: 35.4vh; left: -22.59vw;">AcT1V1TY 1nFO</span>
-    <span class="custom-text" style="top: 35.4vh; left: -8.83vw;">i-cHAT - OPEn</span>
-    <span class="custom-text" style="top: 41.6vh; left: -8.83vw;">i-POST - OPEn</span>
-    <span class="custom-text" style="top: 41.6vh; left: -22.59vw;">AccOUnT 1nFO</span>
-    <span class="custom-text" style="top: 54vh; left: -22.59vw;">YOUR L1ST</span>
-    <span class="custom-text" style="top: 60.2vh; left: -22.59vw;">cHAnnELS</span>
-    <span class="custom-text" style="top: 66.4vh; left: -22.59vw;">OFFER HUB</span>
-    <span class="custom-text" style="top: 72.6vh; left: -22.59vw;">YOUR JOBS</span>
-    <span class="custom-text" style="top: 54vh; left: -3.29vw;">OPEn</span>
-    <span class="custom-text" style="top: 60.2vh; left: -3.29vw;">OPEn</span>
-    <span class="custom-text" style="top: 66.4vh; left: -3.29vw;">OPEn</span>
-    <span class="custom-text" style="top: 72.6vh; left: -3.29vw;">OPEn</span>
+.slide-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    clip-path: inset(0 0 0 28.86vw);
+}
 
-    <div class="custom-line"></div>
+.dashed {
+    position: absolute;
+    height: 1px;
+    top: 28.5vh;
+    left: 36vw;
+    width: 52.4vw;
+    background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
+    background-size: 10px 1px;
+}
+.second-dashed {
+    top: 47vh;
+    left: 36vw;
+    width: 52.4vw;
+}
+.third-dashed {
+    top: 65.5vh;
+    left: 36vw;
+    width: 52.4vw;
+}
+.fourth-dashed {
+    top: 84vh;
+    left: 36vw;
+    width: 52.4vw;
+}
 
-    <div class="slide-trigger"></div>
-    <div class="slide-trigger-reverse"></div>
-  </div>
+.time-text {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.331rem;
+    color: #111111;
+    letter-spacing: 0.2vw;
+    text-shadow: 0.011rem 0 0 #919191, -0.011rem 0 0 #919191;
+    top: 28.5vh;
+    left: 89.81vw;
+}
+.second-time-text {
+    top: 47.04vh;
+    left: 89.91vw;
+}
+.third-time-text {
+    top: 65.51vh;
+    left: 89.87vw;
+}
+.fourth-time-text {
+    top: 83.86vh;
+    left: 90.1vw;
+}
 
-  <script>
-    const pageContent = document.querySelector('.page-content');
-    let pageFadedIn = false;
-    function fadeInPage() {
-      pageContent.style.opacity = '1';
-      pageFadedIn = true;
-    }
-    document.addEventListener('mousemove', function onFirstMouseMove() {
-      if (!pageFadedIn) { fadeInPage(); }
-      document.removeEventListener('mousemove', onFirstMouseMove);
-    });
+.hover-area {
+    position: absolute;
+    top: 28.5vh;
+    left: 6.4vw;
+    width: calc(28.86vw - 6.4vw);
+    height: calc(84vh - 28.5vh);
+}
 
-    const EDGE_MARGIN = 11;
-    document.addEventListener('click', (event) => {
-      const { clientX: x, clientY: y } = event;
-      const { innerWidth: width, innerHeight: height } = window;
-      if (!document.fullscreenElement &&
-          (x <= EDGE_MARGIN || x >= width - EDGE_MARGIN ||
-           y <= EDGE_MARGIN || y >= height - EDGE_MARGIN)) {
-        document.documentElement.requestFullscreen();
-      }
-    });
+.chat-text {
+    position: absolute;
+    top: 77vh;
+    left: 6.41vw;
+    display: inline-block;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #111111;
+    letter-spacing: 0.28vw;
+    font-size: 0.47rem;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    line-height: 1.3;
+    padding-top: 0.1rem;
+}
+.chat-input {
+    position: absolute;
+    top: 77vh;
+    left: 6.41vw;
+    width: 22.17vw;
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.47rem;
+    letter-spacing: 0.28vw;
+    color: #111111;
+    caret-color: #d1d1d1;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    line-height: 1.2;
+    padding: 0.2rem 0;
+    border: none;
+    outline: none;
+    background: #ffffff;
+    cursor: text;
+}
 
-    const inverseTrigger = document.querySelector('.slide-trigger');
-    inverseTrigger.addEventListener('click', (event) => {
-      event.stopPropagation();
-      document.querySelector('.slide-container').classList.remove('animate-slide');
-      document.querySelector('.page-content').classList.remove('animate-grid');
-    });
-    const forwardTrigger = document.querySelector('.slide-trigger-reverse');
-    forwardTrigger.addEventListener('click', (event) => {
-      event.stopPropagation();
-      document.querySelector('.slide-container').classList.add('animate-slide');
-      document.querySelector('.page-content').classList.add('animate-grid');
-    });
+.grid-number {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #111111;
+    font-size: 0.411rem;
+    letter-spacing: 0.28vw;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    transition: left 0.7s ease;
+}
+.num1  { top: 28.5vh; left: 108.8vw; }
+.num2  { top: 28.5vh; left: 123.7vw; }
+.num3  { top: 28.5vh; left: 138.5vw; }
+.num4  { top: 28.5vh; left: 153.3vw; }
+.num5  { top: 47vh;   left: 108.8vw; }
+.num6  { top: 47vh;   left: 123.7vw; }
+.num7  { top: 47vh;   left: 138.5vw; }
+.num8  { top: 47vh;   left: 153.3vw; }
+.num9   { top: 65.5vh; left: 108.8vw; }
+.num10  { top: 65.5vh; left: 123.3vw; }
+.num11  { top: 65.5vh; left: 138.3vw; }
+.num12  { top: 65.5vh; left: 152.9vw; }
+.num13  { top: 83.7vh; left: 108.3vw; }
+.num14  { top: 83.7vh; left: 123.2vw; }
+.num15  { top: 83.7vh; left: 138.0vw; }
+.num16  { top: 83.7vh; left: 152.8vw; }
 
-    const chatText = document.getElementById('chatText');
-    let chatShownOnce = false;
-    const hoverArea = document.querySelector('.hover-area');
-    hoverArea.addEventListener('mouseenter', () => {
-      if (!chatShownOnce && pageFadedIn) {
-        chatText.style.opacity = '1';
-        chatShownOnce = true;
-      }
-    });
-    chatText.addEventListener('click', () => {
-      const chatInput = document.createElement('input');
-      chatInput.type = 'text';
-      chatInput.classList.add('chat-input');
-      chatText.insertAdjacentElement('afterend', chatInput);
-      chatText.remove();
-      chatInput.focus();
-    });
+.grid-dashed {
+    position: absolute;
+    height: 1px;
+    width: 11.8vw;
+    background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
+    background-size: 10px 1px;
+    transition: left 0.7s ease;
+}
+.dashed01 { top: 28.5vh; left: 96vw; }
+.dashed02 { top: 28.5vh; left: 111vw; }
+.dashed03 { top: 28.5vh; left: 125.9vw; }
+.dashed04 { top: 28.5vh; left: 140.8vw; }
+.dashed05 { top: 47vh;   left: 96vw; }
+.dashed06 { top: 47vh;   left: 111vw; }
+.dashed07 { top: 47vh;   left: 125.9vw; }
+.dashed08 { top: 47vh;   left: 140.8vw; }
+.dashed09 { top: 65.5vh; left: 96vw; }
+.dashed10 { top: 65.5vh; left: 111vw; }
+.dashed11 { top: 65.5vh; left: 125.9vw; }
+.dashed12 { top: 65.5vh; left: 140.8vw; }
+.dashed13 { top: 84vh;   left: 96vw; }
+.dashed14 { top: 84vh;   left: 111vw; }
+.dashed15 { top: 84vh;   left: 125.9vw; }
+.dashed16 { top: 84vh;   left: 140.8vw; }
 
-    // New event listener: when clicking in the left area (0–6.37vw, 28.5–84vh) to slide elements in
-    document.addEventListener('click', (event) => {
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const xLimit = 6.37 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
-      if (event.clientX >= 0 && event.clientX <= xLimit &&
-          event.clientY >= yMin && event.clientY <= yMax) {
-        // Slide .chat-text and .chat-input by moving 24vw to the right
-        const chatTextEl = document.querySelector('.chat-text');
-        if (chatTextEl) {
-          chatTextEl.classList.add('chat-slide');
-        }
-        const chatInputEl = document.querySelector('.chat-input');
-        if (chatInputEl) {
-          chatInputEl.classList.add('chat-slide');
-        }
-        // Slide all .custom-text elements by moving 29vw to the right
-        const customTextEls = document.querySelectorAll('.custom-text');
-        customTextEls.forEach(el => {
-          el.classList.add('custom-slide');
-        });
-      }
-    });
+.page-content.animate-grid .grid-number.num1 { left: 48.8vw; }
+.page-content.animate-grid .grid-number.num2 { left: 63.7vw; }
+.page-content.animate-grid .grid-number.num3 { left: 78.5vw; }
+.page-content.animate-grid .grid-number.num4 { left: 93.3vw; }
+.page-content.animate-grid .grid-number.num5 { left: 48.8vw; }
+.page-content.animate-grid .grid-number.num6 { left: 63.7vw; }
+.page-content.animate-grid .grid-number.num7 { left: 78.5vw; }
+.page-content.animate-grid .grid-number.num8 { left: 93.3vw; }
+.page-content.animate-grid .grid-number.num9 { left: 48.8vw; }
+.page-content.animate-grid .grid-number.num10 { left: 63.3vw; }
+.page-content.animate-grid .grid-number.num11 { left: 78.3vw; }
+.page-content.animate-grid .grid-number.num12 { left: 92.9vw; }
+.page-content.animate-grid .grid-number.num13 { left: 48.3vw; }
+.page-content.animate-grid .grid-number.num14 { left: 63.2vw; }
+.page-content.animate-grid .grid-number.num15 { left: 78.0vw; }
+.page-content.animate-grid .grid-number.num16 { left: 92.8vw; }
 
-    // New inverse sliding event listener: when clicking in the area (22.87–32.44vw, 28.5–84vh)
-    document.addEventListener('click', (event) => {
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const leftMin = 22.87 * vwUnit;
-      const leftMax = 32.44 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
-      if (event.clientX >= leftMin && event.clientX <= leftMax &&
-          event.clientY >= yMin && event.clientY <= yMax) {
-        // Remove sliding classes to trigger the inverse sliding animation
-        const chatTextEl = document.querySelector('.chat-text');
-        if (chatTextEl) {
-          chatTextEl.classList.remove('chat-slide');
-        }
-        const chatInputEl = document.querySelector('.chat-input');
-        if (chatInputEl) {
-          chatInputEl.classList.remove('chat-slide');
-        }
-        const customTextEls = document.querySelectorAll('.custom-text');
-        customTextEls.forEach(el => {
-          el.classList.remove('custom-slide');
-        });
-      }
-    });
-  </script>
-</body>
-</html>
+.page-content.animate-grid .grid-dashed.dashed01 { left: 36vw; }
+.page-content.animate-grid .grid-dashed.dashed02 { left: 51vw; }
+.page-content.animate-grid .grid-dashed.dashed03 { left: 65.9vw; }
+.page-content.animate-grid .grid-dashed.dashed04 { left: 80.8vw; }
+.page-content.animate-grid .grid-dashed.dashed05 { left: 36vw; }
+.page-content.animate-grid .grid-dashed.dashed06 { left: 51vw; }
+.page-content.animate-grid .grid-dashed.dashed07 { left: 65.9vw; }
+.page-content.animate-grid .grid-dashed.dashed08 { left: 80.8vw; }
+.page-content.animate-grid .grid-dashed.dashed09 { left: 36vw; }
+.page-content.animate-grid .grid-dashed.dashed10 { left: 51vw; }
+.page-content.animate-grid .grid-dashed.dashed11 { left: 65.9vw; }
+.page-content.animate-grid .grid-dashed.dashed12 { left: 80.8vw; }
+.page-content.animate-grid .grid-dashed.dashed13 { left: 36vw; }
+.page-content.animate-grid .grid-dashed.dashed14 { left: 51vw; }
+.page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; }
+.page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; }
+
+.slide-container > .line.dashed,
+.slide-container > .time-text,
+.slide-container > .time-text.second-time-text,
+.slide-container > .time-text.third-time-text,
+.slide-container > .time-text.fourth-time-text {
+    transition: transform 0.7s ease;
+}
+.slide-container.animate-slide > .line.dashed,
+.slide-container.animate-slide > .time-text,
+.slide-container.animate-slide > .time-text.second-time-text,
+.slide-container.animate-slide > .time-text.third-time-text,
+.slide-container.animate-slide > .time-text.fourth-time-text {
+    transform: translateX(-91vw);
+}
+
+.slide-trigger {
+    position: absolute;
+    top: 28.5vh;
+    left: 32.43vw;
+    width: calc(36vw - 32.43vw);
+    height: calc(84vh - 28.5vh);
+    background: transparent;
+    z-index: 101;
+    cursor: pointer;
+}
+.slide-trigger-reverse {
+    position: absolute;
+    top: 28.5vh;
+    left: 94vw;
+    width: calc(100vw - 94vw);
+    height: calc(84vh - 28.5vh);
+    background: transparent;
+    z-index: 101;
+    cursor: pointer;
+}
+
+.custom-text {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #111111;
+    letter-spacing: 0.28vw;
+    font-size: 0.47rem;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+}
+
+/* Adjusted custom-line position */
+.custom-line {
+    position: absolute;
+    top: 47.8vh; /* Changed to top 55vh as requested */
+    left: -22.59vw;
+    width: 22.48vw;
+    height: 1px;
+    background-color: rgba(230, 230, 230, 0.28);
+}
+
+/* New classes for sliding elements */
+.chat-slide {
+    transition: transform 0.5s ease;
+    transform: translateX(24vw);
+}
+.custom-slide {
+    transition: transform 0.5s ease;
+    transform: translateX(29vw);
+}

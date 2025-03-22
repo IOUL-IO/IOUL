@@ -66,7 +66,6 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- .custom-text elements (with their inline left values lowered by 10vw twice) -->
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.83vw;">i-cHAT - OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -28.83vw;">i-POST - OPEn</span>
@@ -80,7 +79,6 @@
     <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
 
-    <!-- .custom-line also has its left value lowered by 10vw -->
     <div class="custom-line"></div>
 
     <div class="slide-trigger"></div>
@@ -141,7 +139,6 @@
       chatInput.focus();
     });
 
-    // Forward sliding: clicking in area (0–6.37vw, 28.5–84vh)
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -152,10 +149,8 @@
           event.clientY >= yMin && event.clientY <= yMax) {
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
-          // First, quickly fade out .chat-text (0.1s)
           chatTextEl.style.transition = "opacity 0.1s ease";
           chatTextEl.style.opacity = "0";
-          // Then, after a short delay, add the sliding class to start transform transition
           setTimeout(() => {
             chatTextEl.classList.add('chat-slide');
           }, 110);
@@ -175,7 +170,6 @@
       }
     });
 
-    // Inverse sliding: clicking in area (28.87–32.44vw, 28.5–84vh)
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -188,7 +182,6 @@
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
           chatTextEl.classList.remove('chat-slide');
-          // Wait for sliding (transform transition) to complete (0.7s), then fade in
           setTimeout(() => {
             chatTextEl.style.opacity = "1";
           }, 700);

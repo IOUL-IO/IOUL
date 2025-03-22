@@ -66,7 +66,7 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- The .custom-text elements have their original left values lowered by 10vw -->
+    <!-- The .custom-text elements have their left values lowered by 10vw -->
     <span class="custom-text" style="top: 35.4vh; left: -32.59vw;">AcT1V1TY 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -18.83vw;">i-cHAT - OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -18.83vw;">i-POST - OPEn</span>
@@ -139,6 +139,19 @@
       chatText.insertAdjacentElement('afterend', chatInput);
       chatText.remove();
       chatInput.focus();
+    });
+
+    // Add a transitionend listener to .chat-text so it fades out/in after sliding
+    chatText.addEventListener('transitionend', (event) => {
+      if (event.propertyName === "transform") {
+        if (chatText.classList.contains("chat-slide")) {
+          // After sliding out, fade out the chat text
+          chatText.style.opacity = "0";
+        } else {
+          // After sliding back, fade it in
+          chatText.style.opacity = "1";
+        }
+      }
     });
 
     // Forward sliding: clicking in area (0–6.37vw, 28.5–84vh)

@@ -66,6 +66,7 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
+    <!-- .custom-text elements with inline left values lowered by 10vw twice -->
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.83vw;">i-cHAT - OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -28.83vw;">i-POST - OPEn</span>
@@ -79,6 +80,7 @@
     <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
 
+    <!-- .custom-line also has its left value lowered by 10vw -->
     <div class="custom-line"></div>
 
     <div class="slide-trigger"></div>
@@ -139,6 +141,7 @@
       chatInput.focus();
     });
 
+    // Forward sliding: clicking in area (0–6.37vw, 28.5–84vh)
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -149,12 +152,13 @@
           event.clientY >= yMin && event.clientY <= yMax) {
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
-          chatTextEl.classList.add('chat-slide');
-          chatTextEl.addEventListener('transitionend', (e) => {
-            if (e.propertyName === "transform") {
-              chatTextEl.style.opacity = "0";
-            }
-          }, { once: true });
+          // First, quickly fade out .chat-text before starting the slide-out
+          chatTextEl.style.transition = "opacity 0.1s ease";
+          chatTextEl.style.opacity = "0";
+          // After a short delay, add the sliding class to start the transform transition
+          setTimeout(() => {
+            chatTextEl.classList.add('chat-slide');
+          }, 110);
         }
         const chatInputEl = document.querySelector('.chat-input');
         if (chatInputEl) {
@@ -171,6 +175,7 @@
       }
     });
 
+    // Inverse sliding: clicking in area (28.87–32.44vw, 28.5–84vh)
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -183,8 +188,10 @@
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
           chatTextEl.classList.remove('chat-slide');
+          // Wait for sliding (transform) to finish then fade in
           chatTextEl.addEventListener('transitionend', (e) => {
             if (e.propertyName === "transform") {
+              chatTextEl.style.transition = "opacity 0.3s ease";
               chatTextEl.style.opacity = "1";
             }
           }, { once: true });
@@ -196,10 +203,12 @@
         const customTextEls = document.querySelectorAll('.custom-text');
         customTextEls.forEach(el => {
           el.classList.remove('custom-slide');
+          el.style.transition = "transform 0.7s ease";
         });
         const customLineEl = document.querySelector('.custom-line');
         if (customLineEl) {
           customLineEl.classList.remove('custom-slide');
+          customLineEl.style.transition = "transform 0.7s ease";
         }
       }
     });

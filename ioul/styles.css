@@ -309,6 +309,7 @@ body.non-fullscreen {
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
 }
 
+/* Adjusted custom-line position */
 .custom-line {
     position: absolute;
     top: 47.8vh; /* Changed to top 55vh as requested */
@@ -316,4 +317,14 @@ body.non-fullscreen {
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
+}
+
+/* New classes for sliding elements */
+.chat-slide {
+    transition: transform 0.5s ease;
+    transform: translateX(24vw);
+}
+.custom-slide {
+    transition: transform 0.5s ease;
+    transform: translateX(29vw);
 }

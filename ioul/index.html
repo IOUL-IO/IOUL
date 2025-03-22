@@ -139,7 +139,7 @@
       chatInput.focus();
     });
 
-    // New event listener: when clicking in the left area (0–6.37vw, 28.5–84vh)
+    // Forward slide: when clicking in left area 0–6.37vw & 28.5–84vh
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -161,6 +161,32 @@
         const customTextEls = document.querySelectorAll('.custom-text');
         customTextEls.forEach(el => {
           el.classList.add('custom-slide');
+        });
+      }
+    });
+
+    // Inverse slide: when clicking in area 22.87–32.44vw & 28.5–84vh
+    document.addEventListener('click', (event) => {
+      const vwUnit = window.innerWidth / 100;
+      const vhUnit = window.innerHeight / 100;
+      const xMinInverse = 22.87 * vwUnit;
+      const xMaxInverse = 32.44 * vwUnit;
+      const yMin = 28.5 * vhUnit;
+      const yMax = 84 * vhUnit;
+      if (event.clientX >= xMinInverse && event.clientX <= xMaxInverse &&
+          event.clientY >= yMin && event.clientY <= yMax) {
+        // Remove slide classes to revert the animation
+        const chatTextEl = document.querySelector('.chat-text');
+        if (chatTextEl) {
+          chatTextEl.classList.remove('chat-slide');
+        }
+        const chatInputEl = document.querySelector('.chat-input');
+        if (chatInputEl) {
+          chatInputEl.classList.remove('chat-slide');
+        }
+        const customTextEls = document.querySelectorAll('.custom-text');
+        customTextEls.forEach(el => {
+          el.classList.remove('custom-slide');
         });
       }
     });

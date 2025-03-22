@@ -139,7 +139,7 @@
       chatInput.focus();
     });
 
-    // Forward slide: when clicking in left area 0–6.37vw & 28.5–84vh
+    // New event listener: when clicking in the left area (0–6.37vw, 28.5–84vh) to slide elements in
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -165,17 +165,17 @@
       }
     });
 
-    // Inverse slide: when clicking in area 22.87–32.44vw & 28.5–84vh
+    // New inverse sliding event listener: when clicking in the area (22.87–32.44vw, 28.5–84vh)
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
-      const xMinInverse = 22.87 * vwUnit;
-      const xMaxInverse = 32.44 * vwUnit;
+      const leftMin = 22.87 * vwUnit;
+      const leftMax = 32.44 * vwUnit;
       const yMin = 28.5 * vhUnit;
       const yMax = 84 * vhUnit;
-      if (event.clientX >= xMinInverse && event.clientX <= xMaxInverse &&
+      if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
-        // Remove slide classes to revert the animation
+        // Remove sliding classes to trigger the inverse sliding animation
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
           chatTextEl.classList.remove('chat-slide');

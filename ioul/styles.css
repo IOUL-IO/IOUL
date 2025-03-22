@@ -309,7 +309,7 @@ body.non-fullscreen {
     font-size: 0.47rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     transition: transform 0.5s ease;
-    /* Added to fix clipping issues */
+    /* Fix clipping issues */
     line-height: 1.6;
     overflow: visible;
 }

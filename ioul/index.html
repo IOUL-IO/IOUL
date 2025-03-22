@@ -139,7 +139,7 @@
       chatInput.focus();
     });
 
-    // New event listener: when clicking in the left area (0–6.37vw, 28.5–84vh) to slide elements in
+    // Event listener for sliding elements in when clicking in the area (0–6.37vw, 28.5–84vh)
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -148,7 +148,6 @@
       const yMax = 84 * vhUnit;
       if (event.clientX >= 0 && event.clientX <= xLimit &&
           event.clientY >= yMin && event.clientY <= yMax) {
-        // Slide .chat-text and .chat-input by moving 24vw to the right
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
           chatTextEl.classList.add('chat-slide');
@@ -157,7 +156,6 @@
         if (chatInputEl) {
           chatInputEl.classList.add('chat-slide');
         }
-        // Slide all .custom-text elements by moving 29vw to the right
         const customTextEls = document.querySelectorAll('.custom-text');
         customTextEls.forEach(el => {
           el.classList.add('custom-slide');
@@ -165,7 +163,7 @@
       }
     });
 
-    // New inverse sliding event listener: when clicking in the area (22.87–32.44vw, 28.5–84vh)
+    // Instant inverse sliding: when clicking in the area (22.87–32.44vw, 28.5–84vh)
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -175,18 +173,23 @@
       const yMax = 84 * vhUnit;
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
-        // Remove sliding classes to trigger the inverse sliding animation
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
+          chatTextEl.style.transition = 'none';
           chatTextEl.classList.remove('chat-slide');
+          setTimeout(() => { chatTextEl.style.transition = ''; }, 0);
         }
         const chatInputEl = document.querySelector('.chat-input');
         if (chatInputEl) {
+          chatInputEl.style.transition = 'none';
           chatInputEl.classList.remove('chat-slide');
+          setTimeout(() => { chatInputEl.style.transition = ''; }, 0);
         }
         const customTextEls = document.querySelectorAll('.custom-text');
         customTextEls.forEach(el => {
+          el.style.transition = 'none';
           el.classList.remove('custom-slide');
+          setTimeout(() => { el.style.transition = ''; }, 0);
         });
       }
     });

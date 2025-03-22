@@ -66,7 +66,7 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- The original left values have been lowered by 10vw -->
+    <!-- The .custom-text elements have their original left values lowered by 10vw -->
     <span class="custom-text" style="top: 35.4vh; left: -32.59vw;">AcT1V1TY 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -18.83vw;">i-cHAT - OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -18.83vw;">i-POST - OPEn</span>
@@ -80,6 +80,7 @@
     <span class="custom-text" style="top: 66.4vh; left: -13.29vw;">OPEn</span>
     <span class="custom-text" style="top: 72.6vh; left: -13.29vw;">OPEn</span>
 
+    <!-- .custom-line now also has its left value lowered by 10vw -->
     <div class="custom-line"></div>
 
     <div class="slide-trigger"></div>
@@ -161,6 +162,10 @@
         customTextEls.forEach(el => {
           el.classList.add('custom-slide');
         });
+        const customLineEl = document.querySelector('.custom-line');
+        if (customLineEl) {
+          customLineEl.classList.add('custom-slide');
+        }
       }
     });
 
@@ -186,6 +191,10 @@
         customTextEls.forEach(el => {
           el.classList.remove('custom-slide');
         });
+        const customLineEl = document.querySelector('.custom-line');
+        if (customLineEl) {
+          customLineEl.classList.remove('custom-slide');
+        }
       }
     });
   </script>

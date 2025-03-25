@@ -330,3 +330,8 @@ body.non-fullscreen {
 .custom-slide {
     transform: translateX(49vw);
 }
+
+/* New class for sliding down animation */
+.animate-slide-down {
+  transition: top 0.7s ease;
+}

@@ -229,19 +229,24 @@
     // Global variable to track which menu is currently open
     let currentMenu = null;
 
-    // Closes any open submenu with inverse slide-up (by removing the slide-down classes)
-    // and fading out the newly added text elements.
+    // Closes any open submenu.
+    // New texts are first faded out quickly (0.3s) and only after they’re fully invisible,
+    // the slide-down classes are removed.
     function closeSubmenu() {
-      document.getElementById("linkup-center").classList.remove("slide-down");
-      document.getElementById("delivery-line").classList.remove("slide-down");
-      document.getElementById("internal-unit").classList.remove("slide-down");
-      
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
+        // Set a quicker fade-out transition (0.3s)
+        span.style.transition = 'opacity 0.3s ease';
         span.classList.remove("visible");
-        setTimeout(() => { span.remove(); }, 700);
       });
-      currentMenu = null;
+      // Wait 300ms for the texts to fully disappear before starting the inverse slide-up.
+      setTimeout(() => {
+         document.getElementById("linkup-center").classList.remove("slide-down");
+         document.getElementById("delivery-line").classList.remove("slide-down");
+         document.getElementById("internal-unit").classList.remove("slide-down");
+         newTexts.forEach(span => span.remove());
+         currentMenu = null;
+      }, 300);
     }
 
     // Opens the submenu for "OnL1nE ASSETS"
@@ -287,7 +292,7 @@
               setTimeout(() => {
                 openOnlineAssets();
                 currentMenu = "online-assets";
-              }, 700);
+              }, 300);
           } else {
               openOnlineAssets();
               currentMenu = "online-assets";
@@ -305,7 +310,7 @@
               setTimeout(() => {
                 openLinkupCenter();
                 currentMenu = "linkup-center";
-              }, 700);
+              }, 300);
           } else {
               openLinkupCenter();
               currentMenu = "linkup-center";
@@ -323,7 +328,7 @@
               setTimeout(() => {
                 openDeliveryLine();
                 currentMenu = "delivery-line";
-              }, 700);
+              }, 300);
           } else {
               openDeliveryLine();
               currentMenu = "delivery-line";
@@ -341,7 +346,7 @@
               setTimeout(() => {
                 openInternalUnit();
                 currentMenu = "internal-unit";
-              }, 700);
+              }, 300);
           } else {
               openInternalUnit();
               currentMenu = "internal-unit";

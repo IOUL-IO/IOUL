@@ -254,31 +254,41 @@
       document.getElementById("linkup-center").classList.add("slide-down");
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
-      addNewText("cOnTEnT", 41.6, 7.4);
-      addNewText("LEARn1ng", 47.8, 7.4);
+      // Wait 700ms for the slide-down to complete before adding submenu texts
+      setTimeout(() => {
+        addNewText("cOnTEnT", 41.6, 7.4);
+        addNewText("LEARn1ng", 47.8, 7.4);
+      }, 700);
     }
 
     // Opens the submenu for "L1nKUP cEnTER"
     function openLinkupCenter() {
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
-      addNewText("cHAnnELS", 47.8, 7.4);
-      addNewText("LABOUR", 54, 7.4);
+      setTimeout(() => {
+        addNewText("cHAnnELS", 47.8, 7.4);
+        addNewText("LABOUR", 54, 7.4);
+      }, 700);
     }
 
     // Opens the submenu for "DEL1VERY L1nE"
     function openDeliveryLine() {
       document.getElementById("internal-unit").classList.add("slide-down");
-      addNewText("cL1ENTS", 54, 7.4);
-      addNewText("PROJEcTS", 60.2, 7.4);
+      setTimeout(() => {
+        addNewText("cL1ENTS", 54, 7.4);
+        addNewText("PROJEcTS", 60.2, 7.4);
+      }, 700);
     }
 
     // Opens the submenu for "1nTERnAL Un1T"
     function openInternalUnit() {
-      addNewText("1nVEnTORY", 60.2, 7.4);
-      addNewText("DEVOPS", 66.4, 7.4);
-      addNewText("F1nAncES", 72.6, 7.4);
-      addNewText("1T-cEnTER", 78.8, 7.4);
+      // No slide-down needed here as there is no lower item to slide down.
+      setTimeout(() => {
+        addNewText("1nVEnTORY", 60.2, 7.4);
+        addNewText("DEVOPS", 66.4, 7.4);
+        addNewText("F1nAncES", 72.6, 7.4);
+        addNewText("1T-cEnTER", 78.8, 7.4);
+      }, 700);
     }
 
     // Updated event listeners with toggle behavior so only one submenu is open at a time

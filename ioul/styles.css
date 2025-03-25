@@ -330,7 +330,7 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* New CSS for submenu sliding and new items */
+/* Submenu sliding rules */
 .submenu-item {
     cursor: pointer;
 }

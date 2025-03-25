@@ -335,3 +335,8 @@ body.non-fullscreen {
 .animate-slide-down {
   transition: top 0.7s ease;
 }
+
+/* Prevent asset texts from being affected by the global custom-slide */
+.asset-text.custom-slide {
+  transform: none !important;
+}

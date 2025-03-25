@@ -309,6 +309,7 @@ body.non-fullscreen {
     font-size: 0.47rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     transition: transform 0.7s ease;
+    /* Fix clipping issues */
     line-height: 1.6;
     overflow: visible;
 }
@@ -331,12 +332,13 @@ body.non-fullscreen {
 }
 
 /* Submenu sliding rules */
-.submenu-item {
-    cursor: pointer;
-}
 .submenu-item.slide-down {
     transform: translateY(13vh);
 }
 .new-item {
+    transition: opacity 0.3s ease;
+}
+/* Nested new items rule */
+.nested-new {
     transition: opacity 0.3s ease;
 }

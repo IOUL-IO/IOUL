@@ -333,7 +333,7 @@ body.non-fullscreen {
 
 /* Updated CSS for submenu sliding and new items */
 .submenu-item.slide-down {
-    transform: translateY(11vh);
+    transform: translateY(14vh);
 }
 .new-item {
     transition: opacity 0.3s ease;

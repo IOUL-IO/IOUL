@@ -47,15 +47,13 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* Menu container: starts at left:29vw with transform:translateX(0);
-   When animated, its transform is set to translateX(-29vw), 
-   effectively moving it from 29vw to 0vw. */
+/* Updated menu-container: now transition its left property */
 .menu-container {
     position: absolute;
     left: 29vw;
     width: calc(36vw - 29vw);
     overflow: hidden;
-    transition: transform 0.7s ease;
+    transition: left 0.7s ease;
 }
 
 .page-content {

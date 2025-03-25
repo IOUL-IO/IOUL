@@ -331,12 +331,14 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* New class for sliding down animation */
-.animate-slide-down {
-  transition: top 0.7s ease;
+/* New CSS for slide down and new text animations */
+.slide-down {
+    transform: translateY(13vh);
 }
-
-/* Prevent asset texts from being affected by the global custom-slide */
-.asset-text.custom-slide {
-  transform: none !important;
+.new-text {
+    opacity: 0;
+    transition: opacity 0.7s ease;
+}
+.new-text.visible {
+    opacity: 1;
 }

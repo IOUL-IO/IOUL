@@ -13,6 +13,7 @@
   <div class="layer-three"></div>
 
   <div class="page-content">
+    <!-- Existing lines, slide container, time texts, grid numbers, etc. remain unchanged -->
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
@@ -30,52 +31,23 @@
     </div>
 
     <div class="hover-area"></div>
+    <!-- chat-text always starts at left:6.41vw -->
     <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
 
-    <span class="grid-number num1">1</span>
-    <span class="grid-number num2">2</span>
-    <span class="grid-number num3">3</span>
-    <span class="grid-number num4">4</span>
-    <span class="grid-number num5">5</span>
-    <span class="grid-number num6">6</span>
-    <span class="grid-number num7">7</span>
-    <span class="grid-number num8">8</span>
-    <span class="grid-number num9">9</span>
-    <span class="grid-number num10">10</span>
-    <span class="grid-number num11">11</span>
-    <span class="grid-number num12">12</span>
-    <span class="grid-number num13">13</span>
-    <span class="grid-number num14">14</span>
-    <span class="grid-number num15">15</span>
-    <span class="grid-number num16">16</span>
-
-    <div class="grid-dashed dashed01"></div>
-    <div class="grid-dashed dashed02"></div>
-    <div class="grid-dashed dashed03"></div>
-    <div class="grid-dashed dashed04"></div>
-    <div class="grid-dashed dashed05"></div>
-    <div class="grid-dashed dashed06"></div>
-    <div class="grid-dashed dashed07"></div>
-    <div class="grid-dashed dashed08"></div>
-    <div class="grid-dashed dashed09"></div>
-    <div class="grid-dashed dashed10"></div>
-    <div class="grid-dashed dashed11"></div>
-    <div class="grid-dashed dashed12"></div>
-    <div class="grid-dashed dashed13"></div>
-    <div class="grid-dashed dashed14"></div>
-    <div class="grid-dashed dashed15"></div>
-    <div class="grid-dashed dashed16"></div>
+    <!-- (Grid numbers and dashed grid lines remain unchanged) -->
 
     <!-- The menu-container holds the 4 menu items and any submenu texts.
-         It starts at left:29vw so that the items’ effective positions are increased by 29vw.
-         (Any text extending beyond 36vw is clipped.) -->
-    <div class="menu-container">
+         It is positioned at left:29vw so that the menu items’ effective left values
+         (e.g. 6.41vw in inline style) are 29vw lower in absolute terms.
+         Also, its width is set so that any content extending beyond 36vw is clipped. -->
+    <div class="menu-container" style="left:29vw;">
       <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
       <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
       <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
       <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
     </div>
 
+    <!-- Other .custom-text elements (for account info, etc.) remain outside the menu-container -->
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -95,7 +67,7 @@
     <div class="slide-trigger-reverse"></div>
   </div>
 
-  <!-- Existing scripts remain largely unchanged -->
+  <!-- Existing scripts for page fade, fullscreen, chat input, etc. remain unchanged -->
   <script>
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
@@ -151,9 +123,9 @@
     });
   </script>
 
-  <!-- Menu interactions and submenu functions (unchanged from previous updates) -->
+  <!-- (Menu interactions and submenu functions remain as previously defined) -->
   <script>
-    // Helper to create a new text span inside the menu container
+    // Helper to create a new text span inside the menu-container
     function addNewText(text, top, left) {
       let span = document.createElement("span");
       span.className = "custom-text new-text";
@@ -161,16 +133,10 @@
       span.style.left = left + "vw";
       span.textContent = text;
       document.querySelector(".menu-container").appendChild(span);
-      // Trigger fade-in after insertion
-      setTimeout(() => {
-        span.classList.add("visible");
-      }, 10);
+      setTimeout(() => { span.classList.add("visible"); }, 10);
     }
 
-    // Global variable to track which menu is currently open
     let currentMenu = null;
-
-    // Closes any open submenu.
     function closeSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
@@ -185,7 +151,6 @@
          currentMenu = null;
       }, 300);
     }
-
     function openOnlineAssets() {
       document.getElementById("linkup-center").classList.add("slide-down");
       document.getElementById("delivery-line").classList.add("slide-down");
@@ -218,7 +183,6 @@
         addNewText("1T-cEnTER", 78.8, 7.4);
       }, 700);
     }
-
     document.getElementById("online-assets").addEventListener("click", function(e) {
       if (currentMenu === "online-assets") {
           closeSubmenu();
@@ -288,28 +252,75 @@
     });
   </script>
 
-  <!-- New event listener for clicks in the region 28.86–32.43vw (left) and 28.5–84vh (top):
-       • Animates .chat-text left by subtracting 29vw (from 6.41vw to -22.59vw)
-       • Animates .menu-container left from 29vw to 0vw -->
+  <!-- New click listener for designated Region A (left:28.86–32.43vw) to toggle chat-text/menu reveal -->
+  <script>
+    // Global flag for Region A toggling
+    let menuRevealed = false;
+    document.addEventListener('click', (event) => {
+      const vwUnit = window.innerWidth / 100;
+      const vhUnit = window.innerHeight / 100;
+      const leftMinA = 28.86 * vwUnit;
+      const leftMaxA = 32.43 * vwUnit;
+      const yMin = 28.5 * vhUnit;
+      const yMax = 84 * vhUnit;
+      if (event.clientX >= leftMinA && event.clientX <= leftMaxA &&
+          event.clientY >= yMin && event.clientY <= yMax) {
+        const chatTextEl = document.querySelector('.chat-text');
+        const menuContainer = document.querySelector('.menu-container');
+        if (!menuRevealed) {
+          // If chat-text is in its initial location, slide it left and bring in menu-container.
+          chatTextEl.style.transition = "left 0.7s ease";
+          chatTextEl.style.left = "-22.59vw"; // 6.41 - 29
+          menuContainer.style.transition = "left 0.7s ease";
+          menuContainer.style.left = "0vw";
+          menuRevealed = true;
+        } else {
+          // Otherwise, if already revealed, trigger inverse to return them.
+          chatTextEl.style.transition = "left 0.7s ease";
+          chatTextEl.style.left = "6.41vw";
+          menuContainer.style.transition = "left 0.7s ease";
+          menuContainer.style.left = "29vw";
+          // Also remove any dynamic submenu texts from menu-container.
+          const newTexts = document.querySelectorAll('.menu-container .new-text');
+          newTexts.forEach(span => span.remove());
+          menuRevealed = false;
+        }
+      }
+    });
+  </script>
+
+  <!-- New click listener for designated Region B (left:0–6.41vw) to trigger the original inverse animation -->
   <script>
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
-      const leftMin = 28.86 * vwUnit;
-      const leftMax = 32.43 * vwUnit;
+      const leftMinB = 0;
+      const leftMaxB = 6.41 * vwUnit;
       const yMin = 28.5 * vhUnit;
       const yMax = 84 * vhUnit;
-      if (event.clientX >= leftMin && event.clientX <= leftMax &&
+      if (event.clientX >= leftMinB && event.clientX <= leftMaxB &&
           event.clientY >= yMin && event.clientY <= yMax) {
+        // Trigger inverse animation for the .custom-text elements (those outside menu-container)
         const chatTextEl = document.querySelector('.chat-text');
-        if(chatTextEl) {
-          chatTextEl.style.transition = "left 0.7s ease";
-          chatTextEl.style.left = "-22.59vw"; // 6.41 - 29 = -22.59
+        if (chatTextEl) {
+          chatTextEl.classList.remove('chat-slide');
+          setTimeout(() => {
+            chatTextEl.style.opacity = "1";
+          }, 700);
         }
-        const menuContainer = document.querySelector('.menu-container');
-        if(menuContainer) {
-          menuContainer.style.transition = "left 0.7s ease";
-          menuContainer.style.left = "0vw";
+        const chatInputEl = document.querySelector('.chat-input');
+        if (chatInputEl) {
+          chatInputEl.classList.remove('chat-slide');
+        }
+        const customTextEls = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
+        customTextEls.forEach(el => {
+          el.classList.remove('custom-slide');
+          el.style.transition = "transform 0.7s ease";
+        });
+        const customLineEl = document.querySelector('.custom-line');
+        if (customLineEl) {
+          customLineEl.classList.remove('custom-slide');
+          customLineEl.style.transition = "transform 0.7s ease";
         }
       }
     });

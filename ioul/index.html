@@ -81,14 +81,15 @@
     <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
 
-    <!-- Interactive asset texts with new IDs -->
-    <span id="online-assets" class="custom-text" style="top: 35.4vh; left: 6.41vw;">-  OnL1nE ASSETS</span>
-    <span id="linkup-center" class="custom-text" style="top: 41.6vh; left: 6.41vw;">-  L1nKUP cEnTER</span>
-    <span id="delivery-line" class="custom-text" style="top: 47.8vh; left: 6.41vw;">-  DEL1VERY L1nE</span>
-    <span id="internal-unit" class="custom-text" style="top: 54vh; left: 6.41vw;">-  1nTERnAL Un1T</span>
+    <!-- Updated asset texts now include the extra "asset-text" class -->
+    <span id="online-assets" class="custom-text asset-text" style="top: 35.4vh; left: 6.41vw;">-  OnL1nE ASSETS</span>
+    <span id="linkup-center" class="custom-text asset-text" style="top: 41.6vh; left: 6.41vw;">-  L1nKUP cEnTER</span>
+    <span id="delivery-line" class="custom-text asset-text" style="top: 47.8vh; left: 6.41vw;">-  DEL1VERY L1nE</span>
+    <span id="internal-unit" class="custom-text asset-text" style="top: 54vh; left: 6.41vw;">-  1nTERnAL Un1T</span>
   </div>
 
   <script>
+    // ----- Original code begins -----
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -133,7 +134,8 @@
         chatShownOnce = true;
       }
     });
-    chatText.addEventListener('click', () => {
+    chatText.addEventListener('click', (event) => {
+      event.stopPropagation();
       const chatInput = document.createElement('input');
       chatInput.type = 'text';
       chatInput.classList.add('chat-input');
@@ -142,7 +144,9 @@
       chatInput.focus();
     });
 
+    // In the following document click handlers we exclude clicks on asset-texts so the new functionality is isolated.
     document.addEventListener('click', (event) => {
+      if (event.target.closest('.asset-text')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const xLimit = 6.37 * vwUnit;
@@ -162,7 +166,7 @@
         if (chatInputEl) {
           chatInputEl.classList.add('chat-slide');
         }
-        const customTextEls = document.querySelectorAll('.custom-text');
+        const customTextEls = document.querySelectorAll('.custom-text:not(.asset-text)');
         customTextEls.forEach(el => {
           el.classList.add('custom-slide');
         });
@@ -174,6 +178,7 @@
     });
 
     document.addEventListener('click', (event) => {
+      if (event.target.closest('.asset-text')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const leftMin = 28.87 * vwUnit;
@@ -193,7 +198,7 @@
         if (chatInputEl) {
           chatInputEl.classList.remove('chat-slide');
         }
-        const customTextEls = document.querySelectorAll('.custom-text');
+        const customTextEls = document.querySelectorAll('.custom-text:not(.asset-text)');
         customTextEls.forEach(el => {
           el.classList.remove('custom-slide');
           el.style.transition = "transform 0.7s ease";
@@ -205,6 +210,7 @@
         }
       }
     });
+    // ----- Original code ends -----
 
     // -------------------------------
     // New functionality for asset texts
@@ -213,7 +219,8 @@
     // Helper to create and add dynamic text spans.
     function addDynamicText(text, top, left) {
       const span = document.createElement('span');
-      span.className = "custom-text dynamic-text";
+      // New dynamic texts are marked as asset-text so they won’t be affected by global clicks.
+      span.className = "custom-text asset-text dynamic-text";
       span.style.position = "absolute";
       span.style.top = top;
       span.style.left = left;
@@ -234,7 +241,8 @@
     const deliveryLine = document.getElementById('delivery-line');
     const internalUnit = document.getElementById('internal-unit');
 
-    function onlineAssetsClickHandler() {
+    function onlineAssetsClickHandler(event) {
+      event.stopPropagation();
       // Slide down all three texts below it.
       [linkupCenter, deliveryLine, internalUnit].forEach(el => {
          slideDownElement(el, 13);
@@ -245,7 +253,8 @@
       onlineAssets.removeEventListener('click', onlineAssetsClickHandler);
     }
 
-    function linkupCenterClickHandler() {
+    function linkupCenterClickHandler(event) {
+      event.stopPropagation();
       // Slide down the two texts below it.
       [deliveryLine, internalUnit].forEach(el => {
          slideDownElement(el, 13);
@@ -256,7 +265,8 @@
       linkupCenter.removeEventListener('click', linkupCenterClickHandler);
     }
 
-    function deliveryLineClickHandler() {
+    function deliveryLineClickHandler(event) {
+      event.stopPropagation();
       // Slide down the only text below it.
       slideDownElement(internalUnit, 13);
       // Add new texts: “cL1ENTS” and “PROJEcTS”
@@ -265,7 +275,8 @@
       deliveryLine.removeEventListener('click', deliveryLineClickHandler);
     }
 
-    function internalUnitClickHandler() {
+    function internalUnitClickHandler(event) {
+      event.stopPropagation();
       // Add four new texts: “1nVEnTORY”, “DEVOPS”, “F1nAncES”, “1T-cEnTER”
       addDynamicText("1nVEnTORY", "60.2vh", "7.4vw");
       addDynamicText("DEVOPS", "66.4vh", "7.4vw");

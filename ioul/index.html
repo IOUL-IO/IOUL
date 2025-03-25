@@ -32,23 +32,24 @@
       </div>
 
       <div class="hover-area"></div>
-      <!-- .chat-text always begins at left:6.41vw -->
+      <!-- chat-text always begins at left:6.41vw -->
       <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
 
       <!-- (Grid numbers and dashed grid lines omitted for brevity) -->
 
-      <!-- The menu-container holds the four menu items and any submenu texts.
-           It is positioned at left:29vw so that once it slides in its children’s inline left
-           values (6.41vw for menu items, 7.4vw for submenu texts) yield the desired absolute positions.
-           Its width is set so that any text extending beyond 36vw is clipped. -->
-      <div class="menu-container" style="left:29vw;">
+      <!-- The menu-container holds the 4 menu items and any submenu texts.
+           It is positioned at left:29vw so that its children’s inline left values
+           (6.41vw for main, 7.4vw for submenu) will yield the desired absolute positions once the container is moved.
+           Its width clips any content past 36vw.
+           Note: We will animate its transform to slide it left by 29vw. -->
+      <div class="menu-container" style="left:29vw; transform: translateX(0);">
         <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
         <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
         <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
         <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
       </div>
 
-      <!-- Other custom-text elements (Account info, i-cHAT: OPEn, etc.) remain outside menu-container -->
+      <!-- Other .custom-text elements (account info, i-cHAT: OPEn, etc.) -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
       <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -62,14 +63,14 @@
       <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
       <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
       
-      <!-- Include the line that accompanies the custom-text group -->
+      <!-- The custom-line that accompanies the extra custom-text group -->
       <div class="custom-line"></div>
 
       <div class="slide-trigger"></div>
       <div class="slide-trigger-reverse"></div>
     </div>
 
-    <!-- Existing scripts for page fade, fullscreen, chat input, etc. remain unchanged -->
+    <!-- Existing scripts for page fade, fullscreen, chat input, etc. -->
     <script>
       const pageContent = document.querySelector('.page-content');
       let pageFadedIn = false;
@@ -122,9 +123,9 @@
       });
     </script>
 
-    <!-- Menu interactions and submenu functions (unchanged) -->
+    <!-- Menu interactions and submenu functions remain unchanged -->
     <script>
-      // Helper to create a new submenu text inside the menu-container
+      // Helper: create new submenu text inside menu-container
       function addNewText(text, top, left) {
         let span = document.createElement("span");
         span.className = "custom-text new-text";
@@ -250,7 +251,7 @@
       });
     </script>
 
-    <!-- Combined designated-area listener -->
+    <!-- Combined designated-area listener for Region A and B -->
     <script>
       // Global mode: "normal", "menu", or "custom"
       let currentMode = "normal";
@@ -266,23 +267,22 @@
         const leftMaxB = 6.41 * vwUnit;
         const yMin = 28.5 * vhUnit;
         const yMax = 84 * vhUnit;
-        // Check if click falls in Region A
+        // Region A: for toggling the menu container
         if (event.clientX >= leftMinA && event.clientX <= leftMaxA &&
             event.clientY >= yMin && event.clientY <= yMax) {
           if (currentMode === "normal") {
-            // Enter menu mode: slide chat-text left and slide menu-container from 29vw to 0vw.
+            // Enter menu mode: slide chat-text left and slide menu-container using transform.
             chatTextEl.style.transition = "left 0.7s ease";
-            chatTextEl.style.left = "-22.59vw"; // 6.41vw - 29vw
-            menuContainer.style.transition = "left 0.7s ease";
-            menuContainer.style.left = "0vw";
+            chatTextEl.style.left = "-22.59vw"; // 6.41 - 29
+            menuContainer.style.transition = "transform 0.7s ease";
+            menuContainer.style.transform = "translateX(-29vw)"; // Moves container from 29vw to 0vw effective.
             currentMode = "menu";
           } else if (currentMode === "menu") {
-            // Exit menu mode: reverse the above.
+            // Exit menu mode: reverse the transformation.
             chatTextEl.style.transition = "left 0.7s ease";
             chatTextEl.style.left = "6.41vw";
-            menuContainer.style.transition = "left 0.7s ease";
-            menuContainer.style.left = "29vw";
-            // Remove any dynamic submenu texts
+            menuContainer.style.transition = "transform 0.7s ease";
+            menuContainer.style.transform = "translateX(0)";
             const newTexts = menuContainer.querySelectorAll(".new-text");
             newTexts.forEach(span => span.remove());
             currentMode = "normal";
@@ -299,11 +299,10 @@
             }, 700);
           }
         }
-        // Check if click falls in Region B
+        // Region B: for toggling the extra custom-text elements
         else if (event.clientX >= leftMinB && event.clientX <= leftMaxB &&
                  event.clientY >= yMin && event.clientY <= yMax) {
           if (currentMode === "normal") {
-            // Enter custom mode: fade out chat-text and slide in extra custom-texts.
             chatTextEl.style.transition = "opacity 0.3s ease";
             chatTextEl.style.opacity = "0";
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
@@ -312,7 +311,6 @@
             if(customLine){ customLine.classList.add("custom-slide"); }
             currentMode = "custom";
           } else if (currentMode === "custom") {
-            // Exit custom mode: remove custom-slide classes then fade chat-text back in.
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.remove("custom-slide"));
             const customLine = document.querySelector('.custom-line');
@@ -326,8 +324,8 @@
             // If in menu mode, exit it.
             chatTextEl.style.transition = "left 0.7s ease";
             chatTextEl.style.left = "6.41vw";
-            menuContainer.style.transition = "left 0.7s ease";
-            menuContainer.style.left = "29vw";
+            menuContainer.style.transition = "transform 0.7s ease";
+            menuContainer.style.transform = "translateX(0)";
             const newTexts = menuContainer.querySelectorAll(".new-text");
             newTexts.forEach(span => span.remove());
             currentMode = "normal";

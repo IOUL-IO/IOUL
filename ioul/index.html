@@ -13,12 +13,13 @@
   <div class="layer-three"></div>
 
   <div class="page-content">
-    <!-- Existing lines, grid, etc. -->
+    <!-- Static lines -->
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
     <div class="line fourth"></div>
 
+    <!-- Slide container with time texts -->
     <div class="slide-container">
       <div class="line dashed"></div>
       <div class="line dashed second-dashed"></div>
@@ -34,9 +35,9 @@
     <span class="chat-text" id="chatText">cHAT . . .</span>
 
     <!-- Grid numbers and dashed grid elements (unchanged) -->
-    <!-- ... -->
+    <!-- … (omitted for brevity – same as original) … -->
 
-    <!-- Original custom texts -->
+    <!-- Original static custom texts -->
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -49,11 +50,15 @@
     <span class="custom-text" style="top: 41.6vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 47.8vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 54vh; left: -23.29vw;">OPEn</span>
+    
+    <!-- The line element (restoring original accompaniment) -->
+    <div class="custom-line"></div>
 
-    <!-- Updated OnL1nE ASSETS and submenu structure -->
-    <span class="custom-text" id="online-assets" style="top: 35.4vh; left: 6.41vw; cursor: pointer;">-  OnL1nE ASSETS</span>
+    <!-- Main menu and nested submenu structure -->
+    <!-- "OnL1nE ASSETS" is the level1 main menu trigger -->
+    <span class="custom-text main-menu" id="online-assets" style="top: 35.4vh; left: 6.41vw;">-  OnL1nE ASSETS</span>
     <div id="assets-submenu">
-      <!-- Level 1 submenu items -->
+      <!-- Level 1 submenu items (all with pointer cursor) -->
       <span class="custom-text submenu-item" id="linkup" style="top: 41.6vh; left: 6.41vw;">-  L1nKUP cEnTER</span>
       <span class="custom-text submenu-item" id="delivery" style="top: 47.8vh; left: 6.41vw;">-  DEL1VERY L1nE</span>
       <span class="custom-text submenu-item" id="internal" style="top: 54vh; left: 6.41vw;">-  1nTERnAL Un1T</span>
@@ -78,7 +83,7 @@
   </div>
 
   <script>
-    // --- Page fade-in and fullscreen (unchanged) ---
+    // --- Page fade-in and fullscreen logic (unchanged) ---
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -129,147 +134,141 @@
       chatInput.focus();
     });
 
-    // --- Level 1 (assets) submenu open/close ---
-    let assetsOpen = false;
+    // --- Level-1 submenu handling ---
+    let level1Open = false;
+    let currentNestedOpen = null;
     const onlineAssetsEl = document.getElementById('online-assets');
     onlineAssetsEl.addEventListener('click', function(e) {
       e.stopPropagation();
-      // If a nested submenu is open, close it first.
-      if (nestedOpen) { closeNestedSubmenu(nestedOpen); nestedOpen = null; }
-      if (!assetsOpen) {
-        // Open: slide level1 submenu items down and reveal level1 new texts.
-        const submenuItems = document.querySelectorAll('#assets-submenu .submenu-item');
-        submenuItems.forEach(function(item) {
-          item.classList.add('slide-down');
-        });
-        const lastItem = submenuItems[submenuItems.length - 1];
-        lastItem.addEventListener('transitionend', function() {
-          const newItems = document.querySelectorAll('#assets-submenu .new-item');
-          newItems.forEach(function(item) {
-            item.style.opacity = '1';
-          });
-        }, {once: true});
-        assetsOpen = true;
+      // If level1 is open and no nested is active, toggle close.
+      if(level1Open && !currentNestedOpen) {
+        closeLevel1();
+      } else if (!level1Open) {
+        // Open level1 submenu
+        openLevel1();
+      } else if (level1Open && currentNestedOpen) {
+        // If a nested submenu is open, close it before toggling level1 off.
+        closeNested(currentNestedOpen);
+        currentNestedOpen = null;
+        closeLevel1();
       }
     });
+    function openLevel1() {
+      const submenuItems = document.querySelectorAll('#assets-submenu .submenu-item');
+      submenuItems.forEach(item => item.classList.add('slide-down'));
+      const lastItem = submenuItems[submenuItems.length - 1];
+      lastItem.addEventListener('transitionend', function() {
+         const level1New = document.querySelectorAll('#assets-submenu .new-item');
+         level1New.forEach(item => item.style.opacity = '1');
+      }, {once: true});
+      level1Open = true;
+    }
+    function closeLevel1() {
+      const level1New = document.querySelectorAll('#assets-submenu .new-item');
+      level1New.forEach(item => item.style.opacity = '0');
+      const submenuItems = document.querySelectorAll('#assets-submenu .submenu-item');
+      submenuItems.forEach(item => item.classList.remove('slide-down'));
+      level1Open = false;
+    }
 
-    // --- Nested submenu state & helper ---
-    let nestedOpen = null;
-    function closeNestedSubmenu(id) {
-      if (id === 'linkup') {
+    // --- Nested submenu handling functions ---
+    function closeNested(id) {
+      if(id === 'linkup') {
         document.getElementById('linkup-new1').style.opacity = '0';
         document.getElementById('linkup-new2').style.opacity = '0';
         const submenuItems = Array.from(document.querySelectorAll('#assets-submenu .submenu-item'));
         const index = submenuItems.findIndex(item => item.id === 'linkup');
-        const siblingsToSlide = submenuItems.slice(index + 1);
-        siblingsToSlide.forEach(item => item.classList.remove('slide-down'));
-      } else if (id === 'delivery') {
+        submenuItems.slice(index+1).forEach(item => item.classList.remove('slide-down'));
+      } else if(id === 'delivery') {
         document.getElementById('delivery-new1').style.opacity = '0';
         document.getElementById('delivery-new2').style.opacity = '0';
         const submenuItems = Array.from(document.querySelectorAll('#assets-submenu .submenu-item'));
         const index = submenuItems.findIndex(item => item.id === 'delivery');
-        const siblingsToSlide = submenuItems.slice(index + 1);
-        siblingsToSlide.forEach(item => item.classList.remove('slide-down'));
-      } else if (id === 'internal') {
+        submenuItems.slice(index+1).forEach(item => item.classList.remove('slide-down'));
+      } else if(id === 'internal') {
         document.getElementById('internal-new1').style.opacity = '0';
         document.getElementById('internal-new2').style.opacity = '0';
         document.getElementById('internal-new3').style.opacity = '0';
         document.getElementById('internal-new4').style.opacity = '0';
       }
     }
-
-    // --- Nested submenu open for each level1 item ---
+    // --- Nested submenu event listeners ---
     const linkupEl = document.getElementById('linkup');
     linkupEl.addEventListener('click', function(e) {
       e.stopPropagation();
-      if (nestedOpen && nestedOpen !== 'linkup') {
-        closeNestedSubmenu(nestedOpen);
+      if(!level1Open) openLevel1();
+      if(currentNestedOpen && currentNestedOpen !== 'linkup') {
+         closeNested(currentNestedOpen);
       }
-      if (nestedOpen === 'linkup') {
-        closeNestedSubmenu('linkup');
-        nestedOpen = null;
+      if(currentNestedOpen === 'linkup') {
+         closeNested('linkup');
+         currentNestedOpen = null;
       } else {
-        const submenuItems = Array.from(document.querySelectorAll('#assets-submenu .submenu-item'));
-        const index = submenuItems.indexOf(linkupEl);
-        const siblingsToSlide = submenuItems.slice(index + 1);
-        siblingsToSlide.forEach(item => item.classList.add('slide-down'));
-        if (siblingsToSlide.length > 0) {
-          const lastItem = siblingsToSlide[siblingsToSlide.length - 1];
-          lastItem.addEventListener('transitionend', function() {
-            document.getElementById('linkup-new1').style.opacity = '1';
-            document.getElementById('linkup-new2').style.opacity = '1';
-          }, {once: true});
-        } else {
-          document.getElementById('linkup-new1').style.opacity = '1';
-          document.getElementById('linkup-new2').style.opacity = '1';
-        }
-        nestedOpen = 'linkup';
+         const submenuItems = Array.from(document.querySelectorAll('#assets-submenu .submenu-item'));
+         const index = submenuItems.findIndex(item => item.id === 'linkup');
+         submenuItems.slice(index+1).forEach(item => item.classList.add('slide-down'));
+         const lastSibling = submenuItems[submenuItems.length - 1];
+         lastSibling.addEventListener('transitionend', function() {
+           document.getElementById('linkup-new1').style.opacity = '1';
+           document.getElementById('linkup-new2').style.opacity = '1';
+         }, {once: true});
+         currentNestedOpen = 'linkup';
       }
     });
-
     const deliveryEl = document.getElementById('delivery');
     deliveryEl.addEventListener('click', function(e) {
       e.stopPropagation();
-      if (nestedOpen && nestedOpen !== 'delivery') {
-        closeNestedSubmenu(nestedOpen);
+      if(!level1Open) openLevel1();
+      if(currentNestedOpen && currentNestedOpen !== 'delivery') {
+         closeNested(currentNestedOpen);
       }
-      if (nestedOpen === 'delivery') {
-        closeNestedSubmenu('delivery');
-        nestedOpen = null;
+      if(currentNestedOpen === 'delivery') {
+         closeNested('delivery');
+         currentNestedOpen = null;
       } else {
-        const submenuItems = Array.from(document.querySelectorAll('#assets-submenu .submenu-item'));
-        const index = submenuItems.indexOf(deliveryEl);
-        const siblingsToSlide = submenuItems.slice(index + 1);
-        siblingsToSlide.forEach(item => item.classList.add('slide-down'));
-        if (siblingsToSlide.length > 0) {
-          const lastItem = siblingsToSlide[siblingsToSlide.length - 1];
-          lastItem.addEventListener('transitionend', function() {
-            document.getElementById('delivery-new1').style.opacity = '1';
-            document.getElementById('delivery-new2').style.opacity = '1';
-          }, {once: true});
-        } else {
-          document.getElementById('delivery-new1').style.opacity = '1';
-          document.getElementById('delivery-new2').style.opacity = '1';
-        }
-        nestedOpen = 'delivery';
+         const submenuItems = Array.from(document.querySelectorAll('#assets-submenu .submenu-item'));
+         const index = submenuItems.findIndex(item => item.id === 'delivery');
+         submenuItems.slice(index+1).forEach(item => item.classList.add('slide-down'));
+         const lastSibling = submenuItems[submenuItems.length - 1];
+         lastSibling.addEventListener('transitionend', function() {
+           document.getElementById('delivery-new1').style.opacity = '1';
+           document.getElementById('delivery-new2').style.opacity = '1';
+         }, {once: true});
+         currentNestedOpen = 'delivery';
       }
     });
-
     const internalEl = document.getElementById('internal');
     internalEl.addEventListener('click', function(e) {
       e.stopPropagation();
-      if (nestedOpen && nestedOpen !== 'internal') {
-        closeNestedSubmenu(nestedOpen);
+      if(!level1Open) openLevel1();
+      if(currentNestedOpen && currentNestedOpen !== 'internal') {
+         closeNested(currentNestedOpen);
       }
-      if (nestedOpen === 'internal') {
-        closeNestedSubmenu('internal');
-        nestedOpen = null;
+      if(currentNestedOpen === 'internal') {
+         closeNested('internal');
+         currentNestedOpen = null;
       } else {
-        // For the last item, directly reveal nested new texts.
-        document.getElementById('internal-new1').style.opacity = '1';
-        document.getElementById('internal-new2').style.opacity = '1';
-        document.getElementById('internal-new3').style.opacity = '1';
-        document.getElementById('internal-new4').style.opacity = '1';
-        nestedOpen = 'internal';
+         // For the last item, simply reveal nested new texts.
+         document.getElementById('internal-new1').style.opacity = '1';
+         document.getElementById('internal-new2').style.opacity = '1';
+         document.getElementById('internal-new3').style.opacity = '1';
+         document.getElementById('internal-new4').style.opacity = '1';
+         currentNestedOpen = 'internal';
       }
     });
 
-    // --- Global click: if any submenu (level1 or nested) is open, close it ---
+    // --- Global click: Close any open submenu (both level1 and nested) ---
     document.addEventListener('click', function() {
-      if (assetsOpen) {
-        const level1NewItems = document.querySelectorAll('#assets-submenu .new-item');
-        level1NewItems.forEach(item => item.style.opacity = '0');
-        const submenuItems = document.querySelectorAll('#assets-submenu .submenu-item');
-        submenuItems.forEach(item => item.classList.remove('slide-down'));
-        assetsOpen = false;
+      if(level1Open) {
+        closeLevel1();
       }
-      if (nestedOpen) {
-        closeNestedSubmenu(nestedOpen);
-        nestedOpen = null;
+      if(currentNestedOpen) {
+        closeNested(currentNestedOpen);
+        currentNestedOpen = null;
       }
     });
 
-    // --- Also preserve designated area click events for chat and custom text slides (from your original code) ---
+    // --- Preserve designated area click events for chat & original custom-text slides ---
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;

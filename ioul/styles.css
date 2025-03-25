@@ -260,10 +260,10 @@ body.non-fullscreen {
 .page-content.animate-grid .grid-dashed.dashed10 { left: 51vw; }
 .page-content.animate-grid .grid-dashed.dashed11 { left: 65.9vw; }
 .page-content.animate-grid .grid-dashed.dashed12 { left: 80.8vw; }
-.page-content.animate-grid .grid-dashed.dashed13 { left: 36vw; }
-.page-content.animate-grid .grid-dashed.dashed14 { left: 51vw; }
-.page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; }
-.page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; }
+.Page-content.animate-grid .grid-dashed.dashed13 { left: 36vw; }
+.Page-content.animate-grid .grid-dashed.dashed14 { left: 51vw; }
+.Page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; }
+.Page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; }
 
 .slide-container > .line.dashed,
 .slide-container > .time-text,

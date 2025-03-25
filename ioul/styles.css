@@ -47,13 +47,18 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* Updated menu-container: now transition its left property */
+/* Menu container starts at left:29vw, hidden behind layer two (z-index:90).
+   When it slides out (class "revealed" added by JS), its z-index is raised so it appears as it emerges. */
 .menu-container {
     position: absolute;
     left: 29vw;
     width: calc(36vw - 29vw);
     overflow: hidden;
     transition: left 0.7s ease;
+    z-index: 90;
+}
+.menu-container.revealed {
+    z-index: 110;
 }
 
 .page-content {

@@ -66,7 +66,7 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- Menu items (with new IDs) -->
+    <!-- Menu items with unique IDs -->
     <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
     <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
     <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
@@ -210,9 +210,9 @@
     });
   </script>
   
-  <!-- New Script for Menu Interactions -->
+  <!-- New Script for Menu Interactions with Toggle/Inversion -->
   <script>
-    // Helper function to create a new text span
+    // Helper to create a new text span
     function addNewText(text, top, left) {
       let span = document.createElement("span");
       span.className = "custom-text new-text";
@@ -226,46 +226,127 @@
       }, 10);
     }
 
-    // When "OnL1nE ASSETS" is clicked
-    document.getElementById("online-assets").addEventListener("click", function(e) {
-      // Slide down the three texts under it
+    // Global variable to track which menu is currently open
+    let currentMenu = null;
+
+    // Closes any open submenu with inverse slide-up (by removing the slide-down classes)
+    // and fading out the newly added text elements.
+    function closeSubmenu() {
+      document.getElementById("linkup-center").classList.remove("slide-down");
+      document.getElementById("delivery-line").classList.remove("slide-down");
+      document.getElementById("internal-unit").classList.remove("slide-down");
+      
+      const newTexts = document.querySelectorAll('.new-text');
+      newTexts.forEach(span => {
+        span.classList.remove("visible");
+        setTimeout(() => { span.remove(); }, 700);
+      });
+      currentMenu = null;
+    }
+
+    // Opens the submenu for "OnL1nE ASSETS"
+    function openOnlineAssets() {
       document.getElementById("linkup-center").classList.add("slide-down");
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
-      // Add two new texts
       addNewText("cOnTEnT", 41.6, 7.4);
       addNewText("LEARn1ng", 47.8, 7.4);
-    });
+    }
 
-    // When "L1nKUP cEnTER" is clicked
-    document.getElementById("linkup-center").addEventListener("click", function(e) {
-      e.stopPropagation();
-      // Slide down the two texts under it
+    // Opens the submenu for "L1nKUP cEnTER"
+    function openLinkupCenter() {
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
-      // Add two new texts
       addNewText("cHAnnELS", 47.8, 7.4);
       addNewText("LABOUR", 54, 7.4);
-    });
+    }
 
-    // When "DEL1VERY L1nE" is clicked
-    document.getElementById("delivery-line").addEventListener("click", function(e) {
-      e.stopPropagation();
-      // Slide down the text under it
+    // Opens the submenu for "DEL1VERY L1nE"
+    function openDeliveryLine() {
       document.getElementById("internal-unit").classList.add("slide-down");
-      // Add two new texts
       addNewText("cL1ENTS", 54, 7.4);
       addNewText("PROJEcTS", 60.2, 7.4);
-    });
+    }
 
-    // When "1nTERnAL Un1T" is clicked
-    document.getElementById("internal-unit").addEventListener("click", function(e) {
-      e.stopPropagation();
-      // Add four new texts
+    // Opens the submenu for "1nTERnAL Un1T"
+    function openInternalUnit() {
       addNewText("1nVEnTORY", 60.2, 7.4);
       addNewText("DEVOPS", 66.4, 7.4);
       addNewText("F1nAncES", 72.6, 7.4);
       addNewText("1T-cEnTER", 78.8, 7.4);
+    }
+
+    // Updated event listeners with toggle behavior so only one submenu is open at a time
+
+    document.getElementById("online-assets").addEventListener("click", function(e) {
+      if (currentMenu === "online-assets") {
+          closeSubmenu();
+      } else {
+          if (currentMenu !== null) {
+              closeSubmenu();
+              setTimeout(() => {
+                openOnlineAssets();
+                currentMenu = "online-assets";
+              }, 700);
+          } else {
+              openOnlineAssets();
+              currentMenu = "online-assets";
+          }
+      }
+    });
+
+    document.getElementById("linkup-center").addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (currentMenu === "linkup-center") {
+          closeSubmenu();
+      } else {
+          if (currentMenu !== null) {
+              closeSubmenu();
+              setTimeout(() => {
+                openLinkupCenter();
+                currentMenu = "linkup-center";
+              }, 700);
+          } else {
+              openLinkupCenter();
+              currentMenu = "linkup-center";
+          }
+      }
+    });
+
+    document.getElementById("delivery-line").addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (currentMenu === "delivery-line") {
+          closeSubmenu();
+      } else {
+          if (currentMenu !== null) {
+              closeSubmenu();
+              setTimeout(() => {
+                openDeliveryLine();
+                currentMenu = "delivery-line";
+              }, 700);
+          } else {
+              openDeliveryLine();
+              currentMenu = "delivery-line";
+          }
+      }
+    });
+
+    document.getElementById("internal-unit").addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (currentMenu === "internal-unit") {
+          closeSubmenu();
+      } else {
+          if (currentMenu !== null) {
+              closeSubmenu();
+              setTimeout(() => {
+                openInternalUnit();
+                currentMenu = "internal-unit";
+              }, 700);
+          } else {
+              openInternalUnit();
+              currentMenu = "internal-unit";
+          }
+      }
     });
   </script>
 </body>

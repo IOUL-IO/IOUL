@@ -6,6 +6,39 @@
   <title>IOUL</title>
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
+  <!-- New styles for the drop-down menu -->
+  <style>
+    /* Container for the new menu */
+    #menu {
+      position: absolute;
+      top: 35.4vh;
+      left: 6.41vw;
+    }
+    /* Each menu item stacks vertically with a gap */
+    .menu-item {
+      position: relative;
+    }
+    .menu-item:not(:first-child) {
+      margin-top: 6.2vh;
+    }
+    /* Make the text clickable */
+    .menu-item span.custom-text {
+      cursor: pointer;
+    }
+    /* Dropdown hidden by default */
+    .dropdown {
+      display: none;
+    }
+    /* Each dropdown item appears with a 6.2vh top gap */
+    .dropdown .drop-item {
+      display: block;
+      margin-top: 6.2vh;
+    }
+    /* Show dropdown when the parent menu-item has the "active" class */
+    .menu-item.active .dropdown {
+      display: block;
+    }
+  </style>
 </head>
 <body class="non-fullscreen">
   <div class="layer-one"></div>
@@ -28,6 +61,27 @@
       <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     </div>
+
+    <!-- New Drop-Down Menu for the custom texts -->
+    <div id="menu">
+      <div class="menu-item" id="menu-item1">
+        <span class="custom-text">-  OnL1nE ASSETS</span>
+        <div class="dropdown">
+          <span class="custom-text drop-item">cOnTEnT</span>
+          <span class="custom-text drop-item">LEARn1ng</span>
+        </div>
+      </div>
+      <div class="menu-item" id="menu-item2">
+        <span class="custom-text">-  L1nKUP cEnTER</span>
+      </div>
+      <div class="menu-item" id="menu-item3">
+        <span class="custom-text">-  DEL1VERY L1nE</span>
+      </div>
+      <div class="menu-item" id="menu-item4">
+        <span class="custom-text">-  1nTERnAL Un1T</span>
+      </div>
+    </div>
+    <!-- End New Menu -->
 
     <div class="hover-area"></div>
     <span class="chat-text" id="chatText">cHAT . . .</span>
@@ -78,16 +132,6 @@
     <span class="custom-text" style="top: 60.2vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
-
-    <span class="custom-text" style="top: 35.4vh; left: 6.41vw;">-  OnL1nE ASSETS</span>
-    <span class="custom-text" style="top: 41.6vh; left: 6.41vw;">-  L1nKUP cEnTER</span>
-    <span class="custom-text" style="top: 47.8vh; left: 6.41vw;">-  DEL1VERY L1nE</span>
-    <span class="custom-text" style="top: 54vh; left: 6.41vw;">-  1nTERnAL Un1T</span>
-
-    <div class="custom-line"></div>
-
-    <div class="slide-trigger"></div>
-    <div class="slide-trigger-reverse"></div>
   </div>
 
   <script>
@@ -206,6 +250,12 @@
           customLineEl.style.transition = "transform 0.7s ease";
         }
       }
+    });
+
+    // New dropdown functionality for the "OnL1nE ASSETS" item
+    document.getElementById('menu-item1').addEventListener('click', function(e) {
+      e.stopPropagation();
+      this.classList.toggle('active');
     });
   </script>
 </body>

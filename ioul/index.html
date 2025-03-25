@@ -66,11 +66,14 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- Menu items with unique IDs -->
-    <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
-    <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
-    <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
-    <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
+    <!-- New container to hold the 4 menu items and submenu texts.
+         Its left is 29vw and width is calc(36vw - 29vw) so any text beyond 36vw is clipped. -->
+    <div class="menu-container">
+      <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
+      <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
+      <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
+      <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
+    </div>
 
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
@@ -92,6 +95,7 @@
   </div>
 
   <script>
+    // (Existing page and fullscreen behavior code remains unchanged)
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -212,14 +216,14 @@
   
   <!-- New Script for Menu Interactions with Toggle/Inversion -->
   <script>
-    // Helper to create a new text span
+    // Helper to create a new text span inside the menu container
     function addNewText(text, top, left) {
       let span = document.createElement("span");
       span.className = "custom-text new-text";
       span.style.top = top + "vh";
       span.style.left = left + "vw";
       span.textContent = text;
-      document.querySelector(".page-content").appendChild(span);
+      document.querySelector(".menu-container").appendChild(span);
       // Trigger fade-in after insertion
       setTimeout(() => {
         span.classList.add("visible");

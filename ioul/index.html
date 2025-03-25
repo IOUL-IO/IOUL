@@ -32,10 +32,9 @@
     <div class="hover-area"></div>
     <span class="chat-text" id="chatText">cHAT . . .</span>
 
-    <!-- Grid numbers and dashed grid elements (unchanged) -->
-    <!-- ... (omitted for brevity; use your original code) ... -->
+    <!-- (Grid numbers and dashed grid elements omitted for brevity) -->
 
-    <!-- Original custom texts -->
+    <!-- Original custom texts as uploaded -->
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -68,6 +67,7 @@
   </div>
 
   <script>
+    // Page fade-in and fullscreen logic
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -121,14 +121,14 @@
       chatInput.focus();
     });
     
-    // --- Assets submenu open/close functionality ---
+    // Assets submenu open/close functionality
     let assetsOpen = false;
     const onlineAssetsEl = document.getElementById('online-assets');
     onlineAssetsEl.addEventListener('click', function(e) {
-      // Stop propagation so global click does not immediately trigger closing.
+      // Prevent global click from immediately closing the submenu.
       e.stopPropagation();
       if (!assetsOpen) {
-        // Open: slide submenu items down and then reveal new texts.
+        // Open submenu: slide items down and reveal new texts.
         const submenuItems = document.querySelectorAll('#assets-submenu .submenu-item');
         submenuItems.forEach(function(item) {
           item.classList.add('slide-down');
@@ -144,15 +144,13 @@
       }
     });
     
-    // Global click reverses the submenu animation if assets are open.
+    // Global click: if submenu is open, reverse the animation.
     document.addEventListener('click', function() {
       if (assetsOpen) {
-        // Hide the new texts.
         const newItems = document.querySelectorAll('#assets-submenu .new-item');
         newItems.forEach(function(item) {
           item.style.opacity = '0';
         });
-        // Slide submenu items back up.
         const submenuItems = document.querySelectorAll('#assets-submenu .submenu-item');
         submenuItems.forEach(function(item) {
           item.classList.remove('slide-down');
@@ -161,7 +159,7 @@
       }
     });
     
-    // --- Preserve designated area click events for chat and original custom-text slides ---
+    // Preserve designated area click events for chat and custom text slide animations.
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;

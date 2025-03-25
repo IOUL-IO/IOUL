@@ -30,7 +30,7 @@
     </div>
 
     <div class="hover-area"></div>
-    <span class="chat-text" id="chatText">cHAT . . .</span>
+    <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
 
     <span class="grid-number num1">1</span>
     <span class="grid-number num2">2</span>
@@ -66,8 +66,9 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- New container to hold the 4 menu items and submenu texts.
-         Its left is 29vw and width is calc(36vw - 29vw) so any text beyond 36vw is clipped. -->
+    <!-- The menu-container holds the 4 menu items and any submenu texts.
+         It starts at left:29vw so that the items’ effective positions are increased by 29vw.
+         (Any text extending beyond 36vw is clipped.) -->
     <div class="menu-container">
       <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
       <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
@@ -94,8 +95,8 @@
     <div class="slide-trigger-reverse"></div>
   </div>
 
+  <!-- Existing scripts remain largely unchanged -->
   <script>
-    // (Existing page and fullscreen behavior code remains unchanged)
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -148,73 +149,9 @@
       chatText.remove();
       chatInput.focus();
     });
-
-    document.addEventListener('click', (event) => {
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const xLimit = 6.37 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
-      if (event.clientX >= 0 && event.clientX <= xLimit &&
-          event.clientY >= yMin && event.clientY <= yMax) {
-        const chatTextEl = document.querySelector('.chat-text');
-        if (chatTextEl) {
-          chatTextEl.style.transition = "opacity 0.1s ease";
-          chatTextEl.style.opacity = "0";
-          setTimeout(() => {
-            chatTextEl.classList.add('chat-slide');
-          }, 110);
-        }
-        const chatInputEl = document.querySelector('.chat-input');
-        if (chatInputEl) {
-          chatInputEl.classList.add('chat-slide');
-        }
-        const customTextEls = document.querySelectorAll('.custom-text');
-        customTextEls.forEach(el => {
-          el.classList.add('custom-slide');
-        });
-        const customLineEl = document.querySelector('.custom-line');
-        if (customLineEl) {
-          customLineEl.classList.add('custom-slide');
-        }
-      }
-    });
-
-    document.addEventListener('click', (event) => {
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const leftMin = 28.87 * vwUnit;
-      const leftMax = 32.44 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
-      if (event.clientX >= leftMin && event.clientX <= leftMax &&
-          event.clientY >= yMin && event.clientY <= yMax) {
-        const chatTextEl = document.querySelector('.chat-text');
-        if (chatTextEl) {
-          chatTextEl.classList.remove('chat-slide');
-          setTimeout(() => {
-            chatTextEl.style.opacity = "1";
-          }, 700);
-        }
-        const chatInputEl = document.querySelector('.chat-input');
-        if (chatInputEl) {
-          chatInputEl.classList.remove('chat-slide');
-        }
-        const customTextEls = document.querySelectorAll('.custom-text');
-        customTextEls.forEach(el => {
-          el.classList.remove('custom-slide');
-          el.style.transition = "transform 0.7s ease";
-        });
-        const customLineEl = document.querySelector('.custom-line');
-        if (customLineEl) {
-          customLineEl.classList.remove('custom-slide');
-          customLineEl.style.transition = "transform 0.7s ease";
-        }
-      }
-    });
   </script>
-  
-  <!-- New Script for Menu Interactions with Toggle/Inversion -->
+
+  <!-- Menu interactions and submenu functions (unchanged from previous updates) -->
   <script>
     // Helper to create a new text span inside the menu container
     function addNewText(text, top, left) {
@@ -234,16 +171,12 @@
     let currentMenu = null;
 
     // Closes any open submenu.
-    // New texts are first faded out quickly (0.3s) and only after they’re fully invisible,
-    // the slide-down classes are removed.
     function closeSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
-        // Set a quicker fade-out transition (0.3s)
         span.style.transition = 'opacity 0.3s ease';
         span.classList.remove("visible");
       });
-      // Wait 300ms for the texts to fully disappear before starting the inverse slide-up.
       setTimeout(() => {
          document.getElementById("linkup-center").classList.remove("slide-down");
          document.getElementById("delivery-line").classList.remove("slide-down");
@@ -253,19 +186,15 @@
       }, 300);
     }
 
-    // Opens the submenu for "OnL1nE ASSETS"
     function openOnlineAssets() {
       document.getElementById("linkup-center").classList.add("slide-down");
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
-      // Wait 700ms for the slide-down to complete before adding submenu texts
       setTimeout(() => {
         addNewText("cOnTEnT", 41.6, 7.4);
         addNewText("LEARn1ng", 47.8, 7.4);
       }, 700);
     }
-
-    // Opens the submenu for "L1nKUP cEnTER"
     function openLinkupCenter() {
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
@@ -274,8 +203,6 @@
         addNewText("LABOUR", 54, 7.4);
       }, 700);
     }
-
-    // Opens the submenu for "DEL1VERY L1nE"
     function openDeliveryLine() {
       document.getElementById("internal-unit").classList.add("slide-down");
       setTimeout(() => {
@@ -283,10 +210,7 @@
         addNewText("PROJEcTS", 60.2, 7.4);
       }, 700);
     }
-
-    // Opens the submenu for "1nTERnAL Un1T"
     function openInternalUnit() {
-      // No slide-down needed here as there is no lower item to slide down.
       setTimeout(() => {
         addNewText("1nVEnTORY", 60.2, 7.4);
         addNewText("DEVOPS", 66.4, 7.4);
@@ -294,8 +218,6 @@
         addNewText("1T-cEnTER", 78.8, 7.4);
       }, 700);
     }
-
-    // Updated event listeners with toggle behavior so only one submenu is open at a time
 
     document.getElementById("online-assets").addEventListener("click", function(e) {
       if (currentMenu === "online-assets") {
@@ -313,7 +235,6 @@
           }
       }
     });
-
     document.getElementById("linkup-center").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "linkup-center") {
@@ -331,7 +252,6 @@
           }
       }
     });
-
     document.getElementById("delivery-line").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "delivery-line") {
@@ -349,7 +269,6 @@
           }
       }
     });
-
     document.getElementById("internal-unit").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "internal-unit") {
@@ -365,6 +284,33 @@
               openInternalUnit();
               currentMenu = "internal-unit";
           }
+      }
+    });
+  </script>
+
+  <!-- New event listener for clicks in the region 28.86–32.43vw (left) and 28.5–84vh (top):
+       • Animates .chat-text left by subtracting 29vw (from 6.41vw to -22.59vw)
+       • Animates .menu-container left from 29vw to 0vw -->
+  <script>
+    document.addEventListener('click', (event) => {
+      const vwUnit = window.innerWidth / 100;
+      const vhUnit = window.innerHeight / 100;
+      const leftMin = 28.86 * vwUnit;
+      const leftMax = 32.43 * vwUnit;
+      const yMin = 28.5 * vhUnit;
+      const yMax = 84 * vhUnit;
+      if (event.clientX >= leftMin && event.clientX <= leftMax &&
+          event.clientY >= yMin && event.clientY <= yMax) {
+        const chatTextEl = document.querySelector('.chat-text');
+        if(chatTextEl) {
+          chatTextEl.style.transition = "left 0.7s ease";
+          chatTextEl.style.left = "-22.59vw"; // 6.41 - 29 = -22.59
+        }
+        const menuContainer = document.querySelector('.menu-container');
+        if(menuContainer) {
+          menuContainer.style.transition = "left 0.7s ease";
+          menuContainer.style.left = "0vw";
+        }
       }
     });
   </script>

@@ -331,7 +331,7 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* New CSS for slide down and new text animations */
+/* New CSS for slide-down and new text animations */
 .slide-down {
     transform: translateY(13vh);
 }

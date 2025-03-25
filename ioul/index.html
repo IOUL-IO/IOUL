@@ -172,20 +172,87 @@
       }
     });
 
-    // Global click reverses the submenu animation if assets are open.
+    // Global click (outside designated areas) closes assets submenu if open.
     document.addEventListener('click', function() {
       if (assetsOpen) {
-        // Hide the new texts.
         const newItems = document.querySelectorAll('#assets-submenu .new-item');
         newItems.forEach(function(item) {
           item.style.opacity = '0';
         });
-        // Slide submenu items back up.
         const submenuItems = document.querySelectorAll('#assets-submenu .submenu-item');
         submenuItems.forEach(function(item) {
           item.classList.remove('slide-down');
         });
         assetsOpen = false;
+      }
+    });
+
+    // ---- Designated area click events from original code ----
+    // Area 1: Trigger chat text slide out & custom text slide in.
+    document.addEventListener('click', (event) => {
+      const vwUnit = window.innerWidth / 100;
+      const vhUnit = window.innerHeight / 100;
+      const xLimit = 6.37 * vwUnit;
+      const yMin = 28.5 * vhUnit;
+      const yMax = 84 * vhUnit;
+      if (event.clientX >= 0 && event.clientX <= xLimit &&
+          event.clientY >= yMin && event.clientY <= yMax) {
+        event.stopPropagation();  // Prevent global assets close.
+        const chatTextEl = document.querySelector('.chat-text');
+        if (chatTextEl) {
+          chatTextEl.style.transition = "opacity 0.1s ease";
+          chatTextEl.style.opacity = "0";
+          setTimeout(() => {
+            chatTextEl.classList.add('chat-slide');
+          }, 110);
+        }
+        const chatInputEl = document.querySelector('.chat-input');
+        if (chatInputEl) {
+          chatInputEl.classList.add('chat-slide');
+        }
+        const customTextEls = document.querySelectorAll('.custom-text');
+        customTextEls.forEach(el => {
+          el.classList.add('custom-slide');
+        });
+        const customLineEl = document.querySelector('.custom-line');
+        if (customLineEl) {
+          customLineEl.classList.add('custom-slide');
+        }
+      }
+    });
+
+    // Area 2: Revert chat text slide and custom text slide out.
+    document.addEventListener('click', (event) => {
+      const vwUnit = window.innerWidth / 100;
+      const vhUnit = window.innerHeight / 100;
+      const leftMin = 28.87 * vwUnit;
+      const leftMax = 32.44 * vwUnit;
+      const yMin = 28.5 * vhUnit;
+      const yMax = 84 * vhUnit;
+      if (event.clientX >= leftMin && event.clientX <= leftMax &&
+          event.clientY >= yMin && event.clientY <= yMax) {
+        event.stopPropagation();  // Prevent global assets close.
+        const chatTextEl = document.querySelector('.chat-text');
+        if (chatTextEl) {
+          chatTextEl.classList.remove('chat-slide');
+          setTimeout(() => {
+            chatTextEl.style.opacity = "1";
+          }, 700);
+        }
+        const chatInputEl = document.querySelector('.chat-input');
+        if (chatInputEl) {
+          chatInputEl.classList.remove('chat-slide');
+        }
+        const customTextEls = document.querySelectorAll('.custom-text');
+        customTextEls.forEach(el => {
+          el.classList.remove('custom-slide');
+          el.style.transition = "transform 0.7s ease";
+        });
+        const customLineEl = document.querySelector('.custom-line');
+        if (customLineEl) {
+          customLineEl.classList.remove('custom-slide');
+          customLineEl.style.transition = "transform 0.7s ease";
+        }
       }
     });
   </script>

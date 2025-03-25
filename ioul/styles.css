@@ -197,14 +197,14 @@ body.non-fullscreen {
 .num6  { top: 47vh;   left: 123.7vw; }
 .num7  { top: 47vh;   left: 138.5vw; }
 .num8  { top: 47vh;   left: 153.3vw; }
-.num9   { top: 65.5vh; left: 108.8vw; }
-.num10  { top: 65.5vh; left: 123.3vw; }
-.num11  { top: 65.5vh; left: 138.3vw; }
-.num12  { top: 65.5vh; left: 152.9vw; }
-.num13  { top: 83.7vh; left: 108.3vw; }
-.num14  { top: 83.7vh; left: 123.2vw; }
-.num15  { top: 83.7vh; left: 138.0vw; }
-.num16  { top: 83.7vh; left: 152.8vw; }
+.num9  { top: 65.5vh; left: 108.8vw; }
+.num10 { top: 65.5vh; left: 123.3vw; }
+.num11 { top: 65.5vh; left: 138.3vw; }
+.num12 { top: 65.5vh; left: 152.9vw; }
+.num13 { top: 83.7vh; left: 108.3vw; }
+.num14 { top: 83.7vh; left: 123.2vw; }
+.num15 { top: 83.7vh; left: 138.0vw; }
+.num16 { top: 83.7vh; left: 152.8vw; }
 
 .grid-dashed {
     position: absolute;
@@ -309,7 +309,6 @@ body.non-fullscreen {
     font-size: 0.47rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     transition: transform 0.7s ease;
-    /* Fix clipping issues */
     line-height: 1.6;
     overflow: visible;
 }
@@ -329,4 +328,15 @@ body.non-fullscreen {
 }
 .custom-slide {
     transform: translateX(49vw);
+}
+
+/* New CSS for submenu sliding and new items */
+.submenu-item {
+    cursor: pointer;
+}
+.submenu-item.slide-down {
+    transform: translateY(13vh);
+}
+.new-item {
+    transition: opacity 0.3s ease;
 }

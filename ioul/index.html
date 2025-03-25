@@ -1,329 +1,348 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IOUL</title>
-  <link rel="icon" href="favicon.png" type="image/png" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body class="non-fullscreen">
-  <div class="layer-one"></div>
-  <div class="layer-two"></div>
-  <div class="layer-three"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IOUL</title>
+    <link rel="icon" href="favicon.png" type="image/png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="non-fullscreen">
+    <div class="layer-one"></div>
+    <div class="layer-two"></div>
+    <div class="layer-three"></div>
 
-  <div class="page-content">
-    <!-- Existing lines, slide container, time texts, grid numbers, etc. remain unchanged -->
-    <div class="line original"></div>
-    <div class="line second"></div>
-    <div class="line third"></div>
-    <div class="line fourth"></div>
+    <div class="page-content">
+      <!-- Existing lines -->
+      <div class="line original"></div>
+      <div class="line second"></div>
+      <div class="line third"></div>
+      <div class="line fourth"></div>
 
-    <div class="slide-container">
-      <div class="line dashed"></div>
-      <div class="line dashed second-dashed"></div>
-      <div class="line dashed third-dashed"></div>
-      <div class="line dashed fourth-dashed"></div>
-      <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-      <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-      <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
-      <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+      <div class="slide-container">
+        <div class="line dashed"></div>
+        <div class="line dashed second-dashed"></div>
+        <div class="line dashed third-dashed"></div>
+        <div class="line dashed fourth-dashed"></div>
+        <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+        <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+        <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+        <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+      </div>
+
+      <div class="hover-area"></div>
+      <!-- chat-text always starts at left:6.41vw -->
+      <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
+
+      <!-- (Grid numbers and dashed grid lines omitted for brevity) -->
+
+      <!-- The menu-container holds the 4 menu items and any submenu texts.
+           It starts at left:29vw so that (once slid in) the inline left values of 6.41vw (or 7.4vw for submenu items)
+           become their final absolute positions.
+           Its width is set so that any content extending beyond 36vw is clipped. -->
+      <div class="menu-container" style="left:29vw;">
+        <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
+        <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
+        <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
+        <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
+      </div>
+
+      <!-- Other .custom-text elements (e.g. Account info, i-cHAT: OPEn, etc.) remain outside menu-container -->
+      <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
+      <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
+      <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
+      <span class="custom-text" style="top: 41.6vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
+      <span class="custom-text" style="top: 54vh; left: -42.59vw;">YOUR L1ST</span>
+      <span class="custom-text" style="top: 60.2vh; left: -42.59vw;">cHAnnELS</span>
+      <span class="custom-text" style="top: 66.4vh; left: -42.59vw;">OFFER HUB</span>
+      <span class="custom-text" style="top: 72.6vh; left: -42.59vw;">YOUR JOBS</span>
+      <span class="custom-text" style="top: 54vh; left: -23.29vw;">OPEn</span>
+      <span class="custom-text" style="top: 60.2vh; left: -23.29vw;">OPEn</span>
+      <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
+      <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
+
+      <div class="custom-line"></div>
+
+      <div class="slide-trigger"></div>
+      <div class="slide-trigger-reverse"></div>
     </div>
 
-    <div class="hover-area"></div>
-    <!-- chat-text always starts at left:6.41vw -->
-    <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
-
-    <!-- (Grid numbers and dashed grid lines remain unchanged) -->
-
-    <!-- The menu-container holds the 4 menu items and any submenu texts.
-         It is positioned at left:29vw so that the menu items’ effective left values
-         (e.g. 6.41vw in inline style) are 29vw lower in absolute terms.
-         Also, its width is set so that any content extending beyond 36vw is clipped. -->
-    <div class="menu-container" style="left:29vw;">
-      <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
-      <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
-      <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
-      <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
-    </div>
-
-    <!-- Other .custom-text elements (for account info, etc.) remain outside the menu-container -->
-    <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
-    <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
-    <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
-    <span class="custom-text" style="top: 41.6vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
-    <span class="custom-text" style="top: 54vh; left: -42.59vw;">YOUR L1ST</span>
-    <span class="custom-text" style="top: 60.2vh; left: -42.59vw;">cHAnnELS</span>
-    <span class="custom-text" style="top: 66.4vh; left: -42.59vw;">OFFER HUB</span>
-    <span class="custom-text" style="top: 72.6vh; left: -42.59vw;">YOUR JOBS</span>
-    <span class="custom-text" style="top: 54vh; left: -23.29vw;">OPEn</span>
-    <span class="custom-text" style="top: 60.2vh; left: -23.29vw;">OPEn</span>
-    <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
-    <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
-    
-    <div class="custom-line"></div>
-
-    <div class="slide-trigger"></div>
-    <div class="slide-trigger-reverse"></div>
-  </div>
-
-  <!-- Existing scripts for page fade, fullscreen, chat input, etc. remain unchanged -->
-  <script>
-    const pageContent = document.querySelector('.page-content');
-    let pageFadedIn = false;
-    function fadeInPage() {
-      pageContent.style.opacity = '1';
-      pageFadedIn = true;
-    }
-    document.addEventListener('mousemove', function onFirstMouseMove() {
-      if (!pageFadedIn) { fadeInPage(); }
-      document.removeEventListener('mousemove', onFirstMouseMove);
-    });
-
-    const EDGE_MARGIN = 11;
-    document.addEventListener('click', (event) => {
-      const { clientX: x, clientY: y } = event;
-      const { innerWidth: width, innerHeight: height } = window;
-      if (!document.fullscreenElement &&
-          (x <= EDGE_MARGIN || x >= width - EDGE_MARGIN ||
-           y <= EDGE_MARGIN || y >= height - EDGE_MARGIN)) {
-        document.documentElement.requestFullscreen();
+    <!-- Existing scripts for page fade, fullscreen, chat input, etc. -->
+    <script>
+      const pageContent = document.querySelector('.page-content');
+      let pageFadedIn = false;
+      function fadeInPage() {
+        pageContent.style.opacity = '1';
+        pageFadedIn = true;
       }
-    });
-
-    const inverseTrigger = document.querySelector('.slide-trigger');
-    inverseTrigger.addEventListener('click', (event) => {
-      event.stopPropagation();
-      document.querySelector('.slide-container').classList.remove('animate-slide');
-      document.querySelector('.page-content').classList.remove('animate-grid');
-    });
-    const forwardTrigger = document.querySelector('.slide-trigger-reverse');
-    forwardTrigger.addEventListener('click', (event) => {
-      event.stopPropagation();
-      document.querySelector('.slide-container').classList.add('animate-slide');
-      document.querySelector('.page-content').classList.add('animate-grid');
-    });
-
-    const chatText = document.getElementById('chatText');
-    let chatShownOnce = false;
-    const hoverArea = document.querySelector('.hover-area');
-    hoverArea.addEventListener('mouseenter', () => {
-      if (!chatShownOnce && pageFadedIn) {
-        chatText.style.opacity = '1';
-        chatShownOnce = true;
-      }
-    });
-    chatText.addEventListener('click', () => {
-      const chatInput = document.createElement('input');
-      chatInput.type = 'text';
-      chatInput.classList.add('chat-input');
-      chatText.insertAdjacentElement('afterend', chatInput);
-      chatText.remove();
-      chatInput.focus();
-    });
-  </script>
-
-  <!-- (Menu interactions and submenu functions remain as previously defined) -->
-  <script>
-    // Helper to create a new text span inside the menu-container
-    function addNewText(text, top, left) {
-      let span = document.createElement("span");
-      span.className = "custom-text new-text";
-      span.style.top = top + "vh";
-      span.style.left = left + "vw";
-      span.textContent = text;
-      document.querySelector(".menu-container").appendChild(span);
-      setTimeout(() => { span.classList.add("visible"); }, 10);
-    }
-
-    let currentMenu = null;
-    function closeSubmenu() {
-      const newTexts = document.querySelectorAll('.new-text');
-      newTexts.forEach(span => {
-        span.style.transition = 'opacity 0.3s ease';
-        span.classList.remove("visible");
+      document.addEventListener('mousemove', function onFirstMouseMove() {
+        if (!pageFadedIn) { fadeInPage(); }
+        document.removeEventListener('mousemove', onFirstMouseMove);
       });
-      setTimeout(() => {
-         document.getElementById("linkup-center").classList.remove("slide-down");
-         document.getElementById("delivery-line").classList.remove("slide-down");
-         document.getElementById("internal-unit").classList.remove("slide-down");
-         newTexts.forEach(span => span.remove());
-         currentMenu = null;
-      }, 300);
-    }
-    function openOnlineAssets() {
-      document.getElementById("linkup-center").classList.add("slide-down");
-      document.getElementById("delivery-line").classList.add("slide-down");
-      document.getElementById("internal-unit").classList.add("slide-down");
-      setTimeout(() => {
-        addNewText("cOnTEnT", 41.6, 7.4);
-        addNewText("LEARn1ng", 47.8, 7.4);
-      }, 700);
-    }
-    function openLinkupCenter() {
-      document.getElementById("delivery-line").classList.add("slide-down");
-      document.getElementById("internal-unit").classList.add("slide-down");
-      setTimeout(() => {
-        addNewText("cHAnnELS", 47.8, 7.4);
-        addNewText("LABOUR", 54, 7.4);
-      }, 700);
-    }
-    function openDeliveryLine() {
-      document.getElementById("internal-unit").classList.add("slide-down");
-      setTimeout(() => {
-        addNewText("cL1ENTS", 54, 7.4);
-        addNewText("PROJEcTS", 60.2, 7.4);
-      }, 700);
-    }
-    function openInternalUnit() {
-      setTimeout(() => {
-        addNewText("1nVEnTORY", 60.2, 7.4);
-        addNewText("DEVOPS", 66.4, 7.4);
-        addNewText("F1nAncES", 72.6, 7.4);
-        addNewText("1T-cEnTER", 78.8, 7.4);
-      }, 700);
-    }
-    document.getElementById("online-assets").addEventListener("click", function(e) {
-      if (currentMenu === "online-assets") {
-          closeSubmenu();
-      } else {
-          if (currentMenu !== null) {
-              closeSubmenu();
-              setTimeout(() => {
+      const EDGE_MARGIN = 11;
+      document.addEventListener('click', (event) => {
+        const { clientX: x, clientY: y } = event;
+        const { innerWidth: width, innerHeight: height } = window;
+        if (!document.fullscreenElement &&
+            (x <= EDGE_MARGIN || x >= width - EDGE_MARGIN ||
+             y <= EDGE_MARGIN || y >= height - EDGE_MARGIN)) {
+          document.documentElement.requestFullscreen();
+        }
+      });
+      const inverseTrigger = document.querySelector('.slide-trigger');
+      inverseTrigger.addEventListener('click', (event) => {
+        event.stopPropagation();
+        document.querySelector('.slide-container').classList.remove('animate-slide');
+        document.querySelector('.page-content').classList.remove('animate-grid');
+      });
+      const forwardTrigger = document.querySelector('.slide-trigger-reverse');
+      forwardTrigger.addEventListener('click', (event) => {
+        event.stopPropagation();
+        document.querySelector('.slide-container').classList.add('animate-slide');
+        document.querySelector('.page-content').classList.add('animate-grid');
+      });
+      const chatText = document.getElementById('chatText');
+      let chatShownOnce = false;
+      const hoverArea = document.querySelector('.hover-area');
+      hoverArea.addEventListener('mouseenter', () => {
+        if (!chatShownOnce && pageFadedIn) {
+          chatText.style.opacity = '1';
+          chatShownOnce = true;
+        }
+      });
+      chatText.addEventListener('click', () => {
+        const chatInput = document.createElement('input');
+        chatInput.type = 'text';
+        chatInput.classList.add('chat-input');
+        chatText.insertAdjacentElement('afterend', chatInput);
+        chatText.remove();
+        chatInput.focus();
+      });
+    </script>
+
+    <!-- Menu interactions and submenu functions (unchanged from previous updates) -->
+    <script>
+      // Helper: create new submenu text inside menu-container
+      function addNewText(text, top, left) {
+        let span = document.createElement("span");
+        span.className = "custom-text new-text";
+        span.style.top = top + "vh";
+        span.style.left = left + "vw";
+        span.textContent = text;
+        document.querySelector(".menu-container").appendChild(span);
+        setTimeout(() => { span.classList.add("visible"); }, 10);
+      }
+      let currentMenu = null;
+      function closeSubmenu() {
+        const newTexts = document.querySelectorAll('.new-text');
+        newTexts.forEach(span => {
+          span.style.transition = 'opacity 0.3s ease';
+          span.classList.remove("visible");
+        });
+        setTimeout(() => {
+           document.getElementById("linkup-center").classList.remove("slide-down");
+           document.getElementById("delivery-line").classList.remove("slide-down");
+           document.getElementById("internal-unit").classList.remove("slide-down");
+           newTexts.forEach(span => span.remove());
+           currentMenu = null;
+        }, 300);
+      }
+      function openOnlineAssets() {
+        document.getElementById("linkup-center").classList.add("slide-down");
+        document.getElementById("delivery-line").classList.add("slide-down");
+        document.getElementById("internal-unit").classList.add("slide-down");
+        setTimeout(() => {
+          addNewText("cOnTEnT", 41.6, 7.4);
+          addNewText("LEARn1ng", 47.8, 7.4);
+        }, 700);
+      }
+      function openLinkupCenter() {
+        document.getElementById("delivery-line").classList.add("slide-down");
+        document.getElementById("internal-unit").classList.add("slide-down");
+        setTimeout(() => {
+          addNewText("cHAnnELS", 47.8, 7.4);
+          addNewText("LABOUR", 54, 7.4);
+        }, 700);
+      }
+      function openDeliveryLine() {
+        document.getElementById("internal-unit").classList.add("slide-down");
+        setTimeout(() => {
+          addNewText("cL1ENTS", 54, 7.4);
+          addNewText("PROJEcTS", 60.2, 7.4);
+        }, 700);
+      }
+      function openInternalUnit() {
+        setTimeout(() => {
+          addNewText("1nVEnTORY", 60.2, 7.4);
+          addNewText("DEVOPS", 66.4, 7.4);
+          addNewText("F1nAncES", 72.6, 7.4);
+          addNewText("1T-cEnTER", 78.8, 7.4);
+        }, 700);
+      }
+      document.getElementById("online-assets").addEventListener("click", function(e) {
+        if (currentMenu === "online-assets") {
+            closeSubmenu();
+        } else {
+            if (currentMenu !== null) {
+                closeSubmenu();
+                setTimeout(() => {
+                  openOnlineAssets();
+                  currentMenu = "online-assets";
+                }, 300);
+            } else {
                 openOnlineAssets();
                 currentMenu = "online-assets";
-              }, 300);
-          } else {
-              openOnlineAssets();
-              currentMenu = "online-assets";
-          }
-      }
-    });
-    document.getElementById("linkup-center").addEventListener("click", function(e) {
-      e.stopPropagation();
-      if (currentMenu === "linkup-center") {
-          closeSubmenu();
-      } else {
-          if (currentMenu !== null) {
-              closeSubmenu();
-              setTimeout(() => {
+            }
+        }
+      });
+      document.getElementById("linkup-center").addEventListener("click", function(e) {
+        e.stopPropagation();
+        if (currentMenu === "linkup-center") {
+            closeSubmenu();
+        } else {
+            if (currentMenu !== null) {
+                closeSubmenu();
+                setTimeout(() => {
+                  openLinkupCenter();
+                  currentMenu = "linkup-center";
+                }, 300);
+            } else {
                 openLinkupCenter();
                 currentMenu = "linkup-center";
-              }, 300);
-          } else {
-              openLinkupCenter();
-              currentMenu = "linkup-center";
-          }
-      }
-    });
-    document.getElementById("delivery-line").addEventListener("click", function(e) {
-      e.stopPropagation();
-      if (currentMenu === "delivery-line") {
-          closeSubmenu();
-      } else {
-          if (currentMenu !== null) {
-              closeSubmenu();
-              setTimeout(() => {
+            }
+        }
+      });
+      document.getElementById("delivery-line").addEventListener("click", function(e) {
+        e.stopPropagation();
+        if (currentMenu === "delivery-line") {
+            closeSubmenu();
+        } else {
+            if (currentMenu !== null) {
+                closeSubmenu();
+                setTimeout(() => {
+                  openDeliveryLine();
+                  currentMenu = "delivery-line";
+                }, 300);
+            } else {
                 openDeliveryLine();
                 currentMenu = "delivery-line";
-              }, 300);
-          } else {
-              openDeliveryLine();
-              currentMenu = "delivery-line";
-          }
-      }
-    });
-    document.getElementById("internal-unit").addEventListener("click", function(e) {
-      e.stopPropagation();
-      if (currentMenu === "internal-unit") {
-          closeSubmenu();
-      } else {
-          if (currentMenu !== null) {
-              closeSubmenu();
-              setTimeout(() => {
+            }
+        }
+      });
+      document.getElementById("internal-unit").addEventListener("click", function(e) {
+        e.stopPropagation();
+        if (currentMenu === "internal-unit") {
+            closeSubmenu();
+        } else {
+            if (currentMenu !== null) {
+                closeSubmenu();
+                setTimeout(() => {
+                  openInternalUnit();
+                  currentMenu = "internal-unit";
+                }, 300);
+            } else {
                 openInternalUnit();
                 currentMenu = "internal-unit";
-              }, 300);
-          } else {
-              openInternalUnit();
-              currentMenu = "internal-unit";
+            }
+        }
+      });
+    </script>
+
+    <!-- New designated-area listeners for toggling between two modes.
+         We distinguish two regions:
+         Region A: left between 28.86 and 32.43vw.
+         Region B: left between 0 and 6.41vw.
+         When in "normal" mode:
+         • Clicking Region A enters "menu" mode: chat-text slides left (subtract 29vw) and menu-container slides in (from left 29vw to 0vw).
+         • Clicking Region B enters "custom" mode: chat-text quickly fades out and the extra custom-text elements (outside menu-container) slide in via adding "custom-slide".
+         When in a mode, clicking in the same region (or the opposite region) triggers the inverse.
+      -->
+    <script>
+      // Global variable for current mode: "normal", "menu", or "custom"
+      let currentMode = "normal";
+      const chatTextEl = document.getElementById("chatText");
+      const menuContainer = document.querySelector(".menu-container");
+
+      // Region A listener (28.86–32.43vw)
+      document.addEventListener("click", (event) => {
+        const vwUnit = window.innerWidth / 100;
+        const vhUnit = window.innerHeight / 100;
+        const leftMinA = 28.86 * vwUnit;
+        const leftMaxA = 32.43 * vwUnit;
+        const yMin = 28.5 * vhUnit;
+        const yMax = 84 * vhUnit;
+        if (event.clientX >= leftMinA && event.clientX <= leftMaxA &&
+            event.clientY >= yMin && event.clientY <= yMax) {
+          // If in normal mode, enter menu mode
+          if (currentMode === "normal") {
+            chatTextEl.style.transition = "left 0.7s ease";
+            chatTextEl.style.left = "-22.59vw"; // 6.41 - 29
+            menuContainer.style.transition = "left 0.7s ease";
+            menuContainer.style.left = "0vw";
+            currentMode = "menu";
           }
-      }
-    });
-  </script>
-
-  <!-- New click listener for designated Region A (left:28.86–32.43vw) to toggle chat-text/menu reveal -->
-  <script>
-    // Global flag for Region A toggling
-    let menuRevealed = false;
-    document.addEventListener('click', (event) => {
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const leftMinA = 28.86 * vwUnit;
-      const leftMaxA = 32.43 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
-      if (event.clientX >= leftMinA && event.clientX <= leftMaxA &&
-          event.clientY >= yMin && event.clientY <= yMax) {
-        const chatTextEl = document.querySelector('.chat-text');
-        const menuContainer = document.querySelector('.menu-container');
-        if (!menuRevealed) {
-          // If chat-text is in its initial location, slide it left and bring in menu-container.
-          chatTextEl.style.transition = "left 0.7s ease";
-          chatTextEl.style.left = "-22.59vw"; // 6.41 - 29
-          menuContainer.style.transition = "left 0.7s ease";
-          menuContainer.style.left = "0vw";
-          menuRevealed = true;
-        } else {
-          // Otherwise, if already revealed, trigger inverse to return them.
-          chatTextEl.style.transition = "left 0.7s ease";
-          chatTextEl.style.left = "6.41vw";
-          menuContainer.style.transition = "left 0.7s ease";
-          menuContainer.style.left = "29vw";
-          // Also remove any dynamic submenu texts from menu-container.
-          const newTexts = document.querySelectorAll('.menu-container .new-text');
-          newTexts.forEach(span => span.remove());
-          menuRevealed = false;
-        }
-      }
-    });
-  </script>
-
-  <!-- New click listener for designated Region B (left:0–6.41vw) to trigger the original inverse animation -->
-  <script>
-    document.addEventListener('click', (event) => {
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const leftMinB = 0;
-      const leftMaxB = 6.41 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
-      if (event.clientX >= leftMinB && event.clientX <= leftMaxB &&
-          event.clientY >= yMin && event.clientY <= yMax) {
-        // Trigger inverse animation for the .custom-text elements (those outside menu-container)
-        const chatTextEl = document.querySelector('.chat-text');
-        if (chatTextEl) {
-          chatTextEl.classList.remove('chat-slide');
-          setTimeout(() => {
+          // If already in menu mode, exit back to normal
+          else if (currentMode === "menu") {
+            chatTextEl.style.transition = "left 0.7s ease";
+            chatTextEl.style.left = "6.41vw";
+            menuContainer.style.transition = "left 0.7s ease";
+            menuContainer.style.left = "29vw";
+            // Remove any dynamic submenu texts in menu-container
+            const newTexts = menuContainer.querySelectorAll(".new-text");
+            newTexts.forEach(span => span.remove());
+            currentMode = "normal";
+          }
+          // If in custom mode, exit custom mode (inverse custom animation)
+          else if (currentMode === "custom") {
+            chatTextEl.style.transition = "opacity 0.7s ease";
             chatTextEl.style.opacity = "1";
-          }, 700);
+            // Remove the custom-slide class from custom-text elements outside menu-container
+            const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
+            customTexts.forEach(el => el.classList.remove("custom-slide"));
+            currentMode = "normal";
+          }
         }
-        const chatInputEl = document.querySelector('.chat-input');
-        if (chatInputEl) {
-          chatInputEl.classList.remove('chat-slide');
+      });
+
+      // Region B listener (0 to 6.41vw)
+      document.addEventListener("click", (event) => {
+        const vwUnit = window.innerWidth / 100;
+        const vhUnit = window.innerHeight / 100;
+        const leftMinB = 0;
+        const leftMaxB = 6.41 * vwUnit;
+        const yMin = 28.5 * vhUnit;
+        const yMax = 84 * vhUnit;
+        if (event.clientX >= leftMinB && event.clientX <= leftMaxB &&
+            event.clientY >= yMin && event.clientY <= yMax) {
+          // If in normal mode, enter custom mode
+          if (currentMode === "normal") {
+            chatTextEl.style.transition = "opacity 0.3s ease";
+            chatTextEl.style.opacity = "0";
+            // Add custom-slide to the non-menu custom-text elements
+            const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
+            customTexts.forEach(el => el.classList.add("custom-slide"));
+            currentMode = "custom";
+          }
+          // If in custom mode, exit custom mode
+          else if (currentMode === "custom") {
+            chatTextEl.style.transition = "opacity 0.7s ease";
+            chatTextEl.style.opacity = "1";
+            const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
+            customTexts.forEach(el => el.classList.remove("custom-slide"));
+            currentMode = "normal";
+          }
+          // If in menu mode, exit menu mode (same as Region A exit)
+          else if (currentMode === "menu") {
+            chatTextEl.style.transition = "left 0.7s ease";
+            chatTextEl.style.left = "6.41vw";
+            menuContainer.style.transition = "left 0.7s ease";
+            menuContainer.style.left = "29vw";
+            const newTexts = menuContainer.querySelectorAll(".new-text");
+            newTexts.forEach(span => span.remove());
+            currentMode = "normal";
+          }
         }
-        const customTextEls = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
-        customTextEls.forEach(el => {
-          el.classList.remove('custom-slide');
-          el.style.transition = "transform 0.7s ease";
-        });
-        const customLineEl = document.querySelector('.custom-line');
-        if (customLineEl) {
-          customLineEl.classList.remove('custom-slide');
-          customLineEl.style.transition = "transform 0.7s ease";
-        }
-      }
-    });
-  </script>
-</body>
+      });
+    </script>
+  </body>
 </html>

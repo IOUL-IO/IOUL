@@ -74,17 +74,20 @@
     <span class="custom-text" style="top: 60.2vh; left: -42.59vw;">cHAnnELS</span>
     <span class="custom-text" style="top: 66.4vh; left: -42.59vw;">OFFER HUB</span>
     <span class="custom-text" style="top: 72.6vh; left: -42.59vw;">YOUR JOBS</span>
+    <span class="custom-text" style="top: 35.4vh; left: -23.29vw;">OPEn</span>
+    <span class="custom-text" style="top: 41.6vh; left: -23.29vw;">OPEn</span>
+    <span class="custom-text" style="top: 47.8vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 54vh; left: -23.29vw;">OPEn</span>
-    <span class="custom-text" style="top: 60.2vh; left: -23.29vw;">OPEn</span>
-    <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
-    <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
 
-    <span class="custom-text" style="top: 35.4vh; left: 6.41vw;">-  OnL1nE ASSETS</span>
-    <span class="custom-text" style="top: 41.6vh; left: 6.41vw;">-  L1nKUP cEnTER</span>
-    <span class="custom-text" style="top: 47.8vh; left: 6.41vw;">-  DEL1VERY L1nE</span>
-    <span class="custom-text" style="top: 54vh; left: 6.41vw;">-  1nTERnAL Un1T</span>
-
-    <div class="custom-line"></div>
+    <!-- Updated OnL1nE ASSETS and submenu -->
+    <span class="custom-text" id="online-assets" style="top: 35.4vh; left: 6.41vw; cursor: pointer;">-  OnL1nE ASSETS</span>
+    <div id="assets-submenu">
+      <span class="custom-text submenu-item" style="top: 41.6vh; left: 6.41vw;">-  L1nKUP cEnTER</span>
+      <span class="custom-text submenu-item" style="top: 47.8vh; left: 6.41vw;">-  DEL1VERY L1nE</span>
+      <span class="custom-text submenu-item" style="top: 54vh; left: 6.41vw;">-  1nTERnAL Un1T</span>
+      <span class="custom-text new-item" id="content-text" style="top: 41.6vh; left: 7.4vw; opacity: 0;">cOnTEnT</span>
+      <span class="custom-text new-item" id="learning-text" style="top: 47.8vh; left: 7.4vw; opacity: 0;">LEARn1ng</span>
+    </div>
 
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
@@ -206,6 +209,22 @@
           customLineEl.style.transition = "transform 0.7s ease";
         }
       }
+    });
+
+    // New functionality: On clicking "OnL1nE ASSETS"
+    document.getElementById('online-assets').addEventListener('click', function() {
+      var submenuItems = document.querySelectorAll('#assets-submenu .submenu-item');
+      submenuItems.forEach(function(item) {
+        item.classList.add('slide-down');
+      });
+      // After the slide-down transition, reveal the new texts
+      var lastItem = submenuItems[submenuItems.length - 1];
+      lastItem.addEventListener('transitionend', function() {
+        var newItems = document.querySelectorAll('#assets-submenu .new-item');
+        newItems.forEach(function(item) {
+          item.style.opacity = '1';
+        });
+      }, {once: true});
     });
   </script>
 </body>

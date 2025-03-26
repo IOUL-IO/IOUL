@@ -19,6 +19,7 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
+/* The 3 layered divs from your original */
 .layer-one {
     position: fixed;
     top: 0;
@@ -47,15 +48,14 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* Four separate menu items, each at left:29vw by default.
-   When .open is added, they animate to left:6.41vw. */
+/* Each menu-item container at left:29vw, can animate to 6.41vw when .open */
 .menu-item {
     position: absolute;
     left: 29vw;
     width: calc(36vw - 29vw);
     overflow: hidden;
-    transition: left 0.7s ease; 
-    z-index: 200; /* so it's clickable above transparent overlays */
+    transition: left 0.7s ease;
+    z-index: 200; 
 }
 .menu-item.open {
     left: 6.41vw;
@@ -67,6 +67,7 @@ body.non-fullscreen {
     position: relative;
 }
 
+/* The 4 horizontal lines from original */
 .line {
     position: absolute;
     height: 1px;
@@ -93,6 +94,7 @@ body.non-fullscreen {
     width: 57.8vw;
 }
 
+/* Slide-container w/ dashed lines */
 .slide-container {
     position: absolute;
     top: 0;
@@ -102,7 +104,6 @@ body.non-fullscreen {
     clip-path: inset(0 0 0 28.86vw);
 }
 
-/* Dashed lines in slide-container */
 .dashed {
     position: absolute;
     height: 1px;
@@ -159,7 +160,7 @@ body.non-fullscreen {
     height: calc(84vh - 28.5vh);
 }
 
-/* Chat text & input from original */
+/* Chat text from your original code */
 .chat-text {
     position: absolute;
     top: 77vh;
@@ -196,7 +197,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* Grid numbering from original */
+/* Grid numbering from original code */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -282,6 +283,7 @@ body.non-fullscreen {
 .page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; }
 .page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; }
 
+/* Slide container children shift left with .animate-slide */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -318,6 +320,7 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
+/* custom-text and custom-line from original */
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -329,7 +332,6 @@ body.non-fullscreen {
     line-height: 1.6;
     overflow: visible;
 }
-
 .custom-line {
     position: absolute;
     top: 47.8vh; 
@@ -340,6 +342,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
+/* Shift chat text horizontally */
 .chat-slide {
     transform: translateX(24vw);
 }
@@ -347,7 +350,7 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* Slide-down for items below the open one, new-text fade-in */
+/* Submenu "slide-down" and new text fade-in (unchanged) */
 .slide-down {
     transform: translateY(13vh);
 }

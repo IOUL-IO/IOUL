@@ -13,11 +13,13 @@
   <div class="layer-three"></div>
 
   <div class="page-content">
+    <!-- Original horizontal lines at top, second, third, fourth -->
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
     <div class="line fourth"></div>
 
+    <!-- Slide-container with dashed lines and time texts -->
     <div class="slide-container">
       <div class="line dashed"></div>
       <div class="line dashed second-dashed"></div>
@@ -32,6 +34,7 @@
     <div class="hover-area"></div>
     <span class="chat-text" id="chatText">cHAT . . .</span>
 
+    <!-- Grid numbers -->
     <span class="grid-number num1">1</span>
     <span class="grid-number num2">2</span>
     <span class="grid-number num3">3</span>
@@ -49,6 +52,7 @@
     <span class="grid-number num15">15</span>
     <span class="grid-number num16">16</span>
 
+    <!-- Grid dashed lines -->
     <div class="grid-dashed dashed01"></div>
     <div class="grid-dashed dashed02"></div>
     <div class="grid-dashed dashed03"></div>
@@ -66,15 +70,25 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- Main menu container holding the 4 menu items and submenus -->
-    <div class="menu-container">
-      <!-- CHANGED left from 6.41vw to -42.59vw, so they're initially offscreen. -->
-      <span class="custom-text" style="top: 35.4vh; left: -42.59vw;" id="online-assets">-  OnL1nE ASSETS</span>
-      <span class="custom-text" style="top: 41.6vh; left: -42.59vw;" id="linkup-center">-  L1nKUP cEnTER</span>
-      <span class="custom-text" style="top: 47.8vh; left: -42.59vw;" id="delivery-line">-  DEL1VERY L1nE</span>
-      <span class="custom-text" style="top: 54vh; left: -42.59vw;" id="internal-unit">-  1nTERnAL Un1T</span>
+    <!-- Four separate menu-item containers (instead of one .menu-container) -->
+    <!-- By default, each is placed at left: 29vw in CSS -->
+    <div class="menu-item" id="onlineAssetsWrapper" style="top: 35.4vh;">
+      <span class="custom-text" style="left: 0;" id="online-assets">-  OnL1nE ASSETS</span>
     </div>
 
+    <div class="menu-item" id="linkupCenterWrapper" style="top: 41.6vh;">
+      <span class="custom-text" style="left: 0;" id="linkup-center">-  L1nKUP cEnTER</span>
+    </div>
+
+    <div class="menu-item" id="deliveryLineWrapper" style="top: 47.8vh;">
+      <span class="custom-text" style="left: 0;" id="delivery-line">-  DEL1VERY L1nE</span>
+    </div>
+
+    <div class="menu-item" id="internalUnitWrapper" style="top: 54vh;">
+      <span class="custom-text" style="left: 0;" id="internal-unit">-  1nTERnAL Un1T</span>
+    </div>
+
+    <!-- Original custom-text items (on the far left side) remain -->
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -87,15 +101,16 @@
     <span class="custom-text" style="top: 60.2vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
-    
+
     <div class="custom-line"></div>
 
+    <!-- Slide triggers -->
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
   </div>
 
+  <!-- Existing script that handles page fade-in, fullscreen logic, chat text, and triggers -->
   <script>
-    // (Existing page and fullscreen behavior code remains unchanged)
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -103,7 +118,9 @@
       pageFadedIn = true;
     }
     document.addEventListener('mousemove', function onFirstMouseMove() {
-      if (!pageFadedIn) { fadeInPage(); }
+      if (!pageFadedIn) {
+        fadeInPage();
+      }
       document.removeEventListener('mousemove', onFirstMouseMove);
     });
 
@@ -111,9 +128,11 @@
     document.addEventListener('click', (event) => {
       const { clientX: x, clientY: y } = event;
       const { innerWidth: width, innerHeight: height } = window;
-      if (!document.fullscreenElement &&
-          (x <= EDGE_MARGIN || x >= width - EDGE_MARGIN ||
-           y <= EDGE_MARGIN || y >= height - EDGE_MARGIN)) {
+      if (
+        !document.fullscreenElement &&
+        (x <= EDGE_MARGIN || x >= width - EDGE_MARGIN ||
+         y <= EDGE_MARGIN || y >= height - EDGE_MARGIN)
+      ) {
         document.documentElement.requestFullscreen();
       }
     });
@@ -149,16 +168,17 @@
       chatInput.focus();
     });
 
-    // If user clicks in the leftmost region (x <= 6.37vw),
-    // we add "custom-slide" to all .custom-text. That pushes them to ~left: 6.41vw.
+    // On clicks in the far-left zone (0 to 6.37vw), shift text
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const xLimit = 6.37 * vwUnit;
       const yMin = 28.5 * vhUnit;
       const yMax = 84 * vhUnit;
-      if (event.clientX >= 0 && event.clientX <= xLimit &&
-          event.clientY >= yMin && event.clientY <= yMax) {
+      if (
+        event.clientX >= 0 && event.clientX <= xLimit &&
+        event.clientY >= yMin && event.clientY <= yMax
+      ) {
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
           chatTextEl.style.transition = "opacity 0.1s ease";
@@ -182,8 +202,7 @@
       }
     });
 
-    // Clicking in the region between 28.87vw and 32.44vw
-    // removes "custom-slide," sending items back offscreen to ~left: -42.59vw.
+    // On clicks in the “middle” zone (roughly 28.87 to 32.44vw), shift them back
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -191,8 +210,10 @@
       const leftMax = 32.44 * vwUnit;
       const yMin = 28.5 * vhUnit;
       const yMax = 84 * vhUnit;
-      if (event.clientX >= leftMin && event.clientX <= leftMax &&
-          event.clientY >= yMin && event.clientY <= yMax) {
+      if (
+        event.clientX >= leftMin && event.clientX <= leftMax &&
+        event.clientY >= yMin && event.clientY <= yMax
+      ) {
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
           chatTextEl.classList.remove('chat-slide');
@@ -217,152 +238,181 @@
       }
     });
   </script>
-  
-  <!-- Script for Menu Interactions with Toggle/Inversion -->
+
+  <!-- New Script for Menu Interactions: toggling submenus + sliding each item from 29vw to 6.41vw -->
   <script>
-    // Helper to create a new text span inside the menu container
-    function addNewText(text, top, left) {
+    // Quick helper to map each main menu name to its container's ID
+    function getWrapperID(menuName) {
+      if (menuName === "online-assets") return "onlineAssetsWrapper";
+      if (menuName === "linkup-center") return "linkupCenterWrapper";
+      if (menuName === "delivery-line") return "deliveryLineWrapper";
+      if (menuName === "internal-unit") return "internalUnitWrapper";
+      return null;
+    }
+
+    // Create new spans for sub-items
+    function addNewText(containerID, text, top, left) {
       let span = document.createElement("span");
       span.className = "custom-text new-text";
       span.style.top = top + "vh";
       span.style.left = left + "vw";
-      span.textContent = text;
-      document.querySelector(".menu-container").appendChild(span);
-      // Trigger fade-in after insertion
+      document.getElementById(containerID).appendChild(span);
       setTimeout(() => {
         span.classList.add("visible");
       }, 10);
     }
 
-    // Global variable to track which menu is currently open
+    // Track which main menu is open
     let currentMenu = null;
 
-    // Closes any open submenu.
+    // Close any open submenu
     function closeSubmenu() {
+      // Fade out sub-items
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
-        // quick fade-out
         span.style.transition = 'opacity 0.3s ease';
         span.classList.remove("visible");
       });
+      // After .3s, remove them
       setTimeout(() => {
-         document.getElementById("linkup-center").classList.remove("slide-down");
-         document.getElementById("delivery-line").classList.remove("slide-down");
-         document.getElementById("internal-unit").classList.remove("slide-down");
-         newTexts.forEach(span => span.remove());
-         currentMenu = null;
+        document.getElementById("linkup-center").classList.remove("slide-down");
+        document.getElementById("delivery-line").classList.remove("slide-down");
+        document.getElementById("internal-unit").classList.remove("slide-down");
+        newTexts.forEach(span => span.remove());
+
+        // Also remove the .open class from whichever menu is currently open
+        if (currentMenu) {
+          const wrapperId = getWrapperID(currentMenu);
+          if (wrapperId) {
+            document.getElementById(wrapperId).classList.remove("open");
+          }
+        }
+        currentMenu = null;
       }, 300);
     }
 
-    // Opens the submenu for "OnL1nE ASSETS"
+    // Each function below:
+    //  (1) add the .open class so it slides from 29vw -> 6.41vw
+    //  (2) "slide-down" items below
+    //  (3) show sub-items after a delay
     function openOnlineAssets() {
+      document.getElementById("onlineAssetsWrapper").classList.add("open");
+
       document.getElementById("linkup-center").classList.add("slide-down");
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
+
       setTimeout(() => {
-        addNewText("cOnTEnT", 41.6, 7.4);
-        addNewText("LEARn1ng", 47.8, 7.4);
+        addNewText("onlineAssetsWrapper", "cOnTEnT", 41.6, 7.4);
+        addNewText("onlineAssetsWrapper", "LEARn1ng", 47.8, 7.4);
       }, 700);
     }
 
-    // Opens the submenu for "L1nKUP cEnTER"
     function openLinkupCenter() {
+      document.getElementById("linkupCenterWrapper").classList.add("open");
+
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
+
       setTimeout(() => {
-        addNewText("cHAnnELS", 47.8, 7.4);
-        addNewText("LABOUR", 54, 7.4);
+        addNewText("linkupCenterWrapper", "cHAnnELS", 47.8, 7.4);
+        addNewText("linkupCenterWrapper", "LABOUR", 54, 7.4);
       }, 700);
     }
 
-    // Opens the submenu for "DEL1VERY L1nE"
     function openDeliveryLine() {
+      document.getElementById("deliveryLineWrapper").classList.add("open");
+
       document.getElementById("internal-unit").classList.add("slide-down");
+
       setTimeout(() => {
-        addNewText("cL1ENTS", 54, 7.4);
-        addNewText("PROJEcTS", 60.2, 7.4);
+        addNewText("deliveryLineWrapper", "cL1ENTS", 54, 7.4);
+        addNewText("deliveryLineWrapper", "PROJEcTS", 60.2, 7.4);
       }, 700);
     }
 
-    // Opens the submenu for "1nTERnAL Un1T"
     function openInternalUnit() {
+      document.getElementById("internalUnitWrapper").classList.add("open");
+
+      // no items below, so no slide-down needed
       setTimeout(() => {
-        addNewText("1nVEnTORY", 60.2, 7.4);
-        addNewText("DEVOPS", 66.4, 7.4);
-        addNewText("F1nAncES", 72.6, 7.4);
-        addNewText("1T-cEnTER", 78.8, 7.4);
+        addNewText("internalUnitWrapper", "1nVEnTORY", 60.2, 7.4);
+        addNewText("internalUnitWrapper", "DEVOPS", 66.4, 7.4);
+        addNewText("internalUnitWrapper", "F1nAncES", 72.6, 7.4);
+        addNewText("internalUnitWrapper", "1T-cEnTER", 78.8, 7.4);
       }, 700);
     }
 
-    // Toggle logic so only one submenu is open at a time
+    // Toggle each main item
     document.getElementById("online-assets").addEventListener("click", function(e) {
+      e.stopPropagation();
       if (currentMenu === "online-assets") {
-          closeSubmenu();
+        closeSubmenu();
       } else {
-          if (currentMenu !== null) {
-              closeSubmenu();
-              setTimeout(() => {
-                openOnlineAssets();
-                currentMenu = "online-assets";
-              }, 300);
-          } else {
-              openOnlineAssets();
-              currentMenu = "online-assets";
-          }
+        if (currentMenu !== null) {
+          closeSubmenu();
+          setTimeout(() => {
+            openOnlineAssets();
+            currentMenu = "online-assets";
+          }, 300);
+        } else {
+          openOnlineAssets();
+          currentMenu = "online-assets";
+        }
       }
     });
 
     document.getElementById("linkup-center").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "linkup-center") {
-          closeSubmenu();
+        closeSubmenu();
       } else {
-          if (currentMenu !== null) {
-              closeSubmenu();
-              setTimeout(() => {
-                openLinkupCenter();
-                currentMenu = "linkup-center";
-              }, 300);
-          } else {
-              openLinkupCenter();
-              currentMenu = "linkup-center";
-          }
+        if (currentMenu !== null) {
+          closeSubmenu();
+          setTimeout(() => {
+            openLinkupCenter();
+            currentMenu = "linkup-center";
+          }, 300);
+        } else {
+          openLinkupCenter();
+          currentMenu = "linkup-center";
+        }
       }
     });
 
     document.getElementById("delivery-line").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "delivery-line") {
-          closeSubmenu();
+        closeSubmenu();
       } else {
-          if (currentMenu !== null) {
-              closeSubmenu();
-              setTimeout(() => {
-                openDeliveryLine();
-                currentMenu = "delivery-line";
-              }, 300);
-          } else {
-              openDeliveryLine();
-              currentMenu = "delivery-line";
-          }
+        if (currentMenu !== null) {
+          closeSubmenu();
+          setTimeout(() => {
+            openDeliveryLine();
+            currentMenu = "delivery-line";
+          }, 300);
+        } else {
+          openDeliveryLine();
+          currentMenu = "delivery-line";
+        }
       }
     });
 
     document.getElementById("internal-unit").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "internal-unit") {
-          closeSubmenu();
+        closeSubmenu();
       } else {
-          if (currentMenu !== null) {
-              closeSubmenu();
-              setTimeout(() => {
-                openInternalUnit();
-                currentMenu = "internal-unit";
-              }, 300);
-          } else {
-              openInternalUnit();
-              currentMenu = "internal-unit";
-          }
+        if (currentMenu !== null) {
+          closeSubmenu();
+          setTimeout(() => {
+            openInternalUnit();
+            currentMenu = "internal-unit";
+          }, 300);
+        } else {
+          openInternalUnit();
+          currentMenu = "internal-unit";
+        }
       }
     });
   </script>

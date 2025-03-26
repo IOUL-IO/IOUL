@@ -6,6 +6,14 @@
     <title>IOUL</title>
     <link rel="icon" href="favicon.png" type="image/png" />
     <link rel="stylesheet" href="styles.css" />
+    <!-- New CSS for menu items: using CSS variables for horizontal (--tx) and vertical (--ty) translations -->
+    <style>
+      .menu-container .custom-text {
+        /* Inline left (6.41vw) plus container left (29vw) plus transform = effective absolute left */
+        transform: translateX(var(--tx, -6.41vw)) translateY(var(--ty, 0));
+        transition: transform 0.7s ease;
+      }
+    </style>
   </head>
   <body class="non-fullscreen">
     <div class="layer-one"></div>
@@ -32,19 +40,22 @@
       </div>
 
       <div class="hover-area"></div>
-      <!-- .chat-text always begins at left:6.41vw -->
+      <!-- chat-text always begins at left:6.41vw -->
       <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
 
-      <!-- The menu-container holds the four menu items and any submenu texts.
-           Its left remains at 29vw so that we can animate the individual texts. -->
+      <!-- menu-container remains fixed at left:29vw.
+           Each menu item has an inline left of 6.41vw.
+           Initially, setting --tx to -6.41vw makes their effective left:
+             29vw + 6.41vw + (-6.41vw) = 29vw.
+           Later, we animate --tx to -29vw so they appear at 29 + 6.41 - 29 = 6.41vw. -->
       <div class="menu-container" style="left:29vw;">
-        <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
-        <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
-        <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
-        <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
+        <span class="custom-text" style="top: 35.4vh; left: 6.41vw; --tx: -6.41vw; --ty: 0;" id="online-assets">-  OnL1nE ASSETS</span>
+        <span class="custom-text" style="top: 41.6vh; left: 6.41vw; --tx: -6.41vw; --ty: 0;" id="linkup-center">-  L1nKUP cEnTER</span>
+        <span class="custom-text" style="top: 47.8vh; left: 6.41vw; --tx: -6.41vw; --ty: 0;" id="delivery-line">-  DEL1VERY L1nE</span>
+        <span class="custom-text" style="top: 54vh; left: 6.41vw; --tx: -6.41vw; --ty: 0;" id="internal-unit">-  1nTERnAL Un1T</span>
       </div>
 
-      <!-- Other custom-text elements (e.g. account info, i-cHAT: OPEn, etc.) -->
+      <!-- Other custom-text elements (unchanged) -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
       <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -58,14 +69,14 @@
       <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
       <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
       
-      <!-- The custom-line element (accompanies the custom-text group) -->
+      <!-- Custom line element -->
       <div class="custom-line"></div>
 
       <div class="slide-trigger"></div>
       <div class="slide-trigger-reverse"></div>
     </div>
 
-    <!-- Existing scripts (page fade, fullscreen, chat input, etc.) -->
+    <!-- Existing scripts for page fade, fullscreen, chat input, etc. -->
     <script>
       const pageContent = document.querySelector('.page-content');
       let pageFadedIn = false;
@@ -120,12 +131,15 @@
 
     <!-- Menu interactions and submenu functions -->
     <script>
-      // Helper: create new submenu text inside menu-container
+      // Helper: create a new submenu text element.
       function addNewText(text, top, left) {
         let span = document.createElement("span");
         span.className = "custom-text new-text";
         span.style.top = top + "vh";
         span.style.left = left + "vw";
+        // For submenu items, set final horizontal transform to -29vw so they align with menu items
+        span.style.setProperty('--tx', '-29vw');
+        span.style.setProperty('--ty', '0');
         span.textContent = text;
         document.querySelector(".menu-container").appendChild(span);
         setTimeout(() => { span.classList.add("visible"); }, 10);
@@ -138,32 +152,34 @@
           span.classList.remove("visible");
         });
         setTimeout(() => {
-           document.getElementById("linkup-center").classList.remove("slide-down");
-           document.getElementById("delivery-line").classList.remove("slide-down");
-           document.getElementById("internal-unit").classList.remove("slide-down");
+           // Reset vertical translations for the menu items.
+           document.getElementById("linkup-center").style.setProperty('--ty', '0');
+           document.getElementById("delivery-line").style.setProperty('--ty', '0');
+           document.getElementById("internal-unit").style.setProperty('--ty', '0');
            newTexts.forEach(span => span.remove());
            currentMenu = null;
         }, 300);
       }
       function openOnlineAssets() {
-        document.getElementById("linkup-center").classList.add("slide-down");
-        document.getElementById("delivery-line").classList.add("slide-down");
-        document.getElementById("internal-unit").classList.add("slide-down");
+        // Slide the sibling menu items down by 13vh before adding submenu texts.
+        document.getElementById("linkup-center").style.setProperty('--ty', '13vh');
+        document.getElementById("delivery-line").style.setProperty('--ty', '13vh');
+        document.getElementById("internal-unit").style.setProperty('--ty', '13vh');
         setTimeout(() => {
           addNewText("cOnTEnT", 41.6, 7.4);
           addNewText("LEARn1ng", 47.8, 7.4);
         }, 700);
       }
       function openLinkupCenter() {
-        document.getElementById("delivery-line").classList.add("slide-down");
-        document.getElementById("internal-unit").classList.add("slide-down");
+        document.getElementById("delivery-line").style.setProperty('--ty', '13vh');
+        document.getElementById("internal-unit").style.setProperty('--ty', '13vh');
         setTimeout(() => {
           addNewText("cHAnnELS", 47.8, 7.4);
           addNewText("LABOUR", 54, 7.4);
         }, 700);
       }
       function openDeliveryLine() {
-        document.getElementById("internal-unit").classList.add("slide-down");
+        document.getElementById("internal-unit").style.setProperty('--ty', '13vh');
         setTimeout(() => {
           addNewText("cL1ENTS", 54, 7.4);
           addNewText("PROJEcTS", 60.2, 7.4);
@@ -264,12 +280,13 @@
         if (event.clientX >= leftMinA && event.clientX <= leftMaxA &&
             event.clientY >= yMin && event.clientY <= yMax) {
           if (currentMode === "normal") {
-            // Enter menu mode: slide chat-text left and animate menu items.
+            // Enter menu mode: slide chat-text left and animate menu items horizontally.
             chatTextEl.style.transition = "left 0.7s ease";
             chatTextEl.style.left = "-22.59vw"; // Moves chat-text left.
             document.querySelectorAll('.menu-container .custom-text').forEach(el => {
               el.style.transition = "transform 0.7s ease";
-              el.style.transform = "translateX(-29vw)";
+              // Animate horizontal variable from initial (-6.41vw) to final (-29vw)
+              el.style.setProperty('--tx', '-29vw');
             });
             currentMode = "menu";
           } else if (currentMode === "menu") {
@@ -278,7 +295,8 @@
             chatTextEl.style.left = "6.41vw";
             document.querySelectorAll('.menu-container .custom-text').forEach(el => {
               el.style.transition = "transform 0.7s ease";
-              el.style.transform = "translateX(0)";
+              el.style.setProperty('--tx', '-6.41vw');
+              el.style.setProperty('--ty', '0');
             });
             const newTexts = menuContainer.querySelectorAll(".new-text");
             newTexts.forEach(span => span.remove());
@@ -328,12 +346,13 @@
               currentMode = "normal";
             }, 700);
           } else if (currentMode === "menu") {
-            // If currently in menu mode, exit it.
+            // If in menu mode, exit it.
             chatTextEl.style.transition = "left 0.7s ease";
             chatTextEl.style.left = "6.41vw";
             document.querySelectorAll('.menu-container .custom-text').forEach(el => {
               el.style.transition = "transform 0.7s ease";
-              el.style.transform = "translateX(0)";
+              el.style.setProperty('--tx', '-6.41vw');
+              el.style.setProperty('--ty', '0');
             });
             const newTexts = menuContainer.querySelectorAll(".new-text");
             newTexts.forEach(span => span.remove());

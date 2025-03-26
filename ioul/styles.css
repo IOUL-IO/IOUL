@@ -19,7 +19,6 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
-/* The 3 layers from your original code */
 .layer-one {
     position: fixed;
     top: 0;
@@ -32,7 +31,7 @@ body.non-fullscreen {
 .layer-two {
     position: fixed;
     top: 0;
-    left: 28.87vw;
+    left: 28.87vw; /* or 28.86vw if you prefer matching the click range exactly */
     width: calc(36vw - 28.87vw);
     height: 100vh;
     background-color: #ffffff;
@@ -48,16 +47,15 @@ body.non-fullscreen {
     z-index: 100;
 }
 
+/* Each menu item stands alone at left:29vw, width:7vw, overflow hidden. */
 .menu-item {
     position: absolute;
     left: 29vw;
-    width: calc(36vw - 29vw);
+    width: 7vw;
     overflow: hidden;
-    transition: left 0.7s ease;
-    z-index: 200;
-}
-.menu-item.open {
-    left: 6.41vw; /* animate from 29vw to 6.41vw */
+    /* If you want them *behind* .layer-two (z-index:100),
+       give them a lower z-index (e.g. 99) */
+    z-index: 99;
 }
 
 .page-content {
@@ -66,7 +64,6 @@ body.non-fullscreen {
     position: relative;
 }
 
-/* The 4 lines from original code */
 .line {
     position: absolute;
     height: 1px;
@@ -93,7 +90,6 @@ body.non-fullscreen {
     width: 57.8vw;
 }
 
-/* slide-container, dashed lines, time-text from original code */
 .slide-container {
     position: absolute;
     top: 0;
@@ -159,7 +155,6 @@ body.non-fullscreen {
     height: calc(84vh - 28.5vh);
 }
 
-/* Chat text & input remain the same */
 .chat-text {
     position: absolute;
     top: 77vh;
@@ -196,7 +191,6 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* Grid numbers from original code */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -214,14 +208,14 @@ body.non-fullscreen {
 .num6  { top: 47vh;   left: 123.7vw; }
 .num7  { top: 47vh;   left: 138.5vw; }
 .num8  { top: 47vh;   left: 153.3vw; }
-.num9  { top: 65.5vh; left: 108.8vw; }
-.num10 { top: 65.5vh; left: 123.3vw; }
-.num11 { top: 65.5vh; left: 138.3vw; }
-.num12 { top: 65.5vh; left: 152.9vw; }
-.num13 { top: 83.7vh; left: 108.3vw; }
-.num14 { top: 83.7vh; left: 123.2vw; }
-.num15 { top: 83.7vh; left: 138.0vw; }
-.num16 { top: 83.7vh; left: 152.8vw; }
+.num9   { top: 65.5vh; left: 108.8vw; }
+.num10  { top: 65.5vh; left: 123.3vw; }
+.num11  { top: 65.5vh; left: 138.3vw; }
+.num12  { top: 65.5vh; left: 152.9vw; }
+.num13  { top: 83.7vh; left: 108.3vw; }
+.num14  { top: 83.7vh; left: 123.2vw; }
+.num15  { top: 83.7vh; left: 138.0vw; }
+.num16  { top: 83.7vh; left: 152.8vw; }
 
 .grid-dashed {
     position: absolute;
@@ -248,15 +242,15 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
-.page-content.animate-grid .grid-number.num1  { left: 48.8vw; }
-.page-content.animate-grid .grid-number.num2  { left: 63.7vw; }
-.page-content.animate-grid .grid-number.num3  { left: 78.5vw; }
-.page-content.animate-grid .grid-number.num4  { left: 93.3vw; }
-.page-content.animate-grid .grid-number.num5  { left: 48.8vw; }
-.page-content.animate-grid .grid-number.num6  { left: 63.7vw; }
-.page-content.animate-grid .grid-number.num7  { left: 78.5vw; }
-.page-content.animate-grid .grid-number.num8  { left: 93.3vw; }
-.page-content.animate-grid .grid-number.num9  { left: 48.8vw; }
+.page-content.animate-grid .grid-number.num1 { left: 48.8vw; }
+.page-content.animate-grid .grid-number.num2 { left: 63.7vw; }
+.page-content.animate-grid .grid-number.num3 { left: 78.5vw; }
+.page-content.animate-grid .grid-number.num4 { left: 93.3vw; }
+.page-content.animate-grid .grid-number.num5 { left: 48.8vw; }
+.page-content.animate-grid .grid-number.num6 { left: 63.7vw; }
+.page-content.animate-grid .grid-number.num7 { left: 78.5vw; }
+.page-content.animate-grid .grid-number.num8 { left: 93.3vw; }
+.page-content.animate-grid .grid-number.num9 { left: 48.8vw; }
 .page-content.animate-grid .grid-number.num10 { left: 63.3vw; }
 .page-content.animate-grid .grid-number.num11 { left: 78.3vw; }
 .page-content.animate-grid .grid-number.num12 { left: 92.9vw; }
@@ -282,7 +276,6 @@ body.non-fullscreen {
 .page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; }
 .page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; }
 
-/* slide-container children shift left with .animate-slide */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -294,15 +287,14 @@ body.non-fullscreen {
 .slide-container.animate-slide > .time-text,
 .slide-container.animate-slide > .time-text.second-time-text,
 .slide-container.animate-slide > .time-text.third-time-text,
-.slide-container > .time-text.fourth-time-text {
+.slide-container.animate-slide > .time-text.fourth-time-text {
     transform: translateX(-91vw);
 }
 
-/* The invisible triggers for animate-slide */
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
-    left: 32.43vw;
+    left: 32.43vw; /* narrower area from 28.86 to 32.43 */
     width: calc(36vw - 32.43vw);
     height: calc(84vh - 28.5vh);
     background: transparent;
@@ -320,7 +312,6 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-/* custom-text from original code */
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -332,6 +323,7 @@ body.non-fullscreen {
     line-height: 1.6;
     overflow: visible;
 }
+
 .custom-line {
     position: absolute;
     top: 47.8vh; 
@@ -342,7 +334,6 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* .chat-slide => shift chat text horizontally */
 .chat-slide {
     transform: translateX(24vw);
 }
@@ -350,7 +341,7 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* Submenu slide-down & fade-in of new text */
+/* Submenu slides */
 .slide-down {
     transform: translateY(13vh);
 }

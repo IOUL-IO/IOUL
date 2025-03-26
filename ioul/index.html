@@ -34,10 +34,10 @@
 
       <div class="hover-area"></div>
       
-      <!-- Chat text (initially at left:6.41vw; fades in on load/hover) -->
+      <!-- Chat text starts at left:6.41vw; will fade in on hover -->
       <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
       
-      <!-- Grid numbers (1–16) -->
+      <!-- Grid numbers 1–16 -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -73,7 +73,7 @@
       <div class="grid-dashed dashed15"></div>
       <div class="grid-dashed dashed16"></div>
       
-      <!-- Menu container (initially at left:29vw, hidden behind layer two) -->
+      <!-- Menu container (initially at left:29vw, clipped by layer two) -->
       <div class="menu-container" style="left:29vw;">
         <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
         <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
@@ -116,7 +116,7 @@
         document.removeEventListener('mousemove', onFirstMouseMove);
       });
       
-      // Fullscreen trigger when clicking near screen edges
+      // Fullscreen trigger near screen edges
       const EDGE_MARGIN = 11;
       document.addEventListener('click', (event) => {
         const { clientX: x, clientY: y } = event;
@@ -128,7 +128,7 @@
         }
       });
       
-      // Slide trigger functions (for additional animations)
+      // Slide triggers for additional animations (unchanged)
       const inverseTrigger = document.querySelector('.slide-trigger');
       inverseTrigger.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -153,12 +153,13 @@
         chatInput.focus();
       });
       
-      // Force chat-text fade-in on load (as originally when hovered over region 6.41–28.86vw)
-      window.addEventListener('load', () => {
-        setTimeout(() => {
+      // Restore original hover behavior for chat-text
+      const hoverArea = document.querySelector('.hover-area');
+      hoverArea.addEventListener('mouseenter', () => {
+        if (currentMode === "normal") {
           chatTextEl.style.transition = "opacity 0.7s ease";
           chatTextEl.style.opacity = "1";
-        }, 100);
+        }
       });
     </script>
     
@@ -300,22 +301,6 @@
       const chatTextNode2 = document.getElementById("chatText");
       const menuContainer2 = document.querySelector(".menu-container");
       
-      // Function to continuously check the computed left value and update z-index via class "revealed"
-      function checkMenuContainerZIndex() {
-        const computedLeft = parseFloat(getComputedStyle(menuContainer2).left);
-        const boundaryPx = 28.86 * (window.innerWidth / 100);
-        if (computedLeft < boundaryPx) {
-          menuContainer2.classList.add("revealed");
-        } else {
-          menuContainer2.classList.remove("revealed");
-        }
-      }
-      
-      function startZIndexCheck() {
-        const intervalId = setInterval(checkMenuContainerZIndex, 10);
-        setTimeout(() => { clearInterval(intervalId); }, 800);
-      }
-      
       document.addEventListener("click", (event) => {
         const vwUnit = window.innerWidth / 100;
         const vhUnit = window.innerHeight / 100;
@@ -329,13 +314,22 @@
         if (event.clientX >= regionA_leftMin && event.clientX <= regionA_leftMax &&
             event.clientY >= yMin && event.clientY <= yMax) {
           if (currentMode === "normal") {
-            // Enter menu mode: slide chat-text left and menu-container from 29vw to 0vw.
+            // Enter menu mode: slide chat-text left and menu-container from left 29vw to 0vw.
             chatTextNode2.style.transition = "left 0.7s ease";
             chatTextNode2.style.left = "-22.59vw"; // 6.41 - 29
             menuContainer2.style.transition = "left 0.7s ease";
             menuContainer2.style.left = "0vw";
-            // Start checking computed left to update z-index (class "revealed") once it crosses 28.86vw
-            startZIndexCheck();
+            // Use transitionend event to add "revealed" when container is below 28.86vw boundary.
+            menuContainer2.addEventListener('transitionend', function handler(e) {
+              // Only if we are in menu mode:
+              if (currentMode === "menu") {
+                let computedLeft = parseFloat(getComputedStyle(menuContainer2).left);
+                if (computedLeft < 28.86 * vwUnit) {
+                  menuContainer2.classList.add("revealed");
+                }
+              }
+              menuContainer2.removeEventListener('transitionend', handler);
+            });
             currentMode = "menu";
           } else if (currentMode === "menu") {
             // Exit menu mode:
@@ -352,7 +346,7 @@
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.remove("custom-slide"));
             const customLine = document.querySelector('.custom-line');
-            if (customLine) { customLine.classList.remove("custom-slide"); }
+            if(customLine){ customLine.classList.remove("custom-slide"); }
             setTimeout(() => {
               chatTextNode2.style.transition = "opacity 0.7s ease";
               chatTextNode2.style.opacity = "1";
@@ -368,19 +362,20 @@
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.add("custom-slide"));
             const customLine = document.querySelector('.custom-line');
-            if (customLine) { customLine.classList.add("custom-slide"); }
+            if(customLine){ customLine.classList.add("custom-slide"); }
             currentMode = "custom";
           } else if (currentMode === "custom") {
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.remove("custom-slide"));
             const customLine = document.querySelector('.custom-line');
-            if (customLine) { customLine.classList.remove("custom-slide"); }
+            if(customLine){ customLine.classList.remove("custom-slide"); }
             setTimeout(() => {
               chatTextNode2.style.transition = "opacity 0.7s ease";
               chatTextNode2.style.opacity = "1";
               currentMode = "normal";
             }, 700);
           } else if (currentMode === "menu") {
+            // If in menu mode, exit it (same as Region A exit).
             chatTextNode2.style.transition = "left 0.7s ease";
             chatTextNode2.style.left = "6.41vw";
             menuContainer2.style.transition = "left 0.7s ease";

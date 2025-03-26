@@ -48,17 +48,18 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* Menu Container */
+/* Menu Container - now fixed so we can control its stacking */
 .menu-container {
-    position: absolute;
+    position: fixed;
+    top: 0;
     left: 29vw;
     width: calc(36vw - 29vw);
     overflow: hidden;
     transition: left 0.7s ease;
-    z-index: 90;
+    z-index: 50;
 }
 .menu-container.revealed {
-    z-index: 110;
+    z-index: 150;
 }
 
 .page-content {

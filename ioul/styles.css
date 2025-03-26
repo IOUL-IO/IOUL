@@ -47,13 +47,13 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* Menu container now starts at left: 0vw width: 36vw
-   so the inline-styled items appear at 6.41vw from page edge. */
+/* .menu-container now sits at 6.41vw to align items exactly 6.41vw from the page edge. */
 .menu-container {
     position: absolute;
-    left: 0vw;
-    width: 36vw;
+    left: 6.41vw;
+    width: calc(36vw - 6.41vw);
     overflow: hidden;
+    z-index: 200; /* ensure the menu is above .layer-one */
 }
 
 .page-content {
@@ -206,14 +206,14 @@ body.non-fullscreen {
 .num6  { top: 47vh;   left: 123.7vw; }
 .num7  { top: 47vh;   left: 138.5vw; }
 .num8  { top: 47vh;   left: 153.3vw; }
-.num9   { top: 65.5vh; left: 108.8vw; }
-.num10  { top: 65.5vh; left: 123.3vw; }
-.num11  { top: 65.5vh; left: 138.3vw; }
-.num12  { top: 65.5vh; left: 152.9vw; }
-.num13  { top: 83.7vh; left: 108.3vw; }
-.num14  { top: 83.7vh; left: 123.2vw; }
-.num15  { top: 83.7vh; left: 138.0vw; }
-.num16  { top: 83.7vh; left: 152.8vw; }
+.num9  { top: 65.5vh; left: 108.8vw; }
+.num10 { top: 65.5vh; left: 123.3vw; }
+.num11 { top: 65.5vh; left: 138.3vw; }
+.num12 { top: 65.5vh; left: 152.9vw; }
+.num13 { top: 83.7vh; left: 108.3vw; }
+.num14 { top: 83.7vh; left: 123.2vw; }
+.num15 { top: 83.7vh; left: 138.0vw; }
+.num16 { top: 83.7vh; left: 152.8vw; }
 
 .grid-dashed {
     position: absolute;
@@ -240,15 +240,15 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
-.page-content.animate-grid .grid-number.num1 { left: 48.8vw; }
-.page-content.animate-grid .grid-number.num2 { left: 63.7vw; }
-.page-content.animate-grid .grid-number.num3 { left: 78.5vw; }
-.page-content.animate-grid .grid-number.num4 { left: 93.3vw; }
-.page-content.animate-grid .grid-number.num5 { left: 48.8vw; }
-.page-content.animate-grid .grid-number.num6 { left: 63.7vw; }
-.page-content.animate-grid .grid-number.num7 { left: 78.5vw; }
-.page-content.animate-grid .grid-number.num8 { left: 93.3vw; }
-.page-content.animate-grid .grid-number.num9 { left: 48.8vw; }
+.page-content.animate-grid .grid-number.num1  { left: 48.8vw; }
+.page-content.animate-grid .grid-number.num2  { left: 63.7vw; }
+.page-content.animate-grid .grid-number.num3  { left: 78.5vw; }
+.page-content.animate-grid .grid-number.num4  { left: 93.3vw; }
+.page-content.animate-grid .grid-number.num5  { left: 48.8vw; }
+.page-content.animate-grid .grid-number.num6  { left: 63.7vw; }
+.page-content.animate-grid .grid-number.num7  { left: 78.5vw; }
+.page-content.animate-grid .grid-number.num8  { left: 93.3vw; }
+.page-content.animate-grid .grid-number.num9  { left: 48.8vw; }
 .page-content.animate-grid .grid-number.num10 { left: 63.3vw; }
 .page-content.animate-grid .grid-number.num11 { left: 78.3vw; }
 .page-content.animate-grid .grid-number.num12 { left: 92.9vw; }
@@ -318,7 +318,6 @@ body.non-fullscreen {
     font-size: 0.47rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     transition: transform 0.7s ease;
-    /* Fix clipping issues */
     line-height: 1.6;
     overflow: visible;
 }
@@ -340,7 +339,7 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* New CSS for slide-down and new text animations */
+/* Slide-down and new text animations (unchanged) */
 .slide-down {
     transform: translateY(13vh);
 }

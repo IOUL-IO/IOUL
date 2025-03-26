@@ -19,7 +19,7 @@
     <div class="line third"></div>
     <div class="line fourth"></div>
 
-    <!-- Original .slide-container with dashed lines & time labels -->
+    <!-- Slide-container with dashed lines & time labels -->
     <div class="slide-container">
       <div class="line dashed"></div>
       <div class="line dashed second-dashed"></div>
@@ -70,24 +70,21 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- Four .menu-item containers (disassembled from single .menu-container) -->
+    <!-- Four .menu-item containers at left:29vw (slide to 6.41vw when .open is added) -->
     <div class="menu-item" id="onlineAssetsWrapper" style="top: 35.4vh;">
       <span class="custom-text" style="left: 0;" id="online-assets">-  OnL1nE ASSETS</span>
     </div>
-
     <div class="menu-item" id="linkupCenterWrapper" style="top: 41.6vh;">
       <span class="custom-text" style="left: 0;" id="linkup-center">-  L1nKUP cEnTER</span>
     </div>
-
     <div class="menu-item" id="deliveryLineWrapper" style="top: 47.8vh;">
       <span class="custom-text" style="left: 0;" id="delivery-line">-  DEL1VERY L1nE</span>
     </div>
-
     <div class="menu-item" id="internalUnitWrapper" style="top: 54vh;">
       <span class="custom-text" style="left: 0;" id="internal-unit">-  1nTERnAL Un1T</span>
     </div>
 
-    <!-- Additional custom-text from original code -->
+    <!-- Far-left custom-text items from original code -->
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -103,12 +100,12 @@
 
     <div class="custom-line"></div>
 
-    <!-- Slide triggers from original code -->
+    <!-- Slide triggers -->
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
   </div>
 
-  <!-- Script 1: Page fade-in, fullscreen logic, chat text, triggers, etc. (unchanged) -->
+  <!-- Script #1: Page fade-in, fullscreen logic, chat text, triggers, etc. -->
   <script>
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
@@ -138,12 +135,14 @@
 
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
+      // Inverse the big "slide-container" animation
       event.stopPropagation();
       document.querySelector('.slide-container').classList.remove('animate-slide');
       document.querySelector('.page-content').classList.remove('animate-grid');
     });
     const forwardTrigger = document.querySelector('.slide-trigger-reverse');
     forwardTrigger.addEventListener('click', (event) => {
+      // Re-apply the big "slide-container" animation
       event.stopPropagation();
       document.querySelector('.slide-container').classList.add('animate-slide');
       document.querySelector('.page-content').classList.add('animate-grid');
@@ -167,13 +166,15 @@
       chatInput.focus();
     });
 
-    // On clicks in far-left (0..6.37vw), shift chat text
+    // If user clicks far-left (0..6.37vw), fade out chat text and shift custom texts
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const xLimit = 6.37 * vwUnit;
       const yMin = 28.5 * vhUnit;
       const yMax = 84 * vhUnit;
+
+      // Left bounding box
       if (
         event.clientX >= 0 && event.clientX <= xLimit &&
         event.clientY >= yMin && event.clientY <= yMax
@@ -200,48 +201,11 @@
         }
       }
     });
-
-    // On clicks in ~left:28.87..32.44vw, revert chat text
-    document.addEventListener('click', (event) => {
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const leftMin = 28.87 * vwUnit;
-      const leftMax = 32.44 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
-      if (
-        event.clientX >= leftMin && event.clientX <= leftMax &&
-        event.clientY >= yMin && event.clientY <= yMax
-      ) {
-        const chatTextEl = document.querySelector('.chat-text');
-        if (chatTextEl) {
-          chatTextEl.classList.remove('chat-slide');
-          setTimeout(() => {
-            chatTextEl.style.opacity = "1";
-          }, 700);
-        }
-        const chatInputEl = document.querySelector('.chat-input');
-        if (chatInputEl) {
-          chatInputEl.classList.remove('chat-slide');
-        }
-        const customTextEls = document.querySelectorAll('.custom-text');
-        customTextEls.forEach(el => {
-          el.classList.remove('custom-slide');
-          el.style.transition = "transform 0.7s ease";
-        });
-        const customLineEl = document.querySelector('.custom-line');
-        if (customLineEl) {
-          customLineEl.classList.remove('custom-slide');
-          customLineEl.style.transition = "transform 0.7s ease";
-        }
-      }
-    });
   </script>
 
-  <!-- Script 2: Per-item submenu toggles, plus bounding-box click to slide all items -->
+  <!-- Script #2: Submenu toggles + the UNIFIED middle bounding-box logic -->
   <script>
-    // ===== 1) Submenu logic (unchanged except we removed "e.stopPropagation()" ) =====
-
+    // 1) Submenu logic remains the same, minus any stopPropagation()
     function addNewText(containerID, text, top, left) {
       let span = document.createElement("span");
       span.className = "custom-text new-text";
@@ -267,10 +231,9 @@
         document.getElementById("internal-unit").classList.remove("slide-down");
         newTexts.forEach(span => span.remove());
 
-        // remove .open from the current menu, sliding it back to 29vw
+        // remove .open from whichever was open
         if (currentMenu) {
-          const wrapperId = currentMenu + "Wrapper";
-          const wrapperDiv = document.getElementById(wrapperId);
+          const wrapperDiv = document.getElementById(currentMenu + "Wrapper");
           if (wrapperDiv) {
             wrapperDiv.classList.remove("open");
           }
@@ -316,8 +279,8 @@
       }, 700);
     }
 
-    // Removed e.stopPropagation() here so the click can bubble to doc-level bounding-box code
     document.getElementById("online-assets").addEventListener("click", function(e) {
+      // no stopPropagation so it can bubble if needed
       if (currentMenu === "online-assets") {
         closeSubmenu();
       } else {
@@ -333,7 +296,6 @@
         }
       }
     });
-
     document.getElementById("linkup-center").addEventListener("click", function(e) {
       if (currentMenu === "linkup-center") {
         closeSubmenu();
@@ -350,7 +312,6 @@
         }
       }
     });
-
     document.getElementById("delivery-line").addEventListener("click", function(e) {
       if (currentMenu === "delivery-line") {
         closeSubmenu();
@@ -367,7 +328,6 @@
         }
       }
     });
-
     document.getElementById("internal-unit").addEventListener("click", function(e) {
       if (currentMenu === "internal-unit") {
         closeSubmenu();
@@ -385,27 +345,64 @@
       }
     });
 
-    // ===== 2) BOUNDING-BOX CLICK TO SLIDE ALL ITEMS =====
-    // If user clicks anywhere in left:28.86..32.43vw, top:28.5..84vh,
-    // we add .open to every .menu-item => all shift from 29vw -> 6.41vw
+    // 2) UNIFIED MIDDLE BOUNDING-BOX LOGIC
+    // If user clicks in left:28.86..32.43vw, top:28.5..84vh
+    //   - If chat-text is STILL in original position (no .chat-slide),
+    //     slide all menu items from 29vw -> 6.41vw
+    //   - If chat-text is ALREADY slid out (has .chat-slide),
+    //     we revert that chat text/cust text back, ignoring the menu items
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
-
       const leftMin = 28.86 * vwUnit;
       const leftMax = 32.43 * vwUnit;
-      const topMin  = 28.5  * vhUnit;
-      const topMax  = 84    * vhUnit;
+      const yMin = 28.5 * vhUnit;
+      const yMax = 84 * vhUnit;
 
       if (
         event.clientX >= leftMin && event.clientX <= leftMax &&
-        event.clientY >= topMin  && event.clientY <= topMax
+        event.clientY >= yMin && event.clientY <= yMax
       ) {
-        // Slide all from 29vw to 6.41vw
-        document.getElementById("onlineAssetsWrapper").classList.add("open");
-        document.getElementById("linkupCenterWrapper").classList.add("open");
-        document.getElementById("deliveryLineWrapper").classList.add("open");
-        document.getElementById("internalUnitWrapper").classList.add("open");
+        // Check if chat text is slid out or not
+        const chatTextEl = document.querySelector('.chat-text');
+        const chatInputEl = document.querySelector('.chat-input');
+        const customTextEls = document.querySelectorAll('.custom-text');
+        const customLineEl = document.querySelector('.custom-line');
+
+        // if we see .chat-slide on them => the user previously clicked left area
+        let chatIsSlidOut = false;
+        if ((chatTextEl && chatTextEl.classList.contains('chat-slide')) ||
+            (chatInputEl && chatInputEl.classList.contains('chat-slide'))) {
+          chatIsSlidOut = true;
+        }
+
+        if (!chatIsSlidOut) {
+          // Chat is in original position => let's slide all menu items
+          document.getElementById("onlineAssetsWrapper").classList.add("open");
+          document.getElementById("linkupCenterWrapper").classList.add("open");
+          document.getElementById("deliveryLineWrapper").classList.add("open");
+          document.getElementById("internalUnitWrapper").classList.add("open");
+
+        } else {
+          // Chat is slid out => so let's "invert" that chat animation, bringing it back
+          if (chatTextEl) {
+            chatTextEl.classList.remove('chat-slide');
+            setTimeout(() => {
+              chatTextEl.style.opacity = "1";
+            }, 700);
+          }
+          if (chatInputEl) {
+            chatInputEl.classList.remove('chat-slide');
+          }
+          customTextEls.forEach(el => {
+            el.classList.remove('custom-slide');
+            el.style.transition = "transform 0.7s ease";
+          });
+          if (customLineEl) {
+            customLineEl.classList.remove('custom-slide');
+            customLineEl.style.transition = "transform 0.7s ease";
+          }
+        }
       }
     });
   </script>

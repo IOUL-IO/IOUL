@@ -66,13 +66,13 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- Main Menu Items (container removed). Each item is now at left: 6.41vw. -->
-    <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
-    <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
-    <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
-    <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
+    <!-- Main menu items placed at left: 29vw. -->
+    <span class="custom-text" style="top: 35.4vh; left: 29vw;" id="online-assets">-  OnL1nE ASSETS</span>
+    <span class="custom-text" style="top: 41.6vh; left: 29vw;" id="linkup-center">-  L1nKUP cEnTER</span>
+    <span class="custom-text" style="top: 47.8vh; left: 29vw;" id="delivery-line">-  DEL1VERY L1nE</span>
+    <span class="custom-text" style="top: 54vh; left: 29vw;" id="internal-unit">-  1nTERnAL Un1T</span>
 
-    <!-- Submenu items remain (offscreen at negative left). -->
+    <!-- Submenu items remain "off-screen" at negative left. -->
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -212,10 +212,9 @@
     });
   </script>
   
-  <!-- Submenu Toggle Script (updated to append new items to .page-content) -->
+  <!-- Submenu Toggle Script (still appending to .page-content) -->
   <script>
-    // Helper to create a new text span.
-    // Instead of .menu-container, we append to .page-content.
+    // Helper to create a new text span for submenus
     function addNewText(text, top, left) {
       let span = document.createElement("span");
       span.className = "custom-text new-text";
@@ -223,23 +222,20 @@
       span.style.left = left + "vw";
       span.textContent = text;
       document.querySelector(".page-content").appendChild(span);
-      // Trigger fade-in
+      // Fade-in
       setTimeout(() => {
         span.classList.add("visible");
       }, 10);
     }
 
-    let currentMenu = null; // Tracks which submenu is open
+    let currentMenu = null;
 
-    // Closes any open submenu
     function closeSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
-        // quick fade-out
         span.style.transition = 'opacity 0.3s ease';
         span.classList.remove("visible");
       });
-      // Wait 300ms to remove them
       setTimeout(() => {
         document.getElementById("linkup-center").classList.remove("slide-down");
         document.getElementById("delivery-line").classList.remove("slide-down");
@@ -249,7 +245,6 @@
       }, 300);
     }
 
-    // Submenu expansions
     function openOnlineAssets() {
       document.getElementById("linkup-center").classList.add("slide-down");
       document.getElementById("delivery-line").classList.add("slide-down");
@@ -286,7 +281,6 @@
       }, 700);
     }
 
-    // Event listeners for toggling
     document.getElementById("online-assets").addEventListener("click", function(e) {
       if (currentMenu === "online-assets") {
         closeSubmenu();

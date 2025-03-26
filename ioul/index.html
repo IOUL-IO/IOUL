@@ -34,10 +34,10 @@
 
       <div class="hover-area"></div>
       
-      <!-- Chat text (initially at left:6.41vw; fades in on first mouse move) -->
+      <!-- Chat text (initially at left:6.41vw) -->
       <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
-
-      <!-- Grid numbers 1-16 -->
+      
+      <!-- Grid numbers (1–16) -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -54,7 +54,7 @@
       <span class="grid-number num14">14</span>
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
-
+      
       <!-- Dashed grid lines -->
       <div class="grid-dashed dashed01"></div>
       <div class="grid-dashed dashed02"></div>
@@ -72,15 +72,15 @@
       <div class="grid-dashed dashed14"></div>
       <div class="grid-dashed dashed15"></div>
       <div class="grid-dashed dashed16"></div>
-
-      <!-- Menu container (initially at left:29vw so its children are hidden behind layer two) -->
+      
+      <!-- Menu container (initially at left:29vw so its child menu items are hidden behind layer two) -->
       <div class="menu-container" style="left:29vw;">
         <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
         <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
         <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
         <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
       </div>
-
+      
       <!-- Extra custom-text elements (outside menu-container) -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
@@ -151,6 +151,15 @@
         chatTextEl.insertAdjacentElement('afterend', chatInput);
         chatTextEl.remove();
         chatInput.focus();
+      });
+      
+      // Force chat-text to be visible on load (restoring previous fade-in behavior)
+      window.addEventListener('load', () => {
+        // Slight delay to ensure page content is ready
+        setTimeout(() => {
+          chatTextEl.style.transition = "opacity 0.7s ease";
+          chatTextEl.style.opacity = "1";
+        }, 100);
       });
     </script>
     
@@ -310,6 +319,8 @@
             chatTextNode2.style.left = "-22.59vw"; // 6.41 - 29
             menuContainer2.style.transition = "left 0.7s ease";
             menuContainer2.style.left = "0vw";
+            // Raise menu container above layer two once sliding in
+            menuContainer2.classList.add("revealed");
             currentMode = "menu";
           } else if (currentMode === "menu") {
             // Exit menu mode:
@@ -317,6 +328,7 @@
             chatTextNode2.style.left = "6.41vw";
             menuContainer2.style.transition = "left 0.7s ease";
             menuContainer2.style.left = "29vw";
+            menuContainer2.classList.remove("revealed");
             const newTexts = menuContainer2.querySelectorAll(".new-text");
             newTexts.forEach(span => span.remove());
             currentMode = "normal";
@@ -358,6 +370,7 @@
             chatTextNode2.style.left = "6.41vw";
             menuContainer2.style.transition = "left 0.7s ease";
             menuContainer2.style.left = "29vw";
+            menuContainer2.classList.remove("revealed");
             const newTexts = menuContainer2.querySelectorAll(".new-text");
             newTexts.forEach(span => span.remove());
             currentMode = "normal";

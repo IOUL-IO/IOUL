@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IOUL</title>
-    <link rel="icon" href="favicon.png" type="image/png" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="non-fullscreen">
+    <!-- Layers -->
     <div class="layer-one"></div>
     <div class="layer-two"></div>
     <div class="layer-three"></div>
@@ -19,7 +19,7 @@
       <div class="line third"></div>
       <div class="line fourth"></div>
 
-      <!-- Slide container and time texts -->
+      <!-- Slide container with time texts -->
       <div class="slide-container">
         <div class="line dashed"></div>
         <div class="line dashed second-dashed"></div>
@@ -32,24 +32,18 @@
       </div>
 
       <div class="hover-area"></div>
-      <!-- chat-text always begins at left:6.41vw -->
+      <!-- Chat text starts at left:6.41vw -->
       <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
 
-      <!-- (Grid numbers and dashed grid lines omitted for brevity) -->
-
-      <!-- The menu-container holds the 4 menu items and any submenu texts.
-           It is positioned at left:29vw so that its children’s inline left values
-           (6.41vw for main, 7.4vw for submenu) will yield the desired absolute positions once the container is moved.
-           Its width clips any content past 36vw.
-           Note: We will animate its transform to slide it left by 29vw. -->
-      <div class="menu-container" style="left:29vw; transform: translateX(0);">
+      <!-- Menu container (initially at left:29vw, hidden under layer two) -->
+      <div class="menu-container" style="left:29vw;">
         <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
         <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
         <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
         <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
       </div>
 
-      <!-- Other .custom-text elements (account info, i-cHAT: OPEn, etc.) -->
+      <!-- Extra custom-text elements (outside the menu container) -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
       <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -62,15 +56,14 @@
       <span class="custom-text" style="top: 60.2vh; left: -23.29vw;">OPEn</span>
       <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
       <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
-      
-      <!-- The custom-line that accompanies the extra custom-text group -->
+      <!-- Accompanying line for extra custom-text -->
       <div class="custom-line"></div>
 
       <div class="slide-trigger"></div>
       <div class="slide-trigger-reverse"></div>
     </div>
 
-    <!-- Existing scripts for page fade, fullscreen, chat input, etc. -->
+    <!-- JavaScript for basic behavior -->
     <script>
       const pageContent = document.querySelector('.page-content');
       let pageFadedIn = false;
@@ -104,28 +97,20 @@
         document.querySelector('.slide-container').classList.add('animate-slide');
         document.querySelector('.page-content').classList.add('animate-grid');
       });
-      const chatText = document.getElementById('chatText');
-      let chatShownOnce = false;
-      const hoverArea = document.querySelector('.hover-area');
-      hoverArea.addEventListener('mouseenter', () => {
-        if (!chatShownOnce && pageFadedIn) {
-          chatText.style.opacity = '1';
-          chatShownOnce = true;
-        }
-      });
-      chatText.addEventListener('click', () => {
+      const chatTextNode = document.getElementById("chatText");
+      chatTextNode.addEventListener('click', () => {
         const chatInput = document.createElement('input');
         chatInput.type = 'text';
         chatInput.classList.add('chat-input');
-        chatText.insertAdjacentElement('afterend', chatInput);
-        chatText.remove();
+        chatTextNode.insertAdjacentElement('afterend', chatInput);
+        chatTextNode.remove();
         chatInput.focus();
       });
     </script>
 
-    <!-- Menu interactions and submenu functions remain unchanged -->
+    <!-- JavaScript for menu interactions and designated-area listeners -->
     <script>
-      // Helper: create new submenu text inside menu-container
+      // Menu interactions and submenu functions
       function addNewText(text, top, left) {
         let span = document.createElement("span");
         span.className = "custom-text new-text";
@@ -250,61 +235,56 @@
         }
       });
     </script>
-
-    <!-- Combined designated-area listener for Region A and B -->
     <script>
-      // Global mode: "normal", "menu", or "custom"
+      // Combined designated-area listener for Region A and Region B
       let currentMode = "normal";
-      const chatTextEl = document.getElementById("chatText");
+      const chatTextNode2 = document.getElementById("chatText");
       const menuContainer = document.querySelector(".menu-container");
-
       document.addEventListener("click", (event) => {
-        const vwUnit = window.innerWidth / 100;
-        const vhUnit = window.innerHeight / 100;
-        const leftMinA = 28.86 * vwUnit;
-        const leftMaxA = 32.43 * vwUnit;
-        const leftMinB = 0;
-        const leftMaxB = 6.41 * vwUnit;
-        const yMin = 28.5 * vhUnit;
-        const yMax = 84 * vhUnit;
-        // Region A: for toggling the menu container
-        if (event.clientX >= leftMinA && event.clientX <= leftMaxA &&
+        const vw = window.innerWidth / 100;
+        const vh = window.innerHeight / 100;
+        const regionA_leftMin = 28.86 * vw;
+        const regionA_leftMax = 32.43 * vw;
+        const regionB_leftMin = 0;
+        const regionB_leftMax = 6.41 * vw;
+        const yMin = 28.5 * vh;
+        const yMax = 84 * vh;
+        if (event.clientX >= regionA_leftMin && event.clientX <= regionA_leftMax &&
             event.clientY >= yMin && event.clientY <= yMax) {
           if (currentMode === "normal") {
-            // Enter menu mode: slide chat-text left and slide menu-container using transform.
-            chatTextEl.style.transition = "left 0.7s ease";
-            chatTextEl.style.left = "-22.59vw"; // 6.41 - 29
-            menuContainer.style.transition = "transform 0.7s ease";
-            menuContainer.style.transform = "translateX(-29vw)"; // Moves container from 29vw to 0vw effective.
+            // Enter menu mode: slide chat-text left and slide menu-container from 29vw to 0vw.
+            chatTextNode2.style.transition = "left 0.7s ease";
+            chatTextNode2.style.left = "-22.59vw"; // 6.41 - 29
+            menuContainer.style.transition = "left 0.7s ease";
+            menuContainer.style.left = "0vw";
             currentMode = "menu";
           } else if (currentMode === "menu") {
-            // Exit menu mode: reverse the transformation.
-            chatTextEl.style.transition = "left 0.7s ease";
-            chatTextEl.style.left = "6.41vw";
-            menuContainer.style.transition = "transform 0.7s ease";
-            menuContainer.style.transform = "translateX(0)";
+            // Exit menu mode
+            chatTextNode2.style.transition = "left 0.7s ease";
+            chatTextNode2.style.left = "6.41vw";
+            menuContainer.style.transition = "left 0.7s ease";
+            menuContainer.style.left = "29vw";
             const newTexts = menuContainer.querySelectorAll(".new-text");
             newTexts.forEach(span => span.remove());
             currentMode = "normal";
           } else if (currentMode === "custom") {
-            // If in custom mode, first remove custom-slide classes then restore chat-text.
+            // Exit custom mode: remove custom-slide classes then fade chat-text back in.
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.remove("custom-slide"));
             const customLine = document.querySelector('.custom-line');
             if(customLine){ customLine.classList.remove("custom-slide"); }
             setTimeout(() => {
-              chatTextEl.style.transition = "opacity 0.7s ease";
-              chatTextEl.style.opacity = "1";
+              chatTextNode2.style.transition = "opacity 0.7s ease";
+              chatTextNode2.style.opacity = "1";
               currentMode = "normal";
             }, 700);
           }
         }
-        // Region B: for toggling the extra custom-text elements
-        else if (event.clientX >= leftMinB && event.clientX <= leftMaxB &&
+        else if (event.clientX >= regionB_leftMin && event.clientX <= regionB_leftMax &&
                  event.clientY >= yMin && event.clientY <= yMax) {
           if (currentMode === "normal") {
-            chatTextEl.style.transition = "opacity 0.3s ease";
-            chatTextEl.style.opacity = "0";
+            chatTextNode2.style.transition = "opacity 0.3s ease";
+            chatTextNode2.style.opacity = "0";
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.add("custom-slide"));
             const customLine = document.querySelector('.custom-line');
@@ -316,16 +296,15 @@
             const customLine = document.querySelector('.custom-line');
             if(customLine){ customLine.classList.remove("custom-slide"); }
             setTimeout(() => {
-              chatTextEl.style.transition = "opacity 0.7s ease";
-              chatTextEl.style.opacity = "1";
+              chatTextNode2.style.transition = "opacity 0.7s ease";
+              chatTextNode2.style.opacity = "1";
               currentMode = "normal";
             }, 700);
           } else if (currentMode === "menu") {
-            // If in menu mode, exit it.
-            chatTextEl.style.transition = "left 0.7s ease";
-            chatTextEl.style.left = "6.41vw";
-            menuContainer.style.transition = "transform 0.7s ease";
-            menuContainer.style.transform = "translateX(0)";
+            chatTextNode2.style.transition = "left 0.7s ease";
+            chatTextNode2.style.left = "6.41vw";
+            menuContainer.style.transition = "left 0.7s ease";
+            menuContainer.style.left = "29vw";
             const newTexts = menuContainer.querySelectorAll(".new-text");
             newTexts.forEach(span => span.remove());
             currentMode = "normal";

@@ -48,18 +48,14 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* Menu Container - now fixed so we can control its stacking */
+/* Menu Container: fixed at left 29vw, width 7vw so its right edge is at 36vw; overflow hidden clips content */
 .menu-container {
-    position: fixed;
-    top: 0;
+    position: absolute;
     left: 29vw;
-    width: calc(36vw - 29vw);
+    width: 7vw;
     overflow: hidden;
-    transition: left 0.7s ease;
-    z-index: 50;
-}
-.menu-container.revealed {
-    z-index: 150;
+    transition: none; /* We animate children, not the container */
+    z-index: 90;
 }
 
 .page-content {
@@ -201,6 +197,13 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
+/* Menu items inside .menu-container */
+.menu-container .custom-text {
+    position: absolute;
+    left: 0;  /* relative to container */
+    transition: transform 0.7s ease;
+}
+
 /* Grid Numbers */
 .grid-number {
     position: absolute;
@@ -328,7 +331,7 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-/* Custom Text */
+/* Custom Text (for menu items and extra texts) */
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -352,7 +355,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* Additional transforms */
+/* Additional transforms for sliding */
 .chat-slide {
     transform: translateX(24vw);
 }
@@ -360,7 +363,7 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* Slide-down animations for submenu texts */
+/* Slide-down animations for submenu texts (unchanged) */
 .slide-down {
     transform: translateY(13vh);
 }

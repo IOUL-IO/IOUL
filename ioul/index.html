@@ -13,13 +13,13 @@
   <div class="layer-three"></div>
 
   <div class="page-content">
-    <!-- Lines from original -->
+    <!-- Original lines -->
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
     <div class="line fourth"></div>
 
-    <!-- The slide-container from original code -->
+    <!-- Original .slide-container with dashed lines & time labels -->
     <div class="slide-container">
       <div class="line dashed"></div>
       <div class="line dashed second-dashed"></div>
@@ -34,7 +34,7 @@
     <div class="hover-area"></div>
     <span class="chat-text" id="chatText">cHAT . . .</span>
 
-    <!-- Grid numbers from original -->
+    <!-- Grid numbers -->
     <span class="grid-number num1">1</span>
     <span class="grid-number num2">2</span>
     <span class="grid-number num3">3</span>
@@ -52,7 +52,7 @@
     <span class="grid-number num15">15</span>
     <span class="grid-number num16">16</span>
 
-    <!-- Grid dashed lines from original -->
+    <!-- Grid dashed lines -->
     <div class="grid-dashed dashed01"></div>
     <div class="grid-dashed dashed02"></div>
     <div class="grid-dashed dashed03"></div>
@@ -70,8 +70,7 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- Four .menu-item containers (disassembled from the single .menu-container) -->
-    <!-- By default, each is at left:29vw in CSS, can animate to 6.41vw when .open is added -->
+    <!-- Four .menu-item containers (disassembled from single .menu-container) -->
     <div class="menu-item" id="onlineAssetsWrapper" style="top: 35.4vh;">
       <span class="custom-text" style="left: 0;" id="online-assets">-  OnL1nE ASSETS</span>
     </div>
@@ -88,7 +87,7 @@
       <span class="custom-text" style="left: 0;" id="internal-unit">-  1nTERnAL Un1T</span>
     </div>
 
-    <!-- Additional custom-text from your original code (left side) -->
+    <!-- Additional custom-text from original code -->
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -104,11 +103,12 @@
 
     <div class="custom-line"></div>
 
+    <!-- Slide triggers from original code -->
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
   </div>
 
-  <!-- Script #1: Existing page fade-in, fullscreen logic, chat text, triggers, etc. -->
+  <!-- Script 1: Page fade-in, fullscreen logic, chat text, triggers, etc. (unchanged) -->
   <script>
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
@@ -167,7 +167,7 @@
       chatInput.focus();
     });
 
-    // On clicks in the far-left range (0..6.37vw, 28.5..84vh), shift chat text
+    // On clicks in far-left (0..6.37vw), shift chat text
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -201,8 +201,7 @@
       }
     });
 
-    // On clicks in the range left:28.87vw..32.44vw, top:28.5..84vh,
-    // we revert chat text from .chat-slide
+    // On clicks in ~left:28.87..32.44vw, revert chat text
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -239,12 +238,10 @@
     });
   </script>
 
-  <!-- Script #2: Submenu logic for each item, plus bounding-box click for 29vw->6.41vw -->
+  <!-- Script 2: Per-item submenu toggles, plus bounding-box click to slide all items -->
   <script>
-    // =========== SUBMENU LOGIC (same as before) ============
-    // If you want per-item toggles, we keep it.
+    // ===== 1) Submenu logic (unchanged except we removed "e.stopPropagation()" ) =====
 
-    // Helper: create a new text span inside the chosen container
     function addNewText(containerID, text, top, left) {
       let span = document.createElement("span");
       span.className = "custom-text new-text";
@@ -269,11 +266,13 @@
         document.getElementById("delivery-line").classList.remove("slide-down");
         document.getElementById("internal-unit").classList.remove("slide-down");
         newTexts.forEach(span => span.remove());
+
+        // remove .open from the current menu, sliding it back to 29vw
         if (currentMenu) {
-          // remove .open so that item slides back to left:29vw
-          const openWrapper = document.getElementById(currentMenu + "Wrapper");
-          if (openWrapper) {
-            openWrapper.classList.remove("open");
+          const wrapperId = currentMenu + "Wrapper";
+          const wrapperDiv = document.getElementById(wrapperId);
+          if (wrapperDiv) {
+            wrapperDiv.classList.remove("open");
           }
         }
         currentMenu = null;
@@ -317,9 +316,8 @@
       }, 700);
     }
 
-    // Clicking the item toggles it
+    // Removed e.stopPropagation() here so the click can bubble to doc-level bounding-box code
     document.getElementById("online-assets").addEventListener("click", function(e) {
-      e.stopPropagation();
       if (currentMenu === "online-assets") {
         closeSubmenu();
       } else {
@@ -335,8 +333,8 @@
         }
       }
     });
+
     document.getElementById("linkup-center").addEventListener("click", function(e) {
-      e.stopPropagation();
       if (currentMenu === "linkup-center") {
         closeSubmenu();
       } else {
@@ -352,8 +350,8 @@
         }
       }
     });
+
     document.getElementById("delivery-line").addEventListener("click", function(e) {
-      e.stopPropagation();
       if (currentMenu === "delivery-line") {
         closeSubmenu();
       } else {
@@ -369,8 +367,8 @@
         }
       }
     });
+
     document.getElementById("internal-unit").addEventListener("click", function(e) {
-      e.stopPropagation();
       if (currentMenu === "internal-unit") {
         closeSubmenu();
       } else {
@@ -387,9 +385,9 @@
       }
     });
 
-    // =========== NEW BOUNDING-BOX CLICK ============
+    // ===== 2) BOUNDING-BOX CLICK TO SLIDE ALL ITEMS =====
     // If user clicks anywhere in left:28.86..32.43vw, top:28.5..84vh,
-    // all four .menu-item blocks transform from 29vw -> 6.41vw
+    // we add .open to every .menu-item => all shift from 29vw -> 6.41vw
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -403,7 +401,7 @@
         event.clientX >= leftMin && event.clientX <= leftMax &&
         event.clientY >= topMin  && event.clientY <= topMax
       ) {
-        // Slide all items from 29vw to 6.41vw:
+        // Slide all from 29vw to 6.41vw
         document.getElementById("onlineAssetsWrapper").classList.add("open");
         document.getElementById("linkupCenterWrapper").classList.add("open");
         document.getElementById("deliveryLineWrapper").classList.add("open");

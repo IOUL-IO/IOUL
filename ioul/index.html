@@ -66,14 +66,16 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- Menu container; now positioned so the main items truly appear at left: 6.41vw -->
+    <!-- The menu container now starts at 6.41vw, so the main items sit at exactly 6.41vw from the page edge. -->
     <div class="menu-container">
-      <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
-      <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
-      <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
-      <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
+      <!-- Removed inline 'left: 6.41vw'; each item now only has top. -->
+      <span class="custom-text" style="top: 35.4vh;" id="online-assets">-  OnL1nE ASSETS</span>
+      <span class="custom-text" style="top: 41.6vh;" id="linkup-center">-  L1nKUP cEnTER</span>
+      <span class="custom-text" style="top: 47.8vh;" id="delivery-line">-  DEL1VERY L1nE</span>
+      <span class="custom-text" style="top: 54vh;" id="internal-unit">-  1nTERnAL Un1T</span>
     </div>
 
+    <!-- These remain at negative left offsets so they're "off-canvas" initially -->
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -213,7 +215,7 @@
     });
   </script>
   
-  <!-- New Script for Menu Interactions with Toggle/Inversion -->
+  <!-- (Submenu Toggle Script remains the same.) -->
   <script>
     // Helper to create a new text span inside the menu container
     function addNewText(text, top, left) {

@@ -57,6 +57,7 @@ body.non-fullscreen {
     transition: left 0.7s ease;
     z-index: 90;
 }
+/* When revealed, its z-index is raised */
 .menu-container.revealed {
     z-index: 110;
 }

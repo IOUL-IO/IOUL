@@ -6,9 +6,10 @@
     <title>IOUL</title>
     <link rel="icon" href="favicon.png" type="image/png" />
     <link rel="stylesheet" href="styles.css" />
+    <!-- No extra CSS changes needed in your stylesheet -->
   </head>
   <body class="non-fullscreen">
-    <!-- Layer elements (unchanged) -->
+    <!-- Layers -->
     <div class="layer-one"></div>
     <div class="layer-two"></div>
     <div class="layer-three"></div>
@@ -20,7 +21,43 @@
       <div class="line third"></div>
       <div class="line fourth"></div>
 
-      <!-- Slide container and time texts (unchanged) -->
+      <!-- Grid numbers 1-16 -->
+      <span class="grid-number num1">1</span>
+      <span class="grid-number num2">2</span>
+      <span class="grid-number num3">3</span>
+      <span class="grid-number num4">4</span>
+      <span class="grid-number num5">5</span>
+      <span class="grid-number num6">6</span>
+      <span class="grid-number num7">7</span>
+      <span class="grid-number num8">8</span>
+      <span class="grid-number num9">9</span>
+      <span class="grid-number num10">10</span>
+      <span class="grid-number num11">11</span>
+      <span class="grid-number num12">12</span>
+      <span class="grid-number num13">13</span>
+      <span class="grid-number num14">14</span>
+      <span class="grid-number num15">15</span>
+      <span class="grid-number num16">16</span>
+
+      <!-- Dashed grid lines 1-16 -->
+      <div class="grid-dashed dashed01"></div>
+      <div class="grid-dashed dashed02"></div>
+      <div class="grid-dashed dashed03"></div>
+      <div class="grid-dashed dashed04"></div>
+      <div class="grid-dashed dashed05"></div>
+      <div class="grid-dashed dashed06"></div>
+      <div class="grid-dashed dashed07"></div>
+      <div class="grid-dashed dashed08"></div>
+      <div class="grid-dashed dashed09"></div>
+      <div class="grid-dashed dashed10"></div>
+      <div class="grid-dashed dashed11"></div>
+      <div class="grid-dashed dashed12"></div>
+      <div class="grid-dashed dashed13"></div>
+      <div class="grid-dashed dashed14"></div>
+      <div class="grid-dashed dashed15"></div>
+      <div class="grid-dashed dashed16"></div>
+
+      <!-- Slide container and time texts -->
       <div class="slide-container">
         <div class="line dashed"></div>
         <div class="line dashed second-dashed"></div>
@@ -33,19 +70,26 @@
       </div>
 
       <div class="hover-area"></div>
-      <!-- chat-text remains at left:6.41vw -->
+      <!-- Chat text (always at left:6.41vw) -->
       <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
 
-      <!--
-           Menu container:
-           • It is positioned at left:29vw (i.e. under layer two).
-           • Menu texts are now placed at left:0vw (relative to the container) so they appear at 29vw.
+      <!-- 
+           Menu container: originally positioned at left:29vw (inside layer two).
+           We now remove the inline left offsets from menu texts so that they appear at 29vw.
       -->
       <div class="menu-container" style="left:29vw;">
-        <span class="custom-text" style="top: 35.4vh; left: 0vw;" id="online-assets">- OnL1nE ASSETS</span>
-        <span class="custom-text" style="top: 41.6vh; left: 0vw;" id="linkup-center">- L1nKUP cEnTER</span>
-        <span class="custom-text" style="top: 47.8vh; left: 0vw;" id="delivery-line">- DEL1VERY L1nE</span>
-        <span class="custom-text" style="top: 54vh; left: 0vw;" id="internal-unit">- 1nTERnAL Un1T</span>
+        <span class="custom-text" style="top: 35.4vh; left: 0vw;" id="online-assets">
+          - OnL1nE ASSETS
+        </span>
+        <span class="custom-text" style="top: 41.6vh; left: 0vw;" id="linkup-center">
+          - L1nKUP cEnTER
+        </span>
+        <span class="custom-text" style="top: 47.8vh; left: 0vw;" id="delivery-line">
+          - DEL1VERY L1nE
+        </span>
+        <span class="custom-text" style="top: 54vh; left: 0vw;" id="internal-unit">
+          - 1nTERnAL Un1T
+        </span>
       </div>
 
       <!-- Other custom-text elements (unchanged) -->
@@ -64,12 +108,14 @@
       
       <!-- Custom line element -->
       <div class="custom-line"></div>
+
       <div class="slide-trigger"></div>
       <div class="slide-trigger-reverse"></div>
     </div>
 
-    <!-- Basic scripts (page fade, fullscreen, chat input) remain unchanged -->
+    <!-- Scripts -->
     <script>
+      // Basic functions: page fade, fullscreen, and chat input (same as your original code)
       const pageContent = document.querySelector('.page-content');
       let pageFadedIn = false;
       function fadeInPage() {
@@ -102,34 +148,34 @@
         document.querySelector('.slide-container').classList.add('animate-slide');
         document.querySelector('.page-content').classList.add('animate-grid');
       });
-      const chatText = document.getElementById('chatText');
+      const chatTextEl = document.getElementById('chatText');
       let chatShownOnce = false;
       const hoverArea = document.querySelector('.hover-area');
       hoverArea.addEventListener('mouseenter', () => {
         if (!chatShownOnce && pageFadedIn) {
-          chatText.style.opacity = '1';
+          chatTextEl.style.opacity = '1';
           chatShownOnce = true;
         }
       });
-      chatText.addEventListener('click', () => {
+      chatTextEl.addEventListener('click', () => {
         const chatInput = document.createElement('input');
         chatInput.type = 'text';
         chatInput.classList.add('chat-input');
-        chatText.insertAdjacentElement('afterend', chatInput);
-        chatText.remove();
+        chatTextEl.insertAdjacentElement('afterend', chatInput);
+        chatTextEl.remove();
         chatInput.focus();
       });
-    </script>
-
-    <!-- Menu interactions and submenu functions -->
-    <script>
-      const menuContainer = document.querySelector(".menu-container");
-      let currentMenu = null;
       
-      // Functions to slide the entire menu container
+      // Menu interactions and submenu functions
+      const menuContainer = document.querySelector(".menu-container");
+      let currentMode = "normal";
+      
+      // Functions to slide the entire menu container.
+      // Initially, menuContainer is at left:29vw. When Region A is clicked,
+      // we slide it to left:6.41vw so that its children (with inline left:0vw)
+      // appear at 6.41vw.
       function slideMenuToLeft() {
         menuContainer.style.transition = "left 0.7s ease";
-        // Slide container from 29vw to 6.41vw
         menuContainer.style.left = "6.41vw";
       }
       function slideMenuToRight() {
@@ -137,29 +183,28 @@
         menuContainer.style.left = "29vw";
       }
       
-      // Submenu functions: after a delay, add submenu items.
-      // When the container is at 6.41vw, setting a submenu item's inline left to "1vw" gives an effective left of ~7.41vw.
+      // Submenu functions:
+      // When a menu item is clicked (after the container slide), we trigger the vertical slide‐down.
+      // Submenu items are created with inline left:7.4vw.
       function addSubmenuItem(text, top) {
         let span = document.createElement("span");
         span.className = "custom-text new-text";
         span.style.top = top + "vh";
-        span.style.left = "1vw";
+        span.style.left = "7.4vw"; // so that effective absolute left becomes ~7.4vw
         span.textContent = text;
         menuContainer.appendChild(span);
         setTimeout(() => { span.classList.add("visible"); }, 10);
       }
       function closeSubmenu() {
-        const newTexts = document.querySelectorAll('.new-text');
-        newTexts.forEach(span => {
-          span.style.transition = "opacity 0.3s ease";
-          span.classList.remove("visible");
+        const submenus = menuContainer.querySelectorAll('.new-text');
+        submenus.forEach(el => {
+          el.style.transition = "opacity 0.3s ease";
+          el.classList.remove("visible");
         });
         setTimeout(() => {
-          newTexts.forEach(span => span.remove());
-          currentMenu = null;
+          submenus.forEach(el => el.remove());
         }, 300);
       }
-      
       function openOnlineAssets() {
         setTimeout(() => {
           addSubmenuItem("cOnTEnT", 41.6);
@@ -187,81 +232,34 @@
         }, 700);
       }
       
-      // Menu item click handlers for submenu interactions
+      // Attach click handlers for submenu actions on menu items.
       document.getElementById("online-assets").addEventListener("click", function(e) {
         e.stopPropagation();
-        if (currentMenu === "online-assets") {
-          closeSubmenu();
-        } else {
-          if (currentMenu !== null) {
-            closeSubmenu();
-            setTimeout(() => {
-              openOnlineAssets();
-              currentMenu = "online-assets";
-            }, 300);
-          } else {
-            openOnlineAssets();
-            currentMenu = "online-assets";
-          }
+        if (currentMode === "menu") {
+          openOnlineAssets();
         }
       });
       document.getElementById("linkup-center").addEventListener("click", function(e) {
         e.stopPropagation();
-        if (currentMenu === "linkup-center") {
-          closeSubmenu();
-        } else {
-          if (currentMenu !== null) {
-            closeSubmenu();
-            setTimeout(() => {
-              openLinkupCenter();
-              currentMenu = "linkup-center";
-            }, 300);
-          } else {
-            openLinkupCenter();
-            currentMenu = "linkup-center";
-          }
+        if (currentMode === "menu") {
+          openLinkupCenter();
         }
       });
       document.getElementById("delivery-line").addEventListener("click", function(e) {
         e.stopPropagation();
-        if (currentMenu === "delivery-line") {
-          closeSubmenu();
-        } else {
-          if (currentMenu !== null) {
-            closeSubmenu();
-            setTimeout(() => {
-              openDeliveryLine();
-              currentMenu = "delivery-line";
-            }, 300);
-          } else {
-            openDeliveryLine();
-            currentMenu = "delivery-line";
-          }
+        if (currentMode === "menu") {
+          openDeliveryLine();
         }
       });
       document.getElementById("internal-unit").addEventListener("click", function(e) {
         e.stopPropagation();
-        if (currentMenu === "internal-unit") {
-          closeSubmenu();
-        } else {
-          if (currentMenu !== null) {
-            closeSubmenu();
-            setTimeout(() => {
-              openInternalUnit();
-              currentMenu = "internal-unit";
-            }, 300);
-          } else {
-            openInternalUnit();
-            currentMenu = "internal-unit";
-          }
+        if (currentMode === "menu") {
+          openInternalUnit();
         }
       });
       
       // Global region handlers
-      let currentMode = "normal";
-      const chatTextEl = document.getElementById("chatText");
-      
-      // Region A: clicking within Region A slides the menu container (and chat text) into menu mode.
+      // Region A: Clicking here should slide the chat text and the menu container.
       document.addEventListener("click", (event) => {
         const vwUnit = window.innerWidth / 100;
         const vhUnit = window.innerHeight / 100;
@@ -273,23 +271,22 @@
             event.clientY >= yMin && event.clientY <= yMax) {
           if (currentMode === "normal") {
             chatTextEl.style.transition = "left 0.7s ease";
-            chatTextEl.style.left = "-22.59vw";  // Moves chatText left (6.41vw - 29vw)
+            chatTextEl.style.left = "-22.59vw";  // as per original behavior
             slideMenuToLeft();
             currentMode = "menu";
           } else if (currentMode === "menu") {
             chatTextEl.style.transition = "left 0.7s ease";
             chatTextEl.style.left = "6.41vw";
             slideMenuToRight();
-            const newTexts = menuContainer.querySelectorAll(".new-text");
-            newTexts.forEach(span => span.remove());
-            currentMode = "normal";
-          } else if (currentMode === "custom") {
+            // Remove any open submenu items
+            const submenus = menuContainer.querySelectorAll('.new-text');
+            submenus.forEach(el => el.remove());
             currentMode = "normal";
           }
         }
       });
       
-      // Region B: for custom mode (unchanged)
+      // Region B: For custom mode (keeping your original behavior)
       document.addEventListener("click", (event) => {
         const vwUnit = window.innerWidth / 100;
         const vhUnit = window.innerHeight / 100;
@@ -305,13 +302,13 @@
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.add("custom-slide"));
             const customLine = document.querySelector('.custom-line');
-            if (customLine) { customLine.classList.add("custom-slide"); }
+            if(customLine) { customLine.classList.add("custom-slide"); }
             currentMode = "custom";
           } else if (currentMode === "custom") {
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.remove("custom-slide"));
             const customLine = document.querySelector('.custom-line');
-            if (customLine) { customLine.classList.remove("custom-slide"); }
+            if(customLine) { customLine.classList.remove("custom-slide"); }
             setTimeout(() => {
               chatTextEl.style.transition = "opacity 0.7s ease";
               chatTextEl.style.opacity = "1";
@@ -321,8 +318,8 @@
             chatTextEl.style.transition = "left 0.7s ease";
             chatTextEl.style.left = "6.41vw";
             slideMenuToRight();
-            const newTexts = menuContainer.querySelectorAll(".new-text");
-            newTexts.forEach(span => span.remove());
+            const submenus = menuContainer.querySelectorAll('.new-text');
+            submenus.forEach(el => el.remove());
             currentMode = "normal";
           }
         }

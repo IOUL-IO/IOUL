@@ -66,25 +66,14 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- Instead of one .menu-container, we now have four separate “mini” containers:
-         each at left 29vw, width 7vw, overflow hidden, so text beyond 36vw is clipped. -->
-    <div class="menu-item" style="top: 35.4vh;">
-      <span class="custom-text" style="top: 0; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
+    <!-- Menu container; now positioned so the main items truly appear at left: 6.41vw -->
+    <div class="menu-container">
+      <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
+      <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
+      <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
+      <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
     </div>
 
-    <div class="menu-item" style="top: 41.6vh;">
-      <span class="custom-text" style="top: 0; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
-    </div>
-
-    <div class="menu-item" style="top: 47.8vh;">
-      <span class="custom-text" style="top: 0; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
-    </div>
-
-    <div class="menu-item" style="top: 54vh;">
-      <span class="custom-text" style="top: 0; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
-    </div>
-
-    <!-- The submenu text items remain as-is, so their JS animation is unaffected. -->
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -97,7 +86,7 @@
     <span class="custom-text" style="top: 60.2vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
-
+    
     <div class="custom-line"></div>
 
     <div class="slide-trigger"></div>
@@ -105,7 +94,7 @@
   </div>
 
   <script>
-    // Existing page / fullscreen fade logic is unchanged
+    // (Existing page and fullscreen behavior code remains unchanged)
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -113,9 +102,7 @@
       pageFadedIn = true;
     }
     document.addEventListener('mousemove', function onFirstMouseMove() {
-      if (!pageFadedIn) {
-        fadeInPage();
-      }
+      if (!pageFadedIn) { fadeInPage(); }
       document.removeEventListener('mousemove', onFirstMouseMove);
     });
 
@@ -130,7 +117,6 @@
       }
     });
 
-    // The triggers for the dashed lines / grid numbers
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -144,7 +130,6 @@
       document.querySelector('.page-content').classList.add('animate-grid');
     });
 
-    // Chat text logic
     const chatText = document.getElementById('chatText');
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
@@ -163,20 +148,16 @@
       chatInput.focus();
     });
 
-    // Updated bounding boxes to use 6.41 for left range and 28.86–32.43 for the “inverse” range
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
-      const xLimit = 6.41 * vwUnit;
+      const xLimit = 6.37 * vwUnit;
       const yMin = 28.5 * vhUnit;
       const yMax = 84 * vhUnit;
-
-      // If click is in range of left 0–6.41 and top 28.5–84
       if (event.clientX >= 0 && event.clientX <= xLimit &&
           event.clientY >= yMin && event.clientY <= yMax) {
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
-          // fade out the chat text
           chatTextEl.style.transition = "opacity 0.1s ease";
           chatTextEl.style.opacity = "0";
           setTimeout(() => {
@@ -201,12 +182,10 @@
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
-      const leftMin = 28.86 * vwUnit;
-      const leftMax = 32.43 * vwUnit;
+      const leftMin = 28.87 * vwUnit;
+      const leftMax = 32.44 * vwUnit;
       const yMin = 28.5 * vhUnit;
       const yMax = 84 * vhUnit;
-
-      // If click is in range 28.86–32.43 (left) and 28.5–84 (top)
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         const chatTextEl = document.querySelector('.chat-text');
@@ -233,30 +212,37 @@
       }
     });
   </script>
-
-  <!-- The existing submenu toggling logic remains identical. -->
+  
+  <!-- New Script for Menu Interactions with Toggle/Inversion -->
   <script>
-    // Helper to create a new text span inside the "submenu"
+    // Helper to create a new text span inside the menu container
     function addNewText(text, top, left) {
       let span = document.createElement("span");
       span.className = "custom-text new-text";
       span.style.top = top + "vh";
       span.style.left = left + "vw";
       span.textContent = text;
-      document.body.appendChild(span); // or place it wherever your submenu items go
-      // Trigger fade-in
+      document.querySelector(".menu-container").appendChild(span);
+      // Trigger fade-in after insertion
       setTimeout(() => {
         span.classList.add("visible");
       }, 10);
     }
 
+    // Global variable to track which menu is currently open
     let currentMenu = null;
+
+    // Closes any open submenu.
+    // New texts are first faded out quickly (0.3s) and only after they’re fully invisible,
+    // the slide-down classes are removed.
     function closeSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
+        // Set a quicker fade-out transition (0.3s)
         span.style.transition = 'opacity 0.3s ease';
         span.classList.remove("visible");
       });
+      // Wait 300ms for the texts to fully disappear before starting the inverse slide-up.
       setTimeout(() => {
          document.getElementById("linkup-center").classList.remove("slide-down");
          document.getElementById("delivery-line").classList.remove("slide-down");
@@ -265,15 +251,20 @@
          currentMenu = null;
       }, 300);
     }
+
+    // Opens the submenu for "OnL1nE ASSETS"
     function openOnlineAssets() {
       document.getElementById("linkup-center").classList.add("slide-down");
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
+      // Wait 700ms for the slide-down to complete before adding submenu texts
       setTimeout(() => {
         addNewText("cOnTEnT", 41.6, 7.4);
         addNewText("LEARn1ng", 47.8, 7.4);
       }, 700);
     }
+
+    // Opens the submenu for "L1nKUP cEnTER"
     function openLinkupCenter() {
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
@@ -282,6 +273,8 @@
         addNewText("LABOUR", 54, 7.4);
       }, 700);
     }
+
+    // Opens the submenu for "DEL1VERY L1nE"
     function openDeliveryLine() {
       document.getElementById("internal-unit").classList.add("slide-down");
       setTimeout(() => {
@@ -289,7 +282,10 @@
         addNewText("PROJEcTS", 60.2, 7.4);
       }, 700);
     }
+
+    // Opens the submenu for "1nTERnAL Un1T"
     function openInternalUnit() {
+      // No slide-down needed here as there is no lower item to slide down.
       setTimeout(() => {
         addNewText("1nVEnTORY", 60.2, 7.4);
         addNewText("DEVOPS", 66.4, 7.4);
@@ -297,6 +293,8 @@
         addNewText("1T-cEnTER", 78.8, 7.4);
       }, 700);
     }
+
+    // Updated event listeners with toggle behavior so only one submenu is open at a time
 
     document.getElementById("online-assets").addEventListener("click", function(e) {
       if (currentMenu === "online-assets") {

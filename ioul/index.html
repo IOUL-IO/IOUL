@@ -66,7 +66,7 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- Menu container and items -->
+    <!-- Main menu container holding the 4 menu items and submenus -->
     <div class="menu-container">
       <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
       <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
@@ -86,16 +86,15 @@
     <span class="custom-text" style="top: 60.2vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
-
+    
     <div class="custom-line"></div>
 
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
   </div>
 
-  <!-- Existing Scripts -->
   <script>
-    // Page fade-in
+    // (Existing page and fullscreen behavior code remains unchanged)
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -107,7 +106,6 @@
       document.removeEventListener('mousemove', onFirstMouseMove);
     });
 
-    // Enter fullscreen if click near edges
     const EDGE_MARGIN = 11;
     document.addEventListener('click', (event) => {
       const { clientX: x, clientY: y } = event;
@@ -119,7 +117,6 @@
       }
     });
 
-    // Slide containers: the triggers
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -133,7 +130,6 @@
       document.querySelector('.page-content').classList.add('animate-grid');
     });
 
-    // Chat text behavior
     const chatText = document.getElementById('chatText');
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
@@ -152,7 +148,6 @@
       chatInput.focus();
     });
 
-    // Slide text and lines on click in region (0-6.37vw, 28.5-84vh)
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -184,7 +179,6 @@
       }
     });
 
-    // Slide text and lines back on click in region (28.87-32.44vw, 28.5-84vh)
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -218,8 +212,8 @@
       }
     });
   </script>
-
-  <!-- Menu Interactions + Submenu Toggle -->
+  
+  <!-- Script for Menu Interactions with Toggle/Inversion -->
   <script>
     // Helper to create a new text span inside the menu container
     function addNewText(text, top, left) {
@@ -235,14 +229,18 @@
       }, 10);
     }
 
+    // Global variable to track which menu is currently open
     let currentMenu = null;
 
+    // Closes any open submenu.
     function closeSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
+        // Fade out quickly (0.3s)
         span.style.transition = 'opacity 0.3s ease';
         span.classList.remove("visible");
       });
+      // Remove them fully after fade-out
       setTimeout(() => {
          document.getElementById("linkup-center").classList.remove("slide-down");
          document.getElementById("delivery-line").classList.remove("slide-down");
@@ -252,15 +250,19 @@
       }, 300);
     }
 
+    // Opens the submenu for "OnL1nE ASSETS"
     function openOnlineAssets() {
       document.getElementById("linkup-center").classList.add("slide-down");
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
+      // Wait 700ms for the slide-down to complete
       setTimeout(() => {
         addNewText("cOnTEnT", 41.6, 7.4);
         addNewText("LEARn1ng", 47.8, 7.4);
       }, 700);
     }
+
+    // Opens the submenu for "L1nKUP cEnTER"
     function openLinkupCenter() {
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
@@ -269,6 +271,8 @@
         addNewText("LABOUR", 54, 7.4);
       }, 700);
     }
+
+    // Opens the submenu for "DEL1VERY L1nE"
     function openDeliveryLine() {
       document.getElementById("internal-unit").classList.add("slide-down");
       setTimeout(() => {
@@ -276,7 +280,10 @@
         addNewText("PROJEcTS", 60.2, 7.4);
       }, 700);
     }
+
+    // Opens the submenu for "1nTERnAL Un1T"
     function openInternalUnit() {
+      // No lower items to slide down
       setTimeout(() => {
         addNewText("1nVEnTORY", 60.2, 7.4);
         addNewText("DEVOPS", 66.4, 7.4);
@@ -285,6 +292,7 @@
       }, 700);
     }
 
+    // Updated event listeners with toggle behavior (only one open at a time)
     document.getElementById("online-assets").addEventListener("click", function(e) {
       if (currentMenu === "online-assets") {
           closeSubmenu();
@@ -301,6 +309,7 @@
           }
       }
     });
+
     document.getElementById("linkup-center").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "linkup-center") {
@@ -318,6 +327,7 @@
           }
       }
     });
+
     document.getElementById("delivery-line").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "delivery-line") {
@@ -335,6 +345,7 @@
           }
       }
     });
+
     document.getElementById("internal-unit").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "internal-unit") {
@@ -350,30 +361,6 @@
               openInternalUnit();
               currentMenu = "internal-unit";
           }
-      }
-    });
-  </script>
-
-  <!-- DEBUG CODE: ANY CLICK toggles .menu-container + logs to console -->
-  <script>
-    document.addEventListener('click', (event) => {
-      // Use the full screen as bounding region
-      const leftMin = 0;
-      const leftMax = window.innerWidth;
-      const topMin  = 0;
-      const topMax  = window.innerHeight;
-
-      const { clientX: x, clientY: y } = event;
-
-      // Log everything in the console
-      console.log("Clicked at x="+ x + ", y=" + y);
-      console.log("Bounds: leftMin=" + leftMin + ", leftMax=" + leftMax +
-                  ", topMin=" + topMin + ", topMax=" + topMax);
-
-      if (x >= leftMin && x <= leftMax && y >= topMin && y <= topMax) {
-        console.log("Inside bounding box (entire screen). Toggling .opened...");
-        const menuContainer = document.querySelector('.menu-container');
-        menuContainer.classList.toggle('opened');
       }
     });
   </script>

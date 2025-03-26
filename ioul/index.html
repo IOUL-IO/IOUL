@@ -34,7 +34,7 @@
 
       <div class="hover-area"></div>
       
-      <!-- Chat text starts at left:6.41vw; will fade in on hover -->
+      <!-- Chat text (initially at left:6.41vw) -->
       <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
       
       <!-- Grid numbers 1–16 -->
@@ -81,7 +81,7 @@
         <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
       </div>
       
-      <!-- Extra custom-text elements (outside menu-container) -->
+      <!-- Extra custom-text elements -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
       <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -116,7 +116,7 @@
         document.removeEventListener('mousemove', onFirstMouseMove);
       });
       
-      // Fullscreen trigger near screen edges
+      // Fullscreen trigger near the screen edges
       const EDGE_MARGIN = 11;
       document.addEventListener('click', (event) => {
         const { clientX: x, clientY: y } = event;
@@ -128,7 +128,7 @@
         }
       });
       
-      // Slide triggers for additional animations (unchanged)
+      // Slide trigger functions for additional animations
       const inverseTrigger = document.querySelector('.slide-trigger');
       inverseTrigger.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -160,6 +160,14 @@
           chatTextEl.style.transition = "opacity 0.7s ease";
           chatTextEl.style.opacity = "1";
         }
+      });
+      
+      // Force chat-text fade-in on load
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          chatTextEl.style.transition = "opacity 0.7s ease";
+          chatTextEl.style.opacity = "1";
+        }, 100);
       });
     </script>
     
@@ -319,17 +327,10 @@
             chatTextNode2.style.left = "-22.59vw"; // 6.41 - 29
             menuContainer2.style.transition = "left 0.7s ease";
             menuContainer2.style.left = "0vw";
-            // Use transitionend event to add "revealed" when container is below 28.86vw boundary.
-            menuContainer2.addEventListener('transitionend', function handler(e) {
-              // Only if we are in menu mode:
-              if (currentMode === "menu") {
-                let computedLeft = parseFloat(getComputedStyle(menuContainer2).left);
-                if (computedLeft < 28.86 * vwUnit) {
-                  menuContainer2.classList.add("revealed");
-                }
-              }
-              menuContainer2.removeEventListener('transitionend', handler);
-            });
+            // After 0.7s, add the "revealed" class so that it rises above layer two.
+            setTimeout(() => {
+              menuContainer2.classList.add("revealed");
+            }, 700);
             currentMode = "menu";
           } else if (currentMode === "menu") {
             // Exit menu mode:

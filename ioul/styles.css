@@ -55,6 +55,14 @@ body.non-fullscreen {
     left: 29vw;
     width: calc(36vw - 29vw);
     overflow: hidden;
+
+    /* NEW CODE: Add a transition so it can slide horizontally */
+    transition: left 0.7s ease;
+}
+
+/* NEW CODE: When .menu-container has "opened" class, slide it to 6.41vw */
+.menu-container.opened {
+    left: 6.41vw;
 }
 
 .page-content {

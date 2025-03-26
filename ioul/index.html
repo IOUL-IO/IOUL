@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="styles.css" />
     <!-- New CSS: Define default transforms using CSS variables for menu items -->
     <style>
-      /* Ensure the menu-container keeps its original dimensions */
+      /* The menu container stays at left:29vw (under layer two) */
       .menu-container {
         position: absolute;
         left: 29vw;
@@ -16,12 +16,13 @@
         overflow: hidden;
         transition: left 0.7s ease;
       }
-      /* Menu items inside the menu-container:
+      /* For menu items inside the menu container:
          - They have an inline left of 6.41vw.
-         - Default horizontal translation (--tx) is set so that:
-             effective left = container left (29vw) + inline left (6.41vw) + (‑6.41vw) = 29vw.
-         - When we update --tx to ‑29vw, effective left becomes 29 + 6.41 – 29 = 6.41vw.
-         - Vertical translation (--ty) is initially 0.
+         - Default horizontal transform (--tx) is set to -6.41vw so that:
+             effective left = 29vw + 6.41vw + (-6.41vw) = 29vw.
+         - When updated to -29vw, effective left becomes:
+             29vw + 6.41vw + (-29vw) = 6.41vw.
+         - Vertical translation (--ty) remains 0 initially.
       */
       .menu-container .custom-text {
         --tx: -6.41vw;
@@ -37,13 +38,13 @@
     <div class="layer-three"></div>
 
     <div class="page-content">
-      <!-- Static lines -->
+      <!-- Static lines (unchanged) -->
       <div class="line original"></div>
       <div class="line second"></div>
       <div class="line third"></div>
       <div class="line fourth"></div>
 
-      <!-- Slide container and time texts -->
+      <!-- Slide container and time texts (unchanged) -->
       <div class="slide-container">
         <div class="line dashed"></div>
         <div class="line dashed second-dashed"></div>
@@ -56,20 +57,27 @@
       </div>
 
       <div class="hover-area"></div>
-      <!-- chat-text always begins at left:6.41vw -->
+      <!-- .chat-text always begins at left:6.41vw -->
       <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
 
-      <!-- The menu-container remains fixed at left:29vw.
+      <!-- The menu-container holds the menu items.
            Each menu item has an inline left of 6.41vw.
-           Their effective initial left will be: 29vw + 6.41vw + (‑6.41vw) = 29vw.
-           When we update the horizontal transform to ‑29vw via JavaScript,
-           effective left becomes 29 + 6.41 – 29 = 6.41vw.
+           With the default transform (--tx: -6.41vw), effective left = 29 + 6.41 - 6.41 = 29vw.
+           Once Region A is clicked, we animate --tx to -29vw so they slide to 6.41vw.
       -->
       <div class="menu-container">
-        <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
-        <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
-        <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
-        <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
+        <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">
+          -  OnL1nE ASSETS
+        </span>
+        <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">
+          -  L1nKUP cEnTER
+        </span>
+        <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">
+          -  DEL1VERY L1nE
+        </span>
+        <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">
+          -  1nTERnAL Un1T
+        </span>
       </div>
 
       <!-- Other custom-text elements (unchanged) -->
@@ -86,14 +94,14 @@
       <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
       <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
       
-      <!-- Custom line element -->
+      <!-- Custom line element (unchanged) -->
       <div class="custom-line"></div>
 
       <div class="slide-trigger"></div>
       <div class="slide-trigger-reverse"></div>
     </div>
 
-    <!-- Existing scripts: page fade, fullscreen, chat input, etc. -->
+    <!-- Existing scripts (page fade, fullscreen, chat input, etc.) -->
     <script>
       const pageContent = document.querySelector('.page-content');
       let pageFadedIn = false;
@@ -149,13 +157,13 @@
     <!-- Menu interactions and submenu functions -->
     <script>
       // Helper: create a new submenu text element.
+      // Submenu items will have an inline left of 7.4vw and a horizontal transform of -29vw.
       function addNewText(text, top, left) {
         let span = document.createElement("span");
         span.className = "custom-text new-text";
         span.style.top = top + "vh";
-        span.style.left = left + "vw";
-        // For submenu items, we want them to appear already slid in (i.e. --tx = -29vw)
-        span.style.setProperty('--tx', '-29vw');
+        span.style.left = left + "vw";  // for submenu items, use 7.4vw
+        span.style.setProperty('--tx', '-29vw'); // so effective left = 29 + 7.4 -29 = 7.4vw
         span.style.setProperty('--ty', '0');
         span.textContent = text;
         document.querySelector(".menu-container").appendChild(span);
@@ -183,31 +191,31 @@
         document.getElementById("delivery-line").style.setProperty('--ty', '13vh');
         document.getElementById("internal-unit").style.setProperty('--ty', '13vh');
         setTimeout(() => {
-          addNewText("cOnTEnT", 41.6, 7.4);
-          addNewText("LEARn1ng", 47.8, 7.4);
+          addNewText("cOnTEnT", 41.6, "7.4");  // submenu item left:7.4vw
+          addNewText("LEARn1ng", 47.8, "7.4");
         }, 700);
       }
       function openLinkupCenter() {
         document.getElementById("delivery-line").style.setProperty('--ty', '13vh');
         document.getElementById("internal-unit").style.setProperty('--ty', '13vh');
         setTimeout(() => {
-          addNewText("cHAnnELS", 47.8, 7.4);
-          addNewText("LABOUR", 54, 7.4);
+          addNewText("cHAnnELS", 47.8, "7.4");
+          addNewText("LABOUR", 54, "7.4");
         }, 700);
       }
       function openDeliveryLine() {
         document.getElementById("internal-unit").style.setProperty('--ty', '13vh');
         setTimeout(() => {
-          addNewText("cL1ENTS", 54, 7.4);
-          addNewText("PROJEcTS", 60.2, 7.4);
+          addNewText("cL1ENTS", 54, "7.4");
+          addNewText("PROJEcTS", 60.2, "7.4");
         }, 700);
       }
       function openInternalUnit() {
         setTimeout(() => {
-          addNewText("1nVEnTORY", 60.2, 7.4);
-          addNewText("DEVOPS", 66.4, 7.4);
-          addNewText("F1nAncES", 72.6, 7.4);
-          addNewText("1T-cEnTER", 78.8, 7.4);
+          addNewText("1nVEnTORY", 60.2, "7.4");
+          addNewText("DEVOPS", 66.4, "7.4");
+          addNewText("F1nAncES", 72.6, "7.4");
+          addNewText("1T-cEnTER", 78.8, "7.4");
         }, 700);
       }
       document.getElementById("online-assets").addEventListener("click", function(e) {
@@ -286,7 +294,7 @@
       const chatTextEl = document.getElementById("chatText");
       const menuContainer = document.querySelector(".menu-container");
 
-      // Region A (28.86–32.43vw by 28.5–84vh)
+      // Region A: when clicked, slide the menu items left from an effective left of 29vw to 6.41vw.
       document.addEventListener('click', (event) => {
         const vwUnit = window.innerWidth / 100;
         const vhUnit = window.innerHeight / 100;
@@ -297,18 +305,17 @@
         if (event.clientX >= leftMinA && event.clientX <= leftMaxA &&
             event.clientY >= yMin && event.clientY <= yMax) {
           if (currentMode === "normal") {
-            // Enter menu mode:
-            // Slide chat-text left and animate menu items horizontally.
+            // Enter menu mode: slide chat-text left and animate menu items.
             chatTextEl.style.transition = "left 0.7s ease";
             chatTextEl.style.left = "-22.59vw"; // Moves chat-text left.
             document.querySelectorAll('.menu-container .custom-text').forEach(el => {
               el.style.transition = "transform 0.7s ease";
-              // Animate horizontal variable from -6.41vw to -29vw
+              // Animate horizontal variable from initial (-6.41vw) to -29vw.
               el.style.setProperty('--tx', '-29vw');
             });
             currentMode = "menu";
           } else if (currentMode === "menu") {
-            // Exit menu mode:
+            // Exit menu mode: restore chat-text and reset menu items.
             chatTextEl.style.transition = "left 0.7s ease";
             chatTextEl.style.left = "6.41vw";
             document.querySelectorAll('.menu-container .custom-text').forEach(el => {
@@ -323,7 +330,7 @@
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.remove("custom-slide"));
             const customLine = document.querySelector('.custom-line');
-            if(customLine) { customLine.classList.remove("custom-slide"); }
+            if (customLine) { customLine.classList.remove("custom-slide"); }
             setTimeout(() => {
               chatTextEl.style.transition = "opacity 0.7s ease";
               chatTextEl.style.opacity = "1";
@@ -333,7 +340,7 @@
         }
       });
 
-      // Region B (0–6.41vw by 28.5–84vh)
+      // Region B: for entering/exiting custom mode (unchanged from before).
       document.addEventListener("click", (event) => {
         const vwUnit = window.innerWidth / 100;
         const vhUnit = window.innerHeight / 100;
@@ -344,27 +351,24 @@
         if (event.clientX >= leftMinB && event.clientX <= leftMaxB &&
             event.clientY >= yMin && event.clientY <= yMax) {
           if (currentMode === "normal") {
-            // Enter custom mode: fade out chat-text and slide in custom texts.
             chatTextEl.style.transition = "opacity 0.3s ease";
             chatTextEl.style.opacity = "0";
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.add("custom-slide"));
             const customLine = document.querySelector('.custom-line');
-            if(customLine) { customLine.classList.add("custom-slide"); }
+            if (customLine) { customLine.classList.add("custom-slide"); }
             currentMode = "custom";
           } else if (currentMode === "custom") {
-            // Exit custom mode: slide out custom texts and fade chat-text back in.
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.remove("custom-slide"));
             const customLine = document.querySelector('.custom-line');
-            if(customLine) { customLine.classList.remove("custom-slide"); }
+            if (customLine) { customLine.classList.remove("custom-slide"); }
             setTimeout(() => {
               chatTextEl.style.transition = "opacity 0.7s ease";
               chatTextEl.style.opacity = "1";
               currentMode = "normal";
             }, 700);
           } else if (currentMode === "menu") {
-            // If in menu mode, exit it.
             chatTextEl.style.transition = "left 0.7s ease";
             chatTextEl.style.left = "6.41vw";
             document.querySelectorAll('.menu-container .custom-text').forEach(el => {

@@ -11,15 +11,15 @@
     <div class="layer-one"></div>
     <div class="layer-two"></div>
     <div class="layer-three"></div>
-
+    
     <div class="page-content">
       <!-- Static lines -->
       <div class="line original"></div>
       <div class="line second"></div>
       <div class="line third"></div>
       <div class="line fourth"></div>
-
-      <!-- Slide container with time texts -->
+      
+      <!-- Slide container with dashed lines and time texts -->
       <div class="slide-container">
         <div class="line dashed"></div>
         <div class="line dashed second-dashed"></div>
@@ -30,19 +30,20 @@
         <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
         <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       </div>
-
+      
       <div class="hover-area"></div>
-      <!-- Chat text starts at left:6.41vw -->
+      
+      <!-- Chat text (initially at left:6.41vw) -->
       <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
-
-      <!-- Menu container (initially at left:29vw, hidden under layer two) -->
+      
+      <!-- Menu container (initially at left:29vw; its children have inline left values that will yield absolute positions when container slides in) -->
       <div class="menu-container" style="left:29vw;">
         <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
         <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
         <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
         <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
       </div>
-
+      
       <!-- Extra custom-text elements (outside the menu container) -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
@@ -56,15 +57,16 @@
       <span class="custom-text" style="top: 60.2vh; left: -23.29vw;">OPEn</span>
       <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
       <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
-      <!-- Accompanying line for extra custom-text -->
+      <!-- Custom line accompanying extra custom-text elements -->
       <div class="custom-line"></div>
-
+      
       <div class="slide-trigger"></div>
       <div class="slide-trigger-reverse"></div>
     </div>
-
-    <!-- JavaScript for basic behavior -->
+    
+    <!-- Basic Page Scripts -->
     <script>
+      // Fade in page content on first mouse move
       const pageContent = document.querySelector('.page-content');
       let pageFadedIn = false;
       function fadeInPage() {
@@ -75,6 +77,8 @@
         if (!pageFadedIn) { fadeInPage(); }
         document.removeEventListener('mousemove', onFirstMouseMove);
       });
+      
+      // Fullscreen trigger on clicks near the edges
       const EDGE_MARGIN = 11;
       document.addEventListener('click', (event) => {
         const { clientX: x, clientY: y } = event;
@@ -85,6 +89,8 @@
           document.documentElement.requestFullscreen();
         }
       });
+      
+      // Slide trigger functions (for other animations)
       const inverseTrigger = document.querySelector('.slide-trigger');
       inverseTrigger.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -97,20 +103,21 @@
         document.querySelector('.slide-container').classList.add('animate-slide');
         document.querySelector('.page-content').classList.add('animate-grid');
       });
-      const chatTextNode = document.getElementById("chatText");
-      chatTextNode.addEventListener('click', () => {
+      
+      // Chat text click: replace with an input
+      const chatTextEl = document.getElementById("chatText");
+      chatTextEl.addEventListener('click', () => {
         const chatInput = document.createElement('input');
         chatInput.type = 'text';
         chatInput.classList.add('chat-input');
-        chatTextNode.insertAdjacentElement('afterend', chatInput);
-        chatTextNode.remove();
+        chatTextEl.insertAdjacentElement('afterend', chatInput);
+        chatTextEl.remove();
         chatInput.focus();
       });
     </script>
-
-    <!-- JavaScript for menu interactions and designated-area listeners -->
+    
+    <!-- Menu Interactions and Submenu Functions -->
     <script>
-      // Menu interactions and submenu functions
       function addNewText(text, top, left) {
         let span = document.createElement("span");
         span.className = "custom-text new-text";
@@ -167,6 +174,7 @@
           addNewText("1T-cEnTER", 78.8, 7.4);
         }, 700);
       }
+      
       document.getElementById("online-assets").addEventListener("click", function(e) {
         if (currentMenu === "online-assets") {
             closeSubmenu();
@@ -235,77 +243,82 @@
         }
       });
     </script>
+    
+    <!-- Designated-area listener for Region A and Region B -->
     <script>
-      // Combined designated-area listener for Region A and Region B
+      // Global mode: "normal", "menu", or "custom"
       let currentMode = "normal";
-      const chatTextNode2 = document.getElementById("chatText");
-      const menuContainer = document.querySelector(".menu-container");
+      const chatTextNode = document.getElementById("chatText");
+      const menuCont = document.querySelector(".menu-container");
+      
       document.addEventListener("click", (event) => {
         const vw = window.innerWidth / 100;
         const vh = window.innerHeight / 100;
-        const regionA_leftMin = 28.86 * vw;
-        const regionA_leftMax = 32.43 * vw;
-        const regionB_leftMin = 0;
-        const regionB_leftMax = 6.41 * vw;
-        const yMin = 28.5 * vh;
-        const yMax = 84 * vh;
-        if (event.clientX >= regionA_leftMin && event.clientX <= regionA_leftMax &&
-            event.clientY >= yMin && event.clientY <= yMax) {
-          if (currentMode === "normal") {
-            // Enter menu mode: slide chat-text left and slide menu-container from 29vw to 0vw.
-            chatTextNode2.style.transition = "left 0.7s ease";
-            chatTextNode2.style.left = "-22.59vw"; // 6.41 - 29
-            menuContainer.style.transition = "left 0.7s ease";
-            menuContainer.style.left = "0vw";
+        const x = event.clientX;
+        const y = event.clientY;
+        // Define Region A: x between 28.86vw and 32.43vw; y between 28.5vh and 84vh.
+        const inRegionA = (x >= 28.86 * vw && x <= 32.43 * vw && y >= 28.5 * vh && y <= 84 * vh);
+        // Define Region B: x between 0 and 6.41vw; y between 28.5vh and 84vh.
+        const inRegionB = (x >= 0 && x <= 6.41 * vw && y >= 28.5 * vh && y <= 84 * vh);
+        
+        if(inRegionA) {
+          if(currentMode === "normal") {
+            // Enter menu mode: slide chat-text left and slide menu-container from left 29vw to 0vw.
+            chatTextNode.style.transition = "left 0.7s ease";
+            chatTextNode.style.left = "-22.59vw"; // 6.41 - 29
+            menuCont.style.transition = "left 0.7s ease";
+            menuCont.style.left = "0vw";
             currentMode = "menu";
-          } else if (currentMode === "menu") {
-            // Exit menu mode
-            chatTextNode2.style.transition = "left 0.7s ease";
-            chatTextNode2.style.left = "6.41vw";
-            menuContainer.style.transition = "left 0.7s ease";
-            menuContainer.style.left = "29vw";
-            const newTexts = menuContainer.querySelectorAll(".new-text");
+          } else if(currentMode === "menu") {
+            // Exit menu mode:
+            chatTextNode.style.transition = "left 0.7s ease";
+            chatTextNode.style.left = "6.41vw";
+            menuCont.style.transition = "left 0.7s ease";
+            menuCont.style.left = "29vw";
+            const newTexts = menuCont.querySelectorAll(".new-text");
             newTexts.forEach(span => span.remove());
             currentMode = "normal";
-          } else if (currentMode === "custom") {
+          } else if(currentMode === "custom") {
             // Exit custom mode: remove custom-slide classes then fade chat-text back in.
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.remove("custom-slide"));
             const customLine = document.querySelector('.custom-line');
             if(customLine){ customLine.classList.remove("custom-slide"); }
             setTimeout(() => {
-              chatTextNode2.style.transition = "opacity 0.7s ease";
-              chatTextNode2.style.opacity = "1";
+              chatTextNode.style.transition = "opacity 0.7s ease";
+              chatTextNode.style.opacity = "1";
               currentMode = "normal";
             }, 700);
           }
         }
-        else if (event.clientX >= regionB_leftMin && event.clientX <= regionB_leftMax &&
-                 event.clientY >= yMin && event.clientY <= yMax) {
-          if (currentMode === "normal") {
-            chatTextNode2.style.transition = "opacity 0.3s ease";
-            chatTextNode2.style.opacity = "0";
+        else if(inRegionB) {
+          if(currentMode === "normal") {
+            // Enter custom mode: fade out chat-text and slide in extra custom-text elements.
+            chatTextNode.style.transition = "opacity 0.3s ease";
+            chatTextNode.style.opacity = "0";
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.add("custom-slide"));
             const customLine = document.querySelector('.custom-line');
             if(customLine){ customLine.classList.add("custom-slide"); }
             currentMode = "custom";
-          } else if (currentMode === "custom") {
+          } else if(currentMode === "custom") {
+            // Exit custom mode:
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.remove("custom-slide"));
             const customLine = document.querySelector('.custom-line');
             if(customLine){ customLine.classList.remove("custom-slide"); }
             setTimeout(() => {
-              chatTextNode2.style.transition = "opacity 0.7s ease";
-              chatTextNode2.style.opacity = "1";
+              chatTextNode.style.transition = "opacity 0.7s ease";
+              chatTextNode.style.opacity = "1";
               currentMode = "normal";
             }, 700);
-          } else if (currentMode === "menu") {
-            chatTextNode2.style.transition = "left 0.7s ease";
-            chatTextNode2.style.left = "6.41vw";
-            menuContainer.style.transition = "left 0.7s ease";
-            menuContainer.style.left = "29vw";
-            const newTexts = menuContainer.querySelectorAll(".new-text");
+          } else if(currentMode === "menu") {
+            // If in menu mode, exit it (same as Region A exit).
+            chatTextNode.style.transition = "left 0.7s ease";
+            chatTextNode.style.left = "6.41vw";
+            menuCont.style.transition = "left 0.7s ease";
+            menuCont.style.left = "29vw";
+            const newTexts = menuCont.querySelectorAll(".new-text");
             newTexts.forEach(span => span.remove());
             currentMode = "normal";
           }

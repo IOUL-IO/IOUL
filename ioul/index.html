@@ -34,10 +34,10 @@
 
       <div class="hover-area"></div>
       
-      <!-- Chat text (starts at left:6.41vw, fades in on first mousemove) -->
+      <!-- Chat text (initially at left:6.41vw; fades in on first mouse move) -->
       <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
-      
-      <!-- Grid numbers -->
+
+      <!-- Grid numbers 1-16 -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -54,7 +54,7 @@
       <span class="grid-number num14">14</span>
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
-      
+
       <!-- Dashed grid lines -->
       <div class="grid-dashed dashed01"></div>
       <div class="grid-dashed dashed02"></div>
@@ -72,15 +72,15 @@
       <div class="grid-dashed dashed14"></div>
       <div class="grid-dashed dashed15"></div>
       <div class="grid-dashed dashed16"></div>
-      
-      <!-- Menu container (initially at left:29vw, hidden under layer two) -->
+
+      <!-- Menu container (initially at left:29vw so its children are hidden behind layer two) -->
       <div class="menu-container" style="left:29vw;">
         <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
         <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
         <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
         <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
       </div>
-      
+
       <!-- Extra custom-text elements (outside menu-container) -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
@@ -116,7 +116,7 @@
         document.removeEventListener('mousemove', onFirstMouseMove);
       });
       
-      // Fullscreen trigger near the screen edges
+      // Fullscreen trigger when clicking near screen edges
       const EDGE_MARGIN = 11;
       document.addEventListener('click', (event) => {
         const { clientX: x, clientY: y } = event;
@@ -128,7 +128,7 @@
         }
       });
       
-      // Slide trigger functions (for other animations)
+      // Slide trigger functions for additional animations (unchanged)
       const inverseTrigger = document.querySelector('.slide-trigger');
       inverseTrigger.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -336,7 +336,6 @@
         else if (event.clientX >= regionB_leftMin && event.clientX <= regionB_leftMax &&
                  event.clientY >= yMin && event.clientY <= yMax) {
           if (currentMode === "normal") {
-            // Enter custom mode: fade out chat-text and slide in extra custom-text elements.
             chatTextNode2.style.transition = "opacity 0.3s ease";
             chatTextNode2.style.opacity = "0";
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
@@ -355,7 +354,6 @@
               currentMode = "normal";
             }, 700);
           } else if (currentMode === "menu") {
-            // If in menu mode, exit it (same as Region A exit).
             chatTextNode2.style.transition = "left 0.7s ease";
             chatTextNode2.style.left = "6.41vw";
             menuContainer2.style.transition = "left 0.7s ease";

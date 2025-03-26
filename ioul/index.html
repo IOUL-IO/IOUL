@@ -34,7 +34,7 @@
 
       <div class="hover-area"></div>
       
-      <!-- Chat text (initially at left:6.41vw; will fade in on hover as before) -->
+      <!-- Chat text (initially at left:6.41vw; fades in on load/hover) -->
       <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
       
       <!-- Grid numbers (1–16) -->
@@ -128,7 +128,7 @@
         }
       });
       
-      // Slide trigger functions for additional animations (unchanged)
+      // Slide trigger functions (for additional animations)
       const inverseTrigger = document.querySelector('.slide-trigger');
       inverseTrigger.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -153,7 +153,7 @@
         chatInput.focus();
       });
       
-      // Force chat-text to fade in on load as in the original code (when hovered over region 6.41-28.86vw)
+      // Force chat-text fade-in on load (as originally when hovered over region 6.41–28.86vw)
       window.addEventListener('load', () => {
         setTimeout(() => {
           chatTextEl.style.transition = "opacity 0.7s ease";
@@ -300,6 +300,22 @@
       const chatTextNode2 = document.getElementById("chatText");
       const menuContainer2 = document.querySelector(".menu-container");
       
+      // Function to continuously check the computed left value and update z-index via class "revealed"
+      function checkMenuContainerZIndex() {
+        const computedLeft = parseFloat(getComputedStyle(menuContainer2).left);
+        const boundaryPx = 28.86 * (window.innerWidth / 100);
+        if (computedLeft < boundaryPx) {
+          menuContainer2.classList.add("revealed");
+        } else {
+          menuContainer2.classList.remove("revealed");
+        }
+      }
+      
+      function startZIndexCheck() {
+        const intervalId = setInterval(checkMenuContainerZIndex, 10);
+        setTimeout(() => { clearInterval(intervalId); }, 800);
+      }
+      
       document.addEventListener("click", (event) => {
         const vwUnit = window.innerWidth / 100;
         const vhUnit = window.innerHeight / 100;
@@ -313,13 +329,13 @@
         if (event.clientX >= regionA_leftMin && event.clientX <= regionA_leftMax &&
             event.clientY >= yMin && event.clientY <= yMax) {
           if (currentMode === "normal") {
-            // Enter menu mode: slide chat-text left and menu-container from left 29vw to 0vw.
+            // Enter menu mode: slide chat-text left and menu-container from 29vw to 0vw.
             chatTextNode2.style.transition = "left 0.7s ease";
             chatTextNode2.style.left = "-22.59vw"; // 6.41 - 29
             menuContainer2.style.transition = "left 0.7s ease";
             menuContainer2.style.left = "0vw";
-            // Add class "revealed" to raise its z-index so it becomes visible as it emerges
-            menuContainer2.classList.add("revealed");
+            // Start checking computed left to update z-index (class "revealed") once it crosses 28.86vw
+            startZIndexCheck();
             currentMode = "menu";
           } else if (currentMode === "menu") {
             // Exit menu mode:
@@ -336,7 +352,7 @@
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.remove("custom-slide"));
             const customLine = document.querySelector('.custom-line');
-            if(customLine){ customLine.classList.remove("custom-slide"); }
+            if (customLine) { customLine.classList.remove("custom-slide"); }
             setTimeout(() => {
               chatTextNode2.style.transition = "opacity 0.7s ease";
               chatTextNode2.style.opacity = "1";
@@ -352,20 +368,19 @@
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.add("custom-slide"));
             const customLine = document.querySelector('.custom-line');
-            if(customLine){ customLine.classList.add("custom-slide"); }
+            if (customLine) { customLine.classList.add("custom-slide"); }
             currentMode = "custom";
           } else if (currentMode === "custom") {
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.remove("custom-slide"));
             const customLine = document.querySelector('.custom-line');
-            if(customLine){ customLine.classList.remove("custom-slide"); }
+            if (customLine) { customLine.classList.remove("custom-slide"); }
             setTimeout(() => {
               chatTextNode2.style.transition = "opacity 0.7s ease";
               chatTextNode2.style.opacity = "1";
               currentMode = "normal";
             }, 700);
           } else if (currentMode === "menu") {
-            // If in menu mode, exit it (same as Region A exit).
             chatTextNode2.style.transition = "left 0.7s ease";
             chatTextNode2.style.left = "6.41vw";
             menuContainer2.style.transition = "left 0.7s ease";

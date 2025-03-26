@@ -31,7 +31,7 @@ body.non-fullscreen {
 .layer-two {
     position: fixed;
     top: 0;
-    left: 28.87vw; /* or 28.86vw if you prefer matching the click range exactly */
+    left: 28.87vw;
     width: calc(36vw - 28.87vw);
     height: 100vh;
     background-color: #ffffff;
@@ -47,15 +47,13 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* Each menu item stands alone at left:29vw, width:7vw, overflow hidden. */
-.menu-item {
+/* Menu container now starts at left: 0vw width: 36vw
+   so the inline-styled items appear at 6.41vw from page edge. */
+.menu-container {
     position: absolute;
-    left: 29vw;
-    width: 7vw;
+    left: 0vw;
+    width: 36vw;
     overflow: hidden;
-    /* If you want them *behind* .layer-two (z-index:100),
-       give them a lower z-index (e.g. 99) */
-    z-index: 99;
 }
 
 .page-content {
@@ -294,7 +292,7 @@ body.non-fullscreen {
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
-    left: 32.43vw; /* narrower area from 28.86 to 32.43 */
+    left: 32.43vw;
     width: calc(36vw - 32.43vw);
     height: calc(84vh - 28.5vh);
     background: transparent;
@@ -320,6 +318,7 @@ body.non-fullscreen {
     font-size: 0.47rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     transition: transform 0.7s ease;
+    /* Fix clipping issues */
     line-height: 1.6;
     overflow: visible;
 }
@@ -341,7 +340,7 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* Submenu slides */
+/* New CSS for slide-down and new text animations */
 .slide-down {
     transform: translateY(13vh);
 }

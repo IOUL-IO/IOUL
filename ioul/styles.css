@@ -286,7 +286,7 @@ body.non-fullscreen {
 .page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; }
 .page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; }
 
-/* Slide Container's children transition */
+/* Slide Container children transition */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -324,7 +324,7 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-/* Custom Text (for menu items and extra texts) */
+/* Custom Text */
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -348,7 +348,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* Additional transforms for chat and custom text sliding */
+/* Additional transforms */
 .chat-slide {
     transform: translateX(24vw);
 }

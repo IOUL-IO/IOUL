@@ -276,7 +276,7 @@ body.non-fullscreen {
 .slide-container.animate-slide > .time-text,
 .slide-container.animate-slide > .time-text.second-time-text,
 .slide-container.animate-slide > .time-text.third-time-text,
-.slide-container > .time-text.fourth-time-text {
+.slide-container.animate-slide > .time-text.fourth-time-text {
     transform: translateX(-91vw);
 }
 
@@ -330,7 +330,7 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* Slide-down & new-text animations (unchanged) */
+/* Slide-down & new-text animations */
 .slide-down {
     transform: translateY(13vh);
 }

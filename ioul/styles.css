@@ -19,7 +19,7 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
-/* Layers */
+/* --- Layers --- */
 .layer-one {
     position: fixed;
     top: 0;
@@ -48,14 +48,17 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* Menu container: initially left:29vw; when active, JS sets left:0vw */
+/* --- Menu Container ---
+   Initially, left:29vw so its children (with inline left values of 6.41vw)
+   are hidden behind layer two. When activated, JS sets left:0vw.
+*/
 .menu-container {
     position: absolute;
     left: 29vw;
     width: calc(36vw - 29vw);
     overflow: hidden;
     transition: left 0.7s ease;
-    z-index: 90; /* initially hidden behind layer two */
+    z-index: 90;
 }
 
 .page-content {
@@ -64,6 +67,7 @@ body.non-fullscreen {
     position: relative;
 }
 
+/* --- Lines --- */
 .line {
     position: absolute;
     height: 1px;
@@ -90,6 +94,7 @@ body.non-fullscreen {
     width: 57.8vw;
 }
 
+/* --- Slide Container --- */
 .slide-container {
     position: absolute;
     top: 0;
@@ -99,6 +104,7 @@ body.non-fullscreen {
     clip-path: inset(0 0 0 28.86vw);
 }
 
+/* --- Dashed Lines --- */
 .dashed {
     position: absolute;
     height: 1px;
@@ -124,6 +130,7 @@ body.non-fullscreen {
     width: 52.4vw;
 }
 
+/* --- Time Texts --- */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -147,6 +154,7 @@ body.non-fullscreen {
     left: 90.1vw;
 }
 
+/* --- Hover Area --- */
 .hover-area {
     position: absolute;
     top: 28.5vh;
@@ -155,6 +163,7 @@ body.non-fullscreen {
     height: calc(84vh - 28.5vh);
 }
 
+/* --- Chat Text --- */
 .chat-text {
     position: absolute;
     top: 77vh;
@@ -167,7 +176,7 @@ body.non-fullscreen {
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     cursor: pointer;
     opacity: 0;
-    transition: opacity 0.3s ease, transform 0.7s ease;
+    transition: opacity 0.3s ease, transform 0.7s ease, left 0.7s ease;
     line-height: 1.3;
     padding-top: 0.1rem;
 }
@@ -191,6 +200,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
+/* --- Grid Numbers --- */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -217,6 +227,7 @@ body.non-fullscreen {
 .num15  { top: 83.7vh; left: 138.0vw; }
 .num16  { top: 83.7vh; left: 152.8vw; }
 
+/* --- Grid Dashed --- */
 .grid-dashed {
     position: absolute;
     height: 1px;
@@ -341,7 +352,7 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* New CSS for slide-down and new text animations */
+/* New slide-down animations for submenu texts */
 .slide-down {
     transform: translateY(13vh);
 }

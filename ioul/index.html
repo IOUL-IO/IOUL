@@ -34,7 +34,7 @@
 
       <div class="hover-area"></div>
       
-      <!-- Chat text (initially at left:6.41vw) -->
+      <!-- Chat text (initially at left:6.41vw; will fade in on hover as before) -->
       <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
       
       <!-- Grid numbers (1–16) -->
@@ -73,7 +73,7 @@
       <div class="grid-dashed dashed15"></div>
       <div class="grid-dashed dashed16"></div>
       
-      <!-- Menu container (initially at left:29vw so its child menu items are hidden behind layer two) -->
+      <!-- Menu container (initially at left:29vw, hidden behind layer two) -->
       <div class="menu-container" style="left:29vw;">
         <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
         <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
@@ -153,9 +153,8 @@
         chatInput.focus();
       });
       
-      // Force chat-text to be visible on load (restoring previous fade-in behavior)
+      // Force chat-text to fade in on load as in the original code (when hovered over region 6.41-28.86vw)
       window.addEventListener('load', () => {
-        // Slight delay to ensure page content is ready
         setTimeout(() => {
           chatTextEl.style.transition = "opacity 0.7s ease";
           chatTextEl.style.opacity = "1";
@@ -319,7 +318,7 @@
             chatTextNode2.style.left = "-22.59vw"; // 6.41 - 29
             menuContainer2.style.transition = "left 0.7s ease";
             menuContainer2.style.left = "0vw";
-            // Raise menu container above layer two once sliding in
+            // Add class "revealed" to raise its z-index so it becomes visible as it emerges
             menuContainer2.classList.add("revealed");
             currentMode = "menu";
           } else if (currentMode === "menu") {
@@ -366,6 +365,7 @@
               currentMode = "normal";
             }, 700);
           } else if (currentMode === "menu") {
+            // If in menu mode, exit it (same as Region A exit).
             chatTextNode2.style.transition = "left 0.7s ease";
             chatTextNode2.style.left = "6.41vw";
             menuContainer2.style.transition = "left 0.7s ease";

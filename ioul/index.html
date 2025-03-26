@@ -66,8 +66,7 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- New container to hold the 4 menu items and submenu texts.
-         Its left is 29vw and width is calc(36vw - 29vw) so any text beyond 36vw is clipped. -->
+    <!-- Menu container and items -->
     <div class="menu-container">
       <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
       <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
@@ -87,13 +86,14 @@
     <span class="custom-text" style="top: 60.2vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
     <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
-    
+
     <div class="custom-line"></div>
 
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
   </div>
 
+  <!-- Existing Scripts -->
   <script>
     // (Existing page and fullscreen behavior code remains unchanged)
     const pageContent = document.querySelector('.page-content');
@@ -213,7 +213,7 @@
       }
     });
   </script>
-  
+
   <!-- New Script for Menu Interactions with Toggle/Inversion -->
   <script>
     // Helper to create a new text span inside the menu container
@@ -365,6 +365,27 @@
               openInternalUnit();
               currentMenu = "internal-unit";
           }
+      }
+    });
+  </script>
+
+  <!-- NEW CODE: Slide container from 29vw to 6.41vw on click in region (28.86-32.43vw, 28.5-84vh) -->
+  <script>
+    document.addEventListener('click', (event) => {
+      const vwUnit = window.innerWidth / 100;
+      const vhUnit = window.innerHeight / 100;
+
+      const leftMin = 28.86 * vwUnit;  // 28.86vw
+      const leftMax = 32.43 * vwUnit;  // 32.43vw
+      const topMin  = 28.5  * vhUnit;  // 28.5vh
+      const topMax  = 84    * vhUnit;  // 84vh
+
+      const { clientX: x, clientY: y } = event;
+
+      if (x >= leftMin && x <= leftMax && y >= topMin && y <= topMax) {
+        const menuContainer = document.querySelector('.menu-container');
+        // Toggle "opened" class: slides from left: 29vw --> left: 6.41vw
+        menuContainer.classList.toggle('opened');
       }
     });
   </script>

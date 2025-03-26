@@ -19,6 +19,7 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
+/* Layers */
 .layer-one {
     position: fixed;
     top: 0;
@@ -47,13 +48,14 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* New container for menu items and submenu texts */
+/* Menu Container */
 .menu-container {
     position: absolute;
     left: 29vw;
     width: calc(36vw - 29vw);
     overflow: hidden;
     transition: left 0.7s ease;
+    z-index: 90;
 }
 
 .page-content {
@@ -62,6 +64,7 @@ body.non-fullscreen {
     position: relative;
 }
 
+/* Lines */
 .line {
     position: absolute;
     height: 1px;
@@ -88,6 +91,7 @@ body.non-fullscreen {
     width: 57.8vw;
 }
 
+/* Slide Container */
 .slide-container {
     position: absolute;
     top: 0;
@@ -97,6 +101,7 @@ body.non-fullscreen {
     clip-path: inset(0 0 0 28.86vw);
 }
 
+/* Dashed Lines */
 .dashed {
     position: absolute;
     height: 1px;
@@ -122,6 +127,7 @@ body.non-fullscreen {
     width: 52.4vw;
 }
 
+/* Time Texts */
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -145,6 +151,7 @@ body.non-fullscreen {
     left: 90.1vw;
 }
 
+/* Hover Area */
 .hover-area {
     position: absolute;
     top: 28.5vh;
@@ -153,6 +160,7 @@ body.non-fullscreen {
     height: calc(84vh - 28.5vh);
 }
 
+/* Chat Text */
 .chat-text {
     position: absolute;
     top: 77vh;
@@ -165,8 +173,7 @@ body.non-fullscreen {
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     cursor: pointer;
     opacity: 0;
-    transition: opacity 0.3s ease, transform 0.7s ease;
-    /* (For left property changes, JS sets inline transition) */
+    transition: opacity 0.3s ease, transform 0.7s ease, left 0.7s ease;
     line-height: 1.3;
     padding-top: 0.1rem;
 }
@@ -190,6 +197,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
+/* Grid Numbers */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -216,6 +224,7 @@ body.non-fullscreen {
 .num15  { top: 83.7vh; left: 138.0vw; }
 .num16  { top: 83.7vh; left: 152.8vw; }
 
+/* Grid Dashed */
 .grid-dashed {
     position: absolute;
     height: 1px;
@@ -241,6 +250,7 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
+/* Animate grid numbers when .page-content.animate-grid is added */
 .page-content.animate-grid .grid-number.num1 { left: 48.8vw; }
 .page-content.animate-grid .grid-number.num2 { left: 63.7vw; }
 .page-content.animate-grid .grid-number.num3 { left: 78.5vw; }
@@ -258,6 +268,7 @@ body.non-fullscreen {
 .page-content.animate-grid .grid-number.num15 { left: 78.0vw; }
 .page-content.animate-grid .grid-number.num16 { left: 92.8vw; }
 
+/* Animate dashed grid lines when .page-content.animate-grid is added */
 .page-content.animate-grid .grid-dashed.dashed01 { left: 36vw; }
 .page-content.animate-grid .grid-dashed.dashed02 { left: 51vw; }
 .page-content.animate-grid .grid-dashed.dashed03 { left: 65.9vw; }
@@ -275,6 +286,7 @@ body.non-fullscreen {
 .page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; }
 .page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; }
 
+/* Slide Container's children transition */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -290,6 +302,7 @@ body.non-fullscreen {
     transform: translateX(-91vw);
 }
 
+/* Slide Triggers */
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
@@ -311,6 +324,7 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
+/* Custom Text (for menu items and extra texts) */
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -323,6 +337,7 @@ body.non-fullscreen {
     overflow: visible;
 }
 
+/* Custom Line */
 .custom-line {
     position: absolute;
     top: 47.8vh; 
@@ -333,6 +348,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
+/* Additional transforms for chat and custom text sliding */
 .chat-slide {
     transform: translateX(24vw);
 }
@@ -340,7 +356,7 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* New CSS for slide-down and new text animations */
+/* Slide-down animations for submenu texts */
 .slide-down {
     transform: translateY(13vh);
 }

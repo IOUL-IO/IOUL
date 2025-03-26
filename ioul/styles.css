@@ -47,15 +47,16 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* Each menu item starts at left: 29vw and can slide to 6.41vw */
+/* Four separate menu items, each at left:29vw by default.
+   When .open is added, they animate to left:6.41vw. */
 .menu-item {
     position: absolute;
     left: 29vw;
     width: calc(36vw - 29vw);
     overflow: hidden;
-    transition: left 0.7s ease; /* animate from 29vw -> 6.41vw */
+    transition: left 0.7s ease; 
+    z-index: 200; /* so it's clickable above transparent overlays */
 }
-/* When .open is applied, we shift from 29vw to 6.41vw */
 .menu-item.open {
     left: 6.41vw;
 }
@@ -66,7 +67,6 @@ body.non-fullscreen {
     position: relative;
 }
 
-/* The four main lines across the top, second, third, etc. */
 .line {
     position: absolute;
     height: 1px;
@@ -102,6 +102,7 @@ body.non-fullscreen {
     clip-path: inset(0 0 0 28.86vw);
 }
 
+/* Dashed lines in slide-container */
 .dashed {
     position: absolute;
     height: 1px;
@@ -158,7 +159,7 @@ body.non-fullscreen {
     height: calc(84vh - 28.5vh);
 }
 
-/* Chat text & input (unchanged) */
+/* Chat text & input from original */
 .chat-text {
     position: absolute;
     top: 77vh;
@@ -195,6 +196,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
+/* Grid numbering from original */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -246,7 +248,6 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
-/* When .page-content has .animate-grid, these shift horizontally */
 .page-content.animate-grid .grid-number.num1  { left: 48.8vw; }
 .page-content.animate-grid .grid-number.num2  { left: 63.7vw; }
 .page-content.animate-grid .grid-number.num3  { left: 78.5vw; }
@@ -281,7 +282,6 @@ body.non-fullscreen {
 .page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; }
 .page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; }
 
-/* Animate the .slide-container lines/time text leftward with .animate-slide */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -293,11 +293,10 @@ body.non-fullscreen {
 .slide-container.animate-slide > .time-text,
 .slide-container.animate-slide > .time-text.second-time-text,
 .slide-container.animate-slide > .time-text.third-time-text,
-.slide-container.animate-slide > .time-text.fourth-time-text {
+.slide-container > .time-text.fourth-time-text {
     transform: translateX(-91vw);
 }
 
-/* The invisible triggers to apply .animate-slide to .slide-container */
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
@@ -319,7 +318,6 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-/* Common .custom-text styles */
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -332,7 +330,6 @@ body.non-fullscreen {
     overflow: visible;
 }
 
-/* The horizontal line on the far left, also shifts with .custom-slide */
 .custom-line {
     position: absolute;
     top: 47.8vh; 
@@ -343,7 +340,6 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* When user clicks left side, we shift text horizontally by .chat-slide / .custom-slide */
 .chat-slide {
     transform: translateX(24vw);
 }
@@ -351,12 +347,10 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* Submenu items “slide down” a bit */
+/* Slide-down for items below the open one, new-text fade-in */
 .slide-down {
     transform: translateY(13vh);
 }
-
-/* Newly injected sub-items fade in */
 .new-text {
     opacity: 0;
     transition: opacity 0.7s ease;

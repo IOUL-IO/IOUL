@@ -32,12 +32,13 @@
         <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       </div>
 
+      <!-- Hover area: when the cursor enters here (between left 6.41 and 28.86vw) in normal mode, .chat-text fades in -->
       <div class="hover-area"></div>
       
-      <!-- Chat text (initially at left:6.41vw) -->
+      <!-- Chat text (initially at left:6.41vw; its opacity is set to 0 and only fades in on hover) -->
       <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
       
-      <!-- Grid numbers 1–16 -->
+      <!-- Grid numbers (1–16) -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -73,7 +74,7 @@
       <div class="grid-dashed dashed15"></div>
       <div class="grid-dashed dashed16"></div>
       
-      <!-- Menu container (initially at left:29vw, clipped by layer two) -->
+      <!-- Menu container (initially at left:29vw so its child menu items are hidden behind layer two) -->
       <div class="menu-container" style="left:29vw;">
         <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
         <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
@@ -81,7 +82,7 @@
         <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
       </div>
       
-      <!-- Extra custom-text elements -->
+      <!-- Extra custom-text elements (outside menu-container) -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
       <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -116,7 +117,7 @@
         document.removeEventListener('mousemove', onFirstMouseMove);
       });
       
-      // Fullscreen trigger near the screen edges
+      // Fullscreen trigger when clicking near screen edges
       const EDGE_MARGIN = 11;
       document.addEventListener('click', (event) => {
         const { clientX: x, clientY: y } = event;
@@ -153,7 +154,7 @@
         chatInput.focus();
       });
       
-      // Restore original hover behavior for chat-text
+      // Restore original hover behavior: when hovering over the area between left 6.4vw and 28.86vw, chat-text fades in (if in normal mode)
       const hoverArea = document.querySelector('.hover-area');
       hoverArea.addEventListener('mouseenter', () => {
         if (currentMode === "normal") {
@@ -162,7 +163,7 @@
         }
       });
       
-      // Force chat-text fade-in on load
+      // Force chat-text fade-in on load (if not triggered by hover)
       window.addEventListener('load', () => {
         setTimeout(() => {
           chatTextEl.style.transition = "opacity 0.7s ease";
@@ -327,10 +328,14 @@
             chatTextNode2.style.left = "-22.59vw"; // 6.41 - 29
             menuContainer2.style.transition = "left 0.7s ease";
             menuContainer2.style.left = "0vw";
-            // After 0.7s, add the "revealed" class so that it rises above layer two.
-            setTimeout(() => {
-              menuContainer2.classList.add("revealed");
-            }, 700);
+            // When transition ends, check if menuContainer2 is sufficiently left to add "revealed"
+            menuContainer2.addEventListener('transitionend', function handler(e) {
+              let computedLeft = parseFloat(getComputedStyle(menuContainer2).left);
+              if (computedLeft < 28.86 * vwUnit) {
+                menuContainer2.classList.add("revealed");
+              }
+              menuContainer2.removeEventListener('transitionend', handler);
+            });
             currentMode = "menu";
           } else if (currentMode === "menu") {
             // Exit menu mode:

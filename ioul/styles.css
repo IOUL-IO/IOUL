@@ -19,7 +19,7 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
-/* The 3 layered divs from your original */
+/* The 3 layers from your original code */
 .layer-one {
     position: fixed;
     top: 0;
@@ -48,17 +48,16 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* Each menu-item container at left:29vw, can animate to 6.41vw when .open */
 .menu-item {
     position: absolute;
     left: 29vw;
     width: calc(36vw - 29vw);
     overflow: hidden;
     transition: left 0.7s ease;
-    z-index: 200; 
+    z-index: 200;
 }
 .menu-item.open {
-    left: 6.41vw;
+    left: 6.41vw; /* animate from 29vw to 6.41vw */
 }
 
 .page-content {
@@ -67,7 +66,7 @@ body.non-fullscreen {
     position: relative;
 }
 
-/* The 4 horizontal lines from original */
+/* The 4 lines from original code */
 .line {
     position: absolute;
     height: 1px;
@@ -94,7 +93,7 @@ body.non-fullscreen {
     width: 57.8vw;
 }
 
-/* Slide-container w/ dashed lines */
+/* slide-container, dashed lines, time-text from original code */
 .slide-container {
     position: absolute;
     top: 0;
@@ -160,7 +159,7 @@ body.non-fullscreen {
     height: calc(84vh - 28.5vh);
 }
 
-/* Chat text from your original code */
+/* Chat text & input remain the same */
 .chat-text {
     position: absolute;
     top: 77vh;
@@ -197,7 +196,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* Grid numbering from original code */
+/* Grid numbers from original code */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -283,7 +282,7 @@ body.non-fullscreen {
 .page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; }
 .page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; }
 
-/* Slide container children shift left with .animate-slide */
+/* slide-container children shift left with .animate-slide */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -299,6 +298,7 @@ body.non-fullscreen {
     transform: translateX(-91vw);
 }
 
+/* The invisible triggers for animate-slide */
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
@@ -320,7 +320,7 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-/* custom-text and custom-line from original */
+/* custom-text from original code */
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -342,7 +342,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* Shift chat text horizontally */
+/* .chat-slide => shift chat text horizontally */
 .chat-slide {
     transform: translateX(24vw);
 }
@@ -350,7 +350,7 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* Submenu "slide-down" and new text fade-in (unchanged) */
+/* Submenu slide-down & fade-in of new text */
 .slide-down {
     transform: translateY(13vh);
 }

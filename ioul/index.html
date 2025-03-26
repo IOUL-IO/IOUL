@@ -32,13 +32,13 @@
         <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       </div>
 
-      <!-- Hover area for chat-text fade-in (original behavior: chat-text fades in on hover over area from left 6.4vw to 28.86vw) -->
+      <!-- Hover area for chat-text fade-in -->
       <div class="hover-area"></div>
       
-      <!-- Chat text starts at left:6.41vw; opacity remains 0 until hovered -->
+      <!-- Chat text (initially at left:6.41vw, opacity 0 until hover) -->
       <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
       
-      <!-- Grid numbers (1–16) -->
+      <!-- Grid numbers 1–16 -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -74,7 +74,7 @@
       <div class="grid-dashed dashed15"></div>
       <div class="grid-dashed dashed16"></div>
       
-      <!-- Menu container (initially at left:29vw, clipped by layer two) -->
+      <!-- Menu container (changed to fixed position) -->
       <div class="menu-container" style="left:29vw;">
         <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
         <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
@@ -82,7 +82,7 @@
         <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
       </div>
       
-      <!-- Extra custom-text elements (outside menu-container) -->
+      <!-- Extra custom-text elements -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
       <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -96,7 +96,7 @@
       <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
       <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
       
-      <!-- Custom line accompanying extra custom-text elements -->
+      <!-- Custom line -->
       <div class="custom-line"></div>
       
       <div class="slide-trigger"></div>
@@ -129,7 +129,7 @@
         }
       });
       
-      // Slide trigger functions for additional animations (unchanged)
+      // Slide trigger functions (unchanged)
       const inverseTrigger = document.querySelector('.slide-trigger');
       inverseTrigger.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -143,7 +143,7 @@
         document.querySelector('.page-content').classList.add('animate-grid');
       });
       
-      // Chat text click: replace with an input field
+      // Chat text click: replace with input
       const chatTextEl = document.getElementById("chatText");
       chatTextEl.addEventListener('click', () => {
         const chatInput = document.createElement('input');
@@ -154,8 +154,7 @@
         chatInput.focus();
       });
       
-      // Restore original hover behavior: when hovering over the area between left 6.4vw and 28.86vw, 
-      // if in normal mode, chat-text fades in.
+      // Hover behavior for chat-text: when hovering the designated area (6.4vw–28.86vw) in normal mode, fade in
       const hoverArea = document.querySelector('.hover-area');
       hoverArea.addEventListener('mouseenter', () => {
         if (currentMode === "normal") {
@@ -316,12 +315,12 @@
         if (event.clientX >= regionA_leftMin && event.clientX <= regionA_leftMax &&
             event.clientY >= yMin && event.clientY <= yMax) {
           if (currentMode === "normal") {
-            // Enter menu mode: slide chat-text left and menu-container from 29vw to 0vw.
+            // Enter menu mode: slide chat-text left and menu-container from left 29vw to 0vw.
             chatTextNode2.style.transition = "left 0.7s ease";
             chatTextNode2.style.left = "-22.59vw"; // 6.41 - 29
             menuContainer2.style.transition = "left 0.7s ease";
             menuContainer2.style.left = "0vw";
-            // After 700ms, add "revealed" to raise z-index
+            // After transition (700ms), add "revealed" to raise its z-index
             setTimeout(() => {
               menuContainer2.classList.add("revealed");
             }, 700);
@@ -337,7 +336,7 @@
             newTexts.forEach(span => span.remove());
             currentMode = "normal";
           } else if (currentMode === "custom") {
-            // Exit custom mode: remove custom-slide classes then fade chat-text back in.
+            // Exit custom mode:
             const customTexts = document.querySelectorAll('.custom-text:not(.menu-container .custom-text)');
             customTexts.forEach(el => el.classList.remove("custom-slide"));
             const customLine = document.querySelector('.custom-line');
@@ -370,7 +369,7 @@
               currentMode = "normal";
             }, 700);
           } else if (currentMode === "menu") {
-            // If in menu mode, exit it (same as Region A exit).
+            // Exit menu mode (same as Region A exit)
             chatTextNode2.style.transition = "left 0.7s ease";
             chatTextNode2.style.left = "6.41vw";
             menuContainer2.style.transition = "left 0.7s ease";

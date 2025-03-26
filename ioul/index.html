@@ -68,10 +68,11 @@
 
     <!-- Main menu container holding the 4 menu items and submenus -->
     <div class="menu-container">
-      <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
-      <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
-      <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
-      <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
+      <!-- CHANGED left from 6.41vw to -42.59vw, so they're initially offscreen. -->
+      <span class="custom-text" style="top: 35.4vh; left: -42.59vw;" id="online-assets">-  OnL1nE ASSETS</span>
+      <span class="custom-text" style="top: 41.6vh; left: -42.59vw;" id="linkup-center">-  L1nKUP cEnTER</span>
+      <span class="custom-text" style="top: 47.8vh; left: -42.59vw;" id="delivery-line">-  DEL1VERY L1nE</span>
+      <span class="custom-text" style="top: 54vh; left: -42.59vw;" id="internal-unit">-  1nTERnAL Un1T</span>
     </div>
 
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
@@ -148,6 +149,8 @@
       chatInput.focus();
     });
 
+    // If user clicks in the leftmost region (x <= 6.37vw),
+    // we add "custom-slide" to all .custom-text. That pushes them to ~left: 6.41vw.
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -179,6 +182,8 @@
       }
     });
 
+    // Clicking in the region between 28.87vw and 32.44vw
+    // removes "custom-slide," sending items back offscreen to ~left: -42.59vw.
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -236,11 +241,10 @@
     function closeSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
-        // Fade out quickly (0.3s)
+        // quick fade-out
         span.style.transition = 'opacity 0.3s ease';
         span.classList.remove("visible");
       });
-      // Remove them fully after fade-out
       setTimeout(() => {
          document.getElementById("linkup-center").classList.remove("slide-down");
          document.getElementById("delivery-line").classList.remove("slide-down");
@@ -255,7 +259,6 @@
       document.getElementById("linkup-center").classList.add("slide-down");
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
-      // Wait 700ms for the slide-down to complete
       setTimeout(() => {
         addNewText("cOnTEnT", 41.6, 7.4);
         addNewText("LEARn1ng", 47.8, 7.4);
@@ -283,7 +286,6 @@
 
     // Opens the submenu for "1nTERnAL Un1T"
     function openInternalUnit() {
-      // No lower items to slide down
       setTimeout(() => {
         addNewText("1nVEnTORY", 60.2, 7.4);
         addNewText("DEVOPS", 66.4, 7.4);
@@ -292,7 +294,7 @@
       }, 700);
     }
 
-    // Updated event listeners with toggle behavior (only one open at a time)
+    // Toggle logic so only one submenu is open at a time
     document.getElementById("online-assets").addEventListener("click", function(e) {
       if (currentMenu === "online-assets") {
           closeSubmenu();

@@ -35,7 +35,7 @@ body.non-fullscreen {
     width: calc(36vw - 28.87vw);
     height: 100vh;
     background-color: #ffffff;
-    z-index: 100; /* No pointer-events: none here */
+    z-index: 100;
 }
 .layer-three {
     position: fixed;
@@ -47,18 +47,16 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* Container for the 4 menu items and submenu texts.
-   Now with z-index: 200 so it appears above layer-two. */
+/* .menu-container is on top of layer-two by z-index: 200 */
 .menu-container {
     position: absolute;
     left: 29vw;
     width: calc(36vw - 29vw);
     overflow: hidden;
     transition: left 0.7s ease;
-    z-index: 200; /* <-- ensures it's above layer-two (z-index:100) */
+    z-index: 200; 
 }
 
-/* When .menu-container has "opened" class, slide to 6.41vw */
 .menu-container.opened {
     left: 6.41vw;
 }

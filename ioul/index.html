@@ -6,11 +6,27 @@
     <title>IOUL</title>
     <link rel="icon" href="favicon.png" type="image/png" />
     <link rel="stylesheet" href="styles.css" />
-    <!-- New CSS for menu items: using CSS variables for horizontal (--tx) and vertical (--ty) translations -->
+    <!-- New CSS: Define default transforms using CSS variables for menu items -->
     <style>
+      /* Ensure the menu-container keeps its original dimensions */
+      .menu-container {
+        position: absolute;
+        left: 29vw;
+        width: calc(36vw - 29vw);
+        overflow: hidden;
+        transition: left 0.7s ease;
+      }
+      /* Menu items inside the menu-container:
+         - They have an inline left of 6.41vw.
+         - Default horizontal translation (--tx) is set so that:
+             effective left = container left (29vw) + inline left (6.41vw) + (‑6.41vw) = 29vw.
+         - When we update --tx to ‑29vw, effective left becomes 29 + 6.41 – 29 = 6.41vw.
+         - Vertical translation (--ty) is initially 0.
+      */
       .menu-container .custom-text {
-        /* Inline left (6.41vw) plus container left (29vw) plus transform = effective absolute left */
-        transform: translateX(var(--tx, -6.41vw)) translateY(var(--ty, 0));
+        --tx: -6.41vw;
+        --ty: 0;
+        transform: translateX(var(--tx)) translateY(var(--ty));
         transition: transform 0.7s ease;
       }
     </style>
@@ -43,16 +59,17 @@
       <!-- chat-text always begins at left:6.41vw -->
       <span class="chat-text" id="chatText" style="left: 6.41vw;">cHAT . . .</span>
 
-      <!-- menu-container remains fixed at left:29vw.
+      <!-- The menu-container remains fixed at left:29vw.
            Each menu item has an inline left of 6.41vw.
-           Initially, setting --tx to -6.41vw makes their effective left:
-             29vw + 6.41vw + (-6.41vw) = 29vw.
-           Later, we animate --tx to -29vw so they appear at 29 + 6.41 - 29 = 6.41vw. -->
-      <div class="menu-container" style="left:29vw;">
-        <span class="custom-text" style="top: 35.4vh; left: 6.41vw; --tx: -6.41vw; --ty: 0;" id="online-assets">-  OnL1nE ASSETS</span>
-        <span class="custom-text" style="top: 41.6vh; left: 6.41vw; --tx: -6.41vw; --ty: 0;" id="linkup-center">-  L1nKUP cEnTER</span>
-        <span class="custom-text" style="top: 47.8vh; left: 6.41vw; --tx: -6.41vw; --ty: 0;" id="delivery-line">-  DEL1VERY L1nE</span>
-        <span class="custom-text" style="top: 54vh; left: 6.41vw; --tx: -6.41vw; --ty: 0;" id="internal-unit">-  1nTERnAL Un1T</span>
+           Their effective initial left will be: 29vw + 6.41vw + (‑6.41vw) = 29vw.
+           When we update the horizontal transform to ‑29vw via JavaScript,
+           effective left becomes 29 + 6.41 – 29 = 6.41vw.
+      -->
+      <div class="menu-container">
+        <span class="custom-text" style="top: 35.4vh; left: 6.41vw;" id="online-assets">-  OnL1nE ASSETS</span>
+        <span class="custom-text" style="top: 41.6vh; left: 6.41vw;" id="linkup-center">-  L1nKUP cEnTER</span>
+        <span class="custom-text" style="top: 47.8vh; left: 6.41vw;" id="delivery-line">-  DEL1VERY L1nE</span>
+        <span class="custom-text" style="top: 54vh; left: 6.41vw;" id="internal-unit">-  1nTERnAL Un1T</span>
       </div>
 
       <!-- Other custom-text elements (unchanged) -->
@@ -76,7 +93,7 @@
       <div class="slide-trigger-reverse"></div>
     </div>
 
-    <!-- Existing scripts for page fade, fullscreen, chat input, etc. -->
+    <!-- Existing scripts: page fade, fullscreen, chat input, etc. -->
     <script>
       const pageContent = document.querySelector('.page-content');
       let pageFadedIn = false;
@@ -137,7 +154,7 @@
         span.className = "custom-text new-text";
         span.style.top = top + "vh";
         span.style.left = left + "vw";
-        // For submenu items, set final horizontal transform to -29vw so they align with menu items
+        // For submenu items, we want them to appear already slid in (i.e. --tx = -29vw)
         span.style.setProperty('--tx', '-29vw');
         span.style.setProperty('--ty', '0');
         span.textContent = text;
@@ -161,7 +178,7 @@
         }, 300);
       }
       function openOnlineAssets() {
-        // Slide the sibling menu items down by 13vh before adding submenu texts.
+        // Slide sibling menu items down by 13vh before adding submenu texts.
         document.getElementById("linkup-center").style.setProperty('--ty', '13vh');
         document.getElementById("delivery-line").style.setProperty('--ty', '13vh');
         document.getElementById("internal-unit").style.setProperty('--ty', '13vh');
@@ -280,17 +297,18 @@
         if (event.clientX >= leftMinA && event.clientX <= leftMaxA &&
             event.clientY >= yMin && event.clientY <= yMax) {
           if (currentMode === "normal") {
-            // Enter menu mode: slide chat-text left and animate menu items horizontally.
+            // Enter menu mode:
+            // Slide chat-text left and animate menu items horizontally.
             chatTextEl.style.transition = "left 0.7s ease";
             chatTextEl.style.left = "-22.59vw"; // Moves chat-text left.
             document.querySelectorAll('.menu-container .custom-text').forEach(el => {
               el.style.transition = "transform 0.7s ease";
-              // Animate horizontal variable from initial (-6.41vw) to final (-29vw)
+              // Animate horizontal variable from -6.41vw to -29vw
               el.style.setProperty('--tx', '-29vw');
             });
             currentMode = "menu";
           } else if (currentMode === "menu") {
-            // Exit menu mode: slide chat-text back and reset menu items.
+            // Exit menu mode:
             chatTextEl.style.transition = "left 0.7s ease";
             chatTextEl.style.left = "6.41vw";
             document.querySelectorAll('.menu-container .custom-text').forEach(el => {

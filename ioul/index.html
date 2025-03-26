@@ -9,7 +9,7 @@
 </head>
 <body class="non-fullscreen">
   <div class="layer-one"></div>
-  <div class="layer-two"></div> <!-- No pointer-events: none here -->
+  <div class="layer-two"></div>
   <div class="layer-three"></div>
 
   <div class="page-content">
@@ -235,18 +235,14 @@
       }, 10);
     }
 
-    // Global variable to track which menu is currently open
     let currentMenu = null;
 
-    // Closes any open submenu.
     function closeSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
-        // Quick fade-out (0.3s)
         span.style.transition = 'opacity 0.3s ease';
         span.classList.remove("visible");
       });
-      // Wait 300ms for the texts to fully disappear
       setTimeout(() => {
          document.getElementById("linkup-center").classList.remove("slide-down");
          document.getElementById("delivery-line").classList.remove("slide-down");
@@ -256,7 +252,6 @@
       }, 300);
     }
 
-    // Opens the submenu for "OnL1nE ASSETS"
     function openOnlineAssets() {
       document.getElementById("linkup-center").classList.add("slide-down");
       document.getElementById("delivery-line").classList.add("slide-down");
@@ -266,8 +261,6 @@
         addNewText("LEARn1ng", 47.8, 7.4);
       }, 700);
     }
-
-    // Opens the submenu for "L1nKUP cEnTER"
     function openLinkupCenter() {
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
@@ -276,8 +269,6 @@
         addNewText("LABOUR", 54, 7.4);
       }, 700);
     }
-
-    // Opens the submenu for "DEL1VERY L1nE"
     function openDeliveryLine() {
       document.getElementById("internal-unit").classList.add("slide-down");
       setTimeout(() => {
@@ -285,8 +276,6 @@
         addNewText("PROJEcTS", 60.2, 7.4);
       }, 700);
     }
-
-    // Opens the submenu for "1nTERnAL Un1T"
     function openInternalUnit() {
       setTimeout(() => {
         addNewText("1nVEnTORY", 60.2, 7.4);
@@ -296,7 +285,6 @@
       }, 700);
     }
 
-    // Updated event listeners
     document.getElementById("online-assets").addEventListener("click", function(e) {
       if (currentMenu === "online-assets") {
           closeSubmenu();
@@ -313,7 +301,6 @@
           }
       }
     });
-
     document.getElementById("linkup-center").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "linkup-center") {
@@ -331,7 +318,6 @@
           }
       }
     });
-
     document.getElementById("delivery-line").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "delivery-line") {
@@ -349,7 +335,6 @@
           }
       }
     });
-
     document.getElementById("internal-unit").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "internal-unit") {
@@ -369,22 +354,25 @@
     });
   </script>
 
-  <!-- Slide container from 29vw to 6.41vw on click in region (28.86-32.43vw, 28.5-84vh) -->
+  <!-- DEBUG CODE: ANY CLICK toggles .menu-container + logs to console -->
   <script>
     document.addEventListener('click', (event) => {
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-
-      const leftMin = 28.86 * vwUnit;  // 28.86vw
-      const leftMax = 32.43 * vwUnit;  // 32.43vw
-      const topMin  = 28.5  * vhUnit;  // 28.5vh
-      const topMax  = 84    * vhUnit;  // 84vh
+      // Use the full screen as bounding region
+      const leftMin = 0;
+      const leftMax = window.innerWidth;
+      const topMin  = 0;
+      const topMax  = window.innerHeight;
 
       const { clientX: x, clientY: y } = event;
 
+      // Log everything in the console
+      console.log("Clicked at x="+ x + ", y=" + y);
+      console.log("Bounds: leftMin=" + leftMin + ", leftMax=" + leftMax +
+                  ", topMin=" + topMin + ", topMax=" + topMax);
+
       if (x >= leftMin && x <= leftMax && y >= topMin && y <= topMax) {
+        console.log("Inside bounding box (entire screen). Toggling .opened...");
         const menuContainer = document.querySelector('.menu-container');
-        // Toggle "opened" class: slides from left: 29vw --> left: 6.41vw
         menuContainer.classList.toggle('opened');
       }
     });

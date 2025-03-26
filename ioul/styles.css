@@ -35,10 +35,7 @@ body.non-fullscreen {
     width: calc(36vw - 28.87vw);
     height: 100vh;
     background-color: #ffffff;
-    z-index: 100;
-
-    /* NEW: ignore all pointer events so clicks pass through to .menu-container */
-    pointer-events: none;
+    z-index: 100; /* No pointer-events: none here */
 }
 .layer-three {
     position: fixed;
@@ -51,14 +48,14 @@ body.non-fullscreen {
 }
 
 /* Container for the 4 menu items and submenu texts.
-   Its left is 29vw, width is calc(36vw - 29vw),
-   and overflow is hidden so anything going past 36vw is clipped. */
+   Now with z-index: 200 so it appears above layer-two. */
 .menu-container {
     position: absolute;
     left: 29vw;
     width: calc(36vw - 29vw);
     overflow: hidden;
-    transition: left 0.7s ease; /* for sliding horizontally */
+    transition: left 0.7s ease;
+    z-index: 200; /* <-- ensures it's above layer-two (z-index:100) */
 }
 
 /* When .menu-container has "opened" class, slide to 6.41vw */

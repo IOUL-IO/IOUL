@@ -9,7 +9,7 @@
 </head>
 <body class="non-fullscreen">
   <div class="layer-one"></div>
-  <div class="layer-two"></div>
+  <div class="layer-two"></div> <!-- Will ignore pointer events so clicks pass through -->
   <div class="layer-three"></div>
 
   <div class="page-content">
@@ -95,7 +95,7 @@
 
   <!-- Existing Scripts -->
   <script>
-    // (Existing page and fullscreen behavior code remains unchanged)
+    // Page fade-in
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -107,6 +107,7 @@
       document.removeEventListener('mousemove', onFirstMouseMove);
     });
 
+    // Enter fullscreen if click near edges
     const EDGE_MARGIN = 11;
     document.addEventListener('click', (event) => {
       const { clientX: x, clientY: y } = event;
@@ -118,6 +119,7 @@
       }
     });
 
+    // Slide containers: the triggers
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -131,6 +133,7 @@
       document.querySelector('.page-content').classList.add('animate-grid');
     });
 
+    // Chat text behavior
     const chatText = document.getElementById('chatText');
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
@@ -149,6 +152,7 @@
       chatInput.focus();
     });
 
+    // Slide text and lines on click in region (0-6.37vw, 28.5-84vh)
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -180,6 +184,7 @@
       }
     });
 
+    // Slide text and lines back on click in region (28.87-32.44vw, 28.5-84vh)
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -214,7 +219,7 @@
     });
   </script>
 
-  <!-- New Script for Menu Interactions with Toggle/Inversion -->
+  <!-- Menu Interactions + Submenu Toggle -->
   <script>
     // Helper to create a new text span inside the menu container
     function addNewText(text, top, left) {
@@ -234,16 +239,14 @@
     let currentMenu = null;
 
     // Closes any open submenu.
-    // New texts are first faded out quickly (0.3s) and only after they’re fully invisible,
-    // the slide-down classes are removed.
     function closeSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
-        // Set a quicker fade-out transition (0.3s)
+        // Quick fade-out (0.3s)
         span.style.transition = 'opacity 0.3s ease';
         span.classList.remove("visible");
       });
-      // Wait 300ms for the texts to fully disappear before starting the inverse slide-up.
+      // Wait 300ms for the texts to fully disappear
       setTimeout(() => {
          document.getElementById("linkup-center").classList.remove("slide-down");
          document.getElementById("delivery-line").classList.remove("slide-down");
@@ -258,7 +261,6 @@
       document.getElementById("linkup-center").classList.add("slide-down");
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
-      // Wait 700ms for the slide-down to complete before adding submenu texts
       setTimeout(() => {
         addNewText("cOnTEnT", 41.6, 7.4);
         addNewText("LEARn1ng", 47.8, 7.4);
@@ -286,7 +288,6 @@
 
     // Opens the submenu for "1nTERnAL Un1T"
     function openInternalUnit() {
-      // No slide-down needed here as there is no lower item to slide down.
       setTimeout(() => {
         addNewText("1nVEnTORY", 60.2, 7.4);
         addNewText("DEVOPS", 66.4, 7.4);
@@ -295,8 +296,7 @@
       }, 700);
     }
 
-    // Updated event listeners with toggle behavior so only one submenu is open at a time
-
+    // Updated event listeners
     document.getElementById("online-assets").addEventListener("click", function(e) {
       if (currentMenu === "online-assets") {
           closeSubmenu();

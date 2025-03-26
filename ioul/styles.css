@@ -47,18 +47,14 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* .menu-container is on top of layer-two by z-index: 200 */
+/* Updated .menu-container so it starts at left: 0 
+   and has a width of 36vw for clipping at 36vw. */
 .menu-container {
     position: absolute;
-    left: 29vw;
-    width: calc(36vw - 29vw);
+    top: 0;
+    left: 0;
+    width: 36vw;
     overflow: hidden;
-    transition: left 0.7s ease;
-    z-index: 200; 
-}
-
-.menu-container.opened {
-    left: 6.41vw;
 }
 
 .page-content {
@@ -344,7 +340,7 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* For slide-down submenus and newly added texts */
+/* Slide-down and new text animations */
 .slide-down {
     transform: translateY(13vh);
 }

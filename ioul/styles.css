@@ -47,8 +47,7 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* Updated .menu-container so it starts at left: 0 
-   and has a width of 36vw for clipping at 36vw. */
+/* Positions container at left: 0, width: 36vw for clipping. */
 .menu-container {
     position: absolute;
     top: 0;
@@ -207,14 +206,14 @@ body.non-fullscreen {
 .num6  { top: 47vh;   left: 123.7vw; }
 .num7  { top: 47vh;   left: 138.5vw; }
 .num8  { top: 47vh;   left: 153.3vw; }
-.num9   { top: 65.5vh; left: 108.8vw; }
-.num10  { top: 65.5vh; left: 123.3vw; }
-.num11  { top: 65.5vh; left: 138.3vw; }
-.num12  { top: 65.5vh; left: 152.9vw; }
-.num13  { top: 83.7vh; left: 108.3vw; }
-.num14  { top: 83.7vh; left: 123.2vw; }
-.num15  { top: 83.7vh; left: 138.0vw; }
-.num16  { top: 83.7vh; left: 152.8vw; }
+.num9  { top: 65.5vh; left: 108.8vw; }
+.num10 { top: 65.5vh; left: 123.3vw; }
+.num11 { top: 65.5vh; left: 138.3vw; }
+.num12 { top: 65.5vh; left: 152.9vw; }
+.num13 { top: 83.7vh; left: 108.3vw; }
+.num14 { top: 83.7vh; left: 123.2vw; }
+.num15 { top: 83.7vh; left: 138.0vw; }
+.num16 { top: 83.7vh; left: 152.8vw; }
 
 .grid-dashed {
     position: absolute;
@@ -241,15 +240,15 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
-.page-content.animate-grid .grid-number.num1 { left: 48.8vw; }
-.page-content.animate-grid .grid-number.num2 { left: 63.7vw; }
-.page-content.animate-grid .grid-number.num3 { left: 78.5vw; }
-.page-content.animate-grid .grid-number.num4 { left: 93.3vw; }
-.page-content.animate-grid .grid-number.num5 { left: 48.8vw; }
-.page-content.animate-grid .grid-number.num6 { left: 63.7vw; }
-.page-content.animate-grid .grid-number.num7 { left: 78.5vw; }
-.page-content.animate-grid .grid-number.num8 { left: 93.3vw; }
-.page-content.animate-grid .grid-number.num9 { left: 48.8vw; }
+.page-content.animate-grid .grid-number.num1  { left: 48.8vw; }
+.page-content.animate-grid .grid-number.num2  { left: 63.7vw; }
+.page-content.animate-grid .grid-number.num3  { left: 78.5vw; }
+.page-content.animate-grid .grid-number.num4  { left: 93.3vw; }
+.page-content.animate-grid .grid-number.num5  { left: 48.8vw; }
+.page-content.animate-grid .grid-number.num6  { left: 63.7vw; }
+.page-content.animate-grid .grid-number.num7  { left: 78.5vw; }
+.page-content.animate-grid .grid-number.num8  { left: 93.3vw; }
+.page-content.animate-grid .grid-number.num9  { left: 48.8vw; }
 .page-content.animate-grid .grid-number.num10 { left: 63.3vw; }
 .page-content.animate-grid .grid-number.num11 { left: 78.3vw; }
 .page-content.animate-grid .grid-number.num12 { left: 92.9vw; }
@@ -311,6 +310,11 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
+/* 
+   Each .custom-text starts at left: -42.59vw inline style. 
+   Then .custom-slide => transform: translateX(49vw), 
+   so the final net left is ~6.41vw.
+*/
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -333,6 +337,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
+/* Sliding everything to ~6.41vw from the left */
 .chat-slide {
     transform: translateX(24vw);
 }
@@ -340,7 +345,7 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* Slide-down and new text animations */
+/* Slide-down for submenus */
 .slide-down {
     transform: translateY(13vh);
 }

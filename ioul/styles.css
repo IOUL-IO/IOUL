@@ -36,6 +36,9 @@ body.non-fullscreen {
     height: 100vh;
     background-color: #ffffff;
     z-index: 100;
+
+    /* NEW: ignore all pointer events so clicks pass through to .menu-container */
+    pointer-events: none;
 }
 .layer-three {
     position: fixed;
@@ -47,20 +50,18 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* New container for the 4 menu items and submenu texts.
-   Its left is 29vw, width is calc(36vw - 29vw) (about 7vw),
-   and overflow is hidden so any text going past 36vw is clipped. */
+/* Container for the 4 menu items and submenu texts.
+   Its left is 29vw, width is calc(36vw - 29vw),
+   and overflow is hidden so anything going past 36vw is clipped. */
 .menu-container {
     position: absolute;
     left: 29vw;
     width: calc(36vw - 29vw);
     overflow: hidden;
-
-    /* NEW CODE: Add a transition so it can slide horizontally */
-    transition: left 0.7s ease;
+    transition: left 0.7s ease; /* for sliding horizontally */
 }
 
-/* NEW CODE: When .menu-container has "opened" class, slide it to 6.41vw */
+/* When .menu-container has "opened" class, slide to 6.41vw */
 .menu-container.opened {
     left: 6.41vw;
 }
@@ -327,7 +328,6 @@ body.non-fullscreen {
     font-size: 0.47rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     transition: transform 0.7s ease;
-    /* Fix clipping issues */
     line-height: 1.6;
     overflow: visible;
 }
@@ -349,7 +349,7 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* New CSS for slide-down and new text animations */
+/* For slide-down submenus and newly added texts */
 .slide-down {
     transform: translateY(13vh);
 }

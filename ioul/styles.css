@@ -57,7 +57,6 @@ body.non-fullscreen {
     transition: left 0.7s ease;
     z-index: 90;
 }
-/* When revealed, its z-index is raised */
 .menu-container.revealed {
     z-index: 110;
 }
@@ -328,7 +327,7 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-/* Custom Text */
+/* Custom Text (for menu items and extra texts) */
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;

@@ -9,7 +9,7 @@
 </head>
 <body class="non-fullscreen">
   <div class="layer-one"></div>
-  <div class="layer-two"></div> <!-- Will ignore pointer events so clicks pass through -->
+  <div class="layer-two"></div> <!-- No pointer-events: none here -->
   <div class="layer-three"></div>
 
   <div class="page-content">
@@ -369,7 +369,7 @@
     });
   </script>
 
-  <!-- NEW CODE: Slide container from 29vw to 6.41vw on click in region (28.86-32.43vw, 28.5-84vh) -->
+  <!-- Slide container from 29vw to 6.41vw on click in region (28.86-32.43vw, 28.5-84vh) -->
   <script>
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;

@@ -8,16 +8,13 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="non-fullscreen">
-  <!-- Standard layers -->
+  <!-- Existing layers -->
   <div class="layer-one"></div>
   <div class="layer-two"></div>
   <div class="layer-three"></div>
 
-  <!-- 
-    NEW: A 'layer-four' from left=36vw to left=94.17vw (the start of layer-three). 
-    This white rectangle is behind the dashed lines/time-text but in front of the text,
-    so any text beyond 36vw is hidden behind it.
-  -->
+  <!-- New 'layer-four' from 36vw to 94.17vw, at a z-index higher than the text (so it hides text) 
+       but below lines/time-text. -->
   <div class="layer-four"></div>
 
   <div class="page-content">
@@ -40,6 +37,7 @@
     <div class="hover-area"></div>
     <span class="chat-text" id="chatText">cHAT . . .</span>
 
+    <!-- Grid numbers -->
     <span class="grid-number num1">1</span>
     <span class="grid-number num2">2</span>
     <span class="grid-number num3">3</span>
@@ -57,6 +55,7 @@
     <span class="grid-number num15">15</span>
     <span class="grid-number num16">16</span>
 
+    <!-- Grid dashed lines -->
     <div class="grid-dashed dashed01"></div>
     <div class="grid-dashed dashed02"></div>
     <div class="grid-dashed dashed03"></div>
@@ -74,13 +73,16 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- Main menu items, no container, each behind layer-four if they pass 36vw -->
+    <!-- 
+      Main menu items. Each at left: 29vw and behind .layer-four if they cross 36vw. 
+      No .menu-container is used.
+    -->
     <span class="custom-text" style="top: 35.4vh; left: 29vw;" id="online-assets">-  OnL1nE ASSETS</span>
     <span class="custom-text" style="top: 41.6vh; left: 29vw;" id="linkup-center">-  L1nKUP cEnTER</span>
     <span class="custom-text" style="top: 47.8vh; left: 29vw;" id="delivery-line">-  DEL1VERY L1nE</span>
     <span class="custom-text" style="top: 54vh; left: 29vw;" id="internal-unit">-  1nTERnAL Un1T</span>
 
-    <!-- Submenu items also behind layer-four if they cross 36vw -->
+    <!-- Submenu items also behind .layer-four for any portion beyond 36vw -->
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -101,7 +103,9 @@
   </div>
 
   <script>
-    // Fullscreen & page fade-in remain the same
+    // ---------------------
+    // PAGE FADE-IN & FULLSCREEN LOGIC
+    // ---------------------
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -124,6 +128,9 @@
       }
     });
 
+    // ---------------------
+    // SLIDE IN/OUT TRIGGERS
+    // ---------------------
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -137,7 +144,9 @@
       document.querySelector('.page-content').classList.add('animate-grid');
     });
 
-    // Chat text fade logic remains unchanged
+    // ---------------------
+    // CHAT TEXT & INPUT
+    // ---------------------
     const chatText = document.getElementById('chatText');
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
@@ -156,13 +165,16 @@
       chatInput.focus();
     });
 
-    // Slide effect on left edge click
+    // ---------------------
+    // SLIDE ANIMATION ON LEFT/MID CLICKS
+    // ---------------------
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const xLimit = 6.37 * vwUnit;
       const yMin = 28.5 * vhUnit;
       const yMax = 84 * vhUnit;
+      // If clicking left (within 6.37vw) triggers forward slide
       if (event.clientX >= 0 && event.clientX <= xLimit &&
           event.clientY >= yMin && event.clientY <= yMax) {
         const chatTextEl = document.querySelector('.chat-text');
@@ -177,9 +189,8 @@
         if (chatInputEl) {
           chatInputEl.classList.add('chat-slide');
         }
-        document.querySelectorAll('.custom-text').forEach(el => {
-          el.classList.add('custom-slide');
-        });
+        const customTextEls = document.querySelectorAll('.custom-text');
+        customTextEls.forEach(el => el.classList.add('custom-slide'));
         const customLineEl = document.querySelector('.custom-line');
         if (customLineEl) {
           customLineEl.classList.add('custom-slide');
@@ -187,7 +198,6 @@
       }
     });
 
-    // Reverse slide effect on mid-area click
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -195,6 +205,7 @@
       const leftMax = 32.44 * vwUnit;
       const yMin = 28.5 * vhUnit;
       const yMax = 84 * vhUnit;
+      // If clicking mid area (roughly 28.87->32.44vw) triggers reverse slide
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         const chatTextEl = document.querySelector('.chat-text');
@@ -208,7 +219,8 @@
         if (chatInputEl) {
           chatInputEl.classList.remove('chat-slide');
         }
-        document.querySelectorAll('.custom-text').forEach(el => {
+        const customTextEls = document.querySelectorAll('.custom-text');
+        customTextEls.forEach(el => {
           el.classList.remove('custom-slide');
           el.style.transition = "transform 0.7s ease";
         });
@@ -221,7 +233,11 @@
     });
   </script>
 
-  <!-- Submenu logic appends items to .page-content, behind .layer-four past 36vw -->
+  <!-- ---------------------
+       SUBMENU / TOGGLE SCRIPT
+       STILL APPENDS ITEMS TO .page-content
+       ANYTHING PAST 36VW HIDDEN BEHIND .layer-four
+       --------------------- -->
   <script>
     function addNewText(text, top, leftVw) {
       const span = document.createElement("span");
@@ -230,6 +246,7 @@
       span.style.left = leftVw + "vw";
       span.textContent = text;
       document.querySelector(".page-content").appendChild(span);
+      // fade-in
       setTimeout(() => {
         span.classList.add("visible");
       }, 10);
@@ -261,6 +278,7 @@
         addNewText("LEARn1ng", 47.8, 29.7);
       }, 700);
     }
+
     function openLinkupCenter() {
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
@@ -269,6 +287,7 @@
         addNewText("LABOUR", 54, 29.7);
       }, 700);
     }
+
     function openDeliveryLine() {
       document.getElementById("internal-unit").classList.add("slide-down");
       setTimeout(() => {
@@ -276,6 +295,7 @@
         addNewText("PROJEcTS", 60.2, 29.7);
       }, 700);
     }
+
     function openInternalUnit() {
       setTimeout(() => {
         addNewText("1nVEnTORY", 60.2, 29.7);
@@ -285,6 +305,7 @@
       }, 700);
     }
 
+    // Toggle logic for each of the 4 main items
     document.getElementById("online-assets").addEventListener("click", function(e) {
       if (currentMenu === "online-assets") {
         closeSubmenu();
@@ -301,6 +322,7 @@
         }
       }
     });
+
     document.getElementById("linkup-center").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "linkup-center") {
@@ -318,6 +340,7 @@
         }
       }
     });
+
     document.getElementById("delivery-line").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "delivery-line") {
@@ -335,6 +358,7 @@
         }
       }
     });
+
     document.getElementById("internal-unit").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "internal-unit") {

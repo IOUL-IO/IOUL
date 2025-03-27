@@ -256,6 +256,7 @@ body.non-fullscreen {
     background: #ffffff;
     cursor: text;
     transition: transform 0.7s ease;
+    z-index: 10;
 }
 
 .grid-number {

@@ -12,9 +12,6 @@
     box-sizing: border-box;
 }
 
-/* The white bar from 28.87vw to 36vw sits on top (z-index:100),
-   effectively hiding (clipping) anything behind it. */
-
 body.non-fullscreen {
     background-color: #ffffff;
     min-height: 100vh;
@@ -22,6 +19,10 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
+/* 
+   Existing layers #1, #2, #3 
+   covering [0->6.37vw], [28.87->36vw], [94.17->100vw], each at z-index:100
+*/
 .layer-one {
     position: fixed;
     top: 0;
@@ -34,7 +35,7 @@ body.non-fullscreen {
 .layer-two {
     position: fixed;
     top: 0;
-    left: 28.87vw; /* up to 36vw is all white, z-index:100 */
+    left: 28.87vw;
     width: calc(36vw - 28.87vw);
     height: 100vh;
     background-color: #ffffff;
@@ -50,16 +51,36 @@ body.non-fullscreen {
     z-index: 100;
 }
 
+/* 
+   NEW .layer-four from left=36vw up to left=94.17vw 
+   covers any text that tries to extend beyond 36vw 
+   so it is effectively "clipped" behind it.
+   Put it at z-index:95 so it’s on top of text (z-index:90) 
+   but under lines/time-text (z-index:101).
+*/
+.layer-four {
+    position: fixed;
+    top: 0;
+    left: 36vw;
+    width: calc(94.17vw - 36vw);
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 95;
+}
+
 .page-content {
-    opacity: 0;
+    opacity: 0; /* fade-in effect */
     transition: opacity 0.6s ease;
     position: relative;
 }
 
+/* Horizontal lines (four main lines in .page-content) */
 .line {
     position: absolute;
     height: 1px;
     background-color: #cfcfcf;
+    /* Must be above .layer-four => z-index:101 */
+    z-index: 101;
 }
 .original {
     top: 12.5vh;
@@ -82,6 +103,7 @@ body.non-fullscreen {
     width: 57.8vw;
 }
 
+/* The 'slide-container' has dashed lines/time-text, also above .layer-four => z-index:101 */
 .slide-container {
     position: absolute;
     top: 0;
@@ -89,8 +111,10 @@ body.non-fullscreen {
     width: 100vw;
     height: 100vh;
     clip-path: inset(0 0 0 28.86vw);
+    z-index: 101;
 }
 
+/* Dashed lines inside .slide-container */
 .dashed {
     position: absolute;
     height: 1px;
@@ -116,8 +140,10 @@ body.non-fullscreen {
     width: 52.4vw;
 }
 
+/* Time text also in .slide-container, above .layer-four => z-index:101 */
 .time-text {
     position: absolute;
+    z-index: 101;
     font-family: 'Distill Expanded', sans-serif;
     font-size: 0.331rem;
     color: #111111;
@@ -139,6 +165,7 @@ body.non-fullscreen {
     left: 90.1vw;
 }
 
+/* Hover area for chat fade-in */
 .hover-area {
     position: absolute;
     top: 28.5vh;
@@ -147,11 +174,13 @@ body.non-fullscreen {
     height: calc(84vh - 28.5vh);
 }
 
+/* Chat text and chat input. Place them above layer-four => z-index:102 so they're visible. */
 .chat-text {
     position: absolute;
     top: 77vh;
     left: 6.41vw;
     display: inline-block;
+    z-index: 102;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
     letter-spacing: 0.28vw;
@@ -168,6 +197,7 @@ body.non-fullscreen {
     top: 77vh;
     left: 6.41vw;
     width: 22.17vw;
+    z-index: 102;
     font-family: 'Distill Expanded', sans-serif;
     font-size: 0.47rem;
     letter-spacing: 0.28vw;
@@ -183,27 +213,10 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* 
-   Each custom-text is behind layer-two => z-index: 90.
-   So anything crossing 36vw is covered by the white bar (z-index:100).
-   Also, white-space: nowrap to prevent multi-line breaks.
-*/
-.custom-text {
-    position: absolute;
-    z-index: 90; /* behind layer-two's z-index:100 */
-    font-family: 'Distill Expanded', sans-serif;
-    color: #111111;
-    letter-spacing: 0.28vw;
-    font-size: 0.47rem;
-    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    transition: transform 0.7s ease;
-    line-height: 1.6;
-    white-space: nowrap;
-    overflow: visible;
-}
-
+/* Grid-number positions, each at z-index:101 so they're above .layer-four. */
 .grid-number {
     position: absolute;
+    z-index: 101;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
     font-size: 0.411rem;
@@ -228,6 +241,7 @@ body.non-fullscreen {
 .num15 { top: 83.7vh; left: 138.0vw; }
 .num16 { top: 83.7vh; left: 152.8vw; }
 
+/* Grid-dashed transitions */
 .grid-dashed {
     position: absolute;
     height: 1px;
@@ -235,6 +249,7 @@ body.non-fullscreen {
     background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
     background-size: 10px 1px;
     transition: left 0.7s ease;
+    z-index: 101;
 }
 .dashed01 { top: 28.5vh; left: 96vw; }
 .dashed02 { top: 28.5vh; left: 111vw; }
@@ -253,6 +268,7 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
+/* Animate-grid moves the numbers & dashed lines left */
 .page-content.animate-grid .grid-number.num1  { left: 48.8vw; }
 .page-content.animate-grid .grid-number.num2  { left: 63.7vw; }
 .page-content.animate-grid .grid-number.num3  { left: 78.5vw; }
@@ -287,6 +303,7 @@ body.non-fullscreen {
 .page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; }
 .page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; }
 
+/* Slide transitions inside slide-container */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -302,6 +319,7 @@ body.non-fullscreen {
     transform: translateX(-91vw);
 }
 
+/* Slide triggers also above .layer-four => z-index:101 */
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
@@ -323,16 +341,38 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
+/* 
+   .custom-text is below .layer-four => z-index:90,
+   so if it extends beyond left=36vw, it's hidden. 
+   Force single-line with white-space: nowrap. 
+*/
+.custom-text {
+    position: absolute;
+    z-index: 90;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #111111;
+    letter-spacing: 0.28vw;
+    font-size: 0.47rem;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    transition: transform 0.7s ease;
+    line-height: 1.6;
+    white-space: nowrap; 
+    overflow: visible;
+}
+
+/* A line behind .layer-four => z-index:90 */
 .custom-line {
     position: absolute;
-    top: 47.8vh;
+    top: 47.8vh; 
     left: -42.59vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
     transition: transform 0.7s ease;
+    z-index: 90;
 }
 
+/* Slide animations for chat & custom texts */
 .chat-slide {
     transform: translateX(24vw);
 }
@@ -340,7 +380,7 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* Slide-down & new-text animations remain the same */
+/* Submenu expansions */
 .slide-down {
     transform: translateY(13vh);
 }

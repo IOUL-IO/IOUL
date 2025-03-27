@@ -8,24 +8,20 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="non-fullscreen">
-  <!-- Layers 1,2,3 same as before -->
+  <!-- Same three fixed layers as your original code -->
   <div class="layer-one"></div>
   <div class="layer-two"></div>
   <div class="layer-three"></div>
 
-  <!-- NEW layer-four from 36vw to 94.17vw, 
-       so anything beyond 36vw and below z-index:95 is hidden (clipped). -->
-  <div class="layer-four"></div>
-
+  <!-- All page contents fade in together -->
   <div class="page-content">
-    <!-- 4 main horizontal lines. All included from the start so they fade in together. -->
+    <!-- The same four main lines -->
     <div class="line original"></div>
     <div class="line second"></div>
     <div class="line third"></div>
     <div class="line fourth"></div>
 
-    <!-- 4 dashed lines and time-text are also in .page-content, 
-         so they fade in at the same time (page-content's opacity:0->1). -->
+    <!-- Slide container with 4 dashed lines & 4 time texts -->
     <div class="slide-container">
       <div class="line dashed"></div>
       <div class="line dashed second-dashed"></div>
@@ -37,15 +33,11 @@
       <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
     </div>
 
+    <!-- Hover area & chat text -->
     <div class="hover-area"></div>
     <span class="chat-text" id="chatText">cHAT . . .</span>
 
-    <!-- 
-      Grid numbers and dashed lines for the 4x4 =16 cells.
-      Positioned far to the right, so they appear offscreen or behind layer-three. 
-      They fade in with everything else, 
-      but only become fully visible when you do the "animate-grid" shift.
-    -->
+    <!-- Grid numbers 1–16 -->
     <span class="grid-number num1">1</span>
     <span class="grid-number num2">2</span>
     <span class="grid-number num3">3</span>
@@ -63,6 +55,7 @@
     <span class="grid-number num15">15</span>
     <span class="grid-number num16">16</span>
 
+    <!-- Grid dashed lines 1–16 -->
     <div class="grid-dashed dashed01"></div>
     <div class="grid-dashed dashed02"></div>
     <div class="grid-dashed dashed03"></div>
@@ -80,14 +73,17 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- Main Menu Items at left: 29vw. No container. 
-         Hidden behind layer-four if they cross 36vw. -->
+    <!-- 
+      The four main menu items, no container. 
+      Each at left: 29vw so if it crosses layer-two's boundary (36vw), 
+      it’s hidden behind that white bar. 
+    -->
     <span class="custom-text" style="top: 35.4vh; left: 29vw;" id="online-assets">-  OnL1nE ASSETS</span>
     <span class="custom-text" style="top: 41.6vh; left: 29vw;" id="linkup-center">-  L1nKUP cEnTER</span>
     <span class="custom-text" style="top: 47.8vh; left: 29vw;" id="delivery-line">-  DEL1VERY L1nE</span>
     <span class="custom-text" style="top: 54vh; left: 29vw;" id="internal-unit">-  1nTERnAL Un1T</span>
 
-    <!-- Submenu items also behind layer-four if crossing 36vw. -->
+    <!-- Submenu items for each, placed at negative left to start "off-canvas" -->
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -103,58 +99,56 @@
 
     <div class="custom-line"></div>
 
+    <!-- Same triggers for the “slide” effect -->
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
   </div>
 
   <script>
-    /*********************************
-     * PAGE FADE-IN & FULLSCREEN LOGIC
-     *********************************/
+    /***********************************
+     * FADING IN PAGE & FULLSCREEN CODE
+     ***********************************/
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
-      pageContent.style.opacity = '1'; // triggers the .page-content { transition: opacity }
+      pageContent.style.opacity = '1'; // Everything inside fades in at once
       pageFadedIn = true;
     }
     document.addEventListener('mousemove', function onFirstMouseMove() {
-      if (!pageFadedIn) {
-        fadeInPage();
-      }
+      if (!pageFadedIn) { fadeInPage(); }
       document.removeEventListener('mousemove', onFirstMouseMove);
     });
 
     const EDGE_MARGIN = 11;
     document.addEventListener('click', (event) => {
       const { clientX: x, clientY: y } = event;
-      const { innerWidth: width, innerHeight: height } = window;
+      const { innerWidth: w, innerHeight: h } = window;
       if (!document.fullscreenElement &&
-          (x <= EDGE_MARGIN || x >= width - EDGE_MARGIN ||
-           y <= EDGE_MARGIN || y >= height - EDGE_MARGIN)) {
+         (x <= EDGE_MARGIN || x >= w - EDGE_MARGIN ||
+          y <= EDGE_MARGIN || y >= h - EDGE_MARGIN)) {
         document.documentElement.requestFullscreen();
       }
     });
 
-    /*********************************
-     * SLIDE IN/OUT TRIGGERS
-     *********************************/
+    /*****************************************
+     * SLIDE IN/OUT FOR THE 4 DASHED + TIME TEXT
+     *****************************************/
     const inverseTrigger = document.querySelector('.slide-trigger');
-    inverseTrigger.addEventListener('click', (e) => {
-      e.stopPropagation();
+    inverseTrigger.addEventListener('click', (event) => {
+      event.stopPropagation();
       document.querySelector('.slide-container').classList.remove('animate-slide');
       document.querySelector('.page-content').classList.remove('animate-grid');
     });
-
     const forwardTrigger = document.querySelector('.slide-trigger-reverse');
-    forwardTrigger.addEventListener('click', (e) => {
-      e.stopPropagation();
+    forwardTrigger.addEventListener('click', (event) => {
+      event.stopPropagation();
       document.querySelector('.slide-container').classList.add('animate-slide');
       document.querySelector('.page-content').classList.add('animate-grid');
     });
 
-    /*********************************
-     * CHAT TEXT & INPUT
-     *********************************/
+    /***********************************
+     * CHAT TEXT & HOVER / CLICK LOGIC
+     ***********************************/
     const chatText = document.getElementById('chatText');
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
@@ -173,18 +167,18 @@
       chatInput.focus();
     });
 
-    /*********************************
-     * SLIDE ANIMATION ON LEFT/MID CLICKS
-     *********************************/
+    /***********************************
+     * SLIDE ANIMATION WHEN CLICKING LEFT
+     ***********************************/
     document.addEventListener('click', (event) => {
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const xLimit = 6.37 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
+      const vw = window.innerWidth / 100;
+      const vh = window.innerHeight / 100;
+      const xLimit = 6.37 * vw;
+      const yMin = 28.5 * vh;
+      const yMax = 84 * vh;
+
       if (event.clientX >= 0 && event.clientX <= xLimit &&
           event.clientY >= yMin && event.clientY <= yMax) {
-        // Slide forward
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
           chatTextEl.style.transition = "opacity 0.1s ease";
@@ -197,22 +191,29 @@
         if (chatInputEl) {
           chatInputEl.classList.add('chat-slide');
         }
-        document.querySelectorAll('.custom-text').forEach(el => el.classList.add('custom-slide'));
+        document.querySelectorAll('.custom-text').forEach(el => {
+          el.classList.add('custom-slide');
+        });
         const customLineEl = document.querySelector('.custom-line');
-        if (customLineEl) customLineEl.classList.add('custom-slide');
+        if (customLineEl) {
+          customLineEl.classList.add('custom-slide');
+        }
       }
     });
 
+    /***********************************
+     * REVERSE SLIDE WHEN CLICKING MIDDLE
+     ***********************************/
     document.addEventListener('click', (event) => {
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const leftMin = 28.87 * vwUnit;
-      const leftMax = 32.44 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
+      const vw = window.innerWidth / 100;
+      const vh = window.innerHeight / 100;
+      const leftMin = 28.87 * vw;
+      const leftMax = 32.44 * vw;
+      const yMin = 28.5 * vh;
+      const yMax = 84 * vh;
+
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
-        // Slide back
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
           chatTextEl.classList.remove('chat-slide');
@@ -237,13 +238,14 @@
     });
   </script>
 
-  <!-- SUBMENU / TOGGLE SCRIPT -->
+  <!-- EXACT SAME SUBMENU TOGGLE LOGIC -->
   <script>
-    function addNewText(text, top, leftVw) {
-      const span = document.createElement("span");
+    // Submenu expansions, toggles, etc.
+    function addNewText(text, top, left) {
+      let span = document.createElement("span");
       span.className = "custom-text new-text";
       span.style.top = top + "vh";
-      span.style.left = leftVw + "vw";
+      span.style.left = left + "vw";
       span.textContent = text;
       document.querySelector(".page-content").appendChild(span);
       setTimeout(() => {

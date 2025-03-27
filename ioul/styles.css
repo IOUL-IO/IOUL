@@ -320,11 +320,9 @@ body.non-fullscreen {
     transform: translateX(-91vw);
 }
 
-/* Slide animation for grid numbers and grid dashed lines */
-/* Updated so grid numbers slide just enough to reach left: 36vw */
-.other-content.animate-grid .grid-number {
-    transform: translateX(-72.8vw);
-}
+/* Slide animation for grid numbers and grid dashed lines.
+   Both now slide by -60vw so their relative positions remain as originally set. */
+.other-content.animate-grid .grid-number,
 .other-content.animate-grid .grid-dashed {
     transform: translateX(-60vw);
 }

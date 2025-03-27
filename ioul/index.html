@@ -142,14 +142,19 @@
     
     // Chat area behavior
     const chatText = document.getElementById('chatText');
+    // Disable pointer events initially so that chat-text doesn't block its trigger area.
+    chatText.style.pointerEvents = 'none';
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
     hoverArea.addEventListener('mouseenter', () => {
       if (!chatShownOnce && pageFadedIn) {
         chatText.style.opacity = '1';
+        // Re-enable pointer events when chat-text fades in
+        chatText.style.pointerEvents = 'auto';
         chatShownOnce = true;
       }
     });
+    
     chatText.addEventListener('click', () => {
       const chatInput = document.createElement('input');
       chatInput.type = 'text';

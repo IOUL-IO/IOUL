@@ -42,10 +42,12 @@
         <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       </div>
 
+      <!-- The hover area for chat fade‑in -->
       <div class="hover-area"></div>
-      <!-- Initially, chat-text is invisible, non-interactive and behind other elements -->
+      <!-- Initially, chat-text is invisible, non-interactive, and placed behind -->
       <span class="chat-text" id="chatText">cHAT . . .</span>
 
+      <!-- Grid numbers -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -63,6 +65,7 @@
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
 
+      <!-- Grid dashed lines -->
       <div class="grid-dashed dashed01"></div>
       <div class="grid-dashed dashed02"></div>
       <div class="grid-dashed dashed03"></div>
@@ -80,7 +83,7 @@
       <div class="grid-dashed dashed15"></div>
       <div class="grid-dashed dashed16"></div>
 
-      <!-- Submenu items (which remain above layer-four) -->
+      <!-- Submenu items -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
       <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -98,14 +101,14 @@
     </div> <!-- end of .other-content -->
   </div> <!-- end of .page-content -->
 
-  <!-- NEW: Slide triggers container moved outside .page-content and made fixed -->
+  <!-- Slide triggers container (fixed) -->
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
   </div>
 
   <script>
-    // Fade-in & fullscreen behavior remains unchanged
+    // Fade-in & fullscreen behavior
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -143,18 +146,24 @@
     
     // Chat area behavior
     const chatText = document.getElementById('chatText');
-    // Initially, disable pointer events and set z-index low so that hover-area receives events.
+    // Initially, disable pointer events and lower z-index so chatText doesn't block hover.
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
-    hoverArea.addEventListener('mouseenter', () => {
+    
+    // Instead of relying solely on a "mouseenter" event,
+    // we add a document-level mousemove listener that checks if the pointer is within the hover-area.
+    document.addEventListener('mousemove', (event) => {
       if (!chatShownOnce && pageFadedIn) {
-        chatText.style.opacity = '1';
-        // Re-enable pointer events and bring chat-text to front.
-        chatText.style.pointerEvents = 'auto';
-        chatText.style.zIndex = '10';
-        chatShownOnce = true;
+        const rect = hoverArea.getBoundingClientRect();
+        if (event.clientX >= rect.left && event.clientX <= rect.right &&
+            event.clientY >= rect.top && event.clientY <= rect.bottom) {
+          chatText.style.opacity = '1';
+          chatText.style.pointerEvents = 'auto';
+          chatText.style.zIndex = '10';
+          chatShownOnce = true;
+        }
       }
     });
     

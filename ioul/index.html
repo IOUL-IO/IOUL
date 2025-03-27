@@ -42,7 +42,7 @@
         <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       </div>
 
-      <!-- The hover area for chat fade‑in -->
+      <!-- The hover area for triggering chat fade‑in -->
       <div class="hover-area"></div>
       <!-- Initially, chat-text is invisible, non-interactive, and placed behind -->
       <span class="chat-text" id="chatText">cHAT . . .</span>
@@ -152,7 +152,7 @@
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
     
-    // Use document-level mousemove to detect when pointer is within the hover area
+    // Document-level mousemove to detect pointer within hover-area.
     document.addEventListener('mousemove', (event) => {
       if (!chatShownOnce && pageFadedIn) {
         const rect = hoverArea.getBoundingClientRect();
@@ -162,11 +162,13 @@
           chatText.style.pointerEvents = 'auto';
           chatText.style.zIndex = '10';
           chatShownOnce = true;
+          // Disable pointer events on the hover area so it doesn't block clicks.
+          hoverArea.style.pointerEvents = 'none';
         }
       }
     });
     
-    // Updated chat click handler: now stops propagation and prevents default.
+    // Updated chat click handler – stops propagation and prevents default.
     chatText.addEventListener('click', (e) => {
       e.stopPropagation();
       e.preventDefault();

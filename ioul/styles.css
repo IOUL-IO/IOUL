@@ -27,6 +27,7 @@ body.non-fullscreen {
     height: 100vh;
     background-color: #ffffff;
     z-index: 100;
+    pointer-events: none; /* added */
 }
 .layer-two {
     position: fixed;
@@ -36,6 +37,7 @@ body.non-fullscreen {
     height: 100vh;
     background-color: #ffffff;
     z-index: 100;
+    pointer-events: none; /* added */
 }
 .layer-three {
     position: fixed;
@@ -45,6 +47,7 @@ body.non-fullscreen {
     height: 100vh;
     background-color: #ffffff;
     z-index: 100;
+    pointer-events: none; /* added */
 }
 
 .page-content {
@@ -215,6 +218,8 @@ body.non-fullscreen {
     left: 6.4vw;
     width: calc(28.86vw - 6.4vw);
     height: calc(84vh - 28.5vh);
+    pointer-events: auto; /* ensure it receives mouse events */
+    background: transparent; /* explicitly transparent */
 }
 
 .chat-text {

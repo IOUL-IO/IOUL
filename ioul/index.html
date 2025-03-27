@@ -21,7 +21,7 @@
       <span class="custom-text menu-item" style="top: 54vh; left: 29vw;" id="internal-unit">-  1nTERnAL Un1T</span>
     </div>
 
-    <!-- The covering layer (only covers overflowing main menu items) -->
+    <!-- The covering layer -->
     <div class="layer-four"></div>
 
     <!-- Container for all other content -->
@@ -146,14 +146,14 @@
     
     // Chat area behavior
     const chatText = document.getElementById('chatText');
-    // Initially disable pointer events and lower z-index
+    // Initially disable pointer events and lower z-index so it doesn't block hover.
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
     
-    // Use "mouseover" so that if the pointer is already in the hover area the event fires.
-    hoverArea.addEventListener('mouseover', () => {
+    // Use mouseenter on hoverArea to trigger chat fade‑in.
+    hoverArea.addEventListener('mouseenter', () => {
       if (!chatShownOnce && pageFadedIn) {
         chatText.style.opacity = '1';
         chatText.style.pointerEvents = 'auto';
@@ -162,11 +162,11 @@
       }
     });
     
-    // Chat click handler – use stopPropagation, preventDefault, and stopImmediatePropagation.
+    // Chat click handler – stop propagation so document-level clicks don't interfere.
     chatText.addEventListener('click', (e) => {
       e.stopPropagation();
       e.preventDefault();
-      e.stopImmediatePropagation();
+      // Create and insert chat input.
       const chatInput = document.createElement('input');
       chatInput.type = 'text';
       chatInput.classList.add('chat-input');
@@ -175,8 +175,13 @@
       chatInput.focus();
     });
     
-    // Document-level click handlers for slide animations (unchanged)
+    // Modify document-level click handlers to ignore clicks on chat-related elements.
+    function shouldIgnoreClick(event) {
+      return event.target.closest('.chat-text, .chat-input, .hover-area');
+    }
+    
     document.addEventListener('click', (event) => {
+      if (shouldIgnoreClick(event)) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const xLimit = 6.37 * vwUnit;
@@ -197,9 +202,7 @@
           chatInputEl.classList.add('chat-slide');
         }
         const customTextEls = document.querySelectorAll('.custom-text');
-        customTextEls.forEach(el => {
-          el.classList.add('custom-slide');
-        });
+        customTextEls.forEach(el => el.classList.add('custom-slide'));
         const customLineEl = document.querySelector('.custom-line');
         if (customLineEl) {
           customLineEl.classList.add('custom-slide');
@@ -207,6 +210,7 @@
       }
     });
     document.addEventListener('click', (event) => {
+      if (shouldIgnoreClick(event)) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const leftMin = 28.87 * vwUnit;
@@ -218,9 +222,7 @@
         const chatTextEl = document.querySelector('.chat-text');
         if (chatTextEl) {
           chatTextEl.classList.remove('chat-slide');
-          setTimeout(() => {
-            chatTextEl.style.opacity = "1";
-          }, 700);
+          setTimeout(() => { chatTextEl.style.opacity = "1"; }, 700);
         }
         const chatInputEl = document.querySelector('.chat-input');
         if (chatInputEl) {
@@ -239,7 +241,7 @@
       }
     });
     
-    // Submenu Toggle Script (append new submenu text into .other-content)
+    // Submenu Toggle Script remains unchanged.
     function addNewText(text, top, left) {
       let span = document.createElement("span");
       span.className = "custom-text new-text";
@@ -247,9 +249,7 @@
       span.style.left = left + "vw";
       span.textContent = text;
       document.querySelector(".other-content").appendChild(span);
-      setTimeout(() => {
-        span.classList.add("visible");
-      }, 10);
+      setTimeout(() => { span.classList.add("visible"); }, 10);
     }
     let currentMenu = null;
     function closeSubmenu() {
@@ -304,10 +304,7 @@
       } else {
         if (currentMenu !== null) {
           closeSubmenu();
-          setTimeout(() => {
-            openOnlineAssets();
-            currentMenu = "online-assets";
-          }, 300);
+          setTimeout(() => { openOnlineAssets(); currentMenu = "online-assets"; }, 300);
         } else {
           openOnlineAssets();
           currentMenu = "online-assets";
@@ -321,10 +318,7 @@
       } else {
         if (currentMenu !== null) {
           closeSubmenu();
-          setTimeout(() => {
-            openLinkupCenter();
-            currentMenu = "linkup-center";
-          }, 300);
+          setTimeout(() => { openLinkupCenter(); currentMenu = "linkup-center"; }, 300);
         } else {
           openLinkupCenter();
           currentMenu = "linkup-center";
@@ -338,10 +332,7 @@
       } else {
         if (currentMenu !== null) {
           closeSubmenu();
-          setTimeout(() => {
-            openDeliveryLine();
-            currentMenu = "delivery-line";
-          }, 300);
+          setTimeout(() => { openDeliveryLine(); currentMenu = "delivery-line"; }, 300);
         } else {
           openDeliveryLine();
           currentMenu = "delivery-line";
@@ -355,10 +346,7 @@
       } else {
         if (currentMenu !== null) {
           closeSubmenu();
-          setTimeout(() => {
-            openInternalUnit();
-            currentMenu = "internal-unit";
-          }, 300);
+          setTimeout(() => { openInternalUnit(); currentMenu = "internal-unit"; }, 300);
         } else {
           openInternalUnit();
           currentMenu = "internal-unit";

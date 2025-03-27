@@ -6,16 +6,6 @@
   <title>IOUL</title>
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
-  <script>
-    function convertChatText(el) {
-      const chatInput = document.createElement('input');
-      chatInput.type = 'text';
-      chatInput.classList.add('chat-input');
-      el.insertAdjacentElement('afterend', chatInput);
-      el.remove();
-      chatInput.focus();
-    }
-  </script>
 </head>
 <body class="non-fullscreen">
   <div class="layer-one"></div>
@@ -52,9 +42,12 @@
         <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       </div>
 
+      <!-- The hover area for chat fade‑in -->
       <div class="hover-area"></div>
-      <span class="chat-text" id="chatText" onclick="convertChatText(this)">cHAT . . .</span>
+      <!-- Initially, chat-text is invisible, non-interactive, and placed behind -->
+      <span class="chat-text" id="chatText">cHAT . . .</span>
 
+      <!-- Grid numbers -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -72,6 +65,7 @@
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
 
+      <!-- Grid dashed lines -->
       <div class="grid-dashed dashed01"></div>
       <div class="grid-dashed dashed02"></div>
       <div class="grid-dashed dashed03"></div>
@@ -89,6 +83,7 @@
       <div class="grid-dashed dashed15"></div>
       <div class="grid-dashed dashed16"></div>
 
+      <!-- Submenu items -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
       <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -103,20 +98,16 @@
       <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
 
       <div class="custom-line"></div>
-    </div>
-  </div>
+    </div> <!-- end of .other-content -->
+  </div> <!-- end of .page-content -->
 
+  <!-- Slide triggers container (fixed) -->
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
   </div>
 
   <script>
-    // Helper: return true if the event target is within chat-related elements.
-    function isChatEvent(event) {
-      return event.target.closest('#chatText') || event.target.closest('.chat-input');
-    }
-    
     // Fade-in & fullscreen behavior
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
@@ -130,44 +121,39 @@
     });
     const EDGE_MARGIN = 11;
     document.addEventListener('click', (event) => {
-      if (!isChatEvent(event)) {
-        const { clientX: x, clientY: y } = event;
-        const { innerWidth: width, innerHeight: height } = window;
-        if (!document.fullscreenElement &&
-            (x <= EDGE_MARGIN || x >= width - EDGE_MARGIN ||
-             y <= EDGE_MARGIN || y >= height - EDGE_MARGIN)) {
-          document.documentElement.requestFullscreen();
-        }
+      const { clientX: x, clientY: y } = event;
+      const { innerWidth: width, innerHeight: height } = window;
+      if (!document.fullscreenElement &&
+          (x <= EDGE_MARGIN || x >= width - EDGE_MARGIN ||
+           y <= EDGE_MARGIN || y >= height - EDGE_MARGIN)) {
+        document.documentElement.requestFullscreen();
       }
     });
     
     // Slide trigger behavior for slide in/out
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
-      if (!isChatEvent(event)) {
-        event.stopPropagation();
-        document.querySelector('.slide-container').classList.remove('animate-slide');
-        document.querySelector('.other-content').classList.remove('animate-grid');
-      }
+      event.stopPropagation();
+      document.querySelector('.slide-container').classList.remove('animate-slide');
+      document.querySelector('.other-content').classList.remove('animate-grid');
     });
     const forwardTrigger = document.querySelector('.slide-trigger-reverse');
     forwardTrigger.addEventListener('click', (event) => {
-      if (!isChatEvent(event)) {
-        event.stopPropagation();
-        document.querySelector('.slide-container').classList.add('animate-slide');
-        document.querySelector('.other-content').classList.add('animate-grid');
-      }
+      event.stopPropagation();
+      document.querySelector('.slide-container').classList.add('animate-slide');
+      document.querySelector('.other-content').classList.add('animate-grid');
     });
     
     // Chat area behavior
     const chatText = document.getElementById('chatText');
-    // Initially disable pointer events and lower z-index.
+    // Initially, disable pointer events and lower z-index so chatText doesn't block hover.
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
     
-    // Document-level mousemove to detect pointer within hover-area.
+    // Instead of relying solely on a "mouseenter" event,
+    // we add a document-level mousemove listener that checks if the pointer is within the hover-area.
     document.addEventListener('mousemove', (event) => {
       if (!chatShownOnce && pageFadedIn) {
         const rect = hoverArea.getBoundingClientRect();
@@ -177,30 +163,22 @@
           chatText.style.pointerEvents = 'auto';
           chatText.style.zIndex = '10';
           chatShownOnce = true;
-          // Disable pointer events on hoverArea so it doesn't block chatText clicks.
-          hoverArea.style.pointerEvents = 'none';
         }
       }
     });
     
-    // Chat click handler: convert chatText to an input field.
-    // Use mousedown (which fires before click) to trigger conversion.
-    chatText.addEventListener('mousedown', (e) => {
+    // Updated click handler: replace .chat-text with an input field.
+    chatText.addEventListener('click', e => {
       e.stopPropagation();
-      e.preventDefault();
-      setTimeout(() => {
-        const chatInput = document.createElement('input');
-        chatInput.type = 'text';
-        chatInput.classList.add('chat-input');
-        chatText.insertAdjacentElement('afterend', chatInput);
-        chatText.remove();
-        chatInput.focus();
-      }, 0);
+      const chatInput = document.createElement('input');
+      chatInput.type = 'text';
+      chatInput.className = 'chat-input';
+      chatText.replaceWith(chatInput);
+      chatInput.focus();
     });
     
-    // Document-level click handlers for slide animations
+    // Document-level click handlers for slide animations (unchanged)
     document.addEventListener('click', (event) => {
-      if (isChatEvent(event)) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const xLimit = 6.37 * vwUnit;
@@ -231,7 +209,6 @@
       }
     });
     document.addEventListener('click', (event) => {
-      if (isChatEvent(event)) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const leftMin = 28.87 * vwUnit;
@@ -264,7 +241,7 @@
       }
     });
     
-    // Submenu Toggle Script (unchanged)
+    // Submenu Toggle Script (append new submenu text into .other-content)
     function addNewText(text, top, left) {
       let span = document.createElement("span");
       span.className = "custom-text new-text";
@@ -329,7 +306,10 @@
       } else {
         if (currentMenu !== null) {
           closeSubmenu();
-          setTimeout(() => { openOnlineAssets(); currentMenu = "online-assets"; }, 300);
+          setTimeout(() => {
+            openOnlineAssets();
+            currentMenu = "online-assets";
+          }, 300);
         } else {
           openOnlineAssets();
           currentMenu = "online-assets";
@@ -343,7 +323,10 @@
       } else {
         if (currentMenu !== null) {
           closeSubmenu();
-          setTimeout(() => { openLinkupCenter(); currentMenu = "linkup-center"; }, 300);
+          setTimeout(() => {
+            openLinkupCenter();
+            currentMenu = "linkup-center";
+          }, 300);
         } else {
           openLinkupCenter();
           currentMenu = "linkup-center";
@@ -357,7 +340,10 @@
       } else {
         if (currentMenu !== null) {
           closeSubmenu();
-          setTimeout(() => { openDeliveryLine(); currentMenu = "delivery-line"; }, 300);
+          setTimeout(() => {
+            openDeliveryLine();
+            currentMenu = "delivery-line";
+          }, 300);
         } else {
           openDeliveryLine();
           currentMenu = "delivery-line";
@@ -371,7 +357,10 @@
       } else {
         if (currentMenu !== null) {
           closeSubmenu();
-          setTimeout(() => { openInternalUnit(); currentMenu = "internal-unit"; }, 300);
+          setTimeout(() => {
+            openInternalUnit();
+            currentMenu = "internal-unit";
+          }, 300);
         } else {
           openInternalUnit();
           currentMenu = "internal-unit";

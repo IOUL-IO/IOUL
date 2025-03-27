@@ -42,7 +42,7 @@
         <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       </div>
 
-      <!-- The hover area for chat fade‑in -->
+      <!-- The hover area for triggering chat fade‑in -->
       <div class="hover-area"></div>
       <!-- Initially, chat-text is invisible, non-interactive, and placed behind -->
       <span class="chat-text" id="chatText">cHAT . . .</span>
@@ -108,6 +108,11 @@
   </div>
 
   <script>
+    // Helper function: if the click event's target is inside the chat area, ignore it.
+    function isChatEvent(event) {
+      return event.target.closest('#chatText') || event.target.closest('.chat-input');
+    }
+    
     // Fade-in & fullscreen behavior
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
@@ -121,27 +126,33 @@
     });
     const EDGE_MARGIN = 11;
     document.addEventListener('click', (event) => {
-      const { clientX: x, clientY: y } = event;
-      const { innerWidth: width, innerHeight: height } = window;
-      if (!document.fullscreenElement &&
-          (x <= EDGE_MARGIN || x >= width - EDGE_MARGIN ||
-           y <= EDGE_MARGIN || y >= height - EDGE_MARGIN)) {
-        document.documentElement.requestFullscreen();
+      if (!isChatEvent(event)) {
+        const { clientX: x, clientY: y } = event;
+        const { innerWidth: width, innerHeight: height } = window;
+        if (!document.fullscreenElement &&
+            (x <= EDGE_MARGIN || x >= width - EDGE_MARGIN ||
+             y <= EDGE_MARGIN || y >= height - EDGE_MARGIN)) {
+          document.documentElement.requestFullscreen();
+        }
       }
     });
     
     // Slide trigger behavior for slide in/out
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
-      event.stopPropagation();
-      document.querySelector('.slide-container').classList.remove('animate-slide');
-      document.querySelector('.other-content').classList.remove('animate-grid');
+      if (!isChatEvent(event)) {
+        event.stopPropagation();
+        document.querySelector('.slide-container').classList.remove('animate-slide');
+        document.querySelector('.other-content').classList.remove('animate-grid');
+      }
     });
     const forwardTrigger = document.querySelector('.slide-trigger-reverse');
     forwardTrigger.addEventListener('click', (event) => {
-      event.stopPropagation();
-      document.querySelector('.slide-container').classList.add('animate-slide');
-      document.querySelector('.other-content').classList.add('animate-grid');
+      if (!isChatEvent(event)) {
+        event.stopPropagation();
+        document.querySelector('.slide-container').classList.add('animate-slide');
+        document.querySelector('.other-content').classList.add('animate-grid');
+      }
     });
     
     // Chat area behavior
@@ -168,7 +179,7 @@
       }
     });
     
-    // Chat click handler: stops propagation, prevents default, and stops immediate propagation.
+    // Chat click handler: stops propagation, prevents default, and converts chatText to input.
     chatText.addEventListener('click', (e) => {
       e.stopPropagation();
       e.preventDefault();
@@ -181,8 +192,9 @@
       chatInput.focus();
     }, true);
     
-    // Document-level click handlers for slide animations (unchanged)
+    // Document-level click handlers for slide animations
     document.addEventListener('click', (event) => {
+      if (isChatEvent(event)) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const xLimit = 6.37 * vwUnit;
@@ -213,6 +225,7 @@
       }
     });
     document.addEventListener('click', (event) => {
+      if (isChatEvent(event)) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const leftMin = 28.87 * vwUnit;

@@ -19,7 +19,7 @@ body.non-fullscreen {
   overflow: hidden;
 }
 
-/* Fixed layers as in your original code */
+/* Fixed layers – highest stacking order (z-index: 300) */
 .layer-one {
   position: fixed;
   top: 0;
@@ -27,7 +27,7 @@ body.non-fullscreen {
   width: 6.37vw;
   height: 100vh;
   background-color: #ffffff;
-  z-index: 100;
+  z-index: 300;
 }
 .layer-two {
   position: fixed;
@@ -36,7 +36,7 @@ body.non-fullscreen {
   width: calc(36vw - 28.87vw);
   height: 100vh;
   background-color: #ffffff;
-  z-index: 100;
+  z-index: 300;
 }
 .layer-three {
   position: fixed;
@@ -45,17 +45,32 @@ body.non-fullscreen {
   width: calc(100vw - 94.17vw);
   height: 100vh;
   background-color: #ffffff;
-  z-index: 100;
+  z-index: 300;
 }
 
-/* .page-content fades in all at once as originally */
+/* NEW layer-four – covers area from 36vw to 94.17vw.
+   It has z-index 150 so that it sits above main menu texts (z-index 100)
+   but below all other components (which we set to 200). */
+.layer-four {
+  position: fixed;
+  top: 0;
+  left: 36vw;
+  width: calc(94.17vw - 36vw);
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 150;
+}
+
+/* All other components in .page-content (except main menu texts) */
 .page-content {
   opacity: 0;
   transition: opacity 0.6s ease;
   position: relative;
+  /* We set these elements to z-index:200 by default */
+  z-index: 200;
 }
 
-/* Horizontal lines (unchanged) */
+/* Horizontal lines */
 .line {
   position: absolute;
   height: 1px;
@@ -82,7 +97,8 @@ body.non-fullscreen {
   width: 57.8vw;
 }
 
-/* Slide container for dashed lines and time texts */
+/* Slide container for dashed lines and time texts.
+   They should slide under layer-two. (Their z-index remains 200.) */
 .slide-container {
   position: absolute;
   top: 0;
@@ -90,8 +106,7 @@ body.non-fullscreen {
   width: 100vw;
   height: 100vh;
   clip-path: inset(0 0 0 28.86vw);
-  /* IMPORTANT: set z-index to 90 so these elements are below layer-two */
-  z-index: 90;
+  z-index: 200;
 }
 
 /* Dashed lines in slide-container */
@@ -103,25 +118,25 @@ body.non-fullscreen {
   width: 52.4vw;
   background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
   background-size: 10px 1px;
-  z-index: 90;
+  z-index: 200;
 }
 .second-dashed {
   top: 47vh;
   left: 36vw;
   width: 52.4vw;
-  z-index: 90;
+  z-index: 200;
 }
 .third-dashed {
   top: 65.5vh;
   left: 36vw;
   width: 52.4vw;
-  z-index: 90;
+  z-index: 200;
 }
 .fourth-dashed {
   top: 84vh;
   left: 36vw;
   width: 52.4vw;
-  z-index: 90;
+  z-index: 200;
 }
 
 /* Time texts in slide-container */
@@ -135,14 +150,14 @@ body.non-fullscreen {
   color: #111111;
   letter-spacing: 0.2vw;
   text-shadow: 0.011rem 0 0 #919191, -0.011rem 0 0 #919191;
-  z-index: 90;
+  z-index: 200;
 }
 .time-text { top: 28.5vh; left: 89.81vw; }
 .second-time-text { top: 47.04vh; left: 89.91vw; }
 .third-time-text { top: 65.51vh; left: 89.87vw; }
 .fourth-time-text { top: 83.86vh; left: 90.1vw; }
 
-/* Hover area & chat text remain unchanged */
+/* Hover area */
 .hover-area {
   position: absolute;
   top: 28.5vh;
@@ -150,6 +165,8 @@ body.non-fullscreen {
   width: calc(28.86vw - 6.4vw);
   height: calc(84vh - 28.5vh);
 }
+
+/* Chat text & chat input (set to z-index: 102 so they remain visible above other page content) */
 .chat-text {
   position: absolute;
   top: 77vh;
@@ -188,7 +205,7 @@ body.non-fullscreen {
   transition: transform 0.7s ease;
 }
 
-/* Grid numbers & grid dashed lines (remain above for animate-grid) */
+/* Grid numbers (1–16) – remain as in original (z-index 101) */
 .grid-number {
   position: absolute;
   z-index: 101;
@@ -216,6 +233,7 @@ body.non-fullscreen {
 .num15 { top: 83.7vh; left: 138.0vw; }
 .num16 { top: 83.7vh; left: 152.8vw; }
 
+/* Grid dashed lines (1–16) – z-index 101 */
 .grid-dashed {
   position: absolute;
   z-index: 101;
@@ -242,7 +260,7 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
-/* When .animate-grid is applied, grid numbers & grid dashed lines slide in */
+/* Animate-grid – slide grid numbers/dashed lines into view */
 .page-content.animate-grid .grid-number.num1  { left: 48.8vw; }
 .page-content.animate-grid .grid-number.num2  { left: 63.7vw; }
 .page-content.animate-grid .grid-number.num3  { left: 78.5vw; }
@@ -276,7 +294,7 @@ body.non-fullscreen {
 .page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; }
 .page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; }
 
-/* Slide-container children slide left on trigger */
+/* Slide-container children (dashed lines & time texts) */
 .slide-container > .line.dashed,
 .slide-container > .time-text {
   transition: transform 0.7s ease;
@@ -308,15 +326,20 @@ body.non-fullscreen {
   cursor: pointer;
 }
 
-/* 
-   MAIN MENU & SUBMENU TEXT (the .custom-text elements) 
-   They now have a clip-path so that anything past 36vw is not visible.
-   They’re set at z-index 90 so that if any part crosses into layer-two’s area, 
-   it’s hidden behind that white bar.
-*/
+/* MAIN MENU & SUBMENU TEXTS */
+/* They are positioned directly in .page-content at left:29vw (or offscreen for submenus).
+   We add a max-width to the four main menu items (via their IDs) so that any text extending past 36vw is clipped. */
+#online-assets,
+#linkup-center,
+#delivery-line,
+#internal-unit {
+  max-width: calc(36vw - 29vw);
+  overflow: hidden;
+  white-space: nowrap;
+}
 .custom-text {
   position: absolute;
-  z-index: 90;
+  z-index: 100; /* main menu texts are set at z-index 100 so they are under layer-four */
   font-family: 'Distill Expanded', sans-serif;
   color: #111111;
   letter-spacing: 0.28vw;
@@ -325,11 +348,9 @@ body.non-fullscreen {
   line-height: 1.6;
   white-space: nowrap;
   transition: transform 0.7s ease;
-  /* This clip-path restricts visible content to the first 36vw of the viewport */
-  clip-path: inset(0 calc(100vw - 36vw) 0 0);
 }
 
-/* The extra horizontal line behind menu texts */
+/* Extra horizontal line (unchanged) */
 .custom-line {
   position: absolute;
   top: 47.8vh;
@@ -338,7 +359,7 @@ body.non-fullscreen {
   height: 1px;
   background-color: rgba(230, 230, 230, 0.28);
   transition: transform 0.7s ease;
-  z-index: 90;
+  z-index: 100;
 }
 
 /* Slide animations for chat and custom texts */
@@ -349,7 +370,7 @@ body.non-fullscreen {
   transform: translateX(49vw);
 }
 
-/* Submenu expansion and fade-in for new texts */
+/* Submenu expansion & fade-in for new texts */
 .slide-down {
   transform: translateY(13vh);
 }

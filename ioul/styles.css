@@ -20,8 +20,8 @@ body.non-fullscreen {
 }
 
 /* 
-   Existing layers #1, #2, #3 
-   covering [0->6.37vw], [28.87->36vw], [94.17->100vw], each at z-index:100
+  Layers #1, #2, #3 exactly as before, each at z-index:100, covering 
+  [0->6.37vw], [28.87->36vw], and [94.17->100vw]. 
 */
 .layer-one {
     position: fixed;
@@ -51,13 +51,7 @@ body.non-fullscreen {
     z-index: 100;
 }
 
-/* 
-   NEW .layer-four from left=36vw up to left=94.17vw 
-   covers any text that tries to extend beyond 36vw 
-   so it is effectively "clipped" behind it.
-   Put it at z-index:95 so it’s on top of text (z-index:90) 
-   but under lines/time-text (z-index:101).
-*/
+/* layer-four from 36vw->94.17vw, hides text behind it (z-index:95). */
 .layer-four {
     position: fixed;
     top: 0;
@@ -68,18 +62,21 @@ body.non-fullscreen {
     z-index: 95;
 }
 
+/* 
+   .page-content fades from opacity:0->1 for everything inside 
+   (lines, dashed lines, time text, grid #s, menu text, etc.)
+*/
 .page-content {
-    opacity: 0; /* fade-in effect */
+    opacity: 0;
     transition: opacity 0.6s ease;
     position: relative;
 }
 
-/* Horizontal lines (four main lines in .page-content) */
 .line {
     position: absolute;
     height: 1px;
     background-color: #cfcfcf;
-    /* Must be above .layer-four => z-index:101 */
+    /* Must be above layer-four => z-index:101 */
     z-index: 101;
 }
 .original {
@@ -103,7 +100,7 @@ body.non-fullscreen {
     width: 57.8vw;
 }
 
-/* The 'slide-container' has dashed lines/time-text, also above .layer-four => z-index:101 */
+/* The dashed lines & time-text are also part of .page-content fade, at z-index:101 */
 .slide-container {
     position: absolute;
     top: 0;
@@ -114,7 +111,6 @@ body.non-fullscreen {
     z-index: 101;
 }
 
-/* Dashed lines inside .slide-container */
 .dashed {
     position: absolute;
     height: 1px;
@@ -140,7 +136,6 @@ body.non-fullscreen {
     width: 52.4vw;
 }
 
-/* Time text also in .slide-container, above .layer-four => z-index:101 */
 .time-text {
     position: absolute;
     z-index: 101;
@@ -149,23 +144,20 @@ body.non-fullscreen {
     color: #111111;
     letter-spacing: 0.2vw;
     text-shadow: 0.011rem 0 0 #919191, -0.011rem 0 0 #919191;
-    top: 28.5vh;
-    left: 89.81vw;
+}
+.time-text {
+    top: 28.5vh; left: 89.81vw;
 }
 .second-time-text {
-    top: 47.04vh;
-    left: 89.91vw;
+    top: 47.04vh; left: 89.91vw;
 }
 .third-time-text {
-    top: 65.51vh;
-    left: 89.87vw;
+    top: 65.51vh; left: 89.87vw;
 }
 .fourth-time-text {
-    top: 83.86vh;
-    left: 90.1vw;
+    top: 83.86vh; left: 90.1vw;
 }
 
-/* Hover area for chat fade-in */
 .hover-area {
     position: absolute;
     top: 28.5vh;
@@ -174,7 +166,7 @@ body.non-fullscreen {
     height: calc(84vh - 28.5vh);
 }
 
-/* Chat text and chat input. Place them above layer-four => z-index:102 so they're visible. */
+/* Chat text is above layer-four => z-index:102. */
 .chat-text {
     position: absolute;
     top: 77vh;
@@ -213,10 +205,17 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* Grid-number positions, each at z-index:101 so they're above .layer-four. */
+/* 
+  The numeric grid & dashed lines 
+  are at z-index:90 or 80 so they're behind layer-three (z-index:100). 
+  But we want them on top of layer-four or behind? 
+  Actually, we just need them to start offscreen. 
+  We'll set them behind layer-four and behind layer-three 
+  so they remain hidden if they cross beyond 94.17vw. 
+*/
 .grid-number {
     position: absolute;
-    z-index: 101;
+    z-index: 90; /* behind layer-three => invisible if crossing 94.17vw */
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
     font-size: 0.411rem;
@@ -224,6 +223,10 @@ body.non-fullscreen {
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     transition: left 0.7s ease;
 }
+/* 
+  These positions place them well off to the right at page load, 
+  so you won't see them until "animate-grid" moves them left. 
+*/
 .num1  { top: 28.5vh; left: 108.8vw; }
 .num2  { top: 28.5vh; left: 123.7vw; }
 .num3  { top: 28.5vh; left: 138.5vw; }
@@ -241,7 +244,7 @@ body.non-fullscreen {
 .num15 { top: 83.7vh; left: 138.0vw; }
 .num16 { top: 83.7vh; left: 152.8vw; }
 
-/* Grid-dashed transitions */
+/* 16 dashed lines for the numeric grid */
 .grid-dashed {
     position: absolute;
     height: 1px;
@@ -249,7 +252,7 @@ body.non-fullscreen {
     background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
     background-size: 10px 1px;
     transition: left 0.7s ease;
-    z-index: 101;
+    z-index: 90; /* behind layer-three => invisible if crossing 94.17vw */
 }
 .dashed01 { top: 28.5vh; left: 96vw; }
 .dashed02 { top: 28.5vh; left: 111vw; }
@@ -268,7 +271,7 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
-/* Animate-grid moves the numbers & dashed lines left */
+/* Animate-grid moves them left so they're visible in the main area. */
 .page-content.animate-grid .grid-number.num1  { left: 48.8vw; }
 .page-content.animate-grid .grid-number.num2  { left: 63.7vw; }
 .page-content.animate-grid .grid-number.num3  { left: 78.5vw; }
@@ -303,23 +306,17 @@ body.non-fullscreen {
 .page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; }
 .page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; }
 
-/* Slide transitions inside slide-container */
+/* The lines/time-text in slide-container also shift left by 91vw when triggered. */
 .slide-container > .line.dashed,
-.slide-container > .time-text,
-.slide-container > .time-text.second-time-text,
-.slide-container > .time-text.third-time-text,
-.slide-container > .time-text.fourth-time-text {
+.slide-container > .time-text {
     transition: transform 0.7s ease;
 }
 .slide-container.animate-slide > .line.dashed,
-.slide-container.animate-slide > .time-text,
-.slide-container.animate-slide > .time-text.second-time-text,
-.slide-container.animate-slide > .time-text.third-time-text,
-.slide-container.animate-slide > .time-text.fourth-time-text {
+.slide-container.animate-slide > .time-text {
     transform: translateX(-91vw);
 }
 
-/* Slide triggers also above .layer-four => z-index:101 */
+/* Slide triggers at z-index:101 so they're clickable above layer-four. */
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
@@ -342,9 +339,9 @@ body.non-fullscreen {
 }
 
 /* 
-   .custom-text is below .layer-four => z-index:90,
-   so if it extends beyond left=36vw, it's hidden. 
-   Force single-line with white-space: nowrap. 
+  Main & submenu texts are behind layer-four => z-index:90, 
+  so if they pass left=36vw, they're hidden.
+  Also we force no wrapping. 
 */
 .custom-text {
     position: absolute;
@@ -354,13 +351,12 @@ body.non-fullscreen {
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    transition: transform 0.7s ease;
     line-height: 1.6;
-    white-space: nowrap; 
-    overflow: visible;
+    white-space: nowrap;
+    transition: transform 0.7s ease;
 }
 
-/* A line behind .layer-four => z-index:90 */
+/* That horizontal line behind layer-four => z-index:90 */
 .custom-line {
     position: absolute;
     top: 47.8vh; 
@@ -372,7 +368,7 @@ body.non-fullscreen {
     z-index: 90;
 }
 
-/* Slide animations for chat & custom texts */
+/* Slide animations triggered by clicks. */
 .chat-slide {
     transform: translateX(24vw);
 }
@@ -380,7 +376,7 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
-/* Submenu expansions */
+/* Submenu expansions (slide-down) and fade-in new text. */
 .slide-down {
     transform: translateY(13vh);
 }

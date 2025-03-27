@@ -218,8 +218,8 @@ body.non-fullscreen {
     left: 6.4vw;
     width: calc(28.86vw - 6.4vw);
     height: calc(84vh - 28.5vh);
-    pointer-events: auto; /* ensure it receives mouse events */
-    background: transparent; /* explicitly transparent */
+    pointer-events: auto; /* ensure it gets events */
+    z-index: 1; /* behind chat-text which will be raised when visible */
 }
 
 .chat-text {

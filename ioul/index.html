@@ -43,6 +43,7 @@
       </div>
 
       <div class="hover-area"></div>
+      <!-- Initially, chat-text is invisible, non-interactive and behind other elements -->
       <span class="chat-text" id="chatText">cHAT . . .</span>
 
       <span class="grid-number num1">1</span>
@@ -126,7 +127,7 @@
       }
     });
     
-    // Slide trigger behavior now targets the new slide-triggers container (which is fixed)
+    // Slide trigger behavior for slide in/out
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -142,15 +143,17 @@
     
     // Chat area behavior
     const chatText = document.getElementById('chatText');
-    // Disable pointer events initially so that chat-text doesn't block its trigger area.
+    // Initially, disable pointer events and set z-index low so that hover-area receives events.
     chatText.style.pointerEvents = 'none';
+    chatText.style.zIndex = '-1';
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
     hoverArea.addEventListener('mouseenter', () => {
       if (!chatShownOnce && pageFadedIn) {
         chatText.style.opacity = '1';
-        // Re-enable pointer events when chat-text fades in
+        // Re-enable pointer events and bring chat-text to front.
         chatText.style.pointerEvents = 'auto';
+        chatText.style.zIndex = '10';
         chatShownOnce = true;
       }
     });

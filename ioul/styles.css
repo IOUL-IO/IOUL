@@ -1,213 +1,203 @@
 @font-face {
-    font-family: 'Distill Expanded';
-    src: url('font.woff2') format('woff2'),
-         url('font.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Distill Expanded';
+  src: url('font.woff2') format('woff2'),
+       url('font.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Same background */
 body.non-fullscreen {
-    background-color: #ffffff;
-    min-height: 100vh;
-    min-width: 100vw;
-    overflow: hidden;
+  background-color: #ffffff;
+  min-height: 100vh;
+  min-width: 100vw;
+  overflow: hidden;
 }
 
-/* The same three layers: 
-   - layer-one covers [0->6.37vw],
-   - layer-two covers [28.87->36vw],
-   - layer-three covers [94.17->100vw]. 
-   All at z-index: 100. */
+/* Fixed layers as in your original code */
 .layer-one {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 6.37vw;
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6.37vw;
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 100;
 }
 .layer-two {
-    position: fixed;
-    top: 0;
-    left: 28.87vw;
-    width: calc(36vw - 28.87vw);
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 28.87vw;
+  width: calc(36vw - 28.87vw);
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 100;
 }
 .layer-three {
-    position: fixed;
-    top: 0;
-    left: 94.17vw;
-    width: calc(100vw - 94.17vw);
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 94.17vw;
+  width: calc(100vw - 94.17vw);
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 100;
 }
 
-/* 
-   .page-content fades from opacity:0->1 
-   so everything inside (lines, dashed lines, time text, grid #, menu text) 
-   appears at once.
-*/
+/* .page-content fades in all at once as originally */
 .page-content {
-    opacity: 0;
-    transition: opacity 0.6s ease;
-    position: relative;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  position: relative;
 }
 
-/* The four horizontal lines. Same positions as original. */
+/* Horizontal lines (unchanged) */
 .line {
-    position: absolute;
-    height: 1px;
-    background-color: #cfcfcf;
+  position: absolute;
+  height: 1px;
+  background-color: #cfcfcf;
 }
 .original {
-    top: 12.5vh;
-    left: 6.38vw;
-    width: 22.48vw;
+  top: 12.5vh;
+  left: 6.38vw;
+  width: 22.48vw;
 }
 .second {
-    top: 28.5vh;
-    left: 6.38vw;
-    width: 22.48vw;
+  top: 28.5vh;
+  left: 6.38vw;
+  width: 22.48vw;
 }
 .third {
-    top: 84vh;
-    left: 6.38vw;
-    width: 22.48vw;
+  top: 84vh;
+  left: 6.38vw;
+  width: 22.48vw;
 }
 .fourth {
-    top: 12.5vh;
-    left: 36vw;
-    width: 57.8vw;
+  top: 12.5vh;
+  left: 36vw;
+  width: 57.8vw;
 }
 
-/* 
-   The dashed lines & time texts are in .slide-container, 
-   clipped at left=28.86vw, just like your original code. 
-*/
+/* Slide container for dashed lines and time texts */
 .slide-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    clip-path: inset(0 0 0 28.86vw);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  clip-path: inset(0 0 0 28.86vw);
+  /* IMPORTANT: set z-index to 90 so these elements are below layer-two */
+  z-index: 90;
 }
-.dashed {
-    position: absolute;
-    height: 1px;
-    top: 28.5vh;
-    left: 36vw;
-    width: 52.4vw;
-    background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
-    background-size: 10px 1px;
+
+/* Dashed lines in slide-container */
+.slide-container > .line.dashed {
+  position: absolute;
+  height: 1px;
+  top: 28.5vh;
+  left: 36vw;
+  width: 52.4vw;
+  background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
+  background-size: 10px 1px;
+  z-index: 90;
 }
 .second-dashed {
-    top: 47vh;
-    left: 36vw;
-    width: 52.4vw;
+  top: 47vh;
+  left: 36vw;
+  width: 52.4vw;
+  z-index: 90;
 }
 .third-dashed {
-    top: 65.5vh;
-    left: 36vw;
-    width: 52.4vw;
+  top: 65.5vh;
+  left: 36vw;
+  width: 52.4vw;
+  z-index: 90;
 }
 .fourth-dashed {
-    top: 84vh;
-    left: 36vw;
-    width: 52.4vw;
+  top: 84vh;
+  left: 36vw;
+  width: 52.4vw;
+  z-index: 90;
 }
 
-/* The four time texts */
-.time-text {
-    position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.331rem;
-    color: #111111;
-    letter-spacing: 0.2vw;
-    text-shadow: 0.011rem 0 0 #919191, -0.011rem 0 0 #919191;
-    top: 28.5vh;
-    left: 89.81vw;
-}
-.second-time-text {
-    top: 47.04vh;
-    left: 89.91vw;
-}
-.third-time-text {
-    top: 65.51vh;
-    left: 89.87vw;
-}
+/* Time texts in slide-container */
+.time-text,
+.second-time-text,
+.third-time-text,
 .fourth-time-text {
-    top: 83.86vh;
-    left: 90.1vw;
+  position: absolute;
+  font-family: 'Distill Expanded', sans-serif;
+  font-size: 0.331rem;
+  color: #111111;
+  letter-spacing: 0.2vw;
+  text-shadow: 0.011rem 0 0 #919191, -0.011rem 0 0 #919191;
+  z-index: 90;
 }
+.time-text { top: 28.5vh; left: 89.81vw; }
+.second-time-text { top: 47.04vh; left: 89.91vw; }
+.third-time-text { top: 65.51vh; left: 89.87vw; }
+.fourth-time-text { top: 83.86vh; left: 90.1vw; }
 
-/* The area that triggers chat fade on hover */
+/* Hover area & chat text remain unchanged */
 .hover-area {
-    position: absolute;
-    top: 28.5vh;
-    left: 6.4vw;
-    width: calc(28.86vw - 6.4vw);
-    height: calc(84vh - 28.5vh);
+  position: absolute;
+  top: 28.5vh;
+  left: 6.4vw;
+  width: calc(28.86vw - 6.4vw);
+  height: calc(84vh - 28.5vh);
 }
-
-/* Chat text & input, same as original */
 .chat-text {
-    position: absolute;
-    top: 77vh;
-    left: 6.41vw;
-    display: inline-block;
-    font-family: 'Distill Expanded', sans-serif;
-    color: #111111;
-    letter-spacing: 0.28vw;
-    font-size: 0.47rem;
-    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    cursor: pointer;
-    opacity: 0; /* will fade in */
-    transition: opacity 0.3s ease, transform 0.7s ease;
-    line-height: 1.3;
-    padding-top: 0.1rem;
+  position: absolute;
+  top: 77vh;
+  left: 6.41vw;
+  display: inline-block;
+  z-index: 102;
+  font-family: 'Distill Expanded', sans-serif;
+  color: #111111;
+  letter-spacing: 0.28vw;
+  font-size: 0.47rem;
+  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.7s ease;
+  line-height: 1.3;
+  padding-top: 0.1rem;
 }
 .chat-input {
-    position: absolute;
-    top: 77vh;
-    left: 6.41vw;
-    width: 22.17vw;
-    font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.47rem;
-    letter-spacing: 0.28vw;
-    color: #111111;
-    caret-color: #d1d1d1;
-    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    line-height: 1.2;
-    padding: 0.2rem 0;
-    border: none;
-    outline: none;
-    background: #ffffff;
-    cursor: text;
-    transition: transform 0.7s ease;
+  position: absolute;
+  top: 77vh;
+  left: 6.41vw;
+  width: 22.17vw;
+  z-index: 102;
+  font-family: 'Distill Expanded', sans-serif;
+  font-size: 0.47rem;
+  letter-spacing: 0.28vw;
+  color: #111111;
+  caret-color: #d1d1d1;
+  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+  line-height: 1.2;
+  padding: 0.2rem 0;
+  border: none;
+  outline: none;
+  background: #ffffff;
+  cursor: text;
+  transition: transform 0.7s ease;
 }
 
-/* Grid numbers, same positions as original, 
-   so they start far to the right until "animate-grid" slides them in. */
+/* Grid numbers & grid dashed lines (remain above for animate-grid) */
 .grid-number {
-    position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    color: #111111;
-    font-size: 0.411rem;
-    letter-spacing: 0.28vw;
-    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    transition: left 0.7s ease;
+  position: absolute;
+  z-index: 101;
+  font-family: 'Distill Expanded', sans-serif;
+  color: #111111;
+  font-size: 0.411rem;
+  letter-spacing: 0.28vw;
+  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+  transition: left 0.7s ease;
 }
 .num1  { top: 28.5vh; left: 108.8vw; }
 .num2  { top: 28.5vh; left: 123.7vw; }
@@ -226,14 +216,14 @@ body.non-fullscreen {
 .num15 { top: 83.7vh; left: 138.0vw; }
 .num16 { top: 83.7vh; left: 152.8vw; }
 
-/* Grid-dashed lines 1–16, also far to the right. */
 .grid-dashed {
-    position: absolute;
-    height: 1px;
-    width: 11.8vw;
-    background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
-    background-size: 10px 1px;
-    transition: left 0.7s ease;
+  position: absolute;
+  z-index: 101;
+  height: 1px;
+  width: 11.8vw;
+  background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
+  background-size: 10px 1px;
+  transition: left 0.7s ease;
 }
 .dashed01 { top: 28.5vh; left: 96vw; }
 .dashed02 { top: 28.5vh; left: 111vw; }
@@ -252,7 +242,7 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
-/* Animate-grid slides those numbers & dashed lines into the main area */
+/* When .animate-grid is applied, grid numbers & grid dashed lines slide in */
 .page-content.animate-grid .grid-number.num1  { left: 48.8vw; }
 .page-content.animate-grid .grid-number.num2  { left: 63.7vw; }
 .page-content.animate-grid .grid-number.num3  { left: 78.5vw; }
@@ -269,7 +259,6 @@ body.non-fullscreen {
 .page-content.animate-grid .grid-number.num14 { left: 63.2vw; }
 .page-content.animate-grid .grid-number.num15 { left: 78.0vw; }
 .page-content.animate-grid .grid-number.num16 { left: 92.8vw; }
-
 .page-content.animate-grid .grid-dashed.dashed01 { left: 36vw; }
 .page-content.animate-grid .grid-dashed.dashed02 { left: 51vw; }
 .page-content.animate-grid .grid-dashed.dashed03 { left: 65.9vw; }
@@ -287,90 +276,87 @@ body.non-fullscreen {
 .page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; }
 .page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; }
 
-/* Slide container items shift left by 91vw when triggered */
+/* Slide-container children slide left on trigger */
 .slide-container > .line.dashed,
-.slide-container > .time-text,
-.slide-container > .time-text.second-time-text,
-.slide-container > .time-text.third-time-text,
-.slide-container > .time-text.fourth-time-text {
-    transition: transform 0.7s ease;
+.slide-container > .time-text {
+  transition: transform 0.7s ease;
 }
 .slide-container.animate-slide > .line.dashed,
-.slide-container.animate-slide > .time-text,
-.slide-container.animate-slide > .time-text.second-time-text,
-.slide-container.animate-slide > .time-text.third-time-text,
-.slide-container.animate-slide > .time-text.fourth-time-text {
-    transform: translateX(-91vw);
+.slide-container.animate-slide > .time-text {
+  transform: translateX(-91vw);
 }
 
-/* The triggers near the boundaries */
+/* Slide triggers */
 .slide-trigger {
-    position: absolute;
-    top: 28.5vh;
-    left: 32.43vw;
-    width: calc(36vw - 32.43vw);
-    height: calc(84vh - 28.5vh);
-    background: transparent;
-    z-index: 101;
-    cursor: pointer;
+  position: absolute;
+  top: 28.5vh;
+  left: 32.43vw;
+  width: calc(36vw - 32.43vw);
+  height: calc(84vh - 28.5vh);
+  background: transparent;
+  z-index: 101;
+  cursor: pointer;
 }
 .slide-trigger-reverse {
-    position: absolute;
-    top: 28.5vh;
-    left: 94vw;
-    width: calc(100vw - 94vw);
-    height: calc(84vh - 28.5vh);
-    background: transparent;
-    z-index: 101;
-    cursor: pointer;
+  position: absolute;
+  top: 28.5vh;
+  left: 94vw;
+  width: calc(100vw - 94vw);
+  height: calc(84vh - 28.5vh);
+  background: transparent;
+  z-index: 101;
+  cursor: pointer;
 }
 
 /* 
-   The main & submenu texts: 
-   z-index < layer-two's 100 
-   => if left > 36vw, they're hidden behind the white bar.
-   Also force single-line with white-space: nowrap.
+   MAIN MENU & SUBMENU TEXT (the .custom-text elements) 
+   They now have a clip-path so that anything past 36vw is not visible.
+   They’re set at z-index 90 so that if any part crosses into layer-two’s area, 
+   it’s hidden behind that white bar.
 */
 .custom-text {
-    position: absolute;
-    z-index: 90; /* behind layer-two (z-index: 100) => clipped at left=36 */
-    font-family: 'Distill Expanded', sans-serif;
-    color: #111111;
-    letter-spacing: 0.28vw;
-    font-size: 0.47rem;
-    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    line-height: 1.6;
-    white-space: nowrap;
-    transition: transform 0.7s ease;
+  position: absolute;
+  z-index: 90;
+  font-family: 'Distill Expanded', sans-serif;
+  color: #111111;
+  letter-spacing: 0.28vw;
+  font-size: 0.47rem;
+  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+  line-height: 1.6;
+  white-space: nowrap;
+  transition: transform 0.7s ease;
+  /* This clip-path restricts visible content to the first 36vw of the viewport */
+  clip-path: inset(0 calc(100vw - 36vw) 0 0);
 }
 
-/* That extra line behind the bar if it crosses 36 */
+/* The extra horizontal line behind menu texts */
 .custom-line {
-    position: absolute;
-    top: 47.8vh; 
-    left: -42.59vw;
-    width: 22.48vw;
-    height: 1px;
-    background-color: rgba(230, 230, 230, 0.28);
-    transition: transform 0.7s ease;
+  position: absolute;
+  top: 47.8vh;
+  left: -42.59vw;
+  width: 22.48vw;
+  height: 1px;
+  background-color: rgba(230, 230, 230, 0.28);
+  transition: transform 0.7s ease;
+  z-index: 90;
 }
 
-/* On left-click, the chat & custom texts shift right. On mid-click, they shift back. */
+/* Slide animations for chat and custom texts */
 .chat-slide {
-    transform: translateX(24vw);
+  transform: translateX(24vw);
 }
 .custom-slide {
-    transform: translateX(49vw);
+  transform: translateX(49vw);
 }
 
-/* Submenu expansions: "slide-down" & fade in new text */
+/* Submenu expansion and fade-in for new texts */
 .slide-down {
-    transform: translateY(13vh);
+  transform: translateY(13vh);
 }
 .new-text {
-    opacity: 0;
-    transition: opacity 0.7s ease;
+  opacity: 0;
+  transition: opacity 0.7s ease;
 }
 .new-text.visible {
-    opacity: 1;
+  opacity: 1;
 }

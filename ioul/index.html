@@ -8,25 +8,20 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="non-fullscreen">
-    <!-- Fixed layers (highest) -->
+    <!-- Fixed layers – these always remain on top -->
     <div class="layer-one"></div>
     <div class="layer-two"></div>
     <div class="layer-three"></div>
     
-    <!-- NEW layer-four: covers area from 36vw to 94.17vw.
-         This white mask (z-index 150) will cover main menu texts (z-index 100)
-         if they extend beyond 36vw. -->
-    <div class="layer-four"></div>
-    
-    <!-- Main page content (all these elements fade in together, z-index 200 by default) -->
+    <!-- All page content (including dashed lines, grid, chat, etc.) fades in together -->
     <div class="page-content">
-      <!-- Horizontal lines -->
+      <!-- Four horizontal lines -->
       <div class="line original"></div>
       <div class="line second"></div>
       <div class="line third"></div>
       <div class="line fourth"></div>
       
-      <!-- Slide container with dashed lines and time texts -->
+      <!-- Slide container for 4 dashed lines and 4 time texts -->
       <div class="slide-container">
         <div class="line dashed"></div>
         <div class="line dashed second-dashed"></div>
@@ -41,7 +36,7 @@
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
       
-      <!-- Grid numbers (1–16) -->
+      <!-- Grid numbers 1–16 -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -59,7 +54,7 @@
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
       
-      <!-- Grid dashed lines (1–16) -->
+      <!-- Grid dashed lines 1–16 -->
       <div class="grid-dashed dashed01"></div>
       <div class="grid-dashed dashed02"></div>
       <div class="grid-dashed dashed03"></div>
@@ -77,9 +72,11 @@
       <div class="grid-dashed dashed15"></div>
       <div class="grid-dashed dashed16"></div>
       
-      <!-- Main menu items (no extra container) -->
-      <!-- They are positioned at left:29vw, z-index:100,
-           and have a max-width so that any text beyond 36vw is hidden -->
+      <!-- Main menu items.
+           They are placed directly in page-content at left:29vw.
+           Their IDs have a CSS rule that limits their max-width to (36vw-29vw),
+           so any text extending past 36vw is clipped.
+      -->
       <span class="custom-text" id="online-assets" style="top: 35.4vh; left: 29vw;">
         -  OnL1nE ASSETS
       </span>
@@ -130,10 +127,10 @@
       document.addEventListener('click', (event) => {
         const { clientX, clientY } = event;
         if (!document.fullscreenElement &&
-            (clientX <= EDGE_MARGIN ||
-             clientX >= window.innerWidth - EDGE_MARGIN ||
-             clientY <= EDGE_MARGIN ||
-             clientY >= window.innerHeight - EDGE_MARGIN)) {
+           (clientX <= EDGE_MARGIN ||
+            clientX >= window.innerWidth - EDGE_MARGIN ||
+            clientY <= EDGE_MARGIN ||
+            clientY >= window.innerHeight - EDGE_MARGIN)) {
           document.documentElement.requestFullscreen();
         }
       });

@@ -21,10 +21,10 @@
       <span class="custom-text menu-item" style="top: 54vh; left: 29vw;" id="internal-unit">-  1nTERnAL Un1T</span>
     </div>
 
-    <!-- Layer four now sits inside .page-content and will cover only the menu items -->
+    <!-- The covering layer -->
     <div class="layer-four"></div>
 
-    <!-- Container for all other content (dashed lines, time texts, grid numbers, submenu items, etc.) -->
+    <!-- Container for other content -->
     <div class="other-content">
       <div class="line original"></div>
       <div class="line second"></div>
@@ -79,7 +79,7 @@
       <div class="grid-dashed dashed15"></div>
       <div class="grid-dashed dashed16"></div>
 
-      <!-- Submenu items (which should remain above layer 4) -->
+      <!-- Submenu items -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
       <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -94,14 +94,17 @@
       <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
 
       <div class="custom-line"></div>
+    </div> <!-- end of .other-content -->
 
+    <!-- New container for slide triggers -->
+    <div class="slide-triggers">
       <div class="slide-trigger"></div>
       <div class="slide-trigger-reverse"></div>
-    </div> <!-- end of .other-content -->
-  </div> <!-- end of .page-content -->
+    </div>
+  </div>
 
   <script>
-    // Fade-in & fullscreen behavior remains unchanged
+    // Fade-in and fullscreen behavior (unchanged)
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -122,7 +125,7 @@
         document.documentElement.requestFullscreen();
       }
     });
-    // Slide trigger behavior remains unchanged (note we now target .other-content for grid animations)
+    // Slide trigger behavior now targets the new slide-triggers container
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -135,6 +138,7 @@
       document.querySelector('.slide-container').classList.add('animate-slide');
       document.querySelector('.other-content').classList.add('animate-grid');
     });
+    // Chat area behavior (unchanged)
     const chatText = document.getElementById('chatText');
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
@@ -152,6 +156,7 @@
       chatText.remove();
       chatInput.focus();
     });
+    // Document-level click handlers for slide animations remain unchanged
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -214,7 +219,7 @@
         }
       }
     });
-    // Submenu Toggle Script (modified to append new text to .other-content)
+    // Submenu Toggle Script (append new submenu text into .other-content)
     function addNewText(text, top, left) {
       let span = document.createElement("span");
       span.className = "custom-text new-text";

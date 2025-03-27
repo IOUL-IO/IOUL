@@ -341,3 +341,16 @@ body.non-fullscreen {
 .new-text.visible {
     opacity: 1;
 }
+
+/* NEW RULE:
+   Clip the main menu items (those at left:29vw) so that any part
+   of the text past the 36vw boundary (i.e. visible width of 7vw)
+   is hidden. This is done without changing text width or using a container.
+*/
+#online-assets,
+#linkup-center,
+#delivery-line,
+#internal-unit {
+    display: inline-block;
+    clip-path: inset(0 calc(100% - 7vw) 0 0);
+}

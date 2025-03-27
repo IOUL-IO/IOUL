@@ -42,12 +42,9 @@
         <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       </div>
 
-      <!-- The hover area for chat fade‑in -->
       <div class="hover-area"></div>
-      <!-- Initially, chat-text is invisible, non-interactive, and placed behind -->
       <span class="chat-text" id="chatText">cHAT . . .</span>
 
-      <!-- Grid numbers -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -65,7 +62,6 @@
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
 
-      <!-- Grid dashed lines -->
       <div class="grid-dashed dashed01"></div>
       <div class="grid-dashed dashed02"></div>
       <div class="grid-dashed dashed03"></div>
@@ -101,7 +97,7 @@
     </div> <!-- end of .other-content -->
   </div> <!-- end of .page-content -->
 
-  <!-- Slide triggers container (fixed) -->
+  <!-- Slide triggers container -->
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
@@ -146,14 +142,10 @@
     
     // Chat area behavior
     const chatText = document.getElementById('chatText');
-    // Initially, disable pointer events and lower z-index so chatText doesn't block hover.
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
-    
-    // Instead of relying solely on a "mouseenter" event,
-    // we add a document-level mousemove listener that checks if the pointer is within the hover-area.
     document.addEventListener('mousemove', (event) => {
       if (!chatShownOnce && pageFadedIn) {
         const rect = hoverArea.getBoundingClientRect();
@@ -167,7 +159,9 @@
       }
     });
     
-    chatText.addEventListener('click', () => {
+    // Updated chat click handler: stop propagation to avoid triggering document-level click events
+    chatText.addEventListener('click', (e) => {
+      e.stopPropagation();
       const chatInput = document.createElement('input');
       chatInput.type = 'text';
       chatInput.classList.add('chat-input');

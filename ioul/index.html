@@ -8,9 +8,17 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="non-fullscreen">
+  <!-- Standard layers -->
   <div class="layer-one"></div>
   <div class="layer-two"></div>
   <div class="layer-three"></div>
+
+  <!-- 
+    NEW: A 'layer-four' from left=36vw to left=94.17vw (the start of layer-three). 
+    This white rectangle is behind the dashed lines/time-text but in front of the text,
+    so any text beyond 36vw is hidden behind it.
+  -->
+  <div class="layer-four"></div>
 
   <div class="page-content">
     <div class="line original"></div>
@@ -66,16 +74,13 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- Main menu items: absolutely positioned at left: 29vw, 
-         z-index: 90, so they're behind .layer-two (z-index:100). 
-         The portion that crosses 36vw is effectively hidden under that bar. -->
+    <!-- Main menu items, no container, each behind layer-four if they pass 36vw -->
     <span class="custom-text" style="top: 35.4vh; left: 29vw;" id="online-assets">-  OnL1nE ASSETS</span>
     <span class="custom-text" style="top: 41.6vh; left: 29vw;" id="linkup-center">-  L1nKUP cEnTER</span>
     <span class="custom-text" style="top: 47.8vh; left: 29vw;" id="delivery-line">-  DEL1VERY L1nE</span>
     <span class="custom-text" style="top: 54vh; left: 29vw;" id="internal-unit">-  1nTERnAL Un1T</span>
 
-    <!-- Submenu items (also behind layer-two); 
-         placed offscreen with negative left; they'll animate in. -->
+    <!-- Submenu items also behind layer-four if they cross 36vw -->
     <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
     <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
     <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -96,7 +101,7 @@
   </div>
 
   <script>
-    // Page fade-in and fullscreen code (unchanged)
+    // Fullscreen & page fade-in remain the same
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -132,7 +137,7 @@
       document.querySelector('.page-content').classList.add('animate-grid');
     });
 
-    // Chat text fade / input logic
+    // Chat text fade logic remains unchanged
     const chatText = document.getElementById('chatText');
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
@@ -151,7 +156,7 @@
       chatInput.focus();
     });
 
-    // Slide animations when clicking the left area
+    // Slide effect on left edge click
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -172,8 +177,7 @@
         if (chatInputEl) {
           chatInputEl.classList.add('chat-slide');
         }
-        const customTextEls = document.querySelectorAll('.custom-text');
-        customTextEls.forEach(el => {
+        document.querySelectorAll('.custom-text').forEach(el => {
           el.classList.add('custom-slide');
         });
         const customLineEl = document.querySelector('.custom-line');
@@ -183,7 +187,7 @@
       }
     });
 
-    // Reverse slide animation when clicking the mid area
+    // Reverse slide effect on mid-area click
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -204,8 +208,7 @@
         if (chatInputEl) {
           chatInputEl.classList.remove('chat-slide');
         }
-        const customTextEls = document.querySelectorAll('.custom-text');
-        customTextEls.forEach(el => {
+        document.querySelectorAll('.custom-text').forEach(el => {
           el.classList.remove('custom-slide');
           el.style.transition = "transform 0.7s ease";
         });
@@ -218,14 +221,13 @@
     });
   </script>
 
-  <!-- Submenu toggle code (appends new items to .page-content). 
-       We rely on layer-two's z-index to hide anything crossing 36vw. -->
+  <!-- Submenu logic appends items to .page-content, behind .layer-four past 36vw -->
   <script>
-    function addNewText(text, top, left) {
+    function addNewText(text, top, leftVw) {
       const span = document.createElement("span");
       span.className = "custom-text new-text";
       span.style.top = top + "vh";
-      span.style.left = left + "vw";
+      span.style.left = leftVw + "vw";
       span.textContent = text;
       document.querySelector(".page-content").appendChild(span);
       setTimeout(() => {
@@ -255,13 +257,10 @@
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
       setTimeout(() => {
-        // Example: sub-items at left: 29.7 => 0.7vw further right, 
-        // so it lines up with the main item around 29vw
         addNewText("cOnTEnT", 41.6, 29.7);
         addNewText("LEARn1ng", 47.8, 29.7);
       }, 700);
     }
-
     function openLinkupCenter() {
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
@@ -270,7 +269,6 @@
         addNewText("LABOUR", 54, 29.7);
       }, 700);
     }
-
     function openDeliveryLine() {
       document.getElementById("internal-unit").classList.add("slide-down");
       setTimeout(() => {
@@ -278,7 +276,6 @@
         addNewText("PROJEcTS", 60.2, 29.7);
       }, 700);
     }
-
     function openInternalUnit() {
       setTimeout(() => {
         addNewText("1nVEnTORY", 60.2, 29.7);
@@ -304,7 +301,6 @@
         }
       }
     });
-
     document.getElementById("linkup-center").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "linkup-center") {
@@ -322,7 +318,6 @@
         }
       }
     });
-
     document.getElementById("delivery-line").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "delivery-line") {
@@ -340,7 +335,6 @@
         }
       }
     });
-
     document.getElementById("internal-unit").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "internal-unit") {

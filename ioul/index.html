@@ -152,8 +152,7 @@
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
     
-    // Instead of relying solely on a "mouseenter" event,
-    // we add a document-level mousemove listener that checks if the pointer is within the hover-area.
+    // Add a document-level mousemove listener to check if pointer is within hover-area.
     document.addEventListener('mousemove', (event) => {
       if (!chatShownOnce && pageFadedIn) {
         const rect = hoverArea.getBoundingClientRect();
@@ -167,7 +166,10 @@
       }
     });
     
-    chatText.addEventListener('click', () => {
+    // Updated chat click handler: now stops propagation and prevents default.
+    chatText.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
       const chatInput = document.createElement('input');
       chatInput.type = 'text';
       chatInput.classList.add('chat-input');

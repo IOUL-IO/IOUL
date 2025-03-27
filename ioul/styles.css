@@ -161,21 +161,25 @@ body.non-fullscreen {
     width: 52.4vw;
     background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
     background-size: 10px 1px;
+    transition: transform 0.7s ease;
 }
 .second-dashed {
     top: 47vh;
     left: 36vw;
     width: 52.4vw;
+    transition: transform 0.7s ease;
 }
 .third-dashed {
     top: 65.5vh;
     left: 36vw;
     width: 52.4vw;
+    transition: transform 0.7s ease;
 }
 .fourth-dashed {
     top: 84vh;
     left: 36vw;
     width: 52.4vw;
+    transition: transform 0.7s ease;
 }
 
 .time-text {
@@ -187,18 +191,22 @@ body.non-fullscreen {
     text-shadow: 0.011rem 0 0 #919191, -0.011rem 0 0 #919191;
     top: 28.5vh;
     left: 89.81vw;
+    transition: transform 0.7s ease;
 }
 .second-time-text {
     top: 47.04vh;
     left: 89.91vw;
+    transition: transform 0.7s ease;
 }
 .third-time-text {
     top: 65.51vh;
     left: 89.87vw;
+    transition: transform 0.7s ease;
 }
 .fourth-time-text {
     top: 83.86vh;
     left: 90.1vw;
+    transition: transform 0.7s ease;
 }
 
 .hover-area {
@@ -252,7 +260,7 @@ body.non-fullscreen {
     font-size: 0.411rem;
     letter-spacing: 0.28vw;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    transition: left 0.7s ease;
+    transition: transform 0.7s ease;
 }
 .num1  { top: 28.5vh; left: 108.8vw; }
 .num2  { top: 28.5vh; left: 123.7vw; }
@@ -277,7 +285,7 @@ body.non-fullscreen {
     width: 11.8vw;
     background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
     background-size: 10px 1px;
-    transition: left 0.7s ease;
+    transition: transform 0.7s ease;
 }
 .dashed01 { top: 28.5vh; left: 96vw; }
 .dashed02 { top: 28.5vh; left: 111vw; }
@@ -296,6 +304,7 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
+/* Slide animation for dashed lines and time texts in slide-container */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -308,6 +317,12 @@ body.non-fullscreen {
 .slide-container.animate-slide > .time-text.second-time-text,
 .slide-container.animate-slide > .time-text.third-time-text,
 .slide-container.animate-slide > .time-text.fourth-time-text {
+    transform: translateX(-91vw);
+}
+
+/* Slide animation for grid numbers and grid dashed lines */
+.other-content.animate-grid .grid-number,
+.other-content.animate-grid .grid-dashed {
     transform: translateX(-91vw);
 }
 

@@ -1,375 +1,319 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IOUL</title>
-  <link rel="icon" href="favicon.png" type="image/png" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body class="non-fullscreen">
-  <!-- Same three fixed layers as your original code -->
-  <div class="layer-one"></div>
-  <div class="layer-two"></div>
-  <div class="layer-three"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IOUL</title>
+    <link rel="icon" href="favicon.png" type="image/png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="non-fullscreen">
+    <!-- Original fixed layers -->
+    <div class="layer-one"></div>
+    <div class="layer-two"></div>
+    <div class="layer-three"></div>
 
-  <!-- All page contents fade in together -->
-  <div class="page-content">
-    <!-- The same four main lines -->
-    <div class="line original"></div>
-    <div class="line second"></div>
-    <div class="line third"></div>
-    <div class="line fourth"></div>
+    <!-- NEW Layer Four: covers from left 36vw to 94.17vw so that any menu text beyond 36vw is hidden -->
+    <div class="layer-four"></div>
 
-    <!-- Slide container with 4 dashed lines & 4 time texts -->
-    <div class="slide-container">
-      <div class="line dashed"></div>
-      <div class="line dashed second-dashed"></div>
-      <div class="line dashed third-dashed"></div>
-      <div class="line dashed fourth-dashed"></div>
-      <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-      <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
-      <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
-      <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+    <div class="page-content">
+      <!-- Four horizontal lines -->
+      <div class="line original"></div>
+      <div class="line second"></div>
+      <div class="line third"></div>
+      <div class="line fourth"></div>
+
+      <!-- Slide container with 4 dashed lines and 4 time texts -->
+      <div class="slide-container">
+        <div class="line dashed"></div>
+        <div class="line dashed second-dashed"></div>
+        <div class="line dashed third-dashed"></div>
+        <div class="line dashed fourth-dashed"></div>
+        <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+        <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+        <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+        <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+      </div>
+
+      <div class="hover-area"></div>
+      <span class="chat-text" id="chatText">cHAT . . .</span>
+
+      <!-- Grid numbers 1–16 -->
+      <span class="grid-number num1">1</span>
+      <span class="grid-number num2">2</span>
+      <span class="grid-number num3">3</span>
+      <span class="grid-number num4">4</span>
+      <span class="grid-number num5">5</span>
+      <span class="grid-number num6">6</span>
+      <span class="grid-number num7">7</span>
+      <span class="grid-number num8">8</span>
+      <span class="grid-number num9">9</span>
+      <span class="grid-number num10">10</span>
+      <span class="grid-number num11">11</span>
+      <span class="grid-number num12">12</span>
+      <span class="grid-number num13">13</span>
+      <span class="grid-number num14">14</span>
+      <span class="grid-number num15">15</span>
+      <span class="grid-number num16">16</span>
+
+      <!-- Grid dashed lines 1–16 -->
+      <div class="grid-dashed dashed01"></div>
+      <div class="grid-dashed dashed02"></div>
+      <div class="grid-dashed dashed03"></div>
+      <div class="grid-dashed dashed04"></div>
+      <div class="grid-dashed dashed05"></div>
+      <div class="grid-dashed dashed06"></div>
+      <div class="grid-dashed dashed07"></div>
+      <div class="grid-dashed dashed08"></div>
+      <div class="grid-dashed dashed09"></div>
+      <div class="grid-dashed dashed10"></div>
+      <div class="grid-dashed dashed11"></div>
+      <div class="grid-dashed dashed12"></div>
+      <div class="grid-dashed dashed13"></div>
+      <div class="grid-dashed dashed14"></div>
+      <div class="grid-dashed dashed15"></div>
+      <div class="grid-dashed dashed16"></div>
+
+      <!-- Main menu items: placed at left:29vw.
+           They have a lower z-index so that if their text extends past 36vw, layer-four (above them) covers it. -->
+      <span class="custom-text" style="top: 35.4vh; left: 29vw;" id="online-assets">-  OnL1nE ASSETS</span>
+      <span class="custom-text" style="top: 41.6vh; left: 29vw;" id="linkup-center">-  L1nKUP cEnTER</span>
+      <span class="custom-text" style="top: 47.8vh; left: 29vw;" id="delivery-line">-  DEL1VERY L1nE</span>
+      <span class="custom-text" style="top: 54vh; left: 29vw;" id="internal-unit">-  1nTERnAL Un1T</span>
+
+      <!-- Submenu items (initially offscreen) -->
+      <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
+      <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
+      <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
+      <span class="custom-text" style="top: 41.6vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
+      <span class="custom-text" style="top: 54vh; left: -42.59vw;">YOUR L1ST</span>
+      <span class="custom-text" style="top: 60.2vh; left: -42.59vw;">cHAnnELS</span>
+      <span class="custom-text" style="top: 66.4vh; left: -42.59vw;">OFFER HUB</span>
+      <span class="custom-text" style="top: 72.6vh; left: -42.59vw;">YOUR JOBS</span>
+      <span class="custom-text" style="top: 54vh; left: -23.29vw;">OPEn</span>
+      <span class="custom-text" style="top: 60.2vh; left: -23.29vw;">OPEn</span>
+      <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
+      <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
+
+      <div class="custom-line"></div>
+
+      <!-- Slide triggers (unchanged) -->
+      <div class="slide-trigger"></div>
+      <div class="slide-trigger-reverse"></div>
     </div>
 
-    <!-- Hover area & chat text -->
-    <div class="hover-area"></div>
-    <span class="chat-text" id="chatText">cHAT . . .</span>
-
-    <!-- Grid numbers 1–16 -->
-    <span class="grid-number num1">1</span>
-    <span class="grid-number num2">2</span>
-    <span class="grid-number num3">3</span>
-    <span class="grid-number num4">4</span>
-    <span class="grid-number num5">5</span>
-    <span class="grid-number num6">6</span>
-    <span class="grid-number num7">7</span>
-    <span class="grid-number num8">8</span>
-    <span class="grid-number num9">9</span>
-    <span class="grid-number num10">10</span>
-    <span class="grid-number num11">11</span>
-    <span class="grid-number num12">12</span>
-    <span class="grid-number num13">13</span>
-    <span class="grid-number num14">14</span>
-    <span class="grid-number num15">15</span>
-    <span class="grid-number num16">16</span>
-
-    <!-- Grid dashed lines 1–16 -->
-    <div class="grid-dashed dashed01"></div>
-    <div class="grid-dashed dashed02"></div>
-    <div class="grid-dashed dashed03"></div>
-    <div class="grid-dashed dashed04"></div>
-    <div class="grid-dashed dashed05"></div>
-    <div class="grid-dashed dashed06"></div>
-    <div class="grid-dashed dashed07"></div>
-    <div class="grid-dashed dashed08"></div>
-    <div class="grid-dashed dashed09"></div>
-    <div class="grid-dashed dashed10"></div>
-    <div class="grid-dashed dashed11"></div>
-    <div class="grid-dashed dashed12"></div>
-    <div class="grid-dashed dashed13"></div>
-    <div class="grid-dashed dashed14"></div>
-    <div class="grid-dashed dashed15"></div>
-    <div class="grid-dashed dashed16"></div>
-
-    <!-- 
-      The four main menu items, no container. 
-      Each at left: 29vw so if it crosses layer-two's boundary (36vw), 
-      it’s hidden behind that white bar. 
-    -->
-    <span class="custom-text" style="top: 35.4vh; left: 29vw;" id="online-assets">-  OnL1nE ASSETS</span>
-    <span class="custom-text" style="top: 41.6vh; left: 29vw;" id="linkup-center">-  L1nKUP cEnTER</span>
-    <span class="custom-text" style="top: 47.8vh; left: 29vw;" id="delivery-line">-  DEL1VERY L1nE</span>
-    <span class="custom-text" style="top: 54vh; left: 29vw;" id="internal-unit">-  1nTERnAL Un1T</span>
-
-    <!-- Submenu items for each, placed at negative left to start "off-canvas" -->
-    <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
-    <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
-    <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
-    <span class="custom-text" style="top: 41.6vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
-    <span class="custom-text" style="top: 54vh; left: -42.59vw;">YOUR L1ST</span>
-    <span class="custom-text" style="top: 60.2vh; left: -42.59vw;">cHAnnELS</span>
-    <span class="custom-text" style="top: 66.4vh; left: -42.59vw;">OFFER HUB</span>
-    <span class="custom-text" style="top: 72.6vh; left: -42.59vw;">YOUR JOBS</span>
-    <span class="custom-text" style="top: 54vh; left: -23.29vw;">OPEn</span>
-    <span class="custom-text" style="top: 60.2vh; left: -23.29vw;">OPEn</span>
-    <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
-    <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
-
-    <div class="custom-line"></div>
-
-    <!-- Same triggers for the “slide” effect -->
-    <div class="slide-trigger"></div>
-    <div class="slide-trigger-reverse"></div>
-  </div>
-
-  <script>
-    /***********************************
-     * FADING IN PAGE & FULLSCREEN CODE
-     ***********************************/
-    const pageContent = document.querySelector('.page-content');
-    let pageFadedIn = false;
-    function fadeInPage() {
-      pageContent.style.opacity = '1'; // Everything inside fades in at once
-      pageFadedIn = true;
-    }
-    document.addEventListener('mousemove', function onFirstMouseMove() {
-      if (!pageFadedIn) { fadeInPage(); }
-      document.removeEventListener('mousemove', onFirstMouseMove);
-    });
-
-    const EDGE_MARGIN = 11;
-    document.addEventListener('click', (event) => {
-      const { clientX: x, clientY: y } = event;
-      const { innerWidth: w, innerHeight: h } = window;
-      if (!document.fullscreenElement &&
-         (x <= EDGE_MARGIN || x >= w - EDGE_MARGIN ||
-          y <= EDGE_MARGIN || y >= h - EDGE_MARGIN)) {
-        document.documentElement.requestFullscreen();
+    <script>
+      /* PAGE FADE-IN & FULLSCREEN */
+      const pageContent = document.querySelector('.page-content');
+      let pageFadedIn = false;
+      function fadeInPage() {
+        pageContent.style.opacity = '1';
+        pageFadedIn = true;
       }
-    });
-
-    /*****************************************
-     * SLIDE IN/OUT FOR THE 4 DASHED + TIME TEXT
-     *****************************************/
-    const inverseTrigger = document.querySelector('.slide-trigger');
-    inverseTrigger.addEventListener('click', (event) => {
-      event.stopPropagation();
-      document.querySelector('.slide-container').classList.remove('animate-slide');
-      document.querySelector('.page-content').classList.remove('animate-grid');
-    });
-    const forwardTrigger = document.querySelector('.slide-trigger-reverse');
-    forwardTrigger.addEventListener('click', (event) => {
-      event.stopPropagation();
-      document.querySelector('.slide-container').classList.add('animate-slide');
-      document.querySelector('.page-content').classList.add('animate-grid');
-    });
-
-    /***********************************
-     * CHAT TEXT & HOVER / CLICK LOGIC
-     ***********************************/
-    const chatText = document.getElementById('chatText');
-    let chatShownOnce = false;
-    const hoverArea = document.querySelector('.hover-area');
-    hoverArea.addEventListener('mouseenter', () => {
-      if (!chatShownOnce && pageFadedIn) {
-        chatText.style.opacity = '1';
-        chatShownOnce = true;
-      }
-    });
-    chatText.addEventListener('click', () => {
-      const chatInput = document.createElement('input');
-      chatInput.type = 'text';
-      chatInput.classList.add('chat-input');
-      chatText.insertAdjacentElement('afterend', chatInput);
-      chatText.remove();
-      chatInput.focus();
-    });
-
-    /***********************************
-     * SLIDE ANIMATION WHEN CLICKING LEFT
-     ***********************************/
-    document.addEventListener('click', (event) => {
-      const vw = window.innerWidth / 100;
-      const vh = window.innerHeight / 100;
-      const xLimit = 6.37 * vw;
-      const yMin = 28.5 * vh;
-      const yMax = 84 * vh;
-
-      if (event.clientX >= 0 && event.clientX <= xLimit &&
-          event.clientY >= yMin && event.clientY <= yMax) {
-        const chatTextEl = document.querySelector('.chat-text');
-        if (chatTextEl) {
-          chatTextEl.style.transition = "opacity 0.1s ease";
-          chatTextEl.style.opacity = "0";
-          setTimeout(() => {
-            chatTextEl.classList.add('chat-slide');
-          }, 110);
-        }
-        const chatInputEl = document.querySelector('.chat-input');
-        if (chatInputEl) {
-          chatInputEl.classList.add('chat-slide');
-        }
-        document.querySelectorAll('.custom-text').forEach(el => {
-          el.classList.add('custom-slide');
-        });
-        const customLineEl = document.querySelector('.custom-line');
-        if (customLineEl) {
-          customLineEl.classList.add('custom-slide');
-        }
-      }
-    });
-
-    /***********************************
-     * REVERSE SLIDE WHEN CLICKING MIDDLE
-     ***********************************/
-    document.addEventListener('click', (event) => {
-      const vw = window.innerWidth / 100;
-      const vh = window.innerHeight / 100;
-      const leftMin = 28.87 * vw;
-      const leftMax = 32.44 * vw;
-      const yMin = 28.5 * vh;
-      const yMax = 84 * vh;
-
-      if (event.clientX >= leftMin && event.clientX <= leftMax &&
-          event.clientY >= yMin && event.clientY <= yMax) {
-        const chatTextEl = document.querySelector('.chat-text');
-        if (chatTextEl) {
-          chatTextEl.classList.remove('chat-slide');
-          setTimeout(() => {
-            chatTextEl.style.opacity = "1";
-          }, 700);
-        }
-        const chatInputEl = document.querySelector('.chat-input');
-        if (chatInputEl) {
-          chatInputEl.classList.remove('chat-slide');
-        }
-        document.querySelectorAll('.custom-text').forEach(el => {
-          el.classList.remove('custom-slide');
-          el.style.transition = "transform 0.7s ease";
-        });
-        const customLineEl = document.querySelector('.custom-line');
-        if (customLineEl) {
-          customLineEl.classList.remove('custom-slide');
-          customLineEl.style.transition = "transform 0.7s ease";
-        }
-      }
-    });
-  </script>
-
-  <!-- EXACT SAME SUBMENU TOGGLE LOGIC -->
-  <script>
-    // Submenu expansions, toggles, etc.
-    function addNewText(text, top, left) {
-      let span = document.createElement("span");
-      span.className = "custom-text new-text";
-      span.style.top = top + "vh";
-      span.style.left = left + "vw";
-      span.textContent = text;
-      document.querySelector(".page-content").appendChild(span);
-      setTimeout(() => {
-        span.classList.add("visible");
-      }, 10);
-    }
-
-    let currentMenu = null;
-
-    function closeSubmenu() {
-      const newTexts = document.querySelectorAll('.new-text');
-      newTexts.forEach(span => {
-        span.style.transition = 'opacity 0.3s ease';
-        span.classList.remove("visible");
+      document.addEventListener('mousemove', function onFirstMouseMove() {
+        if (!pageFadedIn) { fadeInPage(); }
+        document.removeEventListener('mousemove', onFirstMouseMove);
       });
-      setTimeout(() => {
-        document.getElementById("linkup-center").classList.remove("slide-down");
-        document.getElementById("delivery-line").classList.remove("slide-down");
-        document.getElementById("internal-unit").classList.remove("slide-down");
-        newTexts.forEach(span => span.remove());
-        currentMenu = null;
-      }, 300);
-    }
+      const EDGE_MARGIN = 11;
+      document.addEventListener('click', (event) => {
+        const { clientX, clientY } = event;
+        if (!document.fullscreenElement &&
+           (clientX <= EDGE_MARGIN ||
+            clientX >= window.innerWidth - EDGE_MARGIN ||
+            clientY <= EDGE_MARGIN ||
+            clientY >= window.innerHeight - EDGE_MARGIN)) {
+          document.documentElement.requestFullscreen();
+        }
+      });
 
-    function openOnlineAssets() {
-      document.getElementById("linkup-center").classList.add("slide-down");
-      document.getElementById("delivery-line").classList.add("slide-down");
-      document.getElementById("internal-unit").classList.add("slide-down");
-      setTimeout(() => {
-        addNewText("cOnTEnT", 41.6, 29.7);
-        addNewText("LEARn1ng", 47.8, 29.7);
-      }, 700);
-    }
-    function openLinkupCenter() {
-      document.getElementById("delivery-line").classList.add("slide-down");
-      document.getElementById("internal-unit").classList.add("slide-down");
-      setTimeout(() => {
-        addNewText("cHAnnELS", 47.8, 29.7);
-        addNewText("LABOUR", 54, 29.7);
-      }, 700);
-    }
-    function openDeliveryLine() {
-      document.getElementById("internal-unit").classList.add("slide-down");
-      setTimeout(() => {
-        addNewText("cL1ENTS", 54, 29.7);
-        addNewText("PROJEcTS", 60.2, 29.7);
-      }, 700);
-    }
-    function openInternalUnit() {
-      setTimeout(() => {
-        addNewText("1nVEnTORY", 60.2, 29.7);
-        addNewText("DEVOPS", 66.4, 29.7);
-        addNewText("F1nAncES", 72.6, 29.7);
-        addNewText("1T-cEnTER", 78.8, 29.7);
-      }, 700);
-    }
+      /* SLIDE TRIGGERS */
+      const inverseTrigger = document.querySelector('.slide-trigger');
+      inverseTrigger.addEventListener('click', (event) => {
+        event.stopPropagation();
+        document.querySelector('.slide-container').classList.remove('animate-slide');
+        document.querySelector('.page-content').classList.remove('animate-grid');
+      });
+      const forwardTrigger = document.querySelector('.slide-trigger-reverse');
+      forwardTrigger.addEventListener('click', (event) => {
+        event.stopPropagation();
+        document.querySelector('.slide-container').classList.add('animate-slide');
+        document.querySelector('.page-content').classList.add('animate-grid');
+      });
 
-    document.getElementById("online-assets").addEventListener("click", function(e) {
-      if (currentMenu === "online-assets") {
-        closeSubmenu();
-      } else {
-        if (currentMenu !== null) {
-          closeSubmenu();
-          setTimeout(() => {
-            openOnlineAssets();
-            currentMenu = "online-assets";
-          }, 300);
-        } else {
-          openOnlineAssets();
-          currentMenu = "online-assets";
+      /* CHAT TEXT & INPUT */
+      const chatText = document.getElementById('chatText');
+      let chatShownOnce = false;
+      const hoverArea = document.querySelector('.hover-area');
+      hoverArea.addEventListener('mouseenter', () => {
+        if (!chatShownOnce && pageFadedIn) {
+          chatText.style.opacity = '1';
+          chatShownOnce = true;
         }
-      }
-    });
-    document.getElementById("linkup-center").addEventListener("click", function(e) {
-      e.stopPropagation();
-      if (currentMenu === "linkup-center") {
-        closeSubmenu();
-      } else {
-        if (currentMenu !== null) {
-          closeSubmenu();
-          setTimeout(() => {
-            openLinkupCenter();
-            currentMenu = "linkup-center";
-          }, 300);
-        } else {
-          openLinkupCenter();
-          currentMenu = "linkup-center";
+      });
+      chatText.addEventListener('click', () => {
+        const chatInput = document.createElement('input');
+        chatInput.type = 'text';
+        chatInput.classList.add('chat-input');
+        chatText.insertAdjacentElement('afterend', chatInput);
+        chatText.remove();
+        chatInput.focus();
+      });
+
+      /* SLIDE ANIMATION ON LEFT CLICK */
+      document.addEventListener('click', (event) => {
+        const vw = window.innerWidth / 100;
+        const vh = window.innerHeight / 100;
+        if (event.clientX >= 0 && event.clientX <= 6.37 * vw &&
+            event.clientY >= 28.5 * vh && event.clientY <= 84 * vh) {
+          const ct = document.querySelector('.chat-text');
+          if (ct) {
+            ct.style.transition = "opacity 0.1s ease";
+            ct.style.opacity = "0";
+            setTimeout(() => { ct.classList.add('chat-slide'); }, 110);
+          }
+          const ci = document.querySelector('.chat-input');
+          if (ci) { ci.classList.add('chat-slide'); }
+          document.querySelectorAll('.custom-text').forEach(el => el.classList.add('custom-slide'));
+          const cl = document.querySelector('.custom-line');
+          if (cl) { cl.classList.add('custom-slide'); }
         }
-      }
-    });
-    document.getElementById("delivery-line").addEventListener("click", function(e) {
-      e.stopPropagation();
-      if (currentMenu === "delivery-line") {
-        closeSubmenu();
-      } else {
-        if (currentMenu !== null) {
-          closeSubmenu();
-          setTimeout(() => {
-            openDeliveryLine();
-            currentMenu = "delivery-line";
-          }, 300);
-        } else {
-          openDeliveryLine();
-          currentMenu = "delivery-line";
+      });
+
+      /* REVERSE SLIDE ON MID CLICK */
+      document.addEventListener('click', (event) => {
+        const vw = window.innerWidth / 100;
+        const vh = window.innerHeight / 100;
+        if (event.clientX >= 28.87 * vw && event.clientX <= 32.44 * vw &&
+            event.clientY >= 28.5 * vh && event.clientY <= 84 * vh) {
+          const ct = document.querySelector('.chat-text');
+          if (ct) {
+            ct.classList.remove('chat-slide');
+            setTimeout(() => { ct.style.opacity = "1"; }, 700);
+          }
+          const ci = document.querySelector('.chat-input');
+          if (ci) { ci.classList.remove('chat-slide'); }
+          document.querySelectorAll('.custom-text').forEach(el => {
+            el.classList.remove('custom-slide');
+            el.style.transition = "transform 0.7s ease";
+          });
+          const cl = document.querySelector('.custom-line');
+          if (cl) {
+            cl.classList.remove('custom-slide');
+            cl.style.transition = "transform 0.7s ease";
+          }
         }
+      });
+    </script>
+
+    <!-- SUBMENU TOGGLE SCRIPT -->
+    <script>
+      function addNewText(text, top, left) {
+        const span = document.createElement("span");
+        span.className = "custom-text new-text";
+        span.style.top = top + "vh";
+        span.style.left = left + "vw";
+        span.textContent = text;
+        document.querySelector(".page-content").appendChild(span);
+        setTimeout(() => { span.classList.add("visible"); }, 10);
       }
-    });
-    document.getElementById("internal-unit").addEventListener("click", function(e) {
-      e.stopPropagation();
-      if (currentMenu === "internal-unit") {
-        closeSubmenu();
-      } else {
-        if (currentMenu !== null) {
+      let currentMenu = null;
+      function closeSubmenu() {
+        const newTexts = document.querySelectorAll('.new-text');
+        newTexts.forEach(span => {
+          span.style.transition = 'opacity 0.3s ease';
+          span.classList.remove("visible");
+        });
+        setTimeout(() => {
+          document.getElementById("linkup-center").classList.remove("slide-down");
+          document.getElementById("delivery-line").classList.remove("slide-down");
+          document.getElementById("internal-unit").classList.remove("slide-down");
+          newTexts.forEach(span => span.remove());
+          currentMenu = null;
+        }, 300);
+      }
+      function openOnlineAssets() {
+        document.getElementById("linkup-center").classList.add("slide-down");
+        document.getElementById("delivery-line").classList.add("slide-down");
+        document.getElementById("internal-unit").classList.add("slide-down");
+        setTimeout(() => {
+          addNewText("cOnTEnT", 41.6, 29.7);
+          addNewText("LEARn1ng", 47.8, 29.7);
+        }, 700);
+      }
+      function openLinkupCenter() {
+        document.getElementById("delivery-line").classList.add("slide-down");
+        document.getElementById("internal-unit").classList.add("slide-down");
+        setTimeout(() => {
+          addNewText("cHAnnELS", 47.8, 29.7);
+          addNewText("LABOUR", 54, 29.7);
+        }, 700);
+      }
+      function openDeliveryLine() {
+        document.getElementById("internal-unit").classList.add("slide-down");
+        setTimeout(() => {
+          addNewText("cL1ENTS", 54, 29.7);
+          addNewText("PROJEcTS", 60.2, 29.7);
+        }, 700);
+      }
+      function openInternalUnit() {
+        setTimeout(() => {
+          addNewText("1nVEnTORY", 60.2, 29.7);
+          addNewText("DEVOPS", 66.4, 29.7);
+          addNewText("F1nAncES", 72.6, 29.7);
+          addNewText("1T-cEnTER", 78.8, 29.7);
+        }, 700);
+      }
+      document.getElementById("online-assets").addEventListener("click", function(e) {
+        if (currentMenu === "online-assets") {
           closeSubmenu();
-          setTimeout(() => {
-            openInternalUnit();
-            currentMenu = "internal-unit";
-          }, 300);
         } else {
-          openInternalUnit();
-          currentMenu = "internal-unit";
+          if (currentMenu !== null) {
+            closeSubmenu();
+            setTimeout(() => { openOnlineAssets(); currentMenu = "online-assets"; }, 300);
+          } else {
+            openOnlineAssets(); currentMenu = "online-assets";
+          }
         }
-      }
-    });
-  </script>
-</body>
+      });
+      document.getElementById("linkup-center").addEventListener("click", function(e) {
+        e.stopPropagation();
+        if (currentMenu === "linkup-center") {
+          closeSubmenu();
+        } else {
+          if (currentMenu !== null) {
+            closeSubmenu();
+            setTimeout(() => { openLinkupCenter(); currentMenu = "linkup-center"; }, 300);
+          } else {
+            openLinkupCenter(); currentMenu = "linkup-center";
+          }
+        }
+      });
+      document.getElementById("delivery-line").addEventListener("click", function(e) {
+        e.stopPropagation();
+        if (currentMenu === "delivery-line") {
+          closeSubmenu();
+        } else {
+          if (currentMenu !== null) {
+            closeSubmenu();
+            setTimeout(() => { openDeliveryLine(); currentMenu = "delivery-line"; }, 300);
+          } else {
+            openDeliveryLine(); currentMenu = "delivery-line";
+          }
+        }
+      });
+      document.getElementById("internal-unit").addEventListener("click", function(e) {
+        e.stopPropagation();
+        if (currentMenu === "internal-unit") {
+          closeSubmenu();
+        } else {
+          if (currentMenu !== null) {
+            closeSubmenu();
+            setTimeout(() => { openInternalUnit(); currentMenu = "internal-unit"; }, 300);
+          } else {
+            openInternalUnit(); currentMenu = "internal-unit";
+          }
+        }
+      });
+    </script>
+  </body>
 </html>

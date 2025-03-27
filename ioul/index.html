@@ -108,7 +108,7 @@
   </div>
 
   <script>
-    // Helper: return true if the click is on chat-related elements.
+    // Helper: return true if the event target is within chat-related elements.
     function isChatEvent(event) {
       return event.target.closest('#chatText') || event.target.closest('.chat-input');
     }
@@ -157,7 +157,7 @@
     
     // Chat area behavior
     const chatText = document.getElementById('chatText');
-    // Initially disable pointer events and lower z-index so chatText doesn't block hover.
+    // Initially disable pointer events and lower z-index.
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
     let chatShownOnce = false;
@@ -173,17 +173,17 @@
           chatText.style.pointerEvents = 'auto';
           chatText.style.zIndex = '10';
           chatShownOnce = true;
-          // Disable pointer events on hoverArea so it doesn't block clicks on chatText.
+          // Disable pointer events on hoverArea so it doesn't block chatText clicks.
           hoverArea.style.pointerEvents = 'none';
         }
       }
     });
     
-    // Chat click handler (attached in capturing phase) to convert chatText to input.
-    chatText.addEventListener('click', (e) => {
+    // Chat click handler: convert chatText to an input field.
+    // Use mousedown (which fires before click) to trigger conversion.
+    chatText.addEventListener('mousedown', (e) => {
       e.stopPropagation();
       e.preventDefault();
-      e.stopImmediatePropagation();
       setTimeout(() => {
         const chatInput = document.createElement('input');
         chatInput.type = 'text';
@@ -192,7 +192,7 @@
         chatText.remove();
         chatInput.focus();
       }, 0);
-    }, true);
+    });
     
     // Document-level click handlers for slide animations
     document.addEventListener('click', (event) => {

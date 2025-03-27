@@ -66,32 +66,28 @@
     <div class="grid-dashed dashed15"></div>
     <div class="grid-dashed dashed16"></div>
 
-    <!-- 
-      A new .clip-region wrapper that covers 0 -> 36vw (overflow:hidden).
-      This ensures anything going beyond left:36vw is clipped.
-    -->
-    <div class="clip-region">
-      <!-- Main Menu Items at left: 29vw so they appear inside the 0->36vw zone. -->
-      <span class="custom-text" style="top: 35.4vh; left: 29vw;" id="online-assets">-  OnL1nE ASSETS</span>
-      <span class="custom-text" style="top: 41.6vh; left: 29vw;" id="linkup-center">-  L1nKUP cEnTER</span>
-      <span class="custom-text" style="top: 47.8vh; left: 29vw;" id="delivery-line">-  DEL1VERY L1nE</span>
-      <span class="custom-text" style="top: 54vh; left: 29vw;" id="internal-unit">-  1nTERnAL Un1T</span>
+    <!-- Main menu items: absolutely positioned at left: 29vw, 
+         z-index: 90, so they're behind .layer-two (z-index:100). 
+         The portion that crosses 36vw is effectively hidden under that bar. -->
+    <span class="custom-text" style="top: 35.4vh; left: 29vw;" id="online-assets">-  OnL1nE ASSETS</span>
+    <span class="custom-text" style="top: 41.6vh; left: 29vw;" id="linkup-center">-  L1nKUP cEnTER</span>
+    <span class="custom-text" style="top: 47.8vh; left: 29vw;" id="delivery-line">-  DEL1VERY L1nE</span>
+    <span class="custom-text" style="top: 54vh; left: 29vw;" id="internal-unit">-  1nTERnAL Un1T</span>
 
-      <!-- Submenu items remain "off-screen" at negative left, 
-           but still inside .clip-region, so they're also subject to clipping. -->
-      <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
-      <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
-      <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
-      <span class="custom-text" style="top: 41.6vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
-      <span class="custom-text" style="top: 54vh; left: -42.59vw;">YOUR L1ST</span>
-      <span class="custom-text" style="top: 60.2vh; left: -42.59vw;">cHAnnELS</span>
-      <span class="custom-text" style="top: 66.4vh; left: -42.59vw;">OFFER HUB</span>
-      <span class="custom-text" style="top: 72.6vh; left: -42.59vw;">YOUR JOBS</span>
-      <span class="custom-text" style="top: 54vh; left: -23.29vw;">OPEn</span>
-      <span class="custom-text" style="top: 60.2vh; left: -23.29vw;">OPEn</span>
-      <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
-      <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
-    </div>
+    <!-- Submenu items (also behind layer-two); 
+         placed offscreen with negative left; they'll animate in. -->
+    <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
+    <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
+    <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
+    <span class="custom-text" style="top: 41.6vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
+    <span class="custom-text" style="top: 54vh; left: -42.59vw;">YOUR L1ST</span>
+    <span class="custom-text" style="top: 60.2vh; left: -42.59vw;">cHAnnELS</span>
+    <span class="custom-text" style="top: 66.4vh; left: -42.59vw;">OFFER HUB</span>
+    <span class="custom-text" style="top: 72.6vh; left: -42.59vw;">YOUR JOBS</span>
+    <span class="custom-text" style="top: 54vh; left: -23.29vw;">OPEn</span>
+    <span class="custom-text" style="top: 60.2vh; left: -23.29vw;">OPEn</span>
+    <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
+    <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
 
     <div class="custom-line"></div>
 
@@ -100,7 +96,7 @@
   </div>
 
   <script>
-    // (Existing page and fullscreen behavior code remains unchanged)
+    // Page fade-in and fullscreen code (unchanged)
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -136,6 +132,7 @@
       document.querySelector('.page-content').classList.add('animate-grid');
     });
 
+    // Chat text fade / input logic
     const chatText = document.getElementById('chatText');
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
@@ -154,6 +151,7 @@
       chatInput.focus();
     });
 
+    // Slide animations when clicking the left area
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -185,6 +183,7 @@
       }
     });
 
+    // Reverse slide animation when clicking the mid area
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -218,19 +217,17 @@
       }
     });
   </script>
-  
-  <!-- Submenu Toggle Script: now appending new items to .clip-region instead of .page-content -->
+
+  <!-- Submenu toggle code (appends new items to .page-content). 
+       We rely on layer-two's z-index to hide anything crossing 36vw. -->
   <script>
-    // Helper to create a new text span for submenus
     function addNewText(text, top, left) {
-      let span = document.createElement("span");
+      const span = document.createElement("span");
       span.className = "custom-text new-text";
       span.style.top = top + "vh";
       span.style.left = left + "vw";
       span.textContent = text;
-      // Append to .clip-region so anything beyond 36vw is clipped
-      document.querySelector(".clip-region").appendChild(span);
-      // Fade-in
+      document.querySelector(".page-content").appendChild(span);
       setTimeout(() => {
         span.classList.add("visible");
       }, 10);
@@ -258,8 +255,10 @@
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
       setTimeout(() => {
-        addNewText("cOnTEnT", 41.6, 30.4);
-        addNewText("LEARn1ng", 47.8, 30.4);
+        // Example: sub-items at left: 29.7 => 0.7vw further right, 
+        // so it lines up with the main item around 29vw
+        addNewText("cOnTEnT", 41.6, 29.7);
+        addNewText("LEARn1ng", 47.8, 29.7);
       }, 700);
     }
 
@@ -267,25 +266,25 @@
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
       setTimeout(() => {
-        addNewText("cHAnnELS", 47.8, 30.4);
-        addNewText("LABOUR", 54, 30.4);
+        addNewText("cHAnnELS", 47.8, 29.7);
+        addNewText("LABOUR", 54, 29.7);
       }, 700);
     }
 
     function openDeliveryLine() {
       document.getElementById("internal-unit").classList.add("slide-down");
       setTimeout(() => {
-        addNewText("cL1ENTS", 54, 30.4);
-        addNewText("PROJEcTS", 60.2, 30.4);
+        addNewText("cL1ENTS", 54, 29.7);
+        addNewText("PROJEcTS", 60.2, 29.7);
       }, 700);
     }
 
     function openInternalUnit() {
       setTimeout(() => {
-        addNewText("1nVEnTORY", 60.2, 30.4);
-        addNewText("DEVOPS", 66.4, 30.4);
-        addNewText("F1nAncES", 72.6, 30.4);
-        addNewText("1T-cEnTER", 78.8, 30.4);
+        addNewText("1nVEnTORY", 60.2, 29.7);
+        addNewText("DEVOPS", 66.4, 29.7);
+        addNewText("F1nAncES", 72.6, 29.7);
+        addNewText("1T-cEnTER", 78.8, 29.7);
       }, 700);
     }
 

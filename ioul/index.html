@@ -45,6 +45,7 @@
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
 
+      <!-- Grid numbers: final positions set in left; initially offset by 60vw -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -62,6 +63,7 @@
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
 
+      <!-- Grid dashed lines: final positions set in left; initially offset by 60vw -->
       <div class="grid-dashed dashed01"></div>
       <div class="grid-dashed dashed02"></div>
       <div class="grid-dashed dashed03"></div>
@@ -79,7 +81,7 @@
       <div class="grid-dashed dashed15"></div>
       <div class="grid-dashed dashed16"></div>
 
-      <!-- Submenu items (which remain above layer-four) -->
+      <!-- Submenu items (remain above layer-four) -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
       <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -97,7 +99,7 @@
     </div> <!-- end of .other-content -->
   </div> <!-- end of .page-content -->
 
-  <!-- NEW: Slide triggers container moved outside .page-content and made fixed -->
+  <!-- Slide triggers container (moved outside .page-content and fixed with high z-index) -->
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
@@ -140,7 +142,7 @@
       document.querySelector('.other-content').classList.add('animate-grid');
     });
     
-    // Chat area behavior
+    // Chat area behavior remains unchanged
     const chatText = document.getElementById('chatText');
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
@@ -159,7 +161,7 @@
       chatInput.focus();
     });
     
-    // Document-level click handlers for slide animations (unchanged)
+    // Document-level click handlers for slide animations remain unchanged
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;

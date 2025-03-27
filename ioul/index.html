@@ -97,7 +97,7 @@
     </div> <!-- end of .other-content -->
   </div> <!-- end of .page-content -->
 
-  <!-- NEW: Slide triggers container moved outside .page-content and made fixed -->
+  <!-- Slide triggers container (fixed with high z-index) -->
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
@@ -126,7 +126,7 @@
       }
     });
     
-    // Slide trigger behavior now targets the fixed slide-triggers container
+    // Slide trigger behavior from fixed container
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -140,7 +140,7 @@
       document.querySelector('.other-content').classList.add('animate-grid');
     });
     
-    // Chat area behavior
+    // Chat area behavior remains unchanged
     const chatText = document.getElementById('chatText');
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
@@ -159,7 +159,7 @@
       chatInput.focus();
     });
     
-    // Document-level click handlers for slide animations (unchanged)
+    // Document-level click handlers for slide animations remain unchanged
     document.addEventListener('click', (event) => {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -223,7 +223,7 @@
       }
     });
     
-    // Submenu Toggle Script (append new submenu text into .other-content)
+    // Submenu Toggle Script (appends new submenu text into .other-content)
     function addNewText(text, top, left) {
       let span = document.createElement("span");
       span.className = "custom-text new-text";

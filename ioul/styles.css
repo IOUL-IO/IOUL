@@ -1,157 +1,193 @@
 @font-face {
-  font-family: 'Distill Expanded';
-  src: url('font.woff2') format('woff2'),
-       url('font.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'Distill Expanded';
+    src: url('font.woff2') format('woff2'),
+         url('font.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body.non-fullscreen {
-  background-color: #ffffff;
-  min-height: 100vh;
-  min-width: 100vw;
-  overflow: hidden;
+    background-color: #ffffff;
+    min-height: 100vh;
+    min-width: 100vw;
+    overflow: hidden;
 }
 
-/* Fixed layers – highest stacking order (z-index 300) */
 .layer-one {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 6.37vw;
-  height: 100vh;
-  background-color: #ffffff;
-  z-index: 300;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 6.37vw;
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 100;
 }
 .layer-two {
-  position: fixed;
-  top: 0;
-  left: 28.87vw;
-  width: calc(36vw - 28.87vw);
-  height: 100vh;
-  background-color: #ffffff;
-  z-index: 300;
+    position: fixed;
+    top: 0;
+    left: 28.87vw;
+    width: calc(36vw - 28.87vw);
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 100;
 }
 .layer-three {
-  position: fixed;
-  top: 0;
-  left: 94.17vw;
-  width: calc(100vw - 94.17vw);
-  height: 100vh;
-  background-color: #ffffff;
-  z-index: 300;
+    position: fixed;
+    top: 0;
+    left: 94.17vw;
+    width: calc(100vw - 94.17vw);
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 100;
 }
 
-/* .page-content – all other components (except main menu texts) */
 .page-content {
-  opacity: 0;
-  transition: opacity 0.6s ease;
-  position: relative;
-  z-index: 200;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    position: relative;
 }
 
-/* Slide container for dashed lines & time texts (below fixed layers) */
-.slide-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  clip-path: inset(0 0 0 28.86vw);
-  z-index: 200;
-}
-
-/* Horizontal lines */
 .line {
-  position: absolute;
-  height: 1px;
-  background-color: #cfcfcf;
+    position: absolute;
+    height: 1px;
+    background-color: #cfcfcf;
 }
 .original {
-  top: 12.5vh;
-  left: 6.38vw;
-  width: 22.48vw;
+    top: 12.5vh;
+    left: 6.38vw;
+    width: 22.48vw;
 }
 .second {
-  top: 28.5vh;
-  left: 6.38vw;
-  width: 22.48vw;
+    top: 28.5vh;
+    left: 6.38vw;
+    width: 22.48vw;
 }
 .third {
-  top: 84vh;
-  left: 6.38vw;
-  width: 22.48vw;
+    top: 84vh;
+    left: 6.38vw;
+    width: 22.48vw;
 }
 .fourth {
-  top: 12.5vh;
-  left: 36vw;
-  width: 57.8vw;
+    top: 12.5vh;
+    left: 36vw;
+    width: 57.8vw;
 }
 
-/* Dashed lines in slide-container */
-.slide-container > .line.dashed {
-  position: absolute;
-  height: 1px;
-  top: 28.5vh;
-  left: 36vw;
-  width: 52.4vw;
-  background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
-  background-size: 10px 1px;
-  z-index: 200;
+.slide-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    clip-path: inset(0 0 0 28.86vw);
+}
+
+.dashed {
+    position: absolute;
+    height: 1px;
+    top: 28.5vh;
+    left: 36vw;
+    width: 52.4vw;
+    background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
+    background-size: 10px 1px;
 }
 .second-dashed {
-  top: 47vh;
-  left: 36vw;
-  width: 52.4vw;
-  z-index: 200;
+    top: 47vh;
+    left: 36vw;
+    width: 52.4vw;
 }
 .third-dashed {
-  top: 65.5vh;
-  left: 36vw;
-  width: 52.4vw;
-  z-index: 200;
+    top: 65.5vh;
+    left: 36vw;
+    width: 52.4vw;
 }
 .fourth-dashed {
-  top: 84vh;
-  left: 36vw;
-  width: 52.4vw;
-  z-index: 200;
+    top: 84vh;
+    left: 36vw;
+    width: 52.4vw;
 }
 
-/* Time texts in slide-container */
-.time-text,
-.second-time-text,
-.third-time-text,
+.time-text {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.331rem;
+    color: #111111;
+    letter-spacing: 0.2vw;
+    text-shadow: 0.011rem 0 0 #919191, -0.011rem 0 0 #919191;
+    top: 28.5vh;
+    left: 89.81vw;
+}
+.second-time-text {
+    top: 47.04vh;
+    left: 89.91vw;
+}
+.third-time-text {
+    top: 65.51vh;
+    left: 89.87vw;
+}
 .fourth-time-text {
-  position: absolute;
-  font-family: 'Distill Expanded', sans-serif;
-  font-size: 0.331rem;
-  color: #111111;
-  letter-spacing: 0.2vw;
-  text-shadow: 0.011rem 0 0 #919191, -0.011rem 0 0 #919191;
-  z-index: 200;
+    top: 83.86vh;
+    left: 90.1vw;
 }
-.time-text { top: 28.5vh; left: 89.81vw; }
-.second-time-text { top: 47.04vh; left: 89.91vw; }
-.third-time-text { top: 65.51vh; left: 89.87vw; }
-.fourth-time-text { top: 83.86vh; left: 90.1vw; }
 
-/* Grid numbers (1–16) – remain as in original (z-index 101) */
+.hover-area {
+    position: absolute;
+    top: 28.5vh;
+    left: 6.4vw;
+    width: calc(28.86vw - 6.4vw);
+    height: calc(84vh - 28.5vh);
+}
+
+.chat-text {
+    position: absolute;
+    top: 77vh;
+    left: 6.41vw;
+    display: inline-block;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #111111;
+    letter-spacing: 0.28vw;
+    font-size: 0.47rem;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.7s ease;
+    line-height: 1.3;
+    padding-top: 0.1rem;
+}
+.chat-input {
+    position: absolute;
+    top: 77vh;
+    left: 6.41vw;
+    width: 22.17vw;
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.47rem;
+    letter-spacing: 0.28vw;
+    color: #111111;
+    caret-color: #d1d1d1;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    line-height: 1.2;
+    padding: 0.2rem 0;
+    border: none;
+    outline: none;
+    background: #ffffff;
+    cursor: text;
+    transition: transform 0.7s ease;
+}
+
 .grid-number {
-  position: absolute;
-  z-index: 101;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111111;
-  font-size: 0.411rem;
-  letter-spacing: 0.28vw;
-  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-  transition: left 0.7s ease;
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #111111;
+    font-size: 0.411rem;
+    letter-spacing: 0.28vw;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    transition: left 0.7s ease;
 }
 .num1  { top: 28.5vh; left: 108.8vw; }
 .num2  { top: 28.5vh; left: 123.7vw; }
@@ -170,15 +206,13 @@ body.non-fullscreen {
 .num15 { top: 83.7vh; left: 138.0vw; }
 .num16 { top: 83.7vh; left: 152.8vw; }
 
-/* Grid dashed lines (1–16) – z-index 101 */
 .grid-dashed {
-  position: absolute;
-  z-index: 101;
-  height: 1px;
-  width: 11.8vw;
-  background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
-  background-size: 10px 1px;
-  transition: left 0.7s ease;
+    position: absolute;
+    height: 1px;
+    width: 11.8vw;
+    background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
+    background-size: 10px 1px;
+    transition: left 0.7s ease;
 }
 .dashed01 { top: 28.5vh; left: 96vw; }
 .dashed02 { top: 28.5vh; left: 111vw; }
@@ -197,7 +231,6 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
-/* Animate-grid – slide grid numbers and dashed lines into view */
 .page-content.animate-grid .grid-number.num1  { left: 48.8vw; }
 .page-content.animate-grid .grid-number.num2  { left: 63.7vw; }
 .page-content.animate-grid .grid-number.num3  { left: 78.5vw; }
@@ -214,6 +247,7 @@ body.non-fullscreen {
 .page-content.animate-grid .grid-number.num14 { left: 63.2vw; }
 .page-content.animate-grid .grid-number.num15 { left: 78.0vw; }
 .page-content.animate-grid .grid-number.num16 { left: 92.8vw; }
+
 .page-content.animate-grid .grid-dashed.dashed01 { left: 36vw; }
 .page-content.animate-grid .grid-dashed.dashed02 { left: 51vw; }
 .page-content.animate-grid .grid-dashed.dashed03 { left: 65.9vw; }
@@ -231,93 +265,79 @@ body.non-fullscreen {
 .page-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; }
 .page-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; }
 
-/* Slide-container children (dashed lines & time texts) transition */
 .slide-container > .line.dashed,
-.slide-container > .time-text {
-  transition: transform 0.7s ease;
+.slide-container > .time-text,
+.slide-container > .time-text.second-time-text,
+.slide-container > .time-text.third-time-text,
+.slide-container > .time-text.fourth-time-text {
+    transition: transform 0.7s ease;
 }
 .slide-container.animate-slide > .line.dashed,
-.slide-container.animate-slide > .time-text {
-  transform: translateX(-91vw);
+.slide-container.animate-slide > .time-text,
+.slide-container.animate-slide > .time-text.second-time-text,
+.slide-container.animate-slide > .time-text.third-time-text,
+.slide-container.animate-slide > .time-text.fourth-time-text {
+    transform: translateX(-91vw);
 }
 
-/* Slide triggers */
 .slide-trigger {
-  position: absolute;
-  top: 28.5vh;
-  left: 32.43vw;
-  width: calc(36vw - 32.43vw);
-  height: calc(84vh - 28.5vh);
-  background: transparent;
-  z-index: 101;
-  cursor: pointer;
+    position: absolute;
+    top: 28.5vh;
+    left: 32.43vw;
+    width: calc(36vw - 32.43vw);
+    height: calc(84vh - 28.5vh);
+    background: transparent;
+    z-index: 101;
+    cursor: pointer;
 }
 .slide-trigger-reverse {
-  position: absolute;
-  top: 28.5vh;
-  left: 94vw;
-  width: calc(100vw - 94vw);
-  height: calc(84vh - 28.5vh);
-  background: transparent;
-  z-index: 101;
-  cursor: pointer;
+    position: absolute;
+    top: 28.5vh;
+    left: 94vw;
+    width: calc(100vw - 94vw);
+    height: calc(84vh - 28.5vh);
+    background: transparent;
+    z-index: 101;
+    cursor: pointer;
 }
 
-/* MAIN MENU & SUBMENU TEXTS (the .custom-text elements)
-   They are positioned directly in .page-content at left:29vw (or offscreen for submenus).
-   We add a max-width (calculated as the available width from 29vw to 36vw) to the four main menu items,
-   so that any text extending past 36vw is hidden.
-   Their z-index is set to 100 so they sit under the fixed layers.
-*/
-#online-assets,
-#linkup-center,
-#delivery-line,
-#internal-unit {
-  max-width: calc(36vw - 29vw);
-  overflow: hidden;
-  white-space: nowrap;
-}
 .custom-text {
-  position: absolute;
-  z-index: 100;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111111;
-  letter-spacing: 0.28vw;
-  font-size: 0.47rem;
-  text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-  line-height: 1.6;
-  white-space: nowrap;
-  transition: transform 0.7s ease;
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #111111;
+    letter-spacing: 0.28vw;
+    font-size: 0.47rem;
+    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+    transition: transform 0.7s ease;
+    line-height: 1.6;
+    overflow: visible;
 }
 
-/* Extra horizontal line (unchanged) */
 .custom-line {
-  position: absolute;
-  top: 47.8vh;
-  left: -42.59vw;
-  width: 22.48vw;
-  height: 1px;
-  background-color: rgba(230, 230, 230, 0.28);
-  transition: transform 0.7s ease;
-  z-index: 100;
+    position: absolute;
+    top: 47.8vh; 
+    left: -42.59vw;
+    width: 22.48vw;
+    height: 1px;
+    background-color: rgba(230, 230, 230, 0.28);
+    transition: transform 0.7s ease;
 }
 
-/* Slide animations for chat and custom texts */
 .chat-slide {
-  transform: translateX(24vw);
+    transform: translateX(24vw);
 }
 .custom-slide {
-  transform: translateX(49vw);
+    transform: translateX(49vw);
 }
 
-/* Submenu expansion & fade for new texts */
+/* Slide-down & new-text animations */
 .slide-down {
-  transform: translateY(13vh);
+    transform: translateY(13vh);
 }
 .new-text {
-  opacity: 0;
-  transition: opacity 0.7s ease;
+    opacity: 0;
+    transition: opacity 0.7s ease;
 }
 .new-text.visible {
-  opacity: 1;
+    opacity: 1;
 }

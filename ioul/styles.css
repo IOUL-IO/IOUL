@@ -321,9 +321,12 @@ body.non-fullscreen {
 }
 
 /* Slide animation for grid numbers and grid dashed lines */
-.other-content.animate-grid .grid-number,
+/* Updated so grid numbers slide just enough to reach left: 36vw */
+.other-content.animate-grid .grid-number {
+    transform: translateX(-72.8vw);
+}
 .other-content.animate-grid .grid-dashed {
-    transform: translateX(-91vw);
+    transform: translateX(-60vw);
 }
 
 .custom-text {

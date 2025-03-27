@@ -47,6 +47,20 @@ body.non-fullscreen {
     z-index: 100;
 }
 
+/* 
+   .clip-region from left:0 to width:36vw, so 
+   anything beyond 36vw is clipped.
+*/
+.clip-region {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 36vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 200; /* above layer-one if needed */
+}
+
 .page-content {
     opacity: 0;
     transition: opacity 0.6s ease;

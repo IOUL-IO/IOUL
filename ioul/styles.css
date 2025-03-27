@@ -117,7 +117,7 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-/* Default styles for grid numbers and dashed lines */
+/* Grid numbers default styling */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -126,6 +126,7 @@ body.non-fullscreen {
     letter-spacing: 0.28vw;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
     transition: left 0.7s ease;
+    will-change: left;
 }
 .num1  { top: 28.5vh; left: 108.8vw; }
 .num2  { top: 28.5vh; left: 123.7vw; }
@@ -144,6 +145,7 @@ body.non-fullscreen {
 .num15 { top: 83.7vh; left: 138.0vw; }
 .num16 { top: 83.7vh; left: 152.8vw; }
 
+/* Grid dashed default styling */
 .grid-dashed {
     position: absolute;
     height: 1px;
@@ -151,6 +153,7 @@ body.non-fullscreen {
     background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
     background-size: 10px 1px;
     transition: left 0.7s ease;
+    will-change: left;
 }
 .dashed01 { top: 28.5vh; left: 96vw; }
 .dashed02 { top: 28.5vh; left: 111vw; }
@@ -169,48 +172,7 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
-/* Slide-container animation (unchanged) */
-.slide-container > .line.dashed,
-.slide-container > .time-text,
-.slide-container > .time-text.second-time-text,
-.slide-container > .time-text.third-time-text,
-.slide-container > .time-text.fourth-time-text {
-    transition: transform 0.7s ease;
-}
-.slide-container.animate-slide > .line.dashed,
-.slide-container.animate-slide > .time-text,
-.slide-container.animate-slide > .time-text.second-time-text,
-.slide-container.animate-slide > .time-text.third-time-text,
-.slide-container.animate-slide > .time-text.fourth-time-text {
-    transform: translateX(-91vw);
-}
-
-/* Other content elements remain unchanged */
-.line {
-    position: absolute;
-    height: 1px;
-    background-color: #cfcfcf;
-}
-.original {
-    top: 12.5vh;
-    left: 6.38vw;
-    width: 22.48vw;
-}
-.second {
-    top: 28.5vh;
-    left: 6.38vw;
-    width: 22.48vw;
-}
-.third {
-    top: 84vh;
-    left: 6.38vw;
-    width: 22.48vw;
-}
-.fourth {
-    top: 12.5vh;
-    left: 36vw;
-    width: 57.8vw;
-}
+/* Slide-container for dashed lines and time texts */
 .slide-container {
     position: absolute;
     top: 0;
@@ -241,6 +203,8 @@ body.non-fullscreen {
     top: 83.86vh;
     left: 90.1vw;
 }
+
+/* Hover and chat text */
 .hover-area {
     position: absolute;
     top: 28.5vh;
@@ -320,7 +284,7 @@ body.non-fullscreen {
 .other-content.animate-grid .grid-dashed.dashed15 { left: 65.9vw; }
 .other-content.animate-grid .grid-dashed.dashed16 { left: 80.8vw; }
 
-/* Other classes remain unchanged */
+/* Other elements */
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;

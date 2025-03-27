@@ -78,6 +78,8 @@ body.non-fullscreen {
     z-index: 2;
     pointer-events: none;
 }
+
+/* Other-content holds the non-menu elements */
 .other-content {
     position: absolute;
     top: 0;
@@ -87,7 +89,49 @@ body.non-fullscreen {
     z-index: 3;
 }
 
-/* New slide-triggers container moved outside .page-content now as fixed */
+/* Divide .other-content into three sections */
+.static-content { /* static elements never animate */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+.slide-section { /* contains 4 original dashed lines & time-texts */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    transition: transform 0.7s ease;
+}
+.slide-section.animate-slide {
+    transform: translateX(-91vw);
+}
+.grid-section { /* contains grid numbers and grid dashed lines */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    transition: transform 0.7s ease;
+}
+.grid-section .grid-number,
+.grid-section .grid-dashed {
+    transition: transform 0.7s ease;
+    will-change: transform;
+    /* Initially offset by 60vw */
+    transform: translateX(60vw);
+}
+.grid-section.animate-grid .grid-number,
+.grid-section.animate-grid .grid-dashed {
+    transform: translateX(0);
+}
+
+/* Slide-triggers container as fixed with high z-index */
 .slide-triggers {
     position: fixed;
     top: 0;
@@ -97,7 +141,7 @@ body.non-fullscreen {
     z-index: 101;
 }
 
-/* Original slide trigger rules */
+/* Slide trigger elements */
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
@@ -117,7 +161,7 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-/* Dashed lines, grid numbers, and other content styles */
+/* Static elements styling (inside .static-content) */
 .line {
     position: absolute;
     height: 1px;
@@ -143,64 +187,6 @@ body.non-fullscreen {
     left: 36vw;
     width: 57.8vw;
 }
-
-.slide-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    clip-path: inset(0 0 0 28.86vw);
-}
-
-.dashed {
-    position: absolute;
-    height: 1px;
-    top: 28.5vh;
-    left: 36vw;
-    width: 52.4vw;
-    background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
-    background-size: 10px 1px;
-}
-.second-dashed {
-    top: 47vh;
-    left: 36vw;
-    width: 52.4vw;
-}
-.third-dashed {
-    top: 65.5vh;
-    left: 36vw;
-    width: 52.4vw;
-}
-.fourth-dashed {
-    top: 84vh;
-    left: 36vw;
-    width: 52.4vw;
-}
-
-.time-text {
-    position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.331rem;
-    color: #111111;
-    letter-spacing: 0.2vw;
-    text-shadow: 0.011rem 0 0 #919191, -0.011rem 0 0 #919191;
-    top: 28.5vh;
-    left: 89.81vw;
-}
-.second-time-text {
-    top: 47.04vh;
-    left: 89.91vw;
-}
-.third-time-text {
-    top: 65.51vh;
-    left: 89.87vw;
-}
-.fourth-time-text {
-    top: 83.86vh;
-    left: 90.1vw;
-}
-
 .hover-area {
     position: absolute;
     top: 28.5vh;
@@ -208,7 +194,6 @@ body.non-fullscreen {
     width: calc(28.86vw - 6.4vw);
     height: calc(84vh - 28.5vh);
 }
-
 .chat-text {
     position: absolute;
     top: 77vh;
@@ -245,72 +230,42 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-.grid-number {
+/* Slide-container for the original dashed lines & time texts inside .slide-section */
+.slide-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    clip-path: inset(0 0 0 28.86vw);
+}
+.time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.331rem;
     color: #111111;
-    font-size: 0.411rem;
-    letter-spacing: 0.28vw;
-    text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    transition: left 0.7s ease;
+    letter-spacing: 0.2vw;
+    text-shadow: 0.011rem 0 0 #919191, -0.011rem 0 0 #919191;
+    top: 28.5vh;
+    left: 89.81vw;
 }
-.num1  { top: 28.5vh; left: 108.8vw; }
-.num2  { top: 28.5vh; left: 123.7vw; }
-.num3  { top: 28.5vh; left: 138.5vw; }
-.num4  { top: 28.5vh; left: 153.3vw; }
-.num5  { top: 47vh;   left: 108.8vw; }
-.num6  { top: 47vh;   left: 123.7vw; }
-.num7  { top: 47vh;   left: 138.5vw; }
-.num8  { top: 47vh;   left: 153.3vw; }
-.num9  { top: 65.5vh; left: 108.8vw; }
-.num10 { top: 65.5vh; left: 123.3vw; }
-.num11 { top: 65.5vh; left: 138.3vw; }
-.num12 { top: 65.5vh; left: 152.9vw; }
-.num13 { top: 83.7vh; left: 108.3vw; }
-.num14 { top: 83.7vh; left: 123.2vw; }
-.num15 { top: 83.7vh; left: 138.0vw; }
-.num16 { top: 83.7vh; left: 152.8vw; }
-
-.grid-dashed {
-    position: absolute;
-    height: 1px;
-    width: 11.8vw;
-    background: linear-gradient(to right, #919191 0, #919191 5px, #ffffff 5px, #ffffff 10px);
-    background-size: 10px 1px;
-    transition: left 0.7s ease;
+.second-time-text {
+    top: 47.04vh;
+    left: 89.91vw;
 }
-.dashed01 { top: 28.5vh; left: 96vw; }
-.dashed02 { top: 28.5vh; left: 111vw; }
-.dashed03 { top: 28.5vh; left: 125.9vw; }
-.dashed04 { top: 28.5vh; left: 140.8vw; }
-.dashed05 { top: 47vh;   left: 96vw; }
-.dashed06 { top: 47vh;   left: 111vw; }
-.dashed07 { top: 47vh;   left: 125.9vw; }
-.dashed08 { top: 47vh;   left: 140.8vw; }
-.dashed09 { top: 65.5vh; left: 96vw; }
-.dashed10 { top: 65.5vh; left: 111vw; }
-.dashed11 { top: 65.5vh; left: 125.9vw; }
-.dashed12 { top: 65.5vh; left: 140.8vw; }
-.dashed13 { top: 84vh;   left: 96vw; }
-.dashed14 { top: 84vh;   left: 111vw; }
-.dashed15 { top: 84vh;   left: 125.9vw; }
-.dashed16 { top: 84vh;   left: 140.8vw; }
-
-.slide-container > .line.dashed,
-.slide-container > .time-text,
-.slide-container > .time-text.second-time-text,
-.slide-container > .time-text.third-time-text,
-.slide-container > .time-text.fourth-time-text {
-    transition: transform 0.7s ease;
+.third-time-text {
+    top: 65.51vh;
+    left: 89.87vw;
 }
-.slide-container.animate-slide > .line.dashed,
-.slide-container.animate-slide > .time-text,
-.slide-container.animate-slide > .time-text.second-time-text,
-.slide-container.animate-slide > .time-text.third-time-text,
-.slide-container.animate-slide > .time-text.fourth-time-text {
-    transform: translateX(-91vw);
+.fourth-time-text {
+    top: 83.86vh;
+    left: 90.1vw;
 }
 
+/* Grid numbers and grid dashed lines are in .grid-section */
+/* (No additional CSS here—they use the rules above in .grid-section) */
+
+/* Other elements */
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -322,24 +277,21 @@ body.non-fullscreen {
     line-height: 1.6;
     overflow: visible;
 }
-
 .custom-line {
     position: absolute;
-    top: 47.8vh; 
+    top: 47.8vh;
     left: -42.59vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
     transition: transform 0.7s ease;
 }
-
 .chat-slide {
     transform: translateX(24vw);
 }
 .custom-slide {
     transform: translateX(49vw);
 }
-
 .slide-down {
     transform: translateY(13vh);
 }

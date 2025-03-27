@@ -42,7 +42,7 @@
         <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       </div>
 
-      <!-- The hover area for triggering chat fade‑in -->
+      <!-- The hover area for chat fade‑in -->
       <div class="hover-area"></div>
       <!-- Initially, chat-text is invisible, non-interactive, and placed behind -->
       <span class="chat-text" id="chatText">cHAT . . .</span>
@@ -162,16 +162,17 @@
           chatText.style.pointerEvents = 'auto';
           chatText.style.zIndex = '10';
           chatShownOnce = true;
-          // Disable pointer events on the hover area so it doesn't block clicks.
+          // Disable pointer events on hoverArea so it doesn't block clicks on chatText.
           hoverArea.style.pointerEvents = 'none';
         }
       }
     });
     
-    // Updated chat click handler – stops propagation and prevents default.
+    // Chat click handler: stops propagation, prevents default, and stops immediate propagation.
     chatText.addEventListener('click', (e) => {
       e.stopPropagation();
       e.preventDefault();
+      e.stopImmediatePropagation();
       const chatInput = document.createElement('input');
       chatInput.type = 'text';
       chatInput.classList.add('chat-input');

@@ -146,14 +146,14 @@
     
     // Chat area behavior
     const chatText = document.getElementById('chatText');
-    // Initially, disable pointer events and lower z-index so chatText doesn't block hover.
+    // Initially disable pointer events and lower z-index
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
     
-    // Use mouseenter on hoverArea to trigger the chat fade-in.
-    hoverArea.addEventListener('mouseenter', () => {
+    // Use "mouseover" so that if the pointer is already in the hover area the event fires.
+    hoverArea.addEventListener('mouseover', () => {
       if (!chatShownOnce && pageFadedIn) {
         chatText.style.opacity = '1';
         chatText.style.pointerEvents = 'auto';
@@ -162,9 +162,11 @@
       }
     });
     
-    // Chat click handler stops propagation so document-level clicks don't interfere.
+    // Chat click handler – use stopPropagation, preventDefault, and stopImmediatePropagation.
     chatText.addEventListener('click', (e) => {
       e.stopPropagation();
+      e.preventDefault();
+      e.stopImmediatePropagation();
       const chatInput = document.createElement('input');
       chatInput.type = 'text';
       chatInput.classList.add('chat-input');

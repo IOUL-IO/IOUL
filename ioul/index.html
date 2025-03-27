@@ -13,7 +13,7 @@
   <div class="layer-three"></div>
 
   <div class="page-content">
-    <!-- Container for main menu items -->
+    <!-- Main menu -->
     <div class="menu-items">
       <span class="custom-text menu-item" style="top: 35.4vh; left: 29vw;" id="online-assets">-  OnL1nE ASSETS</span>
       <span class="custom-text menu-item" style="top: 41.6vh; left: 29vw;" id="linkup-center">-  L1nKUP cEnTER</span>
@@ -21,10 +21,9 @@
       <span class="custom-text menu-item" style="top: 54vh; left: 29vw;" id="internal-unit">-  1nTERnAL Un1T</span>
     </div>
 
-    <!-- The covering layer -->
     <div class="layer-four"></div>
 
-    <!-- Container for all other content -->
+    <!-- Content container -->
     <div class="other-content">
       <div class="line original"></div>
       <div class="line second"></div>
@@ -42,9 +41,10 @@
         <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       </div>
 
-      <!-- Hover area for triggering chat fade‑in -->
+      <!-- The designated hover area (make sure it’s above interfering layers) -->
       <div class="hover-area"></div>
-      <!-- Initially, chat-text is invisible, non-interactive, and behind -->
+
+      <!-- Chat text initially hidden and non-interactive -->
       <span class="chat-text" id="chatText">cHAT . . .</span>
 
       <!-- Grid numbers -->
@@ -101,14 +101,14 @@
     </div> <!-- end of .other-content -->
   </div> <!-- end of .page-content -->
 
-  <!-- Slide triggers container (fixed) -->
+  <!-- Slide triggers -->
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
   </div>
 
   <script>
-    // Fade-in & fullscreen behavior
+    // Fade-in & fullscreen
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -116,21 +116,20 @@
       pageFadedIn = true;
     }
     document.addEventListener('mousemove', function onFirstMouseMove() {
-      if (!pageFadedIn) { fadeInPage(); }
+      if (!pageFadedIn) fadeInPage();
       document.removeEventListener('mousemove', onFirstMouseMove);
     });
     const EDGE_MARGIN = 11;
     document.addEventListener('click', (event) => {
       const { clientX: x, clientY: y } = event;
-      const { innerWidth: width, innerHeight: height } = window;
       if (!document.fullscreenElement &&
-          (x <= EDGE_MARGIN || x >= width - EDGE_MARGIN ||
-           y <= EDGE_MARGIN || y >= height - EDGE_MARGIN)) {
+          (x <= EDGE_MARGIN || x >= window.innerWidth - EDGE_MARGIN ||
+           y <= EDGE_MARGIN || y >= window.innerHeight - EDGE_MARGIN)) {
         document.documentElement.requestFullscreen();
       }
     });
     
-    // Slide trigger behavior for slide in/out
+    // Slide trigger behavior
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -146,13 +145,13 @@
     
     // Chat area behavior
     const chatText = document.getElementById('chatText');
-    // Initially disable pointer events and lower z-index so it doesn't block hover.
+    // Initially hide chatText from pointer events.
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
     
-    // Use mouseenter on hoverArea to trigger chat fade‑in.
+    // When the mouse enters the hover area, enable chatText.
     hoverArea.addEventListener('mouseenter', () => {
       if (!chatShownOnce && pageFadedIn) {
         chatText.style.opacity = '1';
@@ -162,86 +161,79 @@
       }
     });
     
-    // Chat click handler – stop propagation so document-level clicks don't interfere.
+    // Use a capturing click listener on chatText so its handler fires before document clicks.
     chatText.addEventListener('click', (e) => {
       e.stopPropagation();
       e.preventDefault();
-      // Create and insert chat input.
+      e.stopImmediatePropagation();
       const chatInput = document.createElement('input');
       chatInput.type = 'text';
       chatInput.classList.add('chat-input');
       chatText.insertAdjacentElement('afterend', chatInput);
       chatText.remove();
       chatInput.focus();
-    });
+    }, true);
     
-    // Modify document-level click handlers to ignore clicks on chat-related elements.
+    // Helper: if the click is on a chat-related element, ignore in document-level handlers.
     function shouldIgnoreClick(event) {
       return event.target.closest('.chat-text, .chat-input, .hover-area');
     }
     
+    // Document-level click handlers: ignore clicks originating from chat-related elements.
     document.addEventListener('click', (event) => {
       if (shouldIgnoreClick(event)) return;
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const xLimit = 6.37 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
+      const vw = window.innerWidth / 100;
+      const vh = window.innerHeight / 100;
+      const xLimit = 6.37 * vw;
+      const yMin = 28.5 * vh;
+      const yMax = 84 * vh;
       if (event.clientX >= 0 && event.clientX <= xLimit &&
           event.clientY >= yMin && event.clientY <= yMax) {
-        const chatTextEl = document.querySelector('.chat-text');
-        if (chatTextEl) {
-          chatTextEl.style.transition = "opacity 0.1s ease";
-          chatTextEl.style.opacity = "0";
-          setTimeout(() => {
-            chatTextEl.classList.add('chat-slide');
-          }, 110);
+        const ct = document.querySelector('.chat-text');
+        if (ct) {
+          ct.style.transition = "opacity 0.1s ease";
+          ct.style.opacity = "0";
+          setTimeout(() => ct.classList.add('chat-slide'), 110);
         }
-        const chatInputEl = document.querySelector('.chat-input');
-        if (chatInputEl) {
-          chatInputEl.classList.add('chat-slide');
-        }
-        const customTextEls = document.querySelectorAll('.custom-text');
-        customTextEls.forEach(el => el.classList.add('custom-slide'));
-        const customLineEl = document.querySelector('.custom-line');
-        if (customLineEl) {
-          customLineEl.classList.add('custom-slide');
-        }
+        const ci = document.querySelector('.chat-input');
+        if (ci) ci.classList.add('chat-slide');
+        const cts = document.querySelectorAll('.custom-text');
+        cts.forEach(el => el.classList.add('custom-slide'));
+        const cl = document.querySelector('.custom-line');
+        if (cl) cl.classList.add('custom-slide');
       }
     });
     document.addEventListener('click', (event) => {
       if (shouldIgnoreClick(event)) return;
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const leftMin = 28.87 * vwUnit;
-      const leftMax = 32.44 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
+      const vw = window.innerWidth / 100;
+      const vh = window.innerHeight / 100;
+      const leftMin = 28.87 * vw;
+      const leftMax = 32.44 * vw;
+      const yMin = 28.5 * vh;
+      const yMax = 84 * vh;
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
-        const chatTextEl = document.querySelector('.chat-text');
-        if (chatTextEl) {
-          chatTextEl.classList.remove('chat-slide');
-          setTimeout(() => { chatTextEl.style.opacity = "1"; }, 700);
+        const ct = document.querySelector('.chat-text');
+        if (ct) {
+          ct.classList.remove('chat-slide');
+          setTimeout(() => ct.style.opacity = "1", 700);
         }
-        const chatInputEl = document.querySelector('.chat-input');
-        if (chatInputEl) {
-          chatInputEl.classList.remove('chat-slide');
-        }
-        const customTextEls = document.querySelectorAll('.custom-text');
-        customTextEls.forEach(el => {
+        const ci = document.querySelector('.chat-input');
+        if (ci) ci.classList.remove('chat-slide');
+        const cts = document.querySelectorAll('.custom-text');
+        cts.forEach(el => {
           el.classList.remove('custom-slide');
           el.style.transition = "transform 0.7s ease";
         });
-        const customLineEl = document.querySelector('.custom-line');
-        if (customLineEl) {
-          customLineEl.classList.remove('custom-slide');
-          customLineEl.style.transition = "transform 0.7s ease";
+        const cl = document.querySelector('.custom-line');
+        if (cl) {
+          cl.classList.remove('custom-slide');
+          cl.style.transition = "transform 0.7s ease";
         }
       }
     });
     
-    // Submenu Toggle Script remains unchanged.
+    // Submenu toggle (unchanged)
     function addNewText(text, top, left) {
       let span = document.createElement("span");
       span.className = "custom-text new-text";
@@ -249,7 +241,7 @@
       span.style.left = left + "vw";
       span.textContent = text;
       document.querySelector(".other-content").appendChild(span);
-      setTimeout(() => { span.classList.add("visible"); }, 10);
+      setTimeout(() => span.classList.add("visible"), 10);
     }
     let currentMenu = null;
     function closeSubmenu() {

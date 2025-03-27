@@ -42,9 +42,12 @@
         <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       </div>
 
+      <!-- Hover area for triggering chat fade‑in -->
       <div class="hover-area"></div>
+      <!-- Initially, chat-text is invisible, non-interactive, and behind -->
       <span class="chat-text" id="chatText">cHAT . . .</span>
 
+      <!-- Grid numbers -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -62,6 +65,7 @@
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
 
+      <!-- Grid dashed lines -->
       <div class="grid-dashed dashed01"></div>
       <div class="grid-dashed dashed02"></div>
       <div class="grid-dashed dashed03"></div>
@@ -97,7 +101,7 @@
     </div> <!-- end of .other-content -->
   </div> <!-- end of .page-content -->
 
-  <!-- Slide triggers container -->
+  <!-- Slide triggers container (fixed) -->
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
@@ -142,24 +146,23 @@
     
     // Chat area behavior
     const chatText = document.getElementById('chatText');
+    // Initially, disable pointer events and lower z-index so chatText doesn't block hover.
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
-    document.addEventListener('mousemove', (event) => {
+    
+    // Use mouseenter on hoverArea to trigger the chat fade-in.
+    hoverArea.addEventListener('mouseenter', () => {
       if (!chatShownOnce && pageFadedIn) {
-        const rect = hoverArea.getBoundingClientRect();
-        if (event.clientX >= rect.left && event.clientX <= rect.right &&
-            event.clientY >= rect.top && event.clientY <= rect.bottom) {
-          chatText.style.opacity = '1';
-          chatText.style.pointerEvents = 'auto';
-          chatText.style.zIndex = '10';
-          chatShownOnce = true;
-        }
+        chatText.style.opacity = '1';
+        chatText.style.pointerEvents = 'auto';
+        chatText.style.zIndex = '10';
+        chatShownOnce = true;
       }
     });
     
-    // Updated chat click handler: stop propagation to avoid triggering document-level click events
+    // Chat click handler stops propagation so document-level clicks don't interfere.
     chatText.addEventListener('click', (e) => {
       e.stopPropagation();
       const chatInput = document.createElement('input');

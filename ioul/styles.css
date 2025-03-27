@@ -318,6 +318,7 @@ body.non-fullscreen {
     background: transparent;
     z-index: 101;
     cursor: pointer;
+    pointer-events: auto;
 }
 .slide-trigger-reverse {
     position: absolute;
@@ -328,6 +329,7 @@ body.non-fullscreen {
     background: transparent;
     z-index: 101;
     cursor: pointer;
+    pointer-events: auto;
 }
 
 .custom-text {

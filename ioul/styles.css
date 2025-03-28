@@ -19,60 +19,27 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
-/* Menu-items container now interactive and on top */
+/* Menu-items container:
+   Initially, menu items are in their original state and should be covered by layer-four.
+   When they slide (class "menu-slide" is added to each menu item) and the container gets the "slid" class,
+   we raise its z-index so that the items become selectable. */
 .menu-items {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 10;
+    z-index: 1;
+}
+.menu-items.slid {
+    z-index: 11;
 }
 .menu-items .menu-item {
     pointer-events: auto;
+    transition: transform 0.7s ease;
 }
 
-/* Layers */
-.layer-one {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 6.37vw;
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100;
-    pointer-events: none;
-}
-.layer-two {
-    position: fixed;
-    top: 0;
-    left: 28.87vw;
-    width: calc(36vw - 28.87vw);
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100;
-    pointer-events: none;
-}
-.layer-three {
-    position: fixed;
-    top: 0;
-    left: 94.17vw;
-    width: calc(100vw - 94.17vw);
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100;
-    pointer-events: none;
-}
-
-.page-content {
-    position: relative;
-    opacity: 0;
-    transition: opacity 0.6s ease;
-    width: 100vw;
-    height: 100vh;
-}
-
-/* Covering layer */
+/* Layer 4 covers the original menu area */
 .layer-four {
     position: absolute;
     top: 28.5vh;
@@ -84,7 +51,7 @@ body.non-fullscreen {
     pointer-events: none;
 }
 
-/* Decorative content – allow pointer events to pass through */
+/* Decorative content – set pointer-events: none so it does not block selection */
 .other-content {
     position: absolute;
     top: 0;
@@ -93,6 +60,17 @@ body.non-fullscreen {
     height: 100%;
     z-index: 5;
     pointer-events: none;
+}
+
+/* New container for submenu items */
+.submenu-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 12;
+    pointer-events: auto;
 }
 
 /* Slide triggers */
@@ -358,11 +336,14 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* Slide menu items from original 29vw to 6.41vw */
+/* When menu items slide, they get a transform and pointer events become enabled after transition.
+   The "menu-slide" class moves each menu item; the container gets the "slid" class to raise its z-index. */
 .menu-slide {
     transform: translateX(-22.59vw);
     transition: transform 0.7s ease;
 }
+
+/* Other animations remain unchanged */
 .chat-slide {
     transform: translateX(24vw);
 }

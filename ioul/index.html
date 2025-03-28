@@ -24,7 +24,7 @@
     <!-- The covering layer (only covers overflowing main menu items) -->
     <div class="layer-four"></div>
 
-    <!-- Container for all other content -->
+    <!-- Container for all other decorative content -->
     <div class="other-content">
       <div class="line original"></div>
       <div class="line second"></div>
@@ -399,6 +399,8 @@
       span.style.top = top + "vh";
       span.style.left = left + "vw";
       span.textContent = text;
+      // Re-enable pointer events for submenu items
+      span.style.pointerEvents = "auto";
       document.querySelector(".other-content").appendChild(span);
       setTimeout(() => {
         span.classList.add("visible");

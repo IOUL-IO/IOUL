@@ -98,7 +98,7 @@ body.non-fullscreen {
     width: 100vw;
     height: 100vh;
     z-index: 101;
-    pointer-events: none; /* Allow clicks to pass through except on triggers */
+    pointer-events: none;
 }
 
 /* Ensure trigger elements are clickable */
@@ -357,6 +357,12 @@ body.non-fullscreen {
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
+    transition: transform 0.7s ease;
+}
+
+/* New class for sliding the main menu items left to 6.41vw */
+.menu-slide {
+    transform: translateX(-22.59vw);
     transition: transform 0.7s ease;
 }
 

@@ -373,8 +373,9 @@ body.non-fullscreen {
     transform: translateX(49vw);
 }
 
+/* Updated slide-down to maintain the X translation while adding vertical shift */
 .slide-down {
-    transform: translateY(13vh);
+    transform: translateX(-22.59vw) translateY(13vh);
 }
 .new-text {
     opacity: 0;

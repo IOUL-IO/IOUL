@@ -152,8 +152,7 @@
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
     
-    // Instead of relying solely on a "mouseenter" event,
-    // we add a document-level mousemove listener that checks if the pointer is within the hover-area.
+    // Reveal chatText when pointer is within hoverArea
     document.addEventListener('mousemove', (event) => {
       if (!chatShownOnce && pageFadedIn) {
         const rect = hoverArea.getBoundingClientRect();
@@ -167,17 +166,21 @@
       }
     });
     
-    chatText.addEventListener('click', () => {
+    // Convert chat-text into an input field when clicked
+    chatText.addEventListener('click', (event) => {
+      event.stopPropagation();
       const chatInput = document.createElement('input');
       chatInput.type = 'text';
       chatInput.classList.add('chat-input');
-      chatText.insertAdjacentElement('afterend', chatInput);
-      chatText.remove();
+      chatText.replaceWith(chatInput);
       chatInput.focus();
     });
     
-    // Document-level click handlers for slide animations (unchanged)
+    // Document-level click handlers for slide animations
+    // (They now ignore clicks originating from chat-text or chat-input)
     document.addEventListener('click', (event) => {
+      if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
+      
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const xLimit = 6.37 * vwUnit;
@@ -208,6 +211,8 @@
       }
     });
     document.addEventListener('click', (event) => {
+      if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
+      
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const leftMin = 28.87 * vwUnit;

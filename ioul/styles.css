@@ -19,7 +19,7 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
-/* Update: Make menu-items interactive and bring them to the front */
+/* Make menu-items interactive and on top */
 .menu-items {
     position: absolute;
     top: 0;
@@ -27,12 +27,12 @@ body.non-fullscreen {
     width: 100%;
     height: 100%;
     z-index: 10;
-    /* pointer-events removed so children can receive events */
 }
 .menu-items .menu-item {
     pointer-events: auto;
 }
 
+/* Layers */
 .layer-one {
     position: fixed;
     top: 0;
@@ -72,7 +72,7 @@ body.non-fullscreen {
     height: 100vh;
 }
 
-/* layer-four remains unchanged */
+/* Covering layer */
 .layer-four {
     position: absolute;
     top: 28.5vh;
@@ -84,7 +84,7 @@ body.non-fullscreen {
     pointer-events: none;
 }
 
-/* Set other-content lower than menu-items */
+/* Other decorative content – disable pointer events to let menu-items be interactive */
 .other-content {
     position: absolute;
     top: 0;
@@ -92,9 +92,10 @@ body.non-fullscreen {
     width: 100%;
     height: 100%;
     z-index: 5;
+    pointer-events: none;
 }
 
-/* Slide-triggers container modified to allow underlying clicks */
+/* Slide triggers */
 .slide-triggers {
     position: fixed;
     top: 0;
@@ -126,6 +127,8 @@ body.non-fullscreen {
     background: transparent;
     cursor: pointer;
 }
+
+/* Lines and grid numbers */
 .line {
     position: absolute;
     height: 1px;
@@ -213,6 +216,8 @@ body.non-fullscreen {
     left: 90.1vw;
     transition: transform 0.7s ease;
 }
+
+/* Hover area */
 .hover-area {
     position: absolute;
     top: 28.5vh;
@@ -222,6 +227,8 @@ body.non-fullscreen {
     pointer-events: auto;
     background: transparent;
 }
+
+/* Chat text & input */
 .chat-text {
     position: absolute;
     top: 77vh;
@@ -257,6 +264,8 @@ body.non-fullscreen {
     cursor: text;
     transition: transform 0.7s ease;
 }
+
+/* Grid numbers */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -282,6 +291,8 @@ body.non-fullscreen {
 .num14 { top: 83.7vh; left: 123.2vw; }
 .num15 { top: 83.7vh; left: 138.0vw; }
 .num16 { top: 83.7vh; left: 152.8vw; }
+
+/* Grid dashed lines */
 .grid-dashed {
     position: absolute;
     height: 1px;
@@ -324,6 +335,8 @@ body.non-fullscreen {
 .other-content.animate-grid .grid-dashed {
     transform: translateX(-60vw);
 }
+
+/* Custom texts */
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -344,6 +357,7 @@ body.non-fullscreen {
     background-color: rgba(230, 230, 230, 0.28);
     transition: transform 0.7s ease;
 }
+
 /* Slide menu items from original 29vw to 6.41vw */
 .menu-slide {
     transform: translateX(-22.59vw);

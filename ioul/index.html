@@ -175,7 +175,7 @@
     // slideState: "none", "menu", or "custom"
     let slideState = "none";
     
-    // Region: Left 0–6.37vw (top 28.5–84vh)
+    // Region: Left 0–6.37vw (top 28.5–84vh) for inverse animation
     document.addEventListener('click', (event) => {
       // Ignore clicks on chat elements or menu items
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input') ||
@@ -189,10 +189,11 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "menu") {
-          // Revert menu slide; wait for transition (700ms) then fade in chatText
+          // Revert menu slide: remove 'menu-slide' from each menu item.
           document.querySelectorAll('.menu-items .menu-item').forEach(el => {
             el.classList.remove('menu-slide');
           });
+          // Wait for transition before fading chatText back in
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             setTimeout(() => {
@@ -202,7 +203,7 @@
           }
           slideState = "none";
         } else if (slideState === "none") {
-          // Trigger original custom slide: fade out chatText and slide in custom-text elements
+          // Trigger original custom slide: fade out chatText and slide in custom-text elements.
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
@@ -223,7 +224,7 @@
       }
     });
     
-    // Region: Left 28.86–32.43vw (top 28.5–84vh)
+    // Region: Left 28.86–32.43vw (top 28.5–84vh) to trigger menu slide
     document.addEventListener('click', (event) => {
       // Ignore clicks on chat elements or menu items
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input') ||
@@ -256,26 +257,35 @@
           }
           slideState = "none";
         } else if (slideState === "none") {
-          // If chatText is in its original location, fade it out and slide menu items left.
+          // Only if chatText is still in its original location,
+          // fade it out and slide menu items left.
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
             chatTextEl.style.opacity = "0";
-            setTimeout(() => {
-              document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-                el.classList.add('menu-slide');
-              });
-            }, 110);
-            slideState = "menu";
           }
+          document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+            el.classList.add('menu-slide');
+            // Disable pointer events during transition.
+            el.style.pointerEvents = "none";
+            el.addEventListener("transitionend", function handler(e) {
+              if (e.propertyName === "transform") {
+                el.style.pointerEvents = "auto";
+                el.removeEventListener("transitionend", handler);
+              }
+            });
+          });
+          slideState = "menu";
         }
       }
     });
     
     // ----- Menu item click handlers for submenu animations -----
+    // These now only work if the menu items have slid (slideState === "menu")
     let currentMenu = null;
     document.getElementById("online-assets").addEventListener("click", function(e) {
       e.stopPropagation();
+      if (slideState !== "menu") return;
       slideState = "none";
       if (currentMenu === "online-assets") {
         closeSubmenu();
@@ -294,6 +304,7 @@
     });
     document.getElementById("linkup-center").addEventListener("click", function(e) {
       e.stopPropagation();
+      if (slideState !== "menu") return;
       slideState = "none";
       if (currentMenu === "linkup-center") {
         closeSubmenu();
@@ -312,6 +323,7 @@
     });
     document.getElementById("delivery-line").addEventListener("click", function(e) {
       e.stopPropagation();
+      if (slideState !== "menu") return;
       slideState = "none";
       if (currentMenu === "delivery-line") {
         closeSubmenu();
@@ -330,6 +342,7 @@
     });
     document.getElementById("internal-unit").addEventListener("click", function(e) {
       e.stopPropagation();
+      if (slideState !== "menu") return;
       slideState = "none";
       if (currentMenu === "internal-unit") {
         closeSubmenu();

@@ -65,7 +65,7 @@
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
 
-      <!-- Account (custom) items – these are the “account” texts -->
+      <!-- Account items (only these custom-texts) -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
       <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -142,10 +142,11 @@
             }
             slideState = "none";
           } else if (slideState === "account") {
-            // Inverse animation for account items: remove transform
+            // Inverse animation for account items: restore original left values
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              el.style.transition = "transform 0.7s ease";
-              el.style.transform = "";
+              if (el.dataset.originalLeft) {
+                el.style.left = el.dataset.originalLeft;
+              }
             });
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
@@ -156,18 +157,21 @@
             }
             slideState = "none";
           } else if (slideState === "none") {
-            // If chat-text is visible, trigger account slide in:
+            // If .chat-text is in its original location, trigger account slide in:
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               chatTextEl.style.transition = "opacity 0.1s ease";
               chatTextEl.style.opacity = "0";
               setTimeout(() => {
-                // For each account item, compute the delta needed to reach left 7.4vw
+                // For each account item, store its original left (if not already stored)
+                // then increase its left by 49vw
                 document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-                  let initialLeft = parseFloat(el.style.left); // e.g., -42.59 or -28.22
-                  let delta = 7.4 - initialLeft;
-                  el.style.transition = "transform 0.7s ease";
-                  el.style.transform = `translateX(${delta}vw)`;
+                  if (!el.dataset.originalLeft) {
+                    el.dataset.originalLeft = el.style.left;
+                  }
+                  let original = parseFloat(el.dataset.originalLeft);
+                  let newLeft = original + 49;
+                  el.style.left = newLeft + "vw";
                 });
               }, 110);
             }
@@ -203,10 +207,11 @@
             }
             slideState = "none";
           } else if (slideState === "account") {
-            // Inverse animation for account items
+            // Inverse animation for account items: restore original left values
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              el.style.transition = "transform 0.7s ease";
-              el.style.transform = "";
+              if (el.dataset.originalLeft) {
+                el.style.left = el.dataset.originalLeft;
+              }
             });
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
@@ -255,8 +260,9 @@
         slideState = "none";
       } else if (slideState === "account") {
         document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-          el.style.transition = "transform 0.7s ease";
-          el.style.transform = "";
+          if (el.dataset.originalLeft) {
+            el.style.left = el.dataset.originalLeft;
+          }
         });
         const chatTextEl = document.getElementById('chatText');
         if (chatTextEl) {

@@ -176,8 +176,63 @@
       chatInput.focus();
     });
     
-    // Document-level click handlers for slide animations
-    // (They ignore clicks that originate from chat elements)
+    // Document-level click handler for left-region area (28.86-32.43vw)
+    // This new command applies only if .chat-text is in its original state.
+    document.addEventListener('click', (event) => {
+      // Ignore clicks on chat elements
+      if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
+      
+      const vwUnit = window.innerWidth / 100;
+      const vhUnit = window.innerHeight / 100;
+      const leftMin = 28.86 * vwUnit;
+      const leftMax = 32.43 * vwUnit;
+      const yMin = 28.5 * vhUnit;
+      const yMax = 84 * vhUnit;
+      if (event.clientX >= leftMin && event.clientX <= leftMax &&
+          event.clientY >= yMin && event.clientY <= yMax) {
+        // Check if chat-text is still in its original state (i.e. exists by its id)
+        const originalChatText = document.getElementById('chatText');
+        if (originalChatText) {
+          // Quickly fade out chat-text
+          originalChatText.style.transition = "opacity 0.1s ease";
+          originalChatText.style.opacity = "0";
+          setTimeout(() => {
+            originalChatText.classList.add('chat-slide');
+          }, 110);
+          // Animate menu items to slide left to 6.41vw
+          const menuItems = document.querySelectorAll('.menu-item');
+          menuItems.forEach(item => {
+            item.style.transition = "left 0.7s ease";
+            item.style.left = "6.41vw";
+          });
+        } else {
+          // Otherwise, if chat-text is not in its original state, perform the existing reset behavior
+          const chatTextEl = document.querySelector('.chat-text');
+          if (chatTextEl) {
+            chatTextEl.classList.remove('chat-slide');
+            setTimeout(() => {
+              chatTextEl.style.opacity = "1";
+            }, 700);
+          }
+          const chatInputEl = document.querySelector('.chat-input');
+          if (chatInputEl) {
+            chatInputEl.classList.remove('chat-slide');
+          }
+          const customTextEls = document.querySelectorAll('.custom-text');
+          customTextEls.forEach(el => {
+            el.classList.remove('custom-slide');
+            el.style.transition = "transform 0.7s ease";
+          });
+          const customLineEl = document.querySelector('.custom-line');
+          if (customLineEl) {
+            customLineEl.classList.remove('custom-slide');
+            customLineEl.style.transition = "transform 0.7s ease";
+          }
+        }
+      }
+    });
+    
+    // (Existing document-level click handler for the left edge region)
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       
@@ -210,6 +265,8 @@
         }
       }
     });
+    
+    // Existing document-level click handler for the right edge region (reset behavior)
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       

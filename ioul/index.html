@@ -108,7 +108,7 @@
   </div>
 
   <script>
-    // Fade-in & fullscreen behavior
+    // ----- Fade-in & fullscreen behavior (unchanged) -----
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -130,7 +130,7 @@
       }
     });
     
-    // Slide trigger behavior for slide in/out
+    // ----- Slide trigger behavior for slide in/out (unchanged) -----
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -144,7 +144,7 @@
       document.querySelector('.other-content').classList.add('animate-grid');
     });
     
-    // Chat area behavior
+    // ----- Chat area behavior (unchanged) -----
     const chatText = document.getElementById('chatText');
     // Initially, disable pointer events and lower z-index so chatText doesn't block hover.
     chatText.style.pointerEvents = 'none';
@@ -166,7 +166,7 @@
       }
     });
     
-    // Convert chat-text into an input field when clicked
+    // Convert .chat-text into an input field when clicked (unchanged)
     chatText.addEventListener('click', (event) => {
       event.stopPropagation();
       const chatInput = document.createElement('input');
@@ -176,11 +176,60 @@
       chatInput.focus();
     });
     
-    // New click command for left-region area (28.86-32.43vw)
-    // Only works if .chat-text is still in its original state (i.e. does not have the 'chat-slide' class)
+    // ----- New region-based click commands for sliding animations -----
+    // slideState can be "none", "menu", or "custom"
+    let slideState = "none";
+    
+    // Region: Left 0 – 6.37 (top 28.5–84)
     document.addEventListener('click', (event) => {
+      // Ignore clicks originating from chat elements
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
-      
+      const vwUnit = window.innerWidth / 100;
+      const vhUnit = window.innerHeight / 100;
+      const leftMin = 0;
+      const leftMax = 6.37 * vwUnit;
+      const yMin = 28.5 * vhUnit;
+      const yMax = 84 * vhUnit;
+      if (event.clientX >= leftMin && event.clientX <= leftMax &&
+          event.clientY >= yMin && event.clientY <= yMax) {
+        // If currently in "menu" slide state, clicking here will revert it.
+        if (slideState === "menu") {
+          document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+            el.classList.remove('menu-slide');
+          });
+          // Restore .chat-text opacity (it should be in DOM because menu-slide only works if it was original)
+          const chatTextEl = document.getElementById('chatText');
+          if (chatTextEl) {
+            chatTextEl.style.transition = "opacity 0.7s ease";
+            chatTextEl.style.opacity = "1";
+          }
+          slideState = "none";
+        } else if (slideState === "none") {
+          // If .chat-text is still in original location, trigger the "custom" slide animation (original behavior)
+          const chatTextEl = document.getElementById('chatText');
+          if (chatTextEl) {
+            chatTextEl.style.transition = "opacity 0.1s ease";
+            chatTextEl.style.opacity = "0";
+            setTimeout(() => {
+              chatTextEl.classList.add('chat-slide');
+            }, 110);
+          }
+          document.querySelectorAll('.custom-text').forEach(el => {
+            el.classList.add('custom-slide');
+          });
+          const customLineEl = document.querySelector('.custom-line');
+          if (customLineEl) {
+            customLineEl.classList.add('custom-slide');
+          }
+          slideState = "custom";
+        }
+      }
+    });
+    
+    // Region: Left 28.86 – 32.43 (top 28.5–84)
+    document.addEventListener('click', (event) => {
+      // Ignore clicks originating from chat elements
+      if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const leftMin = 28.86 * vwUnit;
@@ -189,95 +238,44 @@
       const yMax = 84 * vhUnit;
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
-        const originalChatText = document.getElementById('chatText');
-        if (originalChatText && !originalChatText.classList.contains('chat-slide')) {
-          // Quickly fade out the chat-text
-          originalChatText.style.transition = "opacity 0.1s ease";
-          originalChatText.style.opacity = "0";
-          setTimeout(() => {
-            originalChatText.classList.add('chat-slide');
-          }, 110);
-          // Smoothly slide menu items left to 6.41vw
-          const menuItems = document.querySelectorAll('.menu-item');
-          menuItems.forEach(item => {
-            item.style.transition = "left 0.7s ease";
-            item.style.left = "6.41vw";
+        // If currently in "custom" slide state, trigger inverse animation for custom slide.
+        if (slideState === "custom") {
+          const chatTextEl = document.getElementById('chatText');
+          if (chatTextEl) {
+            chatTextEl.classList.remove('chat-slide');
+            setTimeout(() => {
+              chatTextEl.style.opacity = "1";
+            }, 700);
+          }
+          document.querySelectorAll('.custom-text').forEach(el => {
+            el.classList.remove('custom-slide');
+            el.style.transition = "transform 0.7s ease";
           });
+          const customLineEl = document.querySelector('.custom-line');
+          if (customLineEl) {
+            customLineEl.classList.remove('custom-slide');
+            customLineEl.style.transition = "transform 0.7s ease";
+          }
+          slideState = "none";
+        } else if (slideState === "none") {
+          // Only work if .chat-text is in its original location:
+          const chatTextEl = document.getElementById('chatText');
+          if (chatTextEl) {
+            chatTextEl.style.transition = "opacity 0.1s ease";
+            chatTextEl.style.opacity = "0";
+            setTimeout(() => {
+              // Slide main menu items (.menu-items .menu-item) to left 6.41vw
+              document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+                el.classList.add('menu-slide');
+              });
+            }, 110);
+            slideState = "menu";
+          }
         }
       }
     });
     
-    // Existing document-level click handler for left edge region (unchanged)
-    document.addEventListener('click', (event) => {
-      if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
-      
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const xLimit = 6.37 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
-      if (event.clientX >= 0 && event.clientX <= xLimit &&
-          event.clientY >= yMin && event.clientY <= yMax) {
-        const chatTextEl = document.querySelector('.chat-text');
-        if (chatTextEl) {
-          chatTextEl.style.transition = "opacity 0.1s ease";
-          chatTextEl.style.opacity = "0";
-          setTimeout(() => {
-            chatTextEl.classList.add('chat-slide');
-          }, 110);
-        }
-        const chatInputEl = document.querySelector('.chat-input');
-        if (chatInputEl) {
-          chatInputEl.classList.add('chat-slide');
-        }
-        const customTextEls = document.querySelectorAll('.custom-text');
-        customTextEls.forEach(el => {
-          el.classList.add('custom-slide');
-        });
-        const customLineEl = document.querySelector('.custom-line');
-        if (customLineEl) {
-          customLineEl.classList.add('custom-slide');
-        }
-      }
-    });
-    
-    // Existing document-level click handler for right edge region (reset behavior)
-    document.addEventListener('click', (event) => {
-      if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
-      
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const leftMin = 28.87 * vwUnit;
-      const leftMax = 32.44 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
-      if (event.clientX >= leftMin && event.clientX <= leftMax &&
-          event.clientY >= yMin && event.clientY <= yMax) {
-        const chatTextEl = document.querySelector('.chat-text');
-        if (chatTextEl) {
-          chatTextEl.classList.remove('chat-slide');
-          setTimeout(() => {
-            chatTextEl.style.opacity = "1";
-          }, 700);
-        }
-        const chatInputEl = document.querySelector('.chat-input');
-        if (chatInputEl) {
-          chatInputEl.classList.remove('chat-slide');
-        }
-        const customTextEls = document.querySelectorAll('.custom-text');
-        customTextEls.forEach(el => {
-          el.classList.remove('custom-slide');
-          el.style.transition = "transform 0.7s ease";
-        });
-        const customLineEl = document.querySelector('.custom-line');
-        if (customLineEl) {
-          customLineEl.classList.remove('custom-slide');
-          customLineEl.style.transition = "transform 0.7s ease";
-        }
-      }
-    });
-    
-    // Submenu Toggle Script (append new submenu text into .other-content)
+    // ----- Rest of your submenu toggle code remains unchanged -----
     function addNewText(text, top, left) {
       let span = document.createElement("span");
       span.className = "custom-text new-text";

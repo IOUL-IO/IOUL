@@ -8,33 +8,29 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="non-fullscreen">
-  <!-- Decorative layers remain unchanged -->
   <div class="layer-one"></div>
   <div class="layer-two"></div>
   <div class="layer-three"></div>
 
   <div class="page-content">
-    <!-- Container for main menu items.
-         Initially these are at left:29vw and not selectable because they are covered by layer-four.
-         When they slide (by adding the "slid" class), their z-index is raised so they become interactive. -->
+    <!-- Container for main menu items -->
     <div class="menu-items">
-      <span class="custom-text menu-item" id="online-assets" style="top: 35.4vh; left: 29vw;">-  OnL1nE ASSETS</span>
-      <span class="custom-text menu-item" id="linkup-center" style="top: 41.6vh; left: 29vw;">-  L1nKUP cEnTER</span>
-      <span class="custom-text menu-item" id="delivery-line" style="top: 47.8vh; left: 29vw;">-  DEL1VERY L1nE</span>
-      <span class="custom-text menu-item" id="internal-unit" style="top: 54vh; left: 29vw;">-  1nTERnAL Un1T</span>
+      <span class="custom-text menu-item" style="top: 35.4vh; left: 29vw;" id="online-assets">-  OnL1nE ASSETS</span>
+      <span class="custom-text menu-item" style="top: 41.6vh; left: 29vw;" id="linkup-center">-  L1nKUP cEnTER</span>
+      <span class="custom-text menu-item" style="top: 47.8vh; left: 29vw;" id="delivery-line">-  DEL1VERY L1nE</span>
+      <span class="custom-text menu-item" style="top: 54vh; left: 29vw;" id="internal-unit">-  1nTERnAL Un1T</span>
     </div>
 
-    <!-- Layer 4 covers the original menu area -->
+    <!-- The covering layer (only covers overflowing main menu items) -->
     <div class="layer-four"></div>
 
-    <!-- Decorative content container.
-         This holds grid lines, numbers, and other static items.
-         Pointer events are disabled here so they do not block text selection. -->
+    <!-- Container for all other content -->
     <div class="other-content">
       <div class="line original"></div>
       <div class="line second"></div>
       <div class="line third"></div>
       <div class="line fourth"></div>
+
       <div class="slide-container">
         <div class="line dashed"></div>
         <div class="line dashed second-dashed"></div>
@@ -45,10 +41,13 @@
         <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
         <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       </div>
+
+      <!-- The hover area for chat fade‑in -->
       <div class="hover-area"></div>
-      <!-- Chat text -->
+      <!-- Initially, chat-text is invisible, non-interactive, and placed behind -->
       <span class="chat-text" id="chatText">cHAT . . .</span>
-      <!-- Grid numbers and dashed lines -->
+
+      <!-- Grid numbers -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -65,6 +64,8 @@
       <span class="grid-number num14">14</span>
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
+
+      <!-- Grid dashed lines -->
       <div class="grid-dashed dashed01"></div>
       <div class="grid-dashed dashed02"></div>
       <div class="grid-dashed dashed03"></div>
@@ -81,24 +82,33 @@
       <div class="grid-dashed dashed14"></div>
       <div class="grid-dashed dashed15"></div>
       <div class="grid-dashed dashed16"></div>
-      <!-- Note: Decorative submenu texts (if any) will not be appended here -->
-    </div>
 
-    <!-- New container for submenu items.
-         This is placed above decorative content so that submenu texts are interactive. -->
-    <div class="submenu-container"></div>
-  </div>
+      <!-- Submenu items -->
+      <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
+      <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
+      <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
+      <span class="custom-text" style="top: 41.6vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
+      <span class="custom-text" style="top: 54vh; left: -42.59vw;">YOUR L1ST</span>
+      <span class="custom-text" style="top: 60.2vh; left: -42.59vw;">cHAnnELS</span>
+      <span class="custom-text" style="top: 66.4vh; left: -42.59vw;">OFFER HUB</span>
+      <span class="custom-text" style="top: 72.6vh; left: -42.59vw;">YOUR JOBS</span>
+      <span class="custom-text" style="top: 54vh; left: -23.29vw;">OPEn</span>
+      <span class="custom-text" style="top: 60.2vh; left: -23.29vw;">OPEn</span>
+      <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
+      <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
 
-  <!-- Slide triggers container -->
+      <div class="custom-line"></div>
+    </div> <!-- end of .other-content -->
+  </div> <!-- end of .page-content -->
+
+  <!-- Slide triggers container (fixed) -->
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
   </div>
 
   <script>
-    /* =========================
-       Basic Fade-in & Fullscreen
-       ========================= */
+    // ----- Fade-in & fullscreen behavior (unchanged) -----
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -120,9 +130,7 @@
       }
     });
     
-    /* ==============================
-       Slide Trigger (Decorative Only)
-       ============================== */
+    // ----- Slide trigger behavior for slide in/out (unchanged) -----
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -136,9 +144,7 @@
       document.querySelector('.other-content').classList.add('animate-grid');
     });
     
-    /* ======================
-       Chat Area Behavior
-       ====================== */
+    // ----- Chat area behavior (unchanged) -----
     const chatText = document.getElementById('chatText');
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
@@ -165,17 +171,13 @@
       chatInput.focus();
     });
     
-    /* =====================================================
-       Region-Based Commands & Menu Slide Transition Logic
-       ===================================================== */
+    // ----- Region-based click commands for sliding animations -----
     // slideState: "none", "menu", or "custom"
     let slideState = "none";
     
-    // Region: Left 0–6.37vw (top 28.5–84vh) triggers inverse animation.
+    // Region: Left 0–6.37vw (top 28.5–84vh)
     document.addEventListener('click', (event) => {
-      // Ignore clicks on chat or menu items
-      if (event.target.closest('.chat-text') || event.target.closest('.chat-input') ||
-          event.target.closest('.menu-item')) return;
+      if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const leftMin = 0;
@@ -185,12 +187,10 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "menu") {
-          // Revert the menu slide.
+          // Revert the menu slide (remove .menu-slide) and wait for its transition to complete (700ms)
           document.querySelectorAll('.menu-items .menu-item').forEach(el => {
             el.classList.remove('menu-slide');
           });
-          // Remove the "slid" class from the container to lower its z-index.
-          document.querySelector('.menu-items').classList.remove('slid');
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             setTimeout(() => {
@@ -200,7 +200,7 @@
           }
           slideState = "none";
         } else if (slideState === "none") {
-          // Trigger custom slide (fade out chatText and slide in decorative custom-text elements).
+          // Trigger original custom slide animation: fade out .chat-text and slide in .custom-text elements
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
@@ -221,11 +221,9 @@
       }
     });
     
-    // Region: Left 28.86–32.43vw (top 28.5–84vh) triggers the menu slide.
+    // Region: Left 28.86–32.43vw (top 28.5–84vh)
     document.addEventListener('click', (event) => {
-      // Ignore clicks on chat or menu items
-      if (event.target.closest('.chat-text') || event.target.closest('.chat-input') ||
-          event.target.closest('.menu-item')) return;
+      if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const leftMin = 28.86 * vwUnit;
@@ -235,7 +233,7 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "custom") {
-          // Inverse custom slide: restore chatText and remove custom-slide classes.
+          // Inverse the custom slide: remove slide classes from .chat-text and .custom-text elements
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.classList.remove('chat-slide');
@@ -254,113 +252,36 @@
           }
           slideState = "none";
         } else if (slideState === "none") {
-          // Only if chatText is still in its original location,
-          // fade it out and slide menu items left.
+          // Only if .chat-text is still in its original location,
+          // trigger fade-out of .chat-text and slide main menu items left.
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
             chatTextEl.style.opacity = "0";
+            setTimeout(() => {
+              document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+                el.classList.add('menu-slide');
+              });
+            }, 110);
+            slideState = "menu";
           }
-          // Add "menu-slide" class to each menu item and disable pointer events until transition end.
-          document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-            el.classList.add('menu-slide');
-            el.style.pointerEvents = "none";
-            el.addEventListener("transitionend", function handler(e) {
-              if (e.propertyName === "transform") {
-                el.style.pointerEvents = "auto";
-                el.removeEventListener("transitionend", handler);
-              }
-            });
-          });
-          // Also, add a class to the container to raise its z-index.
-          document.querySelector('.menu-items').classList.add('slid');
-          slideState = "menu";
         }
       }
     });
     
-    /* ==============================================
-       Menu Item Click Handlers for Submenu Animations
-       (Only fire if slideState is "menu" – meaning the menu items have finished sliding.)
-       ============================================== */
+    // ----- Submenu toggle code (unchanged) -----
+    function addNewText(text, top, left) {
+      let span = document.createElement("span");
+      span.className = "custom-text new-text";
+      span.style.top = top + "vh";
+      span.style.left = left + "vw";
+      span.textContent = text;
+      document.querySelector(".other-content").appendChild(span);
+      setTimeout(() => {
+        span.classList.add("visible");
+      }, 10);
+    }
     let currentMenu = null;
-    document.getElementById("online-assets").addEventListener("click", function(e) {
-      e.stopPropagation();
-      if (slideState !== "menu") return;  // Only if menu is slid
-      slideState = "none";
-      if (currentMenu === "online-assets") {
-        closeSubmenu();
-      } else {
-        if (currentMenu !== null) {
-          closeSubmenu();
-          setTimeout(() => {
-            openOnlineAssets();
-            currentMenu = "online-assets";
-          }, 300);
-        } else {
-          openOnlineAssets();
-          currentMenu = "online-assets";
-        }
-      }
-    });
-    document.getElementById("linkup-center").addEventListener("click", function(e) {
-      e.stopPropagation();
-      if (slideState !== "menu") return;
-      slideState = "none";
-      if (currentMenu === "linkup-center") {
-        closeSubmenu();
-      } else {
-        if (currentMenu !== null) {
-          closeSubmenu();
-          setTimeout(() => {
-            openLinkupCenter();
-            currentMenu = "linkup-center";
-          }, 300);
-        } else {
-          openLinkupCenter();
-          currentMenu = "linkup-center";
-        }
-      }
-    });
-    document.getElementById("delivery-line").addEventListener("click", function(e) {
-      e.stopPropagation();
-      if (slideState !== "menu") return;
-      slideState = "none";
-      if (currentMenu === "delivery-line") {
-        closeSubmenu();
-      } else {
-        if (currentMenu !== null) {
-          closeSubmenu();
-          setTimeout(() => {
-            openDeliveryLine();
-            currentMenu = "delivery-line";
-          }, 300);
-        } else {
-          openDeliveryLine();
-          currentMenu = "delivery-line";
-        }
-      }
-    });
-    document.getElementById("internal-unit").addEventListener("click", function(e) {
-      e.stopPropagation();
-      if (slideState !== "menu") return;
-      slideState = "none";
-      if (currentMenu === "internal-unit") {
-        closeSubmenu();
-      } else {
-        if (currentMenu !== null) {
-          closeSubmenu();
-          setTimeout(() => {
-            openInternalUnit();
-            currentMenu = "internal-unit";
-          }, 300);
-        } else {
-          openInternalUnit();
-          currentMenu = "internal-unit";
-        }
-      }
-    });
-    
     function closeSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
@@ -407,20 +328,73 @@
         addNewText("1T-cEnTER", 78.8, 7.4);
       }, 700);
     }
-    function addNewText(text, top, left) {
-      let span = document.createElement("span");
-      span.className = "custom-text new-text";
-      span.style.top = top + "vh";
-      span.style.left = left + "vw";
-      span.textContent = text;
-      // Ensure submenu items are interactive
-      span.style.pointerEvents = "auto";
-      // Append submenu items to the dedicated container.
-      document.querySelector('.submenu-container').appendChild(span);
-      setTimeout(() => {
-        span.classList.add("visible");
-      }, 10);
-    }
+    document.getElementById("online-assets").addEventListener("click", function(e) {
+      if (currentMenu === "online-assets") {
+        closeSubmenu();
+      } else {
+        if (currentMenu !== null) {
+          closeSubmenu();
+          setTimeout(() => {
+            openOnlineAssets();
+            currentMenu = "online-assets";
+          }, 300);
+        } else {
+          openOnlineAssets();
+          currentMenu = "online-assets";
+        }
+      }
+    });
+    document.getElementById("linkup-center").addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (currentMenu === "linkup-center") {
+        closeSubmenu();
+      } else {
+        if (currentMenu !== null) {
+          closeSubmenu();
+          setTimeout(() => {
+            openLinkupCenter();
+            currentMenu = "linkup-center";
+          }, 300);
+        } else {
+          openLinkupCenter();
+          currentMenu = "linkup-center";
+        }
+      }
+    });
+    document.getElementById("delivery-line").addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (currentMenu === "delivery-line") {
+        closeSubmenu();
+      } else {
+        if (currentMenu !== null) {
+          closeSubmenu();
+          setTimeout(() => {
+            openDeliveryLine();
+            currentMenu = "delivery-line";
+          }, 300);
+        } else {
+          openDeliveryLine();
+          currentMenu = "delivery-line";
+        }
+      }
+    });
+    document.getElementById("internal-unit").addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (currentMenu === "internal-unit") {
+        closeSubmenu();
+      } else {
+        if (currentMenu !== null) {
+          closeSubmenu();
+          setTimeout(() => {
+            openInternalUnit();
+            currentMenu = "internal-unit";
+          }, 300);
+        } else {
+          openInternalUnit();
+          currentMenu = "internal-unit";
+        }
+      }
+    });
   </script>
 </body>
 </html>

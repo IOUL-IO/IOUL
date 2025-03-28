@@ -146,13 +146,10 @@
     
     // ----- Chat area behavior (unchanged) -----
     const chatText = document.getElementById('chatText');
-    // Initially, disable pointer events and lower z-index so chatText doesn't block hover.
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
     let chatShownOnce = false;
     const hoverArea = document.querySelector('.hover-area');
-    
-    // Reveal chatText when pointer is within hoverArea
     document.addEventListener('mousemove', (event) => {
       if (!chatShownOnce && pageFadedIn) {
         const rect = hoverArea.getBoundingClientRect();
@@ -165,8 +162,6 @@
         }
       }
     });
-    
-    // Convert .chat-text into an input field when clicked (unchanged)
     chatText.addEventListener('click', (event) => {
       event.stopPropagation();
       const chatInput = document.createElement('input');
@@ -176,13 +171,12 @@
       chatInput.focus();
     });
     
-    // ----- New region-based click commands for sliding animations -----
-    // slideState can be "none", "menu", or "custom"
+    // ----- Region-based click commands for sliding animations -----
+    // slideState: "none", "menu", or "custom"
     let slideState = "none";
     
-    // Region: Left 0 – 6.37 (top 28.5–84)
+    // Region: Left 0–6.37vw (top 28.5–84vh)
     document.addEventListener('click', (event) => {
-      // Ignore clicks originating from chat elements
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -192,20 +186,21 @@
       const yMax = 84 * vhUnit;
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
-        // If currently in "menu" slide state, clicking here will revert it.
         if (slideState === "menu") {
+          // Revert the menu slide (remove .menu-slide) and wait for its transition to complete (700ms)
           document.querySelectorAll('.menu-items .menu-item').forEach(el => {
             el.classList.remove('menu-slide');
           });
-          // Restore .chat-text opacity (it should be in DOM because menu-slide only works if it was original)
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
-            chatTextEl.style.transition = "opacity 0.7s ease";
-            chatTextEl.style.opacity = "1";
+            setTimeout(() => {
+              chatTextEl.style.transition = "opacity 0.7s ease";
+              chatTextEl.style.opacity = "1";
+            }, 700);
           }
           slideState = "none";
         } else if (slideState === "none") {
-          // If .chat-text is still in original location, trigger the "custom" slide animation (original behavior)
+          // Trigger original custom slide animation: fade out .chat-text and slide in .custom-text elements
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
@@ -226,9 +221,8 @@
       }
     });
     
-    // Region: Left 28.86 – 32.43 (top 28.5–84)
+    // Region: Left 28.86–32.43vw (top 28.5–84vh)
     document.addEventListener('click', (event) => {
-      // Ignore clicks originating from chat elements
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -238,8 +232,8 @@
       const yMax = 84 * vhUnit;
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
-        // If currently in "custom" slide state, trigger inverse animation for custom slide.
         if (slideState === "custom") {
+          // Inverse the custom slide: remove slide classes from .chat-text and .custom-text elements
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.classList.remove('chat-slide');
@@ -258,13 +252,13 @@
           }
           slideState = "none";
         } else if (slideState === "none") {
-          // Only work if .chat-text is in its original location:
+          // Only if .chat-text is still in its original location,
+          // trigger fade-out of .chat-text and slide main menu items left.
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
             chatTextEl.style.opacity = "0";
             setTimeout(() => {
-              // Slide main menu items (.menu-items .menu-item) to left 6.41vw
               document.querySelectorAll('.menu-items .menu-item').forEach(el => {
                 el.classList.add('menu-slide');
               });
@@ -275,7 +269,7 @@
       }
     });
     
-    // ----- Rest of your submenu toggle code remains unchanged -----
+    // ----- Submenu toggle code (unchanged) -----
     function addNewText(text, top, left) {
       let span = document.createElement("span");
       span.className = "custom-text new-text";

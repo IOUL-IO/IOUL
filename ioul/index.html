@@ -44,7 +44,7 @@
 
       <!-- The hover area for chat fade‑in -->
       <div class="hover-area"></div>
-      <!-- Initially, chat-text is invisible, non-interactive, and placed behind -->
+      <!-- Initially, chat-text is visible and clickable -->
       <span class="chat-text" id="chatText">cHAT . . .</span>
 
       <!-- Grid numbers -->
@@ -145,27 +145,11 @@
     });
     
     // Chat area behavior
+    // Updated so that the chat text is immediately visible and clickable.
     const chatText = document.getElementById('chatText');
-    // Initially, disable pointer events and lower z-index so chatText doesn't block hover.
-    chatText.style.pointerEvents = 'none';
-    chatText.style.zIndex = '-1';
-    let chatShownOnce = false;
-    const hoverArea = document.querySelector('.hover-area');
-    
-    // Instead of relying solely on a "mouseenter" event,
-    // we add a document-level mousemove listener that checks if the pointer is within the hover-area.
-    document.addEventListener('mousemove', (event) => {
-      if (!chatShownOnce && pageFadedIn) {
-        const rect = hoverArea.getBoundingClientRect();
-        if (event.clientX >= rect.left && event.clientX <= rect.right &&
-            event.clientY >= rect.top && event.clientY <= rect.bottom) {
-          chatText.style.opacity = '1';
-          chatText.style.pointerEvents = 'auto';
-          chatText.style.zIndex = '10';
-          chatShownOnce = true;
-        }
-      }
-    });
+    chatText.style.opacity = '1';
+    chatText.style.pointerEvents = 'auto';
+    chatText.style.zIndex = '10';
     
     chatText.addEventListener('click', () => {
       const chatInput = document.createElement('input');

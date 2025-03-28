@@ -27,7 +27,7 @@ body.non-fullscreen {
     height: 100vh;
     background-color: #ffffff;
     z-index: 100;
-    pointer-events: none; /* added */
+    pointer-events: none;
 }
 .layer-two {
     position: fixed;
@@ -37,7 +37,7 @@ body.non-fullscreen {
     height: 100vh;
     background-color: #ffffff;
     z-index: 100;
-    pointer-events: none; /* added */
+    pointer-events: none;
 }
 .layer-three {
     position: fixed;
@@ -47,7 +47,7 @@ body.non-fullscreen {
     height: 100vh;
     background-color: #ffffff;
     z-index: 100;
-    pointer-events: none; /* added */
+    pointer-events: none;
 }
 
 .page-content {
@@ -90,7 +90,7 @@ body.non-fullscreen {
     z-index: 3;
 }
 
-/* New slide-triggers container moved outside .page-content now as fixed */
+/* Slide-triggers container modified to allow underlying clicks */
 .slide-triggers {
     position: fixed;
     top: 0;
@@ -98,6 +98,13 @@ body.non-fullscreen {
     width: 100vw;
     height: 100vh;
     z-index: 101;
+    pointer-events: none; /* Allow clicks to pass through except on triggers */
+}
+
+/* Ensure trigger elements are clickable */
+.slide-trigger,
+.slide-trigger-reverse {
+    pointer-events: auto;
 }
 
 /* Original slide trigger rules */
@@ -218,8 +225,8 @@ body.non-fullscreen {
     left: 6.4vw;
     width: calc(28.86vw - 6.4vw);
     height: calc(84vh - 28.5vh);
-    pointer-events: auto; /* ensure it receives mouse events */
-    background: transparent; /* explicitly transparent */
+    pointer-events: auto;
+    background: transparent;
 }
 
 .chat-text {
@@ -325,8 +332,7 @@ body.non-fullscreen {
     transform: translateX(-91vw);
 }
 
-/* Slide animation for grid numbers and grid dashed lines.
-   Both now slide by -60vw so their relative positions remain as originally set. */
+/* Slide animation for grid numbers and grid dashed lines */
 .other-content.animate-grid .grid-number,
 .other-content.animate-grid .grid-dashed {
     transform: translateX(-60vw);

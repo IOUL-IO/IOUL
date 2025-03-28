@@ -68,9 +68,8 @@ body.non-fullscreen {
     z-index: 1;
     pointer-events: none;
 }
-/* New class to raise the menu stacking order when slid in */
 .menu-items.raised {
-  z-index: 4;
+    z-index: 4;
 }
 .menu-items .menu-item {
     pointer-events: auto;
@@ -94,7 +93,7 @@ body.non-fullscreen {
     z-index: 3;
 }
 
-/* Slide-triggers container modified to allow underlying clicks */
+/* Slide-triggers container */
 .slide-triggers {
     position: fixed;
     top: 0;
@@ -104,14 +103,10 @@ body.non-fullscreen {
     z-index: 101;
     pointer-events: none;
 }
-
-/* Ensure trigger elements are clickable */
 .slide-trigger,
 .slide-trigger-reverse {
     pointer-events: auto;
 }
-
-/* Original slide trigger rules */
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
@@ -320,7 +315,7 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
-/* Slide animation for dashed lines and time texts in slide-container */
+/* Slide animation for dashed lines and time texts */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -336,7 +331,7 @@ body.non-fullscreen {
     transform: translateX(-91vw);
 }
 
-/* Slide animation for grid numbers and grid dashed lines */
+/* Slide animation for grid numbers and dashed lines */
 .other-content.animate-grid .grid-number,
 .other-content.animate-grid .grid-dashed {
     transform: translateX(-60vw);
@@ -364,23 +359,17 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* New class to slide menu items left from 29vw to 6.41vw */
+/* Existing rule for sliding main menu items */
 .menu-slide {
     transform: translateX(-22.59vw);
     transition: transform 0.7s ease;
 }
-
-/* When an element that already has .menu-slide also gets .slide-down,
-   combine the X and Y transforms so it stays at left 6.41vw and moves down 13vh */
 .menu-items .menu-item.menu-slide.slide-down {
     transform: translate(-22.59vw, 13vh);
 }
-
-/* Otherwise, .slide-down by itself just translates in Y */
 .slide-down {
     transform: translateY(13vh);
 }
-
 .chat-slide {
     transform: translateX(24vw);
 }
@@ -394,4 +383,9 @@ body.non-fullscreen {
 }
 .new-text.visible {
     opacity: 1;
+}
+
+/* Account items (only these custom-texts) animate left changes */
+.other-content > .custom-text:not(.menu-item) {
+    transition: left 0.7s ease;
 }

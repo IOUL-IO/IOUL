@@ -98,8 +98,8 @@
       <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
 
       <div class="custom-line"></div>
-    </div> <!-- end of .other-content -->
-  </div> <!-- end of .page-content -->
+    </div>
+  </div>
 
   <!-- Slide triggers container (fixed) -->
   <div class="slide-triggers">
@@ -108,7 +108,7 @@
   </div>
 
   <script>
-    // ----- Fade-in & fullscreen behavior (unchanged) -----
+    // ----- Fade-in & fullscreen behavior -----
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -130,7 +130,7 @@
       }
     });
     
-    // ----- Slide trigger behavior for slide in/out (unchanged) -----
+    // ----- Slide trigger behavior for slide in/out -----
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -144,7 +144,7 @@
       document.querySelector('.other-content').classList.add('animate-grid');
     });
     
-    // ----- Chat area behavior (unchanged) -----
+    // ----- Chat area behavior -----
     const chatText = document.getElementById('chatText');
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
@@ -189,7 +189,7 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "menu") {
-          // Revert menu slide; wait for transition (700ms) then fade chatText in.
+          // Revert menu slide; wait for transition (700ms) then fade in chatText
           document.querySelectorAll('.menu-items .menu-item').forEach(el => {
             el.classList.remove('menu-slide');
           });
@@ -202,7 +202,7 @@
           }
           slideState = "none";
         } else if (slideState === "none") {
-          // Trigger original custom slide: fade out chatText and slide in custom-text elements.
+          // Trigger original custom slide: fade out chatText and slide in custom-text elements
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
@@ -273,7 +273,7 @@
     });
     
     // ----- Menu item click handlers for submenu animations -----
-    // Each menu item now stops propagation and resets slideState so its own animation fires.
+    let currentMenu = null;
     document.getElementById("online-assets").addEventListener("click", function(e) {
       e.stopPropagation();
       slideState = "none";
@@ -347,19 +347,6 @@
       }
     });
     
-    // ----- Submenu toggle code (unchanged) -----
-    function addNewText(text, top, left) {
-      let span = document.createElement("span");
-      span.className = "custom-text new-text";
-      span.style.top = top + "vh";
-      span.style.left = left + "vw";
-      span.textContent = text;
-      document.querySelector(".other-content").appendChild(span);
-      setTimeout(() => {
-        span.classList.add("visible");
-      }, 10);
-    }
-    let currentMenu = null;
     function closeSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
@@ -405,6 +392,17 @@
         addNewText("F1nAncEs", 72.6, 7.4);
         addNewText("1T-cEnTER", 78.8, 7.4);
       }, 700);
+    }
+    function addNewText(text, top, left) {
+      let span = document.createElement("span");
+      span.className = "custom-text new-text";
+      span.style.top = top + "vh";
+      span.style.left = left + "vw";
+      span.textContent = text;
+      document.querySelector(".other-content").appendChild(span);
+      setTimeout(() => {
+        span.classList.add("visible");
+      }, 10);
     }
   </script>
 </body>

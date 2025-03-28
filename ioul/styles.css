@@ -68,6 +68,10 @@ body.non-fullscreen {
     z-index: 1;
     pointer-events: none;
 }
+/* New class to raise the menu stacking order when slid in */
+.menu-items.raised {
+  z-index: 4;
+}
 .menu-items .menu-item {
     pointer-events: auto;
 }

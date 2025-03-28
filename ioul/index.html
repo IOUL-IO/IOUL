@@ -8,27 +8,23 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="non-fullscreen">
-  <!-- Decorative layers remain unchanged -->
   <div class="layer-one"></div>
   <div class="layer-two"></div>
   <div class="layer-three"></div>
 
   <div class="page-content">
-    <!-- Container for main menu items.
-         Initially, these are at left:29vw and have a low z-index (so they’re covered by layer-four).
-         When they slide (via the "menu-slide" class) and the container gets the "slid" class, they are raised above layer-four and become interactive. -->
+    <!-- Container for main menu items -->
     <div class="menu-items">
-      <span class="custom-text menu-item" id="online-assets" style="top: 35.4vh; left: 29vw;">-  OnL1nE ASSETS</span>
-      <span class="custom-text menu-item" id="linkup-center" style="top: 41.6vh; left: 29vw;">-  L1nKUP cEnTER</span>
-      <span class="custom-text menu-item" id="delivery-line" style="top: 47.8vh; left: 29vw;">-  DEL1VERY L1nE</span>
-      <span class="custom-text menu-item" id="internal-unit" style="top: 54vh; left: 29vw;">-  1nTERnAL Un1T</span>
+      <span class="custom-text menu-item" style="top: 35.4vh; left: 29vw;" id="online-assets">-  OnL1nE ASSETS</span>
+      <span class="custom-text menu-item" style="top: 41.6vh; left: 29vw;" id="linkup-center">-  L1nKUP cEnTER</span>
+      <span class="custom-text menu-item" style="top: 47.8vh; left: 29vw;" id="delivery-line">-  DEL1VERY L1nE</span>
+      <span class="custom-text menu-item" style="top: 54vh; left: 29vw;" id="internal-unit">-  1nTERnAL Un1T</span>
     </div>
 
-    <!-- Layer-four covers the original menu area -->
+    <!-- The covering layer (only covers overflowing main menu items) -->
     <div class="layer-four"></div>
 
-    <!-- Container for decorative content.
-         Pointer events are disabled here so that text (and other elements) can be selected. -->
+    <!-- Container for all other content -->
     <div class="other-content">
       <div class="line original"></div>
       <div class="line second"></div>
@@ -46,12 +42,12 @@
         <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       </div>
 
-      <!-- Hover area for chat fade‑in -->
+      <!-- The hover area for chat fade‑in -->
       <div class="hover-area"></div>
-      <!-- Chat text -->
+      <!-- Initially, chat-text is invisible, non-interactive, and placed behind -->
       <span class="chat-text" id="chatText">cHAT . . .</span>
 
-      <!-- Grid numbers and dashed lines -->
+      <!-- Grid numbers -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -69,6 +65,7 @@
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
 
+      <!-- Grid dashed lines -->
       <div class="grid-dashed dashed01"></div>
       <div class="grid-dashed dashed02"></div>
       <div class="grid-dashed dashed03"></div>
@@ -86,20 +83,32 @@
       <div class="grid-dashed dashed15"></div>
       <div class="grid-dashed dashed16"></div>
 
-      <!-- (Static submenu texts remain here if any) -->
+      <!-- Submenu items -->
+      <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
+      <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
+      <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
+      <span class="custom-text" style="top: 41.6vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
+      <span class="custom-text" style="top: 54vh; left: -42.59vw;">YOUR L1ST</span>
+      <span class="custom-text" style="top: 60.2vh; left: -42.59vw;">cHAnnELS</span>
+      <span class="custom-text" style="top: 66.4vh; left: -42.59vw;">OFFER HUB</span>
+      <span class="custom-text" style="top: 72.6vh; left: -42.59vw;">YOUR JOBS</span>
+      <span class="custom-text" style="top: 54vh; left: -23.29vw;">OPEn</span>
+      <span class="custom-text" style="top: 60.2vh; left: -23.29vw;">OPEn</span>
+      <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
+      <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
+
+      <div class="custom-line"></div>
     </div>
   </div>
 
-  <!-- Slide triggers container (unchanged) -->
+  <!-- Slide triggers container (fixed) -->
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
   </div>
 
   <script>
-    /* -------------------------
-       Basic Fade-In & Fullscreen
-       ------------------------- */
+    /* ---------- Fade-in & Fullscreen Behavior (unchanged) ---------- */
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -121,9 +130,7 @@
       }
     });
     
-    /* ----------------------------
-       Slide Trigger (Decorative Only)
-       ---------------------------- */
+    /* ---------- Slide Trigger Behavior (unchanged) ---------- */
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -137,9 +144,7 @@
       document.querySelector('.other-content').classList.add('animate-grid');
     });
     
-    /* ----------------------------
-       Chat Area Behavior (Unchanged)
-       ---------------------------- */
+    /* ---------- Chat Area Behavior (unchanged) ---------- */
     const chatText = document.getElementById('chatText');
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
@@ -166,9 +171,7 @@
       chatInput.focus();
     });
     
-    /* -----------------------------------------------------------
-       Region-Based Commands & Menu Slide Transition (for 6.41vw slide)
-       ----------------------------------------------------------- */
+    /* ---------- Region-based Click Commands for Sliding Animations ---------- */
     // slideState: "none", "menu", or "custom"
     let slideState = "none";
     
@@ -185,12 +188,12 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "menu") {
-          // Revert the menu slide:
+          // Revert the menu slide.
           document.querySelectorAll('.menu-items .menu-item').forEach(el => {
             el.classList.remove('menu-slide');
           });
-          // Remove the "slid" class to lower z-index so original state is restored.
-          document.querySelector('.menu-items').classList.remove('slid');
+          // Reset pointer-events on the menu-items container so it blocks clicks as originally.
+          document.querySelector('.menu-items').style.pointerEvents = 'none';
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             setTimeout(() => {
@@ -200,7 +203,7 @@
           }
           slideState = "none";
         } else if (slideState === "none") {
-          // Trigger custom slide (fade out chatText and add "custom-slide" classes to decorative texts)
+          // Trigger original custom slide animation.
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
@@ -234,7 +237,7 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "custom") {
-          // Inverse custom slide:
+          // Inverse the custom slide.
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.classList.remove('chat-slide');
@@ -253,13 +256,12 @@
           }
           slideState = "none";
         } else if (slideState === "none") {
-          // If chatText is in its original location, fade it out and slide menu items left.
+          // Fade out chatText and slide menu items.
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
             chatTextEl.style.opacity = "0";
           }
-          // Add the "menu-slide" class to each menu item.
           document.querySelectorAll('.menu-items .menu-item').forEach(el => {
             el.classList.add('menu-slide');
             // Disable pointer events during the transition.
@@ -271,17 +273,14 @@
               }
             });
           });
-          // Raise the container by adding the "slid" class.
-          document.querySelector('.menu-items').classList.add('slid');
+          // This is our added code: raise the container’s pointer events so that menu items can be clicked.
+          document.querySelector('.menu-items').style.pointerEvents = 'auto';
           slideState = "menu";
         }
       }
     });
     
-    /* -------------------------------
-       Menu Item Click Handlers for Submenus
-       (Only work if slideState is "menu" – i.e. after sliding)
-       ------------------------------- */
+    /* ---------- Menu Item Click Handlers for Submenu Animations (unchanged) ---------- */
     let currentMenu = null;
     document.getElementById("online-assets").addEventListener("click", function(e) {
       e.stopPropagation();
@@ -412,7 +411,6 @@
       span.style.top = top + "vh";
       span.style.left = left + "vw";
       span.textContent = text;
-      // Append submenu items inside .other-content (decorative) so they can be selectable
       document.querySelector(".other-content").appendChild(span);
       setTimeout(() => {
         span.classList.add("visible");

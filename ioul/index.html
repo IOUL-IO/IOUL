@@ -191,8 +191,6 @@
           document.querySelectorAll('.menu-items .menu-item').forEach(el => {
             el.classList.remove('menu-slide');
           });
-          // Reset z-index so menu items are again below .other-content
-          document.querySelector('.menu-items').style.zIndex = "1";
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             setTimeout(() => {
@@ -213,8 +211,6 @@
               });
             }, 110);
             slideState = "menu";
-            // Raise the z-index so the menu items are on top of .other-content
-            document.querySelector('.menu-items').style.zIndex = "102";
           }
         }
       }
@@ -263,7 +259,6 @@
               });
             }, 110);
             slideState = "menu";
-            document.querySelector('.menu-items').style.zIndex = "102";
           }
         }
       }

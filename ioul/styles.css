@@ -360,7 +360,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* New class for sliding the main menu items left to 6.41vw */
+/* New class to slide menu items left from 29vw to 6.41vw */
 .menu-slide {
     transform: translateX(-22.59vw);
     transition: transform 0.7s ease;

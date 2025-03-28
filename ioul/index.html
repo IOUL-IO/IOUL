@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IOUL</title>
+  <link rel="icon" href="favicon.png" type="image/png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="non-fullscreen">
+  <div class="layer-one"></div>
+  <div class="layer-two"></div>
+  <div class="layer-three"></div>
+
+  <div class="page-content">
+    <div class="line original"></div>
+    <div class="line second"></div>
+    <div class="line third"></div>
+    <div class="line fourth"></div>
+
+    <div class="slide-container">
+      <div class="line dashed"></div>
+      <div class="line dashed second-dashed"></div>
+      <div class="line dashed third-dashed"></div>
+      <div class="line dashed fourth-dashed"></div>
+      <span class="time-text">10:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+      <span class="time-text second-time-text">11:00&nbsp;&nbsp;&nbsp;&nbsp;AM</span>
+      <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+      <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
+    </div>
+
+    <div class="hover-area"></div>
+    <span class="chat-text" id="chatText">cHAT . . .</span>
+
+    <span class="grid-number num1">1</span>
+    <span class="grid-number num2">2</span>
+    <span class="grid-number num3">3</span>
+    <span class="grid-number num4">4</span>
+    <span class="grid-number num5">5</span>
+    <span class="grid-number num6">6</span>
+    <span class="grid-number num7">7</span>
+    <span class="grid-number num8">8</span>
+    <span class="grid-number num9">9</span>
+    <span class="grid-number num10">10</span>
+    <span class="grid-number num11">11</span>
+    <span class="grid-number num12">12</span>
+    <span class="grid-number num13">13</span>
+    <span class="grid-number num14">14</span>
+    <span class="grid-number num15">15</span>
+    <span class="grid-number num16">16</span>
+
+    <div class="grid-dashed dashed01"></div>
+    <div class="grid-dashed dashed02"></div>
+    <div class="grid-dashed dashed03"></div>
+    <div class="grid-dashed dashed04"></div>
+    <div class="grid-dashed dashed05"></div>
+    <div class="grid-dashed dashed06"></div>
+    <div class="grid-dashed dashed07"></div>
+    <div class="grid-dashed dashed08"></div>
+    <div class="grid-dashed dashed09"></div>
+    <div class="grid-dashed dashed10"></div>
+    <div class="grid-dashed dashed11"></div>
+    <div class="grid-dashed dashed12"></div>
+    <div class="grid-dashed dashed13"></div>
+    <div class="grid-dashed dashed14"></div>
+    <div class="grid-dashed dashed15"></div>
+    <div class="grid-dashed dashed16"></div>
+
+    <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
+    <span class="custom-text" style="top: 35.4vh; left: -28.83vw;">i-cHAT - OPEn</span>
+    <span class="custom-text" style="top: 41.6vh; left: -28.83vw;">i-POST - OPEn</span>
+    <span class="custom-text" style="top: 41.6vh; left: -42.59vw;">AccOUnT 1nFO</span>
+    <span class="custom-text" style="top: 54vh; left: -42.59vw;">YOUR L1ST</span>
+    <span class="custom-text" style="top: 60.2vh; left: -42.59vw;">cHAnnELS</span>
+    <span class="custom-text" style="top: 66.4vh; left: -42.59vw;">OFFER HUB</span>
+    <span class="custom-text" style="top: 72.6vh; left: -42.59vw;">YOUR JOBS</span>
+    <span class="custom-text" style="top: 54vh; left: -23.29vw;">OPEn</span>
+    <span class="custom-text" style="top: 60.2vh; left: -23.29vw;">OPEn</span>
+    <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
+    <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
+
+    <div class="custom-line"></div>
+
+    <div class="slide-trigger"></div>
+    <div class="slide-trigger-reverse"></div>
+  </div>
+
+  <script>
+    const pageContent = document.querySelector('.page-content');
+    let pageFadedIn = false;
+    function fadeInPage() {
+      pageContent.style.opacity = '1';
+      pageFadedIn = true;
+    }
+    document.addEventListener('mousemove', function onFirstMouseMove() {
+      if (!pageFadedIn) { fadeInPage(); }
+      document.removeEventListener('mousemove', onFirstMouseMove);
+    });
+
+    const EDGE_MARGIN = 11;
+    document.addEventListener('click', (event) => {
+      const { clientX: x, clientY: y } = event;
+      const { innerWidth: width, innerHeight: height } = window;
+      if (!document.fullscreenElement &&
+          (x <= EDGE_MARGIN || x >= width - EDGE_MARGIN ||
+           y <= EDGE_MARGIN || y >= height - EDGE_MARGIN)) {
+        document.documentElement.requestFullscreen();
+      }
+    });
+
+    const inverseTrigger = document.querySelector('.slide-trigger');
+    inverseTrigger.addEventListener('click', (event) => {
+      event.stopPropagation();
+      document.querySelector('.slide-container').classList.remove('animate-slide');
+      document.querySelector('.page-content').classList.remove('animate-grid');
+    });
+    const forwardTrigger = document.querySelector('.slide-trigger-reverse');
+    forwardTrigger.addEventListener('click', (event) => {
+      event.stopPropagation();
+      document.querySelector('.slide-container').classList.add('animate-slide');
+      document.querySelector('.page-content').classList.add('animate-grid');
+    });
+
+    const chatText = document.getElementById('chatText');
+    let chatShownOnce = false;
+    const hoverArea = document.querySelector('.hover-area');
+    hoverArea.addEventListener('mouseenter', () => {
+      if (!chatShownOnce && pageFadedIn) {
+        chatText.style.opacity = '1';
+        chatShownOnce = true;
+      }
+    });
+    chatText.addEventListener('click', () => {
+      const chatInput = document.createElement('input');
+      chatInput.type = 'text';
+      chatInput.classList.add('chat-input');
+      chatText.insertAdjacentElement('afterend', chatInput);
+      chatText.remove();
+      chatInput.focus();
+    });
+
+    document.addEventListener('click', (event) => {
+      const vwUnit = window.innerWidth / 100;
+      const vhUnit = window.innerHeight / 100;
+      const xLimit = 6.37 * vwUnit;
+      const yMin = 28.5 * vhUnit;
+      const yMax = 84 * vhUnit;
+      if (event.clientX >= 0 && event.clientX <= xLimit &&
+          event.clientY >= yMin && event.clientY <= yMax) {
+        const chatTextEl = document.querySelector('.chat-text');
+        if (chatTextEl) {
+          chatTextEl.style.transition = "opacity 0.1s ease";
+          chatTextEl.style.opacity = "0";
+          setTimeout(() => {
+            chatTextEl.classList.add('chat-slide');
+          }, 110);
+        }
+        const chatInputEl = document.querySelector('.chat-input');
+        if (chatInputEl) {
+          chatInputEl.classList.add('chat-slide');
+        }
+        const customTextEls = document.querySelectorAll('.custom-text');
+        customTextEls.forEach(el => {
+          el.classList.add('custom-slide');
+        });
+        const customLineEl = document.querySelector('.custom-line');
+        if (customLineEl) {
+          customLineEl.classList.add('custom-slide');
+        }
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      const vwUnit = window.innerWidth / 100;
+      const vhUnit = window.innerHeight / 100;
+      const leftMin = 28.87 * vwUnit;
+      const leftMax = 32.44 * vwUnit;
+      const yMin = 28.5 * vhUnit;
+      const yMax = 84 * vhUnit;
+      if (event.clientX >= leftMin && event.clientX <= leftMax &&
+          event.clientY >= yMin && event.clientY <= yMax) {
+        const chatTextEl = document.querySelector('.chat-text');
+        if (chatTextEl) {
+          chatTextEl.classList.remove('chat-slide');
+          setTimeout(() => {
+            chatTextEl.style.opacity = "1";
+          }, 700);
+        }
+        const chatInputEl = document.querySelector('.chat-input');
+        if (chatInputEl) {
+          chatInputEl.classList.remove('chat-slide');
+        }
+        const customTextEls = document.querySelectorAll('.custom-text');
+        customTextEls.forEach(el => {
+          el.classList.remove('custom-slide');
+          el.style.transition = "transform 0.7s ease";
+        });
+        const customLineEl = document.querySelector('.custom-line');
+        if (customLineEl) {
+          customLineEl.classList.remove('custom-slide');
+          customLineEl.style.transition = "transform 0.7s ease";
+        }
+      }
+    });
+  </script>
+</body>
+</html>

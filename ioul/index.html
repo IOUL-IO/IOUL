@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat Input Test</title>
+  <link rel="stylesheet" href="styles_final_chat.css">
+</head>
+<body>
+  <div class="hover-area"></div>
+  <div class="chat-text" id="chatText">cHAT . . .</div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const hoverArea = document.querySelector('.hover-area');
+      const chatText = document.getElementById('chatText');
+
+      document.addEventListener('mousemove', (e) => {
+        const rect = hoverArea.getBoundingClientRect();
+        if (
+          e.clientX >= rect.left && e.clientX <= rect.right &&
+          e.clientY >= rect.top && e.clientY <= rect.bottom
+        ) {
+          chatText.style.opacity = '1';
+          chatText.style.pointerEvents = 'auto';
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('chat-text')) {
+          const chatInput = document.createElement('input');
+          chatInput.type = 'text';
+          chatInput.className = 'chat-input';
+          chatInput.value = chatText.textContent;
+          chatText.style.display = 'none';
+          chatText.insertAdjacentElement('afterend', chatInput);
+          chatInput.focus();
+
+          chatInput.addEventListener('blur', () => {
+            chatText.textContent = chatInput.value || 'cHAT . . .';
+            chatText.style.display = 'block';
+            chatInput.remove();
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

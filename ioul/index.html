@@ -65,24 +65,6 @@
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
 
-      <!-- Grid dashed lines -->
-      <div class="grid-dashed dashed01"></div>
-      <div class="grid-dashed dashed02"></div>
-      <div class="grid-dashed dashed03"></div>
-      <div class="grid-dashed dashed04"></div>
-      <div class="grid-dashed dashed05"></div>
-      <div class="grid-dashed dashed06"></div>
-      <div class="grid-dashed dashed07"></div>
-      <div class="grid-dashed dashed08"></div>
-      <div class="grid-dashed dashed09"></div>
-      <div class="grid-dashed dashed10"></div>
-      <div class="grid-dashed dashed11"></div>
-      <div class="grid-dashed dashed12"></div>
-      <div class="grid-dashed dashed13"></div>
-      <div class="grid-dashed dashed14"></div>
-      <div class="grid-dashed dashed15"></div>
-      <div class="grid-dashed dashed16"></div>
-
       <!-- Account (custom) items – these are the “account” texts -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
@@ -160,9 +142,10 @@
             }
             slideState = "none";
           } else if (slideState === "account") {
-            // Inverse animation for account items
+            // Inverse animation for account items: remove transform
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              el.classList.remove('account-slide');
+              el.style.transition = "transform 0.7s ease";
+              el.style.transform = "";
             });
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
@@ -173,14 +156,18 @@
             }
             slideState = "none";
           } else if (slideState === "none") {
-            // If chat-text is in its original (visible) state, trigger account slide in
+            // If chat-text is visible, trigger account slide in:
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               chatTextEl.style.transition = "opacity 0.1s ease";
               chatTextEl.style.opacity = "0";
               setTimeout(() => {
+                // For each account item, compute the delta needed to reach left 7.4vw
                 document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-                  el.classList.add('account-slide');
+                  let initialLeft = parseFloat(el.style.left); // e.g., -42.59 or -28.22
+                  let delta = 7.4 - initialLeft;
+                  el.style.transition = "transform 0.7s ease";
+                  el.style.transform = `translateX(${delta}vw)`;
                 });
               }, 110);
             }
@@ -218,7 +205,8 @@
           } else if (slideState === "account") {
             // Inverse animation for account items
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              el.classList.remove('account-slide');
+              el.style.transition = "transform 0.7s ease";
+              el.style.transform = "";
             });
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
@@ -248,7 +236,7 @@
       }
     });
     
-    // ----- Slide trigger behavior for slide in/out via .slide-trigger and .slide-trigger-reverse (unchanged) -----
+    // ----- Slide trigger behavior via .slide-trigger and .slide-trigger-reverse (unchanged) -----
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -256,7 +244,6 @@
         document.querySelectorAll('.menu-items .menu-item').forEach(el => {
           el.classList.remove('menu-slide');
         });
-        // Lower the stacking order immediately
         document.querySelector('.menu-items').classList.remove('raised');
         const chatTextEl = document.getElementById('chatText');
         if (chatTextEl) {
@@ -268,7 +255,8 @@
         slideState = "none";
       } else if (slideState === "account") {
         document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-          el.classList.remove('account-slide');
+          el.style.transition = "transform 0.7s ease";
+          el.style.transform = "";
         });
         const chatTextEl = document.getElementById('chatText');
         if (chatTextEl) {

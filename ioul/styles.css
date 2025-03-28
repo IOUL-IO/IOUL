@@ -385,7 +385,15 @@ body.non-fullscreen {
     opacity: 1;
 }
 
-/* Account items (only these custom-texts) animate left changes */
+/* Account items (only these custom-text elements not inside .menu-items)
+   animate left changes */
 .other-content > .custom-text:not(.menu-item) {
     transition: left 0.7s ease;
+}
+
+/* NEW: For .custom-line to slide so that its left becomes 6.41vw,
+   add a class that translates it by 49vw (since its original left is -42.59vw) */
+.line-slide {
+    transform: translateX(49vw);
+    transition: transform 0.7s ease;
 }

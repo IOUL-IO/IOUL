@@ -177,7 +177,9 @@
     
     // Region: Left 0–6.37vw (top 28.5–84vh)
     document.addEventListener('click', (event) => {
-      if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
+      // Ignore clicks on chat or menu items
+      if (event.target.closest('.chat-text') || event.target.closest('.chat-input') ||
+          event.target.closest('.menu-item')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const leftMin = 0;
@@ -187,7 +189,7 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "menu") {
-          // Revert the menu slide (remove .menu-slide) and wait for its transition to complete (700ms)
+          // Revert the menu slide and wait 700ms for transition before fading in chatText
           document.querySelectorAll('.menu-items .menu-item').forEach(el => {
             el.classList.remove('menu-slide');
           });
@@ -200,7 +202,7 @@
           }
           slideState = "none";
         } else if (slideState === "none") {
-          // Trigger original custom slide animation: fade out .chat-text and slide in .custom-text elements
+          // Trigger original custom slide: fade out chatText and slide in custom-text elements
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
@@ -223,7 +225,9 @@
     
     // Region: Left 28.86–32.43vw (top 28.5–84vh)
     document.addEventListener('click', (event) => {
-      if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
+      // Ignore clicks on chat or menu items
+      if (event.target.closest('.chat-text') || event.target.closest('.chat-input') ||
+          event.target.closest('.menu-item')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const leftMin = 28.86 * vwUnit;
@@ -233,7 +237,7 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "custom") {
-          // Inverse the custom slide: remove slide classes from .chat-text and .custom-text elements
+          // Inverse the custom slide: remove slide classes from chatText and custom-text elements
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.classList.remove('chat-slide');
@@ -252,8 +256,8 @@
           }
           slideState = "none";
         } else if (slideState === "none") {
-          // Only if .chat-text is still in its original location,
-          // trigger fade-out of .chat-text and slide main menu items left.
+          // Only if chatText is still in its original location,
+          // trigger fade-out of chatText and slide menu-items to the left.
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";

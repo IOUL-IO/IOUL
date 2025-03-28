@@ -177,7 +177,7 @@
     });
     
     // Document-level click handlers for slide animations
-    // (They now ignore clicks originating from chat-text or chat-input)
+    // (They ignore clicks that originate from chat elements)
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       

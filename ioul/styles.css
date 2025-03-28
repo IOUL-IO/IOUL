@@ -19,7 +19,7 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
-/* Make menu-items interactive and on top */
+/* Menu-items container now interactive and on top */
 .menu-items {
     position: absolute;
     top: 0;
@@ -84,7 +84,7 @@ body.non-fullscreen {
     pointer-events: none;
 }
 
-/* Other decorative content – disable pointer events to let menu-items be interactive */
+/* Decorative content – allow pointer events to pass through */
 .other-content {
     position: absolute;
     top: 0;
@@ -128,7 +128,7 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-/* Lines and grid numbers */
+/* Lines, grid numbers and dashed lines */
 .line {
     position: absolute;
     height: 1px;

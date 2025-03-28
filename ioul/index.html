@@ -130,12 +130,30 @@
       }
     });
     
-    // ----- Slide trigger behavior for slide in/out (unchanged) -----
+    // ----- Slide trigger behavior for slide in/out (unchanged except for raised class) -----
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
-      document.querySelector('.slide-container').classList.remove('animate-slide');
-      document.querySelector('.other-content').classList.remove('animate-grid');
+      // For custom slide reversal if active
+      if (slideState === "menu") {
+        // Remove menu-slide classes
+        document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+          el.classList.remove('menu-slide');
+        });
+        const chatTextEl = document.getElementById('chatText');
+        if (chatTextEl) {
+          setTimeout(() => {
+            chatTextEl.style.transition = "opacity 0.7s ease";
+            chatTextEl.style.opacity = "1";
+            // Lower the stacking order once slide-out is complete
+            document.querySelector('.menu-items').classList.remove('raised');
+          }, 700);
+        }
+        slideState = "none";
+      } else {
+        document.querySelector('.slide-container').classList.remove('animate-slide');
+        document.querySelector('.other-content').classList.remove('animate-grid');
+      }
     });
     const forwardTrigger = document.querySelector('.slide-trigger-reverse');
     forwardTrigger.addEventListener('click', (event) => {
@@ -187,7 +205,7 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "menu") {
-          // Revert the menu slide (remove .menu-slide) and wait for its transition to complete (700ms)
+          // Revert the menu slide and remove raised class after transition
           document.querySelectorAll('.menu-items .menu-item').forEach(el => {
             el.classList.remove('menu-slide');
           });
@@ -196,27 +214,27 @@
             setTimeout(() => {
               chatTextEl.style.transition = "opacity 0.7s ease";
               chatTextEl.style.opacity = "1";
+              document.querySelector('.menu-items').classList.remove('raised');
             }, 700);
           }
           slideState = "none";
         } else if (slideState === "none") {
-          // Trigger original custom slide animation: fade out .chat-text and slide in .custom-text elements
+          // Fade-out chat-text and slide main menu items left,
+          // then raise their stacking order after animation completes.
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
             chatTextEl.style.opacity = "0";
             setTimeout(() => {
-              chatTextEl.classList.add('chat-slide');
+              document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+                el.classList.add('menu-slide');
+              });
+              setTimeout(() => {
+                document.querySelector('.menu-items').classList.add('raised');
+              }, 700);
             }, 110);
+            slideState = "menu";
           }
-          document.querySelectorAll('.custom-text').forEach(el => {
-            el.classList.add('custom-slide');
-          });
-          const customLineEl = document.querySelector('.custom-line');
-          if (customLineEl) {
-            customLineEl.classList.add('custom-slide');
-          }
-          slideState = "custom";
         }
       }
     });
@@ -233,7 +251,7 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "custom") {
-          // Inverse the custom slide: remove slide classes from .chat-text and .custom-text elements
+          // Inverse custom slide
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.classList.remove('chat-slide');
@@ -252,8 +270,8 @@
           }
           slideState = "none";
         } else if (slideState === "none") {
-          // Only if .chat-text is still in its original location,
-          // trigger fade-out of .chat-text and slide main menu items left.
+          // Fade-out chat-text and slide main menu items left,
+          // then raise their stacking order after animation completes.
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
@@ -262,6 +280,9 @@
               document.querySelectorAll('.menu-items .menu-item').forEach(el => {
                 el.classList.add('menu-slide');
               });
+              setTimeout(() => {
+                document.querySelector('.menu-items').classList.add('raised');
+              }, 700);
             }, 110);
             slideState = "menu";
           }

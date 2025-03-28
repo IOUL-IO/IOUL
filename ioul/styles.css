@@ -19,46 +19,9 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
-.layer-one {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 6.37vw;
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100;
-    pointer-events: none;
-}
-.layer-two {
-    position: fixed;
-    top: 0;
-    left: 28.87vw;
-    width: calc(36vw - 28.87vw);
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100;
-    pointer-events: none;
-}
-.layer-three {
-    position: fixed;
-    top: 0;
-    left: 94.17vw;
-    width: calc(100vw - 94.17vw);
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100;
-    pointer-events: none;
-}
-
-.page-content {
-    position: relative;
-    opacity: 0;
-    transition: opacity 0.6s ease;
-    width: 100vw;
-    height: 100vh;
-}
-
-/* Internal stacking for page-content */
+/* The menu-items container:
+   Initially, menu items are at left:29vw and have a low z-index (1) so that layer-four covers them.
+   When they slide, the container gets a "slid" class that raises its z-index (to 11) so they become interactive. */
 .menu-items {
     position: absolute;
     top: 0;
@@ -66,11 +29,16 @@ body.non-fullscreen {
     width: 100%;
     height: 100%;
     z-index: 1;
-    pointer-events: none;
+}
+.menu-items.slid {
+    z-index: 11;
 }
 .menu-items .menu-item {
-    pointer-events: auto;
+    transition: transform 0.7s ease;
+    /* pointer-events remain enabled */
 }
+
+/* Layer-four covers the original menu area */
 .layer-four {
     position: absolute;
     top: 28.5vh;
@@ -81,6 +49,8 @@ body.non-fullscreen {
     z-index: 2;
     pointer-events: none;
 }
+
+/* Other decorative content is non-interactive so text can be selected */
 .other-content {
     position: absolute;
     top: 0;
@@ -88,9 +58,10 @@ body.non-fullscreen {
     width: 100%;
     height: 100%;
     z-index: 3;
+    pointer-events: none;
 }
 
-/* Slide-triggers container modified to allow underlying clicks */
+/* Slide triggers */
 .slide-triggers {
     position: fixed;
     top: 0;
@@ -100,14 +71,10 @@ body.non-fullscreen {
     z-index: 101;
     pointer-events: none;
 }
-
-/* Ensure trigger elements are clickable */
 .slide-trigger,
 .slide-trigger-reverse {
     pointer-events: auto;
 }
-
-/* Original slide trigger rules */
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
@@ -127,7 +94,7 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-/* Dashed lines, grid numbers, and other content styles */
+/* Lines, grid numbers and dashed lines */
 .line {
     position: absolute;
     height: 1px;
@@ -153,7 +120,6 @@ body.non-fullscreen {
     left: 36vw;
     width: 57.8vw;
 }
-
 .slide-container {
     position: absolute;
     top: 0;
@@ -162,7 +128,6 @@ body.non-fullscreen {
     height: 100vh;
     clip-path: inset(0 0 0 28.86vw);
 }
-
 .dashed {
     position: absolute;
     height: 1px;
@@ -191,7 +156,6 @@ body.non-fullscreen {
     width: 52.4vw;
     transition: transform 0.7s ease;
 }
-
 .time-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -219,6 +183,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
+/* Hover area */
 .hover-area {
     position: absolute;
     top: 28.5vh;
@@ -229,6 +194,7 @@ body.non-fullscreen {
     background: transparent;
 }
 
+/* Chat text & input */
 .chat-text {
     position: absolute;
     top: 77vh;
@@ -265,6 +231,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
+/* Grid numbers */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -291,6 +258,7 @@ body.non-fullscreen {
 .num15 { top: 83.7vh; left: 138.0vw; }
 .num16 { top: 83.7vh; left: 152.8vw; }
 
+/* Grid dashed lines */
 .grid-dashed {
     position: absolute;
     height: 1px;
@@ -315,8 +283,6 @@ body.non-fullscreen {
 .dashed14 { top: 84vh;   left: 111vw; }
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
-
-/* Slide animation for dashed lines and time texts in slide-container */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -331,13 +297,12 @@ body.non-fullscreen {
 .slide-container.animate-slide > .time-text.fourth-time-text {
     transform: translateX(-91vw);
 }
-
-/* Slide animation for grid numbers and grid dashed lines */
 .other-content.animate-grid .grid-number,
 .other-content.animate-grid .grid-dashed {
     transform: translateX(-60vw);
 }
 
+/* Custom texts */
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -349,7 +314,6 @@ body.non-fullscreen {
     line-height: 1.6;
     overflow: visible;
 }
-
 .custom-line {
     position: absolute;
     top: 47.8vh; 
@@ -360,25 +324,26 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* New class to slide menu items left from 29vw to 6.41vw */
+/* When menu items slide, they get the "menu-slide" class which shifts them left (to 6.41vw) */
 .menu-slide {
     transform: translateX(-22.59vw);
     transition: transform 0.7s ease;
 }
 
+/* Other animations remain unchanged */
 .chat-slide {
     transform: translateX(24vw);
 }
 .custom-slide {
     transform: translateX(49vw);
 }
-
 .slide-down {
     transform: translateY(13vh);
 }
 .new-text {
     opacity: 0;
     transition: opacity 0.7s ease;
+    z-index: 11;
 }
 .new-text.visible {
     opacity: 1;

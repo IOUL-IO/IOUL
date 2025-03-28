@@ -177,7 +177,7 @@
     
     // Region: Left 0–6.37vw (top 28.5–84vh)
     document.addEventListener('click', (event) => {
-      // Ignore clicks on chat or menu items
+      // Ignore clicks on chat elements or menu items
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input') ||
           event.target.closest('.menu-item')) return;
       const vwUnit = window.innerWidth / 100;
@@ -189,7 +189,7 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "menu") {
-          // Revert the menu slide and wait 700ms for transition before fading in chatText
+          // Revert menu slide; wait for transition (700ms) then fade chatText in.
           document.querySelectorAll('.menu-items .menu-item').forEach(el => {
             el.classList.remove('menu-slide');
           });
@@ -202,7 +202,7 @@
           }
           slideState = "none";
         } else if (slideState === "none") {
-          // Trigger original custom slide: fade out chatText and slide in custom-text elements
+          // Trigger original custom slide: fade out chatText and slide in custom-text elements.
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
@@ -225,7 +225,7 @@
     
     // Region: Left 28.86–32.43vw (top 28.5–84vh)
     document.addEventListener('click', (event) => {
-      // Ignore clicks on chat or menu items
+      // Ignore clicks on chat elements or menu items
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input') ||
           event.target.closest('.menu-item')) return;
       const vwUnit = window.innerWidth / 100;
@@ -237,7 +237,7 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "custom") {
-          // Inverse the custom slide: remove slide classes from chatText and custom-text elements
+          // Inverse custom slide: remove slide classes and restore chatText.
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.classList.remove('chat-slide');
@@ -256,8 +256,7 @@
           }
           slideState = "none";
         } else if (slideState === "none") {
-          // Only if chatText is still in its original location,
-          // trigger fade-out of chatText and slide menu-items to the left.
+          // If chatText is in its original location, fade it out and slide menu items left.
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
@@ -269,6 +268,81 @@
             }, 110);
             slideState = "menu";
           }
+        }
+      }
+    });
+    
+    // ----- Menu item click handlers for submenu animations -----
+    // Each menu item now stops propagation and resets slideState so its own animation fires.
+    document.getElementById("online-assets").addEventListener("click", function(e) {
+      e.stopPropagation();
+      slideState = "none";
+      if (currentMenu === "online-assets") {
+        closeSubmenu();
+      } else {
+        if (currentMenu !== null) {
+          closeSubmenu();
+          setTimeout(() => {
+            openOnlineAssets();
+            currentMenu = "online-assets";
+          }, 300);
+        } else {
+          openOnlineAssets();
+          currentMenu = "online-assets";
+        }
+      }
+    });
+    document.getElementById("linkup-center").addEventListener("click", function(e) {
+      e.stopPropagation();
+      slideState = "none";
+      if (currentMenu === "linkup-center") {
+        closeSubmenu();
+      } else {
+        if (currentMenu !== null) {
+          closeSubmenu();
+          setTimeout(() => {
+            openLinkupCenter();
+            currentMenu = "linkup-center";
+          }, 300);
+        } else {
+          openLinkupCenter();
+          currentMenu = "linkup-center";
+        }
+      }
+    });
+    document.getElementById("delivery-line").addEventListener("click", function(e) {
+      e.stopPropagation();
+      slideState = "none";
+      if (currentMenu === "delivery-line") {
+        closeSubmenu();
+      } else {
+        if (currentMenu !== null) {
+          closeSubmenu();
+          setTimeout(() => {
+            openDeliveryLine();
+            currentMenu = "delivery-line";
+          }, 300);
+        } else {
+          openDeliveryLine();
+          currentMenu = "delivery-line";
+        }
+      }
+    });
+    document.getElementById("internal-unit").addEventListener("click", function(e) {
+      e.stopPropagation();
+      slideState = "none";
+      if (currentMenu === "internal-unit") {
+        closeSubmenu();
+      } else {
+        if (currentMenu !== null) {
+          closeSubmenu();
+          setTimeout(() => {
+            openInternalUnit();
+            currentMenu = "internal-unit";
+          }, 300);
+        } else {
+          openInternalUnit();
+          currentMenu = "internal-unit";
         }
       }
     });
@@ -332,73 +406,6 @@
         addNewText("1T-cEnTER", 78.8, 7.4);
       }, 700);
     }
-    document.getElementById("online-assets").addEventListener("click", function(e) {
-      if (currentMenu === "online-assets") {
-        closeSubmenu();
-      } else {
-        if (currentMenu !== null) {
-          closeSubmenu();
-          setTimeout(() => {
-            openOnlineAssets();
-            currentMenu = "online-assets";
-          }, 300);
-        } else {
-          openOnlineAssets();
-          currentMenu = "online-assets";
-        }
-      }
-    });
-    document.getElementById("linkup-center").addEventListener("click", function(e) {
-      e.stopPropagation();
-      if (currentMenu === "linkup-center") {
-        closeSubmenu();
-      } else {
-        if (currentMenu !== null) {
-          closeSubmenu();
-          setTimeout(() => {
-            openLinkupCenter();
-            currentMenu = "linkup-center";
-          }, 300);
-        } else {
-          openLinkupCenter();
-          currentMenu = "linkup-center";
-        }
-      }
-    });
-    document.getElementById("delivery-line").addEventListener("click", function(e) {
-      e.stopPropagation();
-      if (currentMenu === "delivery-line") {
-        closeSubmenu();
-      } else {
-        if (currentMenu !== null) {
-          closeSubmenu();
-          setTimeout(() => {
-            openDeliveryLine();
-            currentMenu = "delivery-line";
-          }, 300);
-        } else {
-          openDeliveryLine();
-          currentMenu = "delivery-line";
-        }
-      }
-    });
-    document.getElementById("internal-unit").addEventListener("click", function(e) {
-      e.stopPropagation();
-      if (currentMenu === "internal-unit") {
-        closeSubmenu();
-      } else {
-        if (currentMenu !== null) {
-          closeSubmenu();
-          setTimeout(() => {
-            openInternalUnit();
-            currentMenu = "internal-unit";
-          }, 300);
-        } else {
-          openInternalUnit();
-          currentMenu = "internal-unit";
-        }
-      }
-    });
   </script>
 </body>
 </html>

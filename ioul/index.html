@@ -108,7 +108,7 @@
   </div>
 
   <script>
-    /* ---------- Fade-in & Fullscreen Behavior (unchanged) ---------- */
+    /* ---------- Fade-In & Fullscreen Behavior (unchanged) ---------- */
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -171,7 +171,7 @@
       chatInput.focus();
     });
     
-    /* ---------- Region-based Click Commands for Sliding Animations ---------- */
+    /* ---------- Region-Based Commands for Sliding Animations ---------- */
     // slideState: "none", "menu", or "custom"
     let slideState = "none";
     
@@ -192,7 +192,7 @@
           document.querySelectorAll('.menu-items .menu-item').forEach(el => {
             el.classList.remove('menu-slide');
           });
-          // Reset pointer-events on the menu-items container so it blocks clicks as originally.
+          // Restore pointer events on the menu container.
           document.querySelector('.menu-items').style.pointerEvents = 'none';
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
@@ -224,7 +224,7 @@
       }
     });
     
-    // Region: Left 28.86–32.43vw (top 28.5–84vh) triggers menu slide.
+    // Region: Left 28.86–32.43vw (top 28.5–84vh) triggers the menu slide.
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input') ||
           event.target.closest('.menu-item')) return;
@@ -237,7 +237,7 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "custom") {
-          // Inverse the custom slide.
+          // Inverse custom slide.
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.classList.remove('chat-slide');
@@ -256,7 +256,7 @@
           }
           slideState = "none";
         } else if (slideState === "none") {
-          // Fade out chatText and slide menu items.
+          // Fade out chatText and slide menu items left.
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
@@ -264,7 +264,6 @@
           }
           document.querySelectorAll('.menu-items .menu-item').forEach(el => {
             el.classList.add('menu-slide');
-            // Disable pointer events during the transition.
             el.style.pointerEvents = "none";
             el.addEventListener("transitionend", function handler(e) {
               if (e.propertyName === "transform") {
@@ -273,14 +272,14 @@
               }
             });
           });
-          // This is our added code: raise the container’s pointer events so that menu items can be clicked.
+          // Added extra line: enable pointer events on the container so the items can be clicked.
           document.querySelector('.menu-items').style.pointerEvents = 'auto';
           slideState = "menu";
         }
       }
     });
     
-    /* ---------- Menu Item Click Handlers for Submenu Animations (unchanged) ---------- */
+    /* ---------- Menu Item Click Handlers for Submenu Animations ---------- */
     let currentMenu = null;
     document.getElementById("online-assets").addEventListener("click", function(e) {
       e.stopPropagation();

@@ -395,3 +395,10 @@ body.non-fullscreen {
 .new-text.visible {
     opacity: 1;
 }
+
+/* New class for account items:
+   When added, force the left position to 7.4vw */
+.other-content > .custom-text.account-slide {
+    left: 7.4vw !important;
+    transition: left 0.7s ease;
+}

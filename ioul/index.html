@@ -101,7 +101,7 @@
     </div>
   </div>
 
-  <!-- Slide triggers container (fixed) -->
+  <!-- Slide triggers container (unchanged) -->
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
@@ -192,7 +192,7 @@
           document.querySelectorAll('.menu-items .menu-item').forEach(el => {
             el.classList.remove('menu-slide');
           });
-          // Restore pointer events on the menu container.
+          // Disable pointer events on the menu-items container.
           document.querySelector('.menu-items').style.pointerEvents = 'none';
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
@@ -272,7 +272,7 @@
               }
             });
           });
-          // Added extra line: enable pointer events on the container so the items can be clicked.
+          // Enable pointer events on the menu-items container so that its children can be clicked.
           document.querySelector('.menu-items').style.pointerEvents = 'auto';
           slideState = "menu";
         }

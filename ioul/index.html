@@ -13,7 +13,7 @@
   <div class="layer-three"></div>
 
   <div class="page-content">
-    <!-- Main menu items with increased vertical gap and inserted lines -->
+    <!-- Main menu items with increased vertical gaps and inserted lines -->
     <div class="menu-items">
       <span class="custom-text menu-item" style="top: 36.1vh; left: 29vw;" id="online-assets">OnL1nE ASSETS</span>
       <div class="custom-line menu-line" style="top: 40.1vh; left: 29vw;"></div>
@@ -144,7 +144,8 @@
       }
     }
     
-    // ----- Region: Left 0–6.37vw (top 28.5–84vh) -----
+    // ----- Region: Left 0–6.37vw (top 28.5–84vh) -----  
+    // (Restored original behavior for account items)
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
@@ -156,7 +157,8 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
           if (slideState === "menu") {
-            document.querySelectorAll('.menu-items .menu-item, .menu-items .menu-line').forEach(el => {
+            // Remove horizontal slide from menu items only
+            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               el.classList.remove('menu-slide');
             });
             document.querySelector('.menu-items').classList.remove('raised');
@@ -188,20 +190,26 @@
               chatTextEl.style.transition = "opacity 0.1s ease";
               chatTextEl.style.opacity = "0";
               setTimeout(() => {
-                document.querySelectorAll('.menu-items .menu-item, .menu-items .menu-line').forEach(el => {
-                  el.classList.add('menu-slide');
+                document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
+                  if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
+                  let original = parseFloat(el.dataset.originalLeft);
+                  el.style.left = (original + 49) + "vw";
                 });
-                setTimeout(() => {
-                  document.querySelector('.menu-items').classList.add('raised');
-                }, 700);
+                const customLine = document.querySelector('.custom-line');
+                if (customLine) {
+                  if (!customLine.dataset.originalLeft) { customLine.dataset.originalLeft = customLine.style.left; }
+                  let originalLine = parseFloat(customLine.dataset.originalLeft);
+                  customLine.style.left = (originalLine + 49) + "vw";
+                }
               }, 110);
             }
-            slideState = "menu";
+            slideState = "account";
           }
       }
     });
     
-    // ----- Region: Left 28.86–32.43vw (top 28.5–84vh) -----
+    // ----- Region: Left 28.86–32.43vw (top 28.5–84vh) -----  
+    // (Only affect horizontal slide for menu items)
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
@@ -234,7 +242,8 @@
               chatTextEl.style.transition = "opacity 0.1s ease";
               chatTextEl.style.opacity = "0";
               setTimeout(() => {
-                document.querySelectorAll('.menu-items .menu-item, .menu-items .menu-line').forEach(el => {
+                // Only slide menu items horizontally (not menu lines)
+                document.querySelectorAll('.menu-items .menu-item').forEach(el => {
                   el.classList.add('menu-slide');
                 });
                 setTimeout(() => {

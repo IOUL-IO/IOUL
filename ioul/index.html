@@ -67,7 +67,7 @@
 
       <span class="grid-dashed dashed01"></span>
       <span class="grid-dashed dashed02"></span>
-      <span class="grid-dashed dashed03"></span>
+      <span class="grid-dashed dashed03"></span>    
       <span class="grid-dashed dashed04"></span>
       <span class="grid-dashed dashed05"></span>
       <span class="grid-dashed dashed06"></span>
@@ -259,42 +259,16 @@
       }
     });
     
-    // ----- Slide trigger behavior via .slide-trigger and .slide-trigger-reverse (unchanged) -----
+    // ----- Slide trigger behavior via .slide-trigger and .slide-trigger-reverse -----
+    // Modified inverse trigger: clicking in the area (left 32.43vw to 36vw, top 28.5–84vh)
+    // now only reverses the grid animation.
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
-      if (slideState === "menu") {
-        document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-          el.classList.remove('menu-slide');
-        });
-        document.querySelector('.menu-items').classList.remove('raised');
-        const chatTextEl = document.getElementById('chatText');
-        if (chatTextEl) {
-          setTimeout(() => {
-            chatTextEl.style.transition = "opacity 0.7s ease";
-            chatTextEl.style.opacity = "1";
-          }, 700);
-        }
-        slideState = "none";
-      } else if (slideState === "account") {
-        document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-          if (el.dataset.originalLeft) {
-            el.style.left = el.dataset.originalLeft;
-          }
-        });
-        const chatTextEl = document.getElementById('chatText');
-        if (chatTextEl) {
-          setTimeout(() => {
-            chatTextEl.style.transition = "opacity 0.7s ease";
-            chatTextEl.style.opacity = "1";
-          }, 700);
-        }
-        slideState = "none";
-      } else {
-        document.querySelector('.slide-container').classList.remove('animate-slide');
-        document.querySelector('.other-content').classList.remove('animate-grid');
-      }
+      document.querySelector('.slide-container').classList.remove('animate-slide');
+      document.querySelector('.other-content').classList.remove('animate-grid');
     });
+    
     const forwardTrigger = document.querySelector('.slide-trigger-reverse');
     forwardTrigger.addEventListener('click', (event) => {
       event.stopPropagation();

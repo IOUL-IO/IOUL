@@ -46,7 +46,7 @@
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
 
-      <!-- Grid numbers and dashed grid (unchanged) -->
+      <!-- Grid numbers (unchanged) -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -105,9 +105,7 @@
   </div>
 
   <script>
-    // (JavaScript remains unchanged aside from submenu text positions)
-
-    // Fade-in & fullscreen behavior
+    // ----- Fade-in & fullscreen behavior -----
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -131,7 +129,7 @@
     
     let slideState = "none";
     
-    // (Event listeners for regions remain unchanged)
+    // ----- Region: Left 0–6.37vw (top 28.5–84vh) -----
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
@@ -193,6 +191,7 @@
       }
     });
     
+    // ----- Region: Left 28.86–32.43vw (top 28.5–84vh) -----
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;

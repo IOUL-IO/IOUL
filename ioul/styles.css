@@ -58,7 +58,6 @@ body.non-fullscreen {
     height: 100vh;
 }
 
-/* Internal stacking for page-content */
 .menu-items {
     position: absolute;
     top: 0;
@@ -93,7 +92,6 @@ body.non-fullscreen {
     z-index: 3;
 }
 
-/* Slide-triggers container */
 .slide-triggers {
     position: fixed;
     top: 0;
@@ -126,7 +124,6 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-/* Dashed lines, grid numbers, and other content styles */
 .line {
     position: absolute;
     height: 1px;
@@ -315,7 +312,6 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
-/* Slide animation for dashed lines and time texts */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -331,7 +327,6 @@ body.non-fullscreen {
     transform: translateX(-91vw);
 }
 
-/* Slide animation for grid numbers and dashed lines */
 .other-content.animate-grid .grid-number,
 .other-content.animate-grid .grid-dashed {
     transform: translateX(-60vw);

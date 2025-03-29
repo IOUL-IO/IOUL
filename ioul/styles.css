@@ -356,7 +356,7 @@ body.non-fullscreen {
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
-    transition: transform 0.7s ease;
+    transition: left 0.7s ease, transform 0.7s ease;
 }
 
 /* Existing rule for sliding main menu items */

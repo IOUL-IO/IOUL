@@ -354,12 +354,19 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
-/* Additional rules for menu-lines that slide down (vertical only) */
+/* Rules for menu-lines:
+   They slide vertically with .line-slide-down and horizontally with .menu-slide */
 .menu-line {
     transition: transform 0.7s ease;
 }
+.menu-line.menu-slide {
+    transform: translateX(-22.59vw);
+}
 .menu-line.line-slide-down {
     transform: translateY(10vh);
+}
+.menu-line.menu-slide.line-slide-down {
+    transform: translate(-22.59vw, 10vh);
 }
 
 /* Horizontal slide for main menu items */

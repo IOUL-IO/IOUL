@@ -145,7 +145,7 @@
       }
     }
     
-    // ----- Region: Left 0–6.37vw (account slide; restored original behavior) -----
+    // ----- Region: Left 0–6.37vw (account/inverse slide) -----
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
@@ -157,8 +157,8 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
           if (slideState === "menu") {
-            // Remove horizontal slide from menu items only (leave menu-lines unchanged)
-            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+            // Remove horizontal slide from both menu items and menu lines
+            document.querySelectorAll('.menu-items .menu-item, .menu-items .menu-line').forEach(el => {
               el.classList.remove('menu-slide');
             });
             document.querySelector('.menu-items').classList.remove('raised');
@@ -241,7 +241,7 @@
               chatTextEl.style.transition = "opacity 0.1s ease";
               chatTextEl.style.opacity = "0";
               setTimeout(() => {
-                // Slide both menu items and menu-lines horizontally
+                // Slide both menu items and menu lines horizontally
                 document.querySelectorAll('.menu-items .menu-item, .menu-items .menu-line').forEach(el => {
                   el.classList.add('menu-slide');
                 });

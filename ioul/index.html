@@ -13,12 +13,12 @@
   <div class="layer-three"></div>
 
   <div class="page-content">
-    <!-- Container for main menu items -->
+    <!-- Container for main menu items with increased vertical gaps -->
     <div class="menu-items">
       <span class="custom-text menu-item" style="top: 35.4vh; left: 29vw;" id="online-assets">-  OnL1nE ASSETS</span>
-      <span class="custom-text menu-item" style="top: 41.6vh; left: 29vw;" id="linkup-center">-  L1nKUP cEnTER</span>
-      <span class="custom-text menu-item" style="top: 47.8vh; left: 29vw;" id="delivery-line">-  DEL1VERY L1nE</span>
-      <span class="custom-text menu-item" style="top: 54vh; left: 29vw;" id="internal-unit">-  1nTERnAL Un1T</span>
+      <span class="custom-text menu-item" style="top: 43.1vh; left: 29vw;" id="linkup-center">-  L1nKUP cEnTER</span>
+      <span class="custom-text menu-item" style="top: 50.8vh; left: 29vw;" id="delivery-line">-  DEL1VERY L1nE</span>
+      <span class="custom-text menu-item" style="top: 58.5vh; left: 29vw;" id="internal-unit">-  1nTERnAL Un1T</span>
     </div>
 
     <!-- The covering layer (only covers overflowing main menu items) -->
@@ -314,7 +314,7 @@
       chatInput.focus();
     });
     
-    // ----- Submenu toggle code (unchanged) -----
+    // ----- Submenu toggle code (unchanged except for adjusted top values) -----
     function addNewText(text, top, left) {
       let span = document.createElement("span");
       span.className = "custom-text new-text";
@@ -346,8 +346,9 @@
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
       setTimeout(() => {
+        // Adjusted submenu top values: second item lowered by 1.5vh compared to original
         addNewText("cOnTEnT", 41.6, 7.4);
-        addNewText("LEARn1ng", 47.8, 7.4);
+        addNewText("LEARn1ng", 46.3, 7.4);
       }, 700);
     }
     function openLinkupCenter() {
@@ -355,22 +356,22 @@
       document.getElementById("internal-unit").classList.add("slide-down");
       setTimeout(() => {
         addNewText("cHAnnELS", 47.8, 7.4);
-        addNewText("LABOUR", 54, 7.4);
+        addNewText("LABOUR", 52.5, 7.4);
       }, 700);
     }
     function openDeliveryLine() {
       document.getElementById("internal-unit").classList.add("slide-down");
       setTimeout(() => {
         addNewText("cL1ENTS", 54, 7.4);
-        addNewText("PROJEcTS", 60.2, 7.4);
+        addNewText("PROJEcTS", 58.7, 7.4);
       }, 700);
     }
     function openInternalUnit() {
       setTimeout(() => {
         addNewText("1nVEnTORY", 60.2, 7.4);
-        addNewText("DEVOPS", 66.4, 7.4);
-        addNewText("F1nAncEs", 72.6, 7.4);
-        addNewText("1T-cEnTER", 78.8, 7.4);
+        addNewText("DEVOPS", 64.9, 7.4);
+        addNewText("F1nAncEs", 71.1, 7.4);
+        addNewText("1T-cEnTER", 77.3, 7.4);
       }, 700);
     }
     document.getElementById("online-assets").addEventListener("click", function(e) {

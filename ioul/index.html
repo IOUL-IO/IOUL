@@ -65,6 +65,7 @@
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
 
+      <!-- Grid dashed lines (if needed) -->
       <span class="grid-dashed dashed01"></span>
       <span class="grid-dashed dashed02"></span>
       <span class="grid-dashed dashed03"></span>    
@@ -133,9 +134,28 @@
     // slideState can be "none", "menu", or "account"
     let slideState = "none";
     
+    // Utility: Convert chat-input back to chat-text if present
+    function restoreChatText() {
+      const chatInput = document.querySelector('.chat-input');
+      if (chatInput) {
+        const chatText = document.createElement('span');
+        chatText.id = 'chatText';
+        chatText.className = 'chat-text';
+        chatText.textContent = 'cHAT . . .';
+        // Optionally, you can copy over inline styles if needed.
+        chatInput.replaceWith(chatText);
+      }
+    }
+    
     // ----- Region: Left 0–6.37vw (top 28.5–84vh) -----
     document.addEventListener('click', (event) => {
+      // If a chat-input is present, restore it back to chat-text.
+      if (event.target.closest('.chat-input')) {
+        restoreChatText();
+      }
+      // Only ignore clicks that originate from the original chat-text element.
       if (event.target.closest('.chat-text')) return;
+      
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const leftMin = 0;
@@ -215,7 +235,12 @@
     
     // ----- Region: Left 28.86–32.43vw (top 28.5–84vh) -----
     document.addEventListener('click', (event) => {
+      // Also restore chat-input if present
+      if (event.target.closest('.chat-input')) {
+        restoreChatText();
+      }
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
+      
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const leftMin = 28.86 * vwUnit;

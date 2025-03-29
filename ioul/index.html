@@ -135,7 +135,8 @@
     
     // ----- Region: Left 0–6.37vw (top 28.5–84vh) -----
     document.addEventListener('click', (event) => {
-      if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
+      // Removed .chat-input from the condition so clicks on the input will trigger this event.
+      if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const leftMin = 0;

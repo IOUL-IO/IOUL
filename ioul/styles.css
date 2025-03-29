@@ -354,16 +354,16 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
-/* Sliding main menu items */
+/* Sliding main menu items with updated slide-down amount */
 .menu-slide {
     transform: translateX(-22.59vw);
     transition: transform 0.7s ease;
 }
 .menu-items .menu-item.menu-slide.slide-down {
-    transform: translate(-22.59vw, 7vh);
+    transform: translate(-22.59vw, 10vh);
 }
 .slide-down {
-    transform: translateY(7vh);
+    transform: translateY(10vh);
 }
 
 .new-text {
@@ -374,7 +374,6 @@ body.non-fullscreen {
     opacity: 1;
 }
 
-/* Account items animate left changes */
 .other-content > .custom-text:not(.menu-item) {
     transition: left 0.7s ease;
 }

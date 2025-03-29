@@ -78,8 +78,8 @@ body.non-fullscreen {
     position: absolute;
     top: 28.5vh;
     left: 36vw;
-    width: 61vw;       /* 97vw - 36vw */
-    height: 55.5vh;    /* 84vh - 28.5vh */
+    width: 61vw;
+    height: 55.5vh;
     background-color: #ffffff;
     z-index: 2;
     pointer-events: none;
@@ -359,16 +359,16 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
-/* Existing rule for sliding main menu items */
+/* Sliding main menu items */
 .menu-slide {
     transform: translateX(-22.59vw);
     transition: transform 0.7s ease;
 }
 .menu-items .menu-item.menu-slide.slide-down {
-    transform: translate(-22.59vw, 11vh);
+    transform: translate(-22.59vw, 7vh);
 }
 .slide-down {
-    transform: translateY(11vh);
+    transform: translateY(7vh);
 }
 
 .new-text {
@@ -379,7 +379,7 @@ body.non-fullscreen {
     opacity: 1;
 }
 
-/* Account items (only these custom-texts) animate left changes */
+/* Account items animate left changes */
 .other-content > .custom-text:not(.menu-item) {
     transition: left 0.7s ease;
 }

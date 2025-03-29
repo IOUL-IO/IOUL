@@ -82,7 +82,6 @@
       <span class="grid-dashed dashed15"></span>
       <span class="grid-dashed dashed16"></span>
 
-
       <!-- Account items (only these custom-texts) -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
@@ -97,6 +96,7 @@
       <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
       <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
 
+      <!-- The custom line that will slide with account items -->
       <div class="custom-line"></div>
     </div> <!-- end of .other-content -->
   </div> <!-- end of .page-content -->
@@ -166,6 +166,11 @@
                 el.style.left = el.dataset.originalLeft;
               }
             });
+            // Also slide the custom-line back to its original position
+            const customLine = document.querySelector('.custom-line');
+            if (customLine && customLine.dataset.originalLeft) {
+              customLine.style.left = customLine.dataset.originalLeft;
+            }
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               setTimeout(() => {
@@ -175,7 +180,7 @@
             }
             slideState = "none";
           } else if (slideState === "none") {
-            // If .chat-text is in its original location, trigger account slide in:
+            // Trigger account slide in: fade out chat-text and slide account items and custom-line
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               chatTextEl.style.transition = "opacity 0.1s ease";
@@ -191,6 +196,16 @@
                   let newLeft = original + 49;
                   el.style.left = newLeft + "vw";
                 });
+                // Also slide the custom-line by increasing its left by 49vw
+                const customLine = document.querySelector('.custom-line');
+                if (customLine) {
+                  if (!customLine.dataset.originalLeft) {
+                    customLine.dataset.originalLeft = customLine.style.left;
+                  }
+                  let originalLine = parseFloat(customLine.dataset.originalLeft);
+                  let newLineLeft = originalLine + 49;
+                  customLine.style.left = newLineLeft + "vw";
+                }
               }, 110);
             }
             slideState = "account";
@@ -231,6 +246,11 @@
                 el.style.left = el.dataset.originalLeft;
               }
             });
+            // Also restore custom-line position
+            const customLine = document.querySelector('.custom-line');
+            if (customLine && customLine.dataset.originalLeft) {
+              customLine.style.left = customLine.dataset.originalLeft;
+            }
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               setTimeout(() => {
@@ -260,8 +280,7 @@
     });
     
     // ----- Slide trigger behavior via .slide-trigger and .slide-trigger-reverse -----
-    // Modified inverse trigger: clicking in the area (left 32.43vw to 36vw, top 28.5–84vh)
-    // now only reverses the grid animation.
+    // Inverse trigger now only reverses grid (and slide-container) animation.
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();

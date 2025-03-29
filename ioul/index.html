@@ -227,19 +227,8 @@
           event.clientY >= yMin && event.clientY <= yMax) {
           
           if (slideState === "menu") {
-            // Inverse animation for menu items
-            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-              el.classList.remove('menu-slide');
-            });
-            document.querySelector('.menu-items').classList.remove('raised');
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              setTimeout(() => {
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            slideState = "none";
+            // When menu is already open, ignore clicks in this region.
+            return;
           } else if (slideState === "account") {
             // Inverse animation for account items: restore original left values
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {

@@ -354,6 +354,14 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
+/* Additional rules for menu-lines that slide down */
+.menu-line {
+    transition: transform 0.7s ease;
+}
+.menu-line.line-slide-down {
+    transform: translateY(10vh);
+}
+
 /* Sliding main menu items with updated slide-down amount */
 .menu-slide {
     transform: translateX(-22.59vw);

@@ -365,16 +365,10 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 .menu-items .menu-item.menu-slide.slide-down {
-    transform: translate(-22.59vw, 13vh);
+    transform: translate(-22.59vw, 11vh);
 }
 .slide-down {
-    transform: translateY(13vh);
-}
-.chat-slide {
-    transform: translateX(24vw);
-}
-.custom-slide {
-    transform: translateX(49vw);
+    transform: translateY(11vh);
 }
 
 .new-text {

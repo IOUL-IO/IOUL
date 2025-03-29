@@ -65,7 +65,7 @@
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
 
-      <!-- Grid dashed lines (if needed) -->
+      <!-- Grid dashed lines -->
       <span class="grid-dashed dashed01"></span>
       <span class="grid-dashed dashed02"></span>
       <span class="grid-dashed dashed03"></span>    
@@ -83,7 +83,7 @@
       <span class="grid-dashed dashed15"></span>
       <span class="grid-dashed dashed16"></span>
 
-      <!-- Account items (only these custom-texts) -->
+      <!-- Account items -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
       <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -134,7 +134,7 @@
     // slideState can be "none", "menu", or "account"
     let slideState = "none";
     
-    // Utility: Convert chat-input back to chat-text if present
+    // Helper: Restore chat-text if a chat-input exists
     function restoreChatText() {
       const chatInput = document.querySelector('.chat-input');
       if (chatInput) {
@@ -142,109 +142,16 @@
         chatText.id = 'chatText';
         chatText.className = 'chat-text';
         chatText.textContent = 'cHAT . . .';
-        // Optionally, you can copy over inline styles if needed.
         chatInput.replaceWith(chatText);
       }
     }
     
-    // ----- Region: Left 0–6.37vw (top 28.5–84vh) -----
-    document.addEventListener('click', (event) => {
-      // If a chat-input is present, restore it back to chat-text.
-      if (event.target.closest('.chat-input')) {
-        restoreChatText();
-      }
-      // Only ignore clicks that originate from the original chat-text element.
-      if (event.target.closest('.chat-text')) return;
-      
+    // Left region handler function for account sliding (left 0–6.37vw)
+    function processLeftRegionAccount(event) {
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const leftMin = 0;
       const leftMax = 6.37 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
-      if (event.clientX >= leftMin && event.clientX <= leftMax &&
-          event.clientY >= yMin && event.clientY <= yMax) {
-          
-          if (slideState === "menu") {
-            // Inverse animation for menu items
-            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-              el.classList.remove('menu-slide');
-            });
-            document.querySelector('.menu-items').classList.remove('raised');
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              setTimeout(() => {
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            slideState = "none";
-          } else if (slideState === "account") {
-            // Inverse animation for account items: restore original left values
-            document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              if (el.dataset.originalLeft) {
-                el.style.left = el.dataset.originalLeft;
-              }
-            });
-            // Also slide the custom-line back to its original position
-            const customLine = document.querySelector('.custom-line');
-            if (customLine && customLine.dataset.originalLeft) {
-              customLine.style.left = customLine.dataset.originalLeft;
-            }
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              setTimeout(() => {
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            slideState = "none";
-          } else if (slideState === "none") {
-            // Trigger account slide in: fade out chat-text and slide account items and custom-line
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              chatTextEl.style.transition = "opacity 0.1s ease";
-              chatTextEl.style.opacity = "0";
-              setTimeout(() => {
-                // For each account item, store its original left (if not already stored)
-                // then increase its left by 49vw
-                document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-                  if (!el.dataset.originalLeft) {
-                    el.dataset.originalLeft = el.style.left;
-                  }
-                  let original = parseFloat(el.dataset.originalLeft);
-                  let newLeft = original + 49;
-                  el.style.left = newLeft + "vw";
-                });
-                // Also slide the custom-line by increasing its left by 49vw
-                const customLine = document.querySelector('.custom-line');
-                if (customLine) {
-                  if (!customLine.dataset.originalLeft) {
-                    customLine.dataset.originalLeft = customLine.style.left;
-                  }
-                  let originalLine = parseFloat(customLine.dataset.originalLeft);
-                  let newLineLeft = originalLine + 49;
-                  customLine.style.left = newLineLeft + "vw";
-                }
-              }, 110);
-            }
-            slideState = "account";
-          }
-      }
-    });
-    
-    // ----- Region: Left 28.86–32.43vw (top 28.5–84vh) -----
-    document.addEventListener('click', (event) => {
-      // Also restore chat-input if present
-      if (event.target.closest('.chat-input')) {
-        restoreChatText();
-      }
-      if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
-      
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const leftMin = 28.86 * vwUnit;
-      const leftMax = 32.43 * vwUnit;
       const yMin = 28.5 * vhUnit;
       const yMax = 84 * vhUnit;
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
@@ -285,6 +192,83 @@
             }
             slideState = "none";
           } else if (slideState === "none") {
+            // Trigger account slide in: fade out chat-text and slide account items and custom-line
+            const chatTextEl = document.getElementById('chatText');
+            if (chatTextEl) {
+              chatTextEl.style.transition = "opacity 0.1s ease";
+              chatTextEl.style.opacity = "0";
+              setTimeout(() => {
+                // Slide account items by increasing left by 49vw
+                document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
+                  if (!el.dataset.originalLeft) {
+                    el.dataset.originalLeft = el.style.left;
+                  }
+                  let original = parseFloat(el.dataset.originalLeft);
+                  let newLeft = original + 49;
+                  el.style.left = newLeft + "vw";
+                });
+                // Slide custom-line by increasing left by 49vw
+                const customLine = document.querySelector('.custom-line');
+                if (customLine) {
+                  if (!customLine.dataset.originalLeft) {
+                    customLine.dataset.originalLeft = customLine.style.left;
+                  }
+                  let originalLine = parseFloat(customLine.dataset.originalLeft);
+                  let newLineLeft = originalLine + 49;
+                  customLine.style.left = newLineLeft + "vw";
+                }
+              }, 110);
+            }
+            slideState = "account";
+          }
+      }
+    }
+    
+    // Left region handler function for menu sliding (left 28.86–32.43vw)
+    function processLeftRegionMenu(event) {
+      const vwUnit = window.innerWidth / 100;
+      const vhUnit = window.innerHeight / 100;
+      const leftMin = 28.86 * vwUnit;
+      const leftMax = 32.43 * vwUnit;
+      const yMin = 28.5 * vhUnit;
+      const yMax = 84 * vhUnit;
+      if (event.clientX >= leftMin && event.clientX <= leftMax &&
+          event.clientY >= yMin && event.clientY <= yMax) {
+          
+          if (slideState === "menu") {
+            // Inverse animation for menu items
+            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+              el.classList.remove('menu-slide');
+            });
+            document.querySelector('.menu-items').classList.remove('raised');
+            const chatTextEl = document.getElementById('chatText');
+            if (chatTextEl) {
+              setTimeout(() => {
+                chatTextEl.style.transition = "opacity 0.7s ease";
+                chatTextEl.style.opacity = "1";
+              }, 700);
+            }
+            slideState = "none";
+          } else if (slideState === "account") {
+            // Inverse animation for account items
+            document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
+              if (el.dataset.originalLeft) {
+                el.style.left = el.dataset.originalLeft;
+              }
+            });
+            const customLine = document.querySelector('.custom-line');
+            if (customLine && customLine.dataset.originalLeft) {
+              customLine.style.left = customLine.dataset.originalLeft;
+            }
+            const chatTextEl = document.getElementById('chatText');
+            if (chatTextEl) {
+              setTimeout(() => {
+                chatTextEl.style.transition = "opacity 0.7s ease";
+                chatTextEl.style.opacity = "1";
+              }, 700);
+            }
+            slideState = "none";
+          } else if (slideState === "none") {
             // Trigger menu slide in: fade out chat-text and slide in menu items
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
@@ -302,17 +286,35 @@
             slideState = "menu";
           }
       }
+    }
+    
+    // Document-level click handler for left regions
+    document.addEventListener('click', (event) => {
+      // For both regions, if the click originates in a chat-input, restore it and re-dispatch later.
+      if (event.target.closest('.chat-input')) {
+        restoreChatText();
+        setTimeout(() => {
+          // After restoring, process both left-region handlers
+          processLeftRegionAccount(event);
+          processLeftRegionMenu(event);
+        }, 0);
+        return;
+      }
+      // If the click comes from a chat-text element, do nothing.
+      if (event.target.closest('.chat-text')) return;
+      
+      // Process both left-region areas
+      processLeftRegionAccount(event);
+      processLeftRegionMenu(event);
     });
     
     // ----- Slide trigger behavior via .slide-trigger and .slide-trigger-reverse -----
-    // Inverse trigger now only reverses grid (and slide-container) animation.
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
       document.querySelector('.slide-container').classList.remove('animate-slide');
       document.querySelector('.other-content').classList.remove('animate-grid');
     });
-    
     const forwardTrigger = document.querySelector('.slide-trigger-reverse');
     forwardTrigger.addEventListener('click', (event) => {
       event.stopPropagation();

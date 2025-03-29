@@ -135,7 +135,7 @@
     
     // ----- Region: Left 0–6.37vw (top 28.5–84vh) -----
     document.addEventListener('click', (event) => {
-      // Removed .chat-input from the condition so clicks on the input will trigger this event.
+      // Only ignore clicks if they originate from an element with the class .chat-text.
       if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -181,7 +181,7 @@
             }
             slideState = "none";
           } else if (slideState === "none") {
-            // Trigger account slide in: fade out chat-text and slide account items and custom-line
+            // Trigger account slide in: fade out chat-text (or chat input) and slide account items and custom-line
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               chatTextEl.style.transition = "opacity 0.1s ease";
@@ -296,7 +296,7 @@
       document.querySelector('.other-content').classList.add('animate-grid');
     });
     
-    // ----- Chat area behavior (unchanged) -----
+    // ----- Chat area behavior (unchanged except for id reassignment) -----
     const chatText = document.getElementById('chatText');
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
@@ -319,6 +319,8 @@
       const chatInput = document.createElement('input');
       chatInput.type = 'text';
       chatInput.classList.add('chat-input');
+      // Assign the same id so that getElementById('chatText') continues to find the element
+      chatInput.id = 'chatText';
       chatText.replaceWith(chatInput);
       chatInput.focus();
     });

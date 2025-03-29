@@ -99,6 +99,7 @@
       <span class="custom-text" style="top: 66.4vh; left: -20.67vw;">0</span>
       <span class="custom-text" style="top: 72.6vh; left: -20.67vw;">0</span>
 
+      <!-- This custom-line (without menu-line class) slides with account items -->
       <div class="custom-line" style="left: -42.59vw;"></div>
     </div>
   </div>
@@ -144,8 +145,7 @@
       }
     }
     
-    // ----- Region: Left 0–6.37vw (top 28.5–84vh) -----  
-    // (Restored original behavior for account items)
+    // ----- Region: Left 0–6.37vw (account slide; restored original behavior) -----
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
@@ -157,7 +157,7 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
           if (slideState === "menu") {
-            // Remove horizontal slide from menu items only
+            // Remove horizontal slide from menu items only (leave menu-lines unchanged)
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               el.classList.remove('menu-slide');
             });
@@ -174,7 +174,7 @@
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
               if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
             });
-            const customLine = document.querySelector('.custom-line');
+            const customLine = document.querySelector('.other-content > .custom-line');
             if (customLine && customLine.dataset.originalLeft) { customLine.style.left = customLine.dataset.originalLeft; }
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
@@ -195,7 +195,7 @@
                   let original = parseFloat(el.dataset.originalLeft);
                   el.style.left = (original + 49) + "vw";
                 });
-                const customLine = document.querySelector('.custom-line');
+                const customLine = document.querySelector('.other-content > .custom-line');
                 if (customLine) {
                   if (!customLine.dataset.originalLeft) { customLine.dataset.originalLeft = customLine.style.left; }
                   let originalLine = parseFloat(customLine.dataset.originalLeft);
@@ -208,8 +208,7 @@
       }
     });
     
-    // ----- Region: Left 28.86–32.43vw (top 28.5–84vh) -----  
-    // (Only affect horizontal slide for menu items)
+    // ----- Region: Left 28.86–32.43vw (horizontal menu slide) -----
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
@@ -226,7 +225,7 @@
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
               if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
             });
-            const customLine = document.querySelector('.custom-line');
+            const customLine = document.querySelector('.other-content > .custom-line');
             if (customLine && customLine.dataset.originalLeft) { customLine.style.left = customLine.dataset.originalLeft; }
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
@@ -242,8 +241,8 @@
               chatTextEl.style.transition = "opacity 0.1s ease";
               chatTextEl.style.opacity = "0";
               setTimeout(() => {
-                // Only slide menu items horizontally (not menu lines)
-                document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+                // Slide both menu items and menu-lines horizontally
+                document.querySelectorAll('.menu-items .menu-item, .menu-items .menu-line').forEach(el => {
                   el.classList.add('menu-slide');
                 });
                 setTimeout(() => {

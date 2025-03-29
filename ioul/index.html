@@ -13,15 +13,15 @@
   <div class="layer-three"></div>
 
   <div class="page-content">
-    <!-- Container for main menu items with updated vertical spacing -->
+    <!-- Main menu items with updated top values -->
     <div class="menu-items">
-      <span class="custom-text menu-item" style="top: 35.4vh; left: 29vw;" id="online-assets">-  OnL1nE ASSETS</span>
-      <span class="custom-text menu-item" style="top: 42.5vh; left: 29vw;" id="linkup-center">-  L1nKUP cEnTER</span>
-      <span class="custom-text menu-item" style="top: 49.6vh; left: 29vw;" id="delivery-line">-  DEL1VERY L1nE</span>
-      <span class="custom-text menu-item" style="top: 56.7vh; left: 29vw;" id="internal-unit">-  1nTERnAL Un1T</span>
+      <span class="custom-text menu-item" style="top: 36.3vh; left: 29vw;" id="online-assets">-  OnL1nE ASSETS</span>
+      <span class="custom-text menu-item" style="top: 43.4vh; left: 29vw;" id="linkup-center">-  L1nKUP cEnTER</span>
+      <span class="custom-text menu-item" style="top: 50.5vh; left: 29vw;" id="delivery-line">-  DEL1VERY L1nE</span>
+      <span class="custom-text menu-item" style="top: 57.6vh; left: 29vw;" id="internal-unit">-  1nTERnAL Un1T</span>
     </div>
 
-    <!-- The covering layer (only covers overflowing main menu items) -->
+    <!-- The covering layer -->
     <div class="layer-four"></div>
 
     <!-- Container for all other content -->
@@ -42,12 +42,11 @@
         <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       </div>
 
-      <!-- The hover area for chat fade‑in -->
+      <!-- Chat area -->
       <div class="hover-area"></div>
-      <!-- Initially, chat-text is invisible, non-interactive, and placed behind -->
       <span class="chat-text" id="chatText">cHAT . . .</span>
 
-      <!-- Grid numbers -->
+      <!-- Grid numbers and dashed grid (unchanged) -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -82,7 +81,7 @@
       <span class="grid-dashed dashed15"></span>
       <span class="grid-dashed dashed16"></span>
 
-      <!-- Account items (positions remain unchanged) -->
+      <!-- Account items (unchanged) -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 35.4vh; left: -28.22vw;">i-cHAT: OPEn</span>
       <span class="custom-text" style="top: 41.6vh; left: -28.22vw;">i-MAIL: OPEn</span>
@@ -96,19 +95,19 @@
       <span class="custom-text" style="top: 66.4vh; left: -23.29vw;">OPEn</span>
       <span class="custom-text" style="top: 72.6vh; left: -23.29vw;">OPEn</span>
 
-      <!-- The custom line that will slide with account items -->
       <div class="custom-line" style="left: -42.59vw;"></div>
-    </div> <!-- end of .other-content -->
-  </div> <!-- end of .page-content -->
+    </div>
+  </div>
 
-  <!-- Slide triggers container (fixed) -->
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
   </div>
 
   <script>
-    // ----- Fade-in & fullscreen behavior (unchanged) -----
+    // (JavaScript remains unchanged aside from submenu text positions)
+
+    // Fade-in & fullscreen behavior
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -130,12 +129,10 @@
       }
     });
     
-    // slideState can be "none", "menu", or "account"
     let slideState = "none";
     
-    // ----- Region: Left 0–6.37vw (top 28.5–84vh) -----
+    // (Event listeners for regions remain unchanged)
     document.addEventListener('click', (event) => {
-      // Only ignore clicks if they originate from an element with the class .chat-text.
       if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -145,9 +142,7 @@
       const yMax = 84 * vhUnit;
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
-          
           if (slideState === "menu") {
-            // Inverse animation for menu items
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               el.classList.remove('menu-slide');
             });
@@ -161,17 +156,11 @@
             }
             slideState = "none";
           } else if (slideState === "account") {
-            // Inverse animation for account items: restore original left values
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              if (el.dataset.originalLeft) {
-                el.style.left = el.dataset.originalLeft;
-              }
+              if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
             });
-            // Also slide the custom-line back to its original position
             const customLine = document.querySelector('.custom-line');
-            if (customLine && customLine.dataset.originalLeft) {
-              customLine.style.left = customLine.dataset.originalLeft;
-            }
+            if (customLine && customLine.dataset.originalLeft) { customLine.style.left = customLine.dataset.originalLeft; }
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               setTimeout(() => {
@@ -181,31 +170,21 @@
             }
             slideState = "none";
           } else if (slideState === "none") {
-            // Trigger account slide in: fade out chat-text (or chat input) and slide account items and custom-line
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               chatTextEl.style.transition = "opacity 0.1s ease";
               chatTextEl.style.opacity = "0";
               setTimeout(() => {
-                // For each account item, store its original left (if not already stored)
-                // then increase its left by 49vw
                 document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-                  if (!el.dataset.originalLeft) {
-                    el.dataset.originalLeft = el.style.left;
-                  }
+                  if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
                   let original = parseFloat(el.dataset.originalLeft);
-                  let newLeft = original + 49;
-                  el.style.left = newLeft + "vw";
+                  el.style.left = (original + 49) + "vw";
                 });
-                // Also slide the custom-line by increasing its left by 49vw
                 const customLine = document.querySelector('.custom-line');
                 if (customLine) {
-                  if (!customLine.dataset.originalLeft) {
-                    customLine.dataset.originalLeft = customLine.style.left;
-                  }
+                  if (!customLine.dataset.originalLeft) { customLine.dataset.originalLeft = customLine.style.left; }
                   let originalLine = parseFloat(customLine.dataset.originalLeft);
-                  let newLineLeft = originalLine + 49;
-                  customLine.style.left = newLineLeft + "vw";
+                  customLine.style.left = (originalLine + 49) + "vw";
                 }
               }, 110);
             }
@@ -214,7 +193,6 @@
       }
     });
     
-    // ----- Region: Left 28.86–32.43vw (top 28.5–84vh) -----
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
@@ -225,22 +203,14 @@
       const yMax = 84 * vhUnit;
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
-          
           if (slideState === "menu") {
-            // When menu is already open, ignore clicks in this region.
             return;
           } else if (slideState === "account") {
-            // Inverse animation for account items: restore original left values
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              if (el.dataset.originalLeft) {
-                el.style.left = el.dataset.originalLeft;
-              }
+              if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
             });
-            // Also restore custom-line position
             const customLine = document.querySelector('.custom-line');
-            if (customLine && customLine.dataset.originalLeft) {
-              customLine.style.left = customLine.dataset.originalLeft;
-            }
+            if (customLine && customLine.dataset.originalLeft) { customLine.style.left = customLine.dataset.originalLeft; }
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               setTimeout(() => {
@@ -250,7 +220,6 @@
             }
             slideState = "none";
           } else if (slideState === "none") {
-            // Trigger menu slide in: fade out chat-text and slide in menu items
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               chatTextEl.style.transition = "opacity 0.1s ease";
@@ -269,8 +238,6 @@
       }
     });
     
-    // ----- Slide trigger behavior via .slide-trigger and .slide-trigger-reverse -----
-    // Inverse trigger now only reverses grid (and slide-container) animation.
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -285,7 +252,6 @@
       document.querySelector('.other-content').classList.add('animate-grid');
     });
     
-    // ----- Chat area behavior (with id reassignment) -----
     const chatText = document.getElementById('chatText');
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
@@ -308,13 +274,11 @@
       const chatInput = document.createElement('input');
       chatInput.type = 'text';
       chatInput.classList.add('chat-input');
-      // Assign the same id so that getElementById('chatText') continues to find the element
       chatInput.id = 'chatText';
       chatText.replaceWith(chatInput);
       chatInput.focus();
     });
     
-    // ----- Submenu toggle code with updated submenu spacing -----
     function addNewText(text, top, left) {
       let span = document.createElement("span");
       span.className = "custom-text new-text";
@@ -346,31 +310,31 @@
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
       setTimeout(() => {
-        addNewText("cOnTEnT", 40.7, 7.4);
-        addNewText("LEARn1ng", 46, 7.4);
+        addNewText("cOnTEnT", 41.6, 7.4);
+        addNewText("LEARn1ng", 46.9, 7.4);
       }, 700);
     }
     function openLinkupCenter() {
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
       setTimeout(() => {
-        addNewText("cHAnnELS", 47.8, 7.4);
-        addNewText("LABOUR", 53.1, 7.4);
+        addNewText("cHAnnELS", 48.7, 7.4);
+        addNewText("LABOUR", 54.0, 7.4);
       }, 700);
     }
     function openDeliveryLine() {
       document.getElementById("internal-unit").classList.add("slide-down");
       setTimeout(() => {
-        addNewText("cL1ENTS", 54.9, 7.4);
-        addNewText("PROJEcTS", 60.2, 7.4);
+        addNewText("cL1ENTS", 55.8, 7.4);
+        addNewText("PROJEcTS", 61.1, 7.4);
       }, 700);
     }
     function openInternalUnit() {
       setTimeout(() => {
-        addNewText("1nVEnTORY", 62, 7.4);
-        addNewText("DEVOPS", 67.3, 7.4);
-        addNewText("F1nAncEs", 72.6, 7.4);
-        addNewText("1T-cEnTER", 77.9, 7.4);
+        addNewText("1nVEnTORY", 62.9, 7.4);
+        addNewText("DEVOPS", 68.2, 7.4);
+        addNewText("F1nAncEs", 73.5, 7.4);
+        addNewText("1T-cEnTER", 78.8, 7.4);
       }, 700);
     }
     document.getElementById("online-assets").addEventListener("click", function(e) {

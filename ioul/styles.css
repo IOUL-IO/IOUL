@@ -341,7 +341,7 @@ body.non-fullscreen {
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    transition: left 0.7s ease; /* original code for .custom-text */
+    transition: left 0.7s ease;
     line-height: 1.6;
     overflow: visible;
 }
@@ -356,7 +356,7 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
-/* Sliding main menu items */
+/* Sliding main menu items with updated slide-down amount */
 .menu-slide {
     transform: translateX(-22.59vw);
     transition: transform 0.7s ease;
@@ -376,29 +376,22 @@ body.non-fullscreen {
     opacity: 1;
 }
 
-/* 
-   We can let "other-content > .custom-text:not(.menu-item)" keep its original transition,
-   but now .account-container also needs a transition for left
-*/
+/* The container for each account item, also transitions left for a smooth slide */
 .other-content > .custom-text:not(.menu-item) {
     transition: left 0.7s ease;
 }
-
-/* 
-   The containers for the account items 
-   also animate their left changes 
-*/
 .account-container {
     position: absolute;
     overflow: visible;
-    transition: left 0.7s ease; /* <-- Ensures smooth slide in/out */
+    transition: left 0.7s ease;
 }
 
 /*
-   Right-to-left flow so that new characters 
-   appear on the left side instead of extending to the right
+   Ensure text doesn't break onto a new line 
+   if the container is narrower than the text 
 */
 .right-flow {
     direction: rtl;
     text-align: right;
+    white-space: nowrap; /* <--- Keep “i-cHAT: 0” on one line */
 }

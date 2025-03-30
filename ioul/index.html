@@ -46,43 +46,7 @@
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
 
-      <!-- Grid numbers and dashed grid (unchanged) -->
-      <span class="grid-number num1">1</span>
-      <span class="grid-number num2">2</span>
-      <span class="grid-number num3">3</span>
-      <span class="grid-number num4">4</span>
-      <span class="grid-number num5">5</span>
-      <span class="grid-number num6">6</span>
-      <span class="grid-number num7">7</span>
-      <span class="grid-number num8">8</span>
-      <span class="grid-number num9">9</span>
-      <span class="grid-number num10">10</span>
-      <span class="grid-number num11">11</span>
-      <span class="grid-number num12">12</span>
-      <span class="grid-number num13">13</span>
-      <span class="grid-number num14">14</span>
-      <span class="grid-number num15">15</span>
-      <span class="grid-number num16">16</span>
-
-      <span class="grid-dashed dashed01"></span>
-      <span class="grid-dashed dashed02"></span>
-      <span class="grid-dashed dashed03"></span>    
-      <span class="grid-dashed dashed04"></span>
-      <span class="grid-dashed dashed05"></span>
-      <span class="grid-dashed dashed06"></span>
-      <span class="grid-dashed dashed07"></span>
-      <span class="grid-dashed dashed08"></span>
-      <span class="grid-dashed dashed09"></span>
-      <span class="grid-dashed dashed10"></span>
-      <span class="grid-dashed dashed11"></span>
-      <span class="grid-dashed dashed12"></span>
-      <span class="grid-dashed dashed13"></span>
-      <span class="grid-dashed dashed14"></span>
-      <span class="grid-dashed dashed15"></span>
-      <span class="grid-dashed dashed16"></span>
-
-      <!-- Account items -->
-      <!-- “AccOUnT 1nFO” and “AcT1V1TY 1nFO” etc. remain unchanged if desired -->
+      <!-- Optional headings at negative left (unchanged) -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 41.6vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
       <span class="custom-text" style="top: 54vh;   left: -42.59vw;">YOUR L1ST</span>
@@ -90,15 +54,47 @@
       <span class="custom-text" style="top: 66.4vh; left: -42.59vw;">OFFER HUB</span>
       <span class="custom-text" style="top: 72.6vh; left: -42.59vw;">YOUR JOBS</span>
 
-      <!-- These 6 items now use .right-flow, and all start at left: -20.19vw so that
-           after being shifted by +49vw in the JS, each ends up at left: 28.81vw -->
-      <span class="custom-text right-flow" style="top: 35.4vh; left: -20.19vw;">i-cHAT: 0</span>
-      <span class="custom-text right-flow" style="top: 41.6vh; left: -20.19vw;">i-MAIL: 0</span>
+      <!-- 
+        Account items now wrapped in containers. 
+        Each starts at its original negative left. 
+        We'll slide them by +49vw in JS, 
+        then pin their right edge to 28.81vw 
+      -->
+      <div class="account-container" style="top: 35.4vh; left: -25.62vw;" data-slide-group="account">
+        <span class="custom-text right-flow" style="position: absolute; right: 0;">
+          i-cHAT: 0
+        </span>
+      </div>
 
-      <span class="custom-text right-flow" style="top: 54vh;   left: -20.19vw;">0</span>
-      <span class="custom-text right-flow" style="top: 60.2vh; left: -20.19vw;">0</span>
-      <span class="custom-text right-flow" style="top: 66.4vh; left: -20.19vw;">0</span>
-      <span class="custom-text right-flow" style="top: 72.6vh; left: -20.19vw;">0</span>
+      <div class="account-container" style="top: 41.6vh; left: -25.62vw;" data-slide-group="account">
+        <span class="custom-text right-flow" style="position: absolute; right: 0;">
+          i-MAIL: 0
+        </span>
+      </div>
+
+      <div class="account-container" style="top: 54vh;   left: -20.67vw;" data-slide-group="account">
+        <span class="custom-text right-flow" style="position: absolute; right: 0;">
+          0
+        </span>
+      </div>
+
+      <div class="account-container" style="top: 60.2vh; left: -20.67vw;" data-slide-group="account">
+        <span class="custom-text right-flow" style="position: absolute; right: 0;">
+          0
+        </span>
+      </div>
+
+      <div class="account-container" style="top: 66.4vh; left: -20.67vw;" data-slide-group="account">
+        <span class="custom-text right-flow" style="position: absolute; right: 0;">
+          0
+        </span>
+      </div>
+
+      <div class="account-container" style="top: 72.6vh; left: -20.67vw;" data-slide-group="account">
+        <span class="custom-text right-flow" style="position: absolute; right: 0;">
+          0
+        </span>
+      </div>
 
       <div class="custom-line" style="left: -42.59vw;"></div>
     </div>
@@ -134,7 +130,7 @@
     
     let slideState = "none";
     
-    // ----- Region: Left 0–6.37vw (top 28.5–84vh) -----
+    // ----- Region: Left 0–6.37vw (28.5–84vh) => slide the account items -----
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
@@ -143,69 +139,99 @@
       const leftMax = 6.37 * vwUnit;
       const yMin = 28.5 * vhUnit;
       const yMax = 84 * vhUnit;
+
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
-          if (slideState === "menu") {
-            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-              el.classList.remove('menu-slide');
-            });
-            document.querySelector('.menu-items').classList.remove('raised');
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              setTimeout(() => {
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            slideState = "none";
-          } else if (slideState === "account") {
-            document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              if (el.dataset.originalLeft) {
-                el.style.left = el.dataset.originalLeft;
-              }
-            });
-            const customLine = document.querySelector('.custom-line');
-            if (customLine && customLine.dataset.originalLeft) {
-              customLine.style.left = customLine.dataset.originalLeft;
-            }
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              setTimeout(() => {
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            slideState = "none";
-          } else if (slideState === "none") {
-            // Slide account items
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              chatTextEl.style.transition = "opacity 0.1s ease";
-              chatTextEl.style.opacity = "0";
-              setTimeout(() => {
-                document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-                  if (!el.dataset.originalLeft) {
-                    el.dataset.originalLeft = el.style.left;
-                  }
-                  let original = parseFloat(el.dataset.originalLeft);
-                  el.style.left = (original + 49) + "vw";
-                });
-                const customLine = document.querySelector('.custom-line');
-                if (customLine) {
-                  if (!customLine.dataset.originalLeft) {
-                    customLine.dataset.originalLeft = customLine.style.left;
-                  }
-                  let originalLine = parseFloat(customLine.dataset.originalLeft);
-                  customLine.style.left = (originalLine + 49) + "vw";
-                }
-              }, 110);
-            }
-            slideState = "account";
+        if (slideState === "menu") {
+          // Return menu items
+          document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+            el.classList.remove('menu-slide');
+          });
+          document.querySelector('.menu-items').classList.remove('raised');
+          const chatTextEl = document.getElementById('chatText');
+          if (chatTextEl) {
+            setTimeout(() => {
+              chatTextEl.style.transition = "opacity 0.7s ease";
+              chatTextEl.style.opacity = "1";
+            }, 700);
           }
+          slideState = "none";
+        } else if (slideState === "account") {
+          // Slide account items back
+          document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
+            if (el.dataset.originalLeft) {
+              el.style.left = el.dataset.originalLeft;
+            }
+          });
+          // The container approach => return each container as well:
+          document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
+            if (box.dataset.originalLeft) {
+              box.style.left = box.dataset.originalLeft;
+            }
+            // remove width (so it doesn't chop the text)
+            box.style.width = '';
+          });
+
+          const customLine = document.querySelector('.custom-line');
+          if (customLine && customLine.dataset.originalLeft) {
+            customLine.style.left = customLine.dataset.originalLeft;
+          }
+          const chatTextEl = document.getElementById('chatText');
+          if (chatTextEl) {
+            setTimeout(() => {
+              chatTextEl.style.transition = "opacity 0.7s ease";
+              chatTextEl.style.opacity = "1";
+            }, 700);
+          }
+          slideState = "none";
+        } else if (slideState === "none") {
+          // Slide the account items to the right (+49vw)
+          const chatTextEl = document.getElementById('chatText');
+          if (chatTextEl) {
+            chatTextEl.style.transition = "opacity 0.1s ease";
+            chatTextEl.style.opacity = "0";
+
+            setTimeout(() => {
+              // Save original left if not set, then shift each item
+              document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
+                if (!el.dataset.originalLeft) {
+                  el.dataset.originalLeft = el.style.left;
+                }
+                let original = parseFloat(el.dataset.originalLeft);
+                el.style.left = (original + 49) + "vw";
+              });
+
+              // Also shift each .account-container
+              document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
+                if (!box.dataset.originalLeft) {
+                  box.dataset.originalLeft = box.style.left;
+                }
+                let originalBoxLeft = parseFloat(box.dataset.originalLeft);
+                box.style.left = (originalBoxLeft + 49) + "vw";
+              });
+
+              const customLine = document.querySelector('.custom-line');
+              if (customLine) {
+                if (!customLine.dataset.originalLeft) {
+                  customLine.dataset.originalLeft = customLine.style.left;
+                }
+                let originalLine = parseFloat(customLine.dataset.originalLeft);
+                customLine.style.left = (originalLine + 49) + "vw";
+              }
+
+              // After the 0.7s transition, pin each box's right edge to 28.81vw
+              setTimeout(() => {
+                fixAccountRightEdges();
+              }, 700);
+
+            }, 110);
+          }
+          slideState = "account";
+        }
       }
     });
     
-    // ----- Region: Left 28.86–32.43vw (top 28.5–84vh) -----
+    // ----- Region: Left 28.86–32.43vw (28.5–84vh) => slide the menu items -----
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
@@ -214,45 +240,56 @@
       const leftMax = 32.43 * vwUnit;
       const yMin = 28.5 * vhUnit;
       const yMax = 84 * vhUnit;
+
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
-          if (slideState === "menu") {
-            return;
-          } else if (slideState === "account") {
-            document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              if (el.dataset.originalLeft) {
-                el.style.left = el.dataset.originalLeft;
-              }
-            });
-            const customLine = document.querySelector('.custom-line');
-            if (customLine && customLine.dataset.originalLeft) {
-              customLine.style.left = customLine.dataset.originalLeft;
+        if (slideState === "menu") {
+          // Already slid, do nothing
+          return;
+        } else if (slideState === "account") {
+          // Slide account items back
+          document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
+            if (el.dataset.originalLeft) {
+              el.style.left = el.dataset.originalLeft;
             }
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              setTimeout(() => {
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
+          });
+          // Return each account container to original left
+          document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
+            if (box.dataset.originalLeft) {
+              box.style.left = box.dataset.originalLeft;
             }
-            slideState = "none";
-          } else if (slideState === "none") {
-            // Slide menu items
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              chatTextEl.style.transition = "opacity 0.1s ease";
-              chatTextEl.style.opacity = "0";
-              setTimeout(() => {
-                document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-                  el.classList.add('menu-slide');
-                });
-                setTimeout(() => {
-                  document.querySelector('.menu-items').classList.add('raised');
-                }, 700);
-              }, 110);
-            }
-            slideState = "menu";
+            box.style.width = '';
+          });
+
+          const customLine = document.querySelector('.custom-line');
+          if (customLine && customLine.dataset.originalLeft) {
+            customLine.style.left = customLine.dataset.originalLeft;
           }
+          const chatTextEl = document.getElementById('chatText');
+          if (chatTextEl) {
+            setTimeout(() => {
+              chatTextEl.style.transition = "opacity 0.7s ease";
+              chatTextEl.style.opacity = "1";
+            }, 700);
+          }
+          slideState = "none";
+        } else if (slideState === "none") {
+          // Slide menu items in
+          const chatTextEl = document.getElementById('chatText');
+          if (chatTextEl) {
+            chatTextEl.style.transition = "opacity 0.1s ease";
+            chatTextEl.style.opacity = "0";
+            setTimeout(() => {
+              document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+                el.classList.add('menu-slide');
+              });
+              setTimeout(() => {
+                document.querySelector('.menu-items').classList.add('raised');
+              }, 700);
+            }, 110);
+          }
+          slideState = "menu";
+        }
       }
     });
     
@@ -296,18 +333,24 @@
       chatText.replaceWith(chatInput);
       chatInput.focus();
     });
-    
-    function addNewText(text, top, left) {
-      let span = document.createElement("span");
-      span.className = "custom-text new-text";
-      span.style.top = top + "vh";
-      span.style.left = left + "vw";
-      span.textContent = text;
-      document.querySelector(".other-content").appendChild(span);
-      setTimeout(() => {
-        span.classList.add("visible");
-      }, 10);
+
+    // Once the accounts are slid +49vw and the transition is done,
+    // we call this to fix each container's right edge at left: 28.81vw
+    function fixAccountRightEdges() {
+      const accountBoxes = document.querySelectorAll('.account-container[data-slide-group="account"]');
+      accountBoxes.forEach(box => {
+        // read its final left in vw
+        const finalLeftVw = parseFloat(box.style.left) || 0;
+        // compute width needed so right edge = 28.81
+        const neededWidth = 28.81 - finalLeftVw;
+        // if that is positive, set it
+        if (neededWidth > 0) {
+          box.style.width = neededWidth + 'vw';
+        }
+      });
     }
+
+    // Submenu logic (unchanged, for your convenience)
     let currentMenu = null;
     function closeSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
@@ -322,6 +365,17 @@
         newTexts.forEach(span => span.remove());
         currentMenu = null;
       }, 300);
+    }
+    function addNewText(text, top, left) {
+      let span = document.createElement("span");
+      span.className = "custom-text new-text";
+      span.style.top = top + "vh";
+      span.style.left = left + "vw";
+      span.textContent = text;
+      document.querySelector(".other-content").appendChild(span);
+      setTimeout(() => {
+        span.classList.add("visible");
+      }, 10);
     }
     function openOnlineAssets() {
       document.getElementById("linkup-center").classList.add("slide-down");

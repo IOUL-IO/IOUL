@@ -341,7 +341,7 @@ body.non-fullscreen {
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    transition: transform 0.7s ease;
+    transition: left 0.7s ease; /* original code for .custom-text */
     line-height: 1.6;
     overflow: visible;
 }
@@ -376,23 +376,27 @@ body.non-fullscreen {
     opacity: 1;
 }
 
+/* 
+   We can let "other-content > .custom-text:not(.menu-item)" keep its original transition,
+   but now .account-container also needs a transition for left
+*/
 .other-content > .custom-text:not(.menu-item) {
     transition: left 0.7s ease;
 }
 
 /* 
-   .account-container holds each account item 
-   (starts at negative left, slides to final left).
-   We'll set width after sliding so its right edge is at 28.81vw. 
+   The containers for the account items 
+   also animate their left changes 
 */
 .account-container {
     position: absolute;
-    overflow: visible; 
+    overflow: visible;
+    transition: left 0.7s ease; /* <-- Ensures smooth slide in/out */
 }
 
 /*
    Right-to-left flow so that new characters 
-   appear on the left side instead of extending to the right.
+   appear on the left side instead of extending to the right
 */
 .right-flow {
     direction: rtl;

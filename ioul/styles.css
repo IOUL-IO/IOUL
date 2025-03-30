@@ -73,6 +73,7 @@ body.non-fullscreen {
 .menu-items .menu-item {
     pointer-events: auto;
 }
+
 .layer-four {
     position: absolute;
     top: 28.5vh;
@@ -83,6 +84,7 @@ body.non-fullscreen {
     z-index: 2;
     pointer-events: none;
 }
+
 .other-content {
     position: absolute;
     top: 0;
@@ -354,7 +356,7 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
-/* Sliding main menu items with updated slide-down amount */
+/* Sliding main menu items */
 .menu-slide {
     transform: translateX(-22.59vw);
     transition: transform 0.7s ease;
@@ -379,12 +381,20 @@ body.non-fullscreen {
 }
 
 /* 
-   RIGHT-FLOW: 
-   Overriding letter-spacing so your rightmost character 
-   really sits at the container's right edge 
+   .account-container holds each account item 
+   (starts at negative left, slides to final left).
+   We'll set width after sliding so its right edge is at 28.81vw. 
+*/
+.account-container {
+    position: absolute;
+    overflow: visible; 
+}
+
+/*
+   Right-to-left flow so that new characters 
+   appear on the left side instead of extending to the right.
 */
 .right-flow {
     direction: rtl;
     text-align: right;
-    letter-spacing: 0;  /* remove or reduce letter-spacing here */
 }

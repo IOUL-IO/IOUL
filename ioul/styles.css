@@ -378,9 +378,8 @@ body.non-fullscreen {
     transition: left 0.7s ease;
 }
 
-/* New CSS rule for right-to-left stacking of numeric values */
-.rtl-number {
-    display: inline-block;
-    width: 4ch; /* Adjust width as needed to accommodate maximum digits */
+/* Added class for right-to-left flow */
+.right-flow {
+    direction: rtl;
     text-align: right;
 }

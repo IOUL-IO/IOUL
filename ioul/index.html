@@ -13,7 +13,7 @@
   <div class="layer-three"></div>
 
   <div class="page-content">
-    <!-- Main menu items (unchanged from previous version) -->
+    <!-- Main menu items (unchanged) -->
     <div class="menu-items">
       <span class="custom-text menu-item" style="top: 36.1vh; left: 29vw;" id="online-assets">OnL1nE ASSETS</span>
       <span class="custom-text menu-item" style="top: 43.2vh; left: 29vw;" id="linkup-center">L1nKUP cEnTER</span>
@@ -81,19 +81,24 @@
       <span class="grid-dashed dashed15"></span>
       <span class="grid-dashed dashed16"></span>
 
-      <!-- Account items (unchanged except for i-cHAT) -->
+      <!-- Account items -->
+      <!-- “AccOUnT 1nFO” and “AcT1V1TY 1nFO” etc. remain unchanged if desired -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
-      <span class="custom-text" style="top: 35.4vh; left: -25.62vw;">i-cHAT: <span class="rtl-number">0</span></span>
-      <span class="custom-text" style="top: 41.6vh; left: -25.62vw;">i-MAIL:     0</span>
       <span class="custom-text" style="top: 41.6vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
-      <span class="custom-text" style="top: 54vh; left: -42.59vw;">YOUR L1ST</span>
+      <span class="custom-text" style="top: 54vh;   left: -42.59vw;">YOUR L1ST</span>
       <span class="custom-text" style="top: 60.2vh; left: -42.59vw;">cHAnnELS</span>
       <span class="custom-text" style="top: 66.4vh; left: -42.59vw;">OFFER HUB</span>
       <span class="custom-text" style="top: 72.6vh; left: -42.59vw;">YOUR JOBS</span>
-      <span class="custom-text" style="top: 54vh; left: -20.67vw;">0</span>
-      <span class="custom-text" style="top: 60.2vh; left: -20.67vw;">0</span>
-      <span class="custom-text" style="top: 66.4vh; left: -20.67vw;">0</span>
-      <span class="custom-text" style="top: 72.6vh; left: -20.67vw;">0</span>
+
+      <!-- These 6 items now use .right-flow, and all start at left: -20.19vw so that
+           after being shifted by +49vw in the JS, each ends up at left: 28.81vw -->
+      <span class="custom-text right-flow" style="top: 35.4vh; left: -20.19vw;">i-cHAT: 0</span>
+      <span class="custom-text right-flow" style="top: 41.6vh; left: -20.19vw;">i-MAIL: 0</span>
+
+      <span class="custom-text right-flow" style="top: 54vh;   left: -20.19vw;">0</span>
+      <span class="custom-text right-flow" style="top: 60.2vh; left: -20.19vw;">0</span>
+      <span class="custom-text right-flow" style="top: 66.4vh; left: -20.19vw;">0</span>
+      <span class="custom-text right-flow" style="top: 72.6vh; left: -20.19vw;">0</span>
 
       <div class="custom-line" style="left: -42.59vw;"></div>
     </div>
@@ -155,10 +160,14 @@
             slideState = "none";
           } else if (slideState === "account") {
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
+              if (el.dataset.originalLeft) {
+                el.style.left = el.dataset.originalLeft;
+              }
             });
             const customLine = document.querySelector('.custom-line');
-            if (customLine && customLine.dataset.originalLeft) { customLine.style.left = customLine.dataset.originalLeft; }
+            if (customLine && customLine.dataset.originalLeft) {
+              customLine.style.left = customLine.dataset.originalLeft;
+            }
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               setTimeout(() => {
@@ -168,19 +177,24 @@
             }
             slideState = "none";
           } else if (slideState === "none") {
+            // Slide account items
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               chatTextEl.style.transition = "opacity 0.1s ease";
               chatTextEl.style.opacity = "0";
               setTimeout(() => {
                 document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-                  if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
+                  if (!el.dataset.originalLeft) {
+                    el.dataset.originalLeft = el.style.left;
+                  }
                   let original = parseFloat(el.dataset.originalLeft);
                   el.style.left = (original + 49) + "vw";
                 });
                 const customLine = document.querySelector('.custom-line');
                 if (customLine) {
-                  if (!customLine.dataset.originalLeft) { customLine.dataset.originalLeft = customLine.style.left; }
+                  if (!customLine.dataset.originalLeft) {
+                    customLine.dataset.originalLeft = customLine.style.left;
+                  }
                   let originalLine = parseFloat(customLine.dataset.originalLeft);
                   customLine.style.left = (originalLine + 49) + "vw";
                 }
@@ -206,10 +220,14 @@
             return;
           } else if (slideState === "account") {
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
+              if (el.dataset.originalLeft) {
+                el.style.left = el.dataset.originalLeft;
+              }
             });
             const customLine = document.querySelector('.custom-line');
-            if (customLine && customLine.dataset.originalLeft) { customLine.style.left = customLine.dataset.originalLeft; }
+            if (customLine && customLine.dataset.originalLeft) {
+              customLine.style.left = customLine.dataset.originalLeft;
+            }
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               setTimeout(() => {
@@ -219,6 +237,7 @@
             }
             slideState = "none";
           } else if (slideState === "none") {
+            // Slide menu items
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               chatTextEl.style.transition = "opacity 0.1s ease";

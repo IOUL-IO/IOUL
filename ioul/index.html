@@ -46,7 +46,7 @@
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
 
-      <!-- Optional headings at negative left (unchanged) -->
+      <!-- Optional headings (unchanged) -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 41.6vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
       <span class="custom-text" style="top: 54vh;   left: -42.59vw;">YOUR L1ST</span>
@@ -55,10 +55,10 @@
       <span class="custom-text" style="top: 72.6vh; left: -42.59vw;">YOUR JOBS</span>
 
       <!-- 
-        Account items now wrapped in containers. 
-        Each starts at its original negative left. 
-        We'll slide them by +49vw in JS, 
-        then pin their right edge to 28.81vw 
+        6 account items, each wrapped in .account-container
+        Start at negative left. Slide by +49vw in JS. 
+        Then fix width so right edge is pinned at left: 28.81vw. 
+        .right-flow => direction:rtl 
       -->
       <div class="account-container" style="top: 35.4vh; left: -25.62vw;" data-slide-group="account">
         <span class="custom-text right-flow" style="position: absolute; right: 0;">
@@ -74,7 +74,7 @@
 
       <div class="account-container" style="top: 54vh;   left: -20.67vw;" data-slide-group="account">
         <span class="custom-text right-flow" style="position: absolute; right: 0;">
-          1000
+          0
         </span>
       </div>
 
@@ -130,7 +130,7 @@
     
     let slideState = "none";
     
-    // ----- Region: Left 0–6.37vw (28.5–84vh) => slide the account items -----
+    // ----- Region: Left 0–6.37vw => triggers the account slide -----
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
@@ -143,7 +143,7 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "menu") {
-          // Return menu items
+          // Slide menu items back
           document.querySelectorAll('.menu-items .menu-item').forEach(el => {
             el.classList.remove('menu-slide');
           });
@@ -163,12 +163,12 @@
               el.style.left = el.dataset.originalLeft;
             }
           });
-          // The container approach => return each container as well:
+          // Also restore .account-container
           document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
             if (box.dataset.originalLeft) {
               box.style.left = box.dataset.originalLeft;
             }
-            // remove width (so it doesn't chop the text)
+            // Remove the width so it doesn't clip text
             box.style.width = '';
           });
 
@@ -201,7 +201,7 @@
                 el.style.left = (original + 49) + "vw";
               });
 
-              // Also shift each .account-container
+              // Slide each .account-container
               document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
                 if (!box.dataset.originalLeft) {
                   box.dataset.originalLeft = box.style.left;
@@ -219,7 +219,7 @@
                 customLine.style.left = (originalLine + 49) + "vw";
               }
 
-              // After the 0.7s transition, pin each box's right edge to 28.81vw
+              // After the 0.7s transition, fix the right edge at 28.81vw
               setTimeout(() => {
                 fixAccountRightEdges();
               }, 700);
@@ -231,7 +231,7 @@
       }
     });
     
-    // ----- Region: Left 28.86–32.43vw (28.5–84vh) => slide the menu items -----
+    // ----- Region: Left 28.86–32.43vw => triggers the menu items -----
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
@@ -244,7 +244,7 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "menu") {
-          // Already slid, do nothing
+          // Already slid in, do nothing
           return;
         } else if (slideState === "account") {
           // Slide account items back
@@ -253,7 +253,6 @@
               el.style.left = el.dataset.originalLeft;
             }
           });
-          // Return each account container to original left
           document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
             if (box.dataset.originalLeft) {
               box.style.left = box.dataset.originalLeft;
@@ -334,23 +333,22 @@
       chatInput.focus();
     });
 
-    // Once the accounts are slid +49vw and the transition is done,
-    // we call this to fix each container's right edge at left: 28.81vw
+    // Once the account containers have slid +49vw, we fix their widths 
+    // so each right edge is pinned at left: 28.81vw.
     function fixAccountRightEdges() {
       const accountBoxes = document.querySelectorAll('.account-container[data-slide-group="account"]');
       accountBoxes.forEach(box => {
-        // read its final left in vw
+        // read its final left
         const finalLeftVw = parseFloat(box.style.left) || 0;
-        // compute width needed so right edge = 28.81
+        // compute needed width
         const neededWidth = 28.81 - finalLeftVw;
-        // if that is positive, set it
         if (neededWidth > 0) {
           box.style.width = neededWidth + 'vw';
         }
       });
     }
 
-    // Submenu logic (unchanged, for your convenience)
+    // Submenu logic (unchanged)
     let currentMenu = null;
     function closeSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');

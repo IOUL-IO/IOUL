@@ -377,3 +377,10 @@ body.non-fullscreen {
 .other-content > .custom-text:not(.menu-item) {
     transition: left 0.7s ease;
 }
+
+/* New CSS rule for right-to-left stacking of numeric values */
+.rtl-number {
+    display: inline-block;
+    width: 4ch; /* Adjust width as needed to accommodate maximum digits */
+    text-align: right;
+}

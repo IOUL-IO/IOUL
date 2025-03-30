@@ -378,8 +378,9 @@ body.non-fullscreen {
     transition: left 0.7s ease;
 }
 
-/* New rule: for account items, set direction to rtl so text stacks from right to left */
+/* New rule: force account item text to stack from the right */
 .custom-text[style*="-25.62vw"],
 .custom-text[style*="-20.67vw"] {
   direction: rtl;
+  unicode-bidi: embed;
 }

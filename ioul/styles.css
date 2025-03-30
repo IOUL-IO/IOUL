@@ -332,6 +332,7 @@ body.non-fullscreen {
     transform: translateX(-60vw);
 }
 
+/* Updated .custom-text with fixed width and right alignment */
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -342,6 +343,11 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
     line-height: 1.6;
     overflow: visible;
+
+    display: inline-block;
+    width: 10vw;       /* Adjust this width as needed */
+    text-align: right; /* Keep the right edge anchored */
+    white-space: nowrap;
 }
 
 .custom-line {
@@ -376,12 +382,4 @@ body.non-fullscreen {
 
 .other-content > .custom-text:not(.menu-item) {
     transition: left 0.7s ease;
-}
-
-.custom-text[style*="-25.62vw"],
-.custom-text[style*="-20.67vw"] {
-  display: inline-block;
-  width: 8vw; /* adjust this value to match your desired width */
-  text-align: right;
-  box-sizing: border-box;
 }

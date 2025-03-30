@@ -378,8 +378,13 @@ body.non-fullscreen {
     transition: left 0.7s ease;
 }
 
-/* Added class for right-to-left flow */
+/* 
+   RIGHT-FLOW: 
+   Overriding letter-spacing so your rightmost character 
+   really sits at the container's right edge 
+*/
 .right-flow {
     direction: rtl;
     text-align: right;
+    letter-spacing: 0;  /* remove or reduce letter-spacing here */
 }

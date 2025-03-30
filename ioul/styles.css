@@ -380,7 +380,8 @@ body.non-fullscreen {
 
 .custom-text[style*="-25.62vw"],
 .custom-text[style*="-20.67vw"] {
-  direction: rtl;
+  display: inline-block;
+  width: 8vw; /* adjust this value to match your desired width */
   text-align: right;
-  unicode-bidi: isolate;
+  box-sizing: border-box;
 }

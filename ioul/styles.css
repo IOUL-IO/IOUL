@@ -381,5 +381,5 @@ body.non-fullscreen {
 /* New rule: right-align the inner account text */
 .account-align {
     display: block;
-    text-align: right;
+    direction: rtl;
 }

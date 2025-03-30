@@ -377,3 +377,9 @@ body.non-fullscreen {
 .other-content > .custom-text:not(.menu-item) {
     transition: left 0.7s ease;
 }
+
+/* New rule: right-align the inner account text */
+.account-align {
+    display: block;
+    text-align: right;
+}

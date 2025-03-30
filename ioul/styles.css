@@ -377,3 +377,11 @@ body.non-fullscreen {
 .other-content > .custom-text:not(.menu-item) {
     transition: left 0.7s ease;
 }
+
+/* Right-align account value items without changing inline styles */
+.custom-text[style*="-25.62vw"],
+.custom-text[style*="-20.67vw"] {
+    display: inline-block;
+    width: 8vw; /* adjust as necessary */
+    text-align: right;
+}

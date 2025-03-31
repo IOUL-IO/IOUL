@@ -13,7 +13,7 @@
   <div class="layer-three"></div>
 
   <div class="page-content">
-    <!-- Main menu items (unchanged except for a CSS rule that we’ll show in styles.css) -->
+    <!-- Main menu items (unchanged) -->
     <div class="menu-items">
       <span class="custom-text menu-item" style="top: 36.1vh; left: 29vw;" id="online-assets">OnL1nE ASSETS</span>
       <span class="custom-text menu-item" style="top: 43.2vh; left: 29vw;" id="linkup-center">L1nKUP cEnTER</span>
@@ -31,6 +31,7 @@
       <div class="line third"></div>
       <div class="line fourth"></div>
 
+      <!-- The slide-container for dashed lines and times, unchanged -->
       <div class="slide-container">
         <div class="line dashed"></div>
         <div class="line dashed second-dashed"></div>
@@ -46,7 +47,42 @@
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
 
-      <!-- Optional headings (unchanged) -->
+      <!-- Grid numbers (1-16) and dashed lines (dashed01-16) as originally -->
+      <span class="grid-number num1">1</span>
+      <span class="grid-number num2">2</span>
+      <span class="grid-number num3">3</span>
+      <span class="grid-number num4">4</span>
+      <span class="grid-number num5">5</span>
+      <span class="grid-number num6">6</span>
+      <span class="grid-number num7">7</span>
+      <span class="grid-number num8">8</span>
+      <span class="grid-number num9">9</span>
+      <span class="grid-number num10">10</span>
+      <span class="grid-number num11">11</span>
+      <span class="grid-number num12">12</span>
+      <span class="grid-number num13">13</span>
+      <span class="grid-number num14">14</span>
+      <span class="grid-number num15">15</span>
+      <span class="grid-number num16">16</span>
+
+      <span class="grid-dashed dashed01"></span>
+      <span class="grid-dashed dashed02"></span>
+      <span class="grid-dashed dashed03"></span>    
+      <span class="grid-dashed dashed04"></span>
+      <span class="grid-dashed dashed05"></span>
+      <span class="grid-dashed dashed06"></span>
+      <span class="grid-dashed dashed07"></span>
+      <span class="grid-dashed dashed08"></span>
+      <span class="grid-dashed dashed09"></span>
+      <span class="grid-dashed dashed10"></span>
+      <span class="grid-dashed dashed11"></span>
+      <span class="grid-dashed dashed12"></span>
+      <span class="grid-dashed dashed13"></span>
+      <span class="grid-dashed dashed14"></span>
+      <span class="grid-dashed dashed15"></span>
+      <span class="grid-dashed dashed16"></span>
+
+      <!-- Headings at negative left (unchanged) -->
       <span class="custom-text" style="top: 35.4vh; left: -42.59vw;">AccOUnT 1nFO</span>
       <span class="custom-text" style="top: 41.6vh; left: -42.59vw;">AcT1V1TY 1nFO</span>
       <span class="custom-text" style="top: 54vh;   left: -42.59vw;">YOUR L1ST</span>
@@ -55,59 +91,56 @@
       <span class="custom-text" style="top: 72.6vh; left: -42.59vw;">YOUR JOBS</span>
 
       <!-- 
-         6 account items pinned so their right edge is at left:28.81vw.
-         Each gets a negative translateX(...) to place it off to the left.
-         We'll animate transform from that negative offset to 0.
+        Six account items now replaced with .account-container pinned at left:28.81vw,
+        each with transform:translateX(...) for the "out" position, 
+        then we animate to transform: translateX(0) for the "in" position.
       -->
-
-      <!-- i-cHAT: 0 at top:35.4vh => needed shift was ~54.43vw -->
-      <div class="account-container"
-           style="top: 35.4vh; left: 28.81vw; transform: translateX(-54.43vw);"
+      <!-- i-cHAT: 0 and i-MAIL: 0 each needed about a 54.43vw shift from -25.62 to 28.81 -->
+      <div class="account-container" 
+           style="top:35.4vh; left:28.81vw; transform: translateX(-54.43vw);"
            data-offset="-54.43" data-slide-group="account">
-        <span class="custom-text right-flow" style="position: absolute; right:0;">
+        <span class="custom-text right-flow" style="position:absolute; right:0;">
           i-cHAT: 0
         </span>
       </div>
 
-      <!-- i-MAIL: 0 at top:41.6vh => also ~54.43vw shift -->
-      <div class="account-container"
-           style="top: 41.6vh; left: 28.81vw; transform: translateX(-54.43vw);"
+      <div class="account-container" 
+           style="top:41.6vh; left:28.81vw; transform: translateX(-54.43vw);"
            data-offset="-54.43" data-slide-group="account">
-        <span class="custom-text right-flow" style="position: absolute; right:0;">
+        <span class="custom-text right-flow" style="position:absolute; right:0;">
           i-MAIL: 0
         </span>
       </div>
 
-      <!-- The next four items only need ~49.48vw shift (28.81 - (-20.67) = 49.48) -->
-
-      <div class="account-container"
-           style="top: 54vh;   left: 28.81vw; transform: translateX(-49.48vw);"
+      <!-- The other four items at left: -20.67 => final offset ~49.48 -->
+      <div class="account-container" 
+           style="top:54vh;   left:28.81vw; transform: translateX(-49.48vw);"
            data-offset="-49.48" data-slide-group="account">
-        <span class="custom-text right-flow" style="position: absolute; right:0;">
+        <span class="custom-text right-flow" style="position:absolute; right:0;">
           0
         </span>
       </div>
 
       <div class="account-container"
-           style="top: 60.2vh; left: 28.81vw; transform: translateX(-49.48vw);"
+           style="top:60.2vh; left:28.81vw; transform: translateX(-49.48vw);"
            data-offset="-49.48" data-slide-group="account">
-        <span class="custom-text right-flow" style="position: absolute; right:0;">
+        <span class="custom-text right-flow" style="position:absolute; right:0;">
           0
         </span>
       </div>
 
       <div class="account-container"
-           style="top: 66.4vh; left: 28.81vw; transform: translateX(-49.48vw);"
+           style="top:66.4vh; left:28.81vw; transform: translateX(-49.48vw);"
            data-offset="-49.48" data-slide-group="account">
-        <span class="custom-text right-flow" style="position: absolute; right:0;">
+        <span class="custom-text right-flow" style="position:absolute; right:0;">
           0
         </span>
       </div>
 
       <div class="account-container"
-           style="top: 72.6vh; left: 28.81vw; transform: translateX(-49.48vw);"
+           style="top:72.6vh; left:28.81vw; transform: translateX(-49.48vw);"
            data-offset="-49.48" data-slide-group="account">
-        <span class="custom-text right-flow" style="position: absolute; right:0;">
+        <span class="custom-text right-flow" style="position:absolute; right:0;">
           0
         </span>
       </div>
@@ -116,13 +149,14 @@
     </div>
   </div>
 
+  <!-- Slide triggers, unchanged -->
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
   </div>
 
   <script>
-    // ----- Fade-in & fullscreen behavior -----
+    // ----- Fade-in & fullscreen behavior (unchanged) -----
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -145,8 +179,8 @@
     });
     
     let slideState = "none";
-    
-    // ----- Region: Left 0–6.37vw => triggers the account slide -----
+
+    // ----- Region: Left 0–6.37vw => account slide -----
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
@@ -164,6 +198,8 @@
             el.classList.remove('menu-slide');
           });
           document.querySelector('.menu-items').classList.remove('raised');
+          // Hide the menu => no grid toggles here
+
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             setTimeout(() => {
@@ -174,20 +210,18 @@
           slideState = "none";
 
         } else if (slideState === "account") {
-          // Slide account items out again
+          // Slide account items out (transform => negative offset)
           document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
-            // read the offset from data-offset
             const off = box.dataset.offset;
             box.style.transform = `translateX(${off}vw)`;
           });
-          // Also restore other .custom-text that were sliding
+          // Return any custom-text to original left
           document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
             if (el.dataset.originalLeft) {
               el.style.left = el.dataset.originalLeft;
             }
           });
-
-          // restore the custom-line
+          // Return the custom line
           const customLine = document.querySelector('.custom-line');
           if (customLine && customLine.dataset.originalLeft) {
             customLine.style.left = customLine.dataset.originalLeft;
@@ -203,24 +237,21 @@
           slideState = "none";
 
         } else if (slideState === "none") {
-          // Slide the account items in (transform -> translateX(0))
+          // Slide account items in => transform: translateX(0)
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
             chatTextEl.style.opacity = "0";
-
             setTimeout(() => {
-              // Save original left for other .custom-text if needed
+              // Save originalLeft, shift them by +49vw if you want them to move
               document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
                 if (!el.dataset.originalLeft) {
                   el.dataset.originalLeft = el.style.left;
                 }
                 let original = parseFloat(el.dataset.originalLeft);
-                // shift them +49vw if you still want them to move
                 el.style.left = (original + 49) + "vw";
               });
-
-              // same for the .custom-line
+              // Shift custom line
               const customLine = document.querySelector('.custom-line');
               if (customLine) {
                 if (!customLine.dataset.originalLeft) {
@@ -230,11 +261,10 @@
                 customLine.style.left = (originalLine + 49) + "vw";
               }
 
-              // Now animate each account-container to transform: translateX(0)
+              // Now animate each .account-container inward
               document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
                 box.style.transform = "translateX(0)";
               });
-
             }, 110);
           }
           slideState = "account";
@@ -242,7 +272,7 @@
       }
     });
     
-    // ----- Region: Left 28.86–32.43vw => triggers the menu items -----
+    // ----- Region: Left 28.86–32.43vw => menu items slide -----
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
@@ -255,14 +285,16 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "menu") {
-          // Already slid in, do nothing
+          // Already in menu state, do nothing
           return;
+
         } else if (slideState === "account") {
-          // Slide account items out
+          // Slide account items back out
           document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
             const off = box.dataset.offset;
             box.style.transform = `translateX(${off}vw)`;
           });
+          // restore left for custom-text
           document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
             if (el.dataset.originalLeft) {
               el.style.left = el.dataset.originalLeft;
@@ -272,6 +304,7 @@
           if (customLine && customLine.dataset.originalLeft) {
             customLine.style.left = customLine.dataset.originalLeft;
           }
+
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             setTimeout(() => {
@@ -301,6 +334,7 @@
       }
     });
     
+    // Slide triggers for your original "animate-slide" / "animate-grid" toggles
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -315,6 +349,7 @@
       document.querySelector('.other-content').classList.add('animate-grid');
     });
     
+    // Chat logic (unchanged)
     const chatText = document.getElementById('chatText');
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
@@ -341,8 +376,19 @@
       chatText.replaceWith(chatInput);
       chatInput.focus();
     });
-
+    
     // Submenu logic (unchanged)
+    function addNewText(text, top, left) {
+      let span = document.createElement("span");
+      span.className = "custom-text new-text";
+      span.style.top = top + "vh";
+      span.style.left = left + "vw";
+      span.textContent = text;
+      document.querySelector(".other-content").appendChild(span);
+      setTimeout(() => {
+        span.classList.add("visible");
+      }, 10);
+    }
     let currentMenu = null;
     function closeSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
@@ -357,17 +403,6 @@
         newTexts.forEach(span => span.remove());
         currentMenu = null;
       }, 300);
-    }
-    function addNewText(text, top, left) {
-      let span = document.createElement("span");
-      span.className = "custom-text new-text";
-      span.style.top = top + "vh";
-      span.style.left = left + "vw";
-      span.textContent = text;
-      document.querySelector(".other-content").appendChild(span);
-      setTimeout(() => {
-        span.classList.add("visible");
-      }, 10);
     }
     function openOnlineAssets() {
       document.getElementById("linkup-center").classList.add("slide-down");

@@ -29,18 +29,18 @@
         1nTERnAL Un1T:
       </span>
 
-      <!-- New submenu items at specified positions -->
-      <span class="custom-text menu-item" style="top:36.1vh; left:40.49vw;">cMS</span>
-      <span class="custom-text menu-item" style="top:36vh; left:44.49vw;">LMS</span>
+      <!-- New submenu items with .submenu-item for fade-in/out behavior -->
+      <span class="custom-text menu-item submenu-item" style="top:36.1vh; left:40.49vw;">cMS</span>
+      <span class="custom-text menu-item submenu-item" style="top:36vh; left:44.49vw;">LMS</span>
       
-      <span class="custom-text menu-item" style="top:43.2vh; left:40.49vw;">cOM</span>
-      <span class="custom-text menu-item" style="top:43.2vh; left:44.49vw;">HR</span>
+      <span class="custom-text menu-item submenu-item" style="top:43.2vh; left:40.49vw;">cOM</span>
+      <span class="custom-text menu-item submenu-item" style="top:43.2vh; left:44.49vw;">HR</span>
       
-      <span class="custom-text menu-item" style="top:50.3vh; left:40.49vw;">cRM</span>
-      <span class="custom-text menu-item" style="top:50.3vh; left:44.49vw;">PM</span>
+      <span class="custom-text menu-item submenu-item" style="top:50.3vh; left:40.49vw;">cRM</span>
+      <span class="custom-text menu-item submenu-item" style="top:50.3vh; left:44.49vw;">PM</span>
       
-      <span class="custom-text menu-item" style="top:57.4vh; left:40.49vw;">1nV</span>
-      <span class="custom-text menu-item" style="top:57.4vh; left:44.49vw;">1T</span>
+      <span class="custom-text menu-item submenu-item" style="top:57.4vh; left:40.49vw;">1nV</span>
+      <span class="custom-text menu-item submenu-item" style="top:57.4vh; left:44.49vw;">1T</span>
     </div>
 
     <!-- The covering layer -->
@@ -227,19 +227,27 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "menu") {
-          // Slide menu items back
-          document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-            el.classList.remove('menu-slide');
+          // 1) Fade out submenu items first, quickly
+          document.querySelectorAll('.submenu-item').forEach(el => {
+            el.style.transition = "opacity 0.1s ease";
+            el.classList.remove('show'); // sets them to opacity:0
           });
-          document.querySelector('.menu-items').classList.remove('raised');
-          const chatTextEl = document.getElementById('chatText');
-          if (chatTextEl) {
-            setTimeout(() => {
-              chatTextEl.style.transition = "opacity 0.7s ease";
-              chatTextEl.style.opacity = "1";
-            }, 700);
-          }
-          slideState = "none";
+
+          // 2) Then remove the menu-slide after a short delay
+          setTimeout(() => {
+            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+              el.classList.remove('menu-slide');
+            });
+            document.querySelector('.menu-items').classList.remove('raised');
+            const chatTextEl = document.getElementById('chatText');
+            if (chatTextEl) {
+              setTimeout(() => {
+                chatTextEl.style.transition = "opacity 0.7s ease";
+                chatTextEl.style.opacity = "1";
+              }, 700);
+            }
+            slideState = "none";
+          }, 100);
 
         } else if (slideState === "heading" || slideState === "account") {
           // Slide headings & accounts out
@@ -406,6 +414,21 @@
       chatInput.id = 'chatText';
       chatText.replaceWith(chatInput);
       chatInput.focus();
+    });
+
+    // --- Submenu fade-in on hover: If user hovers ANY .submenu-item, show them all
+    const submenuItems = document.querySelectorAll('.submenu-item');
+    submenuItems.forEach(item => {
+      item.addEventListener('mouseenter', () => {
+        // If the menu is currently slid in (slideState==="menu"), let them fade in
+        if (slideState === "menu") {
+          submenuItems.forEach(el => {
+            // Use the normal 0.4s transition for fade-in
+            el.style.transition = "opacity 0.4s ease";
+            el.classList.add('show'); 
+          });
+        }
+      });
     });
   </script>
 </body>

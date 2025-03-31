@@ -59,7 +59,7 @@ body.non-fullscreen {
     height: 100vh;
 }
 
-/* ----- Main menu items (unchanged, but we add transform transitions for .menu-item) ----- */
+/* ----- Main menu items ----- */
 .menu-items {
     position: absolute;
     top: 0;
@@ -99,7 +99,7 @@ body.non-fullscreen {
     z-index: 3;
 }
 
-/* ----- Slide triggers (unchanged) ----- */
+/* ----- Slide triggers ----- */
 .slide-triggers {
     position: fixed;
     top: 0;
@@ -420,4 +420,17 @@ body.non-fullscreen {
     direction: rtl;
     text-align: right;
     white-space: nowrap;
+}
+
+/* 
+   Submenu fade logic:
+   .submenu-item starts at opacity:0. 
+   .submenu-item.show => transitions to opacity:1 
+*/
+.submenu-item {
+    opacity: 0;
+    transition: opacity 0.4s ease;  /* default fade duration */
+}
+.submenu-item.show {
+    opacity: 1;
 }

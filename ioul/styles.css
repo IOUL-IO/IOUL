@@ -58,7 +58,6 @@ body.non-fullscreen {
     height: 100vh;
 }
 
-/* Menu items */
 .menu-items {
     position: absolute;
     top: 0;
@@ -71,11 +70,11 @@ body.non-fullscreen {
 .menu-items.raised {
     z-index: 4;
 }
+/* Smooth transform for menu items */
 .menu-items .menu-item {
     pointer-events: auto;
-    transition: transform 0.7s ease; /* Smooth both directions */
+    transition: transform 0.7s ease;
 }
-
 .layer-four {
     position: absolute;
     top: 28.5vh;
@@ -264,7 +263,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* Grid numbers */
+/* Grid numbers 1–16 */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -291,7 +290,7 @@ body.non-fullscreen {
 .num15 { top: 83.7vh; left: 138.0vw; }
 .num16 { top: 83.7vh; left: 152.8vw; }
 
-/* Additional dashed lines for 1-16 */
+/* Extra dashed lines 1–16 */
 .grid-dashed {
     position: absolute;
     height: 1px;
@@ -317,7 +316,6 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
-/* The "slide in" for dashed/time texts => animate-slide => transformX(-91vw) */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -333,7 +331,6 @@ body.non-fullscreen {
     transform: translateX(-91vw);
 }
 
-/* The "slide in" for grid-number & grid-dashed => animate-grid => transformX(-60vw) */
 .other-content.animate-grid .grid-number,
 .other-content.animate-grid .grid-dashed {
     transform: translateX(-60vw);
@@ -361,7 +358,7 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
-/* Sliding the main menu items */
+/* Menu slide items */
 .menu-slide {
     transform: translateX(-22.59vw);
 }
@@ -380,12 +377,17 @@ body.non-fullscreen {
     opacity: 1;
 }
 
-/* 
-   We no longer rely on left transitions for these pinned items. 
-   Instead, .account-container is pinned at left:28.91vw
-   and slides by transform. 
-   They share transform 0.7s => all begin & end in sync.
+/*
+   HEADINGS => pinned at left:6.41vw 
+   ACCOUNTS => pinned at left:28.91vw 
+   Both have negative offset transforms. 
+   0.7s transition => they finish at exactly same time.
 */
+.heading-container {
+    position: absolute;
+    overflow: visible;
+    transition: transform 0.7s ease; 
+}
 .account-container {
     position: absolute;
     overflow: visible;
@@ -393,9 +395,8 @@ body.non-fullscreen {
 }
 
 /* 
-   .right-flow ensures direction: rtl
-   so new chars push old ones left. 
-   Also no wrapping. 
+   right-flow => direction: rtl 
+   so new characters appear on the left side 
 */
 .right-flow {
     direction: rtl;

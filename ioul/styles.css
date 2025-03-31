@@ -58,6 +58,7 @@ body.non-fullscreen {
     height: 100vh;
 }
 
+/* Menu items */
 .menu-items {
     position: absolute;
     top: 0;
@@ -70,10 +71,9 @@ body.non-fullscreen {
 .menu-items.raised {
     z-index: 4;
 }
-/* So menu-slide is smooth in both directions */
 .menu-items .menu-item {
     pointer-events: auto;
-    transition: transform 0.7s ease;
+    transition: transform 0.7s ease; /* Smooth both directions */
 }
 
 .layer-four {
@@ -264,7 +264,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* Grid numbers 1-16 */
+/* Grid numbers */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -291,6 +291,7 @@ body.non-fullscreen {
 .num15 { top: 83.7vh; left: 138.0vw; }
 .num16 { top: 83.7vh; left: 152.8vw; }
 
+/* Additional dashed lines for 1-16 */
 .grid-dashed {
     position: absolute;
     height: 1px;
@@ -316,6 +317,7 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
+/* The "slide in" for dashed/time texts => animate-slide => transformX(-91vw) */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -331,13 +333,12 @@ body.non-fullscreen {
     transform: translateX(-91vw);
 }
 
-/* The old .animate-grid => translates the .grid-number and .grid-dashed by -60vw */
+/* The "slide in" for grid-number & grid-dashed => animate-grid => transformX(-60vw) */
 .other-content.animate-grid .grid-number,
 .other-content.animate-grid .grid-dashed {
     transform: translateX(-60vw);
 }
 
-/* Our custom-text items still can shift around if needed, as before */
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -360,7 +361,7 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
-/* Sliding main menu items, as original */
+/* Sliding the main menu items */
 .menu-slide {
     transform: translateX(-22.59vw);
 }
@@ -371,7 +372,6 @@ body.non-fullscreen {
     transform: translateY(10vh);
 }
 
-/* For new/fading text */
 .new-text {
     opacity: 0;
     transition: opacity 0.7s ease;
@@ -380,14 +380,11 @@ body.non-fullscreen {
     opacity: 1;
 }
 
-/* We keep the original left 0.7s ease for .other-content > .custom-text:not(.menu-item) */
-.other-content > .custom-text:not(.menu-item) {
-    transition: left 0.7s ease;
-}
-
 /* 
-   .account-container => pinned at left:28.91vw, starts transform: -XXvw
-   Animate transform to 0 for a smooth slide in ~0.7s 
+   We no longer rely on left transitions for these pinned items. 
+   Instead, .account-container is pinned at left:28.91vw
+   and slides by transform. 
+   They share transform 0.7s => all begin & end in sync.
 */
 .account-container {
     position: absolute;
@@ -396,9 +393,9 @@ body.non-fullscreen {
 }
 
 /* 
-   Right-flow => direction: rtl 
-   so new chars appear on the left side 
-   and "0" doesn't wrap onto its own line
+   .right-flow ensures direction: rtl
+   so new chars push old ones left. 
+   Also no wrapping. 
 */
 .right-flow {
     direction: rtl;

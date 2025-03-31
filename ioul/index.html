@@ -13,12 +13,21 @@
   <div class="layer-three"></div>
 
   <div class="page-content">
-    <!-- Main menu items (unchanged) -->
+    <!-- Main menu items -->
     <div class="menu-items">
-      <span class="custom-text menu-item" style="top: 36.1vh; left: 29vw;" id="online-assets">OnL1nE ASSETS</span>
-      <span class="custom-text menu-item" style="top: 43.2vh; left: 29vw;" id="linkup-center">L1nKUP cEnTER</span>
-      <span class="custom-text menu-item" style="top: 50.3vh; left: 29vw;" id="delivery-line">DEL1VERY L1nE</span>
-      <span class="custom-text menu-item" style="top: 57.4vh; left: 29vw;" id="internal-unit">1nTERnAL Un1T</span>
+      <!-- We add an explicit transition to each .menu-item in CSS -->
+      <span class="custom-text menu-item" style="top: 36.1vh; left: 29vw;" id="online-assets">
+        OnL1nE ASSETS
+      </span>
+      <span class="custom-text menu-item" style="top: 43.2vh; left: 29vw;" id="linkup-center">
+        L1nKUP cEnTER
+      </span>
+      <span class="custom-text menu-item" style="top: 50.3vh; left: 29vw;" id="delivery-line">
+        DEL1VERY L1nE
+      </span>
+      <span class="custom-text menu-item" style="top: 57.4vh; left: 29vw;" id="internal-unit">
+        1nTERnAL Un1T
+      </span>
     </div>
 
     <!-- The covering layer -->
@@ -55,10 +64,10 @@
       <span class="custom-text" style="top: 72.6vh; left: -42.59vw;">YOUR JOBS</span>
 
       <!-- 
-        6 account items, each wrapped in .account-container
-        Start at negative left. Slide by +49vw in JS. 
-        Then fix width so right edge is pinned at left: 28.81vw. 
-        .right-flow => direction:rtl 
+        6 account items: each is an .account-container 
+        with a .right-flow span inside
+        The container starts at negative left, 
+        so we store that in data-originalLeft. 
       -->
       <div class="account-container" style="top: 35.4vh; left: -25.62vw;" data-slide-group="account">
         <span class="custom-text right-flow" style="position: absolute; right: 0;">
@@ -129,8 +138,37 @@
     });
     
     let slideState = "none";
-    
-    // ----- Region: Left 0–6.37vw => triggers the account slide -----
+
+    // Helper: measure text width in VW
+    // We'll measure the <span> in px, then convert to vw
+    function measureTextVw(spanElement) {
+      // force it to be visible in the DOM
+      spanElement.style.visibility = 'hidden';
+      spanElement.style.position = 'absolute';
+      document.body.appendChild(spanElement);
+
+      const pxWidth = spanElement.offsetWidth;  // in px
+      const vwWidth = (pxWidth / window.innerWidth) * 100; // convert to vw
+
+      document.body.removeChild(spanElement);
+      return vwWidth;
+    }
+
+    // Compute final left so that the container's right edge = 28.81vw
+    // We'll measure the text's offsetWidth in VW first,
+    // then finalLeft = 28.81 - textWidthVw
+    function computeFinalLeftForBox(box) {
+      // clone the .right-flow span so we can measure it
+      const span = box.querySelector('.right-flow').cloneNode(true);
+      // measure in VW
+      const textWidthVw = measureTextVw(span);
+
+      // finalLeft = 28.81 - textWidthVw
+      const finalLeft = 28.81 - textWidthVw;
+      return finalLeft;
+    }
+
+    // Region: Left 0–6.37vw => triggers the account slide
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
@@ -148,6 +186,7 @@
             el.classList.remove('menu-slide');
           });
           document.querySelector('.menu-items').classList.remove('raised');
+
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             setTimeout(() => {
@@ -156,8 +195,9 @@
             }, 700);
           }
           slideState = "none";
+
         } else if (slideState === "account") {
-          // Slide account items back
+          // Slide account items back to original
           document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
             if (el.dataset.originalLeft) {
               el.style.left = el.dataset.originalLeft;
@@ -168,7 +208,7 @@
             if (box.dataset.originalLeft) {
               box.style.left = box.dataset.originalLeft;
             }
-            // Remove the width so it doesn't clip text
+            // no forced width
             box.style.width = '';
           });
 
@@ -184,30 +224,34 @@
             }, 700);
           }
           slideState = "none";
+
         } else if (slideState === "none") {
-          // Slide the account items to the right (+49vw)
+          // Slide the account items to their final positions in one smooth transition
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
             chatTextEl.style.opacity = "0";
 
             setTimeout(() => {
-              // Save original left if not set, then shift each item
+              // Save original left if needed
               document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
                 if (!el.dataset.originalLeft) {
                   el.dataset.originalLeft = el.style.left;
                 }
+                // Slide +49vw or whatever your original approach was
                 let original = parseFloat(el.dataset.originalLeft);
                 el.style.left = (original + 49) + "vw";
               });
 
-              // Slide each .account-container
+              // For each .account-container, compute the final left so its RIGHT edge is 28.81
               document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
                 if (!box.dataset.originalLeft) {
                   box.dataset.originalLeft = box.style.left;
                 }
-                let originalBoxLeft = parseFloat(box.dataset.originalLeft);
-                box.style.left = (originalBoxLeft + 49) + "vw";
+                const finalLeftVw = computeFinalLeftForBox(box);
+                // Slide from negative left to finalLeft in one go
+                box.style.left = finalLeftVw + 'vw';
+                // We'll let .right-flow overflow if needed
               });
 
               const customLine = document.querySelector('.custom-line');
@@ -219,11 +263,6 @@
                 customLine.style.left = (originalLine + 49) + "vw";
               }
 
-              // After the 0.7s transition, fix the right edge at 28.81vw
-              setTimeout(() => {
-                fixAccountRightEdges();
-              }, 700);
-
             }, 110);
           }
           slideState = "account";
@@ -231,7 +270,7 @@
       }
     });
     
-    // ----- Region: Left 28.86–32.43vw => triggers the menu items -----
+    // Region: Left 28.86–32.43vw => triggers the menu items
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
@@ -272,6 +311,7 @@
             }, 700);
           }
           slideState = "none";
+
         } else if (slideState === "none") {
           // Slide menu items in
           const chatTextEl = document.getElementById('chatText');
@@ -332,21 +372,6 @@
       chatText.replaceWith(chatInput);
       chatInput.focus();
     });
-
-    // Once the account containers have slid +49vw, we fix their widths 
-    // so each right edge is pinned at left: 28.81vw.
-    function fixAccountRightEdges() {
-      const accountBoxes = document.querySelectorAll('.account-container[data-slide-group="account"]');
-      accountBoxes.forEach(box => {
-        // read its final left
-        const finalLeftVw = parseFloat(box.style.left) || 0;
-        // compute needed width
-        const neededWidth = 28.81 - finalLeftVw;
-        if (neededWidth > 0) {
-          box.style.width = neededWidth + 'vw';
-        }
-      });
-    }
 
     // Submenu logic (unchanged)
     let currentMenu = null;

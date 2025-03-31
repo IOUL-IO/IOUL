@@ -70,8 +70,13 @@ body.non-fullscreen {
 .menu-items.raised {
     z-index: 4;
 }
+/* 
+   Give the menu items a transition for transform 
+   so toggling .menu-slide is smooth in BOTH directions 
+*/
 .menu-items .menu-item {
     pointer-events: auto;
+    transition: transform 0.7s ease; 
 }
 
 .layer-four {
@@ -356,10 +361,9 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
-/* Sliding main menu items with updated slide-down amount */
+/* Sliding main menu items */
 .menu-slide {
     transform: translateX(-22.59vw);
-    transition: transform 0.7s ease;
 }
 .menu-items .menu-item.menu-slide.slide-down {
     transform: translate(-22.59vw, 10vh);
@@ -376,10 +380,7 @@ body.non-fullscreen {
     opacity: 1;
 }
 
-/* The container for each account item, also transitions left for a smooth slide */
-.other-content > .custom-text:not(.menu-item) {
-    transition: left 0.7s ease;
-}
+/* The container for each account item, also transitions left smoothly */
 .account-container {
     position: absolute;
     overflow: visible;
@@ -387,11 +388,11 @@ body.non-fullscreen {
 }
 
 /*
-   Ensure text doesn't break onto a new line 
-   if the container is narrower than the text 
+   Keep text on a single line in .right-flow
+   so "i-cHAT: 0" doesn't break around the colon
 */
 .right-flow {
     direction: rtl;
     text-align: right;
-    white-space: nowrap; /* <--- Keep “i-cHAT: 0” on one line */
+    white-space: nowrap;
 }

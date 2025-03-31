@@ -70,13 +70,10 @@ body.non-fullscreen {
 .menu-items.raised {
     z-index: 4;
 }
-/* 
-   Give the menu items a transition for transform 
-   so toggling .menu-slide is smooth in BOTH directions 
-*/
+/* Smooth both directions */
 .menu-items .menu-item {
     pointer-events: auto;
-    transition: transform 0.7s ease; 
+    transition: transform 0.7s ease;
 }
 
 .layer-four {
@@ -361,9 +358,9 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
-/* Sliding main menu items */
 .menu-slide {
     transform: translateX(-22.59vw);
+    transition: transform 0.7s ease;
 }
 .menu-items .menu-item.menu-slide.slide-down {
     transform: translate(-22.59vw, 10vh);
@@ -380,16 +377,20 @@ body.non-fullscreen {
     opacity: 1;
 }
 
-/* The container for each account item, also transitions left smoothly */
+/* 
+   Each account-container is pinned at left:28.81vw and 
+   starts with transform: translateX(...) offscreen. 
+   We also add a transition so the transform animates smoothly.
+*/
 .account-container {
     position: absolute;
     overflow: visible;
-    transition: left 0.7s ease;
+    transition: transform 0.7s ease; /* Smooth transform from offscreen to 0 */
 }
 
 /*
-   Keep text on a single line in .right-flow
-   so "i-cHAT: 0" doesn't break around the colon
+   Right-to-left flow and no wrapping so "i-cHAT: 0" stays on one line
+   and new chars appear to the left. 
 */
 .right-flow {
     direction: rtl;

@@ -15,7 +15,7 @@
   <div class="page-content">
     <!-- Main menu items -->
     <div class="menu-items">
-      <!-- Original 4 main menu items (unchanged) -->
+      <!-- The four main menu items -->
       <span class="custom-text menu-item" style="top:36.1vh; left:29vw;" id="online-assets">
         OnL1nE ASSETS:
       </span>
@@ -28,25 +28,6 @@
       <span class="custom-text menu-item" style="top:57.4vh; left:29vw;" id="internal-unit">
         1nTERnAL Un1T:
       </span>
-
-      <!-- New submenu items with .submenu-item for fade-in/out behavior -->
-      <span class="custom-text menu-item submenu-item" style="top:36.1vh; left:40.49vw;">cMS</span>
-      <span class="custom-text menu-item submenu-item" style="top:36vh; left:44.49vw;">LMS</span>
-      <span class="custom-text menu-item submenu-item" style="top:36vh; left:48.79vw;">WEB</span>
-
-      
-      <span class="custom-text menu-item submenu-item" style="top:43.2vh; left:40.49vw;">cOM</span>
-      <span class="custom-text menu-item submenu-item" style="top:43.2vh; left:44.49vw;">JOB</span>
-      <span class="custom-text menu-item submenu-item" style="top:43.2vh; left:48.79vw;">HR</span>
-
-      
-      <span class="custom-text menu-item submenu-item" style="top:50.3vh; left:40.49vw;">cRM</span>
-      <span class="custom-text menu-item submenu-item" style="top:50.3vh; left:44.49vw;">OPS</span>
-      <span class="custom-text menu-item submenu-item" style="top:50.3vh; left:48.79vw;">PM</span>
-      
-      <span class="custom-text menu-item submenu-item" style="top:57.4vh; left:40.49vw;">1nV</span>
-      <span class="custom-text menu-item submenu-item" style="top:57.4vh; left:44.49vw;">FMS</span>
-      <span class="custom-text menu-item submenu-item" style="top:57.4vh; left:48.79vw;">1T</span>
     </div>
 
     <!-- The covering layer -->
@@ -109,7 +90,7 @@
       <span class="grid-dashed dashed15"></span>
       <span class="grid-dashed dashed16"></span>
 
-      <!-- HEADINGS group -->
+      <!-- HEADINGS group (unchanged) -->
       <div class="heading-container"
            style="top:35.4vh; left:6.41vw; transform:translateX(-49vw);"
            data-offset="-49" data-slide-group="heading">
@@ -141,7 +122,7 @@
         <span class="custom-text heading-flow">LEAgUES</span>
       </div>
 
-      <!-- ACCOUNT group -->
+      <!-- ACCOUNT group (unchanged) -->
       <div class="account-container"
            style="top:35.4vh; left:28.91vw; transform:translateX(-49vw);"
            data-offset="-49" data-slide-group="account">
@@ -195,7 +176,13 @@
   </div>
 
   <script>
-    /* --- Fade-in & fullscreen behavior (unchanged) --- */
+    /*
+      Everything else is your normal code: fade-in, headings, etc.
+      We're just adding submenu logic for OnL1nE ASSETS, L1nKUP cEnTER,
+      DEL1VERY L1nE, and 1nTERnAL Un1T.
+    */
+
+    /* --- Fade-in & fullscreen behavior --- */
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -217,10 +204,9 @@
       }
     });
 
-    /* --- Menu toggling logic (unchanged) --- */
     let slideState = "none";
 
-    // Region: Left 0–6.37vw => toggles headings + accounts out/in
+    // Region: Left 0–6.37vw => toggles headings + accounts
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
@@ -233,37 +219,29 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "menu") {
-          // 1) Fade out submenu items first, quickly
-          document.querySelectorAll('.submenu-item').forEach(el => {
-            el.style.transition = "opacity 0.1s ease";
-            el.classList.remove('show'); // sets them to opacity:0
+          // Slide menu items back
+          document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+            el.classList.remove('menu-slide');
           });
-
-          // 2) Then remove the menu-slide after a short delay
-          setTimeout(() => {
-            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-              el.classList.remove('menu-slide');
-            });
-            document.querySelector('.menu-items').classList.remove('raised');
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              setTimeout(() => {
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            slideState = "none";
-          }, 100);
+          document.querySelector('.menu-items').classList.remove('raised');
+          const chatTextEl = document.getElementById('chatText');
+          if (chatTextEl) {
+            setTimeout(() => {
+              chatTextEl.style.transition = "opacity 0.7s ease";
+              chatTextEl.style.opacity = "1";
+            }, 700);
+          }
+          slideState = "none";
 
         } else if (slideState === "heading" || slideState === "account") {
-          // Slide headings & accounts out
+          // Slide them out
           document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
             box.style.transform = `translateX(${box.dataset.offset}vw)`;
           });
           document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
             box.style.transform = `translateX(${box.dataset.offset}vw)`;
           });
-          // Restore other .custom-text
+          // restore any .custom-text positions
           document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
             if (el.dataset.originalLeft) {
               el.style.left = el.dataset.originalLeft;
@@ -305,22 +283,20 @@
                 customLine.style.left = (originalLine + 49) + "vw";
               }
 
-              // Headings => transform: translateX(0)
               document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
                 box.style.transform = "translateX(0)";
               });
-              // Accounts => transform: translateX(0)
               document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
                 box.style.transform = "translateX(0)";
               });
             }, 110);
           }
-          slideState = "heading"; // or "both"
+          slideState = "heading";
         }
       }
     });
 
-    // Region: Left 28.86–32.43vw => toggles menu items
+    // Region: Left 28.86–32.43vw => toggles main menu in/out
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
@@ -361,7 +337,7 @@
           slideState = "none";
 
         } else if (slideState === "none") {
-          // Slide menu items in
+          // Slide menu in
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
@@ -380,7 +356,7 @@
       }
     });
 
-    // Slide triggers for animate-slide / animate-grid (unchanged)
+    // Slide triggers for animate-slide / animate-grid
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -394,7 +370,7 @@
       document.querySelector('.other-content').classList.add('animate-grid');
     });
 
-    // Chat logic (unchanged)
+    // Chat logic
     const chatText = document.getElementById('chatText');
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
@@ -422,19 +398,161 @@
       chatInput.focus();
     });
 
-    // --- Submenu fade-in on hover: If user hovers ANY .submenu-item, show them all
-    const submenuItems = document.querySelectorAll('.submenu-item');
-    submenuItems.forEach(item => {
-      item.addEventListener('mouseenter', () => {
-        // If the menu is currently slid in (slideState==="menu"), let them fade in
-        if (slideState === "menu") {
-          submenuItems.forEach(el => {
-            // Use the normal 0.4s transition for fade-in
-            el.style.transition = "opacity 0.4s ease";
-            el.classList.add('show'); 
-          });
-        }
+    /* ------------------------------------------------------------------
+       Submenu logic for main menu items (re-implemented slide-down, etc.)
+       This uses the older approach: open/close submenus dynamically.
+    ------------------------------------------------------------------ */
+    let currentMenu = null; // tracks which main menu is currently open (if any)
+
+    function closeSubmenu() {
+      // 1) Slide back down the other main items
+      document.getElementById("linkup-center").classList.remove("slide-down");
+      document.getElementById("delivery-line").classList.remove("slide-down");
+      document.getElementById("internal-unit").classList.remove("slide-down");
+      // 2) remove the newly created text items
+      const newTexts = document.querySelectorAll('.new-text');
+      newTexts.forEach(span => {
+        span.style.transition = 'opacity 0.3s ease';
+        span.classList.remove('visible');
       });
+      setTimeout(() => {
+        newTexts.forEach(span => span.remove());
+        currentMenu = null;
+      }, 300);
+    }
+
+    function addNewText(text, topVH, leftVW) {
+      const span = document.createElement("span");
+      span.className = "custom-text new-text";
+      span.style.top = topVH + "vh";
+      span.style.left = leftVW + "vw";
+      span.textContent = text;
+      document.querySelector(".other-content").appendChild(span);
+      // fade in
+      setTimeout(() => {
+        span.classList.add("visible");
+      }, 10);
+    }
+
+    function openOnlineAssets() {
+      // Slide down #linkup-center, #delivery-line, #internal-unit by 7vh
+      document.getElementById("linkup-center").classList.add("slide-down");
+      document.getElementById("delivery-line").classList.add("slide-down");
+      document.getElementById("internal-unit").classList.add("slide-down");
+      // Create cMS, LMS, WEB => top=39.1 => left=7.1, 11.1, 14.1
+      setTimeout(() => {
+        addNewText("cMS", 39.1, 7.1);
+        addNewText("LMS", 39.1, 11.1);
+        addNewText("WEB", 39.1, 14.1);
+      }, 700);
+    }
+
+    function openLinkupCenter() {
+      // Slide down #delivery-line, #internal-unit by 7vh
+      document.getElementById("delivery-line").classList.add("slide-down");
+      document.getElementById("internal-unit").classList.add("slide-down");
+      // Create cOM, JOB, HR => top=46.2 => left=7.1, 11.1, 14.1
+      setTimeout(() => {
+        addNewText("cOM", 46.2, 7.1);
+        addNewText("JOB", 46.2, 11.1);
+        addNewText("HR", 46.2, 14.1);
+      }, 700);
+    }
+
+    function openDeliveryLine() {
+      // Slide down #internal-unit by 7vh
+      document.getElementById("internal-unit").classList.add("slide-down");
+      // Create cRM, OPS, PM => top=53.3 => left=7.1, 11.1, 14.1
+      setTimeout(() => {
+        addNewText("cRM", 53.3, 7.1);
+        addNewText("OPS", 53.3, 11.1);
+        addNewText("PM", 53.3, 14.1);
+      }, 700);
+    }
+
+    function openInternalUnit() {
+      // No items below it, so just create the 3 items for top=60.4 => left=7.1, 11.1, 14.1
+      setTimeout(() => {
+        addNewText("1nV", 60.4, 7.1);
+        addNewText("FMS", 60.4, 11.1);
+        addNewText("1T", 60.4, 14.1);
+      }, 700);
+    }
+
+    // Hook each main menu item
+    document.getElementById("online-assets").addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (currentMenu === "online-assets") {
+        // close if already open
+        closeSubmenu();
+      } else {
+        // close any other open first
+        if (currentMenu !== null) {
+          closeSubmenu();
+          // then open after slight delay
+          setTimeout(() => {
+            openOnlineAssets();
+            currentMenu = "online-assets";
+          }, 300);
+        } else {
+          openOnlineAssets();
+          currentMenu = "online-assets";
+        }
+      }
+    });
+
+    document.getElementById("linkup-center").addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (currentMenu === "linkup-center") {
+        closeSubmenu();
+      } else {
+        if (currentMenu !== null) {
+          closeSubmenu();
+          setTimeout(() => {
+            openLinkupCenter();
+            currentMenu = "linkup-center";
+          }, 300);
+        } else {
+          openLinkupCenter();
+          currentMenu = "linkup-center";
+        }
+      }
+    });
+
+    document.getElementById("delivery-line").addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (currentMenu === "delivery-line") {
+        closeSubmenu();
+      } else {
+        if (currentMenu !== null) {
+          closeSubmenu();
+          setTimeout(() => {
+            openDeliveryLine();
+            currentMenu = "delivery-line";
+          }, 300);
+        } else {
+          openDeliveryLine();
+          currentMenu = "delivery-line";
+        }
+      }
+    });
+
+    document.getElementById("internal-unit").addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (currentMenu === "internal-unit") {
+        closeSubmenu();
+      } else {
+        if (currentMenu !== null) {
+          closeSubmenu();
+          setTimeout(() => {
+            openInternalUnit();
+            currentMenu = "internal-unit";
+          }, 300);
+        } else {
+          openInternalUnit();
+          currentMenu = "internal-unit";
+        }
+      }
     });
   </script>
 </body>

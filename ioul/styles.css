@@ -379,10 +379,10 @@ body.non-fullscreen {
     transform: translateX(-22.59vw);
 }
 .menu-items .menu-item.menu-slide.slide-down {
-    transform: translate(-22.59vw, 10vh);
+    transform: translate(-22.59vw, 7vh);
 }
 .slide-down {
-    transform: translateY(10vh);
+    transform: translateY(7vh);
 }
 
 /* For newly added items that fade in (submenus, etc.) */

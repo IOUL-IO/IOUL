@@ -33,7 +33,7 @@
     <!-- The covering layer -->
     <div class="layer-four"></div>
 
-    <!-- Container for all other content (unchanged) -->
+    <!-- Container for all other content -->
     <div class="other-content">
       <div class="line original"></div>
       <div class="line second"></div>
@@ -168,31 +168,131 @@
 
       <div class="custom-line" style="left: -42.59vw;"></div>
 
-      <!-- 
-        BELOW THIS POINT: The NEW items requested 
-        (none of the existing code is changed)
-      -->
+      <!-- ===================================== -->
+      <!-- 1) Four new "community texts" (like .custom-text but not .custom-text class) -->
+      <span 
+        style="
+          position: absolute; 
+          top: 35.4vh; left: 6.41vw;
+          font-family: 'Distill Expanded', sans-serif;
+          color: #111111;
+          letter-spacing: 0.28vw;
+          font-size: 0.47rem;
+          text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+          line-height: 1.6;
+          overflow: visible;
+          transition: transform 0.7s ease;
+        "
+      >cOMMUn1T1ES</span>
 
-      <!-- "community area" texts (identical to .custom-text) -->
-      <span class="custom-text" style="top:35.4vh; left:6.41vw;">cOMMUn1T1ES</span>
-      <span class="custom-text" style="top:41.6vh; left:6.41vw;">UPDATES L1ST</span>
-      <span class="custom-text" style="top:54vh; left:6.41vw;">APP SHOP</span>
-      <span class="custom-text" style="top:60.2vh; left:6.41vw;">1-L1BRARY</span>
-      <span class="custom-text" style="top:72.6vh; left:6.41vw;">1OUL cEnTER</span>
+      <span 
+        style="
+          position: absolute;
+          top: 41.6vh; left: 6.41vw;
+          font-family: 'Distill Expanded', sans-serif;
+          color: #111111;
+          letter-spacing: 0.28vw;
+          font-size: 0.47rem;
+          text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+          line-height: 1.6;
+          overflow: visible;
+          transition: transform 0.7s ease;
+        "
+      >UPDATE L1ST</span>
 
-      <!-- Two new "custom-line" lines -->
-      <div class="custom-line" 
-           style="top:47.8vh; left:6.41vw; width:22.48vw;"></div>
-      <div class="custom-line" 
-           style="top:66.4vh; left:6.41vw; width:22.48vw;"></div>
+      <span 
+        style="
+          position: absolute;
+          top: 53vh; left: 6.41vw;
+          font-family: 'Distill Expanded', sans-serif;
+          color: #111111;
+          letter-spacing: 0.28vw;
+          font-size: 0.47rem;
+          text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+          line-height: 1.6;
+          overflow: visible;
+          transition: transform 0.7s ease;
+        "
+      >ADD-On SHOP</span>
 
-      <!-- Two new right-flow texts -->
-      <span class="custom-text right-flow" style="top:35.4vh; left:20.09vw; position:absolute;">
-        0
-      </span>
-      <span class="custom-text right-flow" style="top:41.6vh; left:20.09vw; position:absolute;">
-        0
-      </span>
+      <span 
+        style="
+          position: absolute;
+          top: 59.2vh; left: 6.41vw;
+          font-family: 'Distill Expanded', sans-serif;
+          color: #111111;
+          letter-spacing: 0.28vw;
+          font-size: 0.47rem;
+          text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+          line-height: 1.6;
+          overflow: visible;
+          transition: transform 0.7s ease;
+        "
+      >1OUL cEnTER</span>
+
+      <!-- ===================================== -->
+      <!-- 2) Two new lines (like .custom-line) -->
+      <div 
+        style="
+          position: absolute; 
+          top: 47.8vh; 
+          left: 6.41vw; 
+          width: 22.48vw; 
+          height: 1px;
+          background-color: rgba(230, 230, 230, 0.28);
+          transition: left 0.7s ease, transform 0.7s ease;
+        "
+      ></div>
+
+      <div 
+        style="
+          position: absolute; 
+          top: 66.4vh; 
+          left: 6.41vw; 
+          width: 22.48vw; 
+          height: 1px;
+          background-color: rgba(230, 230, 230, 0.28);
+          transition: left 0.7s ease, transform 0.7s ease;
+        "
+      ></div>
+
+      <!-- ===================================== -->
+      <!-- 3) Two new right-flow texts saying "0" -->
+      <span
+        style="
+          position: absolute; 
+          top: 35.4vh; left: 27.01vw;
+          direction: rtl;
+          text-align: right;
+          white-space: nowrap;
+          font-family: 'Distill Expanded', sans-serif;
+          color: #111111;
+          letter-spacing: 0.28vw;
+          font-size: 0.47rem;
+          text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+          line-height: 1.6;
+          overflow: visible;
+          transition: transform 0.7s ease;
+        "
+      >0</span>
+
+      <span
+        style="
+          position: absolute; 
+          top: 41.6vh; left: 27.01vw;
+          direction: rtl;
+          text-align: right;
+          white-space: nowrap;
+          font-family: 'Distill Expanded', sans-serif;
+          color: #111111;
+          letter-spacing: 0.28vw;
+          font-size: 0.47rem;
+          text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
+          line-height: 1.6;
+          overflow: visible;
+          transition: transform 0.7s ease;
+        "
+      >0</span>
 
     </div>
   </div>
@@ -203,12 +303,7 @@
   </div>
 
   <script>
-    /*
-      Everything else is your normal code: fade-in, headings, etc.
-      We have NOT changed or removed anything from your existing logic.
-    */
-
-    /* --- Fade-in & fullscreen behavior --- */
+    /* --- Fade-in & fullscreen behavior (unchanged) --- */
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -245,7 +340,6 @@
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         if (slideState === "menu") {
-          // Slide menu items back
           document.querySelectorAll('.menu-items .menu-item').forEach(el => {
             el.classList.remove('menu-slide');
           });
@@ -260,14 +354,12 @@
           slideState = "none";
 
         } else if (slideState === "heading" || slideState === "account") {
-          // Slide them out
           document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
             box.style.transform = `translateX(${box.dataset.offset}vw)`;
           });
           document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
             box.style.transform = `translateX(${box.dataset.offset}vw)`;
           });
-          // restore any .custom-text positions
           document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
             if (el.dataset.originalLeft) {
               el.style.left = el.dataset.originalLeft;
@@ -287,7 +379,6 @@
           slideState = "none";
 
         } else if (slideState === "none") {
-          // Slide headings & accounts in
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
@@ -337,7 +428,6 @@
         if (slideState === "menu") {
           return;
         } else if (slideState === "heading" || slideState === "account") {
-          // Slide headings & accounts out
           document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
             box.style.transform = `translateX(${box.dataset.offset}vw)`;
           });
@@ -363,7 +453,6 @@
           slideState = "none";
 
         } else if (slideState === "none") {
-          // Slide menu in
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
@@ -425,17 +514,16 @@
     });
 
     /* ------------------------------------------------------------------
-       Submenu logic for main menu items
-       (unchanged from your code; no modifications here).
+       Submenu logic, etc., unchanged from your code
+       (the snippet that slides down 7vh, creates new .new-text, etc.)
+       This is just placeholder; presumably your code remains unchanged.
     ------------------------------------------------------------------ */
     let currentMenu = null; // tracks which main menu is currently open (if any)
 
     function closeSubmenu() {
-      // 1) Slide back down the other main items
       document.getElementById("linkup-center").classList.remove("slide-down");
       document.getElementById("delivery-line").classList.remove("slide-down");
       document.getElementById("internal-unit").classList.remove("slide-down");
-      // 2) remove the newly created text items
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
         span.style.transition = 'opacity 0.3s ease';
@@ -454,18 +542,15 @@
       span.style.left = leftVW + "vw";
       span.textContent = text;
       document.querySelector(".other-content").appendChild(span);
-      // fade in
       setTimeout(() => {
         span.classList.add("visible");
       }, 10);
     }
 
     function openOnlineAssets() {
-      // Slide down #linkup-center, #delivery-line, #internal-unit by 7vh
       document.getElementById("linkup-center").classList.add("slide-down");
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
-      // Create cMS, LMS, WEB => top=39.1 => left=7.1, 11.1, 14.1
       setTimeout(() => {
         addNewText("- cMS", 40.1, 6.4);
         addNewText("- LMS", 44.1, 6.4);
@@ -474,10 +559,8 @@
     }
 
     function openLinkupCenter() {
-      // Slide down #delivery-line, #internal-unit by 7vh
       document.getElementById("delivery-line").classList.add("slide-down");
       document.getElementById("internal-unit").classList.add("slide-down");
-      // Create cOM, JOB, HR => top=46.2 => left=7.1, 11.1, 14.1
       setTimeout(() => {
         addNewText("- cOM", 47.2, 6.4);
         addNewText("- JOB", 51.2, 6.4);
@@ -486,9 +569,7 @@
     }
 
     function openDeliveryLine() {
-      // Slide down #internal-unit by 7vh
       document.getElementById("internal-unit").classList.add("slide-down");
-      // Create cRM, OPS, PM => top=53.3 => left=7.1, 11.1, 14.1
       setTimeout(() => {
         addNewText("- cRM", 54.3, 6.4);
         addNewText("- OPS", 58.3, 6.4);
@@ -497,7 +578,6 @@
     }
 
     function openInternalUnit() {
-      // No items below it, so just create the 3 items for top=60.4 => left=7.1, 11.1, 14.1
       setTimeout(() => {
         addNewText("- 1nV", 61.4, 6.4);
         addNewText("- FMS", 65.4, 6.4);
@@ -509,13 +589,10 @@
     document.getElementById("online-assets").addEventListener("click", function(e) {
       e.stopPropagation();
       if (currentMenu === "online-assets") {
-        // close if already open
         closeSubmenu();
       } else {
-        // close any other open first
         if (currentMenu !== null) {
           closeSubmenu();
-          // then open after slight delay
           setTimeout(() => {
             openOnlineAssets();
             currentMenu = "online-assets";

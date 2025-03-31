@@ -31,7 +31,6 @@
       <div class="line third"></div>
       <div class="line fourth"></div>
 
-      <!-- Slide-container for dashed lines/time text -->
       <div class="slide-container">
         <div class="line dashed"></div>
         <div class="line dashed second-dashed"></div>
@@ -47,7 +46,7 @@
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
 
-      <!-- Grid numbers 1-16 -->
+      <!-- Grid numbers & dashed lines (unchanged) -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -65,7 +64,6 @@
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
 
-      <!-- Additional dashed lines 1-16 -->
       <span class="grid-dashed dashed01"></span>
       <span class="grid-dashed dashed02"></span>
       <span class="grid-dashed dashed03"></span>    
@@ -83,62 +81,71 @@
       <span class="grid-dashed dashed15"></span>
       <span class="grid-dashed dashed16"></span>
 
-      <!-- 
-         Now each item is an .account-container pinned at left: 28.91vw (0.10vw more right).
-         We store data-offset to define how far it must travel from offscreen to pinned.
-         All share "data-slide-group=account" and transform 0.7s ease => same timing => 
-         they start & finish together. 
+      <!-- HEADINGS group => final left 6.41vw 
+           originally -42.59 => distance => 6.41 - (-42.59) = 49vw 
+           so transform: translateX(-49vw) 
       -->
-
-      <!-- Items that used to be at left: -42.59 => offset = 28.91 - (-42.59) = 71.5 -->
-      <div class="account-container" style="top:35.4vh; left:28.91vw; transform:translateX(-71.5vw);" data-offset="-71.5" data-slide-group="account">
+      <div class="heading-container" style="top: 35.4vh; left: 6.41vw; transform: translateX(-49vw);"
+           data-offset="-49" data-slide-group="heading">
         <span class="custom-text">AccOUnT 1nFO</span>
       </div>
-      <div class="account-container" style="top:41.6vh; left:28.91vw; transform:translateX(-71.5vw);" data-offset="-71.5" data-slide-group="account">
+      <div class="heading-container" style="top: 41.6vh; left: 6.41vw; transform: translateX(-49vw);"
+           data-offset="-49" data-slide-group="heading">
         <span class="custom-text">AcT1V1TY 1nFO</span>
       </div>
-      <div class="account-container" style="top:54vh;   left:28.91vw; transform:translateX(-71.5vw);" data-offset="-71.5" data-slide-group="account">
+      <div class="heading-container" style="top: 54vh;   left: 6.41vw; transform: translateX(-49vw);"
+           data-offset="-49" data-slide-group="heading">
         <span class="custom-text">YOUR L1ST</span>
       </div>
-      <div class="account-container" style="top:60.2vh; left:28.91vw; transform:translateX(-71.5vw);" data-offset="-71.5" data-slide-group="account">
+      <div class="heading-container" style="top: 60.2vh; left: 6.41vw; transform: translateX(-49vw);"
+           data-offset="-49" data-slide-group="heading">
         <span class="custom-text">cHAnnELS</span>
       </div>
-      <div class="account-container" style="top:66.4vh; left:28.91vw; transform:translateX(-71.5vw);" data-offset="-71.5" data-slide-group="account">
+      <div class="heading-container" style="top: 66.4vh; left: 6.41vw; transform: translateX(-49vw);"
+           data-offset="-49" data-slide-group="heading">
         <span class="custom-text">OFFER HUB</span>
       </div>
-      <div class="account-container" style="top:72.6vh; left:28.91vw; transform:translateX(-71.5vw);" data-offset="-71.5" data-slide-group="account">
+      <div class="heading-container" style="top: 72.6vh; left: 6.41vw; transform: translateX(-49vw);"
+           data-offset="-49" data-slide-group="heading">
         <span class="custom-text">YOUR JOBS</span>
       </div>
 
-      <!-- i-cHAT: 0 and i-MAIL: 0 => originally -25.62 => offset = 28.91 - (-25.62) = 54.53 -->
-      <div class="account-container" style="top:35.4vh; left:28.91vw; transform:translateX(-54.53vw);" data-offset="-54.53" data-slide-group="account">
+      <!-- ACCOUNT group => final left 28.91vw 
+           i-cHAT / i-MAIL => originally -25.62 => distance 54.53 
+           four zeros => originally -20.67 => distance 49.58 
+      -->
+      <div class="account-container" style="top:35.4vh; left:28.91vw; transform: translateX(-54.53vw);"
+           data-offset="-54.53" data-slide-group="account">
         <span class="custom-text right-flow" style="position:absolute; right:0;">
           i-cHAT: 0
         </span>
       </div>
-      <div class="account-container" style="top:41.6vh; left:28.91vw; transform:translateX(-54.53vw);" data-offset="-54.53" data-slide-group="account">
+      <div class="account-container" style="top:41.6vh; left:28.91vw; transform: translateX(-54.53vw);"
+           data-offset="-54.53" data-slide-group="account">
         <span class="custom-text right-flow" style="position:absolute; right:0;">
           i-MAIL: 0
         </span>
       </div>
-
-      <!-- 4 items => originally -20.67 => offset = 28.91 - (-20.67) = 49.58 -->
-      <div class="account-container" style="top:54vh;   left:28.91vw; transform:translateX(-49.58vw);" data-offset="-49.58" data-slide-group="account">
+      <div class="account-container" style="top:54vh;   left:28.91vw; transform: translateX(-49.58vw);"
+           data-offset="-49.58" data-slide-group="account">
         <span class="custom-text right-flow" style="position:absolute; right:0;">
           0
         </span>
       </div>
-      <div class="account-container" style="top:60.2vh; left:28.91vw; transform:translateX(-49.58vw);" data-offset="-49.58" data-slide-group="account">
+      <div class="account-container" style="top:60.2vh; left:28.91vw; transform: translateX(-49.58vw);"
+           data-offset="-49.58" data-slide-group="account">
         <span class="custom-text right-flow" style="position:absolute; right:0;">
           0
         </span>
       </div>
-      <div class="account-container" style="top:66.4vh; left:28.91vw; transform:translateX(-49.58vw);" data-offset="-49.58" data-slide-group="account">
+      <div class="account-container" style="top:66.4vh; left:28.91vw; transform: translateX(-49.58vw);"
+           data-offset="-49.58" data-slide-group="account">
         <span class="custom-text right-flow" style="position:absolute; right:0;">
           0
         </span>
       </div>
-      <div class="account-container" style="top:72.6vh; left:28.91vw; transform:translateX(-49.58vw);" data-offset="-49.58" data-slide-group="account">
+      <div class="account-container" style="top:72.6vh; left:28.91vw; transform: translateX(-49.58vw);"
+           data-offset="-49.58" data-slide-group="account">
         <span class="custom-text right-flow" style="position:absolute; right:0;">
           0
         </span>
@@ -178,7 +185,7 @@
     
     let slideState = "none";
 
-    // Region: Left 0–6.37vw => toggle the .account-container items
+    // Click region: Left 0–6.37vw => toggles BOTH heading + account containers
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
@@ -190,6 +197,7 @@
 
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
+
         if (slideState === "menu") {
           // Slide menu items back
           document.querySelectorAll('.menu-items .menu-item').forEach(el => {
@@ -205,11 +213,18 @@
           }
           slideState = "none";
 
-        } else if (slideState === "account") {
-          // Slide them out => transform => data-offset
+        } else if (slideState === "heading" || slideState === "account") {
+          // Slide out both heading + account
+          // heading containers
+          document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
+            box.style.transform = `translateX(${box.dataset.offset}vw)`;
+          });
+          // account containers
           document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
             box.style.transform = `translateX(${box.dataset.offset}vw)`;
           });
+
+          // restore other .custom-text
           document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
             if (el.dataset.originalLeft) {
               el.style.left = el.dataset.originalLeft;
@@ -219,6 +234,7 @@
           if (customLine && customLine.dataset.originalLeft) {
             customLine.style.left = customLine.dataset.originalLeft;
           }
+
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             setTimeout(() => {
@@ -229,12 +245,13 @@
           slideState = "none";
 
         } else if (slideState === "none") {
-          // Slide them in => transform: translateX(0)
+          // Slide in both heading + account
           const chatTextEl = document.getElementById('chatText');
           if (chatTextEl) {
             chatTextEl.style.transition = "opacity 0.1s ease";
             chatTextEl.style.opacity = "0";
             setTimeout(() => {
+              // shift other .custom-text if needed
               document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
                 if (!el.dataset.originalLeft) {
                   el.dataset.originalLeft = el.style.left;
@@ -250,18 +267,24 @@
                 const originalLine = parseFloat(customLine.dataset.originalLeft);
                 customLine.style.left = (originalLine + 49) + "vw";
               }
-              // Now animate all "account" items
+
+              // heading containers => transform: translateX(0)
+              document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
+                box.style.transform = "translateX(0)";
+              });
+              // account containers => transform: translateX(0)
               document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
                 box.style.transform = "translateX(0)";
               });
             }, 110);
           }
-          slideState = "account";
+          // We'll store which "mode" we are in, for clarity
+          slideState = "heading"; // or "account", but we can pick "heading" or "both"
         }
       }
     });
 
-    // Region: Left 28.86–32.43vw => menu items
+    // Click region: Left 28.86–32.43vw => toggles the menu items
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
@@ -273,11 +296,16 @@
 
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
+
         if (slideState === "menu") {
           // Already slid in
           return;
-        } else if (slideState === "account") {
-          // Slide out all .account-container
+
+        } else if (slideState === "heading" || slideState === "account") {
+          // Slide heading + account out
+          document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
+            box.style.transform = `translateX(${box.dataset.offset}vw)`;
+          });
           document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
             box.style.transform = `translateX(${box.dataset.offset}vw)`;
           });
@@ -319,7 +347,7 @@
       }
     });
 
-    // Slide triggers for "animate-slide" / "animate-grid"
+    // Slide triggers for dashed/time texts => animate-slide, animate-grid
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();

@@ -19,6 +19,7 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
+/* Original layers (unchanged) */
 .layer-one {
     position: fixed;
     top: 0;
@@ -58,6 +59,7 @@ body.non-fullscreen {
     height: 100vh;
 }
 
+/* Menu items, unchanged except we add transform transitions for smooth slide */
 .menu-items {
     position: absolute;
     top: 0;
@@ -70,9 +72,9 @@ body.non-fullscreen {
 .menu-items.raised {
     z-index: 4;
 }
-/* Smooth both directions */
 .menu-items .menu-item {
     pointer-events: auto;
+    /* So .menu-item.menu-slide transforms smoothly in both directions */
     transition: transform 0.7s ease;
 }
 
@@ -96,6 +98,7 @@ body.non-fullscreen {
     z-index: 3;
 }
 
+/* Slide triggers (unchanged) */
 .slide-triggers {
     position: fixed;
     top: 0;
@@ -128,6 +131,7 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
+/* The original lines, unchanged */
 .line {
     position: absolute;
     height: 1px;
@@ -154,6 +158,7 @@ body.non-fullscreen {
     width: 57.8vw;
 }
 
+/* slide-container for dashed lines and time */
 .slide-container {
     position: absolute;
     top: 0;
@@ -229,6 +234,7 @@ body.non-fullscreen {
     background: transparent;
 }
 
+/* Chat text, unchanged */
 .chat-text {
     position: absolute;
     top: 77vh;
@@ -265,6 +271,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
+/* Grid numbers 1-16 */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -291,6 +298,7 @@ body.non-fullscreen {
 .num15 { top: 83.7vh; left: 138.0vw; }
 .num16 { top: 83.7vh; left: 152.8vw; }
 
+/* Additional dashed lines 1-16 */
 .grid-dashed {
     position: absolute;
     height: 1px;
@@ -316,6 +324,7 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
+/* The built-in "slide" animations for these lines */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -331,11 +340,16 @@ body.non-fullscreen {
     transform: translateX(-91vw);
 }
 
+/* Also the .animate-grid => transform: translateX(-60vw) on .grid-number and .grid-dashed */
 .other-content.animate-grid .grid-number,
 .other-content.animate-grid .grid-dashed {
     transform: translateX(-60vw);
 }
 
+/* 
+   The original .custom-text, 
+   though we replaced the 6 account items with .account-container
+*/
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -343,7 +357,7 @@ body.non-fullscreen {
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    transition: left 0.7s ease;
+    transition: transform 0.7s ease; /* originally was transform + left, we keep this for headings */
     line-height: 1.6;
     overflow: visible;
 }
@@ -358,9 +372,9 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
+/* Menu slide transitions */
 .menu-slide {
     transform: translateX(-22.59vw);
-    transition: transform 0.7s ease;
 }
 .menu-items .menu-item.menu-slide.slide-down {
     transform: translate(-22.59vw, 10vh);
@@ -369,6 +383,7 @@ body.non-fullscreen {
     transform: translateY(10vh);
 }
 
+/* new-text fade in */
 .new-text {
     opacity: 0;
     transition: opacity 0.7s ease;
@@ -377,20 +392,24 @@ body.non-fullscreen {
     opacity: 1;
 }
 
+/* Original .other-content > .custom-text:not(.menu-item) left transition */
+.other-content > .custom-text:not(.menu-item) {
+    transition: left 0.7s ease;
+}
+
 /* 
-   Each account-container is pinned at left:28.81vw and 
-   starts with transform: translateX(...) offscreen. 
-   We also add a transition so the transform animates smoothly.
+   Account containers: pinned at left:28.81vw, 
+   transform from negative offset to 0 for a smooth slide
 */
 .account-container {
     position: absolute;
     overflow: visible;
-    transition: transform 0.7s ease; /* Smooth transform from offscreen to 0 */
+    transition: transform 0.7s ease; 
 }
 
-/*
-   Right-to-left flow and no wrapping so "i-cHAT: 0" stays on one line
-   and new chars appear to the left. 
+/* 
+   .right-flow ensures text grows leftward (rtl)
+   and never wraps lines
 */
 .right-flow {
     direction: rtl;

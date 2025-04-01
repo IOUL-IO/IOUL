@@ -215,11 +215,13 @@
 
   <script>
     /*
-      Final logic remains as before except for adjustments:
-      • In both global click handlers we immediately return if the click originates within a menu item.
-      • In the menu item click handlers (for submenu expansion) we no longer reset the inline transform/left values,
-        so the menu item remains in its extended position while its dedicated submenu slide-down animation (11vh shift)
-        occurs as originally intended.
+      FINAL LOGIC:
+      • Global click handlers for left regions ignore clicks originating inside a menu item.
+      • Global handlers manage extended/inverse animations as before.
+      • Menu item click handlers (for submenu expansion) now do not modify the menu item’s position.
+        Instead, they remove any inline transform from the sibling menu items so that the "slide-down" CSS transition
+        (which moves them down by 11vh) can occur as in the original code.
+      • The submenu expansion functions (openOnlineAssets, etc.) remain as in the original code.
     */
 
     /* --- Fade-in & fullscreen --- */
@@ -312,9 +314,9 @@
       }
     }
 
-    /* Region: Left 0–6.37vw */
+    /* Global click handlers */
     document.addEventListener('click', (event) => {
-      // Do not process if click is on a menu item or chat-text.
+      // Skip if click originates inside a menu item or chat.
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -327,7 +329,6 @@
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "community") {
-            // Reverse community extended animation:
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
@@ -340,7 +341,6 @@
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
-            // Restore the community custom-line.
             document.querySelectorAll('.community-items-container .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
@@ -356,7 +356,7 @@
             slideState = "menu";
             return;
           } else if (slideState === "menu") {
-            // Smoothly slide menu items back in.
+            // Remove inline transform from menu items to trigger smooth slide-in.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               el.style.transition = "transform 0.7s ease";
               el.style.transform = "translateX(0)";
@@ -380,7 +380,6 @@
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
               if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
             });
-            // Only update the custom-line in .other-content.
             document.querySelectorAll('.other-content > .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
@@ -429,7 +428,7 @@
 
     /* Region: Left 28.86–32.43vw */
     document.addEventListener('click', (event) => {
-      // Do not process if the click is on a menu item or chat.
+      // Do not process if click is on a menu item or chat.
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -442,7 +441,6 @@
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "menu") {
-            // Extended animation: subtract 29vw from menu items, community items, and zero items.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
@@ -573,9 +571,10 @@
       }, 10);
     }
 
-    /* Menu item click handlers – now no longer reset inline styles */
+    /* Menu item click handlers – allow submenu slide-down to occur without repositioning */
     document.getElementById("online-assets").addEventListener("click", (e) => {
       e.stopPropagation();
+      // Do not modify inline transform; let the submenu function add the "slide-down" class.
       if (currentMenu === "online-assets") {
         closeSubmenu();
       } else {

@@ -216,12 +216,13 @@
   <script>
     /*
       FINAL LOGIC:
-      • Global click handlers for left regions ignore clicks from within menu items.
-      • Global handlers manage horizontal extended/inverse animations.
-      • Submenu expansion functions now remove any inline transform from sibling menu items and add both
-        "menu-slide" and "slide-down" classes. (According to your CSS, a menu item with both classes will transform
-        as: translate(-22.59vw, 11vh), which slides it down by 11vh while retaining its horizontal extended position.)
-      • The menu item click handlers remain unchanged.
+      • Global click handlers for left regions ignore clicks inside menu items.
+      • Global handlers manage horizontal extended/inverse animations as before.
+      • The submenu expansion functions now use a helper (slideDownSiblings) that adds the classes
+        "menu-slide" and "slide-down" only to the menu items that come after the clicked item.
+      • The CSS rule for ".menu-items .menu-item.menu-slide.slide-down" (as in your original code)
+        should cause those items to shift vertically by 11vh while staying at the extended horizontal position.
+      • Menu item click handlers for submenu expansion remain unchanged.
     */
 
     /* --- Fade-in & fullscreen --- */
@@ -316,7 +317,7 @@
 
     /* Global click handlers for left regions */
     document.addEventListener('click', (event) => {
-      // Skip if click originates in a menu item or chat.
+      // Skip if click is on a menu item or chat-text.
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -342,7 +343,6 @@
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
-            // Restore the community custom-line.
             document.querySelectorAll('.community-items-container .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
@@ -431,7 +431,7 @@
 
     /* Global click handler for right region (28.86–32.43vw) */
     document.addEventListener('click', (event) => {
-      // Do not process if click is on a menu item or chat.
+      // Skip if click is on a menu item or chat.
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -527,13 +527,18 @@
       });
     });
 
-    /* Submenu expansion functions – updated to add "menu-slide" and "slide-down" classes to sibling menu items */
+    /* Helper: Slide down only the menu items that follow the clicked one */
+    function slideDownSiblings(clickedId) {
+      let menuItems = Array.from(document.querySelectorAll('.menu-items .menu-item'));
+      let clickedIndex = menuItems.findIndex(el => el.id === clickedId);
+      for (let i = clickedIndex + 1; i < menuItems.length; i++) {
+        menuItems[i].classList.add("menu-slide", "slide-down");
+      }
+    }
+
+    /* Submenu expansion functions – add the slide-down classes to only the following menu items */
     function openOnlineAssets() {
-      document.querySelectorAll('.menu-items .menu-item:not(#online-assets)').forEach(el => {
-          // Remove any inline transform so the CSS classes take effect.
-          el.style.transform = "";
-          el.classList.add("menu-slide", "slide-down");
-      });
+      slideDownSiblings("online-assets");
       setTimeout(() => {
         addNewText("- cMS", 40.1, 6.4);
         addNewText("- LMS", 44.1, 6.4);
@@ -541,10 +546,7 @@
       }, 700);
     }
     function openLinkupCenter() {
-      document.querySelectorAll('.menu-items .menu-item:not(#linkup-center)').forEach(el => {
-          el.style.transform = "";
-          el.classList.add("menu-slide", "slide-down");
-      });
+      slideDownSiblings("linkup-center");
       setTimeout(() => {
         addNewText("- cOM", 47.2, 6.4);
         addNewText("- JOB", 51.2, 6.4);
@@ -552,10 +554,7 @@
       }, 700);
     }
     function openDeliveryLine() {
-      document.querySelectorAll('.menu-items .menu-item:not(#delivery-line)').forEach(el => {
-          el.style.transform = "";
-          el.classList.add("menu-slide", "slide-down");
-      });
+      slideDownSiblings("delivery-line");
       setTimeout(() => {
         addNewText("- cRM", 54.3, 6.4);
         addNewText("- OPS", 58.3, 6.4);
@@ -563,10 +562,7 @@
       }, 700);
     }
     function openInternalUnit() {
-      document.querySelectorAll('.menu-items .menu-item:not(#internal-unit)').forEach(el => {
-          el.style.transform = "";
-          el.classList.add("menu-slide", "slide-down");
-      });
+      slideDownSiblings("internal-unit");
       setTimeout(() => {
         addNewText("- 1nV", 61.4, 6.4);
         addNewText("- FMS", 65.4, 6.4);
@@ -585,7 +581,7 @@
       }, 10);
     }
 
-    /* Menu item click handlers – submenu expansion (unchanged) */
+    /* Menu item click handlers – submenu expansion */
     document.getElementById("online-assets").addEventListener("click", (e) => {
       e.stopPropagation();
       if (currentMenu === "online-assets") {

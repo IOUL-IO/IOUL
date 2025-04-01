@@ -47,7 +47,7 @@
       <span style="position: absolute; top:59.2vh; left:35.41vw; z-index:1; font-family:'Distill Expanded', sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca; transition: left 0.7s ease; line-height:1.6; overflow: visible;">
         1OUL cEnTER
       </span>
-      <div class="custom-line" style="position: absolute; top:47.8vh; left:35.41vw; width:22.48vw; height:1px; background-color:rgba(230,230,230,0.28); transition:left 0.7s ease, transform 0.7s ease; z-index:1;">
+      <div class="custom-line" style="position: absolute; top:47.8vh; left:35.41vw; width:22.48vw; height:1px; background-color:rgba(230,230,230,0.28); transition: left 0.7s ease, transform 0.7s ease; z-index:1;">
       </div>
     </div>
 
@@ -217,12 +217,13 @@
     /*
       FINAL LOGIC:
       • Global click handlers for left regions ignore clicks inside menu items.
-      • Global handlers manage horizontal extended/inverse animations as before.
-      • The submenu expansion functions now use a helper (slideDownSiblings) that adds the classes
-        "menu-slide" and "slide-down" only to the menu items that come after the clicked item.
-      • The CSS rule for ".menu-items .menu-item.menu-slide.slide-down" (as in your original code)
-        should cause those items to shift vertically by 11vh while staying at the extended horizontal position.
-      • Menu item click handlers for submenu expansion remain unchanged.
+      • Global handlers manage horizontal extended/inverse animations.
+      • The helper function slideDownSiblings (called within the submenu expansion functions) now
+        clears any inline transform on each menu item that follows the clicked one and then adds both
+        "menu-slide" and "slide-down" classes.
+      • According to your CSS, a menu item with both classes transforms to translate(-22.59vw, 11vh), which
+        moves it down 11vh while maintaining its horizontal position at 6.41vw.
+      • Menu item click handlers trigger the appropriate submenu expansion function.
     */
 
     /* --- Fade-in & fullscreen --- */
@@ -315,6 +316,17 @@
       }
     }
 
+    /* Helper: Slide down only the menu items that follow the clicked one */
+    function slideDownSiblings(clickedId) {
+      let menuItems = Array.from(document.querySelectorAll('.menu-items .menu-item'));
+      let clickedIndex = menuItems.findIndex(el => el.id === clickedId);
+      for (let i = clickedIndex + 1; i < menuItems.length; i++) {
+        // Clear inline transform to allow CSS to take over.
+        menuItems[i].style.transform = "";
+        menuItems[i].classList.add("menu-slide", "slide-down");
+      }
+    }
+
     /* Global click handlers for left regions */
     document.addEventListener('click', (event) => {
       // Skip if click is on a menu item or chat-text.
@@ -343,6 +355,7 @@
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
+            // Restore the community custom-line.
             document.querySelectorAll('.community-items-container .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
@@ -527,16 +540,16 @@
       });
     });
 
-    /* Helper: Slide down only the menu items that follow the clicked one */
+    /* Submenu expansion functions – use helper to slide down only the following menu items */
     function slideDownSiblings(clickedId) {
       let menuItems = Array.from(document.querySelectorAll('.menu-items .menu-item'));
       let clickedIndex = menuItems.findIndex(el => el.id === clickedId);
       for (let i = clickedIndex + 1; i < menuItems.length; i++) {
+        // Clear any inline transform to let CSS classes take effect.
+        menuItems[i].style.transform = "";
         menuItems[i].classList.add("menu-slide", "slide-down");
       }
     }
-
-    /* Submenu expansion functions – add the slide-down classes to only the following menu items */
     function openOnlineAssets() {
       slideDownSiblings("online-assets");
       setTimeout(() => {

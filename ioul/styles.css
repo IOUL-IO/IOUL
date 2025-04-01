@@ -74,7 +74,7 @@ body.non-fullscreen {
 }
 .menu-items .menu-item {
     pointer-events: auto;
-    transition: left 0.7s ease, transform 0.7s ease;
+    transition: left 0.7s ease, transform 0.7s ease; /* added left transition */
 }
 
 /* ----- The covering layer ----- */
@@ -358,7 +358,7 @@ body.non-fullscreen {
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    transition: left 0.7s ease, transform 0.7s ease;
+    transition: left 0.7s ease, transform 0.7s ease;  /* added left transition */
     line-height: 1.6;
     overflow: visible;
 }
@@ -404,7 +404,7 @@ body.non-fullscreen {
     transition: transform 0.7s ease; 
 }
 .heading-flow {
-    white-space: nowrap;
+    white-space: nowrap;  /* keep heading text on single line */
 }
 
 /* 
@@ -429,7 +429,7 @@ body.non-fullscreen {
 */
 .submenu-item {
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.4s ease;  /* default fade duration */
 }
 .submenu-item.show {
     opacity: 1;
@@ -439,9 +439,5 @@ body.non-fullscreen {
 .community-items-container span,
 .zero-items-container span {
     white-space: nowrap;
-    transition: left 0.7s ease, transform 0.7s ease;
-}
-/* Ensure community container's custom-line also transitions */
-.community-items-container .custom-line {
     transition: left 0.7s ease, transform 0.7s ease;
 }

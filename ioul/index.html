@@ -9,23 +9,25 @@
 </head>
 <body class="non-fullscreen">
   <div class="layer-one"></div>
-  <!-- Move community texts into layer-two.
-       Because layer-two is fixed at left:28.87vw, we subtract that from the original 6.41vw
-       to get left:6.41vw - 28.87vw = -22.46vw -->
+  <!-- Community texts now placed in layer-two.
+       Their effective viewport left becomes original (6.41vw + 29vw = 35.41vw),
+       so inside layer-two (which starts at 28.87vw) we use 35.41 - 28.87 ≈ 6.54vw -->
   <div class="layer-two">
-    <!-- COMMUNITY TEXTS -->
-    <span class="community-text" style="top:35.4vh; left: -22.46vw;">
+    <span class="community-text" style="top:35.4vh; left:6.54vw;">
       cOMMUn1T1ES
     </span>
-    <span class="community-text" style="top:41.6vh; left: -22.46vw;">
+    <span class="community-text" style="top:41.6vh; left:6.54vw;">
       UPDATE L1ST
     </span>
-    <span class="community-text" style="top:53vh; left: -22.46vw;">
+    <span class="community-text" style="top:53vh; left:6.54vw;">
       ADD-On SHOP
     </span>
-    <span class="community-text" style="top:59.2vh; left: -22.46vw;">
+    <span class="community-text" style="top:59.2vh; left:6.54vw;">
       1OUL cEnTER
     </span>
+    <!-- The dividing line (with same vertical position as before: top:47.8vh)
+         now uses left = 6.54vw so its effective viewport left is 6.54 + 28.87 = 35.41vw -->
+    <div class="community-line" style="top:47.8vh; left:6.54vw; width:22.48vw; height:1px;"></div>
   </div>
   <div class="layer-three"></div>
 
@@ -46,29 +48,18 @@
       </span>
     </div>
 
-    <!-- Move the community zeros and the dividing line into layer-four.
-         Since layer-four is positioned at left:36vw, subtracting gives:
-         28.41vw - 36vw = -7.59vw for the zeros and 6.41vw - 36vw = -29.59vw for the line -->
+    <!-- The four zeros are now placed inside layer-four.
+         Their desired effective viewport left is original (28.41 + 29 = 57.41vw);
+         since layer-four is at left:36vw, use 57.41 - 36 ≈ 21.41vw.
+         Also, layer-four’s top is 28.5vh so subtract that from each original top. -->
     <div class="layer-four">
-      <!-- COMMUNITY LINE -->
-      <div class="community-line" style="top:47.8vh; left: -29.59vw; width:22.48vw; height:1px;">
-      </div>
-      <!-- FOUR ZERO TEXTS -->
-      <span class="community-zero right-flow" style="top:35.4vh; left: -7.59vw; position:absolute;">
-        0
-      </span>
-      <span class="community-zero right-flow" style="top:41.6vh; left: -7.59vw; position:absolute;">
-        0
-      </span>
-      <span class="community-zero right-flow" style="top:53vh; left: -7.59vw; position:absolute;">
-        0
-      </span>
-      <span class="community-zero right-flow" style="top:59.2vh; left: -7.59vw; position:absolute;">
-        0
-      </span>
+      <span class="community-zero right-flow" style="top:6.9vh; left:21.41vw; position:absolute;">0</span>
+      <span class="community-zero right-flow" style="top:13.1vh; left:21.41vw; position:absolute;">0</span>
+      <span class="community-zero right-flow" style="top:24.5vh; left:21.41vw; position:absolute;">0</span>
+      <span class="community-zero right-flow" style="top:30.7vh; left:21.41vw; position:absolute;">0</span>
     </div>
 
-    <!-- Container for all other content (community texts/zeros removed) -->
+    <!-- Container for all other content (unchanged) -->
     <div class="other-content">
       <div class="line original"></div>
       <div class="line second"></div>

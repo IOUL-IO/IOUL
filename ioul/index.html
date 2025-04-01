@@ -9,13 +9,29 @@
 </head>
 <body class="non-fullscreen">
   <div class="layer-one"></div>
-  <div class="layer-two"></div>
+  <!-- Move community texts into layer-two.
+       Because layer-two is fixed at left:28.87vw, we subtract that from the original 6.41vw
+       to get left:6.41vw - 28.87vw = -22.46vw -->
+  <div class="layer-two">
+    <!-- COMMUNITY TEXTS -->
+    <span class="community-text" style="top:35.4vh; left: -22.46vw;">
+      cOMMUn1T1ES
+    </span>
+    <span class="community-text" style="top:41.6vh; left: -22.46vw;">
+      UPDATE L1ST
+    </span>
+    <span class="community-text" style="top:53vh; left: -22.46vw;">
+      ADD-On SHOP
+    </span>
+    <span class="community-text" style="top:59.2vh; left: -22.46vw;">
+      1OUL cEnTER
+    </span>
+  </div>
   <div class="layer-three"></div>
 
   <div class="page-content">
-    <!-- Main menu items -->
+    <!-- Main menu items (unchanged) -->
     <div class="menu-items">
-      <!-- The four main menu items -->
       <span class="custom-text menu-item" style="top:36.1vh; left:29vw;" id="online-assets">
         OnL1nE ASSETS:
       </span>
@@ -30,44 +46,29 @@
       </span>
     </div>
 
-    <!-- The covering layer -->
-    <div class="layer-four"></div>
-
-    <!-- Community content container placed below layer-four -->
-    <div class="community-content">
-      <!-- Community texts -->
-      <span class="community-text" style="top:35.4vh; left:6.41vw;">
-        cOMMUn1T1ES
-      </span>
-      <span class="community-text" style="top:41.6vh; left:6.41vw;">
-        UPDATE L1ST
-      </span>
-      <span class="community-text" style="top:53vh; left:6.41vw;">
-        ADD-On SHOP
-      </span>
-      <span class="community-text" style="top:59.2vh; left:6.41vw;">
-        1OUL cEnTER
-      </span>
-
-      <!-- Community dividing line -->
-      <div class="community-line" style="top:47.8vh; left:6.41vw; width:22.48vw;"></div>
-
-      <!-- Four Zero texts -->
-      <span class="community-text right-flow" style="top:35.4vh; left:28.41vw; position:absolute;">
+    <!-- Move the community zeros and the dividing line into layer-four.
+         Since layer-four is positioned at left:36vw, subtracting gives:
+         28.41vw - 36vw = -7.59vw for the zeros and 6.41vw - 36vw = -29.59vw for the line -->
+    <div class="layer-four">
+      <!-- COMMUNITY LINE -->
+      <div class="community-line" style="top:47.8vh; left: -29.59vw; width:22.48vw; height:1px;">
+      </div>
+      <!-- FOUR ZERO TEXTS -->
+      <span class="community-zero right-flow" style="top:35.4vh; left: -7.59vw; position:absolute;">
         0
       </span>
-      <span class="community-text right-flow" style="top:41.6vh; left:28.41vw; position:absolute;">
+      <span class="community-zero right-flow" style="top:41.6vh; left: -7.59vw; position:absolute;">
         0
       </span>
-      <span class="community-text right-flow" style="top:53vh; left:28.41vw; position:absolute;">
+      <span class="community-zero right-flow" style="top:53vh; left: -7.59vw; position:absolute;">
         0
       </span>
-      <span class="community-text right-flow" style="top:59.2vh; left:28.41vw; position:absolute;">
+      <span class="community-zero right-flow" style="top:59.2vh; left: -7.59vw; position:absolute;">
         0
       </span>
     </div>
 
-    <!-- Container for all other content -->
+    <!-- Container for all other content (community texts/zeros removed) -->
     <div class="other-content">
       <div class="line original"></div>
       <div class="line second"></div>
@@ -155,6 +156,7 @@
            data-offset="-49" data-slide-group="heading">
         <span class="custom-text heading-flow">LEAgUES</span>
       </div>
+
       <!-- ACCOUNT group -->
       <div class="account-container"
            style="top:35.4vh; left:28.91vw; transform:translateX(-49vw);"
@@ -209,12 +211,6 @@
   </div>
 
   <script>
-    /*
-      [All your final logic: fade-in, forced-close submenus before slides,
-       main toggles, chat logic, etc. exactly as you ended up with,
-       unchanged except for the updated left coordinate on the four 0's above.]
-    */
-
     /* --- Fade-in & fullscreen --- */
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;

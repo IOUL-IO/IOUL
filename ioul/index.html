@@ -70,7 +70,7 @@
       </span>
     </div>
 
-    <!-- Other content: lines, slide-container, chat-text, grid, headings, account group -->
+    <!-- Other content (lines, slide-container, chat-text, grid, headings, account group) -->
     <div class="other-content">
       <div class="line original"></div>
       <div class="line second"></div>
@@ -91,7 +91,7 @@
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
 
-      <!-- Grid numbers (all 1–16) -->
+      <!-- Grid numbers -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -213,8 +213,19 @@
   </div>
 
   <script>
-    /* Helper Functions */
+    /* --- Fade-in & Fullscreen --- */
+    const pageContent = document.querySelector('.page-content');
+    let pageFadedIn = false;
+    function fadeInPage() {
+      pageContent.style.opacity = '1';
+      pageFadedIn = true;
+    }
+    document.addEventListener('mousemove', function onFirstMouseMove() {
+      if (!pageFadedIn) { fadeInPage(); }
+      document.removeEventListener('mousemove', onFirstMouseMove);
+    });
 
+    /* Helper Functions */
     function originalMenuSlideIn() {
       const chatTextEl = document.getElementById('chatText');
       if (chatTextEl) {
@@ -452,7 +463,7 @@
       }
     }, true);
 
-    /* Slide triggers (unchanged) */
+    /* Slide triggers */
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();

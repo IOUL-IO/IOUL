@@ -215,12 +215,15 @@
 
   <script>
     /*
-      Final logic remains as before except for the updated inverse and extended animations.
+      Final logic remains as before except for adjustments in the global click handlers.
+      In both the 0–6.37vw and 28.86–32.43vw handlers, we now check if the event target (or an ancestor)
+      is a menu item. If so, we return immediately to allow the menu item’s own click handler (for submenu expansion)
+      to work.
       
-      Changes:
-      - In the 0–6.37vw handler for slideState "menu", instead of removing a class we set each menu item's transform back to "translateX(0)".
-      - In the 28.86–32.43vw handler (when slideState is "none"), we set each menu item's transform to "translateX(-22.59vw)".
-      - Both actions rely on the CSS transition for transform.
+      Additionally, in the inverse (0–6.37vw) handler when slideState is "menu", we set each menu item's transform back
+      to "translateX(0)" to trigger smooth sliding.
+      
+      The extended (28.86–32.43vw) handler remains unchanged.
     */
 
     /* --- Fade-in & fullscreen --- */
@@ -315,6 +318,8 @@
 
     /* Region: Left 0–6.37vw */
     document.addEventListener('click', (event) => {
+      // Do not process if a menu item was clicked.
+      if (event.target.closest('.menu-item')) return;
       if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -340,7 +345,7 @@
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
-            // Restore the community custom-line to its original value.
+            // Restore the community custom-line.
             document.querySelectorAll('.community-items-container .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
@@ -356,7 +361,7 @@
             slideState = "menu";
             return;
           } else if (slideState === "menu") {
-            // Instead of removing a class, set each menu item's transform to 0.
+            // Instead of removing a class, set transform back to 0 for smooth sliding.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               el.style.transition = "transform 0.7s ease";
               el.style.transform = "translateX(0)";
@@ -380,6 +385,7 @@
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
               if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
             });
+            // Only update the custom-line in .other-content.
             document.querySelectorAll('.other-content > .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
@@ -428,6 +434,8 @@
 
     /* Region: Left 28.86–32.43vw */
     document.addEventListener('click', (event) => {
+      // Do not process if the click is on a menu item.
+      if (event.target.closest('.menu-item')) return;
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;

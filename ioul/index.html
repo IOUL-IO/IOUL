@@ -163,44 +163,32 @@
       <div class="account-container"
            style="top:35.4vh; left:28.91vw; transform:translateX(-49vw);"
            data-offset="-49" data-slide-group="account">
-        <span class="custom-text right-flow" style="position:absolute; right:0;">
-          i-cHAT: 0
-        </span>
+        <span class="custom-text right-flow" style="position:absolute; right:0;">i-cHAT: 0</span>
       </div>
       <div class="account-container"
            style="top:41.6vh; left:28.91vw; transform:translateX(-49vw);"
            data-offset="-49" data-slide-group="account">
-        <span class="custom-text right-flow" style="position:absolute; right:0;">
-          i-MAIL: 0
-        </span>
+        <span class="custom-text right-flow" style="position:absolute; right:0;">i-MAIL: 0</span>
       </div>
       <div class="account-container"
            style="top:54vh; left:28.91vw; transform:translateX(-49vw);"
            data-offset="-49" data-slide-group="account">
-        <span class="custom-text right-flow" style="position:absolute; right:0;">
-          0
-        </span>
+        <span class="custom-text right-flow" style="position:absolute; right:0;">0</span>
       </div>
       <div class="account-container"
            style="top:60.2vh; left:28.91vw; transform:translateX(-49vw);"
            data-offset="-49" data-slide-group="account">
-        <span class="custom-text right-flow" style="position:absolute; right:0;">
-          0
-        </span>
+        <span class="custom-text right-flow" style="position:absolute; right:0;">0</span>
       </div>
       <div class="account-container"
            style="top:66.4vh; left:28.91vw; transform:translateX(-49vw);"
            data-offset="-49" data-slide-group="account">
-        <span class="custom-text right-flow" style="position:absolute; right:0;">
-          0
-        </span>
+        <span class="custom-text right-flow" style="position:absolute; right:0;">0</span>
       </div>
       <div class="account-container"
            style="top:72.6vh; left:28.91vw; transform:translateX(-49vw);"
            data-offset="-49" data-slide-group="account">
-        <span class="custom-text right-flow" style="position:absolute; right:0;">
-          0
-        </span>
+        <span class="custom-text right-flow" style="position:absolute; right:0;">0</span>
       </div>
 
       <div class="custom-line" style="left: -42.59vw;"></div>
@@ -217,11 +205,12 @@
       FINAL LOGIC:
       • Global click handlers for left regions ignore clicks inside menu items.
       • Global handlers manage horizontal extended/inverse animations.
-      • The helper function slideDownSiblings now forces a reflow (via accessing offsetWidth) for each sibling before adding
-        the "menu-slide" and "slide-down" classes. According to your CSS, a menu item with these classes transforms to translate(-22.59vw, 11vh),
-        which should smoothly slide the element 11vh down.
-      • Submenu expansion functions call slideDownSiblings with the clicked menu item's ID and then fade in submenu items.
-      • Menu item click handlers trigger the appropriate submenu expansion function.
+      • The helper function slideDownSiblings now forces a reflow (via offsetHeight) and then uses requestAnimationFrame
+        to add the "menu-slide" and "slide-down" classes to only the menu items following the clicked one.
+      • According to your CSS, an element with both classes transforms to translate(-22.59vw, 11vh) relative to its original position,
+        which should animate the vertical slide-down smoothly.
+      • Submenu expansion functions call slideDownSiblings with the clicked menu item's ID and then trigger fade-in of submenu items.
+      • Menu item click handlers call the appropriate submenu expansion function.
     */
 
     /* --- Fade-in & fullscreen --- */
@@ -527,20 +516,21 @@
       });
     });
 
-    /* Helper: Slide down only the menu items that follow the clicked one with a slight delay for smooth animation */
+    /* Helper: Slide down only the menu items that follow the clicked one using requestAnimationFrame */
     function slideDownSiblings(clickedId) {
       let menuItems = Array.from(document.querySelectorAll('.menu-items .menu-item'));
       let clickedIndex = menuItems.findIndex(el => el.id === clickedId);
       for (let i = clickedIndex + 1; i < menuItems.length; i++) {
-        // Clear any inline transform to let CSS classes take effect.
+        // Clear any inline transform to ensure the CSS transition applies.
         menuItems[i].style.transform = "";
-        // Force reflow so the initial state is registered.
-        void menuItems[i].offsetWidth;
-        // With a slight delay, add the classes to trigger the transition.
-        setTimeout(() => {
-          menuItems[i].classList.add("menu-slide", "slide-down");
-        }, 20);
+        // Force a reflow
+        void menuItems[i].offsetHeight;
       }
+      requestAnimationFrame(() => {
+        for (let i = clickedIndex + 1; i < menuItems.length; i++) {
+          menuItems[i].classList.add("menu-slide", "slide-down");
+        }
+      });
     }
 
     /* Submenu expansion functions – use helper to slide down only the following menu items */

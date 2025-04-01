@@ -215,15 +215,9 @@
 
   <script>
     /*
-      Final logic remains as before except for adjustments in the global click handlers.
-      In both the 0–6.37vw and 28.86–32.43vw handlers, we now check if the event target (or an ancestor)
-      is a menu item. If so, we return immediately to allow the menu item’s own click handler (for submenu expansion)
-      to work.
-      
-      Additionally, in the inverse (0–6.37vw) handler when slideState is "menu", we set each menu item's transform back
-      to "translateX(0)" to trigger smooth sliding.
-      
-      The extended (28.86–32.43vw) handler remains unchanged.
+      Final logic remains as before except for adjustments:
+      • In both global click handlers we now immediately return if the click target is inside a menu-item.
+      • In each menu-item click handler we reset that item's inline transform and left properties so that the CSS slide-down (11vh) animation (triggered via adding the "slide-down" class) can occur as in the original code.
     */
 
     /* --- Fade-in & fullscreen --- */
@@ -318,9 +312,8 @@
 
     /* Region: Left 0–6.37vw */
     document.addEventListener('click', (event) => {
-      // Do not process if a menu item was clicked.
-      if (event.target.closest('.menu-item')) return;
-      if (event.target.closest('.chat-text')) return;
+      // Do not process if click is on a menu item or chat-text.
+      if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const leftMin = 0;
@@ -332,7 +325,7 @@
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "community") {
-            // Reverse community extended animation:
+            // Reverse extended community animation:
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
@@ -345,7 +338,7 @@
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
-            // Restore the community custom-line.
+            // Restore community custom-line.
             document.querySelectorAll('.community-items-container .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
@@ -361,7 +354,7 @@
             slideState = "menu";
             return;
           } else if (slideState === "menu") {
-            // Instead of removing a class, set transform back to 0 for smooth sliding.
+            // Reset each menu item's transform to allow smooth slide-in.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               el.style.transition = "transform 0.7s ease";
               el.style.transform = "translateX(0)";
@@ -434,9 +427,8 @@
 
     /* Region: Left 28.86–32.43vw */
     document.addEventListener('click', (event) => {
-      // Do not process if the click is on a menu item.
-      if (event.target.closest('.menu-item')) return;
-      if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
+      // Do not process if click is on a menu item or chat.
+      if (event.target.closest('.menu-item') || event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
       const leftMin = 28.86 * vwUnit;
@@ -448,7 +440,8 @@
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "menu") {
-            // Extended animation: subtract 29vw from menu items, community items, zero items, and update community custom-line.
+            // Extended animation: subtract 29vw from menu items, community items, zero items,
+            // and update community custom-line.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
@@ -578,8 +571,13 @@
         span.classList.add("visible");
       }, 10);
     }
+
+    /* Menu item click handlers – reset inline transform and left to allow slide-down */
     document.getElementById("online-assets").addEventListener("click", (e) => {
       e.stopPropagation();
+      // Restore this element's transform and left to original.
+      e.currentTarget.style.transform = "";
+      e.currentTarget.style.left = e.currentTarget.dataset.originalLeft || "29vw";
       if (currentMenu === "online-assets") {
         closeSubmenu();
       } else {
@@ -597,6 +595,8 @@
     });
     document.getElementById("linkup-center").addEventListener("click", (e) => {
       e.stopPropagation();
+      e.currentTarget.style.transform = "";
+      e.currentTarget.style.left = e.currentTarget.dataset.originalLeft || "29vw";
       if (currentMenu === "linkup-center") {
         closeSubmenu();
       } else {
@@ -614,6 +614,8 @@
     });
     document.getElementById("delivery-line").addEventListener("click", (e) => {
       e.stopPropagation();
+      e.currentTarget.style.transform = "";
+      e.currentTarget.style.left = e.currentTarget.dataset.originalLeft || "29vw";
       if (currentMenu === "delivery-line") {
         closeSubmenu();
       } else {
@@ -631,6 +633,8 @@
     });
     document.getElementById("internal-unit").addEventListener("click", (e) => {
       e.stopPropagation();
+      e.currentTarget.style.transform = "";
+      e.currentTarget.style.left = e.currentTarget.dataset.originalLeft || "29vw";
       if (currentMenu === "internal-unit") {
         closeSubmenu();
       } else {

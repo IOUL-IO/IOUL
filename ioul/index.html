@@ -216,10 +216,11 @@
   <script>
     /*
       Final logic remains as before except for the updated inverse and extended animations.
-      In the inverse (left-area) handler for slideState "community", we now update elements separately:
-        – For menu items: add back 29vw.
-        – For community-items: update all except the custom-line.
-        – Then, for the community custom-line (inside .community-items-container), restore its original left.
+      
+      Changes:
+      - In the 0–6.37vw handler for slideState "menu", instead of removing a class we set each menu item's transform back to "translateX(0)".
+      - In the 28.86–32.43vw handler (when slideState is "none"), we set each menu item's transform to "translateX(-22.59vw)".
+      - Both actions rely on the CSS transition for transform.
     */
 
     /* --- Fade-in & fullscreen --- */
@@ -274,7 +275,7 @@
     });
 
     /* Submenu forced-close logic */
-    let currentMenu = null; // e.g. "online-assets" or null if none
+    let currentMenu = null;
     function quickRemoveSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
@@ -312,7 +313,7 @@
       }
     }
 
-    /* Region: Left 0–6.37vw => toggles headings+accounts and inverse animation */
+    /* Region: Left 0–6.37vw */
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
@@ -326,29 +327,26 @@
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "community") {
-            // Reverse extended community animation:
-            // Update menu items:
+            // Reverse community extended animation:
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
-            // Update community items except the custom-line:
             document.querySelectorAll('.community-items-container *:not(.custom-line)').forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
-            // Restore the community custom-line to its original left:
+            // Restore the community custom-line to its original value.
             document.querySelectorAll('.community-items-container .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
                 el.style.left = el.dataset.originalLeft;
               }
             });
-            // Update zero items:
             document.querySelectorAll('.zero-items-container *').forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
@@ -358,8 +356,10 @@
             slideState = "menu";
             return;
           } else if (slideState === "menu") {
+            // Instead of removing a class, set each menu item's transform to 0.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-              el.classList.remove('menu-slide');
+              el.style.transition = "transform 0.7s ease";
+              el.style.transform = "translateX(0)";
             });
             document.querySelector('.menu-items').classList.remove('raised');
             const chatTextEl = document.getElementById('chatText');
@@ -378,11 +378,8 @@
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
             });
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              if (el.dataset.originalLeft) {
-                el.style.left = el.dataset.originalLeft;
-              }
+              if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
             });
-            // Only update the account-area custom-line (child of .other-content)
             document.querySelectorAll('.other-content > .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
@@ -429,7 +426,7 @@
       }
     }, true);
 
-    /* Region: Left 28.86–32.43vw => toggles main menu and extended community animation */
+    /* Region: Left 28.86–32.43vw */
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
@@ -443,7 +440,7 @@
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "menu") {
-            // Extended animation: slide menu items, community items, zero items, and community custom-line left by subtracting 29vw.
+            // Extended animation: subtract 29vw from menu items, community items, zero items, and update community custom-line.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
@@ -471,11 +468,8 @@
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
             });
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              if (el.dataset.originalLeft) {
-                el.style.left = el.dataset.originalLeft;
-              }
+              if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
             });
-            // Only update the account-area custom-line (child of .other-content)
             document.querySelectorAll('.other-content > .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
@@ -497,7 +491,9 @@
               chatTextEl.style.opacity = "0";
               setTimeout(() => {
                 document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-                  el.classList.add('menu-slide');
+                  if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
+                  el.style.transition = "transform 0.7s ease";
+                  el.style.transform = "translateX(-22.59vw)";
                 });
                 setTimeout(() => {
                   document.querySelector('.menu-items').classList.add('raised');

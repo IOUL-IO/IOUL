@@ -218,11 +218,9 @@
       FINAL LOGIC:
       • Global click handlers for left regions ignore clicks inside menu items.
       • Global handlers manage horizontal extended/inverse animations.
-      • The helper function slideDownSiblings (called within the submenu expansion functions) now
-        clears any inline transform on each menu item that follows the clicked one and then adds both
-        "menu-slide" and "slide-down" classes.
-      • According to your CSS, a menu item with both classes transforms to translate(-22.59vw, 11vh), which
-        moves it down 11vh while maintaining its horizontal position at 6.41vw.
+      • The helper function slideDownSiblings now delays adding the "menu-slide" and "slide-down" classes by 20ms.
+        This allows the browser to register the initial state and then animate smoothly to the new transform (translate(-22.59vw, 11vh)).
+      • Submenu expansion functions call slideDownSiblings with the clicked menu item’s ID.
       • Menu item click handlers trigger the appropriate submenu expansion function.
     */
 
@@ -313,17 +311,6 @@
         setTimeout(fn, 100);
       } else {
         fn();
-      }
-    }
-
-    /* Helper: Slide down only the menu items that follow the clicked one */
-    function slideDownSiblings(clickedId) {
-      let menuItems = Array.from(document.querySelectorAll('.menu-items .menu-item'));
-      let clickedIndex = menuItems.findIndex(el => el.id === clickedId);
-      for (let i = clickedIndex + 1; i < menuItems.length; i++) {
-        // Clear inline transform to allow CSS to take over.
-        menuItems[i].style.transform = "";
-        menuItems[i].classList.add("menu-slide", "slide-down");
       }
     }
 
@@ -540,16 +527,23 @@
       });
     });
 
-    /* Submenu expansion functions – use helper to slide down only the following menu items */
+    /* Helper: Slide down only the menu items that follow the clicked one with a slight delay for smooth animation */
     function slideDownSiblings(clickedId) {
       let menuItems = Array.from(document.querySelectorAll('.menu-items .menu-item'));
       let clickedIndex = menuItems.findIndex(el => el.id === clickedId);
+      // Clear inline transform for siblings
       for (let i = clickedIndex + 1; i < menuItems.length; i++) {
-        // Clear any inline transform to let CSS classes take effect.
         menuItems[i].style.transform = "";
-        menuItems[i].classList.add("menu-slide", "slide-down");
       }
+      // Add classes with a slight delay to trigger smooth transition
+      setTimeout(() => {
+        for (let i = clickedIndex + 1; i < menuItems.length; i++) {
+          menuItems[i].classList.add("menu-slide", "slide-down");
+        }
+      }, 20);
     }
+
+    /* Submenu expansion functions – use helper to slide down only the following menu items */
     function openOnlineAssets() {
       slideDownSiblings("online-assets");
       setTimeout(() => {

@@ -8,72 +8,14 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="non-fullscreen">
-
-  <!-- High-z-index stripes (unchanged) -->
+  <!-- Unchanged stripes: z-index=100, etc. -->
   <div class="layer-one"></div>
   <div class="layer-two"></div>
   <div class="layer-three"></div>
 
-  <!-- 
-       New: a separate container with z-index=1 
-       => behind layer-four (z-index=2).
-       We put the 4 community texts, 4 zeros, and line here.
-  -->
-  <div class="community-layer"
-       style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; pointer-events:none;">
-    <!-- SHIFTED by +29 to be behind layers two & four -->
-    <!-- 4 community texts at left=35.41vw -->
-    <span class="custom-text"
-          style="position:absolute; top:35.4vh; left:35.41vw;">
-      cOMMUn1T1ES
-    </span>
-    <span class="custom-text"
-          style="position:absolute; top:41.6vh; left:35.41vw;">
-      UPDATE L1ST
-    </span>
-    <span class="custom-text"
-          style="position:absolute; top:53vh; left:35.41vw;">
-      ADD-On SHOP
-    </span>
-    <span class="custom-text"
-          style="position:absolute; top:59.2vh; left:35.41vw;">
-      1OUL cEnTER
-    </span>
-
-    <!-- Community line -->
-    <div class="custom-line"
-         style="position:absolute; top:47.8vh; left:35.41vw; width:22.48vw; height:1px;
-                background-color:rgba(230,230,230,0.28);
-                transition:left 0.7s ease, transform 0.7s ease;">
-    </div>
-
-    <!-- Four zero texts at left=57.41vw -->
-    <span class="custom-text right-flow"
-          style="position:absolute; top:35.4vh; left:57.41vw;">
-      0
-    </span>
-    <span class="custom-text right-flow"
-          style="position:absolute; top:41.6vh; left:57.41vw;">
-      0
-    </span>
-    <span class="custom-text right-flow"
-          style="position:absolute; top:53vh; left:57.41vw;">
-      0
-    </span>
-    <span class="custom-text right-flow"
-          style="position:absolute; top:59.2vh; left:57.41vw;">
-      0
-    </span>
-  </div>
-
-  <!-- The covering layer, z-index=2, so it's above the .community-layer -->
-  <div class="layer-four"></div>
-
-  <!-- Your main page-content (z-index=??) with all your code -->
   <div class="page-content">
-    <!-- Main menu items -->
+    <!-- 4 main items (unchanged) -->
     <div class="menu-items">
-      <!-- The four main menu items (unchanged) -->
       <span class="custom-text menu-item" style="top:36.1vh; left:29vw;" id="online-assets">
         OnL1nE ASSETS:
       </span>
@@ -88,6 +30,10 @@
       </span>
     </div>
 
+    <!-- The covering layer (unchanged, z-index=2) -->
+    <div class="layer-four"></div>
+
+    <!-- Container for the rest: .other-content at z-index=3 (unchanged) -->
     <div class="other-content">
       <div class="line original"></div>
       <div class="line second"></div>
@@ -221,6 +167,50 @@
       </div>
 
       <div class="custom-line" style="left: -42.59vw;"></div>
+
+      <!--
+        Four community texts, line, and four zeros, each with z-index=1, so behind layer-four (z-index=2).
+        Each is shifted left by +29 => 35.41vw or 57.41vw, as you wanted.
+      -->
+      <span class="custom-text"
+            style="position:absolute; z-index:1; top:35.4vh; left:35.41vw;">
+        cOMMUn1T1ES
+      </span>
+      <span class="custom-text"
+            style="position:absolute; z-index:1; top:41.6vh; left:35.41vw;">
+        UPDATE L1ST
+      </span>
+      <span class="custom-text"
+            style="position:absolute; z-index:1; top:53vh; left:35.41vw;">
+        ADD-On SHOP
+      </span>
+      <span class="custom-text"
+            style="position:absolute; z-index:1; top:59.2vh; left:35.41vw;">
+        1OUL cEnTER
+      </span>
+
+      <div class="custom-line"
+           style="position:absolute; z-index:1; top:47.8vh; left:35.41vw;
+                  width:22.48vw; height:1px; background-color:rgba(230,230,230,0.28);
+                  transition:left 0.7s ease, transform 0.7s ease;">
+      </div>
+
+      <span class="custom-text right-flow"
+            style="position:absolute; z-index:1; top:35.4vh; left:57.41vw;">
+        0
+      </span>
+      <span class="custom-text right-flow"
+            style="position:absolute; z-index:1; top:41.6vh; left:57.41vw;">
+        0
+      </span>
+      <span class="custom-text right-flow"
+            style="position:absolute; z-index:1; top:53vh; left:57.41vw;">
+        0
+      </span>
+      <span class="custom-text right-flow"
+            style="position:absolute; z-index:1; top:59.2vh; left:57.41vw;">
+        0
+      </span>
     </div>
   </div>
 
@@ -229,16 +219,15 @@
     <div class="slide-trigger-reverse"></div>
   </div>
 
-  <!-- Your final script with forced-close logic, submenus, etc. -->
+  <!-- Your final forced-close script, unchanged -->
   <script>
     /*
-      [All your final code:
-       fade-in, forced-close submenus, headings, account, 
-       animate-slide, chat logic, etc.
-       No layering changes here, so no white flicker at load.
+      The rest of your final forced-close submenus, fade-in logic, 
+      chat logic, etc. 
+      All EXACTLY as you had it, so no flicker or layering issues.
     */
 
-    /* Fade-in & fullscreen */
+    /* --- fadeInPage, etc. --- */
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -288,9 +277,7 @@
       chatInput.focus();
     });
 
-    /* Submenu forced-close logic, etc. */
     let currentMenu = null;
-
     function quickRemoveSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
@@ -301,6 +288,7 @@
         newTexts.forEach(span => span.remove());
         currentMenu = null;
       }, 100);
+
       document.getElementById("linkup-center").classList.remove("slide-down");
       document.getElementById("delivery-line").classList.remove("slide-down");
       document.getElementById("internal-unit").classList.remove("slide-down");
@@ -315,6 +303,7 @@
         newTexts.forEach(span => span.remove());
         currentMenu = null;
       }, 300);
+
       document.getElementById("linkup-center").classList.remove("slide-down");
       document.getElementById("delivery-line").classList.remove("slide-down");
       document.getElementById("internal-unit").classList.remove("slide-down");
@@ -328,7 +317,7 @@
       }
     }
 
-    // region: left 0–6.37 => headings+accounts
+    // left 0–6.37 => headings+accounts
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
@@ -414,7 +403,7 @@
       }
     }, true);
 
-    // region: left 28.86–32.43 => toggles main menu
+    // left 28.86–32.43 => toggles main menu
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;

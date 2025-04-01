@@ -434,3 +434,9 @@ body.non-fullscreen {
 .submenu-item.show {
     opacity: 1;
 }
+
+.community-items-container span,
+.zero-items-container span {
+    white-space: nowrap;
+    transition: left 0.7s ease, transform 0.7s ease;
+}

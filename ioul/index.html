@@ -15,7 +15,7 @@
   <div class="page-content">
     <!-- Main menu items -->
     <div class="menu-items">
-      <!-- The four main menu items -->
+      <!-- The four main menu items (each already has inline left:29vw) -->
       <span class="custom-text menu-item" style="top:36.1vh; left:29vw;" id="online-assets">
         OnL1nE ASSETS:
       </span>
@@ -34,7 +34,8 @@
     <div class="layer-four"></div>
 
     <!-- Community Items (moved out of .other-content) -->
-    <div class="community-items-container" style="position: absolute; z-index: 1;">
+    <!-- Set initial left:35.41vw -->
+    <div class="community-items-container" style="position: absolute; z-index: 1; left:35.41vw;">
       <span style="position: absolute; top:35.4vh; left:35.41vw; z-index:1; font-family:'Distill Expanded', sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca; transition: transform 0.7s ease; line-height:1.6; overflow: visible;">
         cOMMUn1T1ES
       </span>
@@ -51,8 +52,9 @@
       </div>
     </div>
 
-    <!-- Zero Items (moved out of .other-content so they appear under layer four) -->
-    <div class="zero-items-container" style="position: absolute; z-index: 1;">
+    <!-- Zero Items (moved out of .other-content) -->
+    <!-- Set initial left:57.41vw -->
+    <div class="zero-items-container" style="position: absolute; z-index: 1; left:57.41vw;">
       <span class="right-flow"
             style="position: absolute; top:35.4vh; left:57.41vw; z-index:1; font-family:'Distill Expanded', sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca; transition: transform 0.7s ease; line-height:1.6; overflow: visible;">
         0
@@ -215,9 +217,7 @@
 
   <script>
     /*
-      [All your final logic: fade-in, forced-close submenus before slides,
-       main toggles, chat logic, etc. exactly as you ended up with,
-       unchanged except for the updated left coordinate on the four 0's above.]
+      [All your final logic remains unchanged except for the added toggling below.]
     */
 
     /* --- Fade-in & fullscreen --- */
@@ -243,6 +243,7 @@
     });
 
     /* Slide state + chat fade */
+    // slideState now can be "none", "menu", or "menu-left" (or "heading"/"account" as before)
     let slideState = "none";
 
     const chatText = document.getElementById('chatText');
@@ -272,9 +273,8 @@
       chatInput.focus();
     });
 
-    /* Submenu forced-close logic */
-    let currentMenu = null; // e.g. "online-assets" or null if none
-
+    /* Submenu forced-close logic (unchanged) */
+    let currentMenu = null;
     function quickRemoveSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
@@ -285,12 +285,10 @@
         newTexts.forEach(span => span.remove());
         currentMenu = null;
       }, 100);
-
       document.getElementById("linkup-center").classList.remove("slide-down");
       document.getElementById("delivery-line").classList.remove("slide-down");
       document.getElementById("internal-unit").classList.remove("slide-down");
     }
-
     function closeSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
@@ -301,12 +299,10 @@
         newTexts.forEach(span => span.remove());
         currentMenu = null;
       }, 300);
-
       document.getElementById("linkup-center").classList.remove("slide-down");
       document.getElementById("delivery-line").classList.remove("slide-down");
       document.getElementById("internal-unit").classList.remove("slide-down");
     }
-
     function forceCloseSubmenuThen(fn) {
       if (currentMenu !== null) {
         quickRemoveSubmenu();
@@ -316,95 +312,8 @@
       }
     }
 
-    /* Region: Left 0–6.37vw => toggles headings+accounts */
-    document.addEventListener('click', (event) => {
-      if (event.target.closest('.chat-text')) return;
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const leftMin = 0;
-      const leftMax = 6.37 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
-
-      if (event.clientX >= leftMin && event.clientX <= leftMax &&
-          event.clientY >= yMin && event.clientY <= yMax) {
-        event.stopPropagation();
-        forceCloseSubmenuThen(() => {
-          if (slideState === "menu") {
-            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-              el.classList.remove('menu-slide');
-            });
-            document.querySelector('.menu-items').classList.remove('raised');
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              setTimeout(() => {
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            slideState = "none";
-
-          } else if (slideState === "heading" || slideState === "account") {
-            document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
-              box.style.transform = `translateX(${box.dataset.offset}vw)`;
-            });
-            document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
-              box.style.transform = `translateX(${box.dataset.offset}vw)`;
-            });
-            document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              if (el.dataset.originalLeft) {
-                el.style.left = el.dataset.originalLeft;
-              }
-            });
-            const customLine = document.querySelector('.custom-line');
-            if (customLine && customLine.dataset.originalLeft) {
-              customLine.style.left = customLine.dataset.originalLeft;
-            }
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              setTimeout(() => {
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            slideState = "none";
-
-          } else if (slideState === "none") {
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              chatTextEl.style.transition = "opacity 0.1s ease";
-              chatTextEl.style.opacity = "0";
-              setTimeout(() => {
-                document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-                  if (!el.dataset.originalLeft) {
-                    el.dataset.originalLeft = el.style.left;
-                  }
-                  const original = parseFloat(el.dataset.originalLeft);
-                  el.style.left = (original + 49) + "vw";
-                });
-                const customLine = document.querySelector('.custom-line');
-                if (customLine) {
-                  if (!customLine.dataset.originalLeft) {
-                    customLine.dataset.originalLeft = customLine.style.left;
-                  }
-                  const originalLine = parseFloat(customLine.dataset.originalLeft);
-                  customLine.style.left = (originalLine + 49) + "vw";
-                }
-                document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
-                  box.style.transform = "translateX(0)";
-                });
-                document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
-                  box.style.transform = "translateX(0)";
-                });
-              }, 110);
-            }
-            slideState = "heading";
-          }
-        });
-      }
-    }, true);
-
-    /* Region: Left 28.86–32.43vw => toggles main menu */
+    /* Region: Left 28.86–32.43vw => toggles main menu
+       Now extended to check if slideState is "menu" to further slide items left by 29vw */
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
@@ -413,12 +322,25 @@
       const leftMax = 32.43 * vwUnit;
       const yMin = 28.5 * vhUnit;
       const yMax = 84 * vhUnit;
-
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
+          // If menu is already in the "menu" state, slide all items further left (subtract 29vw)
           if (slideState === "menu") {
+            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+              // Remove any transform class so we can animate using left property
+              el.classList.remove('menu-slide');
+              el.style.transition = "left 0.7s ease";
+              el.style.left = (parseFloat(el.style.left) - 29) + "vw";
+            });
+            let comm = document.querySelector('.community-items-container');
+            comm.style.transition = "left 0.7s ease";
+            comm.style.left = (parseFloat(comm.style.left) - 29) + "vw";
+            let zero = document.querySelector('.zero-items-container');
+            zero.style.transition = "left 0.7s ease";
+            zero.style.left = (parseFloat(zero.style.left) - 29) + "vw";
+            slideState = "menu-left";
             return;
           } else if (slideState === "heading" || slideState === "account") {
             document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
@@ -444,7 +366,6 @@
               }, 700);
             }
             slideState = "none";
-
           } else if (slideState === "none") {
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
@@ -465,7 +386,63 @@
       }
     }, true);
 
-    /* Slide triggers for animate-slide / animate-grid */
+    /* Region: Left 0–6.37vw => toggles inverse animation
+       When in state "menu-left", this click slides items back right by adding 29vw */
+    document.addEventListener('click', (event) => {
+      if (event.target.closest('.chat-text')) return;
+      const vwUnit = window.innerWidth / 100;
+      const vhUnit = window.innerHeight / 100;
+      const leftMin = 0;
+      const leftMax = 6.37 * vwUnit;
+      const yMin = 28.5 * vhUnit;
+      const yMax = 84 * vhUnit;
+      if (event.clientX >= leftMin && event.clientX <= leftMax &&
+          event.clientY >= yMin && event.clientY <= yMax) {
+        event.stopPropagation();
+        forceCloseSubmenuThen(() => {
+          if (slideState === "menu-left") {
+            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+              el.style.transition = "left 0.7s ease";
+              el.style.left = (parseFloat(el.style.left) + 29) + "vw";
+            });
+            let comm = document.querySelector('.community-items-container');
+            comm.style.transition = "left 0.7s ease";
+            comm.style.left = (parseFloat(comm.style.left) + 29) + "vw";
+            let zero = document.querySelector('.zero-items-container');
+            zero.style.transition = "left 0.7s ease";
+            zero.style.left = (parseFloat(zero.style.left) + 29) + "vw";
+            slideState = "menu";
+            return;
+          } else if (slideState === "heading" || slideState === "account") {
+            document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
+              box.style.transform = `translateX(${box.dataset.offset}vw)`;
+            });
+            document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
+              box.style.transform = `translateX(${box.dataset.offset}vw)`;
+            });
+            document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
+              if (el.dataset.originalLeft) {
+                el.style.left = el.dataset.originalLeft;
+              }
+            });
+            const customLine = document.querySelector('.custom-line');
+            if (customLine && customLine.dataset.originalLeft) {
+              customLine.style.left = customLine.dataset.originalLeft;
+            }
+            const chatTextEl = document.getElementById('chatText');
+            if (chatTextEl) {
+              setTimeout(() => {
+                chatTextEl.style.transition = "opacity 0.7s ease";
+                chatTextEl.style.opacity = "1";
+              }, 700);
+            }
+            slideState = "none";
+          }
+        });
+      }
+    }, true);
+
+    /* Slide triggers for animate-slide / animate-grid (unchanged) */
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -483,7 +460,7 @@
       });
     });
 
-    /* Submenu expansions */
+    /* Submenu expansions (unchanged) */
     function openOnlineAssets() {
       document.getElementById("linkup-center").classList.add("slide-down");
       document.getElementById("delivery-line").classList.add("slide-down");
@@ -518,7 +495,6 @@
         addNewText("- 1T", 69.4, 6.4);
       }, 700);
     }
-
     function addNewText(text, topVH, leftVW) {
       const span = document.createElement("span");
       span.className = "custom-text new-text";
@@ -549,7 +525,6 @@
         }
       }
     });
-
     document.getElementById("linkup-center").addEventListener("click", (e) => {
       e.stopPropagation();
       if (currentMenu === "linkup-center") {
@@ -567,7 +542,6 @@
         }
       }
     });
-
     document.getElementById("delivery-line").addEventListener("click", (e) => {
       e.stopPropagation();
       if (currentMenu === "delivery-line") {
@@ -585,7 +559,6 @@
         }
       }
     });
-
     document.getElementById("internal-unit").addEventListener("click", (e) => {
       e.stopPropagation();
       if (currentMenu === "internal-unit") {

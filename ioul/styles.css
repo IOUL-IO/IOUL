@@ -74,7 +74,7 @@ body.non-fullscreen {
 }
 .menu-items .menu-item {
     pointer-events: auto;
-    transition: transform 0.7s ease; /* smooth in/out */
+    transition: left 0.7s ease, transform 0.7s ease; /* added left transition */
 }
 
 /* ----- The covering layer ----- */
@@ -358,7 +358,7 @@ body.non-fullscreen {
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
     text-shadow: 0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca;
-    transition: transform 0.7s ease;
+    transition: left 0.7s ease, transform 0.7s ease;  /* added left transition */
     line-height: 1.6;
     overflow: visible;
 }
@@ -433,4 +433,11 @@ body.non-fullscreen {
 }
 .submenu-item.show {
     opacity: 1;
+}
+
+/* Additional rules for community and zero items: ensure no wrapping and smooth left transitions */
+.community-items-container span,
+.zero-items-container span {
+    white-space: nowrap;
+    transition: left 0.7s ease, transform 0.7s ease;
 }

@@ -216,11 +216,12 @@
   <script>
     /*
       FINAL LOGIC:
-      - Global click handlers for left regions ignore clicks from menu items.
-      - Global handlers manage horizontal extended/inverse animations via inline styles and classes.
-      - Submenu expansion functions now add the "slide-down" class to sibling menu items.
-      - The CSS rule for ".menu-items .menu-item.menu-slide.slide-down" is expected to combine the horizontal offset (from "menu-slide") with a vertical shift of 11vh.
-      - Our submenu expansion functions no longer clear the inline transform so that the horizontal position (6.41vw) is maintained.
+      • Global click handlers for left regions ignore clicks from within menu items.
+      • Global handlers manage horizontal extended/inverse animations.
+      • Submenu expansion functions now remove any inline transform from sibling menu items and add both
+        "menu-slide" and "slide-down" classes. (According to your CSS, a menu item with both classes will transform
+        as: translate(-22.59vw, 11vh), which slides it down by 11vh while retaining its horizontal extended position.)
+      • The menu item click handlers remain unchanged.
     */
 
     /* --- Fade-in & fullscreen --- */
@@ -315,7 +316,7 @@
 
     /* Global click handlers for left regions */
     document.addEventListener('click', (event) => {
-      // Skip if click is on a menu item or chat-text.
+      // Skip if click originates in a menu item or chat.
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -341,6 +342,7 @@
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
+            // Restore the community custom-line.
             document.querySelectorAll('.community-items-container .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
@@ -427,6 +429,7 @@
       }
     }, true);
 
+    /* Global click handler for right region (28.86–32.43vw) */
     document.addEventListener('click', (event) => {
       // Do not process if click is on a menu item or chat.
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
@@ -524,10 +527,12 @@
       });
     });
 
-    /* Submenu expansion functions – now adding the "slide-down" class to sibling menu items */
+    /* Submenu expansion functions – updated to add "menu-slide" and "slide-down" classes to sibling menu items */
     function openOnlineAssets() {
       document.querySelectorAll('.menu-items .menu-item:not(#online-assets)').forEach(el => {
-          el.classList.add("slide-down");
+          // Remove any inline transform so the CSS classes take effect.
+          el.style.transform = "";
+          el.classList.add("menu-slide", "slide-down");
       });
       setTimeout(() => {
         addNewText("- cMS", 40.1, 6.4);
@@ -537,7 +542,8 @@
     }
     function openLinkupCenter() {
       document.querySelectorAll('.menu-items .menu-item:not(#linkup-center)').forEach(el => {
-          el.classList.add("slide-down");
+          el.style.transform = "";
+          el.classList.add("menu-slide", "slide-down");
       });
       setTimeout(() => {
         addNewText("- cOM", 47.2, 6.4);
@@ -547,7 +553,8 @@
     }
     function openDeliveryLine() {
       document.querySelectorAll('.menu-items .menu-item:not(#delivery-line)').forEach(el => {
-          el.classList.add("slide-down");
+          el.style.transform = "";
+          el.classList.add("menu-slide", "slide-down");
       });
       setTimeout(() => {
         addNewText("- cRM", 54.3, 6.4);
@@ -557,7 +564,8 @@
     }
     function openInternalUnit() {
       document.querySelectorAll('.menu-items .menu-item:not(#internal-unit)').forEach(el => {
-          el.classList.add("slide-down");
+          el.style.transform = "";
+          el.classList.add("menu-slide", "slide-down");
       });
       setTimeout(() => {
         addNewText("- 1nV", 61.4, 6.4);
@@ -577,7 +585,7 @@
       }, 10);
     }
 
-    /* Menu item click handlers – submenu expansion */
+    /* Menu item click handlers – submenu expansion (unchanged) */
     document.getElementById("online-assets").addEventListener("click", (e) => {
       e.stopPropagation();
       if (currentMenu === "online-assets") {

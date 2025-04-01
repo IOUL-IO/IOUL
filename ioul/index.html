@@ -216,8 +216,10 @@
   <script>
     /*
       Final logic remains as before except for adjustments:
-      • In both global click handlers we now immediately return if the click target is inside a menu-item.
-      • In each menu-item click handler we reset that item's inline transform and left properties so that the CSS slide-down (11vh) animation (triggered via adding the "slide-down" class) can occur as in the original code.
+      • In both global click handlers we immediately return if the click originates within a menu item.
+      • In the menu item click handlers (for submenu expansion) we no longer reset the inline transform/left values,
+        so the menu item remains in its extended position while its dedicated submenu slide-down animation (11vh shift)
+        occurs as originally intended.
     */
 
     /* --- Fade-in & fullscreen --- */
@@ -325,7 +327,7 @@
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "community") {
-            // Reverse extended community animation:
+            // Reverse community extended animation:
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
@@ -338,7 +340,7 @@
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
-            // Restore community custom-line.
+            // Restore the community custom-line.
             document.querySelectorAll('.community-items-container .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
@@ -354,7 +356,7 @@
             slideState = "menu";
             return;
           } else if (slideState === "menu") {
-            // Reset each menu item's transform to allow smooth slide-in.
+            // Smoothly slide menu items back in.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               el.style.transition = "transform 0.7s ease";
               el.style.transform = "translateX(0)";
@@ -427,7 +429,7 @@
 
     /* Region: Left 28.86–32.43vw */
     document.addEventListener('click', (event) => {
-      // Do not process if click is on a menu item or chat.
+      // Do not process if the click is on a menu item or chat.
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -440,8 +442,7 @@
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "menu") {
-            // Extended animation: subtract 29vw from menu items, community items, zero items,
-            // and update community custom-line.
+            // Extended animation: subtract 29vw from menu items, community items, and zero items.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
@@ -572,12 +573,9 @@
       }, 10);
     }
 
-    /* Menu item click handlers – reset inline transform and left to allow slide-down */
+    /* Menu item click handlers – now no longer reset inline styles */
     document.getElementById("online-assets").addEventListener("click", (e) => {
       e.stopPropagation();
-      // Restore this element's transform and left to original.
-      e.currentTarget.style.transform = "";
-      e.currentTarget.style.left = e.currentTarget.dataset.originalLeft || "29vw";
       if (currentMenu === "online-assets") {
         closeSubmenu();
       } else {
@@ -595,8 +593,6 @@
     });
     document.getElementById("linkup-center").addEventListener("click", (e) => {
       e.stopPropagation();
-      e.currentTarget.style.transform = "";
-      e.currentTarget.style.left = e.currentTarget.dataset.originalLeft || "29vw";
       if (currentMenu === "linkup-center") {
         closeSubmenu();
       } else {
@@ -614,8 +610,6 @@
     });
     document.getElementById("delivery-line").addEventListener("click", (e) => {
       e.stopPropagation();
-      e.currentTarget.style.transform = "";
-      e.currentTarget.style.left = e.currentTarget.dataset.originalLeft || "29vw";
       if (currentMenu === "delivery-line") {
         closeSubmenu();
       } else {
@@ -633,8 +627,6 @@
     });
     document.getElementById("internal-unit").addEventListener("click", (e) => {
       e.stopPropagation();
-      e.currentTarget.style.transform = "";
-      e.currentTarget.style.left = e.currentTarget.dataset.originalLeft || "29vw";
       if (currentMenu === "internal-unit") {
         closeSubmenu();
       } else {

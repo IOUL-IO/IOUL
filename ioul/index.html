@@ -215,7 +215,7 @@
 
   <script>
     /*
-      Final logic remains as before except for the updated left-region click handler.
+      Final logic remains as before except for the updated inverse animation in the left-region handler.
     */
 
     /* --- Fade-in & fullscreen --- */
@@ -377,7 +377,8 @@
                 el.style.left = el.dataset.originalLeft;
               }
             });
-            document.querySelectorAll('.custom-line').forEach(el => {
+            // Only update the account area custom-line (inside .other-content), not the community line.
+            document.querySelectorAll('.other-content > .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
                 el.style.left = el.dataset.originalLeft;
@@ -406,7 +407,7 @@
                   el.style.transition = "left 0.7s ease";
                   el.style.left = (original + 49) + "vw";
                 });
-                document.querySelectorAll('.custom-line').forEach(el => {
+                document.querySelectorAll('.other-content > .custom-line').forEach(el => {
                   if (!el.dataset.originalLeft) {
                     el.dataset.originalLeft = el.style.left;
                   }
@@ -482,7 +483,7 @@
                 el.style.left = el.dataset.originalLeft;
               }
             });
-            document.querySelectorAll('.custom-line').forEach(el => {
+            document.querySelectorAll('.other-content > .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
                 el.style.left = el.dataset.originalLeft;

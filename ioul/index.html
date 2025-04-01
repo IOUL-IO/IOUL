@@ -215,9 +215,7 @@
 
   <script>
     /*
-      [All your final logic: fade-in, forced-close submenus before slides,
-       main toggles, chat logic, etc. exactly as you ended up with,
-       unchanged except for the updated left coordinate on the four 0's above.]
+      Final logic remains as before except for the updated left-region click handler.
     */
 
     /* --- Fade-in & fullscreen --- */
@@ -316,7 +314,7 @@
       }
     }
 
-    /* Region: Left 0–6.37vw => toggles headings+accounts */
+    /* Region: Left 0–6.37vw => toggles headings+accounts and inverse menu animation */
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
@@ -331,7 +329,7 @@
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "community") {
-            // In extended state, revert extended animation (community -> menu)
+            // Reverse community extended animation: add back 29vw.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
@@ -379,10 +377,12 @@
                 el.style.left = el.dataset.originalLeft;
               }
             });
-            const customLine = document.querySelector('.custom-line');
-            if (customLine && customLine.dataset.originalLeft) {
-              customLine.style.left = customLine.dataset.originalLeft;
-            }
+            document.querySelectorAll('.custom-line').forEach(el => {
+              if (el.dataset.originalLeft) {
+                el.style.transition = "left 0.7s ease";
+                el.style.left = el.dataset.originalLeft;
+              }
+            });
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               setTimeout(() => {
@@ -403,16 +403,17 @@
                     el.dataset.originalLeft = el.style.left;
                   }
                   const original = parseFloat(el.dataset.originalLeft);
+                  el.style.transition = "left 0.7s ease";
                   el.style.left = (original + 49) + "vw";
                 });
-                const customLine = document.querySelector('.custom-line');
-                if (customLine) {
-                  if (!customLine.dataset.originalLeft) {
-                    customLine.dataset.originalLeft = customLine.style.left;
+                document.querySelectorAll('.custom-line').forEach(el => {
+                  if (!el.dataset.originalLeft) {
+                    el.dataset.originalLeft = el.style.left;
                   }
-                  const originalLine = parseFloat(customLine.dataset.originalLeft);
-                  customLine.style.left = (originalLine + 49) + "vw";
-                }
+                  const originalLine = parseFloat(el.dataset.originalLeft);
+                  el.style.transition = "left 0.7s ease";
+                  el.style.left = (originalLine + 49) + "vw";
+                });
                 document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
                   box.style.transform = "translateX(0)";
                 });
@@ -442,13 +443,12 @@
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "menu") {
-            // Extended animation: slide menu items left (subtract 29vw)
+            // Extended animation: slide menu items, community items, zero items, and community custom-line left by subtracting 29vw.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft - 29) + "vw";
             });
-            // Slide in community items (all children) by subtracting 29vw
             document.querySelectorAll('.community-items-container *').forEach(el => {
               if (el.style.left) {
                 el.style.transition = "left 0.7s ease";
@@ -456,7 +456,6 @@
                 el.style.left = (currentLeft - 29) + "vw";
               }
             });
-            // Slide in zero items by subtracting 29vw
             document.querySelectorAll('.zero-items-container *').forEach(el => {
               if (el.style.left) {
                 el.style.transition = "left 0.7s ease";
@@ -464,9 +463,13 @@
                 el.style.left = (currentLeft - 29) + "vw";
               }
             });
+            // Also update community container custom-line(s)
+            document.querySelectorAll('.community-items-container .custom-line').forEach(el => {
+              el.style.transition = "left 0.7s ease";
+              let currentLeft = parseFloat(el.style.left);
+              el.style.left = (currentLeft - 29) + "vw";
+            });
             slideState = "community";
-            return;
-
           } else if (slideState === "heading" || slideState === "account") {
             document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
@@ -479,10 +482,12 @@
                 el.style.left = el.dataset.originalLeft;
               }
             });
-            const customLine = document.querySelector('.custom-line');
-            if (customLine && customLine.dataset.originalLeft) {
-              customLine.style.left = customLine.dataset.originalLeft;
-            }
+            document.querySelectorAll('.custom-line').forEach(el => {
+              if (el.dataset.originalLeft) {
+                el.style.transition = "left 0.7s ease";
+                el.style.left = el.dataset.originalLeft;
+              }
+            });
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               setTimeout(() => {

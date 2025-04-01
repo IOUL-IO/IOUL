@@ -215,7 +215,7 @@
 
   <script>
     /*
-      [All final logic remains unchanged except for the updated inverse animations.]
+      [Final logic remains as before except for the inverse animation fix in the left-region handler.]
     */
 
     /* --- Fade-in & fullscreen --- */
@@ -329,7 +329,7 @@
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "community") {
-            // Reverse extended community animation: add back 29vw to menu, community, and zero items.
+            // Reverse community animation: add back 29vw to menu, community, and zero items.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
@@ -352,44 +352,10 @@
             slideState = "menu";
             return;
           } else if (slideState === "menu") {
-            // Smoothly slide menu items back (remove transform) so they return to their original inline left (29vw)
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-              el.style.transition = "transform 0.7s ease";
-              el.style.transform = "translateX(0)";
+              el.classList.remove('menu-slide');
             });
-            setTimeout(() => {
-              document.querySelector('.menu-items').classList.remove('raised');
-              const chatTextEl = document.getElementById('chatText');
-              if (chatTextEl) {
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }
-            }, 700);
-            slideState = "none";
-          } else if (slideState === "heading" || slideState === "account" || slideState === "none") {
-            document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              if (!el.dataset.originalLeft) {
-                el.dataset.originalLeft = el.style.left;
-              }
-              const original = parseFloat(el.dataset.originalLeft);
-              el.style.transition = "left 0.7s ease";
-              el.style.left = (original + 49) + "vw";
-            });
-            const customLine = document.querySelector('.custom-line');
-            if (customLine) {
-              if (!customLine.dataset.originalLeft) {
-                customLine.dataset.originalLeft = customLine.style.left;
-              }
-              const originalLine = parseFloat(customLine.dataset.originalLeft);
-              customLine.style.transition = "left 0.7s ease";
-              customLine.style.left = (originalLine + 49) + "vw";
-            }
-            document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
-              box.style.transform = "translateX(" + box.dataset.offset + "vw)";
-            });
-            document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
-              box.style.transform = "translateX(" + box.dataset.offset + "vw)";
-            });
+            document.querySelector('.menu-items').classList.remove('raised');
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               setTimeout(() => {
@@ -398,6 +364,62 @@
               }, 700);
             }
             slideState = "none";
+
+          } else if (slideState === "heading" || slideState === "account") {
+            document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
+              box.style.transform = `translateX(${box.dataset.offset}vw)`;
+            });
+            document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
+              box.style.transform = `translateX(${box.dataset.offset}vw)`;
+            });
+            document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
+              if (el.dataset.originalLeft) {
+                el.style.left = el.dataset.originalLeft;
+              }
+            });
+            const customLine = document.querySelector('.custom-line');
+            if (customLine && customLine.dataset.originalLeft) {
+              customLine.style.left = customLine.dataset.originalLeft;
+            }
+            const chatTextEl = document.getElementById('chatText');
+            if (chatTextEl) {
+              setTimeout(() => {
+                chatTextEl.style.transition = "opacity 0.7s ease";
+                chatTextEl.style.opacity = "1";
+              }, 700);
+            }
+            slideState = "none";
+
+          } else if (slideState === "none") {
+            const chatTextEl = document.getElementById('chatText');
+            if (chatTextEl) {
+              chatTextEl.style.transition = "opacity 0.1s ease";
+              chatTextEl.style.opacity = "0";
+              setTimeout(() => {
+                document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
+                  if (!el.dataset.originalLeft) {
+                    el.dataset.originalLeft = el.style.left;
+                  }
+                  const original = parseFloat(el.dataset.originalLeft);
+                  el.style.left = (original + 49) + "vw";
+                });
+                const customLine = document.querySelector('.custom-line');
+                if (customLine) {
+                  if (!customLine.dataset.originalLeft) {
+                    customLine.dataset.originalLeft = customLine.style.left;
+                  }
+                  const originalLine = parseFloat(customLine.dataset.originalLeft);
+                  customLine.style.left = (originalLine + 49) + "vw";
+                }
+                document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
+                  box.style.transform = "translateX(0)";
+                });
+                document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
+                  box.style.transform = "translateX(0)";
+                });
+              }, 110);
+            }
+            slideState = "heading";
           }
         });
       }
@@ -418,60 +440,47 @@
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "menu") {
-            // Extended animation: slide menu items (and community and zero items) left by subtracting 29vw.
-            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft - 29) + "vw";
-            });
-            document.querySelectorAll('.community-items-container *').forEach(el => {
-              if (el.style.left) {
-                el.style.transition = "left 0.7s ease";
-                let currentLeft = parseFloat(el.style.left);
-                el.style.left = (currentLeft - 29) + "vw";
-              }
-            });
-            document.querySelectorAll('.zero-items-container *').forEach(el => {
-              if (el.style.left) {
-                el.style.transition = "left 0.7s ease";
-                let currentLeft = parseFloat(el.style.left);
-                el.style.left = (currentLeft - 29) + "vw";
-              }
-            });
-            slideState = "community";
             return;
-          } else if (slideState === "heading" || slideState === "account" || slideState === "none") {
+          } else if (slideState === "heading" || slideState === "account") {
+            document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
+              box.style.transform = `translateX(${box.dataset.offset}vw)`;
+            });
+            document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
+              box.style.transform = `translateX(${box.dataset.offset}vw)`;
+            });
+            document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
+              if (el.dataset.originalLeft) {
+                el.style.left = el.dataset.originalLeft;
+              }
+            });
+            const customLine = document.querySelector('.custom-line');
+            if (customLine && customLine.dataset.originalLeft) {
+              customLine.style.left = customLine.dataset.originalLeft;
+            }
+            const chatTextEl = document.getElementById('chatText');
+            if (chatTextEl) {
+              setTimeout(() => {
+                chatTextEl.style.transition = "opacity 0.7s ease";
+                chatTextEl.style.opacity = "1";
+              }, 700);
+            }
+            slideState = "none";
+
+          } else if (slideState === "none") {
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
               chatTextEl.style.transition = "opacity 0.1s ease";
               chatTextEl.style.opacity = "0";
               setTimeout(() => {
-                document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-                  if (!el.dataset.originalLeft) {
-                    el.dataset.originalLeft = el.style.left;
-                  }
-                  const original = parseFloat(el.dataset.originalLeft);
-                  el.style.transition = "left 0.7s ease";
-                  el.style.left = (original + 49) + "vw";
+                document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+                  el.classList.add('menu-slide');
                 });
-                const customLine = document.querySelector('.custom-line');
-                if (customLine) {
-                  if (!customLine.dataset.originalLeft) {
-                    customLine.dataset.originalLeft = customLine.style.left;
-                  }
-                  const originalLine = parseFloat(customLine.dataset.originalLeft);
-                  customLine.style.transition = "left 0.7s ease";
-                  customLine.style.left = (originalLine + 49) + "vw";
-                }
-                document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
-                  box.style.transform = "translateX(" + box.dataset.offset + "vw)";
-                });
-                document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
-                  box.style.transform = "translateX(" + box.dataset.offset + "vw)";
-                });
+                setTimeout(() => {
+                  document.querySelector('.menu-items').classList.add('raised');
+                }, 700);
               }, 110);
             }
-            slideState = "heading";
+            slideState = "menu";
           }
         });
       }

@@ -8,12 +8,72 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="non-fullscreen">
+  <!-- Layers one, two, three as before -->
   <div class="layer-one"></div>
   <div class="layer-two"></div>
   <div class="layer-three"></div>
 
+  <!-- 
+       The new container: .community-layer
+       z-index=1 => behind layer-four (z-index=2) but above the white background 
+       This container holds your 4 community texts, 1 line, and 4 zeros
+  -->
+  <div class="community-layer"
+       style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1;">
+    <!--
+      1) The four community texts, left+29 => 35.41vw
+      2) The community line at left=35.41
+      3) The four zeros at left=57.41
+      All have the same top coords as you used, 
+      so they're now fully behind layer-two AND layer-four.
+    -->
+    <span class="custom-text"
+          style="top:35.4vh; left:35.41vw; position:absolute;">
+      cOMMUn1T1ES
+    </span>
+    <span class="custom-text"
+          style="top:41.6vh; left:35.41vw; position:absolute;">
+      UPDATE L1ST
+    </span>
+    <span class="custom-text"
+          style="top:53vh; left:35.41vw; position:absolute;">
+      ADD-On SHOP
+    </span>
+    <span class="custom-text"
+          style="top:59.2vh; left:35.41vw; position:absolute;">
+      1OUL cEnTER
+    </span>
+
+    <div class="custom-line"
+         style="top:47.8vh; left:35.41vw; width:22.48vw; height:1px;
+                background-color:rgba(230,230,230,0.28);
+                transition:left 0.7s ease, transform 0.7s ease;
+                position:absolute;">
+    </div>
+
+    <span class="custom-text right-flow"
+          style="top:35.4vh; left:57.41vw; position:absolute;">
+      0
+    </span>
+    <span class="custom-text right-flow"
+          style="top:41.6vh; left:57.41vw; position:absolute;">
+      0
+    </span>
+    <span class="custom-text right-flow"
+          style="top:53vh; left:57.41vw; position:absolute;">
+      0
+    </span>
+    <span class="custom-text right-flow"
+          style="top:59.2vh; left:57.41vw; position:absolute;">
+      0
+    </span>
+  </div>
+
+  <!-- The covering layer (z-index=2), so it is above the .community-layer (z-index=1) -->
+  <div class="layer-four"></div>
+
+  <!-- main .page-content (z-index=?), containing everything else -->
   <div class="page-content">
-    <!-- Main menu items -->
     <div class="menu-items">
       <!-- The four main menu items (unchanged) -->
       <span class="custom-text menu-item" style="top:36.1vh; left:29vw;" id="online-assets">
@@ -30,10 +90,6 @@
       </span>
     </div>
 
-    <!-- The covering layer -->
-    <div class="layer-four"></div>
-
-    <!-- Container for all other content -->
     <div class="other-content">
       <div class="line original"></div>
       <div class="line second"></div>
@@ -75,7 +131,7 @@
 
       <span class="grid-dashed dashed01"></span>
       <span class="grid-dashed dashed02"></span>
-      <span class="grid-dashed dashed03"></span>    
+      <span class="grid-dashed dashed03"></span>
       <span class="grid-dashed dashed04"></span>
       <span class="grid-dashed dashed05"></span>
       <span class="grid-dashed dashed06"></span>
@@ -167,56 +223,10 @@
       </div>
 
       <div class="custom-line" style="left: -42.59vw;"></div>
-
-      <!-- =========================
-           COMMUNITY TEXTS -> left + 29 => 35.41
-      ========================== -->
-      <span class="custom-text"
-            style="top:35.4vh; left:35.41vw;">
-        cOMMUn1T1ES
-      </span>
-      <span class="custom-text"
-            style="top:41.6vh; left:35.41vw;">
-        UPDATE L1ST
-      </span>
-      <span class="custom-text"
-            style="top:53vh; left:35.41vw;">
-        ADD-On SHOP
-      </span>
-      <span class="custom-text"
-            style="top:59.2vh; left:35.41vw;">
-        1OUL cEnTER
-      </span>
-
-      <!-- COMMUNITY LINE -> left + 29 => 35.41 -->
-      <div class="custom-line"
-           style="top:47.8vh; left:35.41vw; width:22.48vw;
-                  height:1px; background-color:rgba(230,230,230,0.28);
-                  transition:left 0.7s ease, transform 0.7s ease;">
-      </div>
-
-      <!-- =========================
-           FOUR ZERO TEXTS -> left + 29 => 57.41
-      ========================== -->
-      <span class="custom-text right-flow"
-            style="top:35.4vh; left:57.41vw; position:absolute;">
-        0
-      </span>
-      <span class="custom-text right-flow"
-            style="top:41.6vh; left:57.41vw; position:absolute;">
-        0
-      </span>
-      <span class="custom-text right-flow"
-            style="top:53vh; left:57.41vw; position:absolute;">
-        0
-      </span>
-      <span class="custom-text right-flow"
-            style="top:59.2vh; left:57.41vw; position:absolute;">
-        0
-      </span>
     </div>
   </div>
 
+  <!-- Slide triggers -->
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
@@ -224,14 +234,11 @@
 
   <script>
     /*
-      [All your final code: fade-in, forced-close submenus, chat logic, 
-       headings, accounts, submenus, etc. 
-       The only difference: The four community texts, one community line, 
-       and four zero texts now have left increased by 29vw. 
-       No other changes have been made.]
+      [All your final code with forced-close submenus, 
+       subitems behind layer-four, fade-in, chat, etc.]
     */
 
-    /* Fade-in & fullscreen logic */
+    /* --- Fade-in & fullscreen logic --- */
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
     function fadeInPage() {
@@ -282,7 +289,8 @@
       chatInput.focus();
     });
 
-    let currentMenu = null; // e.g. "online-assets" or null if none
+    /* Submenu forced-close logic */
+    let currentMenu = null; // e.g. "online-assets" or null
 
     function quickRemoveSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
@@ -299,6 +307,7 @@
       document.getElementById("delivery-line").classList.remove("slide-down");
       document.getElementById("internal-unit").classList.remove("slide-down");
     }
+
     function closeSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
@@ -314,6 +323,7 @@
       document.getElementById("delivery-line").classList.remove("slide-down");
       document.getElementById("internal-unit").classList.remove("slide-down");
     }
+
     function forceCloseSubmenuThen(fn) {
       if (currentMenu !== null) {
         quickRemoveSubmenu();

@@ -15,7 +15,7 @@
   <div class="page-content">
     <!-- Main menu items -->
     <div class="menu-items">
-      <!-- The four main menu items (each has inline left:29vw) -->
+      <!-- The four main menu items -->
       <span class="custom-text menu-item" style="top:36.1vh; left:29vw;" id="online-assets">
         OnL1nE ASSETS:
       </span>
@@ -34,8 +34,7 @@
     <div class="layer-four"></div>
 
     <!-- Community Items (moved out of .other-content) -->
-    <!-- Initial left: 35.41vw -->
-    <div class="community-items-container" style="position: absolute; z-index: 1; left:35.41vw;">
+    <div class="community-items-container" style="position: absolute; z-index: 1;">
       <span style="position: absolute; top:35.4vh; left:35.41vw; z-index:1; font-family:'Distill Expanded', sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca; transition: transform 0.7s ease; line-height:1.6; overflow: visible;">
         cOMMUn1T1ES
       </span>
@@ -48,13 +47,12 @@
       <span style="position: absolute; top:59.2vh; left:35.41vw; z-index:1; font-family:'Distill Expanded', sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca; transition: transform 0.7s ease; line-height:1.6; overflow: visible;">
         1OUL cEnTER
       </span>
-      <div class="custom-line" style="position: absolute; top:47.8vh; left:35.41vw; width:22.48vw; height:1px; background-color:rgba(230,230,230,0.28); transition: left 0.7s ease, transform 0.7s ease; z-index:1;">
+      <div class="custom-line" style="position: absolute; top:47.8vh; left:35.41vw; width:22.48vw; height:1px; background-color:rgba(230,230,230,0.28); transition:left 0.7s ease, transform 0.7s ease; z-index:1;">
       </div>
     </div>
 
-    <!-- Zero Items (moved out of .other-content) -->
-    <!-- Initial left: 57.41vw -->
-    <div class="zero-items-container" style="position: absolute; z-index: 1; left:57.41vw;">
+    <!-- Zero Items (moved out of .other-content so they appear under layer four) -->
+    <div class="zero-items-container" style="position: absolute; z-index: 1;">
       <span class="right-flow"
             style="position: absolute; top:35.4vh; left:57.41vw; z-index:1; font-family:'Distill Expanded', sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca; transition: transform 0.7s ease; line-height:1.6; overflow: visible;">
         0
@@ -217,7 +215,9 @@
 
   <script>
     /*
-      [Final logic remains unchanged except for the new toggle animations below.]
+      [All your final logic: fade-in, forced-close submenus before slides,
+       main toggles, chat logic, etc. exactly as you ended up with,
+       unchanged except for the updated left coordinate on the four 0's above.]
     */
 
     /* --- Fade-in & fullscreen --- */
@@ -243,8 +243,8 @@
     });
 
     /* Slide state + chat fade */
-    // slideState can be "none", "menu", or "menu-left"
     let slideState = "none";
+
     const chatText = document.getElementById('chatText');
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
@@ -272,8 +272,9 @@
       chatInput.focus();
     });
 
-    /* Submenu forced-close logic (unchanged) */
-    let currentMenu = null;
+    /* Submenu forced-close logic */
+    let currentMenu = null; // e.g. "online-assets" or null if none
+
     function quickRemoveSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
@@ -284,10 +285,12 @@
         newTexts.forEach(span => span.remove());
         currentMenu = null;
       }, 100);
+
       document.getElementById("linkup-center").classList.remove("slide-down");
       document.getElementById("delivery-line").classList.remove("slide-down");
       document.getElementById("internal-unit").classList.remove("slide-down");
     }
+
     function closeSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
@@ -298,10 +301,12 @@
         newTexts.forEach(span => span.remove());
         currentMenu = null;
       }, 300);
+
       document.getElementById("linkup-center").classList.remove("slide-down");
       document.getElementById("delivery-line").classList.remove("slide-down");
       document.getElementById("internal-unit").classList.remove("slide-down");
     }
+
     function forceCloseSubmenuThen(fn) {
       if (currentMenu !== null) {
         quickRemoveSubmenu();
@@ -311,37 +316,35 @@
       }
     }
 
-    /* Region: Left 28.86–32.43vw => Toggle slide-out animation */
+    /* Region: Left 0–6.37vw => toggles headings+accounts */
     document.addEventListener('click', (event) => {
-      if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
+      if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
-      const leftMin = 28.86 * vwUnit;
-      const leftMax = 32.43 * vwUnit;
+      const leftMin = 0;
+      const leftMax = 6.37 * vwUnit;
       const yMin = 28.5 * vhUnit;
       const yMax = 84 * vhUnit;
+
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "menu") {
-            // Slide menu items left to 0vw
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-              el.style.transition = "left 0.7s ease";
-              el.style.left = "0vw";
+              el.classList.remove('menu-slide');
             });
-            // Slide community container left to 6.41vw
-            let comm = document.querySelector('.community-items-container');
-            comm.style.transition = "left 0.7s ease";
-            comm.style.left = "6.41vw";
-            // Slide zero container left to 28.41vw
-            let zero = document.querySelector('.zero-items-container');
-            zero.style.transition = "left 0.7s ease";
-            zero.style.left = "28.41vw";
-            slideState = "menu-left";
-            return;
+            document.querySelector('.menu-items').classList.remove('raised');
+            const chatTextEl = document.getElementById('chatText');
+            if (chatTextEl) {
+              setTimeout(() => {
+                chatTextEl.style.transition = "opacity 0.7s ease";
+                chatTextEl.style.opacity = "1";
+              }, 700);
+            }
+            slideState = "none";
+
           } else if (slideState === "heading" || slideState === "account") {
-            // (unchanged logic for these states)
             document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
             });
@@ -365,6 +368,83 @@
               }, 700);
             }
             slideState = "none";
+
+          } else if (slideState === "none") {
+            const chatTextEl = document.getElementById('chatText');
+            if (chatTextEl) {
+              chatTextEl.style.transition = "opacity 0.1s ease";
+              chatTextEl.style.opacity = "0";
+              setTimeout(() => {
+                document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
+                  if (!el.dataset.originalLeft) {
+                    el.dataset.originalLeft = el.style.left;
+                  }
+                  const original = parseFloat(el.dataset.originalLeft);
+                  el.style.left = (original + 49) + "vw";
+                });
+                const customLine = document.querySelector('.custom-line');
+                if (customLine) {
+                  if (!customLine.dataset.originalLeft) {
+                    customLine.dataset.originalLeft = customLine.style.left;
+                  }
+                  const originalLine = parseFloat(customLine.dataset.originalLeft);
+                  customLine.style.left = (originalLine + 49) + "vw";
+                }
+                document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
+                  box.style.transform = "translateX(0)";
+                });
+                document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
+                  box.style.transform = "translateX(0)";
+                });
+              }, 110);
+            }
+            slideState = "heading";
+          }
+        });
+      }
+    }, true);
+
+    /* Region: Left 28.86–32.43vw => toggles main menu */
+    document.addEventListener('click', (event) => {
+      if (event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
+      const vwUnit = window.innerWidth / 100;
+      const vhUnit = window.innerHeight / 100;
+      const leftMin = 28.86 * vwUnit;
+      const leftMax = 32.43 * vwUnit;
+      const yMin = 28.5 * vhUnit;
+      const yMax = 84 * vhUnit;
+
+      if (event.clientX >= leftMin && event.clientX <= leftMax &&
+          event.clientY >= yMin && event.clientY <= yMax) {
+        event.stopPropagation();
+        forceCloseSubmenuThen(() => {
+          if (slideState === "menu") {
+            return;
+          } else if (slideState === "heading" || slideState === "account") {
+            document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
+              box.style.transform = `translateX(${box.dataset.offset}vw)`;
+            });
+            document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
+              box.style.transform = `translateX(${box.dataset.offset}vw)`;
+            });
+            document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
+              if (el.dataset.originalLeft) {
+                el.style.left = el.dataset.originalLeft;
+              }
+            });
+            const customLine = document.querySelector('.custom-line');
+            if (customLine && customLine.dataset.originalLeft) {
+              customLine.style.left = customLine.dataset.originalLeft;
+            }
+            const chatTextEl = document.getElementById('chatText');
+            if (chatTextEl) {
+              setTimeout(() => {
+                chatTextEl.style.transition = "opacity 0.7s ease";
+                chatTextEl.style.opacity = "1";
+              }, 700);
+            }
+            slideState = "none";
+
           } else if (slideState === "none") {
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
@@ -385,65 +465,7 @@
       }
     }, true);
 
-    /* Region: Left 0–6.37vw => Toggle inverse animation */
-    document.addEventListener('click', (event) => {
-      if (event.target.closest('.chat-text')) return;
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const leftMin = 0;
-      const leftMax = 6.37 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
-      if (event.clientX >= leftMin && event.clientX <= leftMax &&
-          event.clientY >= yMin && event.clientY <= yMax) {
-        event.stopPropagation();
-        forceCloseSubmenuThen(() => {
-          if (slideState === "menu-left") {
-            // Slide menu items back right to 29vw
-            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-              el.style.transition = "left 0.7s ease";
-              el.style.left = "29vw";
-            });
-            // Slide community container back to 35.41vw
-            let comm = document.querySelector('.community-items-container');
-            comm.style.transition = "left 0.7s ease";
-            comm.style.left = "35.41vw";
-            // Slide zero container back to 57.41vw
-            let zero = document.querySelector('.zero-items-container');
-            zero.style.transition = "left 0.7s ease";
-            zero.style.left = "57.41vw";
-            slideState = "menu";
-            return;
-          } else if (slideState === "heading" || slideState === "account") {
-            document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
-              box.style.transform = `translateX(${box.dataset.offset}vw)`;
-            });
-            document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
-              box.style.transform = `translateX(${box.dataset.offset}vw)`;
-            });
-            document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              if (el.dataset.originalLeft) {
-                el.style.left = el.dataset.originalLeft;
-              }
-            });
-            const customLine = document.querySelector('.custom-line');
-            if (customLine && customLine.dataset.originalLeft) {
-              customLine.style.left = customLine.dataset.originalLeft;
-            }
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              setTimeout(() => {
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            slideState = "none";
-          }
-        });
-      }
-    }, true);
-
-    /* Slide triggers for animate-slide / animate-grid (unchanged) */
+    /* Slide triggers for animate-slide / animate-grid */
     const inverseTrigger = document.querySelector('.slide-trigger');
     inverseTrigger.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -461,7 +483,7 @@
       });
     });
 
-    /* Submenu expansions (unchanged) */
+    /* Submenu expansions */
     function openOnlineAssets() {
       document.getElementById("linkup-center").classList.add("slide-down");
       document.getElementById("delivery-line").classList.add("slide-down");
@@ -496,6 +518,7 @@
         addNewText("- 1T", 69.4, 6.4);
       }, 700);
     }
+
     function addNewText(text, topVH, leftVW) {
       const span = document.createElement("span");
       span.className = "custom-text new-text";
@@ -526,6 +549,7 @@
         }
       }
     });
+
     document.getElementById("linkup-center").addEventListener("click", (e) => {
       e.stopPropagation();
       if (currentMenu === "linkup-center") {
@@ -543,6 +567,7 @@
         }
       }
     });
+
     document.getElementById("delivery-line").addEventListener("click", (e) => {
       e.stopPropagation();
       if (currentMenu === "delivery-line") {
@@ -560,6 +585,7 @@
         }
       }
     });
+
     document.getElementById("internal-unit").addEventListener("click", (e) => {
       e.stopPropagation();
       if (currentMenu === "internal-unit") {

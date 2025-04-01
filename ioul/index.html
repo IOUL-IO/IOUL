@@ -216,12 +216,10 @@
   <script>
     /*
       FINAL LOGIC:
-      • Global click handlers for left regions ignore clicks originating inside a menu item.
-      • Global handlers manage extended/inverse animations as before.
-      • Menu item click handlers (for submenu expansion) now do not modify the menu item’s position.
-        Instead, they remove any inline transform from the sibling menu items so that the "slide-down" CSS transition
-        (which moves them down by 11vh) can occur as in the original code.
-      • The submenu expansion functions (openOnlineAssets, etc.) remain as in the original code.
+      - Global click handlers for left regions use early returns if the click is on a menu item.
+      - Global handlers manage extended/inverse animations (horizontal sliding) via inline styles.
+      - The submenu expansion functions now clear any inline transform on sibling menu items and add the "slide-down" class, which (per your CSS) causes a vertical 11vh shift.
+      - The menu item click handlers themselves no longer modify inline transform so that the submenu slide-down animation occurs.
     */
 
     /* --- Fade-in & fullscreen --- */
@@ -314,9 +312,9 @@
       }
     }
 
-    /* Global click handlers */
+    /* Global click handlers for left regions */
     document.addEventListener('click', (event) => {
-      // Skip if click originates inside a menu item or chat.
+      // Skip if click originates in a menu item or chat-text.
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -329,6 +327,7 @@
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "community") {
+            // Reverse community extended animation.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
@@ -356,7 +355,7 @@
             slideState = "menu";
             return;
           } else if (slideState === "menu") {
-            // Remove inline transform from menu items to trigger smooth slide-in.
+            // Remove inline transform from menu items to allow smooth slide-in.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               el.style.transition = "transform 0.7s ease";
               el.style.transform = "translateX(0)";
@@ -426,7 +425,6 @@
       }
     }, true);
 
-    /* Region: Left 28.86–32.43vw */
     document.addEventListener('click', (event) => {
       // Do not process if click is on a menu item or chat.
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
@@ -524,11 +522,12 @@
       });
     });
 
-    /* Submenu expansions */
+    /* Submenu expansion functions – updated to clear inline transforms and add "slide-down" class */
     function openOnlineAssets() {
-      document.getElementById("linkup-center").classList.add("slide-down");
-      document.getElementById("delivery-line").classList.add("slide-down");
-      document.getElementById("internal-unit").classList.add("slide-down");
+      document.querySelectorAll('.menu-items .menu-item:not(#online-assets)').forEach(el => {
+          el.style.transform = "";  // clear any inline transform so CSS takes over
+          el.classList.add("slide-down");
+      });
       setTimeout(() => {
         addNewText("- cMS", 40.1, 6.4);
         addNewText("- LMS", 44.1, 6.4);
@@ -536,8 +535,10 @@
       }, 700);
     }
     function openLinkupCenter() {
-      document.getElementById("delivery-line").classList.add("slide-down");
-      document.getElementById("internal-unit").classList.add("slide-down");
+      document.querySelectorAll('.menu-items .menu-item:not(#linkup-center)').forEach(el => {
+          el.style.transform = "";
+          el.classList.add("slide-down");
+      });
       setTimeout(() => {
         addNewText("- cOM", 47.2, 6.4);
         addNewText("- JOB", 51.2, 6.4);
@@ -545,7 +546,10 @@
       }, 700);
     }
     function openDeliveryLine() {
-      document.getElementById("internal-unit").classList.add("slide-down");
+      document.querySelectorAll('.menu-items .menu-item:not(#delivery-line)').forEach(el => {
+          el.style.transform = "";
+          el.classList.add("slide-down");
+      });
       setTimeout(() => {
         addNewText("- cRM", 54.3, 6.4);
         addNewText("- OPS", 58.3, 6.4);
@@ -553,6 +557,10 @@
       }, 700);
     }
     function openInternalUnit() {
+      document.querySelectorAll('.menu-items .menu-item:not(#internal-unit)').forEach(el => {
+          el.style.transform = "";
+          el.classList.add("slide-down");
+      });
       setTimeout(() => {
         addNewText("- 1nV", 61.4, 6.4);
         addNewText("- FMS", 65.4, 6.4);
@@ -571,10 +579,9 @@
       }, 10);
     }
 
-    /* Menu item click handlers – allow submenu slide-down to occur without repositioning */
+    /* Menu item click handlers – no inline style reset so items remain extended */
     document.getElementById("online-assets").addEventListener("click", (e) => {
       e.stopPropagation();
-      // Do not modify inline transform; let the submenu function add the "slide-down" class.
       if (currentMenu === "online-assets") {
         closeSubmenu();
       } else {

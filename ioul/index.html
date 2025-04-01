@@ -215,7 +215,11 @@
 
   <script>
     /*
-      Final logic remains as before except for the updated inverse animation in the left-region handler.
+      Final logic remains as before except for the updated inverse and extended animations.
+      In the inverse (left-area) handler for slideState "community", we now update elements separately:
+        – For menu items: add back 29vw.
+        – For community-items: update all except the custom-line.
+        – Then, for the community custom-line (inside .community-items-container), restore its original left.
     */
 
     /* --- Fade-in & fullscreen --- */
@@ -242,7 +246,6 @@
 
     /* Slide state + chat fade */
     let slideState = "none";
-
     const chatText = document.getElementById('chatText');
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
@@ -272,7 +275,6 @@
 
     /* Submenu forced-close logic */
     let currentMenu = null; // e.g. "online-assets" or null if none
-
     function quickRemoveSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
@@ -283,12 +285,10 @@
         newTexts.forEach(span => span.remove());
         currentMenu = null;
       }, 100);
-
       document.getElementById("linkup-center").classList.remove("slide-down");
       document.getElementById("delivery-line").classList.remove("slide-down");
       document.getElementById("internal-unit").classList.remove("slide-down");
     }
-
     function closeSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');
       newTexts.forEach(span => {
@@ -299,12 +299,10 @@
         newTexts.forEach(span => span.remove());
         currentMenu = null;
       }, 300);
-
       document.getElementById("linkup-center").classList.remove("slide-down");
       document.getElementById("delivery-line").classList.remove("slide-down");
       document.getElementById("internal-unit").classList.remove("slide-down");
     }
-
     function forceCloseSubmenuThen(fn) {
       if (currentMenu !== null) {
         quickRemoveSubmenu();
@@ -314,7 +312,7 @@
       }
     }
 
-    /* Region: Left 0–6.37vw => toggles headings+accounts and inverse menu animation */
+    /* Region: Left 0–6.37vw => toggles headings+accounts and inverse animation */
     document.addEventListener('click', (event) => {
       if (event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
@@ -323,31 +321,39 @@
       const leftMax = 6.37 * vwUnit;
       const yMin = 28.5 * vhUnit;
       const yMax = 84 * vhUnit;
-
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "community") {
-            // Reverse community extended animation: add back 29vw.
+            // Reverse extended community animation:
+            // Update menu items:
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
-            document.querySelectorAll('.community-items-container *').forEach(el => {
-              if (el.style.left) {
+            // Update community items except the custom-line:
+            document.querySelectorAll('.community-items-container *:not(.custom-line)').forEach(el => {
+              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
+              el.style.transition = "left 0.7s ease";
+              let currentLeft = parseFloat(el.style.left);
+              el.style.left = (currentLeft + 29) + "vw";
+            });
+            // Restore the community custom-line to its original left:
+            document.querySelectorAll('.community-items-container .custom-line').forEach(el => {
+              if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
-                let currentLeft = parseFloat(el.style.left);
-                el.style.left = (currentLeft + 29) + "vw";
+                el.style.left = el.dataset.originalLeft;
               }
             });
+            // Update zero items:
             document.querySelectorAll('.zero-items-container *').forEach(el => {
-              if (el.style.left) {
-                el.style.transition = "left 0.7s ease";
-                let currentLeft = parseFloat(el.style.left);
-                el.style.left = (currentLeft + 29) + "vw";
-              }
+              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
+              el.style.transition = "left 0.7s ease";
+              let currentLeft = parseFloat(el.style.left);
+              el.style.left = (currentLeft + 29) + "vw";
             });
             slideState = "menu";
             return;
@@ -364,7 +370,6 @@
               }, 700);
             }
             slideState = "none";
-
           } else if (slideState === "heading" || slideState === "account") {
             document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
@@ -377,7 +382,7 @@
                 el.style.left = el.dataset.originalLeft;
               }
             });
-            // Only update the account area custom-line (inside .other-content), not the community line.
+            // Only update the account-area custom-line (child of .other-content)
             document.querySelectorAll('.other-content > .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
@@ -392,7 +397,6 @@
               }, 700);
             }
             slideState = "none";
-
           } else if (slideState === "none") {
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
@@ -400,18 +404,14 @@
               chatTextEl.style.opacity = "0";
               setTimeout(() => {
                 document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-                  if (!el.dataset.originalLeft) {
-                    el.dataset.originalLeft = el.style.left;
-                  }
-                  const original = parseFloat(el.dataset.originalLeft);
+                  if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
+                  let original = parseFloat(el.dataset.originalLeft);
                   el.style.transition = "left 0.7s ease";
                   el.style.left = (original + 49) + "vw";
                 });
                 document.querySelectorAll('.other-content > .custom-line').forEach(el => {
-                  if (!el.dataset.originalLeft) {
-                    el.dataset.originalLeft = el.style.left;
-                  }
-                  const originalLine = parseFloat(el.dataset.originalLeft);
+                  if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
+                  let originalLine = parseFloat(el.dataset.originalLeft);
                   el.style.transition = "left 0.7s ease";
                   el.style.left = (originalLine + 49) + "vw";
                 });
@@ -438,7 +438,6 @@
       const leftMax = 32.43 * vwUnit;
       const yMin = 28.5 * vhUnit;
       const yMax = 84 * vhUnit;
-
       if (event.clientX >= leftMin && event.clientX <= leftMax &&
           event.clientY >= yMin && event.clientY <= yMax) {
         event.stopPropagation();
@@ -446,26 +445,19 @@
           if (slideState === "menu") {
             // Extended animation: slide menu items, community items, zero items, and community custom-line left by subtracting 29vw.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft - 29) + "vw";
             });
             document.querySelectorAll('.community-items-container *').forEach(el => {
-              if (el.style.left) {
-                el.style.transition = "left 0.7s ease";
-                let currentLeft = parseFloat(el.style.left);
-                el.style.left = (currentLeft - 29) + "vw";
-              }
+              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
+              el.style.transition = "left 0.7s ease";
+              let currentLeft = parseFloat(el.style.left);
+              el.style.left = (currentLeft - 29) + "vw";
             });
             document.querySelectorAll('.zero-items-container *').forEach(el => {
-              if (el.style.left) {
-                el.style.transition = "left 0.7s ease";
-                let currentLeft = parseFloat(el.style.left);
-                el.style.left = (currentLeft - 29) + "vw";
-              }
-            });
-            // Also update community container custom-line(s)
-            document.querySelectorAll('.community-items-container .custom-line').forEach(el => {
+              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft - 29) + "vw";
@@ -483,6 +475,7 @@
                 el.style.left = el.dataset.originalLeft;
               }
             });
+            // Only update the account-area custom-line (child of .other-content)
             document.querySelectorAll('.other-content > .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
@@ -497,7 +490,6 @@
               }, 700);
             }
             slideState = "none";
-
           } else if (slideState === "none") {
             const chatTextEl = document.getElementById('chatText');
             if (chatTextEl) {
@@ -571,7 +563,6 @@
         addNewText("- 1T", 69.4, 6.4);
       }, 700);
     }
-
     function addNewText(text, topVH, leftVW) {
       const span = document.createElement("span");
       span.className = "custom-text new-text";
@@ -579,12 +570,10 @@
       span.style.left = leftVW + "vw";
       span.textContent = text;
       document.querySelector(".other-content").appendChild(span);
-      // fade in
       setTimeout(() => {
         span.classList.add("visible");
       }, 10);
     }
-
     document.getElementById("online-assets").addEventListener("click", (e) => {
       e.stopPropagation();
       if (currentMenu === "online-assets") {
@@ -602,7 +591,6 @@
         }
       }
     });
-
     document.getElementById("linkup-center").addEventListener("click", (e) => {
       e.stopPropagation();
       if (currentMenu === "linkup-center") {
@@ -620,7 +608,6 @@
         }
       }
     });
-
     document.getElementById("delivery-line").addEventListener("click", (e) => {
       e.stopPropagation();
       if (currentMenu === "delivery-line") {
@@ -638,7 +625,6 @@
         }
       }
     });
-
     document.getElementById("internal-unit").addEventListener("click", (e) => {
       e.stopPropagation();
       if (currentMenu === "internal-unit") {

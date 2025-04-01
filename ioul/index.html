@@ -47,8 +47,7 @@
       <span style="position: absolute; top:59.2vh; left:35.41vw; z-index:1; font-family:'Distill Expanded', sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca; transition: left 0.7s ease; line-height:1.6; overflow: visible;">
         1OUL cEnTER
       </span>
-      <div class="custom-line" style="position: absolute; top:47.8vh; left:35.41vw; width:22.48vw; height:1px; background-color:rgba(230,230,230,0.28); transition: left 0.7s ease, transform 0.7s ease; z-index:1;">
-      </div>
+      <div class="custom-line" style="position: absolute; top:47.8vh; left:35.41vw; width:22.48vw; height:1px; background-color:rgba(230,230,230,0.28); transition:left 0.7s ease, transform 0.7s ease; z-index:1;"></div>
     </div>
 
     <!-- Zero Items (moved out of .other-content so they appear under layer four) -->
@@ -218,9 +217,10 @@
       FINAL LOGIC:
       • Global click handlers for left regions ignore clicks inside menu items.
       • Global handlers manage horizontal extended/inverse animations.
-      • The helper function slideDownSiblings now delays adding the "menu-slide" and "slide-down" classes by 20ms.
-        This allows the browser to register the initial state and then animate smoothly to the new transform (translate(-22.59vw, 11vh)).
-      • Submenu expansion functions call slideDownSiblings with the clicked menu item’s ID.
+      • The helper function slideDownSiblings now forces a reflow (via accessing offsetWidth) for each sibling before adding
+        the "menu-slide" and "slide-down" classes. According to your CSS, a menu item with these classes transforms to translate(-22.59vw, 11vh),
+        which should smoothly slide the element 11vh down.
+      • Submenu expansion functions call slideDownSiblings with the clicked menu item's ID and then fade in submenu items.
       • Menu item click handlers trigger the appropriate submenu expansion function.
     */
 
@@ -531,16 +531,16 @@
     function slideDownSiblings(clickedId) {
       let menuItems = Array.from(document.querySelectorAll('.menu-items .menu-item'));
       let clickedIndex = menuItems.findIndex(el => el.id === clickedId);
-      // Clear inline transform for siblings
       for (let i = clickedIndex + 1; i < menuItems.length; i++) {
+        // Clear any inline transform to let CSS classes take effect.
         menuItems[i].style.transform = "";
-      }
-      // Add classes with a slight delay to trigger smooth transition
-      setTimeout(() => {
-        for (let i = clickedIndex + 1; i < menuItems.length; i++) {
+        // Force reflow so the initial state is registered.
+        void menuItems[i].offsetWidth;
+        // With a slight delay, add the classes to trigger the transition.
+        setTimeout(() => {
           menuItems[i].classList.add("menu-slide", "slide-down");
-        }
-      }, 20);
+        }, 20);
+      }
     }
 
     /* Submenu expansion functions – use helper to slide down only the following menu items */

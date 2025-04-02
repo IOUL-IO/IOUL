@@ -162,7 +162,9 @@
       FINAL LOGIC:
       • Global click handlers for left regions ignore clicks inside menu items.
       • Global handlers manage horizontal extended/inverse animations.
-      • The helper function slideDownSiblings now removes any inline transform, sets a defined starting transform of translate(–22.59vw, 0) by adding the “menu-slide” class (which you should ensure is defined in your CSS to yield that transform), and then—in a requestAnimationFrame call—adds the “slide-down” class so that the CSS transition (on transform) animates the element to translate(–22.59vw, 11vh).
+      • The helper function slideDownSiblings now removes any inline transform and lingering classes, 
+        sets a defined starting transform by adding the “menu-slide” class, and then—in a requestAnimationFrame—
+        adds the “slide-down” class so that the CSS transition animates the element to translate(-22.59vw, 11vh).
       • Submenu expansion functions call slideDownSiblings with the clicked menu item’s ID and then fade in submenu items.
       • Menu item click handlers trigger the appropriate submenu expansion function.
     */
@@ -464,22 +466,24 @@
       });
     });
 
-    /* Helper: For each menu item after the clicked one, ensure its starting transform is set (i.e. translateX(-22.59vw, 0))
-       then use requestAnimationFrame to add the "slide-down" class so the vertical shift (11vh) animates smoothly.
+    /* Helper: For each menu item after the clicked one, ensure its starting transform is reset,
+       then add the "menu-slide" class, and finally (in the next animation frame) add the "slide-down" class.
     */
     function slideDownSiblings(clickedId) {
       let menuItems = Array.from(document.querySelectorAll('.menu-items .menu-item'));
       let clickedIndex = menuItems.findIndex(el => el.id === clickedId);
       // For each sibling after the clicked one:
       for (let i = clickedIndex + 1; i < menuItems.length; i++) {
-        // Remove any inline transform and force the starting state
+        // Remove any previously added classes to reset the state
+        menuItems[i].classList.remove("menu-slide", "slide-down");
+        // Remove any inline transform
         menuItems[i].style.transform = "";
-        // Immediately add the "menu-slide" class to set horizontal translation.
-        menuItems[i].classList.add("menu-slide");
-        // Force a reflow so that the browser registers the current transform.
+        // Force a reflow so the removal takes effect
         void menuItems[i].offsetHeight;
+        // Now add the starting class to set the horizontal offset
+        menuItems[i].classList.add("menu-slide");
       }
-      // Then, in the next animation frame, add the "slide-down" class.
+      // Then, in the next animation frame, add the slide-down class to animate the vertical shift
       requestAnimationFrame(() => {
         for (let i = clickedIndex + 1; i < menuItems.length; i++) {
           menuItems[i].classList.add("slide-down");

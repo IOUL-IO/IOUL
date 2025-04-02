@@ -47,7 +47,7 @@
       <span style="position: absolute; top:59.2vh; left:35.41vw; z-index:1; font-family:'Distill Expanded', sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca; transition: left 0.7s ease; line-height:1.6; overflow: visible;">
         1OUL cEnTER
       </span>
-      <div class="custom-line" style="position: absolute; top:47.8vh; left:35.41vw; width:22.48vw; height:1px; background-color:rgba(230,230,230,0.28); transition:left 0.7s ease, transform 0.7s ease; z-index:1;"></div>
+      <div class="custom-line" style="position: absolute; top:47.8vh; left:35.41vw; width:22.48vw; height:1px; background-color:rgba(230,230,230,0.28); transition: left 0.7s ease, transform 0.7s ease; z-index:1;"></div>
     </div>
 
     <!-- Zero Items (moved out of .other-content so they appear under layer four) -->
@@ -64,7 +64,6 @@
       <div class="line second"></div>
       <div class="line third"></div>
       <div class="line fourth"></div>
-
       <div class="slide-container">
         <div class="line dashed"></div>
         <div class="line dashed second-dashed"></div>
@@ -75,11 +74,9 @@
         <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
         <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       </div>
-
       <!-- Chat area -->
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
-
       <!-- Grid numbers & dashed lines -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
@@ -97,10 +94,9 @@
       <span class="grid-number num14">14</span>
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
-
       <span class="grid-dashed dashed01"></span>
       <span class="grid-dashed dashed02"></span>
-      <span class="grid-dashed dashed03"></span>    
+      <span class="grid-dashed dashed03"></span>
       <span class="grid-dashed dashed04"></span>
       <span class="grid-dashed dashed05"></span>
       <span class="grid-dashed dashed06"></span>
@@ -114,7 +110,6 @@
       <span class="grid-dashed dashed14"></span>
       <span class="grid-dashed dashed15"></span>
       <span class="grid-dashed dashed16"></span>
-
       <!-- HEADINGS group -->
       <div class="heading-container" style="top:35.4vh; left:6.41vw; transform:translateX(-49vw);" data-offset="-49" data-slide-group="heading">
         <span class="custom-text heading-flow">AccOUnT</span>
@@ -134,7 +129,6 @@
       <div class="heading-container" style="top:72.6vh; left:6.41vw; transform:translateX(-49vw);" data-offset="-49" data-slide-group="heading">
         <span class="custom-text heading-flow">LEAgUES</span>
       </div>
-
       <!-- ACCOUNT group -->
       <div class="account-container" style="top:35.4vh; left:28.91vw; transform:translateX(-49vw);" data-offset="-49" data-slide-group="account">
         <span class="custom-text right-flow" style="position:absolute; right:0;">i-cHAT: 0</span>
@@ -154,7 +148,6 @@
       <div class="account-container" style="top:72.6vh; left:28.91vw; transform:translateX(-49vw);" data-offset="-49" data-slide-group="account">
         <span class="custom-text right-flow" style="position:absolute; right:0;">0</span>
       </div>
-
       <div class="custom-line" style="left: -42.59vw;"></div>
     </div>
   </div>
@@ -169,10 +162,8 @@
       FINAL LOGIC:
       • Global click handlers for left regions ignore clicks inside menu items.
       • Global handlers manage horizontal extended/inverse animations.
-      • The helper function slideDownSiblings now forces a reflow using offsetHeight and then uses requestAnimationFrame to add the classes "menu-slide" and "slide-down" to each menu item following the clicked one.
-      • Also, before adding classes, we explicitly set each sibling’s transform to "translate(0,0)" (if not already set) so that the browser has a defined starting point.
-      • According to your CSS, a menu item with "menu-slide" and "slide-down" will transition to transform: translate(-22.59vw, 11vh) smoothly.
-      • Submenu expansion functions call slideDownSiblings with the clicked menu item’s ID and then trigger submenu fade-in.
+      • The helper function slideDownSiblings now removes any inline transform, sets a defined starting transform of translate(–22.59vw, 0) by adding the “menu-slide” class (which you should ensure is defined in your CSS to yield that transform), and then—in a requestAnimationFrame call—adds the “slide-down” class so that the CSS transition (on transform) animates the element to translate(–22.59vw, 11vh).
+      • Submenu expansion functions call slideDownSiblings with the clicked menu item’s ID and then fade in submenu items.
       • Menu item click handlers trigger the appropriate submenu expansion function.
     */
 
@@ -268,7 +259,6 @@
 
     /* Global click handlers for left regions */
     document.addEventListener('click', (event) => {
-      // Skip if click is on a menu item or chat-text.
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -281,7 +271,6 @@
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "community") {
-            // Reverse community extended animation.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
@@ -294,7 +283,6 @@
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
-            // Restore the community custom-line.
             document.querySelectorAll('.community-items-container .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
@@ -310,7 +298,6 @@
             slideState = "menu";
             return;
           } else if (slideState === "menu") {
-            // Remove inline transform from menu items to allow smooth slide-in.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               el.style.transition = "transform 0.7s ease";
               el.style.transform = "translateX(0)";
@@ -334,7 +321,6 @@
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
               if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
             });
-            // Only update the custom-line in .other-content.
             document.querySelectorAll('.other-content > .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
@@ -383,7 +369,6 @@
 
     /* Global click handler for right region (28.86–32.43vw) */
     document.addEventListener('click', (event) => {
-      // Skip if click is on a menu item or chat.
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
       const vwUnit = window.innerWidth / 100;
       const vhUnit = window.innerHeight / 100;
@@ -479,28 +464,30 @@
       });
     });
 
-    /* Helper: Slide down only the menu items that follow the clicked one using requestAnimationFrame */
+    /* Helper: For each menu item after the clicked one, ensure its starting transform is set (i.e. translateX(-22.59vw, 0))
+       then use requestAnimationFrame to add the "slide-down" class so the vertical shift (11vh) animates smoothly.
+    */
     function slideDownSiblings(clickedId) {
       let menuItems = Array.from(document.querySelectorAll('.menu-items .menu-item'));
       let clickedIndex = menuItems.findIndex(el => el.id === clickedId);
+      // For each sibling after the clicked one:
       for (let i = clickedIndex + 1; i < menuItems.length; i++) {
-        // Ensure a starting transform is set.
-        if (window.getComputedStyle(menuItems[i]).transform === "none") {
-          menuItems[i].style.transform = "translate(0, 0)";
-        }
-        // Clear any inline transform to let CSS transitions run.
-        menuItems[i].style.transform = "translate(0, 0)";
-        // Force a reflow.
+        // Remove any inline transform and force the starting state
+        menuItems[i].style.transform = "";
+        // Immediately add the "menu-slide" class to set horizontal translation.
+        menuItems[i].classList.add("menu-slide");
+        // Force a reflow so that the browser registers the current transform.
         void menuItems[i].offsetHeight;
       }
+      // Then, in the next animation frame, add the "slide-down" class.
       requestAnimationFrame(() => {
         for (let i = clickedIndex + 1; i < menuItems.length; i++) {
-          menuItems[i].classList.add("menu-slide", "slide-down");
+          menuItems[i].classList.add("slide-down");
         }
       });
     }
 
-    /* Submenu expansion functions – use helper to slide down only the following menu items */
+    /* Submenu expansion functions – call the helper then fade in submenu items */
     function openOnlineAssets() {
       slideDownSiblings("online-assets");
       setTimeout(() => {
@@ -545,7 +532,7 @@
       }, 10);
     }
 
-    /* Menu item click handlers – submenu expansion */
+    /* Menu item click handlers – trigger appropriate submenu expansion */
     document.getElementById("online-assets").addEventListener("click", (e) => {
       e.stopPropagation();
       if (currentMenu === "online-assets") {

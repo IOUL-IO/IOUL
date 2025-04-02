@@ -162,9 +162,8 @@
       FINAL LOGIC:
       • Global click handlers for left regions ignore clicks inside menu items.
       • Global handlers manage horizontal extended/inverse animations.
-      • The helper function slideDownSiblings now removes any inline transform,
-        explicitly sets a starting transform of "translateX(-22.59vw)" (which keeps the menu items at left 6.41vw when combined with their original left),
-        and then—in a requestAnimationFrame call—adds the "slide-down" class so that the CSS transition animates the element to translate(-22.59vw, 11vh).
+      • The helper function slideDownSiblings now sets an explicit starting inline transform of translate(-22.59vw, 0) on menu items below the clicked one.
+         Then, in the next animation frame it updates that inline transform to translate(-22.59vw, 11vh), triggering a smooth transition.
       • Submenu expansion functions call slideDownSiblings with the clicked menu item’s ID and then fade in submenu items.
       • Menu item click handlers trigger the appropriate submenu expansion function.
     */
@@ -435,11 +434,16 @@
                 document.querySelectorAll('.menu-items .menu-item').forEach(el => {
                   if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
                   el.style.transition = "transform 0.7s ease";
-                  el.style.transform = "translateX(-22.59vw)";
+                  // Set explicit starting inline transform: horizontal offset and no vertical translation
+                  el.style.transform = "translate(-22.59vw, 0)";
                 });
-                setTimeout(() => {
+                // In the next frame, update inline transform to include vertical slide (11vh)
+                requestAnimationFrame(() => {
                   document.querySelector('.menu-items').classList.add('raised');
-                }, 700);
+                  document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+                    el.style.transform = "translate(-22.59vw, 11vh)";
+                  });
+                });
               }, 110);
             }
             slideState = "menu";
@@ -466,28 +470,27 @@
       });
     });
 
-    /* Helper: For each menu item after the clicked one, ensure its starting transform is set (i.e. translateX(-22.59vw))
-       then use requestAnimationFrame to add the "slide-down" class so the vertical shift (11vh) animates smoothly.
+    /* Updated Helper: For each menu item after the clicked one, 
+       set an explicit inline starting transform of translate(-22.59vw, 0),
+       then in the next animation frame update the inline transform to translate(-22.59vw, 11vh) to trigger a smooth transition.
     */
     function slideDownSiblings(clickedId) {
       let menuItems = Array.from(document.querySelectorAll('.menu-items .menu-item'));
       let clickedIndex = menuItems.findIndex(el => el.id === clickedId);
       // For each sibling after the clicked one:
       for (let i = clickedIndex + 1; i < menuItems.length; i++) {
-        // Ensure the element has the correct transition and starting transform
+        // Ensure the element has the correct transition and set initial inline transform
         menuItems[i].style.transition = "transform 0.7s ease";
-        menuItems[i].style.transform = "translateX(-22.59vw)";
-        // Remove any existing slide-down class to reset the state
+        menuItems[i].style.transform = "translate(-22.59vw, 0)";
+        // Remove any existing slide-down class if present (not needed when using inline styles)
         menuItems[i].classList.remove("slide-down");
-        // Immediately add the "menu-slide" class to keep the horizontal translation.
-        menuItems[i].classList.add("menu-slide");
-        // Force a reflow so that the browser registers the current transform.
+        // Force reflow
         void menuItems[i].offsetHeight;
       }
-      // Then, in the next animation frame, add the "slide-down" class to animate vertical translation.
+      // In the next animation frame, update inline transform to include vertical shift
       requestAnimationFrame(() => {
         for (let i = clickedIndex + 1; i < menuItems.length; i++) {
-          menuItems[i].classList.add("slide-down");
+          menuItems[i].style.transform = "translate(-22.59vw, 11vh)";
         }
       });
     }

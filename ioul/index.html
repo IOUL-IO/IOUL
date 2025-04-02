@@ -47,7 +47,7 @@
       <span style="position: absolute; top:59.2vh; left:35.41vw; z-index:1; font-family:'Distill Expanded', sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0 0 #cacaca, -0.001rem 0 0 #cacaca; transition: left 0.7s ease; line-height:1.6; overflow: visible;">
         1OUL cEnTER
       </span>
-      <div class="custom-line" style="position: absolute; top:47.8vh; left:35.41vw; width:22.48vw; height:1px; background-color:rgba(230,230,230,0.28); transition:left 0.7s ease, transform 0.7s ease; z-index:1;"></div>
+      <div class="custom-line" style="position: absolute; top:47.8vh; left:35.41vw; width:22.48vw; height:1px; background-color:rgba(230,230,230,0.28); transition: left 0.7s ease, transform 0.7s ease; z-index:1;"></div>
     </div>
 
     <!-- Zero Items (moved out of .other-content so they appear under layer four) -->
@@ -64,7 +64,6 @@
       <div class="line second"></div>
       <div class="line third"></div>
       <div class="line fourth"></div>
-
       <div class="slide-container">
         <div class="line dashed"></div>
         <div class="line dashed second-dashed"></div>
@@ -75,11 +74,9 @@
         <span class="time-text third-time-text">12:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
         <span class="time-text fourth-time-text">1:00&nbsp;&nbsp;&nbsp;&nbsp;PM</span>
       </div>
-
       <!-- Chat area -->
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
-
       <!-- Grid numbers & dashed lines -->
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
@@ -97,7 +94,6 @@
       <span class="grid-number num14">14</span>
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
-
       <span class="grid-dashed dashed01"></span>
       <span class="grid-dashed dashed02"></span>
       <span class="grid-dashed dashed03"></span>    
@@ -114,7 +110,6 @@
       <span class="grid-dashed dashed14"></span>
       <span class="grid-dashed dashed15"></span>
       <span class="grid-dashed dashed16"></span>
-
       <!-- HEADINGS group -->
       <div class="heading-container" style="top:35.4vh; left:6.41vw; transform:translateX(-49vw);" data-offset="-49" data-slide-group="heading">
         <span class="custom-text heading-flow">AccOUnT</span>
@@ -134,7 +129,6 @@
       <div class="heading-container" style="top:72.6vh; left:6.41vw; transform:translateX(-49vw);" data-offset="-49" data-slide-group="heading">
         <span class="custom-text heading-flow">LEAgUES</span>
       </div>
-
       <!-- ACCOUNT group -->
       <div class="account-container" style="top:35.4vh; left:28.91vw; transform:translateX(-49vw);" data-offset="-49" data-slide-group="account">
         <span class="custom-text right-flow" style="position:absolute; right:0;">i-cHAT: 0</span>
@@ -154,7 +148,6 @@
       <div class="account-container" style="top:72.6vh; left:28.91vw; transform:translateX(-49vw);" data-offset="-49" data-slide-group="account">
         <span class="custom-text right-flow" style="position:absolute; right:0;">0</span>
       </div>
-
       <div class="custom-line" style="left: -42.59vw;"></div>
     </div>
   </div>
@@ -166,12 +159,13 @@
 
   <script>
     /* FINAL LOGIC:
-       • Global click handlers for left regions ignore clicks inside menu items.
-       • When an inverse animation is triggered (menu items returning to base state at 6.41vw),
-         we now remove the classes "menu-slide" and "slide-down" from all menu items.
-       • The helper function slideDownSiblings sets each sibling’s starting state by ensuring its transform is "translate(0,0)",
-         then immediately adds the "menu-slide" class (which applies the horizontal translation to keep the item at 6.41vw).
-         In a requestAnimationFrame call, it adds the "slide-down" class so that the CSS transition (on transform) animates the vertical shift to 11vh.
+       • Global click handlers for left regions ignore clicks within menu items.
+       • When inverse animation runs (returning menu items to the base state at 6.41vw), we now remove any
+         "menu-slide" and "slide-down" classes from all menu items.
+       • The helper function slideDownSiblings sets each sibling’s starting state by:
+           - Removing any inline transform,
+           - Adding the "menu-slide" class (which in your CSS should lock the horizontal translation to keep items at 6.41vw),
+           - Forcing a reflow, and then (via requestAnimationFrame) adding the "slide-down" class so that the CSS transition smoothly animates the vertical shift to 11vh.
        • Submenu expansion functions call slideDownSiblings with the clicked menu item's ID and then trigger fade-in of submenu items.
        • Menu item click handlers trigger the appropriate submenu expansion function.
     */
@@ -304,7 +298,7 @@
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
-            // Remove any slide-down classes so menu items are in a clean state.
+            // Remove vertical classes so that next click starts clean.
             document.querySelectorAll('.menu-items .menu-item').forEach(el => {
               el.classList.remove("menu-slide", "slide-down");
             });
@@ -478,21 +472,22 @@
       });
     });
 
-    /* Helper: For each menu item after the clicked one, ensure its starting transform is set
-       then add the "slide-down" class via requestAnimationFrame so that the vertical shift animates smoothly.
-       Also, the "menu-slide" class is added to lock in the horizontal translation.
+    /* Helper: For each menu item after the clicked one, ensure its starting state is set,
+       then add the horizontal class ("menu-slide") and, via requestAnimationFrame, add the vertical class ("slide-down").
+       This will cause a smooth transition from translate(-22.59vw, 0) to translate(-22.59vw, 11vh).
     */
     function slideDownSiblings(clickedId) {
       let menuItems = Array.from(document.querySelectorAll('.menu-items .menu-item'));
       let clickedIndex = menuItems.findIndex(el => el.id === clickedId);
       for (let i = clickedIndex + 1; i < menuItems.length; i++) {
-        // Remove inline transform.
+        // Remove any inline transform.
         menuItems[i].style.transform = "";
-        // Add the horizontal transform class.
+        // Add the horizontal class immediately.
         menuItems[i].classList.add("menu-slide");
         // Force reflow.
         void menuItems[i].offsetHeight;
       }
+      // In the next animation frame, add the vertical class.
       requestAnimationFrame(() => {
         for (let i = clickedIndex + 1; i < menuItems.length; i++) {
           menuItems[i].classList.add("slide-down");

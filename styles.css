@@ -295,7 +295,7 @@ body.fullscreen .help-text {
 .account-wrapper {
   position: fixed;
   top: 0;
-  left: 40.88vw;
+  left: 28.88vw;
   width: 22.48vw;
   height: 100vh;
   clip-path: inset(0 calc(100% - 31.7%) 0 0);
@@ -363,7 +363,7 @@ body.fullscreen .help-text {
 .help-wrapper {
   position: fixed;
   top: 0;
-  left: 40.88vw;
+  left: 28.88vw;
   width: 22.48vw;
   height: 100vh;
   clip-path: inset(0 calc(100% - 31.7%) 0 0);

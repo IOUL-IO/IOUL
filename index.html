@@ -345,7 +345,7 @@
       }, 500); // Adjust 500ms to your preferred delay
     });
 
-    // Delay slide-out for both account and help
+    // *** REVERSED ANIMATION SEQUENCE HERE: slide out wrapper first, THEN reverse-slide login ***
     document.addEventListener('click', function(event) {
       const x = event.clientX, y = event.clientY;
       const regionRight = window.innerWidth * (6.37 / 100);
@@ -356,23 +356,24 @@
       if (x >= 0 && x <= regionRight && y >= regionTop && y <= regionBottom) {
         const accountActive = accountWrapper.classList.contains('active');
         const helpActive = helpWrapper.classList.contains('active');
+        
         if (accountActive || helpActive) {
-          // Trigger reverse slide on the login elements
-          document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
-            el.classList.add('reverse-slide');
-            el.addEventListener('animationend', function() {
-              el.classList.remove('reverse-slide');
-              el.classList.remove('slide-left');
-            }, {once: true});
-          });
+          // 1) Slide out the active wrapper(s) immediately
+          accountWrapper.classList.remove('active');
+          helpWrapper.classList.remove('active');
+          accountTransitionComplete = false;
+          helpTransitionComplete = false;
 
-          // Delay removing "active" on the wrappers to match the reverse animation
+          // 2) After the wrapper(s) start sliding out, wait, then slide the login elements back in
           setTimeout(() => {
-            accountWrapper.classList.remove('active');
-            helpWrapper.classList.remove('active');
-            accountTransitionComplete = false;
-            helpTransitionComplete = false;
-          }, 500); // Adjust 500ms to match your reverse-slide duration
+            document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
+              el.classList.add('reverse-slide');
+              el.addEventListener('animationend', function() {
+                el.classList.remove('reverse-slide');
+                el.classList.remove('slide-left');
+              }, {once: true});
+            });
+          }, 500); // Adjust this to match or exceed your wrapper transition duration
         }
       }
     });

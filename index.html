@@ -317,9 +317,9 @@
     }
     document.querySelectorAll('.account-text, .help-text-area.email').forEach(addAccountClickHandler);
 
-    // *** ADDED DELAY BEFORE WRAPPERS SLIDE IN ***
+    // Delay slide-in for account
     document.querySelector('.open-text').addEventListener('click', function() {
-      // Slide out the login elements immediately
+      // Slide out login elements immediately
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
       });
@@ -331,8 +331,9 @@
       }, 500); // Adjust 500ms to your preferred delay
     });
 
+    // Delay slide-in for help
     document.querySelector('.help-text').addEventListener('click', function() {
-      // Slide out the login elements immediately
+      // Slide out login elements immediately
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
       });
@@ -344,16 +345,19 @@
       }, 500); // Adjust 500ms to your preferred delay
     });
 
+    // Delay slide-out for both account and help
     document.addEventListener('click', function(event) {
       const x = event.clientX, y = event.clientY;
       const regionRight = window.innerWidth * (6.37 / 100);
       const regionTop = window.innerHeight * (28.5 / 100);
       const regionBottom = window.innerHeight * (84 / 100);
       
+      // If click is in the narrow left region and a wrapper is active, close it
       if (x >= 0 && x <= regionRight && y >= regionTop && y <= regionBottom) {
         const accountActive = accountWrapper.classList.contains('active');
         const helpActive = helpWrapper.classList.contains('active');
         if (accountActive || helpActive) {
+          // Trigger reverse slide on the login elements
           document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
             el.classList.add('reverse-slide');
             el.addEventListener('animationend', function() {
@@ -361,10 +365,14 @@
               el.classList.remove('slide-left');
             }, {once: true});
           });
-          accountWrapper.classList.remove('active');
-          helpWrapper.classList.remove('active');
-          accountTransitionComplete = false;
-          helpTransitionComplete = false;
+
+          // Delay removing "active" on the wrappers to match the reverse animation
+          setTimeout(() => {
+            accountWrapper.classList.remove('active');
+            helpWrapper.classList.remove('active');
+            accountTransitionComplete = false;
+            helpTransitionComplete = false;
+          }, 500); // Adjust 500ms to match your reverse-slide duration
         }
       }
     });

@@ -328,7 +328,7 @@
       setTimeout(() => {
         accountWrapper.classList.add('active');
         accountTransitionComplete = false;
-      }, 500); // Adjust 500ms to your preferred delay
+      }, 400); // Adjust 500ms to your preferred delay
     });
 
     // Delay slide-in for help
@@ -342,7 +342,7 @@
       setTimeout(() => {
         helpWrapper.classList.add('active');
         helpTransitionComplete = false;
-      }, 500); // Adjust 500ms to your preferred delay
+      }, 400); // Adjust 500ms to your preferred delay
     });
 
     // *** REVERSED ANIMATION SEQUENCE HERE: slide out wrapper first, THEN reverse-slide login ***
@@ -373,7 +373,7 @@
                 el.classList.remove('slide-left');
               }, {once: true});
             });
-          }, 500); // Adjust this to match or exceed your wrapper transition duration
+          }, 400); // Adjust this to match or exceed your wrapper transition duration
         }
       }
     });

@@ -317,20 +317,31 @@
     }
     document.querySelectorAll('.account-text, .help-text-area.email').forEach(addAccountClickHandler);
 
+    // *** ADDED DELAY BEFORE WRAPPERS SLIDE IN ***
     document.querySelector('.open-text').addEventListener('click', function() {
+      // Slide out the login elements immediately
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
       });
-      accountWrapper.classList.add('active');
-      accountTransitionComplete = false;
+
+      // Delay the slide-in of the account wrapper
+      setTimeout(() => {
+        accountWrapper.classList.add('active');
+        accountTransitionComplete = false;
+      }, 500); // Adjust 500ms to your preferred delay
     });
 
     document.querySelector('.help-text').addEventListener('click', function() {
+      // Slide out the login elements immediately
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
       });
-      helpWrapper.classList.add('active');
-      helpTransitionComplete = false;
+
+      // Delay the slide-in of the help wrapper
+      setTimeout(() => {
+        helpWrapper.classList.add('active');
+        helpTransitionComplete = false;
+      }, 500); // Adjust 500ms to your preferred delay
     });
 
     document.addEventListener('click', function(event) {

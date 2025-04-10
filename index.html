@@ -317,54 +317,44 @@
     }
     document.querySelectorAll('.account-text, .help-text-area.email').forEach(addAccountClickHandler);
 
-    // Delay slide-in for account
     document.querySelector('.open-text').addEventListener('click', function() {
-      // Slide out login elements immediately
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
       });
 
-      // Delay the slide-in of the account wrapper
       setTimeout(() => {
         accountWrapper.classList.add('active');
         accountTransitionComplete = false;
-      }, 400); // Adjust 500ms to your preferred delay
+      }, 400); 
     });
 
-    // Delay slide-in for help
     document.querySelector('.help-text').addEventListener('click', function() {
-      // Slide out login elements immediately
       document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
         el.classList.add('slide-left');
       });
 
-      // Delay the slide-in of the help wrapper
       setTimeout(() => {
         helpWrapper.classList.add('active');
         helpTransitionComplete = false;
-      }, 400); // Adjust 500ms to your preferred delay
+      }, 400); 
     });
 
-    // *** REVERSED ANIMATION SEQUENCE HERE: slide out wrapper first, THEN reverse-slide login ***
     document.addEventListener('click', function(event) {
       const x = event.clientX, y = event.clientY;
       const regionRight = window.innerWidth * (6.37 / 100);
       const regionTop = window.innerHeight * (28.5 / 100);
       const regionBottom = window.innerHeight * (84 / 100);
       
-      // If click is in the narrow left region and a wrapper is active, close it
       if (x >= 0 && x <= regionRight && y >= regionTop && y <= regionBottom) {
         const accountActive = accountWrapper.classList.contains('active');
         const helpActive = helpWrapper.classList.contains('active');
         
         if (accountActive || helpActive) {
-          // 1) Slide out the active wrapper(s) immediately
           accountWrapper.classList.remove('active');
           helpWrapper.classList.remove('active');
           accountTransitionComplete = false;
           helpTransitionComplete = false;
 
-          // 2) After the wrapper(s) start sliding out, wait, then slide the login elements back in
           setTimeout(() => {
             document.querySelectorAll('.login-text, .login-line, .login-line-second').forEach(function(el) {
               el.classList.add('reverse-slide');
@@ -373,7 +363,7 @@
                 el.classList.remove('slide-left');
               }, {once: true});
             });
-          }, 400); // Adjust this to match or exceed your wrapper transition duration
+          }, 400); 
         }
       }
     });

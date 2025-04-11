@@ -176,7 +176,7 @@ body.non-fullscreen {
     top: 28.5vh;
     left: 36vw;
     width: 52.4vw;
-    background: linear-gradient(to right, #717171 0, #717171 5px, #ffffff 5px, #ffffff 10px);
+    background: linear-gradient(to right, #777777 0, #777777 5px, #ffffff 5px, #ffffff 10px);
     background-size: 10px 1px;
     transition: transform 0.7s ease;
 }
@@ -306,7 +306,7 @@ body.non-fullscreen {
     position: absolute;
     height: 1px;
     width: 11.8vw;
-    background: linear-gradient(to right, #717171 0, #717171 5px, #ffffff 5px, #ffffff 10px);
+    background: linear-gradient(to right, #777777 0, #777777 5px, #ffffff 5px, #ffffff 10px);
     background-size: 10px 1px;
     transition: transform 0.7s ease;
 }

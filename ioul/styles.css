@@ -247,7 +247,7 @@ body.non-fullscreen {
     color: #111111;
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
-    text-shadow: 0.017rem 0 0 #c7c7c7, -0.017rem 0 0 #c7c7c7;
+    text-shadow: 0.001rem 0 0 #111111, -0.001rem 0 0 #111111;
     cursor: pointer;
     opacity: 0;
     transition: opacity 0.3s ease, transform 0.7s ease;
@@ -263,8 +263,8 @@ body.non-fullscreen {
     font-size: 0.47rem;
     letter-spacing: 0.28vw;
     color: #111111;
-    caret-color: #111111;
-    text-shadow: 0.017rem 0 0 #c7c7c7, -0.017rem 0 0 #c7c7c7;
+    caret-color: #c7c7c7;
+    text-shadow: 0.001rem 0 0 #111111, -0.001rem 0 0 #111111;
     line-height: 1.2;
     padding: 0.2rem 0;
     border: none;
@@ -357,7 +357,7 @@ body.non-fullscreen {
     color: #111111;
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
-    text-shadow: 0.017rem 0 0 #c7c7c7, -0.017rem 0 0 #c7c7c7;
+    text-shadow: 0.001rem 0 0 #111111, -0.001rem 0 0 #111111;
     transition: left 0.7s ease, transform 0.7s ease;
     line-height: 1.6;
     overflow: visible;

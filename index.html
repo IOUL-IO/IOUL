@@ -18,7 +18,7 @@
       font-size: 0.46rem;
       line-height: 1.2;
       padding: 0.1rem 0;
-      text-shadow: 0.011rem 0 0 #171717, -0.011rem 0 0 #171717;
+      text-shadow: 0.017rem 0 0 #c7c7c7, -0.017rem 0 0 #c7c7c7;
     }
     
     input.typing-input {
@@ -31,12 +31,12 @@
       outline: none;
       background-color: transparent;
       position: absolute;
-      caret-color: #acacac;
+      caret-color: #111111;
       padding: 0.1rem 0;
       width: calc(22.48vw + 4vw);
       height: auto;
       box-sizing: content-box;
-      text-shadow: 0.011rem 0 0 #171717, -0.011rem 0 0 #171717;
+      text-shadow: 0.017rem 0 0 #c7c7c7, -0.017rem 0 0 #c7c7c7;
       text-align: left;
     }
     
@@ -72,8 +72,12 @@
   <span class="login-text open-text hidden">OPEn</span>
   <span class="login-text help-text hidden">HELP</span>
 
-  <div class="line login-line"></div>
-  <div class="line login-line-second"></div>
+  <!-- 
+       *** NOTE THE HIDDEN CLASS BELOW ***
+       These two lines remain hidden until after fullscreen fade.
+  -->
+  <div class="line login-line hidden"></div>
+  <div class="line login-line-second hidden"></div>
 
   <div class="account-wrapper">
     <span class="account-text account-email">E-MA1L ADDRESS</span>
@@ -127,6 +131,7 @@
     }
 
     function showLoginElements() {
+      // Show only the main login elements:
       document.querySelectorAll('.username, .password, .login-line, .login-line-second')
         .forEach(el => {
           el.classList.add('visible');
@@ -177,12 +182,12 @@
       const bottomPx = (boundingBottom / 100) * innerHeight;
       const leftPx = (boundingLeft / 100) * innerWidth;
       const rightPx = (boundingRight / 100) * innerWidth;
-      const isInRegion = (
+      const isInRegion =
         clientY >= topPx &&
         clientY <= bottomPx &&
         clientX >= leftPx &&
-        clientX <= rightPx
-      );
+        clientX <= rightPx;
+
       if (isInRegion) {
         openText.classList.remove('hidden');
         openText.classList.add('visible');
@@ -213,21 +218,33 @@
         clientX >= innerWidth - edgeThreshold ||
         clientY <= edgeThreshold ||
         clientY >= innerHeight - edgeThreshold;
+
       if (isNearEdge && !document.fullscreenElement) {
         document.documentElement.requestFullscreen();
         return;
       }
+
       if (!initialClickCompleted) {
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen();
         }
+
+        // Begin the fade after 1s
         setTimeout(() => {
           document.body.classList.add('fade-in-trigger');
         }, 1000);
+
+        // After 4s, the fade is considered complete:
         setTimeout(() => {
           fadeCompleted = true;
+
+          // **** NOW show the login lines AFTER the fade is done ****
+          showLoginElements();
+
+          // Start the inactivity timer to hide them again
           inactivityTimer = setTimeout(hideLoginElements, 20000);
         }, 4000);
+
         initialClickCompleted = true;
       }
     });
@@ -240,7 +257,10 @@
 
     function addLoginClickHandler(element) {
       element.addEventListener('click', function() {
-        if (fadeCompleted && (this.classList.contains('username') || this.classList.contains('password'))) {
+        if (
+          fadeCompleted &&
+          (this.classList.contains('username') || this.classList.contains('password'))
+        ) {
           const parentRect = this.getBoundingClientRect();
           const input = document.createElement('input');
           input.type = this.classList.contains('password') ? 'password' : 'text';

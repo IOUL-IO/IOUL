@@ -136,8 +136,7 @@ body.non-fullscreen {
 .line {
     position: absolute;
     height: 1px;
-    background-color: #acacac;
-    opacity: 0.877;
+    background-color: rgba(172, 172, 172, 0.877)
 }
 .original {
     top: 12.5vh;

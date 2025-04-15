@@ -137,21 +137,16 @@ body.fade-in-trigger .line.dashed {
 }
 
 .dashed {
-  position: absolute;
-  height: 1px;
-  top: 28.5vh;
-  left: 36vw;
-  width: 52.4vw;
-  background: linear-gradient(
-    to right,
-    #171717 0,
-    #171717 5px,
-    #ffffff 5px,
-    #ffffff 10px
-  );
-  background-size: 10px 1px;
-
-  opacity: 0.871;
+    position: absolute;
+    height: 1px;
+    top: 28.5vh;
+    left: 36vw;
+    width: 52.4vw;
+    background: linear-gradient(to right, #171717 0, #171717 5px, #ffffff 5px, #ffffff 10px);
+    background-size: 10px 1px;
+    transition: transform 0.7s ease;
+    
+    opacity: 0.841;
 }
 
 .second-dashed {

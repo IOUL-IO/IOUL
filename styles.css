@@ -45,30 +45,20 @@ body.fade-in-trigger {
   background-color: #ffffff;
 }
 
-.line:not(.login-line):not(.login-line-second):not(.dashed),
+/* Fade in the main lines/time text, except login lines */
+.line:not(.login-line):not(.login-line-second),
 .time-text {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
 
-.line.dashed {
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-}
-
-body.fade-in-trigger 
-  .line:not(.login-line):not(.login-line-second):not(.dashed),
-body.fade-in-trigger 
-  .time-text {
+body.fade-in-trigger .line:not(.login-line):not(.login-line-second),
+body.fade-in-trigger .time-text {
   opacity: 1;
   transition-delay: 1s;
 }
 
-body.fade-in-trigger .line .line.dashed {
-  opacity: 0.871;
-  transition-delay: 1s;
-}
-
+/* The login lines and login text start invisible */
 .login-line,
 .login-line-second,
 .login-text {
@@ -77,6 +67,7 @@ body.fade-in-trigger .line .line.dashed {
   transform: translateX(0) translateZ(0);
 }
 
+/* So they can also slide left when needed */
 .login-text,
 .login-line,
 .login-line-second {
@@ -96,6 +87,7 @@ body.fade-in-trigger .line .line.dashed {
   animation: reverseSlide 0.5s forwards;
 }
 
+/* Classes to hide/show elements */
 .visible {
   opacity: 1 !important;
   transition: opacity 0.5s ease-in-out;
@@ -109,8 +101,7 @@ body.fade-in-trigger .line .line.dashed {
 .line {
   position: absolute;
   height: 1px;
-  background-color: #acacac;
-  opacity: 0.871; 
+  background-color: #c7c7c7;
 }
 
 .original {
@@ -143,7 +134,13 @@ body.fade-in-trigger .line .line.dashed {
   top: 28.5vh;
   left: 36vw;
   width: 52.4vw;
-  background: linear-gradient(to right, #171717 0, #171717 5px, #ffffff 5px, #ffffff 10px);
+  background: linear-gradient(
+    to right,
+    #777777 0,
+    #777777 5px,
+    #ffffff 5px,
+    #ffffff 10px
+  );
   background-size: 10px 1px;
 }
 
@@ -171,7 +168,7 @@ body.fade-in-trigger .line .line.dashed {
   font-size: 0.331rem;
   color: #111111;
   letter-spacing: 0.2vw;
-  text-shadow: 0.011rem 0.011rem 0 #111111, -0.011rem -0.011rem 0 #111111;
+  text-shadow: 0.001rem 0 0 #111111, -0.001rem 0 0 #111111;
 }
 
 .time-text {
@@ -201,7 +198,7 @@ body.fade-in-trigger .line .line.dashed {
   letter-spacing: 0.28vw;
   font-size: 0.47rem;
   left: 6.41vw;
-  text-shadow: 0.011rem 0 0 #171717, -0.011rem 0 0 #171717;
+  text-shadow: 0.017rem 0 0 #c7c7c7, -0.017rem 0 0 #c7c7c7;
   transform: translateX(0) translateZ(0);
 }
 
@@ -238,7 +235,7 @@ body.fade-in-trigger .line .line.dashed {
   color: #111111;
   letter-spacing: 0.28vw;
   font-size: 0.47rem;
-  text-shadow: 0.011rem 0 0 #171717, -0.011rem 0 0 #171717;
+  text-shadow: 0.017rem 0 0 #c7c7c7, -0.017rem 0 0 #c7c7c7;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
@@ -324,7 +321,7 @@ body.fullscreen .help-text {
   font-size: 0.46rem;
   line-height: 1.2;
   padding: 0.1rem 0;
-  text-shadow: 0.011rem 0 0 #171717, -0.011rem 0 0 #171717;
+  text-shadow: 0.017rem 0 0 #c7c7c7, -0.017rem 0 0 #c7c7c7;
 }
 
 .account-text.account-email {
@@ -389,7 +386,7 @@ body.fullscreen .help-text {
   color: #111111;
   letter-spacing: 0.34vw;
   font-size: 0.47rem;
-  text-shadow: 0.011rem 0 0 #171717, -0.011rem 0 0 #171717;
+  text-shadow: 0.017rem 0 0 #c7c7c7, -0.017rem 0 0 #c7c7c7;
   white-space: nowrap;
 }
 

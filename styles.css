@@ -45,22 +45,17 @@ body.fade-in-trigger {
   background-color: #ffffff;
 }
 
-/* Hide all non-login lines and .time-text initially */
 .line:not(.login-line):not(.login-line-second):not(.dashed),
 .time-text {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
 
-/* The dashed lines are also hidden initially, but 
-   they will fade in to a lower final opacity */
 .line.dashed {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
 
-/* Once fade-in-trigger is set, non-dashed lines + time-text go to opacity: 1,
-   while dashed lines go to opacity: 0.1 */
 body.fade-in-trigger 
   .line:not(.login-line):not(.login-line-second):not(.dashed),
 body.fade-in-trigger 
@@ -70,7 +65,7 @@ body.fade-in-trigger
 }
 
 body.fade-in-trigger .line.dashed {
-  opacity: 0.1;
+  opacity: 0.881;
   transition-delay: 1s;
 }
 
@@ -115,7 +110,7 @@ body.fade-in-trigger .line.dashed {
   position: absolute;
   height: 1px;
   background-color: #acacac;
-  opacity: 0.881; /* default for any .line without overriding rules */
+  opacity: 0.881; 
 }
 
 .original {
@@ -142,8 +137,6 @@ body.fade-in-trigger .line.dashed {
   width: 57.8vw;
 }
 
-/* Keep exact same gradient, no inline opacity. 
-   (The fade is controlled by the new rules above.) */
 .dashed {
   position: absolute;
   height: 1px;

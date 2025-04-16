@@ -109,7 +109,7 @@ body.fade-in-trigger .line.dashed {
 .line {
   position: absolute;
   height: 1px;
-  background-color: rgba(172, 172, 172, 0.841)
+  background-color: rgba(172, 172, 172, 0.861)
 }
 
 .original {

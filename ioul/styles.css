@@ -249,7 +249,7 @@ body.non-fullscreen {
     color: #111111;
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
-    text-shadow: 0.001rem 0.001rem 0 #111111, -0.001rem -0.001rem 0 #111111;
+    text-shadow: 0.001rem 0.001rem 0 #c1c1c1, -0.001rem -0.001rem 0 #c1c1c1;
     cursor: pointer;
     opacity: 0;
     transition: opacity 0.3s ease, transform 0.7s ease;
@@ -266,7 +266,7 @@ body.non-fullscreen {
     letter-spacing: 0.28vw;
     color: #111111;
     caret-color: #c1c1c1;
-    text-shadow: 0.001rem 0.001rem 0 #111111, -0.001rem -0.001rem 0 #111111;
+    text-shadow: 0.001rem 0.001rem 0 #c1c1c1, -0.001rem -0.001rem 0 #c1c1c1;
     line-height: 1.2;
     padding: 0.2rem 0;
     border: none;
@@ -361,7 +361,7 @@ body.non-fullscreen {
     color: #111111;
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
-    text-shadow: 0.001rem 0.001rem 0 #111111, -0.001rem -0.001rem 0 #111111;
+    text-shadow: 0.001rem 0.001rem 0 #c1c1c1, -0.001rem -0.001rem 0 #c1c1c1;
     transition: left 0.7s ease, transform 0.7s ease;
     line-height: 1.6;
     overflow: visible;

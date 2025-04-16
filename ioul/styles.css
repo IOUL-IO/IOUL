@@ -180,7 +180,7 @@ body.non-fullscreen {
     background-size: 10px 1px;
     transition: transform 0.7s ease;
     
-    opacity: 0.961;
+    opacity: 0.941;
 }
 .second-dashed {
     top: 47vh;
@@ -312,7 +312,7 @@ body.non-fullscreen {
     background-size: 10px 1px;
     transition: transform 0.7s ease;
 
-    opacity: 0.961;
+    opacity: 0.941;
 }
 .dashed01 { top: 28.5vh; left: 96vw; }
 .dashed02 { top: 28.5vh; left: 111vw; }

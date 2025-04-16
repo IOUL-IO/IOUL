@@ -203,7 +203,7 @@ body.fade-in-trigger .line.dashed {
   letter-spacing: 0.28vw;
   font-size: 0.47rem;
   left: 6.41vw;
-  text-shadow: 0.007rem 0 0 #111111, -0.007rem 0 0 #111111;
+  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
   transform: translateX(0) translateZ(0);
 }
 
@@ -240,7 +240,7 @@ body.fade-in-trigger .line.dashed {
   color: #111111;
   letter-spacing: 0.28vw;
   font-size: 0.47rem;
-  text-shadow: 0.007rem 0 0 #111111, -0.007rem 0 0 #111111;
+  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
@@ -326,7 +326,7 @@ body.fullscreen .help-text {
   font-size: 0.46rem;
   line-height: 1.2;
   padding: 0.1rem 0;
-  text-shadow: 0.007rem 0 0 #111111, -0.007rem 0 0 #111111;
+  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
 }
 
 .account-text.account-email {
@@ -391,7 +391,7 @@ body.fullscreen .help-text {
   color: #111111;
   letter-spacing: 0.34vw;
   font-size: 0.47rem;
-  text-shadow: 0.007rem 0 0 #111111, -0.007rem 0 0 #111111;
+  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
   white-space: nowrap;
 }
 

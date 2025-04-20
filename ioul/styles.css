@@ -136,7 +136,7 @@ body.non-fullscreen {
 .line {
     position: absolute;
     height: 1px;
-    background-color: rgba(172, 172, 172, 0.841)
+    background-color: rgba(172, 172, 172, 0.841);
 }
 .original {
     top: 12.5vh;
@@ -157,6 +157,8 @@ body.non-fullscreen {
     top: 12.5vh;
     left: 36vw;
     width: 57.8vw;
+    /* ensure this stays on top of our new stripes */
+    z-index: 1;
 }
 
 /* ----- The slide-container for dashed lines/time texts ----- */
@@ -179,7 +181,6 @@ body.non-fullscreen {
     background: linear-gradient(to right, #171717 0, #171717 5px, #ffffff 5px, #ffffff 10px);
     background-size: 10px 1px;
     transition: transform 0.7s ease;
-    
     opacity: 0.8;
 }
 .second-dashed {
@@ -311,7 +312,6 @@ body.non-fullscreen {
     background: linear-gradient(to right, #171717 0, #171717 5px, #ffffff 5px, #ffffff 10px);
     background-size: 10px 1px;
     transition: transform 0.7s ease;
-
     opacity: 0.8;
 }
 .dashed01 { top: 28.5vh; left: 96vw; }
@@ -332,8 +332,8 @@ body.non-fullscreen {
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
 /* 
-   Slide container => .animate-slide => transformX(-91vw) for lines/time 
-   .other-content => .animate-grid => transformX(-60vw) for .grid-number/.grid-dashed
+   Slide container => .animate-slide => transformX(-91vw)
+   .other-content => .animate-grid => transformX(-60vw)
 */
 .slide-container > .line.dashed,
 .slide-container > .time-text,
@@ -378,7 +378,7 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
-/* The "slide-down" logic for menu items, unchanged */
+/* The "slide-down" logic for menu items */
 .menu-slide {
     transform: translateX(-22.59vw);
 }
@@ -389,7 +389,27 @@ body.non-fullscreen {
     transform: translateY(11vh);
 }
 
-/* For newly added items that fade in (submenus, etc.) */
+/* New top/bottom stripes to mask the dashed grid */
+.layer-five {
+    position: absolute;
+    top: 0;
+    left: 36vw;
+    width: 58.7vw;
+    height: 28.4vh;
+    background-color: #ffffff;
+    pointer-events: none;
+}
+.layer-six {
+    position: absolute;
+    top: 84.7vh;
+    left: 36vw;
+    width: 58.7vw;
+    height: 15.3vh;
+    background-color: #ffffff;
+    pointer-events: none;
+}
+
+/* For newly added submenu items */
 .new-text {
     opacity: 0;
     transition: opacity 0.7s ease;
@@ -398,23 +418,17 @@ body.non-fullscreen {
     opacity: 1;
 }
 
-/* 
-   HEADINGS => pinned at left:6.41vw, .heading-container => transform 0.7s => 
-   "heading-flow" => white-space: nowrap so line doesn't break
-*/
+/* Heading containers */
 .heading-container {
     position: absolute;
     overflow: visible;
-    transition: transform 0.7s ease; 
+    transition: transform 0.7s ease;
 }
 .heading-flow {
     white-space: nowrap;
 }
 
-/* 
-   ACCOUNTS => pinned at left:28.91vw
-   .account-container => transform 0.7s => "right-flow" => direction: rtl
-*/
+/* Account containers */
 .account-container {
     position: absolute;
     overflow: visible;
@@ -426,26 +440,12 @@ body.non-fullscreen {
     white-space: nowrap;
 }
 
-/* 
-   Submenu fade logic:
-   .submenu-item starts at opacity:0. 
-   .submenu-item.show => transitions to opacity:1 
-*/
-.submenu-item {
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-.submenu-item.show {
-    opacity: 1;
-}
-
-/* Additional rules for community and zero items: ensure no wrapping and smooth left transitions */
+/* Community/zero items */
 .community-items-container span,
 .zero-items-container span {
     white-space: nowrap;
     transition: left 0.7s ease, transform 0.7s ease;
 }
-/* Ensure community container's custom-line also transitions */
 .community-items-container .custom-line {
     transition: left 0.7s ease, transform 0.7s ease;
 }

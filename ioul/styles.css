@@ -19,7 +19,6 @@ body.non-fullscreen {
     overflow: hidden;
 }
 
-/* ----- Layer stripes (unchanged) ----- */
 .layer-one {
     position: fixed;
     top: 0;
@@ -59,7 +58,6 @@ body.non-fullscreen {
     height: 100vh;
 }
 
-/* ----- Main menu items ----- */
 .menu-items {
     position: absolute;
     top: 0;
@@ -77,7 +75,6 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
-/* ----- The covering layer ----- */
 .layer-four {
     position: absolute;
     top: 28.5vh;
@@ -89,7 +86,6 @@ body.non-fullscreen {
     pointer-events: none;
 }
 
-/* ----- Container for rest of content ----- */
 .other-content {
     position: absolute;
     top: 0;
@@ -99,7 +95,6 @@ body.non-fullscreen {
     z-index: 3;
 }
 
-/* ----- Slide triggers ----- */
 .slide-triggers {
     position: fixed;
     top: 0;
@@ -132,7 +127,6 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-/* ----- Lines and original positions ----- */
 .line {
     position: absolute;
     height: 1px;
@@ -157,11 +151,9 @@ body.non-fullscreen {
     top: 12.5vh;
     left: 36vw;
     width: 57.8vw;
-    /* ensure this stays on top of our new stripes */
     z-index: 1;
 }
 
-/* ----- The slide-container for dashed lines/time texts ----- */
 .slide-container {
     position: absolute;
     top: 0;
@@ -171,7 +163,6 @@ body.non-fullscreen {
     clip-path: inset(0 0 0 28.86vw);
 }
 
-/* ----- Dashed lines and times in .slide-container ----- */
 .dashed {
     position: absolute;
     height: 1px;
@@ -229,7 +220,6 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* Hover area for the chat text */
 .hover-area {
     position: absolute;
     top: 28.5vh;
@@ -240,7 +230,6 @@ body.non-fullscreen {
     background: transparent;
 }
 
-/* ----- Chat text & input ----- */
 .chat-text {
     position: absolute;
     top: 77vh;
@@ -277,7 +266,6 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-/* ----- Grid numbers 1–16 ----- */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -304,7 +292,6 @@ body.non-fullscreen {
 .num15 { top: 83.7vh; left: 138.0vw; }
 .num16 { top: 83.7vh; left: 152.8vw; }
 
-/* ----- Dashed lines 1–16 ----- */
 .grid-dashed {
     position: absolute;
     height: 1px;
@@ -331,10 +318,7 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
-/* 
-   Slide container => .animate-slide => transformX(-91vw)
-   .other-content => .animate-grid => transformX(-60vw)
-*/
+
 .slide-container > .line.dashed,
 .slide-container > .time-text,
 .slide-container > .time-text.second-time-text,
@@ -354,7 +338,6 @@ body.non-fullscreen {
     transform: translateX(-60vw);
 }
 
-/* Original .custom-text */
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -367,7 +350,6 @@ body.non-fullscreen {
     overflow: visible;
 }
 
-/* The dividing line with left transitions */
 .custom-line {
     position: absolute;
     top: 47.8vh; 
@@ -378,7 +360,6 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
-/* The "slide-down" logic for menu items */
 .menu-slide {
     transform: translateX(-22.59vw);
 }
@@ -389,7 +370,6 @@ body.non-fullscreen {
     transform: translateY(11vh);
 }
 
-/* New top/bottom stripes to mask the dashed grid */
 .layer-five {
     position: absolute;
     top: 0;
@@ -409,7 +389,6 @@ body.non-fullscreen {
     pointer-events: none;
 }
 
-/* For newly added submenu items */
 .new-text {
     opacity: 0;
     transition: opacity 0.7s ease;
@@ -418,7 +397,6 @@ body.non-fullscreen {
     opacity: 1;
 }
 
-/* Heading containers */
 .heading-container {
     position: absolute;
     overflow: visible;
@@ -428,7 +406,6 @@ body.non-fullscreen {
     white-space: nowrap;
 }
 
-/* Account containers */
 .account-container {
     position: absolute;
     overflow: visible;
@@ -440,7 +417,6 @@ body.non-fullscreen {
     white-space: nowrap;
 }
 
-/* Community/zero items */
 .community-items-container span,
 .zero-items-container span {
     white-space: nowrap;

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IOUL</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="non-fullscreen">
+  <!-- Six layers -->
+  <div class="layer-one"></div>
+  <div class="layer-two"></div>
+  <div class="layer-three"></div>
+  <div class="layer-four"></div>
+  <div class="layer-five"></div>
+  <div class="layer-six"></div>
+
+  <!-- Four lines -->
+  <div class="other-content">
+    <div class="line original"></div>
+    <div class="line second"></div>
+    <div class="line third"></div>
+    <div class="line fourth"></div>
+  </div>
+
+  <script>
+    const EDGE_MARGIN = 11;
+    document.addEventListener('click', (event) => {
+      const { clientX: x, clientY: y } = event;
+      const { innerWidth: width, innerHeight: height } = window;
+      if (!document.fullscreenElement &&
+          (x <= EDGE_MARGIN || x >= width - EDGE_MARGIN ||
+           y <= EDGE_MARGIN || y >= height - EDGE_MARGIN)) {
+        document.documentElement.requestFullscreen();
+      }
+    });
+  </script>
+</body>
+</html>

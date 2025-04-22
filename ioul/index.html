@@ -89,6 +89,21 @@
       <span class="grid-number num14">14</span>
       <span class="grid-number num15">15</span>
       <span class="grid-number num16">16</span>
+      <span class="grid-number num17">17</span>
+      <span class="grid-number num18">18</span>
+      <span class="grid-number num19">19</span>
+      <span class="grid-number num20">20</span>
+      <span class="grid-number num21">21</span>
+      <span class="grid-number num22">22</span>
+      <span class="grid-number num23">23</span>
+      <span class="grid-number num24">24</span>
+      <span class="grid-number num25">25</span>
+      <span class="grid-number num26">26</span>
+      <span class="grid-number num27">27</span>
+      <span class="grid-number num28">28</span>
+      <span class="grid-number num29">29</span>
+      <span class="grid-number num30">30</span>
+      <span class="grid-number num31">31</span>
 
       <span class="grid-dashed dashed01"></span>
       <span class="grid-dashed dashed02"></span>
@@ -106,6 +121,21 @@
       <span class="grid-dashed dashed14"></span>
       <span class="grid-dashed dashed15"></span>
       <span class="grid-dashed dashed16"></span>
+      <span class="grid-dashed dashed17"></span>
+      <span class="grid-dashed dashed18"></span>
+      <span class="grid-dashed dashed19"></span>
+      <span class="grid-dashed dashed20"></span>
+      <span class="grid-dashed dashed21"></span>
+      <span class="grid-dashed dashed22"></span>
+      <span class="grid-dashed dashed23"></span>
+      <span class="grid-dashed dashed24"></span>
+      <span class="grid-dashed dashed25"></span>
+      <span class="grid-dashed dashed26"></span>
+      <span class="grid-dashed dashed27"></span>
+      <span class="grid-dashed dashed28"></span>
+      <span class="grid-dashed dashed29"></span>
+      <span class="grid-dashed dashed30"></span>
+      <span class="grid-dashed dashed31"></span>
 
       <div class="heading-container" style="top:35.4vh; left:6.41vw; transform:translateX(-49vw);" data-offset="-49" data-slide-group="heading">
         <span class="custom-text heading-flow">AccOUnT</span>
@@ -475,6 +505,37 @@
     document.getElementById("linkup-center").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="linkup-center")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openLinkupCenter(); currentMenu="linkup-center";},300);} else{ openLinkupCenter(); currentMenu="linkup-center"; } } });
     document.getElementById("delivery-line").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="delivery-line")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openDeliveryLine(); currentMenu="delivery-line";},300);} else{ openDeliveryLine(); currentMenu="delivery-line"; } } });
     document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
+
+    // Add scroll handling for the grid
+    const otherContent = document.querySelector('.other-content');
+    const layerFour = document.querySelector('.layer-four');
+    const layerFive = document.querySelector('.layer-five');
+    const layerSix = document.querySelector('.layer-six');
+
+    // Extend the white layers to cover the entire height
+    layerFour.style.height = '200vh';
+    layerFive.style.height = '200vh';
+    layerSix.style.height = '200vh';
+
+    // Handle scroll events
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const vhUnit = window.innerHeight / 100;
+      
+      // Adjust the position of the grid elements based on scroll
+      const gridNumbers = document.querySelectorAll('.grid-number');
+      const gridDashed = document.querySelectorAll('.grid-dashed');
+      
+      gridNumbers.forEach(number => {
+        const currentTop = parseFloat(number.style.top || getComputedStyle(number).top);
+        number.style.transform = `translateY(${-scrollY}px)`;
+      });
+      
+      gridDashed.forEach(dashed => {
+        const currentTop = parseFloat(dashed.style.top || getComputedStyle(dashed).top);
+        dashed.style.transform = `translateY(${-scrollY}px)`;
+      });
+    });
   </script>
 </body>
 </html>

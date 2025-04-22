@@ -381,11 +381,12 @@ body.non-fullscreen {
 }
 .layer-six {
     position: absolute;
-    top: 84.7vh;
+    top: 28.5vh;
     left: 36vw;
-    width: 58.7vw;
-    height: 15.3vh;
+    width: 58.17vw;
+    height: 55.5vh;
     background-color: #ffffff;
+    z-index: 4;
     pointer-events: none;
 }
 
@@ -424,4 +425,43 @@ body.non-fullscreen {
 }
 .community-items-container .custom-line {
     transition: left 0.7s ease, transform 0.7s ease;
+}
+
+.calendar-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    transform: translateY(100%);
+    transition: transform 0.7s ease;
+}
+
+.calendar-grid .grid-number {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.331rem;
+    color: #111111;
+    letter-spacing: 0.2vw;
+    text-shadow: 0.011rem 0.011rem 0 #111111, -0.011rem -0.011rem 0 #111111;
+    transition: transform 0.7s ease;
+}
+
+.calendar-grid .grid-dashed {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(to right, #171717 0, #171717 5px, #ffffff 5px, #ffffff 10px);
+    background-size: 10px 1px;
+    transition: transform 0.7s ease;
+    opacity: 0.8;
+}
+
+.other-content.animate-grid .calendar-grid {
+    transform: translateY(0);
+}
+
+.other-content.animate-grid .grid-number,
+.other-content.animate-grid .grid-dashed {
+    transform: translateY(-100%);
 }

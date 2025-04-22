@@ -292,23 +292,6 @@ body.non-fullscreen {
 .num15 { top: 83.7vh; left: 138.0vw; }
 .num16 { top: 83.7vh; left: 152.8vw; }
 
-/* Extended grid numbers */
-.num17 { top: 102.2vh; left: 108.3vw; }
-.num18 { top: 102.2vh; left: 123.2vw; }
-.num19 { top: 102.2vh; left: 138.0vw; }
-.num20 { top: 102.2vh; left: 152.8vw; }
-.num21 { top: 120.7vh; left: 108.3vw; }
-.num22 { top: 120.7vh; left: 123.2vw; }
-.num23 { top: 120.7vh; left: 138.0vw; }
-.num24 { top: 120.7vh; left: 152.8vw; }
-.num25 { top: 139.2vh; left: 108.3vw; }
-.num26 { top: 139.2vh; left: 123.2vw; }
-.num27 { top: 139.2vh; left: 138.0vw; }
-.num28 { top: 139.2vh; left: 152.8vw; }
-.num29 { top: 157.7vh; left: 108.3vw; }
-.num30 { top: 157.7vh; left: 123.2vw; }
-.num31 { top: 157.7vh; left: 138.0vw; }
-
 .grid-dashed {
     position: absolute;
     height: 1px;
@@ -335,22 +318,6 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
-/* Extended grid dashed lines */
-.dashed17 { top: 102.2vh; left: 96vw; }
-.dashed18 { top: 102.2vh; left: 111vw; }
-.dashed19 { top: 102.2vh; left: 125.9vw; }
-.dashed20 { top: 102.2vh; left: 140.8vw; }
-.dashed21 { top: 120.7vh; left: 96vw; }
-.dashed22 { top: 120.7vh; left: 111vw; }
-.dashed23 { top: 120.7vh; left: 125.9vw; }
-.dashed24 { top: 120.7vh; left: 140.8vw; }
-.dashed25 { top: 139.2vh; left: 96vw; }
-.dashed26 { top: 139.2vh; left: 111vw; }
-.dashed27 { top: 139.2vh; left: 125.9vw; }
-.dashed28 { top: 139.2vh; left: 140.8vw; }
-.dashed29 { top: 157.7vh; left: 96vw; }
-.dashed30 { top: 157.7vh; left: 111vw; }
-.dashed31 { top: 157.7vh; left: 125.9vw; }
 
 .slide-container > .line.dashed,
 .slide-container > .time-text,

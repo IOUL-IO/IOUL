@@ -107,6 +107,43 @@
       <span class="grid-dashed dashed15"></span>
       <span class="grid-dashed dashed16"></span>
 
+      <!-- Calendar Grid -->
+      <div class="calendar-grid">
+        <span class="grid-number num1">1</span>
+        <span class="grid-number num2">2</span>
+        <span class="grid-number num3">3</span>
+        <span class="grid-number num4">4</span>
+        <span class="grid-number num5">5</span>
+        <span class="grid-number num6">6</span>
+        <span class="grid-number num7">7</span>
+        <span class="grid-number num8">8</span>
+        <span class="grid-number num9">9</span>
+        <span class="grid-number num10">10</span>
+        <span class="grid-number num11">11</span>
+        <span class="grid-number num12">12</span>
+        <span class="grid-number num13">13</span>
+        <span class="grid-number num14">14</span>
+        <span class="grid-number num15">15</span>
+        <span class="grid-number num16">16</span>
+
+        <span class="grid-dashed dashed01"></span>
+        <span class="grid-dashed dashed02"></span>
+        <span class="grid-dashed dashed03"></span>
+        <span class="grid-dashed dashed04"></span>
+        <span class="grid-dashed dashed05"></span>
+        <span class="grid-dashed dashed06"></span>
+        <span class="grid-dashed dashed07"></span>
+        <span class="grid-dashed dashed08"></span>
+        <span class="grid-dashed dashed09"></span>
+        <span class="grid-dashed dashed10"></span>
+        <span class="grid-dashed dashed11"></span>
+        <span class="grid-dashed dashed12"></span>
+        <span class="grid-dashed dashed13"></span>
+        <span class="grid-dashed dashed14"></span>
+        <span class="grid-dashed dashed15"></span>
+        <span class="grid-dashed dashed16"></span>
+      </div>
+
       <div class="heading-container" style="top:35.4vh; left:6.41vw; transform:translateX(-49vw);" data-offset="-49" data-slide-group="heading">
         <span class="custom-text heading-flow">AccOUnT</span>
       </div>
@@ -475,6 +512,45 @@
     document.getElementById("linkup-center").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="linkup-center")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openLinkupCenter(); currentMenu="linkup-center";},300);} else{ openLinkupCenter(); currentMenu="linkup-center"; } } });
     document.getElementById("delivery-line").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="delivery-line")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openDeliveryLine(); currentMenu="delivery-line";},300);} else{ openDeliveryLine(); currentMenu="delivery-line"; } } });
     document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
+
+    // Calendar Grid Scrolling
+    const otherContent = document.querySelector('.other-content');
+    let isScrolling = false;
+    let lastScrollY = 0;
+
+    document.addEventListener('wheel', (event) => {
+      const vwUnit = window.innerWidth / 100;
+      const vhUnit = window.innerHeight / 100;
+      const leftMin = 36 * vwUnit;
+      const leftMax = 94 * vwUnit;
+      const yMin = 28.5 * vhUnit;
+      const yMax = 84 * vhUnit;
+
+      if (event.clientX >= leftMin && event.clientX <= leftMax &&
+          event.clientY >= yMin && event.clientY <= yMax) {
+        event.preventDefault();
+        
+        if (!isScrolling) {
+          isScrolling = true;
+          lastScrollY = window.scrollY;
+        }
+
+        const scrollDirection = event.deltaY > 0 ? 1 : -1;
+        const scrollAmount = Math.abs(event.deltaY) * 0.1;
+        
+        if (scrollDirection > 0) {
+          // Scrolling down
+          otherContent.classList.add('animate-grid');
+        } else {
+          // Scrolling up
+          otherContent.classList.remove('animate-grid');
+        }
+
+        setTimeout(() => {
+          isScrolling = false;
+        }, 700);
+      }
+    });
   </script>
 </body>
 </html>

@@ -505,6 +505,15 @@
     document.getElementById("linkup-center").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="linkup-center")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openLinkupCenter(); currentMenu="linkup-center";},300);} else{ openLinkupCenter(); currentMenu="linkup-center"; } } });
     document.getElementById("delivery-line").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="delivery-line")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openDeliveryLine(); currentMenu="delivery-line";},300);} else{ openDeliveryLine(); currentMenu="delivery-line"; } } });
     document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
+
+        document.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const scrollX = window.scrollX;
+      if (scrollY > 28.5 && scrollY < 84 && scrollX > 36 && scrollX < 94) {
+        document.querySelector('.layer-five').classList.add('update');
+      }
+    });
+    
   </script>
 </body>
 </html>

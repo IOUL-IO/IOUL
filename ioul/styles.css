@@ -338,6 +338,22 @@ body.non-fullscreen {
     transform: translateX(-60vw);
 }
 
+.scroll-range {
+    position: fixed;
+    top: 28.5vh;
+    left: 36vw;
+    width: calc(94vw - 36vw);
+    height: calc(84vh - 28.5vh);
+    pointer-events: auto;
+    z-index: 200;
+    background: transparent;
+}
+
+/* New Layer for Sliding Up */
+.layer-five.update {
+    transform: translateY(-50vh);
+}
+
 .custom-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;

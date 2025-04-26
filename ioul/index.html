@@ -508,16 +508,16 @@
     document.getElementById("delivery-line").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="delivery-line")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openDeliveryLine(); currentMenu="delivery-line";},300);} else{ openDeliveryLine(); currentMenu="delivery-line"; } } });
     document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
 
-    // Add scroll event listener for grid animation
-    document.addEventListener('scroll', () => {
+    // Add mousemove event listener for grid animation
+    document.addEventListener('mousemove', (event) => {
       const vhUnit = window.innerHeight / 100;
       const vwUnit = window.innerWidth / 100;
-      const scrollY = window.scrollY;
-      const scrollX = window.scrollX;
+      const mouseY = event.clientY;
+      const mouseX = event.clientX;
       
-      // Check if scroll position is within the specified range
-      if (scrollY >= 28.5 * vhUnit && scrollY <= 84 * vhUnit &&
-          scrollX >= 36 * vwUnit && scrollX <= 94 * vwUnit) {
+      // Check if mouse position is within the specified range
+      if (mouseY >= 28.5 * vhUnit && mouseY <= 84 * vhUnit &&
+          mouseX >= 36 * vwUnit && mouseX <= 94 * vwUnit) {
         // Add animation class to grid numbers 1-16
         document.querySelectorAll('.grid-number:not(.num17):not(.num18):not(.num19):not(.num20):not(.num21):not(.num22):not(.num23):not(.num24):not(.num25):not(.num26):not(.num27):not(.num28):not(.num29):not(.num30):not(.num31)').forEach(el => {
           el.style.transform = 'translateY(-50vh)';

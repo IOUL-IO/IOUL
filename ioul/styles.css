@@ -318,6 +318,37 @@ body.non-fullscreen {
 .dashed15 { top: 84vh;   left: 125.9vw; }
 .dashed16 { top: 84vh;   left: 140.8vw; }
 
+.num17 { top: 102.2vh; left: 108.8vw; }
+.num18 { top: 102.2vh; left: 123.7vw; }
+.num19 { top: 102.2vh; left: 138.5vw; }
+.num20 { top: 102.2vh; left: 153.3vw; }
+.num21 { top: 120.7vh; left: 108.8vw; }
+.num22 { top: 120.7vh; left: 123.7vw; }
+.num23 { top: 120.7vh; left: 138.5vw; }
+.num24 { top: 120.7vh; left: 153.3vw; }
+.num25 { top: 139.2vh; left: 108.8vw; }
+.num26 { top: 139.2vh; left: 123.3vw; }
+.num27 { top: 139.2vh; left: 138.3vw; }
+.num28 { top: 139.2vh; left: 152.9vw; }
+.num29 { top: 157.7vh; left: 108.3vw; }
+.num30 { top: 157.7vh; left: 123.2vw; }
+.num31 { top: 157.7vh; left: 138.0vw; }
+
+.dashed17 { top: 102.2vh; left: 96vw; }
+.dashed18 { top: 102.2vh; left: 111vw; }
+.dashed19 { top: 102.2vh; left: 125.9vw; }
+.dashed20 { top: 102.2vh; left: 140.8vw; }
+.dashed21 { top: 120.7vh; left: 96vw; }
+.dashed22 { top: 120.7vh; left: 111vw; }
+.dashed23 { top: 120.7vh; left: 125.9vw; }
+.dashed24 { top: 120.7vh; left: 140.8vw; }
+.dashed25 { top: 139.2vh; left: 96vw; }
+.dashed26 { top: 139.2vh; left: 111vw; }
+.dashed27 { top: 139.2vh; left: 125.9vw; }
+.dashed28 { top: 139.2vh; left: 140.8vw; }
+.dashed29 { top: 157.7vh; left: 96vw; }
+.dashed30 { top: 157.7vh; left: 111vw; }
+.dashed31 { top: 157.7vh; left: 125.9vw; }
 
 .slide-container > .line.dashed,
 .slide-container > .time-text,
@@ -336,6 +367,39 @@ body.non-fullscreen {
 .other-content.animate-grid .grid-number,
 .other-content.animate-grid .grid-dashed {
     transform: translateX(-60vw);
+}
+
+.other-content.animate-grid .grid-number.num17,
+.other-content.animate-grid .grid-number.num18,
+.other-content.animate-grid .grid-number.num19,
+.other-content.animate-grid .grid-number.num20,
+.other-content.animate-grid .grid-number.num21,
+.other-content.animate-grid .grid-number.num22,
+.other-content.animate-grid .grid-number.num23,
+.other-content.animate-grid .grid-number.num24,
+.other-content.animate-grid .grid-number.num25,
+.other-content.animate-grid .grid-number.num26,
+.other-content.animate-grid .grid-number.num27,
+.other-content.animate-grid .grid-number.num28,
+.other-content.animate-grid .grid-number.num29,
+.other-content.animate-grid .grid-number.num30,
+.other-content.animate-grid .grid-number.num31,
+.other-content.animate-grid .grid-dashed.dashed17,
+.other-content.animate-grid .grid-dashed.dashed18,
+.other-content.animate-grid .grid-dashed.dashed19,
+.other-content.animate-grid .grid-dashed.dashed20,
+.other-content.animate-grid .grid-dashed.dashed21,
+.other-content.animate-grid .grid-dashed.dashed22,
+.other-content.animate-grid .grid-dashed.dashed23,
+.other-content.animate-grid .grid-dashed.dashed24,
+.other-content.animate-grid .grid-dashed.dashed25,
+.other-content.animate-grid .grid-dashed.dashed26,
+.other-content.animate-grid .grid-dashed.dashed27,
+.other-content.animate-grid .grid-dashed.dashed28,
+.other-content.animate-grid .grid-dashed.dashed29,
+.other-content.animate-grid .grid-dashed.dashed30,
+.other-content.animate-grid .grid-dashed.dashed31 {
+    transform: translateX(-60vw) translateY(-50vh);
 }
 
 .custom-text {

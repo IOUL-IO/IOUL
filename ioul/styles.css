@@ -272,7 +272,7 @@ body.non-fullscreen {
     color: #111111;
     font-size: 0.411rem;
     letter-spacing: 0.28vw;
-    text-shadow: 0.011rem 0.011rem 0 #171717, -0.011rem -0.011rem 0 #171717;
+    text-shadow: 0.001rem 0.001rem 0 #171717, -0.001rem -0.001rem 0 #171717;
     transition: transform 0.7s ease;
 }
 .num1  { top: 28.5vh; left: 108.8vw; }

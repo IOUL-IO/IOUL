@@ -434,7 +434,7 @@ body.non-fullscreen {
 
 @media (min-width: 1200px) {
   .chat-text {
-    font-size: 8.4px !important;    /* snapped to whole pixel */
+    font-size: 8.7px !important;    /* snapped to whole pixel */
   }
   .grid-number {
     font-size: 7px !important;
@@ -445,6 +445,6 @@ body.non-fullscreen {
   }
   .index-input,
   .custom-text {
-    font-size: 8.4px !important;
+    font-size: 8.7px !important;
   }
 }

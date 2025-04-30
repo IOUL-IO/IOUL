@@ -12,6 +12,11 @@
     box-sizing: border-box;
 }
 
+html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+
 body.non-fullscreen {
     background-color: #ffffff;
     min-height: 100vh;

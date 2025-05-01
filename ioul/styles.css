@@ -443,6 +443,10 @@ body.non-fullscreen {
   .second-time-text {
     font-size: 7px !important;
   }
+  .time-text,
+  .grid-number {
+  transform: translate(-4vw, -4vh) !important;
+  }
   .community-items-container span,
   .zero-items-container span,
   .index-input,

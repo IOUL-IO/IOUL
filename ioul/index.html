@@ -480,13 +480,10 @@
 <script>
 (function adjustTimeTextSpacing() {
   if (window.innerWidth > 1700) {
-    // Reduce &nbsp; count to 2
+    // Remove only one &nbsp;
     document.querySelectorAll('.time-text').forEach(el => {
-      el.innerHTML = el.innerHTML
-        .replace(/&nbsp;/g, '')
-        .replace(/(\d+:\d+)(\s*)(AM|PM)/, (_, time, _space, suffix) => {
-          return time + '&nbsp;&nbsp;' + suffix;
-        });
+      let content = el.innerHTML;
+      el.innerHTML = content.replace(/&nbsp;/, '');
     });
 
     function adjustPosition(selector) {
@@ -496,7 +493,7 @@
           const val = cs[prop];
           const match = val.match(/^([\\d.]+)(vh|vw)$/);
           if (match) {
-            const newVal = parseFloat(match[1]) - 2;
+            const newVal = parseFloat(match[1]) - 2.8;
             el.style[prop] = newVal + match[2];
           }
         });

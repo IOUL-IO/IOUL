@@ -443,6 +443,8 @@ body.non-fullscreen {
   .second-time-text {
     font-size: 7px !important;
   }
+  .community-items-container span,
+  .zero-items-container span,
   .index-input,
   .custom-text {
     font-size: 8.7px !important;

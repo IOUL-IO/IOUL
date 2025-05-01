@@ -432,7 +432,7 @@ body.non-fullscreen {
 /*  BUMP FONTS FOR LARGE SCREENS */
 /* —————————————————————————— */
 
-@media (min-width: 1200px) {
+@media (min-width: 1700px) {
   .chat-text {
     font-size: 8.7px !important;    /* snapped to whole pixel */
   }

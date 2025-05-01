@@ -478,9 +478,8 @@
   </script>
 
 <script>
-(function adjustTimeTextPosition() {
+setTimeout(() => {
   if (window.innerWidth > 1700) {
-    // Remove one &nbsp;
     document.querySelectorAll('.time-text').forEach(el => {
       el.innerHTML = el.innerHTML.replace('&nbsp;', '');
 
@@ -497,8 +496,7 @@
       }
     });
   }
-})();
+}, 500); // Wait 500ms after page load
 </script>
-
 </body>
 </html>

@@ -478,34 +478,21 @@
   </script>
 
 <script>
-(function adjustTimeTextSpacing() {
+(function adjustTimeTextPosition() {
   if (window.innerWidth > 1700) {
-    // Remove one &nbsp;
     document.querySelectorAll('.time-text').forEach(el => {
       el.innerHTML = el.innerHTML.replace('&nbsp;', '');
+
+      const computed = getComputedStyle(el);
+      const topMatch = computed.top.match(/^([\\d.]+)vh$/);
+      const leftMatch = computed.left.match(/^([\\d.]+)vw$/);
+
+      if (topMatch && leftMatch) {
+        const newTop = (parseFloat(topMatch[1]) - 7).toFixed(2) + 'vh';
+        const newLeft = (parseFloat(leftMatch[1]) - 7).toFixed(2) + 'vw';
+        el.setAttribute('style', `top: ${newTop} !important; left: ${newLeft} !important;`);
+      }
     });
-
-    function adjustAttrOrStyle(selector) {
-      document.querySelectorAll(selector).forEach(el => {
-        ['top', 'left'].forEach(prop => {
-          let val = el.style[prop];
-
-          // If not inline, get computed style
-          if (!val) {
-            val = getComputedStyle(el)[prop];
-          }
-
-          const match = val.match(/^([\\d.]+)(vh|vw)$/);
-          if (match) {
-            const newVal = (parseFloat(match[1]) - 7).toFixed(2);
-            el.style[prop] = newVal + match[2];
-          }
-        });
-      });
-    }
-
-    adjustAttrOrStyle('.time-text');
-    adjustAttrOrStyle('.grid-number');
   }
 })();
 </script>

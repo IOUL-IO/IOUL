@@ -426,12 +426,6 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
-
-
-/* —————————————————————————— */
-/*  BUMP FONTS FOR LARGE SCREENS */
-/* —————————————————————————— */
-
 @media (min-width: 1700px) {
   .chat-text,
   .community-items-container span,
@@ -443,13 +437,5 @@ body.non-fullscreen {
   .third-time-text,
   .fourth-time-text,
   .grid-number       { font-size: 7.1px   !important; }
-
-  .time-text,
-  .second-time-text,
-  .third-time-text,
-  .fourth-time-text,
-  .grid-number {
-    margin-top:   -0.11vh !important;
-    margin-left:  -0.19vw !important;
   }
 }

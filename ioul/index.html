@@ -494,7 +494,7 @@
             const unit = val.includes('vh') ? 'vh' : val.includes('vw') ? 'vw' : null;
             if (unit) {
               const number = parseFloat(val);
-              el.style[prop] = (number - 1) + unit;
+              el.style[prop] = (number - 1.7) + unit;
             }
           });
         });

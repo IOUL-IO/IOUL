@@ -482,7 +482,7 @@
     if (window.innerWidth > 1700) {
       document.querySelectorAll('.time-text').forEach(el => {
         el.innerHTML = el.innerHTML.replace(/&nbsp;/g, '').replace(/(\d+:\d+)(\s*)(AM|PM)/, (_, time, space, suffix) => {
-          return time + '&nbsp;&nbsp;&nbsp;' + suffix;
+          return time + '&nbsp;&nbsp;' + suffix;
         });
       });
 
@@ -494,7 +494,7 @@
             const unit = val.includes('vh') ? 'vh' : val.includes('vw') ? 'vw' : null;
             if (unit) {
               const number = parseFloat(val);
-              el.style[prop] = (number - 1.7) + unit;
+              el.style[prop] = (number - 2) + unit;
             }
           });
         });

@@ -480,21 +480,25 @@
 <script>
 (function adjustTimeTextPosition() {
   if (window.innerWidth > 1700) {
+    // Remove one &nbsp;
     document.querySelectorAll('.time-text').forEach(el => {
       el.innerHTML = el.innerHTML.replace('&nbsp;', '');
 
-      const computed = getComputedStyle(el);
-      const topMatch = computed.top.match(/^([\\d.]+)vh$/);
-      const leftMatch = computed.left.match(/^([\\d.]+)vw$/);
+      const cs = getComputedStyle(el);
+      const topMatch = cs.top.match(/^([\\d.]+)vh$/);
+      const leftMatch = cs.left.match(/^([\\d.]+)vw$/);
 
       if (topMatch && leftMatch) {
         const newTop = (parseFloat(topMatch[1]) - 7).toFixed(2) + 'vh';
         const newLeft = (parseFloat(leftMatch[1]) - 7).toFixed(2) + 'vw';
-        el.setAttribute('style', `top: ${newTop} !important; left: ${newLeft} !important;`);
+
+        el.style.setProperty('top', newTop, 'important');
+        el.style.setProperty('left', newLeft, 'important');
       }
     });
   }
 })();
 </script>
+
 </body>
 </html>

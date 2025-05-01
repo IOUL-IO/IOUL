@@ -437,11 +437,11 @@ body.non-fullscreen {
     font-size: 8.7px !important;    /* snapped to whole pixel */
   }
   .grid-number {
-    font-size: 8px !important;
+    font-size: 8.2px !important;
   }
   .time-text,
   .second-time-text {
-    font-size: 8px !important;
+    font-size: 8.2px !important;
   }
   .index-input,
   .custom-text {

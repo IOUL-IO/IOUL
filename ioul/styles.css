@@ -442,7 +442,7 @@ body.non-fullscreen {
   .second-time-text,
   .third-time-text,
   .fourth-time-text,
-  .grid-number       { font-size: 8.4px   !important; }
+  .grid-number       { font-size: 8.2px   !important; }
 
   .time-text,
   .second-time-text,
@@ -450,6 +450,6 @@ body.non-fullscreen {
   .fourth-time-text,
   .grid-number {
     margin-top:   -0.11vh !important;
-    margin-left:  -0.17vw !important;
+    margin-left:  -0.11vw !important;
   }
 }

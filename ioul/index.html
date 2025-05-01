@@ -480,10 +480,9 @@
 <script>
 (function adjustTimeTextSpacing() {
   if (window.innerWidth > 1700) {
-    // Remove only one &nbsp;
+    // Remove just one &nbsp;
     document.querySelectorAll('.time-text').forEach(el => {
-      let content = el.innerHTML;
-      el.innerHTML = content.replace(/&nbsp;/, '');
+      el.innerHTML = el.innerHTML.replace('&nbsp;', '');
     });
 
     function adjustPosition(selector) {

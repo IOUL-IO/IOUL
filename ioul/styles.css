@@ -449,7 +449,7 @@ body.non-fullscreen {
   .third-time-text,
   .fourth-time-text,
   .grid-number {
-    margin-top:   -0.1vh !important;
-    margin-left:  -0.1vw !important;
+    margin-top:   -0.11vh !important;
+    margin-left:  -0.17vw !important;
   }
 }

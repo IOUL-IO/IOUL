@@ -477,29 +477,36 @@
     document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
   </script>
 
-  <script>
-  (function adjustTimeTextSpacing() {
-    if (window.innerWidth > 1700) {
-      document.querySelectorAll('.time-text').forEach(el => {
-        el.innerHTML = el.innerHTML.replace(/&nbsp;/g, '').replace(/(\d+:\d+)(\s*)(AM|PM)/, (_, time, space, suffix) => {
+<script>
+(function adjustTimeTextSpacing() {
+  if (window.innerWidth > 1700) {
+    // Reduce &nbsp; count to 2
+    document.querySelectorAll('.time-text').forEach(el => {
+      el.innerHTML = el.innerHTML
+        .replace(/&nbsp;/g, '')
+        .replace(/(\d+:\d+)(\s*)(AM|PM)/, (_, time, _space, suffix) => {
           return time + '&nbsp;&nbsp;' + suffix;
         });
-      });
+    });
 
-      function adjustPosition(className) {
-        document.querySelectorAll(className).forEach(el => {
-          const computedStyle = getComputedStyle(el);
-          ['top', 'left'].forEach(prop => {
-            const val = computedStyle[prop];
-            const unit = val.includes('vh') ? 'vh' : val.includes('vw') ? 'vw' : null;
-            if (unit) {
-              const number = parseFloat(val);
-              el.style[prop] = (number - 2) + unit;
-            }
-          });
+    function adjustPosition(selector) {
+      document.querySelectorAll(selector).forEach(el => {
+        const cs = getComputedStyle(el);
+        ['top', 'left'].forEach(prop => {
+          const val = cs[prop];
+          const match = val.match(/^([\\d.]+)(vh|vw)$/);
+          if (match) {
+            const newVal = parseFloat(match[1]) - 2;
+            el.style[prop] = newVal + match[2];
+          }
         });
-      }
-    })();
-  </script>
+      });
+    }
+
+    adjustPosition('.time-text');
+    adjustPosition('.grid-number');
+  }
+})();
+</script>
 </body>
 </html>

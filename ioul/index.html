@@ -497,7 +497,7 @@
 
           const match = val.match(/^([\\d.]+)(vh|vw)$/);
           if (match) {
-            const newVal = (parseFloat(match[1]) - 4).toFixed(2);
+            const newVal = (parseFloat(match[1]) - 7).toFixed(2);
             el.style[prop] = newVal + match[2];
           }
         });

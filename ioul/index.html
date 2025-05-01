@@ -480,27 +480,32 @@
 <script>
 (function adjustTimeTextSpacing() {
   if (window.innerWidth > 1700) {
-    // Remove just one &nbsp;
+    // Remove one &nbsp;
     document.querySelectorAll('.time-text').forEach(el => {
       el.innerHTML = el.innerHTML.replace('&nbsp;', '');
     });
 
-    function adjustPosition(selector) {
+    function adjustAttrOrStyle(selector) {
       document.querySelectorAll(selector).forEach(el => {
-        const cs = getComputedStyle(el);
         ['top', 'left'].forEach(prop => {
-          const val = cs[prop];
+          let val = el.style[prop];
+
+          // If not inline, get computed style
+          if (!val) {
+            val = getComputedStyle(el)[prop];
+          }
+
           const match = val.match(/^([\\d.]+)(vh|vw)$/);
           if (match) {
-            const newVal = parseFloat(match[1]) - 4;
+            const newVal = (parseFloat(match[1]) - 4).toFixed(2);
             el.style[prop] = newVal + match[2];
           }
         });
       });
     }
 
-    adjustPosition('.time-text');
-    adjustPosition('.grid-number');
+    adjustAttrOrStyle('.time-text');
+    adjustAttrOrStyle('.grid-number');
   }
 })();
 </script>

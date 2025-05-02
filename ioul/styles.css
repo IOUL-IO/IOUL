@@ -426,7 +426,7 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
-@media (min-width: 1700px) {
+@media (min-width: 1990px) {
   .chat-text,
   .community-items-container span,
   .zero-items-container span,

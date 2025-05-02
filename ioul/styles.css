@@ -436,7 +436,7 @@ body.non-fullscreen {
   .second-time-text,
   .third-time-text,
   .fourth-time-text,
-  .grid-number       { font-size: 8.1px   !important; }
+  .grid-number       { font-size: 8.4px   !important; }
 
 @media (min-width: 1700px) {
   .time-text,
@@ -444,7 +444,7 @@ body.non-fullscreen {
   .third-time-text,
   .fourth-time-text {
     margin-top:   -0.19vh !important;
-    margin-left:  -0.19vw !important;  }
+    margin-left:  -0.28vw !important;  }
 
   .grid-number {
     margin-top:   -0.19vh !important;

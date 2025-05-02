@@ -1,3 +1,9 @@
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
 @font-face {
     font-family: 'Distill Expanded';
     src: url('font.woff2') format('woff2'),
@@ -424,27 +430,4 @@ body.non-fullscreen {
 }
 .community-items-container .custom-line {
     transition: left 0.7s ease, transform 0.7s ease;
-}
-
-@media (min-width: 1700px) {
-  .chat-text,
-  .community-items-container span,
-  .zero-items-container span,
-  .index-input,
-  .custom-text       { font-size: 8.7px !important; }
-  .time-text,
-  .second-time-text,
-  .third-time-text,
-  .fourth-time-text,
-  .grid-number       { font-size: 7px   !important; }
-
-  .time-text,
-  .second-time-text,
-  .third-time-text,
-  .fourth-time-text {
-    margin-top:   -0.2vh !important;
-    margin-left:  -0.4vw !important;  }
-
-  .grid-number {
-    margin-top:   -0.2vh !important;  }
 }

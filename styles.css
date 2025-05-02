@@ -65,7 +65,7 @@ body.fade-in-trigger
 }
 
 body.fade-in-trigger .line.dashed {
-  opacity: 0.711;
+  opacity: 0.771;
   transition-delay: 1s;
 }
 
@@ -146,7 +146,7 @@ body.fade-in-trigger .line.dashed {
     background-size: 10px 1px;
     transition: transform 0.7s ease;
     
-    opacity: 0.711;
+    opacity: 0.771;
 }
 
 .second-dashed {

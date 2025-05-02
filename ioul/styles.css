@@ -438,15 +438,14 @@ body.non-fullscreen {
   .fourth-time-text,
   .grid-number       { font-size: 8.4px   !important; }
 
-@media (min-width: 1700px) {
   .time-text,
   .second-time-text,
   .third-time-text,
   .fourth-time-text {
-    margin-top:   -0.19vh !important;
+    margin-top:   -0.18vh !important;
     margin-left:  -0.28vw !important;  }
 
   .grid-number {
-    margin-top:   -0.19vh !important;
+    margin-top:   -0.18vh !important;
     margin-left:  -0.01vw !important;  }
 }

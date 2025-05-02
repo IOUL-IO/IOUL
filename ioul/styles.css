@@ -431,19 +431,19 @@ body.non-fullscreen {
   .community-items-container span,
   .zero-items-container span,
   .index-input,
-  .custom-text       { font-size: 9.1px !important; }
+  .custom-text       { font-size: 8.7px !important; }
   .time-text,
   .second-time-text,
   .third-time-text,
   .fourth-time-text,
-  .grid-number       { font-size: 8.7px   !important; }
+  .grid-number       { font-size: 7.4px   !important; }
 
   .time-text,
   .second-time-text,
   .third-time-text,
   .fourth-time-text {
     margin-top:   -0.18vh !important;
-    margin-left:  -0.4vw !important;  
+    margin-left:  -0.18vw !important;  
     text-shadow: none !important;  }
 
   .grid-number {

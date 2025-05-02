@@ -442,10 +442,9 @@ body.non-fullscreen {
   .second-time-text,
   .third-time-text,
   .fourth-time-text {
-    margin-top:   -0.18vh !important;
+    margin-top:   -0.2vh !important;
     margin-left:  -0.28vw !important;  }
 
   .grid-number {
-    margin-top:   -0.18vh !important;
-    margin-left:  -0.01vw !important;  }
+    margin-top:   -0.2vh !important;  }
 }

@@ -431,10 +431,10 @@ body.non-fullscreen {
   .community-items-container span,
   .zero-items-container span,
   .index-input,
-  .custom-text       { font-size: 8.7px !important; }
+  .custom-text       { font-size: 9.1px !important; }
   .time-text,
   .second-time-text,
   .third-time-text,
   .fourth-time-text,
-  .grid-number       { font-size: 7px   !important; }
+  .grid-number       { font-size: 6.1px   !important; }
 }

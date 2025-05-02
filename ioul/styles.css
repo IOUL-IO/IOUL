@@ -199,7 +199,7 @@ body.non-fullscreen {
     font-size: 5.3px;
     color: #111111;
     letter-spacing: 0.2vw;
-    text-shadow: 0.18px 0.18px 0 #111111, -0.18px -0.18px 0 #111111;
+    text-shadow: 0.11px 0.11px 0 #111111, -0.11px -0.11px 0 #111111;
     top: 28.5vh;
     left: 89.81vw;
     transition: transform 0.7s ease;

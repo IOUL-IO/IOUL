@@ -344,6 +344,7 @@ body.non-fullscreen {
     color: #111111;
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
+    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
     transition: left 0.7s ease, transform 0.7s ease;
     line-height: 1.6;
     overflow: visible;
@@ -442,7 +443,8 @@ body.non-fullscreen {
   .third-time-text,
   .fourth-time-text {
     margin-top:   -0.18vh !important;
-    margin-left:  -0.4vw !important;  }
+    margin-left:  -0.4vw !important;  
+    text-shadow: none !important;  }
 
   .grid-number {
     margin-top:   -0.18vh !important;

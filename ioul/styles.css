@@ -436,14 +436,17 @@ body.non-fullscreen {
   .second-time-text,
   .third-time-text,
   .fourth-time-text,
-  .grid-number       { font-size: 7.1px   !important; }
+  .grid-number       { font-size: 8.1px   !important; }
 
+@media (min-width: 1700px) {
   .time-text,
   .second-time-text,
   .third-time-text,
-  .fourth-time-text,
+  .fourth-time-text {
+    margin-top:   -0.19vh !important;
+    margin-left:  -0.19vw !important;  }
+
   .grid-number {
-    margin-top:   -0.17vh !important;
-    margin-left:  -0.11vw !important;
-  }
+    margin-top:   -0.19vh !important;
+    margin-left:  -0.01vw !important;  }
 }

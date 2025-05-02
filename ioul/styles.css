@@ -425,28 +425,3 @@ body.non-fullscreen {
 .community-items-container .custom-line {
     transition: left 0.7s ease, transform 0.7s ease;
 }
-
-
-
-/* —————————————————————————— */
-/*  BUMP FONTS FOR LARGE SCREENS */
-/* —————————————————————————— */
-
-@media (min-width: 1700px) {
-  .chat-text {
-    font-size: 8.7px !important;    /* snapped to whole pixel */
-  }
-  .grid-number {
-    font-size: 7px !important;
-  }
-  .time-text,
-  .second-time-text {
-    font-size: 7px !important;
-  }
-  .community-items-container span,
-  .zero-items-container span,
-  .index-input,
-  .custom-text {
-    font-size: 8.7px !important;
-  }
-}

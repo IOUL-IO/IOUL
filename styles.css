@@ -423,7 +423,10 @@ body.fullscreen .help-text {
   .time-text,
   .second-time-text,
   .third-time-text,
-  .fourth-time-text,
+  .fourth-time-text {
+    font-size: 6.7px !important;
+  }
+
   .login-text,
   .open-text,
   .help-text,
@@ -431,6 +434,6 @@ body.fullscreen .help-text {
   .help-text-area,
   input.typing-input,
   .grid-number {
-    font-size: 8.7px !important;
+    font-size: 8.6px !important;
   }
 }

@@ -344,7 +344,6 @@ body.non-fullscreen {
     color: #111111;
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
-    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
     transition: left 0.7s ease, transform 0.7s ease;
     line-height: 1.6;
     overflow: visible;

@@ -418,3 +418,19 @@ body.fullscreen .help-text {
   height: 1px;
   background-color: rgba(230, 230, 230, 0.28);
 }
+
+@media (min-width: 1990px) {
+  .time-text,
+  .second-time-text,
+  .third-time-text,
+  .fourth-time-text,
+  .login-text,
+  .open-text,
+  .help-text,
+  .account-text,
+  .help-text-area,
+  input.typing-input,
+  .grid-number {
+    font-size: 8.7px !important;
+  }
+}

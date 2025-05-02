@@ -172,7 +172,7 @@ body.non-fullscreen {
     background: linear-gradient(to right, #171717 0, #171717 5px, #ffffff 5px, #ffffff 10px);
     background-size: 10px 1px;
     transition: transform 0.7s ease;
-    opacity: 0.871;
+    opacity: 0.911;
 }
 .second-dashed {
     top: 47vh;

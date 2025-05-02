@@ -419,7 +419,7 @@ body.fullscreen .help-text {
   background-color: rgba(230, 230, 230, 0.28);
 }
 
-@media (min-width: 1990px) {
+@media (min-width: 1900px) {
   .time-text,
   .second-time-text,
   .third-time-text,

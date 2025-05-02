@@ -199,7 +199,7 @@ body.non-fullscreen {
     font-size: 0.331rem;
     color: #111111;
     letter-spacing: 0.2vw;
-    text-shadow: 0.011rem 0.011rem 0 #111111, -0.011rem -0.011rem 0 #111111;
+    text-shadow: 0.001rem 0.001rem 0 #111111, -0.001rem -0.001rem 0 #111111;
     top: 28.5vh;
     left: 89.81vw;
     transition: transform 0.7s ease;
@@ -436,7 +436,7 @@ body.non-fullscreen {
   .second-time-text,
   .third-time-text,
   .fourth-time-text,
-  .grid-number       { font-size: 8.2px   !important; }
+  .grid-number       { font-size: 8.1px   !important; }
 
   .time-text,
   .second-time-text,

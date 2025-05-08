@@ -61,12 +61,12 @@ body.fade-in-trigger
 body.fade-in-trigger 
   .time-text {
   opacity: 1;
-  transition-delay: 1s;
+  transition-delay: 0s;
 }
 
 body.fade-in-trigger .line.dashed {
   opacity: 0.771;
-  transition-delay: 1s;
+  transition-delay: 0s;
 }
 
 .login-line,

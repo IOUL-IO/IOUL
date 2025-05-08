@@ -238,7 +238,7 @@
       if (!initialHoverCompleted && !fadeCompleted && !document.fullscreenElement) {
         setTimeout(() => {
           document.body.classList.add('fade-in-trigger');
-        }, 1000);
+        }, 1);
         setTimeout(() => {
           fadeCompleted = true;
           inactivityTimer = setTimeout(hideLoginElements, 20000);

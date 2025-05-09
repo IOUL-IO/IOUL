@@ -132,6 +132,18 @@ body.fade-in-trigger .line.dashed {
   width: 57.8vw;
 }
 
+.fifth {
+  top: 28.5vh;
+  left: 36vw;
+  width: 57.8vw;
+}
+
+.sixth {
+  top: 84vh;
+  left: 36vw;
+  width: 57.8vw;
+}
+
 .dashed {
     position: absolute;
     height: 1px;

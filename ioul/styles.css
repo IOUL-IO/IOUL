@@ -154,6 +154,22 @@ body.non-fullscreen {
     z-index: 1;
 }
 
+.fifth {
+    top: 28.5vh;
+    left: 36vw;
+    width: 54vw;
+    z-index: 1;
+    background-color: rgba(172, 172, 172, 0.7);
+}
+
+.sixth {
+    top: 84vh;
+    left: 36vw;
+    width: 57.8vw;
+    z-index: 1;
+    background-color: rgba(172, 172, 172, 0.7);
+}
+
 .slide-container {
     position: absolute;
     top: 0;
@@ -407,16 +423,4 @@ body.non-fullscreen {
     display: none;
 }
 
-/* Extra lines styled like .fourth */
-.line.fifth {
-    top: 28.5vh;
-    left: 36vw;
-    width: 57.8vw;
-    z-index: 1;
-}
-.line.sixth {
-    top: 84vh;
-    left: 36vw;
-    width: 57.8vw;
-    z-index: 1;
-}
+

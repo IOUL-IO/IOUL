@@ -125,14 +125,14 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second) {
   top: 28.5vh;
   left: 36vw;
   width: 57.8vw;
-  background-color: rgba(172, 172, 172, 0.71)
+  background-color: rgba(172, 172, 172, 0.64)
 }
 
 .sixth {
   top: 84vh;
   left: 36vw;
   width: 57.8vw;
-  background-color: rgba(172, 172, 172, 0.71)
+  background-color: rgba(172, 172, 172, 0.64)
 }
 
 .login-text {

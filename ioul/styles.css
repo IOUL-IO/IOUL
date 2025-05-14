@@ -159,7 +159,7 @@ body.non-fullscreen {
     left: 36vw;
     width: 54vw;
     z-index: 1;
-    background-color: rgba(172, 172, 172, 0.64);
+    background-color: rgba(172, 172, 172, 0.841);
 }
 
 .sixth {
@@ -167,7 +167,7 @@ body.non-fullscreen {
     left: 36vw;
     width: 57.8vw;
     z-index: 1;
-    background-color: rgba(172, 172, 172, 0.64);
+    background-color: rgba(172, 172, 172, 0.841);
 }
 
 .slide-container {
@@ -423,10 +423,6 @@ body.non-fullscreen {
     display: none;
 }
 
-
-
-
-/* Menu icon lines */
 .line.menu-icon {
   position: absolute;
   height: 1px;
@@ -434,7 +430,5 @@ body.non-fullscreen {
   left: 91vw;
   width: 2.8vw;
   z-index: 102;
-}
-.line.menu-icon.first {
   top: 28.5vh;
 }

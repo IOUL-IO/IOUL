@@ -1,0 +1,129 @@
+/*----------------------------------------------------
+  Variables
+----------------------------------------------------*/
+:root {
+  /* final gap above dropdown & below calendar/envelope */
+  --icon-gap: 3vh;
+  /* same as above, for dropdown top */
+  --dropdown-top-gap: var(--icon-gap);
+}
+
+/*----------------------------------------------------
+  Global line styling
+----------------------------------------------------*/
+.line {
+  position: absolute;
+  background-color: rgba(172,172,172,0.841);
+}
+
+/*----------------------------------------------------
+  Menu Icon ("hamburger")
+----------------------------------------------------*/
+.menu-icon-container {
+  position: absolute;
+  top: 28.5vh;
+  left: 91vw;
+  width: 2.8vw;
+  z-index: 102;
+}
+.menu-icon-container .line.menu-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: rgba(172,172,172,0.841);
+}
+
+/*----------------------------------------------------
+  Dropdown Menu
+----------------------------------------------------*/
+.menu-icon-container .dropdown-menu {
+  position: absolute;
+  top: var(--dropdown-top-gap);
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.menu-icon-container:hover .dropdown-menu {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/*----------------------------------------------------
+  Calendar Icon
+----------------------------------------------------*/
+.calendar-icon {
+  position: relative;
+  width: 100%;
+  height: 3vh;
+  margin-bottom: var(--icon-gap);
+}
+.calendar-icon .border {
+  position: absolute;
+  background-color: rgba(172,172,172,0.841);
+}
+.calendar-icon .border.top    { top: 0; left: 0; width: 100%; height: 1px; }
+.calendar-icon .border.bottom { bottom: 0; left: 0; width: 100%; height: 1px; }
+.calendar-icon .border.left   { top: 0; left: 0; width: 1px;   height: 100%; }
+.calendar-icon .border.right  { top: 0; right: 0; width: 1px;   height: 100%; }
+.calendar-icon .header-separator {
+  position: absolute;
+  top: 1px; /* matches original */
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: rgba(172,172,172,0.841);
+}
+.calendar-icon .vertical {
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  background-color: rgba(172,172,172,0.841);
+}
+.calendar-icon .vertical.v1 { left: 33%; }
+.calendar-icon .vertical.v2 { left: 66%; }
+
+/*----------------------------------------------------
+  Divider between calendar & envelope
+----------------------------------------------------*/
+.menu-divider {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(172,172,172,0.841);
+  margin: var(--icon-gap) 0;
+}
+
+/*----------------------------------------------------
+  Envelope Icon
+----------------------------------------------------*/
+.envelope-icon {
+  position: relative;
+  width: 100%;
+  height: 3vh;
+  margin-top: var(--icon-gap);
+}
+.envelope-icon .border {
+  position: absolute;
+  background-color: rgba(172,172,172,0.841);
+}
+.envelope-icon .border.top    { top: 0; left: 0; width: 100%; height: 1px; }
+.envelope-icon .border.bottom { bottom: 0; left: 0; width: 100%; height: 1px; }
+.envelope-icon .border.left   { top: 0; left: 0; width: 1px;   height: 100%; }
+.envelope-icon .border.right  { top: 0; right: 0; width: 1px;   height: 100%; }
+.envelope-icon .flap {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: rgba(172,172,172,0.841);
+}
+
+/*----------------------------------------------------
+  ——— Everything below this line is unchanged ———
+----------------------------------------------------*/
+
+/* [ Paste the rest of your existing rules here, verbatim. ] */

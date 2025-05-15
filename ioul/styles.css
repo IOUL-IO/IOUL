@@ -153,21 +153,17 @@ body.non-fullscreen {
     width: 57.8vw;
     z-index: 1;
 }
-
 .fifth {
     top: 28.5vh;
     left: 36vw;
     width: 54vw;
     z-index: 1;
-    background-color: rgba(172, 172, 172, 0.64);
 }
-
 .sixth {
     top: 84vh;
     left: 36vw;
     width: 57.8vw;
     z-index: 1;
-    background-color: rgba(172, 172, 172, 0.64);
 }
 
 .slide-container {

@@ -366,43 +366,6 @@ body.non-fullscreen {
     pointer-events: none;
 }
 
-.new-text {
-    opacity: 0;
-    transition: opacity 0.7s ease;
-}
-.new-text.visible {
-    opacity: 1;
-}
-
-.heading-container {
-    position: absolute;
-    overflow: visible;
-    transition: transform 0.7s ease;
-}
-.heading-flow {
-    white-space: nowrap;
-}
-
-.account-container {
-    position: absolute;
-    overflow: visible;
-    transition: transform 0.7s ease;
-}
-.right-flow {
-    direction: rtl;
-    text-align: right;
-    white-space: nowrap;
-}
-
-.community-items-container span,
-.zero-items-container span {
-    white-space: nowrap;
-    transition: left 0.7s ease, transform 0.7s ease;
-}
-.community-items-container .custom-line {
-    transition: left 0.7s ease, transform 0.7s ease;
-}
-
 @media (min-width: 1900px) {
   .chat-text,
   .community-items-container span,
@@ -418,9 +381,6 @@ body.non-fullscreen {
 .grid-number, .grid-dashed {
     display: none;
 }
-
-
-
 
 /* Menu icon lines */
 .line.menu-icon {

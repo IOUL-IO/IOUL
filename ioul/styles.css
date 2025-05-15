@@ -159,7 +159,6 @@ body.non-fullscreen {
     left: 36vw;
     width: 54vw;
     z-index: 1;
-    background-color: rgba(172, 172, 172, 0.64);
 }
 
 .sixth {
@@ -167,7 +166,6 @@ body.non-fullscreen {
     left: 36vw;
     width: 57.8vw;
     z-index: 1;
-    background-color: rgba(172, 172, 172, 0.64);
 }
 
 

@@ -394,33 +394,9 @@ body.non-fullscreen {
     white-space: nowrap;
 }
 
-.community-items-container span,
-.zero-items-container span {
-    white-space: nowrap;
-    transition: left 0.7s ease, transform 0.7s ease;
-}
-.community-items-container .custom-line {
-    transition: left 0.7s ease, transform 0.7s ease;
-}
-
-@media (min-width: 1900px) {
-  .chat-text,
-  .community-items-container span,
-  .zero-items-container span,
-  .index-input,
-  .custom-text       { font-size: 9px !important; }
-  .grid-number       { font-size: 6.1px   !important; }
-}
-
-/* Removed slide container animation styles */
-
-/* Hide calendar grid items */
 .grid-number, .grid-dashed {
     display: none;
 }
-
-
-
 
 /* Menu icon lines */
 .line.menu-icon {

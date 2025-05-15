@@ -394,32 +394,12 @@ body.non-fullscreen {
     white-space: nowrap;
 }
 
-.grid-number, .grid-dashed {
-    display: none;
-}
-
-/* Menu icon lines */
-.line.menu-icon {
-  position: absolute;
-  height: 1px;
-  background-color: rgba(172, 172, 172, 0.841);
-  left: 91vw;
-  width: 2.8vw;
-  z-index: 102;
-  top: 28.5vh;
-}
-
 .community-items-container span,
 .zero-items-container span,
 .community-items-container .custom-line {
   white-space: nowrap;
   hyphens: none;
   transition: left 0.7s ease, transform 0.7s ease;
-}
-
-.grid-number,
-.grid-dashed {
-  display: none;
 }
 
 @media (min-width: 1900px) {
@@ -433,6 +413,20 @@ body.non-fullscreen {
   .grid-number {
     font-size: 6.1px !important;
   }
+}
+
+.grid-number, .grid-dashed {
+    display: none;
+}
+
+.line.menu-icon {
+  position: absolute;
+  height: 1px;
+  background-color: rgba(172, 172, 172, 0.841);
+  left: 91vw;
+  width: 2.8vw;
+  z-index: 102;
+  top: 28.5vh;
 }
 
 .menu-icon-container {

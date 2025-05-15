@@ -153,22 +153,18 @@ body.non-fullscreen {
     width: 57.8vw;
     z-index: 1;
 }
-
 .fifth {
     top: 28.5vh;
     left: 36vw;
     width: 54vw;
     z-index: 1;
 }
-
 .sixth {
     top: 84vh;
     left: 36vw;
     width: 57.8vw;
     z-index: 1;
 }
-
-
 
 .hover-area {
     position: absolute;

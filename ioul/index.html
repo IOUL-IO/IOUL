@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Calendar Slide & Menu</title>
+</head>
+<body>
+  <div class="page-content">
+    <!-- Calendar Slide Container -->
+    <div class="slide-container">
+      <div class="grid-wrapper">
+        <!-- Calendar grid items -->
+        <!-- (Copy your existing .grid-number and .grid-dashed spans here) -->
+      </div>
+    </div>
+    <!-- Slide Triggers -->
+    <div class="hover-area slide-trigger"></div>
+    <div class="hover-area slide-trigger-reverse"></div>
+
+    <!-- Static Lines -->
+    <div class="line fourth"></div>
+    <div class="line fifth"></div>
+    <div class="line sixth"></div>
+
+    <!-- Menu Trigger -->
+    <div class="menu-trigger">
+      <div class="line menu-icon"></div>
+      <div class="dropdown-menu">
+        <div class="dropdown-item">
+          <!-- Envelope Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 16"><rect x="1" y="1" width="22" height="14"/><polyline points="1,1 12,8 23,1"/></svg>
+        </div>
+        <div class="divider"></div>
+        <div class="dropdown-item">
+          <!-- Calendar Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 20"><rect x="1" y="2" width="22" height="17"/><line x1="1" y1="6" x2="23" y2="6"/><line x1="6" y1="2" x2="6" y2="0"/><line x1="18" y1="2" x2="18" y2="0"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Your other page content (menu-items, chats, etc.) -->
+  </div>
+
+  <script>
+    // Fade in on load
+    function fadeInPage() {
+      document.querySelector('.page-content').style.opacity = '1';
+    }
+    document.addEventListener('DOMContentLoaded', fadeInPage);
+
+    // Slide triggers
+    document.addEventListener('DOMContentLoaded', () => {
+      const forward = document.querySelector('.slide-trigger');
+      const reverse = document.querySelector('.slide-trigger-reverse');
+      const container = document.querySelector('.grid-wrapper');
+      forward.addEventListener('click', () => container.classList.add('animate-grid'));
+      reverse.addEventListener('click', () => container.classList.remove('animate-grid'));
+    });
+  </script>
+</body>
+</html>

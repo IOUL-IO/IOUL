@@ -409,11 +409,6 @@ body.non-fullscreen {
   top: 28.5vh;
 }
 
-/* ========================================================================
-   Consolidated Styles
-   ======================================================================== */
-
-/* Community / Zero items – no wrapping, slide transitions */
 .community-items-container span,
 .zero-items-container span,
 .community-items-container .custom-line {
@@ -422,13 +417,11 @@ body.non-fullscreen {
   transition: left 0.7s ease, transform 0.7s ease;
 }
 
-/* Hide grid-number and grid-dashed elements */
 .grid-number,
 .grid-dashed {
   display: none;
 }
 
-/* Large-screen font adjustments */
 @media (min-width: 1900px) {
   .chat-text,
   .community-items-container span,

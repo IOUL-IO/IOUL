@@ -305,7 +305,6 @@ body.non-fullscreen {
 .dashed30 { top: 158vh;   left: 51vw; }
 .dashed31 { top: 158vh;   left: 65.9vw; }
 
-/* Removed dashed lines and time texts animation styles */
 
 .other-content.animate-grid .grid-number,
 .other-content.animate-grid .grid-dashed {
@@ -409,39 +408,11 @@ body.non-fullscreen {
   .grid-number       { font-size: 6.1px   !important; }
 }
 
-/* Removed slide container animation styles */
 
-/* Hide calendar grid items */
 .grid-number, .grid-dashed {
     display: none;
 }
 
-
-
-
-/* Menu trigger container */
-
-
-/* Menu icon line */
-
-
-/* Dropdown menu */
-
-
-/* Show with fade-in on hover */
-
-
-/* Dropdown items */
-
-
-/* Divider lines between items */
-
-
-/* Icon sizing in dropdown */
-
-
-
-/* Slide container */
 .slide-container {
   position: absolute;
   top: 28.5vh;
@@ -452,39 +423,18 @@ body.non-fullscreen {
   overflow: hidden;
 }
 
-/* Grid wrapper for sliding */
 .grid-wrapper {
   position: relative;
   transform: translateX(0);
   transition: transform 0.7s ease;
 }
 
-/* Slide animation */
 .slide-container.animate-grid .grid-wrapper {
   transform: translateX(-60vw);
 }
 
-/* Line fifth and sixth */
-.line.fifth {
-  position: absolute;
-  top: 28.5vh;
-  left: 36vw;
-  width: 54vw;
-  height: 1px;
-  background-color: rgba(172,172,172,0.841);
-  z-index: 1;
-}
-.line.sixth {
-  position: absolute;
-  top: 84vh;
-  left: 36vw;
-  width: 57.8vw;
-  height: 1px;
-  background-color: rgba(172,172,172,0.841);
-  z-index: 1;
-}
 
-/* Menu trigger and icon */
+
 .menu-trigger {
   position: absolute;
   top: 28.5vh;
@@ -497,20 +447,12 @@ body.non-fullscreen {
   background-color: rgba(172,172,172,0.841);
 }
 
-/* Dropdown menu */
-
-
-/* Show dropdown on hover */
-
-
-/* Dropdown items */
 .menu-trigger .dropdown-item {
   width: 100%;
   padding: 0.5vh 0;
   white-space: nowrap;
 }
 
-/* Divider lines */
 .menu-trigger .divider {
   width: 100%;
   height: 1px;
@@ -518,7 +460,6 @@ body.non-fullscreen {
   margin: 1.5vh 0;
 }
 
-/* Icon sizing and stroke */
 .menu-trigger .dropdown-item svg {
   width: 100%;
   height: auto;
@@ -527,23 +468,6 @@ body.non-fullscreen {
   fill: none;
 }
 
-
-/* Menu trigger container */
-.menu-trigger {
-  position: absolute;
-  top: 28.5vh;
-  left: 91vw;
-  z-index: 102;
-}
-
-/* Menu icon line */
-.menu-trigger .line.menu-icon {
-  width: 2.8vw;
-  height: 1px;
-  background-color: rgba(172,172,172,0.841);
-}
-
-/* Dropdown menu */
 .menu-trigger .dropdown-menu {
   position: absolute;
   top: calc(1px + 1vh);
@@ -558,7 +482,6 @@ body.non-fullscreen {
   align-items: flex-end;
 }
 
-/* Show dropdown on hover */
 .menu-trigger:hover .dropdown-menu,
 .menu-trigger .line.menu-icon:hover + .dropdown-menu,
 .menu-trigger .dropdown-menu:hover {

@@ -435,9 +435,6 @@ body.non-fullscreen {
   }
 }
 
-/* ------------------------------------------------------------------------
-   Menu-icon + dropdown
-   ------------------------------------------------------------------------ */
 .menu-icon-container {
   position: absolute;
   top: 28.5vh;
@@ -475,9 +472,6 @@ body.non-fullscreen {
   margin: 1vh 0;          /* gap above and below divider */
 }
 
-/* ------------------------------------------------------------------------
-   Icons (calendar + envelope)
-   ------------------------------------------------------------------------ */
 .calendar-icon,
 .envelope-icon {
   position: relative;

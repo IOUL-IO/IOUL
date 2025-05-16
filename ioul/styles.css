@@ -531,10 +531,10 @@ body.non-fullscreen {
 .menu-icon-container::before {
   content: "";
   position: absolute;
-  top: -0.5rem;
-  right: -0.5rem;
-  bottom: -0.5rem;
-  left: -0.5rem;
+  top: -1rem;
+  right: -1rem;
+  bottom: -1rem;
+  left: -1rem;
   background: rgba(0,0,0,0);
 }
 

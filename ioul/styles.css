@@ -432,7 +432,7 @@ body.non-fullscreen {
 
 
 /* New styles for TO/SUBJECT and underline */
-.clickable-text {
+.mail-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
@@ -444,4 +444,12 @@ body.non-fullscreen {
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
+}
+
+
+/* Increase mail-text font on very large screens */
+@media screen and (min-width: 1900px) {
+  .mail-text {
+    font-size: 0.6rem;
+  }
 }

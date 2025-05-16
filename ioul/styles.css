@@ -144,7 +144,7 @@ body.non-fullscreen {
 }
 .third {
     top: 84vh;
-    left: 6.38vw;
+    left: 10.18vw;
     width: 22.48vw;
 }
 .fourth {
@@ -156,7 +156,7 @@ body.non-fullscreen {
 .fifth {
     top: 28.5vh;
     left: 36vw;
-    width: 54vw;
+    width: 57.8vw;
     z-index: 1;
 }
 .sixth {
@@ -423,16 +423,16 @@ body.non-fullscreen {
   position: absolute;
   height: 1px;
   background-color: rgba(172, 172, 172, 0.841);
-  left: 91vw;
+  left: 6.38vw;
   width: 2.8vw;
   z-index: 102;
-  top: 28.5vh;
+  top: 84vh;
 }
 
 .menu-icon-container {
   position: absolute;
-  top: 28.5vh;
-  left: 91vw;
+  top: 84vh;
+  left: 6.38vw;
   width: 2.8vw;
   z-index: 102;
 }

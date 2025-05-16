@@ -433,6 +433,7 @@ body.non-fullscreen {
 
 /* Styles for mail-text fields */
 .mail-text {
+    z-index: 10;
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
@@ -449,6 +450,7 @@ body.non-fullscreen {
 /* Increase mail-text font on very large screens */
 @media screen and (min-width: 1900px) {
   .mail-text {
+    z-index: 10;
     font-size: 0.6rem;
   }
 }

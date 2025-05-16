@@ -140,7 +140,7 @@ body.non-fullscreen {
 .second {
     top: 28.5vh;
     left: 6.38vw;
-    width: 18.68vw;
+    width: 22.48vw;
 }
 .third {
     top: 84vh;
@@ -153,19 +153,6 @@ body.non-fullscreen {
     width: 57.8vw;
     z-index: 1;
 }
-.fifth {
-    top: 28.5vh;
-    left: 36vw;
-    width: 57.8vw;
-    z-index: 1;
-}
-.sixth {
-    top: 84vh;
-    left: 36vw;
-    width: 57.8vw;
-    z-index: 1;
-}
-
 
 .slide-container {
     position: absolute;
@@ -420,36 +407,16 @@ body.non-fullscreen {
     display: none;
 }
 
-.line.util-line {
-    position: absolute;
+/* Extra lines styled like .fourth */
+.line.fifth {
     top: 28.5vh;
-    left: 26.06vw;
-    width: 2.8vw;
-    height: 1px;
-    background-color: rgba(172, 172, 172, 0.841);
+    left: 36vw;
+    width: 57.8vw;
     z-index: 1;
 }
-
-
-/* New styles for TO/SUBJECT and underline */
-.mail-text {
-    position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    color: #111111;
-    letter-spacing: 0.28vw;
-    font-size: 0.47rem;
-    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
-    line-height: 1.6;
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-}
-
-
-/* Increase mail-text font on very large screens */
-@media screen and (min-width: 1900px) {
-  .mail-text {
-    font-size: 0.6rem;
-  }
+.line.sixth {
+    top: 84vh;
+    left: 36vw;
+    width: 57.8vw;
+    z-index: 1;
 }

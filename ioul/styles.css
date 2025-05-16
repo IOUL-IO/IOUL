@@ -140,7 +140,7 @@ body.non-fullscreen {
 .second {
     top: 28.5vh;
     left: 6.38vw;
-    width: 18.68vw;
+    width: 22.48vw;
 }
 .third {
     top: 84vh;
@@ -149,18 +149,6 @@ body.non-fullscreen {
 }
 .fourth {
     top: 12.5vh;
-    left: 36vw;
-    width: 57.8vw;
-    z-index: 1;
-}
-.fifth {
-    top: 28.5vh;
-    left: 36vw;
-    width: 57.8vw;
-    z-index: 1;
-}
-.sixth {
-    top: 84vh;
     left: 36vw;
     width: 57.8vw;
     z-index: 1;
@@ -395,11 +383,12 @@ body.non-fullscreen {
 }
 
 .community-items-container span,
-.zero-items-container span,
+.zero-items-container span {
+    white-space: nowrap;
+    transition: left 0.7s ease, transform 0.7s ease;
+}
 .community-items-container .custom-line {
-  white-space: nowrap;
-  hyphens: none;
-  transition: left 0.7s ease, transform 0.7s ease;
+    transition: left 0.7s ease, transform 0.7s ease;
 }
 
 @media (min-width: 1900px) {
@@ -407,15 +396,27 @@ body.non-fullscreen {
   .community-items-container span,
   .zero-items-container span,
   .index-input,
-  .custom-text {
-    font-size: 9px !important;
-  }
-  .grid-number {
-    font-size: 6.1px !important;
-  }
+  .custom-text       { font-size: 9px !important; }
+  .grid-number       { font-size: 6.1px   !important; }
 }
 
+/* Removed slide container animation styles */
+
+/* Hide calendar grid items */
 .grid-number, .grid-dashed {
     display: none;
 }
 
+/* Extra lines styled like .fourth */
+.line.fifth {
+    top: 28.5vh;
+    left: 36vw;
+    width: 57.8vw;
+    z-index: 1;
+}
+.line.sixth {
+    top: 84vh;
+    left: 36vw;
+    width: 57.8vw;
+    z-index: 1;
+}

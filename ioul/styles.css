@@ -430,16 +430,12 @@ body.non-fullscreen {
     z-index: 1;
 }
 
-/* New input field styling */
-.new-input {
-    background: #ffffff;
-    border: none;
-    outline: none;
+/* Fade-in styling for new elements */
+.new-text {
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 
-/* Override font-size for new texts on large screens */
-@media (min-width: 1900px) {
-    .new-text {
-        font-size: 6.1px !important;
-    }
+.new-text.visible {
+    opacity: 1;
 }

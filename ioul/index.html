@@ -61,6 +61,9 @@
       <div class="line fourth"></div>
     <div class="line fifth"></div>
     <div class="line sixth"></div>
+      <span class="clickable-text" id="toText" style="top:35.4vh; left:36vw; z-index:1;">TO:</span>
+      <span class="clickable-text" id="subjectText" style="top:41.6vh; left:36vw; z-index:1;">SUBJECT:</span>
+      <div class="clickable-line" id="customLine2" style="position:absolute; top:47.8vh; left:36vw; width:57.8vw; height:1px; background-color:rgba(230,230,230,0.28); opacity:0; transition:opacity 0.3s ease; pointer-events:none; z-index:1;"></div>
 
 
       <div class="slide-container">
@@ -225,6 +228,47 @@
       chatInput.focus();
     });
 
+    
+
+    // NEW fields—hide until hover
+    let toSubjectShown = false;
+    const toText = document.getElementById('toText');
+    const subjectText = document.getElementById('subjectText');
+    const customLine2 = document.getElementById('customLine2');
+
+    document.addEventListener('mousemove', (event) => {
+      if (pageFadedIn) {
+        const rect = hoverArea.getBoundingClientRect();
+        const inside = event.clientX >= rect.left && event.clientX <= rect.right &&
+                       event.clientY >= rect.top && event.clientY <= rect.bottom;
+        if (inside && !toSubjectShown) {
+          [toText, subjectText].forEach(el => {
+            el.style.opacity = '1';
+            el.style.pointerEvents = 'auto';
+          });
+          customLine2.style.opacity = '1';
+          toSubjectShown = true;
+        }
+      }
+    });
+
+    // Click ⇒ replace TO/SUBJECT with input
+    function wireUpInput(spanId, topVH) {
+      const span = document.getElementById(spanId);
+      span.addEventListener('click', event => {
+        event.stopPropagation();
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.classList.add('chat-input');
+        input.style.top   = topVH + 'vh';
+        input.style.left  = '36vw';
+        input.style.width = '57.8vw';
+        span.replaceWith(input);
+        input.focus();
+      });
+    }
+    wireUpInput('toText',      35.4);
+    wireUpInput('subjectText', 41.6);
     let currentMenu = null;
     function quickRemoveSubmenu() {
       const newTexts = document.querySelectorAll('.new-text');

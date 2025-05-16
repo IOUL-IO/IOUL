@@ -153,6 +153,18 @@ body.non-fullscreen {
     width: 57.8vw;
     z-index: 1;
 }
+.fifth {
+    top: 28.5vh;
+    left: 36vw;
+    width: 57.8vw;
+    z-index: 1;
+}
+.sixth {
+    top: 84vh;
+    left: 36vw;
+    width: 57.8vw;
+    z-index: 1;
+}
 
 .slide-container {
     position: absolute;
@@ -407,16 +419,4 @@ body.non-fullscreen {
     display: none;
 }
 
-/* Extra lines styled like .fourth */
-.line.fifth {
-    top: 28.5vh;
-    left: 36vw;
-    width: 57.8vw;
-    z-index: 1;
-}
-.line.sixth {
-    top: 84vh;
-    left: 36vw;
-    width: 57.8vw;
-    z-index: 1;
-}
+

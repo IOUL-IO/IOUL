@@ -140,12 +140,12 @@ body.non-fullscreen {
 .second {
     top: 28.5vh;
     left: 6.38vw;
-    width: 22.48vw;
+    width: 18.68vw;
 }
 .third {
     top: 84vh;
     left: 6.38vw;
-    width: 18.68vw;
+    width: 22.48vw;
 }
 .fourth {
     top: 12.5vh;
@@ -426,12 +426,12 @@ body.non-fullscreen {
   left: 26.06vw;
   width: 2.8vw;
   z-index: 102;
-  top: 84vh;
+  top: 28.5vh;
 }
 
 .menu-icon-container {
   position: absolute;
-  top: 84vh;
+  top: 28.5vh;
   left: 26.06vw;
   width: 2.8vw;
   z-index: 102;

@@ -447,7 +447,7 @@ body.non-fullscreen {
 .menu-icon-container .dropdown-menu {
   position: absolute;
   bottom: 2vh;           
-  top: auto;             
+  top: auto;            
   left: 0;
   width: 100%;
   opacity: 0;
@@ -527,4 +527,15 @@ body.non-fullscreen {
   top: 50%; left: 0;
   width: 100%; height: 1px;
   background-color: rgba(172, 172, 172, 0.841);
+}
+
+/* Expanded hover area for menu icons */
+.menu-icon-container::before {
+  content: "";
+  position: absolute;
+  top: -1.7rem;
+  right: -1.7rem;
+  bottom: -1.7rem;
+  left: -1.7rem;
+  background: rgba(0,0,0,0);
 }

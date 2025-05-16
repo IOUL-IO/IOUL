@@ -431,7 +431,7 @@ body.non-fullscreen {
 }
 
 
-/* New styles for TO/SUBJECT and underline */
+/* Styles for mail-text fields */
 .mail-text {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -445,7 +445,6 @@ body.non-fullscreen {
     transition: opacity 0.3s ease;
     pointer-events: none;
 }
-
 
 /* Increase mail-text font on very large screens */
 @media screen and (min-width: 1900px) {

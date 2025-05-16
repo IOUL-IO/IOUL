@@ -140,7 +140,7 @@ body.non-fullscreen {
 .second {
     top: 28.5vh;
     left: 6.38vw;
-    width: 22.48vw;
+    width: 18.68vw;
 }
 .third {
     top: 84vh;
@@ -149,18 +149,6 @@ body.non-fullscreen {
 }
 .fourth {
     top: 12.5vh;
-    left: 36vw;
-    width: 57.8vw;
-    z-index: 1;
-}
-.fifth {
-    top: 28.5vh;
-    left: 36vw;
-    width: 57.8vw;
-    z-index: 1;
-}
-.sixth {
-    top: 84vh;
     left: 36vw;
     width: 57.8vw;
     z-index: 1;
@@ -419,4 +407,27 @@ body.non-fullscreen {
     display: none;
 }
 
+/* Extra lines styled like .fourth */
+.line.fifth {
+    top: 28.5vh;
+    left: 36vw;
+    width: 57.8vw;
+    z-index: 1;
+}
+.line.sixth {
+    top: 84vh;
+    left: 36vw;
+    width: 57.8vw;
+    z-index: 1;
+}
 
+
+.line.util-line {
+    position: absolute;
+    top: 28.5vh;
+    left: 26.06vw;
+    width: 2.8vw;
+    height: 1px;
+    background-color: rgba(172, 172, 172, 0.841);
+    z-index: 1;
+}

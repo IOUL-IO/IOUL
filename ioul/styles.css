@@ -444,19 +444,8 @@ body.non-fullscreen {
   height: 1px;
   background-color: rgba(172, 172, 172, 0.841);
 }
-.menu-icon-container .dropdown-menu {
-  position: absolute;
-  top: 2vh;              /* gap from menu line to calendar */
-  left: 0;
-  width: 100%;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-.menu-icon-container:hover .dropdown-menu {
-  opacity: 1;
-  pointer-events: auto;
-}
+.menu-icon-container 
+.menu-icon-container:hover 
 
 /* Divider line between icons */
 .menu-divider {
@@ -531,3 +520,42 @@ body.non-fullscreen {
 
 /* Editable labels cursor */
 .editable { cursor: pointer; }
+
+/* Ensure dropdown appears above the menu line */
+.menu-icon-container 
+
+/* Expanded hover area for menu icons */
+.menu-icon-container {
+  position: relative; /* ensure positioning context */
+}
+.menu-icon-container::before {
+  content: "";
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  bottom: -0.5rem;
+  left: -0.5rem;
+  background: rgba(0,0,0,0);
+}
+
+/* Editable labels cursor */
+.editable { cursor: pointer; }
+
+
+/* Dropdown menu positioning and transition */
+.menu-icon-container .dropdown-menu {
+  position: absolute;
+  bottom: 2vh;
+  top: auto;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Show dropdown on hover */
+.menu-icon-container:hover .dropdown-menu {
+  opacity: 1;
+  pointer-events: auto;
+}

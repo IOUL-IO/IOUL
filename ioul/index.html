@@ -67,6 +67,15 @@
       </div>
 
       <div class="hover-area"></div>
+    <!-- Mail fields -->
+    <div class="mail-hover-area"></div>
+    <span class="mail-text" id="toText" style="top:35.4vh; left:36vw;">TO:</span>
+    <span class="mail-text" id="subjectText" style="top:41.6vh; left:36vw;">SUBJEcT:</span>
+    <span class="mail-text" id="ccText" style="top:35.4vh; left:89vw;">cc</span>
+    <span class="mail-text" id="bccText" style="top:35.4vh; left:92vw;">Bcc</span>
+    <span class="mail-text" id="sendText" style="top:41.6vh; left:92vw;">SEnD</span>
+    <div class="mail-line" style="top:47.8vh; left:36vw; width:57.8vw;"></div>
+
       <span class="chat-text" id="chatText">cHAT . . .</span>
 
       <span class="grid-number num1">1</span>
@@ -168,16 +177,6 @@
     </div>
   </div>
 
-  
-  <div class="mail-fields-container" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:4; pointer-events:none;">
-    <span id="toText" class="custom-text" style="position:absolute; top:35.4vh; left:36vw; z-index:4; pointer-events:auto;">TO:</span>
-    <span id="subjectText" class="custom-text" style="position:absolute; top:41.6vh; left:36vw; z-index:4; pointer-events:auto;">SUBJECT:</span>
-    <span class="custom-text" style="position:absolute; top:35.4vh; left:88vw; z-index:4;">cc</span>
-    <span class="custom-text" style="position:absolute; top:35.4vh; left:91vw; z-index:4;">Bcc</span>
-    <span class="custom-text" style="position:absolute; top:41.6vh; left:90vw; z-index:4;">SEND</span>
-    <div class="custom-line" style="position:absolute; top:47.8vh; left:36vw; width:57.8vw; height:1px; background-color:rgba(230,230,230,0.28); z-index:4;"></div>
-  </div>
-
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
@@ -209,10 +208,6 @@
 
     let slideState = "none";
     const chatText = document.getElementById('chatText');
-    const mailFields = document.querySelector('.mail-fields-container');
-    mailFields.style.pointerEvents = 'none';
-    mailFields.style.zIndex = '-1';
-    mailFields.style.opacity = '0';
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
     let chatShownOnce = false;
@@ -226,9 +221,6 @@
           chatText.style.pointerEvents = 'auto';
           chatText.style.zIndex = '10';
           chatShownOnce = true;
-           mailFields.style.opacity = '1';
-           mailFields.style.pointerEvents = 'auto';
-           mailFields.style.zIndex = '10';
         }
       }
     });
@@ -241,35 +233,6 @@
       chatText.replaceWith(chatInput);
       chatInput.focus();
     });
-    const toTextEl = document.getElementById('toText');
-    toTextEl.addEventListener('click', (event) => {
-      event.stopPropagation();
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.classList.add('mail-input');
-      input.id = 'toText';
-      input.style.position = 'absolute';
-      input.style.top = '35.4vh';
-      input.style.left = '36vw';
-      input.style.width = '57.8vw';
-      toTextEl.replaceWith(input);
-      input.focus();
-    });
-    const subjectEl = document.getElementById('subjectText');
-    subjectEl.addEventListener('click', (event) => {
-      event.stopPropagation();
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.classList.add('mail-input');
-      input.id = 'subjectText';
-      input.style.position = 'absolute';
-      input.style.top = '41.6vh';
-      input.style.left = '36vw';
-      input.style.width = '57.8vw';
-      subjectEl.replaceWith(input);
-      input.focus();
-    });
-
 
     let currentMenu = null;
     function quickRemoveSubmenu() {
@@ -495,6 +458,50 @@
         });
       }
     }, true);
+
+    
+    // Mail fields fade-in and input conversion
+    const mailFields = Array.from(document.querySelectorAll('.mail-text, .mail-line'));
+    const mailHoverArea = document.querySelector('.mail-hover-area');
+    let mailShownOnce = false;
+    document.addEventListener('mousemove', (event) => {
+      if (!mailShownOnce && pageFadedIn) {
+        const rect = mailHoverArea.getBoundingClientRect();
+        if (event.clientX >= rect.left && event.clientX <= rect.right &&
+            event.clientY >= rect.top && event.clientY <= rect.bottom) {
+          mailFields.forEach(el => {
+            el.style.opacity = '1';
+          });
+          mailShownOnce = true;
+        }
+      }
+    });
+    document.getElementById('toText').addEventListener('click', function(event) {
+      event.stopPropagation();
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.classList.add('mail-input');
+      input.style.top = this.style.top;
+      input.style.left = this.style.left;
+      input.style.width = '30vw';
+      input.style.fontSize = this.style.fontSize;
+      input.style.letterSpacing = this.style.letterSpacing;
+      this.replaceWith(input);
+      input.focus();
+    });
+    document.getElementById('subjectText').addEventListener('click', function(event) {
+      event.stopPropagation();
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.classList.add('mail-input');
+      input.style.top = this.style.top;
+      input.style.left = this.style.left;
+      input.style.width = '57.8vw';
+      input.style.fontSize = this.style.fontSize;
+      input.style.letterSpacing = this.style.letterSpacing;
+      this.replaceWith(input);
+      input.focus();
+    });
 
     // Calendar scroll behavior
     let isScrolling = false;

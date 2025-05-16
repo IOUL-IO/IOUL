@@ -78,6 +78,25 @@
     </div>
 
     <div class="other-content">
+  <!-- ——— New initial fields ——— -->
+  <span
+    id="to-text"
+    class="custom-text"
+    style="position:absolute; top:35.4vh; left:36vw; line-height:1.6; cursor:text;"
+  >TO:</span>
+
+  <span
+    id="subject-text"
+    class="custom-text"
+    style="position:absolute; top:41.6vh; left:36vw; line-height:1.6; cursor:text;"
+  >SUBJECT:</span>
+
+  <div
+    class="custom-line"
+    style="position:absolute; top:47.8vh; left:36vw; width:57.8vw;"
+  ></div>
+  <!-- ——— end new fields ——— -->
+
       <div class="line original"></div>
       <div class="line second"></div>
       <div class="line third"></div>
@@ -593,6 +612,34 @@
     document.getElementById("linkup-center").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="linkup-center")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openLinkupCenter(); currentMenu="linkup-center";},300);} else{ openLinkupCenter(); currentMenu="linkup-center"; } } });
     document.getElementById("delivery-line").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="delivery-line")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openDeliveryLine(); currentMenu="delivery-line";},300);} else{ openDeliveryLine(); currentMenu="delivery-line"; } } });
     document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
-  </script>
+  
+  // helper: turn a span into an inline input at the same coords
+  function enableInlineInput(spanId, inputId, topVh, leftVw) {
+    const span = document.getElementById(spanId);
+    span.addEventListener('click', () => {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.id   = inputId;
+      input.className = 'index-input';
+      Object.assign(input.style, {
+        position:  'absolute',
+        top:       topVh + 'vh',
+        left:      leftVw + 'vw',
+        lineHeight:'1.6',
+        background:'transparent',
+        border:    'none',
+        outline:   'none',
+        cursor:    'text'
+      });
+      span.replaceWith(input);
+      input.focus();
+    });
+  }
+
+  // wire up TO: and SUBJECT:
+  enableInlineInput('to-text',      'to-input',      35.4, 36);
+  enableInlineInput('subject-text', 'subject-input', 41.6, 36);
+
+</script>
 </body>
 </html>

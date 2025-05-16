@@ -539,3 +539,13 @@ body.non-fullscreen {
   left: -1.7rem;
   background: rgba(0,0,0,0);
 }
+
+
+.index-input {
+  font-family: 'Distill Expanded';
+  font-size: 0.47rem;              /* same as your custom-text */
+  color: #111111;
+  text-shadow: 0.001rem 0.001rem 0 #717171,
+              -0.001rem -0.001rem 0 #717171;
+  white-space: nowrap;
+}

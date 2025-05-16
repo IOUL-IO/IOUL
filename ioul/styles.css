@@ -444,8 +444,20 @@ body.non-fullscreen {
   height: 1px;
   background-color: rgba(172, 172, 172, 0.841);
 }
-.menu-icon-container 
-.menu-icon-container:hover 
+.menu-icon-container .dropdown-menu {
+  position: absolute;
+  bottom: 2vh;           
+  top: auto;             
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.menu-icon-container:hover .dropdown-menu {
+  opacity: 1;
+  pointer-events: auto;
+}
 
 /* Divider line between icons */
 .menu-divider {
@@ -515,47 +527,4 @@ body.non-fullscreen {
   top: 50%; left: 0;
   width: 100%; height: 1px;
   background-color: rgba(172, 172, 172, 0.841);
-}
-
-
-/* Editable labels cursor */
-.editable { cursor: pointer; }
-
-/* Ensure dropdown appears above the menu line */
-.menu-icon-container 
-
-/* Expanded hover area for menu icons */
-.menu-icon-container {
-  position: relative; /* ensure positioning context */
-}
-.menu-icon-container::before {
-  content: "";
-  position: absolute;
-  top: -1rem;
-  right: -1rem;
-  bottom: -1rem;
-  left: -1rem;
-  background: rgba(0,0,0,0);
-}
-
-/* Editable labels cursor */
-.editable { cursor: pointer; }
-
-
-/* Dropdown menu positioning and transition */
-.menu-icon-container .dropdown-menu {
-  position: absolute;
-  bottom: 2vh;
-  top: auto;
-  left: 0;
-  width: 100%;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-/* Show dropdown on hover */
-.menu-icon-container:hover .dropdown-menu {
-  opacity: 1;
-  pointer-events: auto;
 }

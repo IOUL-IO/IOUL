@@ -209,6 +209,10 @@
 
     let slideState = "none";
     const chatText = document.getElementById('chatText');
+    const mailFields = document.querySelector('.mail-fields-container');
+    mailFields.style.pointerEvents = 'none';
+    mailFields.style.zIndex = '-1';
+    mailFields.style.opacity = '0';
     chatText.style.pointerEvents = 'none';
     chatText.style.zIndex = '-1';
     let chatShownOnce = false;
@@ -222,6 +226,9 @@
           chatText.style.pointerEvents = 'auto';
           chatText.style.zIndex = '10';
           chatShownOnce = true;
+           mailFields.style.opacity = '1';
+           mailFields.style.pointerEvents = 'auto';
+           mailFields.style.zIndex = '10';
         }
       }
     });

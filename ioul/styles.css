@@ -450,3 +450,10 @@ body.non-fullscreen {
 @media (min-width: 1900px) {
   .mail-input { font-size: 6.1px !important; }
 }
+
+
+.mail-fields-container {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}

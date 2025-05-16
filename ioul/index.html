@@ -17,6 +17,25 @@
     
 <div class="menu-icon-container">
   <div class="line menu-icon"></div>
+  <div class="dropdown-menu">
+    <div class="calendar-icon">
+      <div class="line border top"></div>
+      <div class="line border bottom"></div>
+      <div class="line border left"></div>
+      <div class="line border right"></div>
+      <div class="line header-separator"></div>
+      <div class="line vertical v1"></div>
+      <div class="line vertical v2"></div>
+    </div>
+    <div class="menu-divider"></div>
+    <div class="envelope-icon">
+      <div class="line border top"></div>
+      <div class="line border bottom"></div>
+      <div class="line border left"></div>
+      <div class="line border right"></div>
+      <div class="line flap"></div>
+    </div>
+  </div>
 </div>
 <div class="menu-items">
       <span class="custom-text menu-item" style="top:36.1vh; left:29vw;" id="online-assets">
@@ -59,14 +78,6 @@
     </div>
 
     <div class="other-content">
-  <!-- TO/SUBJECT hover-trigger -->
-  <div class="to-subject-hover-area"></div>
-  <div class="hover-fade-to-subject">
-    <span id="to-text" class="custom-text to-subject-text" style="position:absolute; top:35.4vh; left:36vw; line-height:1.6; cursor:text;">TO:</span>
-    <span id="subject-text" class="custom-text to-subject-text" style="position:absolute; top:41.6vh; left:36vw; line-height:1.6; cursor:text;">SUBJECT:</span>
-    <div class="custom-line to-subject-line" style="position:absolute; top:47.8vh; left:36vw; width:57.8vw;"></div>
-  </div>
-
       <div class="line original"></div>
       <div class="line second"></div>
       <div class="line third"></div>
@@ -237,232 +248,7 @@
       chatInput.focus();
     });
 
-    let currentMenu = null;
-    function quickRemoveSubmenu() {
-      const newTexts = document.querySelectorAll('.new-text');
-      newTexts.forEach(span => {
-        span.style.transition = 'opacity 0.1s ease';
-        span.classList.remove('visible');
-      });
-      setTimeout(() => {
-        newTexts.forEach(span => span.remove());
-        currentMenu = null;
-      }, 100);
-      document.getElementById("linkup-center").classList.remove("slide-down");
-      document.getElementById("delivery-line").classList.remove("slide-down");
-      document.getElementById("internal-unit").classList.remove("slide-down");
-    }
-    function closeSubmenu() {
-      const newTexts = document.querySelectorAll('.new-text');
-      newTexts.forEach(span => {
-        span.style.transition = 'opacity 0.3s ease';
-        span.classList.remove('visible');
-      });
-      setTimeout(() => {
-        newTexts.forEach(span => span.remove());
-        currentMenu = null;
-      }, 300);
-      document.getElementById("linkup-center").classList.remove("slide-down");
-      document.getElementById("delivery-line").classList.remove("slide-down");
-      document.getElementById("internal-unit").classList.remove("slide-down");
-    }
-    function forceCloseSubmenuThen(fn) {
-      if (currentMenu !== null) {
-        quickRemoveSubmenu();
-        setTimeout(fn, 100);
-      } else {
-        fn();
-      }
-    }
-
-    document.addEventListener('click', (event) => {
-      if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const leftMin = 0;
-      const leftMax = 6.37 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
-      if (event.clientX >= leftMin && event.clientX <= leftMax &&
-          event.clientY >= yMin && event.clientY <= yMax) {
-        event.stopPropagation();
-        forceCloseSubmenuThen(() => {
-          if (slideState === "community") {
-            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft + 29) + "vw";
-            });
-            document.querySelectorAll('.community-items-container *:not(.custom-line)').forEach(el => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft + 29) + "vw";
-            });
-            document.querySelectorAll('.community-items-container .custom-line').forEach(el => {
-              if (el.dataset.originalLeft) {
-                el.style.transition = "left 0.7s ease";
-                el.style.left = el.dataset.originalLeft;
-              }
-            });
-            document.querySelectorAll('.zero-items-container *').forEach(el => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft + 29) + "vw";
-            });
-            slideState = "menu";
-            return;
-          } else if (slideState === "menu") {
-            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-              el.style.transition = "transform 0.7s ease";
-              el.style.transform = "translateX(0)";
-            });
-            document.querySelector('.menu-items').classList.remove('raised');
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              setTimeout(() => {
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            slideState = "none";
-          } else if (slideState === "heading" || slideState === "account") {
-            document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
-              box.style.transform = `translateX(${box.dataset.offset}vw)`;
-            });
-            document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
-              box.style.transform = `translateX(${box.dataset.offset}vw)`;
-            });
-            document.querySelectorAll('.other-content .custom-text:not(.menu-item):not(.to-subject-text)').forEach(el => {
-              if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
-            });
-            document.querySelectorAll('.other-content > .custom-line:not(.to-subject-line)').forEach(el => {
-              if (el.dataset.originalLeft) {
-                el.style.transition = "left 0.7s ease";
-                el.style.left = el.dataset.originalLeft;
-              }
-            });
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              setTimeout(() => {
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            slideState = "none";
-          } else if (slideState === "none") {
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              chatTextEl.style.transition = "opacity 0.1s ease";
-              chatTextEl.style.opacity = "0";
-              setTimeout(() => {
-                document.querySelectorAll('.other-content .custom-text:not(.menu-item):not(.to-subject-text)').forEach(el => {
-                  if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-                  let original = parseFloat(el.dataset.originalLeft);
-                  el.style.transition = "left 0.7s ease";
-                  el.style.left = (original + 49) + "vw";
-                });
-                document.querySelectorAll('.other-content > .custom-line:not(.to-subject-line)').forEach(el => {
-                  if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-                  let originalLine = parseFloat(el.dataset.originalLeft);
-                  el.style.transition = "left 0.7s ease";
-                  el.style.left = (originalLine + 49) + "vw";
-                });
-                document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
-                  box.style.transform = "translateX(0)";
-                });
-                document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
-                  box.style.transform = "translateX(0)";
-                });
-              }, 110);
-            }
-            slideState = "heading";
-          }
-        });
-      }
-    }, true);
-
-    document.addEventListener('click', (event) => {
-      if (event.target.closest('.menu-item') || event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const leftMin = 28.86 * vwUnit;
-      const leftMax = 32.43 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
-      if (event.clientX >= leftMin && event.clientX <= leftMax &&
-          event.clientY >= yMin && event.clientY <= yMax) {
-        event.stopPropagation();
-        forceCloseSubmenuThen(() => {
-          if (slideState === "menu") {
-            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft - 29) + "vw";
-            });
-            document.querySelectorAll('.community-items-container *').forEach(el => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft - 29) + "vw";
-            });
-            document.querySelectorAll('.zero-items-container *').forEach(el => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft - 29) + "vw";
-            });
-            slideState = "community";
-          } else if (slideState === "heading" || slideState === "account") {
-            document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
-              box.style.transform = `translateX(${box.dataset.offset}vw)`;
-            });
-            document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
-              box.style.transform = `translateX(${box.dataset.offset}vw)`;
-            });
-            document.querySelectorAll('.other-content .custom-text:not(.menu-item):not(.to-subject-text)').forEach(el => {
-              if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
-            });
-            document.querySelectorAll('.other-content > .custom-line:not(.to-subject-line)').forEach(el => {
-              if (el.dataset.originalLeft) {
-                el.style.transition = "left 0.7s ease";
-                el.style.left = el.dataset.originalLeft;
-              }
-            });
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              setTimeout(() => {
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            slideState = "none";
-          } else if (slideState === "none") {
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              chatTextEl.style.transition = "opacity 0.1s ease";
-              chatTextEl.style.opacity = "0";
-              setTimeout(() => {
-                document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-                  if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-                  el.style.transition = "transform 0.7s ease";
-                  el.style.transform = "translateX(-22.59vw)";
-                });
-                setTimeout(() => {
-                  document.querySelector('.menu-items').classList.add('raised');
-                }, 700);
-              }, 110);
-            }
-            slideState = "menu";
-          }
-        });
-      }
-    }, true);
-
-    // Calendar scroll behavior
+    // Calendar scroll behavior// Calendar scroll behavior
     let isScrolling = false;
     let scrollTimeout;
     let isFirstScroll = true;
@@ -573,34 +359,15 @@
         span.classList.add("visible");
       }, 10);
     }
-  
-  // helper: turn a span into an inline input at the same coords
-  function enableInlineInput(spanId, inputId, topVh, leftVw) {
-    const span = document.getElementById(spanId);
-    span.addEventListener('click', () => {
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.id   = inputId;
-      input.className = 'index-input';
-      Object.assign(input.style, {
-        position:  'absolute',
-        top:       topVh + 'vh',
-        left:      leftVw + 'vw',
-        lineHeight:'1.6',
-        background:'transparent',
-        border:    'none',
-        outline:   'none',
-        cursor:    'text'
-      });
-      span.replaceWith(input);
-      input.focus();
-    });
-  }
+    function openOnlineAssets()   { slideDownSiblings("online-assets"); setTimeout(()=>{ addNewText("- cMS",40.1,6.4); addNewText("- LMS",44.1,6.4); addNewText("- WEB",48.1,6.4); },700); }
+    function openLinkupCenter()   { slideDownSiblings("linkup-center"); setTimeout(()=>{ addNewText("- cOM",47.2,6.4); addNewText("- JOB",51.2,6.4); addNewText("- HR",55.2,6.4); },700); }
+    function openDeliveryLine()   { slideDownSiblings("delivery-line"); setTimeout(()=>{ addNewText("- cRM",54.3,6.4); addNewText("- OPS",58.3,6.4); addNewText("- PM",62.3,6.4); },700); }
+    function openInternalUnit()   { slideDownSiblings("internal-unit"); setTimeout(()=>{ addNewText("- 1nV",61.4,6.4); addNewText("- FMS",65.4,6.4); addNewText("- 1T",69.4,6.4); },700); }
 
-  // wire up TO: and SUBJECT:
-  enableInlineInput('to-text',      'to-input',      35.4, 36);
-  enableInlineInput('subject-text', 'subject-input', 41.6, 36);
-
-</script>
+    document.getElementById("online-assets").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="online-assets")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openOnlineAssets(); currentMenu="online-assets";},300);} else{ openOnlineAssets(); currentMenu="online-assets"; } } });
+    document.getElementById("linkup-center").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="linkup-center")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openLinkupCenter(); currentMenu="linkup-center";},300);} else{ openLinkupCenter(); currentMenu="linkup-center"; } } });
+    document.getElementById("delivery-line").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="delivery-line")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openDeliveryLine(); currentMenu="delivery-line";},300);} else{ openDeliveryLine(); currentMenu="delivery-line"; } } });
+    document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
+  </script>
 </body>
 </html>

@@ -219,6 +219,9 @@
       }
     });
     // Region-based hover: show chat and mail fields
+    const toText = document.getElementById('toText');
+    const subjectText = document.getElementById('subjectText');
+    const customLine2 = document.getElementById('customLine2');
     let mailFieldsShown = false;
     document.addEventListener('mousemove', (event) => {
       if (pageFadedIn && !mailFieldsShown) {

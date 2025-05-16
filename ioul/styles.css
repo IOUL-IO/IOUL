@@ -528,3 +528,14 @@ body.non-fullscreen {
   width: 100%; height: 1px;
   background-color: rgba(172, 172, 172, 0.841);
 }
+
+/* Expanded hover area for menu icons */
+.menu-icon-container::before {
+  content: "";
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  bottom: -0.5rem;
+  left: -0.5rem;
+  background: rgba(0,0,0,0);
+}

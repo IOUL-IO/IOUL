@@ -409,7 +409,9 @@ body.non-fullscreen {
   .community-items-container span,
   .zero-items-container span,
   .index-input,
-  .custom-text       { font-size: 9px !important; }
+  .custom-text       { font-size: 9px !important; 
+  .mail-text { font-size: 9px !important; }
+}
   .grid-number       { font-size: 6.1px   !important; }
 }
 
@@ -431,34 +433,22 @@ body.non-fullscreen {
 }
 
 
-/* New fade-in menu texts */
-.new-menu-text {
-    opacity: 0;
-    transition: opacity 0.7s ease;
-}
-.new-menu-line {
-    opacity: 0;
-    transition: opacity 0.7s ease;
-}
-/* Input styling for TO and SUBJECT */
-.custom-input {
-    position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.47rem;
-    letter-spacing: 0.28vw;
-    color: #111111;
-    caret-color: #717171;
-    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
-    background: #ffffff;
-    border: none;
-    outline: none;
-    line-height: 1.6;
-}
-/* Ensure new-menu-text items use 6.1px font on very large screens */
-@media (min-width: 1900px), (min-device-width: 1900px) {
-    .new-menu-text {
-        font-size: 6.1px !important;
-    }
+/* Mail text styling */
+.mail-text {
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  position: absolute;
+  font-family: 'Distill Expanded', sans-serif;
+  color: #111111;
+  letter-spacing: 0.28vw;
+  font-size: 0.47rem;
+  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
+  line-height: 1.6;
 }
 
+.mail-line {
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }

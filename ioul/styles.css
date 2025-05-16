@@ -549,3 +549,29 @@ body.non-fullscreen {
               -0.001rem -0.001rem 0 #717171;
   white-space: nowrap;
 }
+
+
+/* TO/SUBJECT hover-trigger area and fade-in */
+.to-subject-hover-area {
+  position: absolute;
+  top: 28.5vh;
+  left: 36vw;
+  width: 58vw;
+  height: 55.5vh;
+  cursor: pointer;
+  /* invisible overlay */
+}
+.hover-fade-to-subject {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.to-subject-hover-area:hover + .hover-fade-to-subject {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Hide dropdown menu items but keep menu line */
+.menu-icon-container .dropdown-menu {
+  display: none !important;
+}

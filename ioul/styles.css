@@ -429,13 +429,3 @@ body.non-fullscreen {
     background-color: rgba(172, 172, 172, 0.841);
     z-index: 1;
 }
-
-/* Fade-in styling for new elements */
-.new-text {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-.new-text.visible {
-    opacity: 1;
-}

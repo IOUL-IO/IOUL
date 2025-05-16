@@ -623,6 +623,38 @@
     document.getElementById("linkup-center").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="linkup-center")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openLinkupCenter(); currentMenu="linkup-center";},300);} else{ openLinkupCenter(); currentMenu="linkup-center"; } } });
     document.getElementById("delivery-line").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="delivery-line")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openDeliveryLine(); currentMenu="delivery-line";},300);} else{ openDeliveryLine(); currentMenu="delivery-line"; } } });
     document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
-  </script>
+  
+    // Direct click listeners for TO and SUBJECT
+    const toTextEl = document.getElementById('toText');
+    const subjectTextEl = document.getElementById('subjectText');
+    if (toTextEl) {
+      toTextEl.addEventListener('click', event => {
+        event.stopPropagation();
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.classList.add('chat-input');
+        input.style.position = 'absolute';
+        input.style.top = '35.4vh';
+        input.style.left = '36vw';
+        input.style.width = '57.8vw';
+        event.target.replaceWith(input);
+        input.focus();
+      });
+    }
+    if (subjectTextEl) {
+      subjectTextEl.addEventListener('click', event => {
+        event.stopPropagation();
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.classList.add('chat-input');
+        input.style.position = 'absolute';
+        input.style.top = '41.6vh';
+        input.style.left = '36vw';
+        input.style.width = '57.8vw';
+        event.target.replaceWith(input);
+        input.focus();
+      });
+    }
+</script>
 </body>
 </html>

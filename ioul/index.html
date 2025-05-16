@@ -54,6 +54,14 @@
     </div>
 
     <div class="other-content">
+    <div class="new-menu-items-container" style="position:absolute; z-index:1;">
+      <span id="to-text" class="custom-text new-menu-text" style="top:35.4vh; left:36vw;">TO:</span>
+      <span id="subject-text" class="custom-text new-menu-text" style="top:41.6vh; left:36vw;">SUBJEcT:</span>
+      <span id="cc-text" class="custom-text new-menu-text" style="top:35.4vh; left:89vw;">cc</span>
+      <span id="bcc-text" class="custom-text new-menu-text" style="top:35.4vh; left:91.4vw;">Bcc</span>
+      <span id="send-text" class="custom-text new-menu-text" style="top:41.6vh; left:91.7vw;">SEnD</span>
+      <div id="new-line" class="custom-line new-menu-line" style="top:47.8vh; left:36vw; width:57.8vw;"></div>
+    </div>
       <div class="line original"></div>
       <div class="line second"></div>
       <div class="line util-line"></div>
@@ -570,6 +578,48 @@
     document.getElementById("linkup-center").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="linkup-center")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openLinkupCenter(); currentMenu="linkup-center";},300);} else{ openLinkupCenter(); currentMenu="linkup-center"; } } });
     document.getElementById("delivery-line").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="delivery-line")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openDeliveryLine(); currentMenu="delivery-line";},300);} else{ openDeliveryLine(); currentMenu="delivery-line"; } } });
     document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
+  
+    // Fade-in new menu texts on hover in specified area
+    const fadeAreaMenu = document.createElement('div');
+    fadeAreaMenu.style.position = 'absolute';
+    fadeAreaMenu.style.top = '28.5vh';
+    fadeAreaMenu.style.left = '36vw';
+    fadeAreaMenu.style.width = '58vw';
+    fadeAreaMenu.style.height = '55.5vh';
+    fadeAreaMenu.style.zIndex = '5';
+    fadeAreaMenu.style.pointerEvents = 'auto';
+    fadeAreaMenu.style.background = 'transparent';
+    document.querySelector('.other-content').appendChild(fadeAreaMenu);
+
+    let menuFadeShown = false;
+    fadeAreaMenu.addEventListener('mouseenter', () => {
+      if (!menuFadeShown && pageFadedIn) {
+        document.querySelectorAll('.new-menu-text, .new-menu-line').forEach(el => {
+          el.style.opacity = '1';
+        });
+        menuFadeShown = true;
+      }
+    });
+
+    // Convert TO and SUBJECT to input fields on click
+    ['to-text', 'subject-text'].forEach(id => {
+      const el = document.getElementById(id);
+      el.style.cursor = 'text';
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = id;
+        input.classList.add('custom-input');
+        input.style.position = 'absolute';
+        input.style.top = el.style.top;
+        input.style.left = el.style.left;
+        document.querySelector('.other-content').appendChild(input);
+        el.replaceWith(input);
+        input.focus();
+      });
+    });
+
   </script>
 </body>
 </html>

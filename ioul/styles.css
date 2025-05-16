@@ -429,3 +429,34 @@ body.non-fullscreen {
     background-color: rgba(172, 172, 172, 0.841);
     z-index: 1;
 }
+
+
+/* New fade-in menu texts */
+.new-menu-text {
+    opacity: 0;
+    transition: opacity 0.7s ease;
+}
+.new-menu-line {
+    opacity: 0;
+    transition: opacity 0.7s ease;
+}
+/* Input styling for TO and SUBJECT */
+.custom-input {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.47rem;
+    letter-spacing: 0.28vw;
+    color: #111111;
+    caret-color: #717171;
+    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
+    background: #ffffff;
+    border: none;
+    outline: none;
+    line-height: 1.6;
+}
+/* Ensure new-menu-text items use 6.1px font on very large screens */
+@media (min-width: 1900px) {
+    .new-menu-text {
+        font-size: 6.1px !important;
+    }
+}

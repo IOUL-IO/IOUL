@@ -52,6 +52,9 @@
       </span>
     </div>
 
+    <span class="custom-text editable" style="position: absolute; left: 36vw; top: 35.4vh;">TO:</span>
+    <span class="custom-text editable" style="position: absolute; left: 36vw; top: 41.6vh;">SUBJECT:</span>
+    <div class="custom-line" style="position: absolute; left: 36vw; top: 47.8vh; width: 57.8vw;"></div>
     <div class="layer-four"></div>
 
     <div class="community-items-container" style="position: absolute; z-index: 1;">
@@ -593,6 +596,48 @@
     document.getElementById("linkup-center").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="linkup-center")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openLinkupCenter(); currentMenu="linkup-center";},300);} else{ openLinkupCenter(); currentMenu="linkup-center"; } } });
     document.getElementById("delivery-line").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="delivery-line")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openDeliveryLine(); currentMenu="delivery-line";},300);} else{ openDeliveryLine(); currentMenu="delivery-line"; } } });
     document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
+  </script>
+  <script>
+    (function() {
+      function makeEditable(el) {
+        el.style.cursor = "pointer";
+        el.addEventListener("click", function handler() {
+          const originalEl = this;
+          const style = window.getComputedStyle(originalEl);
+          const input = document.createElement("input");
+          input.type = "text";
+          input.value = originalEl.textContent;
+          input.style.position = "absolute";
+          input.style.left = originalEl.style.left;
+          input.style.top = originalEl.style.top;
+          input.style.font = style.font;
+          input.style.color = style.color;
+          input.style.background = "transparent";
+          input.style.border = "none";
+          input.style.outline = "none";
+          input.style.width = originalEl.offsetWidth + "px";
+          function restore() {
+            const newEl = document.createElement("span");
+            newEl.className = originalEl.className;
+            newEl.textContent = input.value;
+            newEl.style.position = "absolute";
+            newEl.style.left = originalEl.style.left;
+            newEl.style.top = originalEl.style.top;
+            newEl.style.font = style.font;
+            newEl.style.color = style.color;
+            makeEditable(newEl);
+            input.parentNode.replaceChild(newEl, input);
+          }
+          input.addEventListener("blur", restore);
+          input.addEventListener("keydown", function(e) {
+            if (e.key === "Enter") { e.preventDefault(); restore(); }
+          });
+          originalEl.parentNode.replaceChild(input, originalEl);
+          input.focus();
+        });
+      }
+      document.querySelectorAll(".editable").forEach(el => makeEditable(el));
+    })();
   </script>
 </body>
 </html>

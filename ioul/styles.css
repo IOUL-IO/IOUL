@@ -144,7 +144,7 @@ body.non-fullscreen {
 }
 .third {
     top: 84vh;
-    left: 10.18vw;
+    left: 6.38vw;
     width: 18.68vw;
 }
 .fourth {
@@ -423,7 +423,7 @@ body.non-fullscreen {
   position: absolute;
   height: 1px;
   background-color: rgba(172, 172, 172, 0.841);
-  left: 6.38vw;
+  left: 26.86vw;
   width: 2.8vw;
   z-index: 102;
   top: 84vh;
@@ -432,7 +432,7 @@ body.non-fullscreen {
 .menu-icon-container {
   position: absolute;
   top: 84vh;
-  left: 6.38vw;
+  left: 26.86vw;
   width: 2.8vw;
   z-index: 102;
 }

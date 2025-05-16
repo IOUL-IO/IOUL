@@ -579,25 +579,23 @@
     document.getElementById("delivery-line").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="delivery-line")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openDeliveryLine(); currentMenu="delivery-line";},300);} else{ openDeliveryLine(); currentMenu="delivery-line"; } } });
     document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
   
-    // Fade-in new menu texts on hover in specified area
-    const fadeAreaMenu = document.createElement('div');
-    fadeAreaMenu.style.position = 'absolute';
-    fadeAreaMenu.style.top = '28.5vh';
-    fadeAreaMenu.style.left = '36vw';
-    fadeAreaMenu.style.width = '58vw';
-    fadeAreaMenu.style.height = '55.5vh';
-    fadeAreaMenu.style.zIndex = '5';
-    fadeAreaMenu.style.pointerEvents = 'auto';
-    fadeAreaMenu.style.background = 'transparent';
-    document.querySelector('.other-content').appendChild(fadeAreaMenu);
-
+    
+    // Hover-based fade-in for new menu items in specified area
     let menuFadeShown = false;
-    fadeAreaMenu.addEventListener('mouseenter', () => {
+    document.querySelector('.other-content').addEventListener('mousemove', (e) => {
       if (!menuFadeShown && pageFadedIn) {
-        document.querySelectorAll('.new-menu-text, .new-menu-line').forEach(el => {
-          el.style.opacity = '1';
-        });
-        menuFadeShown = true;
+        const x = e.clientX;
+        const y = e.clientY;
+        const left = window.innerWidth * 0.36;
+        const right = window.innerWidth * 0.94;
+        const top = window.innerHeight * 0.285;
+        const bottom = window.innerHeight * 0.84;
+        if (x >= left && x <= right && y >= top && y <= bottom) {
+          document.querySelectorAll('.new-menu-text, .new-menu-line').forEach(el => {
+            el.style.opacity = '1';
+          });
+          menuFadeShown = true;
+        }
       }
     });
 

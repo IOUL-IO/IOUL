@@ -455,8 +455,10 @@ body.non-fullscreen {
     line-height: 1.6;
 }
 /* Ensure new-menu-text items use 6.1px font on very large screens */
-@media (min-width: 1900px) {
+@media (min-width: 1900px), (min-device-width: 1900px) {
     .new-menu-text {
         font-size: 6.1px !important;
     }
+}
+
 }

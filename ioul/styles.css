@@ -1,0 +1,5 @@
+/* Override: show dropdown above the menu line */
+.menu-icon-container .dropdown-menu {
+  top: auto !important;
+  bottom: 2vh !important;
+}

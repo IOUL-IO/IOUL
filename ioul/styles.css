@@ -446,8 +446,7 @@ body.non-fullscreen {
 }
 .menu-icon-container .dropdown-menu {
   position: absolute;
-  bottom: 2vh;           
-  top: auto;             
+  top: 2vh;              /* gap from menu line to calendar */
   left: 0;
   width: 100%;
   opacity: 0;

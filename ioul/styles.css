@@ -446,8 +446,8 @@ body.non-fullscreen {
 }
 .menu-icon-container .dropdown-menu {
   position: absolute;
-  top: auto !important; 
-  bottom: 2vh
+  bottom: 2vh;           
+  top: auto;             
   left: 0;
   width: 100%;
   opacity: 0;

@@ -140,7 +140,7 @@ body.non-fullscreen {
 .second {
     top: 28.5vh;
     left: 6.38vw;
-    width: 22.48vw;
+    width: 18.68vw;
 }
 .third {
     top: 84vh;
@@ -153,6 +153,19 @@ body.non-fullscreen {
     width: 57.8vw;
     z-index: 1;
 }
+.fifth {
+    top: 28.5vh;
+    left: 36vw;
+    width: 57.8vw;
+    z-index: 1;
+}
+.sixth {
+    top: 84vh;
+    left: 36vw;
+    width: 57.8vw;
+    z-index: 1;
+}
+
 
 .slide-container {
     position: absolute;
@@ -166,8 +179,8 @@ body.non-fullscreen {
 .hover-area {
     position: absolute;
     top: 28.5vh;
-    left: 6.4vw;
-    width: calc(32.43vw - 6.4vw);
+    left: 36vw;
+    width: calc(94vw - 36vw);
     height: calc(84vh - 28.5vh);
     pointer-events: auto;
     background: transparent;
@@ -407,16 +420,33 @@ body.non-fullscreen {
     display: none;
 }
 
-/* Extra lines styled like .fourth */
-.line.fifth {
+.line.util-line {
+    position: absolute;
     top: 28.5vh;
-    left: 36vw;
-    width: 57.8vw;
+    left: 26.06vw;
+    width: 2.8vw;
+    height: 1px;
+    background-color: rgba(172, 172, 172, 0.841);
     z-index: 1;
 }
-.line.sixth {
-    top: 84vh;
-    left: 36vw;
-    width: 57.8vw;
-    z-index: 1;
+
+
+.mail-input {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.47rem;
+    letter-spacing: 0.28vw;
+    color: #111111;
+    caret-color: #717171;
+    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
+    line-height: 1.2;
+    padding: 0.2rem 0;
+    border: none;
+    outline: none;
+    background: #ffffff;
+    cursor: text;
+}
+
+@media (min-width: 1900px) {
+  .mail-input { font-size: 6.1px !important; }
 }

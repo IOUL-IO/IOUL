@@ -56,6 +56,7 @@
     <div class="other-content">
       <div class="line original"></div>
       <div class="line second"></div>
+      <div class="line util-line"></div>
       <div class="line third"></div>
       <div class="line fourth"></div>
     <div class="line fifth"></div>
@@ -167,6 +168,16 @@
     </div>
   </div>
 
+  
+  <div class="mail-fields-container" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:4; pointer-events:none;">
+    <span id="toText" class="custom-text" style="position:absolute; top:35.4vh; left:36vw; z-index:4; pointer-events:auto;">TO:</span>
+    <span id="subjectText" class="custom-text" style="position:absolute; top:41.6vh; left:36vw; z-index:4; pointer-events:auto;">SUBJECT:</span>
+    <span class="custom-text" style="position:absolute; top:35.4vh; left:88vw; z-index:4;">cc</span>
+    <span class="custom-text" style="position:absolute; top:35.4vh; left:91vw; z-index:4;">Bcc</span>
+    <span class="custom-text" style="position:absolute; top:41.6vh; left:90vw; z-index:4;">SEND</span>
+    <div class="custom-line" style="position:absolute; top:47.8vh; left:36vw; width:57.8vw; height:1px; background-color:rgba(230,230,230,0.28); z-index:4;"></div>
+  </div>
+
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
@@ -223,6 +234,35 @@
       chatText.replaceWith(chatInput);
       chatInput.focus();
     });
+    const toTextEl = document.getElementById('toText');
+    toTextEl.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.classList.add('mail-input');
+      input.id = 'toText';
+      input.style.position = 'absolute';
+      input.style.top = '35.4vh';
+      input.style.left = '36vw';
+      input.style.width = '57.8vw';
+      toTextEl.replaceWith(input);
+      input.focus();
+    });
+    const subjectEl = document.getElementById('subjectText');
+    subjectEl.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.classList.add('mail-input');
+      input.id = 'subjectText';
+      input.style.position = 'absolute';
+      input.style.top = '41.6vh';
+      input.style.left = '36vw';
+      input.style.width = '57.8vw';
+      subjectEl.replaceWith(input);
+      input.focus();
+    });
+
 
     let currentMenu = null;
     function quickRemoveSubmenu() {

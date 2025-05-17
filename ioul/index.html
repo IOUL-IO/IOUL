@@ -472,6 +472,14 @@
     scrollArea.style.pointerEvents = 'auto';
     scrollArea.style.cursor = 'default';
     document.querySelector('.other-content').appendChild(scrollArea);
+    // Mail-text fade-in on hover
+    let mailShownOnce = false;
+    scrollArea.addEventListener('mousemove', () => {
+      if (!mailShownOnce) {
+        document.querySelectorAll('.mail-text, .static-line').forEach(el => el.style.opacity = '1');
+        mailShownOnce = true;
+      }
+    });
 
     scrollArea.addEventListener('wheel', (e) => {
       e.preventDefault();
@@ -579,16 +587,14 @@
           const input = document.createElement('input');
           input.type = 'text';
           input.className = 'mail-input';
-          // position
+          input.style.position = 'absolute';
           input.style.top = el.style.top;
           input.style.left = el.style.left;
-          // replace and focus
           el.replaceWith(input);
           input.focus();
         }
       });
     });
-
   </script>
 </body>
 </html>

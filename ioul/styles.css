@@ -409,7 +409,8 @@ body.non-fullscreen {
   .community-items-container span,
   .zero-items-container span,
   .index-input,
-  .custom-text       { font-size: 9px !important; }
+  .custom-text,
+  .mail-text       { font-size: 9px !important; }
   .grid-number       { font-size: 6.1px   !important; }
 }
 
@@ -428,18 +429,4 @@ body.non-fullscreen {
     height: 1px;
     background-color: rgba(172, 172, 172, 0.841);
     z-index: 1;
-}
-
-/* Mail input field style */
-.mail-input {
-  position: absolute;
-  background: transparent;
-  border: none;
-  outline: none;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111111;
-  letter-spacing: 0.28vw;
-  font-size: 0.47rem;
-  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
-  z-index: 1;
 }

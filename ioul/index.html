@@ -4,45 +4,46 @@
   <meta charset="UTF-8">
   <title>Mail Mock‑up</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Only here so you can open a single file and see it work —
+       remove if this duplicates your main stylesheet. */
+    body { margin:0; background:#e5e5e5; height:100vh; }
+  </style>
 </head>
 <body>
-  <!-- Two clickable labels -->
-  <span id="toText" class="mail-text" style="position:absolute; top:35.4vh; left:36vw;">TO:</span>
-  <span id="subjectText" class="mail-text" style="position:absolute; top:41.6vh; left:36vw;">SUBJECT:</span>
 
-  <!-- ===== JS: turn each span into an input on click ===== -->
+  <!-- ===== Your existing layout goes here ===== -->
+  <!-- For the demo we only need the two labels -->
+  <span id="toText" class="mail-text clickable" style="position:absolute; top:35.4vh; left:36vw;">TO:</span>
+  <span id="subjectText" class="mail-text clickable" style="position:absolute; top:41.6vh; left:36vw;">SUBJECT:</span>
+
+  <!-- ===== JS — delegate click so it works even if spans are recreated ===== -->
   <script>
   document.addEventListener('DOMContentLoaded', () => {
-    function makeMailEditable(id) {
-      const span = document.getElementById(id);
-      if (!span) return;
 
-      span.style.cursor = 'pointer';
+    function swapToInput(target) {
+      const label  = target.textContent.replace(':','').trim();
+      const input  = document.createElement('input');
 
-      span.addEventListener('click', (e) => {
-        e.stopPropagation();
+      input.type   = 'text';
+      input.className = 'mail-input';
+      input.value  = label;                      // remove trailing colon
+      input.style.position = 'absolute';
+      input.style.top  = target.style.top;
+      input.style.left = target.style.left;
+      input.style.width= '57.8vw';
 
-        // Create a replacement input
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.className = 'mail-input';
-
-        // Optionally carry over existing text (TO: / SUBJECT:)
-        input.value = span.textContent.replace(':', '').trim();
-
-        /* Keep the label's exact position */
-        input.style.position = 'absolute';
-        input.style.top  = span.style.top;
-        input.style.left = span.style.left;
-        input.style.width = '57.8vw';  /* adjust to taste */
-
-        span.replaceWith(input);
-        input.focus();
-      });
+      target.replaceWith(input);
+      input.focus();
     }
 
-    makeMailEditable('toText');
-    makeMailEditable('subjectText');
+    // Event delegation so we only add ONE listener
+    document.addEventListener('click', (e) => {
+      const t = e.target;
+      if (t.id === 'toText' || t.id === 'subjectText') {
+        swapToInput(t);
+      }
+    });
   });
   </script>
 </body>

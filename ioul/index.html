@@ -584,23 +584,27 @@
     document.getElementById("linkup-center").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="linkup-center")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openLinkupCenter(); currentMenu="linkup-center";},300);} else{ openLinkupCenter(); currentMenu="linkup-center"; } } });
     document.getElementById("delivery-line").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="delivery-line")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openDeliveryLine(); currentMenu="delivery-line";},300);} else{ openDeliveryLine(); currentMenu="delivery-line"; } } });
     document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
-  
-    // Convert mail labels (TO:, SUBJEcT:, etc.) to editable inputs on click
-    document.querySelectorAll('.mail-text').forEach(label => {
-      label.addEventListener('click', (event) => {
-        event.stopPropagation();
-        const mailInput = document.createElement('input');
-        mailInput.type = 'text';
-        mailInput.classList.add('mail-input');
-        // Preserve label position
-        mailInput.style.position = 'absolute';
-        mailInput.style.top = label.style.top;
-        mailInput.style.left = label.style.left;
-        // Optional: fixed width for easier typing
-        mailInput.style.width = '52vw';
-        label.replaceWith(mailInput);
-        mailInput.focus();
-      });
+    
+    // Delegated click handler for TO: and SUBJECT: labels only
+    document.addEventListener('click', (ev) => {
+      const tgt = ev.target;
+      if (tgt.classList && tgt.classList.contains('mail-text')) {
+        // Only act if label text is TO: or SUBJECT: (case‑insensitive)
+        const txt = tgt.textContent.trim().toUpperCase();
+        if (txt.startsWith('TO') || txt.startsWith('SUBJ')) {
+          ev.stopPropagation();
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.classList.add('mail-input');
+          input.style.position = 'absolute';
+          input.style.top = tgt.style.top;
+          input.style.left = tgt.style.left;
+          input.style.width = '52vw';
+          input.style.zIndex = '20';
+          tgt.replaceWith(input);
+          input.focus();
+        }
+      }
     });
 </script>
 </body>

@@ -410,7 +410,7 @@ body.non-fullscreen {
   .zero-items-container span,
   .index-input,
   .custom-text,
-  .mail-text       { font-size: 9px !important;  pointer-events:auto; cursor:text; }
+  .mail-text       { font-size: 9px !important;  pointer-events:auto; cursor:text;  z-index:20; pointer-events:auto; cursor:text; }
   .grid-number       { font-size: 6.1px   !important; }
 }
 
@@ -449,4 +449,4 @@ body.non-fullscreen {
     cursor: text;
     transition: transform 0.7s ease;
     width: 52vw;
-}
+ z-index:20; }

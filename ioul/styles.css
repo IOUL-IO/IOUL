@@ -448,3 +448,7 @@ body.non-fullscreen {
   font-size: 0.9rem;
   background: #fafafa;
 }
+
+
+/* Hidden helper class */
+.hidden { display:none !important; }

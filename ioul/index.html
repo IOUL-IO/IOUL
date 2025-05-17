@@ -57,10 +57,23 @@
       <div class="line original"></div>
       <div class="line second"></div>
       <div class="line util-line"></div>
+
+<!-- Mail items -->
+<div class="mail-items-container" style="position: absolute; z-index: 1;">
+  <span class="mail-text" style="top:35.4vh; left:36vw;">TO:</span>
+  <span class="mail-text" style="top:41.6vh; left:36vw;">SUBJEcT:</span>
+  <span class="mail-text" style="top:35.4vh; left:89vw;">cc</span>
+  <span class="mail-text" style="top:35.4vh; left:92vw;">Bcc</span>
+  <span class="mail-text" style="top:41.6vh; left:91vw;">SEnD</span>
+  <div class="mail-line" style="top:47.8vh; left:36vw; width:57.8vw;"></div>
+</div>
+
+<!-- Hover area for mail items -->
+<div class="mail-hover-area"></div>
+
       <div class="line third"></div>
       <div class="line fourth"></div>
     <div class="line fifth"></div>
-      <div class="line static-line" style="top:47.8vh; left:36vw; width:57.8vw; z-index:1;"></div>
     <div class="line sixth"></div>
 
 
@@ -69,11 +82,6 @@
 
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
-      <span class="mail-text" style="position:absolute; top:35.4vh; left:36vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">TO:</span>
-      <span class="mail-text" style="position:absolute; top:41.6vh; left:36vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">SUBJEcT:</span>
-      <span class="mail-text" style="position:absolute; top:35.4vh; left:89vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">cc</span>
-      <span class="mail-text" style="position:absolute; top:35.4vh; left:92vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">Bcc</span>
-      <span class="mail-text" style="position:absolute; top:41.6vh; left:91.4vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">SEnD</span>
 
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
@@ -478,14 +486,6 @@
     scrollArea.style.pointerEvents = 'auto';
     scrollArea.style.cursor = 'default';
     document.querySelector('.other-content').appendChild(scrollArea);
-    // Mail-text fade-in on hover
-    let mailShownOnce = false;
-    scrollArea.addEventListener('mousemove', () => {
-      if (!mailShownOnce) {
-        document.querySelectorAll('.mail-text, .static-line').forEach(el => el.style.opacity = '1');
-        mailShownOnce = true;
-      }
-    });
 
     scrollArea.addEventListener('wheel', (e) => {
       e.preventDefault();
@@ -584,6 +584,21 @@
     document.getElementById("linkup-center").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="linkup-center")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openLinkupCenter(); currentMenu="linkup-center";},300);} else{ openLinkupCenter(); currentMenu="linkup-center"; } } });
     document.getElementById("delivery-line").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="delivery-line")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openDeliveryLine(); currentMenu="delivery-line";},300);} else{ openDeliveryLine(); currentMenu="delivery-line"; } } });
     document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
-  </script>
+  
+// === Mail items fade-in ===
+const mailHoverArea = document.querySelector('.mail-hover-area');
+const mailItems = document.querySelectorAll('.mail-text, .mail-line');
+let mailShownOnce = false;
+mailHoverArea.addEventListener('mouseenter', () => {
+  if (!mailShownOnce && pageFadedIn) {
+    mailItems.forEach(el => {
+      el.style.opacity = '1';
+      el.style.pointerEvents = 'auto';
+    });
+    mailShownOnce = true;
+  }
+});
+
+</script>
 </body>
 </html>

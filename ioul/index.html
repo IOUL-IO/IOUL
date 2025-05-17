@@ -8,9 +8,6 @@
   <link rel="stylesheet" href="styles.css" />
 
 
-<style>
-.mail-text, .mail-line { display: none; }
-</style>
 </head>
 <body class="non-fullscreen">
   <div class="layer-one"></div>
@@ -585,19 +582,24 @@
 
 
 
+
+
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const utilLine = document.querySelector('.util-line');
+  const utilLines = document.querySelectorAll('.util-line');
   const mailEls = document.querySelectorAll('.mail-text, .mail-line');
 
-  if (utilLine) {
-    utilLine.addEventListener('click', () => {
-      mailEls.forEach(el => {
-        const currentlyHidden = window.getComputedStyle(el).display === 'none';
-        el.style.display = currentlyHidden ? '' : 'none';
-      });
+  // hide initially via inline style
+  mailEls.forEach(el => el.style.display = 'none');
+
+  const toggleMail = () => {
+    mailEls.forEach(el => {
+      el.style.display = (el.style.display === 'none') ? 'block' : 'none';
     });
-  }
+  };
+
+  utilLines.forEach(line => line.addEventListener('click', toggleMail));
 });
 </script>
 

@@ -68,19 +68,13 @@
 
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
-      <!-- Hover area for mail items -->
-      <div class="hover-area-mail"></div>
-
-      <!-- Mail items -->
-      <div class="mail-items-container" style="position: absolute; z-index: 3;">
-        <span id="toText" class="custom-text mail-text" style="top:35.4vh; left:36vw;">TO:</span>
-        <span id="subjectText" class="custom-text mail-text" style="top:41.6vh; left:36vw;">SUBJEcT:</span>
-        <span class="custom-text mail-text" style="top:35.4vh; left:90vw;">cc</span>
-        <span class="custom-text mail-text" style="top:35.4vh; left:91vw;">Bcc</span>
-        <span class="custom-text mail-text" style="top:41.6vh; left:91.4vw;">SEnD</span>
-        <div class="custom-line mail-line" style="top:47.8vh; left:36vw; width:57.8vw;"></div>
-      </div>
-
+      <!-- Added mail text elements -->
+      <span class="mail-text" style="position:absolute; top:35.4vh; left:36vw; pointer-events:none; opacity:0; transition:opacity 0.3s ease;">TO:</span>
+      <span class="mail-text" style="position:absolute; top:41.6vh; left:36vw; pointer-events:none; opacity:0; transition:opacity 0.3s ease;">SUBJEcT:</span>
+      <span class="mail-text" style="position:absolute; top:35.4vh; left:90vw; pointer-events:none; opacity:0; transition:opacity 0.3s ease;">cc</span>
+      <span class="mail-text" style="position:absolute; top:35.4vh; left:91vw; pointer-events:none; opacity:0; transition:opacity 0.3s ease;">Bcc</span>
+      <span class="mail-text" style="position:absolute; top:41.6vh; left:91.4vw; pointer-events:none; opacity:0; transition:opacity 0.3s ease;">SEnD</span>
+      <div class="mail-line" style="position:absolute; top:47.8vh; left:36vw; width:57.8vw; height:1px; background-color:rgba(230,230,230,0.28); opacity:0; transition:opacity 0.3s ease;"></div>
 
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
@@ -584,51 +578,34 @@
     document.getElementById("delivery-line").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="delivery-line")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openDeliveryLine(); currentMenu="delivery-line";},300);} else{ openDeliveryLine(); currentMenu="delivery-line"; } } });
     document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
   
-    // ===== Mail items fade-in on hover =====
-    const hoverAreaMail = document.querySelector('.hover-area-mail');
-    const mailTexts = document.querySelectorAll('.mail-text');
+    // Mail text fade-in on hover
     let mailShownOnce = false;
-
-    document.addEventListener('mousemove', (event) => {
+    const mailSpansForFade = document.querySelectorAll('.mail-text, .mail-line');
+    scrollArea.addEventListener('mousemove', (event) => {
       if (!mailShownOnce && pageFadedIn) {
-        const rectM = hoverAreaMail.getBoundingClientRect();
-        if (event.clientX >= rectM.left && event.clientX <= rectM.right &&
-            event.clientY >= rectM.top && event.clientY <= rectM.bottom) {
-          mailTexts.forEach(el => {
-            el.style.opacity = '1';
+        mailSpansForFade.forEach(el => {
+          el.style.opacity = '1';
+          if (el.classList.contains('mail-text')) {
             el.style.pointerEvents = 'auto';
-          });
-          mailShownOnce = true;
-        }
+          }
+        });
+        mailShownOnce = true;
       }
     });
-
-    // Replace TO: and SUBJECT: spans with inputs on click
-    function replaceWithMailInput(spanEl, topVH, leftVW, widthVW) {
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.classList.add('mail-input');
-      input.style.top = topVH + 'vh';
-      input.style.left = leftVW + 'vw';
-      input.style.width = widthVW + 'vw';
-      spanEl.replaceWith(input);
-      input.focus();
-    }
-
-    const toSpan = document.getElementById('toText');
-    const subjectSpan = document.getElementById('subjectText');
-    if (toSpan) {
-      toSpan.addEventListener('click', (e) => {
+    // Mail text to input conversion on click
+    document.querySelectorAll('.mail-text').forEach(span => {
+      span.addEventListener('click', e => {
         e.stopPropagation();
-        replaceWithMailInput(e.target, 35.4, 36, 22.17);
+        const mailInput = document.createElement('input');
+        mailInput.type = 'text';
+        mailInput.classList.add('mail-input');
+        mailInput.style.position = 'absolute';
+        mailInput.style.top = span.style.top;
+        mailInput.style.left = span.style.left;
+        span.replaceWith(mailInput);
+        mailInput.focus();
       });
-    }
-    if (subjectSpan) {
-      subjectSpan.addEventListener('click', (e) => {
-        e.stopPropagation();
-        replaceWithMailInput(e.target, 41.6, 36, 57.8);
-      });
-    }
+    });
 
   </script>
 </body>

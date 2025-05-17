@@ -417,9 +417,7 @@ body.non-fullscreen {
 /* Removed slide container animation styles */
 
 /* Hide calendar grid items */
-.grid-number, .grid-dashed {
-    display: none;
-}
+/* removed display none */
 
 .line.util-line {
     position: absolute;

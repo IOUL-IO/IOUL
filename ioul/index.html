@@ -478,15 +478,6 @@
     scrollArea.style.pointerEvents = 'auto';
     scrollArea.style.cursor = 'default';
     document.querySelector('.other-content').appendChild(scrollArea);
-    // Mail-text fade-in on hover
-    let mailShownOnce = false;
-    scrollArea.addEventListener('mousemove', () => {
-      if (!mailShownOnce) {
-        document.querySelectorAll('.mail-text, .mail-line').forEach(el => el.style.opacity = '1');
-        mailShownOnce = true;
-      }
-    });
-
     scrollArea.addEventListener('wheel', (e) => {
       e.preventDefault();
       

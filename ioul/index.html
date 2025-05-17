@@ -588,7 +588,7 @@
 /* ------------------  TO / SUBJECT  ------------------ */
 function makeMailEditable(spanId) {
   const span = document.getElementById(spanId);
-  if (!span) return;
+  if(!span) return;
   span.style.cursor = 'pointer';
 
   span.addEventListener('click', (e) => {
@@ -597,9 +597,10 @@ function makeMailEditable(spanId) {
     const input = document.createElement('input');
     input.type  = 'text';
     input.classList.add('mail-input');
-    input.style.top  = span.style.top;   // preserve position
+    input.style.position = 'absolute';
+    input.style.top  = span.style.top;   // keep original position
     input.style.left = span.style.left;
-    input.style.width = '57.8vw';        // width of white strip
+    input.style.width = '57.8vw';        // full width of the white strip
 
     span.replaceWith(input);
     input.focus();

@@ -60,7 +60,7 @@
       <div class="line third"></div>
       <div class="line fourth"></div>
     <div class="line fifth"></div>
-      <div class="line static-line" style="position:absolute; top:47.8vh; left:36vw; width:57.8vw; height:1px; background-color:rgba(230,230,230,0.28); opacity:0; transition: opacity 0.3s ease; z-index:1;"></div>
+      <div class="line mail-line" style="position:absolute; top:47.8vh; left:36vw; width:57.8vw; height:1px; background-color:rgba(230,230,230,0.28); opacity:0; transition: opacity 0.3s ease; z-index:1;"></div>
     <div class="line sixth"></div>
 
 
@@ -482,7 +482,7 @@
     let mailShownOnce = false;
     scrollArea.addEventListener('mousemove', () => {
       if (!mailShownOnce) {
-        document.querySelectorAll('.mail-text, .static-line').forEach(el => el.style.opacity = '1');
+        document.querySelectorAll('.mail-text, .mail-line').forEach(el => el.style.opacity = '1');
         mailShownOnce = true;
       }
     });

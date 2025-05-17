@@ -9,9 +9,13 @@
 
 
 
+
+
+
 <style>
+.hidden { display:none !important; }
+
 .calendar-grid {
-  display: none;
   width: 100%;
   max-width: 600px;
   margin: 20px auto;
@@ -608,9 +612,49 @@
 
 
 
+<div class="calendar-cell">2</div><div class="calendar-cell">3</div><div class="calendar-cell">4</div><div class="calendar-cell">5</div><div class="calendar-cell">6</div><div class="calendar-cell">7</div><div class="calendar-cell">8</div><div class="calendar-cell">9</div><div class="calendar-cell">10</div><div class="calendar-cell">11</div><div class="calendar-cell">12</div><div class="calendar-cell">13</div><div class="calendar-cell">14</div><div class="calendar-cell">15</div><div class="calendar-cell">16</div><div class="calendar-cell">17</div><div class="calendar-cell">18</div><div class="calendar-cell">19</div><div class="calendar-cell">20</div><div class="calendar-cell">21</div><div class="calendar-cell">22</div><div class="calendar-cell">23</div><div class="calendar-cell">24</div><div class="calendar-cell">25</div><div class="calendar-cell">26</div><div class="calendar-cell">27</div><div class="calendar-cell">28</div><div class="calendar-cell">29</div><div class="calendar-cell">30</div><div class="calendar-cell">31</div><div class="calendar-cell">32</div><div class="calendar-cell">33</div><div class="calendar-cell">34</div><div class="calendar-cell">35</div>
+</div>
+
+
+
+
 <!-- Calendar grid inserted -->
-<div class="calendar-grid" style="display:none;">
-<div class="calendar-cell">1</div><div class="calendar-cell">2</div><div class="calendar-cell">3</div><div class="calendar-cell">4</div><div class="calendar-cell">5</div><div class="calendar-cell">6</div><div class="calendar-cell">7</div><div class="calendar-cell">8</div><div class="calendar-cell">9</div><div class="calendar-cell">10</div><div class="calendar-cell">11</div><div class="calendar-cell">12</div><div class="calendar-cell">13</div><div class="calendar-cell">14</div><div class="calendar-cell">15</div><div class="calendar-cell">16</div><div class="calendar-cell">17</div><div class="calendar-cell">18</div><div class="calendar-cell">19</div><div class="calendar-cell">20</div><div class="calendar-cell">21</div><div class="calendar-cell">22</div><div class="calendar-cell">23</div><div class="calendar-cell">24</div><div class="calendar-cell">25</div><div class="calendar-cell">26</div><div class="calendar-cell">27</div><div class="calendar-cell">28</div><div class="calendar-cell">29</div><div class="calendar-cell">30</div><div class="calendar-cell">31</div><div class="calendar-cell">32</div><div class="calendar-cell">33</div><div class="calendar-cell">34</div><div class="calendar-cell">35</div>
+<div class="calendar-grid hidden">
+  <div class="calendar-cell">1</div>
+  <div class="calendar-cell">2</div>
+  <div class="calendar-cell">3</div>
+  <div class="calendar-cell">4</div>
+  <div class="calendar-cell">5</div>
+  <div class="calendar-cell">6</div>
+  <div class="calendar-cell">7</div>
+  <div class="calendar-cell">8</div>
+  <div class="calendar-cell">9</div>
+  <div class="calendar-cell">10</div>
+  <div class="calendar-cell">11</div>
+  <div class="calendar-cell">12</div>
+  <div class="calendar-cell">13</div>
+  <div class="calendar-cell">14</div>
+  <div class="calendar-cell">15</div>
+  <div class="calendar-cell">16</div>
+  <div class="calendar-cell">17</div>
+  <div class="calendar-cell">18</div>
+  <div class="calendar-cell">19</div>
+  <div class="calendar-cell">20</div>
+  <div class="calendar-cell">21</div>
+  <div class="calendar-cell">22</div>
+  <div class="calendar-cell">23</div>
+  <div class="calendar-cell">24</div>
+  <div class="calendar-cell">25</div>
+  <div class="calendar-cell">26</div>
+  <div class="calendar-cell">27</div>
+  <div class="calendar-cell">28</div>
+  <div class="calendar-cell">29</div>
+  <div class="calendar-cell">30</div>
+  <div class="calendar-cell">31</div>
+  <div class="calendar-cell">32</div>
+  <div class="calendar-cell">33</div>
+  <div class="calendar-cell">34</div>
+  <div class="calendar-cell">35</div>
 </div>
 
 <script>
@@ -619,22 +663,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const mailEls = document.querySelectorAll('.mail-text, .mail-line');
   const calendar = document.querySelector('.calendar-grid');
 
-  // Ensure initial state: hidden
-  mailEls.forEach(el => el.style.display = 'none');
-  if (calendar) calendar.style.display = 'none';
+  // start hidden
+  mailEls.forEach(el => el.classList.add('hidden'));
+  if (calendar) calendar.classList.add('hidden');
 
   let state = 0; // 0 = none, 1 = mail, 2 = calendar
 
   const updateView = () => {
     if (state === 0) {
-      mailEls.forEach(el => el.style.display = 'none');
-      if (calendar) calendar.style.display = 'none';
+      mailEls.forEach(el => el.classList.add('hidden'));
+      if (calendar) calendar.classList.add('hidden');
     } else if (state === 1) {
-      mailEls.forEach(el => el.style.display = 'block');
-      if (calendar) calendar.style.display = 'none';
+      mailEls.forEach(el => el.classList.remove('hidden'));
+      if (calendar) calendar.classList.add('hidden');
     } else if (state === 2) {
-      mailEls.forEach(el => el.style.display = 'none');
-      if (calendar) calendar.style.display = 'block';
+      mailEls.forEach(el => el.classList.add('hidden'));
+      if (calendar) calendar.classList.remove('hidden');
     }
   };
 

@@ -7,8 +7,9 @@
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
 
+
 <style>
-.mail-text, .mail-line { transition: opacity 0.3s ease; }
+.mail-text, .mail-line { display: none; }
 </style>
 </head>
 <body class="non-fullscreen">
@@ -581,23 +582,19 @@
     document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
   </script>
 
+
+
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const utilLine = document.querySelector('.util-line');
   const mailEls = document.querySelectorAll('.mail-text, .mail-line');
 
-  // Ensure they're hidden on load
-  mailEls.forEach(el => {
-    el.style.opacity = '0';
-    el.style.pointerEvents = 'none';
-  });
-
   if (utilLine) {
     utilLine.addEventListener('click', () => {
-      const isVisible = mailEls[0].style.opacity === '1';
       mailEls.forEach(el => {
-        el.style.opacity = isVisible ? '0' : '1';
-        el.style.pointerEvents = isVisible ? 'none' : 'auto';
+        const currentlyHidden = window.getComputedStyle(el).display === 'none';
+        el.style.display = currentlyHidden ? '' : 'none';
       });
     });
   }

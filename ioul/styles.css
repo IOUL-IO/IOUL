@@ -409,11 +409,7 @@ body.non-fullscreen {
   .community-items-container span,
   .zero-items-container span,
   .index-input,
-  .custom-text,
-  .mail-text,
-  .mail-input { font-size: 9px !important; }
-  .grid-number       { font-size: 6.1px   !important; }
-}
+  .custom-text       { font-size: 9px !important; }
   .grid-number       { font-size: 6.1px   !important; }
 }
 
@@ -434,48 +430,41 @@ body.non-fullscreen {
     z-index: 1;
 }
 
+/* ===== Mail area additions ===== */
+.hover-area-mail {
+    position: absolute;
+    top: 28.5vh;
+    left: 36vw;
+    width: calc(94vw - 36vw);
+    height: calc(84vh - 28.5vh);
+    pointer-events: auto;
+    background: transparent;
+}
 
-/* Mail-text and mail-input styles */
 .mail-text {
-  position: absolute;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111111;
-  letter-spacing: 0.28vw;
-  font-size: 0.47rem;
-  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
-  transition: opacity 0.3s ease;
-  line-height: 1.6;
-  overflow: visible;
-  opacity: 0;
-  pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.7s ease;
+    pointer-events: none;
 }
+
 .mail-input {
-  position: absolute;
-  width: 57.8vw;
-  font-family: 'Distill Expanded', sans-serif;
-  font-size: 0.47rem;
-  letter-spacing: 0.28vw;
-  color: #111111;
-  caret-color: #717171;
-  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
-  line-height: 1.6;
-  padding: 0.2rem 0;
-  border: none;
-  outline: none;
-  background: #ffffff;
-  cursor: text;
-  transition: opacity 0.3s ease;
-  opacity: 0;
-  pointer-events: none;
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.47rem;
+    letter-spacing: 0.28vw;
+    color: #111111;
+    caret-color: #717171;
+    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
+    line-height: 1.2;
+    padding: 0.2rem 0;
+    border: none;
+    outline: none;
+    background: #ffffff;
+    cursor: text;
+    transition: transform 0.7s ease;
 }
-.mail-line {
-  position: absolute;
-  top: 47.8vh;
-  left: 36vw;
-  width: 57.8vw;
-  height: 1px;
-  background-color: rgba(230, 230, 230, 0.28);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
+
+/* Larger screens */
+@media (min-width: 1900px) {
+  .mail-input { font-size: 9px !important; }
 }

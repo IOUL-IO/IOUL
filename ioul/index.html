@@ -69,14 +69,6 @@
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
 
-    <span class="custom-text mail-text" id="mail-to" style="position:absolute; top:35.4vh; left:36vw; z-index:10; opacity:0; transition:opacity 0.3s ease;">TO:</span>
-    <span class="custom-text mail-text" id="mail-subject" style="position:absolute; top:41.6vh; left:36vw; z-index:10; opacity:0; transition:opacity 0.3s ease;">SUBJECT:</span>
-    <span class="custom-text mail-text" id="mail-cc" style="position:absolute; top:35.4vh; left:90vw; z-index:10; opacity:0; transition:opacity 0.3s ease;">cc</span>
-    <span class="custom-text mail-text" id="mail-bcc" style="position:absolute; top:35.4vh; left:91vw; z-index:10; opacity:0; transition:opacity 0.3s ease;">Bcc</span>
-    <span class="custom-text mail-text" id="mail-send" style="position:absolute; top:41.6vh; left:91.4vw; z-index:10; opacity:0; transition:opacity 0.3s ease;">SEnD</span>
-    <div class="custom-line mail-line" style="position:absolute; top:47.8vh; left:36vw; width:57.8vw; height:1px; background-color:rgba(230,230,230,0.28); z-index:10; opacity:0; transition:opacity 0.3s ease;"></div>
-
-
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -186,43 +178,6 @@
 
     const pageContent = document.querySelector('.page-content');
     let pageFadedIn = false;
-let mailShownOnce = false;
-
-// Fade-in mail text and line when hovering over specified area
-document.addEventListener('mousemove', (event) => {
-  if (!mailShownOnce && pageFadedIn) {
-    const leftMin = 0.36 * window.innerWidth;
-    const leftMax = 0.94 * window.innerWidth;
-    const topMin = 0.285 * window.innerHeight;
-    const topMax = 0.84 * window.innerHeight;
-    if (event.clientX >= leftMin && event.clientX <= leftMax &&
-        event.clientY >= topMin && event.clientY <= topMax) {
-      document.querySelectorAll('.mail-text, .mail-line').forEach(el => {
-        el.style.opacity = '1';
-        el.style.pointerEvents = 'auto';
-      });
-      mailShownOnce = true;
-    }
-  }
-});
-
-// Convert TO and SUBJECT spans to input fields on click
-['mail-to', 'mail-subject'].forEach(id => {
-  const el = document.getElementById(id);
-  el.addEventListener('click', (event) => {
-    event.stopPropagation();
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.classList.add('chat-input');
-    input.style.position = 'absolute';
-    input.style.top = el.style.top;
-    input.style.left = el.style.left;
-    input.value = el.textContent;
-    el.replaceWith(input);
-    input.focus();
-  });
-});
-
     function fadeInPage() {
       pageContent.style.opacity = '1';
       pageFadedIn = true;

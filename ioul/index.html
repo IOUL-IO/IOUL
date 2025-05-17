@@ -185,7 +185,22 @@
     document.addEventListener('mousemove', function onFirstMouseMove() {
       if (!pageFadedIn) { fadeInPage(); }
       document.removeEventListener('mousemove', onFirstMouseMove);
-    });
+    
+    // Mail-text fade-in on hover via existing .hover-area
+    (function() {
+      let mailShownOnce = false;
+      const hoverArea = document.querySelector('.hover-area');
+      if (hoverArea) {
+        hoverArea.addEventListener('mouseenter', () => {
+          if (!mailShownOnce) {
+            document.querySelectorAll('.mail-text, .static-line').forEach(el => el.style.opacity = '1');
+            mailShownOnce = true;
+          }
+        });
+      }
+    })();
+
+});
     const EDGE_MARGIN = 11;
     document.addEventListener('click', (event) => {
       const { clientX: x, clientY: y } = event;

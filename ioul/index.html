@@ -68,6 +68,20 @@
 
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
+      <!-- Hover area for mail items -->
+      <div class="hover-area-mail"></div>
+
+      <!-- Mail items -->
+      <div class="mail-items-container" style="position: absolute; z-index: 3;">
+        <span id="toText" class="custom-text mail-text" style="top:35.4vh; left:36vw;">TO:</span>
+        <span id="subjectText" class="custom-text mail-text" style="top:41.6vh; left:36vw;">SUBJEcT:</span>
+        <span class="custom-text mail-text" style="top:35.4vh; left:90vw;">cc</span>
+        <span class="custom-text mail-text" style="top:35.4vh; left:91vw;">Bcc</span>
+        <span class="custom-text mail-text" style="top:41.6vh; left:91.4vw;">SEnD</span>
+        <div class="custom-line mail-line" style="top:47.8vh; left:36vw; width:57.8vw;"></div>
+      </div>
+
+
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
       <span class="grid-number num3">3</span>
@@ -462,67 +476,6 @@
 
     // Create a scroll area div
     const scrollArea = document.createElement('div');
-    // Dynamically create mail-text labels and line
-    const mailConfigs = [
-      { id: 'mailTo', text: 'TO:', top: '35.4vh', left: '36vw' },
-      { id: 'mailSubject', text: 'SUBJEcT:', top: '41.6vh', left: '36vw' },
-      { id: 'mailCc', text: 'cc', top: '35.4vh', left: '90vw' },
-      { id: 'mailBcc', text: 'Bcc', top: '35.4vh', left: '91vw' },
-      { id: 'mailSend', text: 'SEnD', top: '41.6vh', left: '91.4vw' }
-    ];
-    const mailElements = [];
-    mailConfigs.forEach(cfg => {
-      const span = document.createElement('span');
-      span.id = cfg.id;
-      span.classList.add('mail-text');
-      span.textContent = cfg.text;
-      span.style.position = 'absolute';
-      span.style.top = cfg.top;
-      span.style.left = cfg.left;
-      scrollArea.appendChild(span);
-      mailElements.push(span);
-    });
-    const mailLine = document.createElement('div');
-    mailLine.id = 'mailLine';
-    mailLine.classList.add('mail-line');
-    mailLine.style.position = 'absolute';
-    mailLine.style.top = '47.8vh';
-    mailLine.style.left = '36vw';
-    mailLine.style.width = '57.8vw';
-    mailLine.style.height = '1px';
-    scrollArea.appendChild(mailLine);
-    mailElements.push(mailLine);
-
-    // Hover detect on scrollArea for mailElements
-    let mailShown = false;
-    scrollArea.addEventListener('mousemove', e => {
-      if (mailShown) return;
-      const xPct = e.clientX / window.innerWidth * 100;
-      const yPct = e.clientY / window.innerHeight * 100;
-      if (xPct >= 36 && xPct <= 94 && yPct >= 28.5 && yPct <= 84) {
-        mailElements.forEach(el => el.classList.add('visible'));
-        mailShown = true;
-      }
-    });
-
-    // Click to convert TO: and SUBJEcT:
-    ['mailTo', 'mailSubject'].forEach(id => {
-      document.addEventListener('click', e => {
-        const target = e.target;
-        if (target.id === id) {
-          const input = document.createElement('input');
-          input.type = 'text';
-          input.classList.add('mail-input');
-          input.style.position = 'absolute';
-          input.style.top = target.style.top;
-          input.style.left = target.style.left;
-          scrollArea.appendChild(input);
-          target.remove();
-          input.focus();
-        }
-      });
-    });
-
     scrollArea.style.position = 'absolute';
     scrollArea.style.top = '28.5vh';
     scrollArea.style.left = '36vw';
@@ -631,31 +584,46 @@
     document.getElementById("delivery-line").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="delivery-line")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openDeliveryLine(); currentMenu="delivery-line";},300);} else{ openDeliveryLine(); currentMenu="delivery-line"; } } });
     document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
   
-    // Improved mail-text hover and click logic
-    const mailElements = [...document.querySelectorAll('.mail-text'), document.getElementById('mailLine')];
-    let mailShown = false;
-    scrollArea.addEventListener('mousemove', (e) => {
-      if (mailShown) return;
-      const xPct = e.clientX / window.innerWidth * 100;
-      const yPct = e.clientY / window.innerHeight * 100;
-      if (xPct >= 36 && xPct <= 94 && yPct >= 28.5 && yPct <= 84) {
-        mailElements.forEach(el => el.classList.add('visible'));
-        mailShown = true;
-      }
+    
+    // ===== Mail items fade‑in on hover over designated area =====
+    const hoverAreaMail = document.querySelector('.hover-area-mail');
+    const mailEls = document.querySelectorAll('.mail-text, .mail-line');
+
+    
+    if (hoverAreaMail) {
+      hoverAreaMail.addEventListener('mouseenter', () => {
+        mailEls.forEach(el => {
+          el.style.opacity = '1';
+          el.style.pointerEvents = 'auto';
+        });
+        // allow clicking through after items are visible
+        hoverAreaMail.style.pointerEvents = 'none';
+      }, { once: true });
+    }
+
+      }, { once: true });
+    }
+
+    // ---------- Convert TO: / SUBJEcT: to input on click ----------
+    function replaceWithMailInput(spanEl, topVH, leftVW, widthVW) {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.classList.add('mail-input');
+      input.style.top = `${topVH}vh`;
+      input.style.left = `${leftVW}vw`;
+      input.style.width = `${widthVW}vw`;
+      spanEl.replaceWith(input);
+      input.focus();
+    }
+
+    document.getElementById('toText')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      replaceWithMailInput(e.target, 35.4, 36, 22.17);
     });
-    // Click to convert TO and SUBJECT
-    ['mailTo', 'mailSubject'].forEach(id => {
-      const span = document.getElementById(id);
-      span.addEventListener('click', () => {
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.classList.add('mail-input');
-        input.style.position = 'absolute';
-        input.style.top = span.style.top;
-        input.style.left = span.style.left;
-        span.replaceWith(input);
-        input.focus();
-      });
+
+    document.getElementById('subjectText')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      replaceWithMailInput(e.target, 41.6, 36, 57.8);
     });
 
   </script>

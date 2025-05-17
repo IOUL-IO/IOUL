@@ -69,8 +69,8 @@
 
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
-      <span id="toLabel" class="mail-text" style="position:absolute; top:35.4vh; left:36vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">TO:</span>
-      <span id="subjectLabel" class="mail-text" style="position:absolute; top:41.6vh; left:36vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">SUBJEcT:</span>
+      <span class="mail-text" style="position:absolute; top:35.4vh; left:36vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">TO:</span>
+      <span class="mail-text" style="position:absolute; top:41.6vh; left:36vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">SUBJEcT:</span>
       <span class="mail-text" style="position:absolute; top:35.4vh; left:89vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">cc</span>
       <span class="mail-text" style="position:absolute; top:35.4vh; left:92vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">Bcc</span>
       <span class="mail-text" style="position:absolute; top:41.6vh; left:91.4vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">SEnD</span>
@@ -482,7 +482,7 @@
     let mailShownOnce = false;
     scrollArea.addEventListener('mousemove', () => {
       if (!mailShownOnce) {
-        document.querySelectorAll('.mail-text, .static-line').forEach(el => el.style.opacity = '1');
+        document.querySelectorAll('.mail-text, .static-line').forEach(el => {el.style.opacity = '1'; el.style.pointerEvents = 'auto';});
         mailShownOnce = true;
       }
     });
@@ -583,25 +583,25 @@
     document.getElementById("online-assets").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="online-assets")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openOnlineAssets(); currentMenu="online-assets";},300);} else{ openOnlineAssets(); currentMenu="online-assets"; } } });
     document.getElementById("linkup-center").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="linkup-center")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openLinkupCenter(); currentMenu="linkup-center";},300);} else{ openLinkupCenter(); currentMenu="linkup-center"; } } });
     document.getElementById("delivery-line").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="delivery-line")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openDeliveryLine(); currentMenu="delivery-line";},300);} else{ openDeliveryLine(); currentMenu="delivery-line"; } } });
-    document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentM
-
-// Convert TO: and SUBJECT: labels to input fields on click
-document.querySelectorAll('.mail-text').forEach(label => {
-  label.addEventListener('click', (event) => {
-    event.stopPropagation();
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.classList.add('mail-input');
-    // Mirror position and dimensions
-    input.style.top = label.style.top;
-    input.style.left = label.style.left;
-    // Let the width cover most of the mail pane
-    input.style.width = '52vw';
-    label.replaceWith(input);
-    input.focus();
-  });
-});
-enu="internal-unit"; } } });
-  </script>
+    document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
+  
+    // Convert mail labels (TO:, SUBJEcT:, etc.) to editable inputs on click
+    document.querySelectorAll('.mail-text').forEach(label => {
+      label.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const mailInput = document.createElement('input');
+        mailInput.type = 'text';
+        mailInput.classList.add('mail-input');
+        // Preserve label position
+        mailInput.style.position = 'absolute';
+        mailInput.style.top = label.style.top;
+        mailInput.style.left = label.style.left;
+        // Optional: fixed width for easier typing
+        mailInput.style.width = '52vw';
+        label.replaceWith(mailInput);
+        mailInput.focus();
+      });
+    });
+</script>
 </body>
 </html>

@@ -223,24 +223,6 @@ body.non-fullscreen {
     transition: transform 0.7s ease;
 }
 
-.mail-input {
-    position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.47rem;
-    letter-spacing: 0.28vw;
-    color: #111111;
-    caret-color: #717171;
-    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
-    line-height: 1.2;
-    padding: 0.2rem 0;
-    border: none;
-    outline: none;
-    background: #ffffff;
-    cursor: text;
-    transition: transform 0.7s ease;
-    width: 52vw;
-}
-
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -428,7 +410,7 @@ body.non-fullscreen {
   .zero-items-container span,
   .index-input,
   .custom-text,
-  .mail-text       { font-size: 9px !important; }
+  .mail-text       { font-size: 9px !important;  pointer-events:auto; cursor:text; }
   .grid-number       { font-size: 6.1px   !important; }
 }
 
@@ -447,4 +429,24 @@ body.non-fullscreen {
     height: 1px;
     background-color: rgba(172, 172, 172, 0.841);
     z-index: 1;
+}
+
+
+
+.mail-input {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    font-size: 0.47rem;
+    letter-spacing: 0.28vw;
+    color: #111111;
+    caret-color: #717171;
+    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
+    line-height: 1.2;
+    padding: 0.2rem 0;
+    border: none;
+    outline: none;
+    background: #ffffff;
+    cursor: text;
+    transition: transform 0.7s ease;
+    width: 52vw;
 }

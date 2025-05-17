@@ -430,3 +430,21 @@ body.non-fullscreen {
     background-color: rgba(172, 172, 172, 0.841);
     z-index: 1;
 }
+
+
+/* Calendar grid styling */
+.calendar-grid {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.calendar-cell {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  font-size: 0.9rem;
+  background: #fafafa;
+}

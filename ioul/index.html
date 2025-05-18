@@ -82,12 +82,12 @@
       <span class="mail-text" style="position:absolute; top:41.6vh; left:91.1vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">SEnD</span>
 
       
-      <span class="account-text" style="position:absolute; top:35.4vh; left:36vw;">AccOUnT&nbsp;nAME</span>
-      <span class="account-text" style="position:absolute; top:35.4vh; left:86vw;">L1nK&nbsp;UP</span>
-      <span class="account-text right-flow" style="position:absolute; top:35.4vh; left:93.19vw;">0</span>
-      <span class="account-text" style="position:absolute; top:77vh; left:36vw; color:#111111;">. . .</span>
+      <span class="account-text" style="position:absolute; top:35.4vh; left:-24.00vw;">AccOUnT&nbsp;nAME</span>
+      <span class="account-text" style="position:absolute; top:35.4vh; left:26.00vw;">L1nK&nbsp;UP</span>
+      <span class="account-text right-flow" style="position:absolute; top:35.4vh; left:33.19vw;">0</span>
+      <span class="account-text" style="position:absolute; top:77vh; left:-24.00vw; color:#111111;">. . .</span>
 
-      <div class="line account-line" style="position:absolute; top:41.6vh; left:36vw; width:57.8vw; height:1px; background-color: rgba(230, 230, 230, 0.28);; z-index:1;"></div>
+      <div class="line account-line" style="position:absolute; top:41.6vh; left:-24.00vw; width:57.8vw; height:1px; background-color: rgba(230, 230, 230, 0.28);; z-index:1;"></div>
 
 
       <span class="grid-number num1">1</span>
@@ -646,6 +646,34 @@ document.addEventListener('DOMContentLoaded', () => {
       updateView();
     });
   });
+});
+</script>
+
+
+<script>
+// Account visibility based on viewport rectangle
+// Hide if center lies within left -40vw..36vw and top 28.5vh..84vh
+document.addEventListener('DOMContentLoaded', () => {
+  const accountEls = document.querySelectorAll('.account-text, .account-line');
+  const update = () => {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const leftMin = w * (-40 / 100);
+    const leftMax = w * (36 / 100);
+    const topMin = h * (28.5 / 100);
+    const topMax = h * (84 / 100);
+    accountEls.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const hidden = cx >= leftMin && cx <= leftMax && cy >= topMin && cy <= topMax;
+      el.style.opacity = hidden ? '0' : '';
+      el.style.pointerEvents = hidden ? 'none' : '';
+    });
+  };
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
 });
 </script>
 

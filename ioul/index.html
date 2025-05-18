@@ -714,13 +714,15 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 <!-- end account-slide-trigger -->
 
+
+
 <!-- account-visibility -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const HIDE_LEFT_MIN_VW = -40;
-  const HIDE_LEFT_MAX_VW = 36;
-  const HIDE_TOP_MIN_VW  = 28.5;
-  const HIDE_TOP_MAX_VW  = 84;
+  const HIDE_BAND_LEFT_MAX_VW = 36;   // right edge of hidden band
+  const HIDE_LEFT_MIN_VW = -40;       // not needed for right check but kept
+  const HIDE_TOP_MIN_VW = 28.5;
+  const HIDE_TOP_MAX_VW = 84;
 
   const targets = [
     ...document.querySelectorAll('.account-text'),
@@ -733,13 +735,14 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateVisibility() {
     targets.forEach(el => {
       const rect = el.getBoundingClientRect();
-      const leftVw = pxToVw(rect.left);
-      const topVh  = pxToVh(rect.top);
+      const rightVw = pxToVw(rect.right);   // right-most x
+      const topVh   = pxToVh(rect.top);
 
-      const hidden = (leftVw >= HIDE_LEFT_MIN_VW && leftVw <= HIDE_LEFT_MAX_VW &&
-                      topVh  >= HIDE_TOP_MIN_VW  && topVh  <= HIDE_TOP_MAX_VW);
+      // hide while the ENTIRE element is still inside the hidden band
+      const stillHiddenHoriz = rightVw <= HIDE_BAND_LEFT_MAX_VW;
+      const stillHiddenVert  = topVh >= HIDE_TOP_MIN_VW && topVh <= HIDE_TOP_MAX_VW;
 
-      if (hidden) {
+      if (stillHiddenHoriz && stillHiddenVert) {
         el.style.opacity = '0';
         el.style.pointerEvents = 'none';
       } else {
@@ -749,17 +752,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initial check
+  // initial check + listeners
   updateVisibility();
-
-  // Re‑check on resize and at end of any transition
   window.addEventListener('resize', updateVisibility);
-  targets.forEach(el => {
-    el.addEventListener('transitionend', updateVisibility);
-  });
+  targets.forEach(el => el.addEventListener('transitionend', updateVisibility));
 
-  // Also expose for other scripts (e.g., slide trigger) to call
-  window.updateAccountVisibility = updateVisibility;
+  window.updateAccountVisibility = updateVisibility; // make globally callable
 });
 </script>
 <!-- end account-visibility -->

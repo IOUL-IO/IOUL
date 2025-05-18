@@ -677,40 +677,64 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+
+
 <!-- account-slide-trigger -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const SLIDE_DISTANCE_VW = 60;   // distance to move (vw)
-  const TRIGGER_MIN_VW = 32.43;   // trigger band start
-  const TRIGGER_MAX_VW = 36;      // trigger band end
-  const DURATION_MS = 700;        // animation duration
+  const SLIDE_DISTANCE_VW = 60;      // move right by 60 vw
+  const TRIGGER_MIN_VW   = 32.43;    // click band start
+  const TRIGGER_MAX_VW   = 36;       // click band end
+  const DURATION_MS      = 700;      // animation length
 
   const pxToVw = px => px / (window.innerWidth / 100);
 
+  // Cache the targets and remember their ORIGINAL position
+  const targets = [
+    ...document.querySelectorAll('.account-text'),
+    document.querySelector('.account-line')
+  ].filter(Boolean);
+
+  targets.forEach(el => {
+    if (!el.dataset.initialLeftVw) {
+      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      el.dataset.initialLeftVw = pxToVw(leftPx);
+    }
+  });
+
+  let isAnimating = false;
+
   function slideRight() {
-    const targets = [
-      ...document.querySelectorAll('.account-text'),
-      document.querySelector('.account-line')
-    ].filter(Boolean);
+    if (isAnimating) return;                   // ignore rapid double‑clicks
+    if (targets[0]?.dataset.slid === 'true') return; // already slid? do nothing
+
+    isAnimating = true;
     targets.forEach(el => {
-      const leftPx = parseFloat(window.getComputedStyle(el).left);
-      const leftVw = pxToVw(leftPx);
+      const baseVw = parseFloat(el.dataset.initialLeftVw);
       el.style.transition = `left ${DURATION_MS}ms ease`;
-      el.style.left = (leftVw + SLIDE_DISTANCE_VW) + 'vw';
+      el.style.left       = (baseVw + SLIDE_DISTANCE_VW) + 'vw';
+      el.dataset.slid     = 'true';
     });
-    // Recalculate visibility of account elements after they move
-    window.dispatchEvent(new Event('resize'));
+
+    // Refresh the "clip/hide" logic once the movement ends
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+      isAnimating = false;
+    }, DURATION_MS);
   }
 
+  // Global click band 32.43‑36 vw
   document.addEventListener('click', evt => {
     const clickVw = pxToVw(evt.clientX);
     if (clickVw >= TRIGGER_MIN_VW && clickVw <= TRIGGER_MAX_VW) {
       slideRight();
     }
   });
-  const triggerEl = document.querySelector('.slide-trigger');
-  if (triggerEl) {
-    triggerEl.addEventListener('click', e => {
+
+  // Also wire the invisible hotspot element (if present)
+  const hotspot = document.querySelector('.slide-trigger');
+  if (hotspot) {
+    hotspot.addEventListener('click', e => {
       e.stopPropagation();
       slideRight();
     });

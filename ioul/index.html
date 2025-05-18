@@ -717,48 +717,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-<!-- account-visibility -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const HIDE_LEFT_BAND_MAX_VW = 36;     // hide until element's LEFT edge passes this
-  const HIDE_TOP_MIN_VH = 28.5;
-  const HIDE_TOP_MAX_VH = 84;
 
-  const targets = [
-    ...document.querySelectorAll('.account-text'),
-    document.querySelector('.account-line')
-  ].filter(Boolean);
-
-  const pxToVw = px => px / (window.innerWidth / 100);
-  const pxToVh = px => px / (window.innerHeight / 100);
-
-  function updateVisibility() {
-    targets.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const leftVw = pxToVw(rect.left);
-      const topVh  = pxToVh(rect.top);
-
-      const inBand = (leftVw <= HIDE_LEFT_BAND_MAX_VW &&
-                      topVh  >= HIDE_TOP_MIN_VH &&
-                      topVh  <= HIDE_TOP_MAX_VH);
-
-      el.style.opacity = inBand ? '0' : '';
-      el.style.pointerEvents = inBand ? 'none' : '';
-    });
-  }
-
-  // initial & resize
-  updateVisibility();
-  window.addEventListener('resize', updateVisibility);
-
-  // make callable from outside (slide script fires it at transitionend)
-  window.updateAccountVisibility = updateVisibility;
-
-  // ensure we un-hide precisely when each element finishes its left animation
-  targets.forEach(el => el.addEventListener('transitionend', updateVisibility));
-});
-</script>
-<!-- end account-visibility -->
 
 </body>
 </html>

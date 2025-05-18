@@ -192,7 +192,6 @@
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
-    <div class="slide-trigger-reverse"></div>
   </div>
 
   <script>
@@ -678,40 +677,38 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-
+<!-- account-slide-trigger -->
 <script>
-/* Inverse slide for account‑texts & account‑line (moves 60 vw right, toggle) */
 document.addEventListener('DOMContentLoaded', () => {
-  const accEls = document.querySelectorAll('.account-text, .account-line');
-  if (!accEls.length) return;
-  let slid = false;                           // toggle flag
+  const SLIDE_DISTANCE_VW = 60;   // distance to move (vw)
+  const TRIGGER_MIN_VW = 32.43;   // trigger band start
+  const TRIGGER_MAX_VW = 36;      // trigger band end
+  const DURATION_MS = 700;        // animation duration
 
-  const strip = document.querySelector('.slide-trigger-reverse');
-  if (!strip) return;
+  const pxToVw = px => px / (window.innerWidth / 100);
 
-  strip.addEventListener('click', e => {
-    e.stopPropagation();
-    accEls.forEach(el => {
-      if (!el.dataset.origLeft) {
-        /* Capture original left (vw) once */
-        const styleLeft = window.getComputedStyle(el).left;
-        el.dataset.origLeft = parseFloat(styleLeft) || 0;
-      }
-      const base = parseFloat(el.dataset.origLeft);
-      const target = slid ? base : base + 60;
-      el.style.left = `${target}vw`;
+  function slideRight() {
+    const targets = [
+      ...document.querySelectorAll('.account-text'),
+      document.querySelector('.account-line')
+    ].filter(Boolean);
+    targets.forEach(el => {
+      const leftPx = parseFloat(window.getComputedStyle(el).left);
+      const leftVw = pxToVw(leftPx);
+      el.style.transition = `left ${DURATION_MS}ms ease`;
+      el.style.left = (leftVw + SLIDE_DISTANCE_VW) + 'vw';
     });
+  }
 
-    slid = !slid;
-
-    /* Ask global update() (clipping refresher) to run after animation ends */
-    if (typeof update === 'function') {
-      setTimeout(update, 710); // 0.7 s = CSS transition duration + buffer
+  document.addEventListener('click', evt => {
+    const clickVw = pxToVw(evt.clientX);
+    if (clickVw >= TRIGGER_MIN_VW && clickVw <= TRIGGER_MAX_VW) {
+      slideRight();
     }
   });
 });
 </script>
-
+<!-- end account-slide-trigger -->
 
 </body>
 </html>

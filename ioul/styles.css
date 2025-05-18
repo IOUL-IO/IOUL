@@ -445,22 +445,3 @@ body.non-fullscreen {
 
 .hidden { display:none !important; }
 
-/* --- Added by ChatGPT on 2025‑05‑17 --- */
-/* Smooth slide for account elements */
-.account-text,
-.account-line {
-  transition: left 0.7s ease;
-}
-
-/* Inverse slide click strip: 32.43‑36 vw, full height */
-.slide-trigger-reverse{
-  position: fixed;
-  top: 0;
-  left: 32.43vw;
-  width: calc(36vw - 32.43vw);
-  height: 100vh;
-  background: transparent;
-  cursor: pointer;
-  pointer-events: auto;
-  z-index: 999;
-}

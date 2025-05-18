@@ -410,7 +410,8 @@ body.non-fullscreen {
   .zero-items-container span,
   .index-input,
   .custom-text,
-  .mail-text       { font-size: 9px !important; }
+  .mail-text,
+  .account-text       { font-size: 9px !important; }
   .grid-number       { font-size: 6.1px   !important; }
 }
 

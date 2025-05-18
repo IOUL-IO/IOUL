@@ -677,5 +677,80 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+
+<script>
+// Account visibility and slide sync
+document.addEventListener('DOMContentLoaded', () => {
+  const accountEls = document.querySelectorAll('.account-text, .account-line');
+
+  const VIEW_RECT = { leftMin:-40, leftMax:36, topMin:28.5, topMax:84 }; // in vw/vh
+  const shiftAmount = 60; // vw
+  let slidIn = false;
+
+  // store original left values
+  accountEls.forEach(el=>{
+    if(!el.dataset.baseLeft){
+      const m = /left:\s*([\-\d\.]+)vw/.exec(el.getAttribute('style')||'');
+      el.dataset.baseLeft = m ? m[1] : '';
+    }
+  });
+
+  const applyVisibility = () => {
+    const w = innerWidth, h = innerHeight;
+    const leftMin = w * (VIEW_RECT.leftMin/100);
+    const leftMax = w * (VIEW_RECT.leftMax/100);
+    const topMin = h * (VIEW_RECT.topMin/100);
+    const topMax = h * (VIEW_RECT.topMax/100);
+
+    accountEls.forEach(el=>{
+      const r = el.getBoundingClientRect();
+      const cx = r.left + r.width/2;
+      const cy = r.top  + r.height/2;
+      const hidden = cx >= leftMin && cx <= leftMax && cy >= topMin && cy <= topMax;
+      el.style.opacity = hidden ? '0' : '';
+      el.style.pointerEvents = hidden ? 'none' : '';
+    });
+  };
+
+  const shiftAccounts = (inward) => {
+    accountEls.forEach(el=>{
+      let baseLeft = parseFloat(el.dataset.baseLeft);
+      if(isNaN(baseLeft)) return;
+      el.style.transition = 'left 0.7s ease';
+      el.style.left = (baseLeft + (inward?shiftAmount:0)) + 'vw';
+    });
+    slidIn = inward;
+    setTimeout(applyVisibility, 750);
+  };
+
+  // Detect clicks that change slide state by monitoring heading-container first slide group
+  const headingGroup = document.querySelectorAll('.heading-container[data-slide-group="heading"]');
+
+  document.addEventListener('click', ()=>{
+    // after stack, compute if heading is slid in
+    setTimeout(()=>{
+      if(headingGroup.length===0) return;
+      const first = headingGroup[0];
+      const t = first.style.transform || getComputedStyle(first).transform;
+      // when slid out, transform contains translateX(-, negative) maybe -49vw => matrix
+      // Determine transform value by checking computed left offset relative to body
+      const slidNow = ( t==='' || t.includes('translateX(0') || t=='none');
+      if(slidNow && !slidIn){
+         shiftAccounts(true);
+      } else if(!slidNow && slidIn){
+         shiftAccounts(false);
+      }
+    }, 100);
+  });
+
+  // update visibility on scroll/resize
+  window.addEventListener('scroll', applyVisibility, {passive:true});
+  window.addEventListener('resize', applyVisibility);
+
+  // initial
+  applyVisibility();
+});
+</script>
+
 </body>
 </html>

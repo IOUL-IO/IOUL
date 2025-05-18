@@ -678,32 +678,34 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
+
+
+
 <!-- inverse-account-slide -->
-<script>
+<script id="inverse-account-slide-script">
 document.addEventListener('DOMContentLoaded', () => {
-  const inverseTrigger = document.querySelector('.slide-trigger-reverse');
-  if (!inverseTrigger) return;
   const slideDistance = 60; // vw
-  inverseTrigger.addEventListener('click', (e) => {
-    e.stopPropagation();
+
+  function triggerSlide() {
     const elements = [
       ...document.querySelectorAll('.account-text'),
       document.querySelector('.account-line')
     ].filter(Boolean);
 
     elements.forEach(el => {
-      // Record original position once
-      if (!el.dataset.originalLeftValue) {
-        el.dataset.originalLeftValue = window.getComputedStyle(el).left;
-      }
-
       const currentLeftPx = window.getComputedStyle(el).left;
       const vwPerPx = window.innerWidth / 100;
       const currentLeftVw = parseFloat(currentLeftPx) / vwPerPx;
-
       el.style.transition = 'left 0.7s ease';
       el.style.left = (currentLeftVw + slideDistance) + 'vw';
     });
+  }
+
+  document.addEventListener('click', (e) => {
+    const clickedVw = (e.clientX / window.innerWidth) * 100;
+    if (clickedVw >= 32.43 && clickedVw <= 36) {
+      triggerSlide();
+    }
   });
 });
 </script>

@@ -714,5 +714,55 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 <!-- end account-slide-trigger -->
 
+<!-- account-visibility -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const HIDE_LEFT_MIN_VW = -40;
+  const HIDE_LEFT_MAX_VW = 36;
+  const HIDE_TOP_MIN_VW  = 28.5;
+  const HIDE_TOP_MAX_VW  = 84;
+
+  const targets = [
+    ...document.querySelectorAll('.account-text'),
+    document.querySelector('.account-line')
+  ].filter(Boolean);
+
+  const pxToVw = px => px / (window.innerWidth / 100);
+  const pxToVh = px => px / (window.innerHeight / 100);
+
+  function updateVisibility() {
+    targets.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const leftVw = pxToVw(rect.left);
+      const topVh  = pxToVh(rect.top);
+
+      const hidden = (leftVw >= HIDE_LEFT_MIN_VW && leftVw <= HIDE_LEFT_MAX_VW &&
+                      topVh  >= HIDE_TOP_MIN_VW  && topVh  <= HIDE_TOP_MAX_VW);
+
+      if (hidden) {
+        el.style.opacity = '0';
+        el.style.pointerEvents = 'none';
+      } else {
+        el.style.opacity = '';
+        el.style.pointerEvents = '';
+      }
+    });
+  }
+
+  // Initial check
+  updateVisibility();
+
+  // Re‑check on resize and at end of any transition
+  window.addEventListener('resize', updateVisibility);
+  targets.forEach(el => {
+    el.addEventListener('transitionend', updateVisibility);
+  });
+
+  // Also expose for other scripts (e.g., slide trigger) to call
+  window.updateAccountVisibility = updateVisibility;
+});
+</script>
+<!-- end account-visibility -->
+
 </body>
 </html>

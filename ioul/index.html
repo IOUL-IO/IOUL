@@ -11,6 +11,17 @@
 .hidden { display:none !important; }
 </style>
 
+<!-- account-slide-style -->
+<style>
+.account-text, .account-line {
+  transition: transform 0.7s ease;
+  will-change: transform;
+}
+.account-slide-right {
+  transform: translateX(60vw);
+}
+</style>
+<!-- end account-slide-style -->
 </head>
 <body class="non-fullscreen">
 
@@ -682,11 +693,8 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- account-slide-trigger -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const SLIDE_DISTANCE_VW = 60;
   const BAND_MIN = 32.43;
   const BAND_MAX = 36;
-  const DURATION = 700;
-
   const pxToVw = px => px / (window.innerWidth / 100);
 
   const targets = [
@@ -694,52 +702,31 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.account-line')
   ].filter(Boolean);
 
-  // Record true initial left (in vw) using bounding box
-  targets.forEach(el => {
-    if (!el.dataset.initialLeftVw) {
-      const leftVw = pxToVw(el.getBoundingClientRect().left);
-      el.dataset.initialLeftVw = leftVw;
-    }
-  });
-
-  let moving = false;
+  let slid = false;
+  let isAnimating = false;
 
   function slideRight() {
-    if (moving) return;
-    if (targets[0]?.dataset.slid === 'true') return;
-
-    moving = true;
-
-    targets.forEach(el => {
-      const base = parseFloat(el.dataset.initialLeftVw);
-      // Establish explicit start point
-      el.style.left = base + 'vw';
-      // Force reflow
-      void el.offsetWidth;
-      // Animate
-      el.style.transition = `left ${DURATION}ms ease`;
-      el.style.left = (base + SLIDE_DISTANCE_VW) + 'vw';
-      el.dataset.slid = 'true';
-    });
-
-    setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
-      moving = false;
-    }, DURATION);
+    if (slid || isAnimating) return;
+    isAnimating = true;
+    targets.forEach(el => el.classList.add('account-slide-right'));
+    slid = true;
+    // Allow interaction after animation
+    setTimeout(() => { isAnimating = false; }, 700);
   }
 
-  document.addEventListener('click', e => {
+  document.addEventListener('click', (e) => {
     const vw = pxToVw(e.clientX);
     if (vw >= BAND_MIN && vw <= BAND_MAX) {
       slideRight();
     }
   });
-
   const hotspot = document.querySelector('.slide-trigger');
-  if (hotspot) hotspot.addEventListener('click', e => {
-    e.stopPropagation();
-    slideRight();
-  });
+  if (hotspot) {
+    hotspot.addEventListener('click', e => {
+      e.stopPropagation();
+      slideRight();
+    });
+  }
 });
 </script>
 <!-- end account-slide-trigger -->

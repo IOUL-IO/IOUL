@@ -689,7 +689,6 @@ document.addEventListener('DOMContentLoaded', () => {
     slid = true;
     targets.forEach(el => el.classList.add('account-slide-right'));
     // ensure elements become visible during slide
-    targets.forEach(el => { el.style.opacity = ''; el.style.pointerEvents = ''; });
     // Re-run any clip/visibility logic after animation
     setTimeout(() => window.dispatchEvent(new Event('resize')), 750);
   };
@@ -716,13 +715,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+
 <!-- account-visibility -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const HIDE_BAND_LEFT_MAX_VW = 36;   // right edge of hidden band
-  const HIDE_LEFT_MIN_VW = -40;       // not needed for right check but kept
-  const HIDE_TOP_MIN_VW = 28.5;
-  const HIDE_TOP_MAX_VW = 84;
+  const HIDE_LEFT_BAND_MAX_VW = 36;     // hide until element's LEFT edge passes this
+  const HIDE_TOP_MIN_VH = 28.5;
+  const HIDE_TOP_MAX_VH = 84;
 
   const targets = [
     ...document.querySelectorAll('.account-text'),
@@ -735,29 +735,27 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateVisibility() {
     targets.forEach(el => {
       const rect = el.getBoundingClientRect();
-      const rightVw = pxToVw(rect.right);   // right-most x
-      const topVh   = pxToVh(rect.top);
+      const leftVw = pxToVw(rect.left);
+      const topVh  = pxToVh(rect.top);
 
-      // hide while the ENTIRE element is still inside the hidden band
-      const stillHiddenHoriz = rightVw <= HIDE_BAND_LEFT_MAX_VW;
-      const stillHiddenVert  = topVh >= HIDE_TOP_MIN_VW && topVh <= HIDE_TOP_MAX_VW;
+      const inBand = (leftVw <= HIDE_LEFT_BAND_MAX_VW &&
+                      topVh  >= HIDE_TOP_MIN_VH &&
+                      topVh  <= HIDE_TOP_MAX_VH);
 
-      if (stillHiddenHoriz && stillHiddenVert) {
-        el.style.opacity = '0';
-        el.style.pointerEvents = 'none';
-      } else {
-        el.style.opacity = '';
-        el.style.pointerEvents = '';
-      }
+      el.style.opacity = inBand ? '0' : '';
+      el.style.pointerEvents = inBand ? 'none' : '';
     });
   }
 
-  // initial check + listeners
+  // initial & resize
   updateVisibility();
   window.addEventListener('resize', updateVisibility);
-  targets.forEach(el => el.addEventListener('transitionend', updateVisibility));
 
-  window.updateAccountVisibility = updateVisibility; // make globally callable
+  // make callable from outside (slide script fires it at transitionend)
+  window.updateAccountVisibility = updateVisibility;
+
+  // ensure we un-hide precisely when each element finishes its left animation
+  targets.forEach(el => el.addEventListener('transitionend', updateVisibility));
 });
 </script>
 <!-- end account-visibility -->

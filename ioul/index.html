@@ -678,33 +678,32 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
+<!-- inverse-account-slide -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const accountTexts = document.querySelectorAll('.account-text');
-  const accountLine = document.querySelector('.account-line');
   const inverseTrigger = document.querySelector('.slide-trigger-reverse');
   if (!inverseTrigger) return;
-
+  const slideDistance = 60; // vw
   inverseTrigger.addEventListener('click', (e) => {
     e.stopPropagation();
+    const elements = [
+      ...document.querySelectorAll('.account-text'),
+      document.querySelector('.account-line')
+    ].filter(Boolean);
 
-    accountTexts.forEach(el => {
-      if (!el.dataset.originalLeft) {
-        el.dataset.originalLeft = el.style.left || '0vw';
+    elements.forEach(el => {
+      // Record original position once
+      if (!el.dataset.originalLeftValue) {
+        el.dataset.originalLeftValue = window.getComputedStyle(el).left;
       }
-      const currentLeft = parseFloat(el.style.left || el.dataset.originalLeft);
+
+      const currentLeftPx = window.getComputedStyle(el).left;
+      const vwPerPx = window.innerWidth / 100;
+      const currentLeftVw = parseFloat(currentLeftPx) / vwPerPx;
+
       el.style.transition = 'left 0.7s ease';
-      el.style.left = (currentLeft + 60) + 'vw';
+      el.style.left = (currentLeftVw + slideDistance) + 'vw';
     });
-
-    if (accountLine) {
-      if (!accountLine.dataset.originalLeft) {
-        accountLine.dataset.originalLeft = accountLine.style.left || '0vw';
-      }
-      const currentLeftLine = parseFloat(accountLine.style.left || accountLine.dataset.originalLeft);
-      accountLine.style.transition = 'left 0.7s ease';
-      accountLine.style.left = (currentLeftLine + 60) + 'vw';
-    }
   });
 });
 </script>

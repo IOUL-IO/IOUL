@@ -192,6 +192,7 @@
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
+    <div class="slide-trigger-reverse"></div>
   </div>
 
   <script>
@@ -678,37 +679,39 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
-
-
-
-<!-- inverse-account-slide -->
-<script id="inverse-account-slide-script">
+<script>
+/* Inverse slide for account‑texts & account‑line (moves 60 vw right, toggle) */
 document.addEventListener('DOMContentLoaded', () => {
-  const slideDistance = 60; // vw
+  const accEls = document.querySelectorAll('.account-text, .account-line');
+  if (!accEls.length) return;
+  let slid = false;                           // toggle flag
 
-  function triggerSlide() {
-    const elements = [
-      ...document.querySelectorAll('.account-text'),
-      document.querySelector('.account-line')
-    ].filter(Boolean);
+  const strip = document.querySelector('.slide-trigger-reverse');
+  if (!strip) return;
 
-    elements.forEach(el => {
-      const currentLeftPx = window.getComputedStyle(el).left;
-      const vwPerPx = window.innerWidth / 100;
-      const currentLeftVw = parseFloat(currentLeftPx) / vwPerPx;
-      el.style.transition = 'left 0.7s ease';
-      el.style.left = (currentLeftVw + slideDistance) + 'vw';
+  strip.addEventListener('click', e => {
+    e.stopPropagation();
+    accEls.forEach(el => {
+      if (!el.dataset.origLeft) {
+        /* Capture original left (vw) once */
+        const styleLeft = window.getComputedStyle(el).left;
+        el.dataset.origLeft = parseFloat(styleLeft) || 0;
+      }
+      const base = parseFloat(el.dataset.origLeft);
+      const target = slid ? base : base + 60;
+      el.style.left = `${target}vw`;
     });
-  }
 
-  document.addEventListener('click', (e) => {
-    const clickedVw = (e.clientX / window.innerWidth) * 100;
-    if (clickedVw >= 32.43 && clickedVw <= 36) {
-      triggerSlide();
+    slid = !slid;
+
+    /* Ask global update() (clipping refresher) to run after animation ends */
+    if (typeof update === 'function') {
+      setTimeout(update, 710); // 0.7 s = CSS transition duration + buffer
     }
   });
 });
 </script>
+
 
 </body>
 </html>

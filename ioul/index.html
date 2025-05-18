@@ -681,29 +681,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const accEls = document.querySelectorAll('.account-text, .account-line');
-  if (!accEls.length) return;
-  let slid = false;
+// Inverse slide trigger: moves account texts and lines by +60vw relative to their original inline left
+const accEls = document.querySelectorAll('.account-text, .account-line');
+let slid = false;
 
-  // Attach to all reverse triggers
-  document.querySelectorAll('.slide-trigger-reverse').forEach(strip => {
-    strip.addEventListener('click', e => {
-      e.stopPropagation();
-      accEls.forEach(el => {
-        if (!el.dataset.origLeft) {
-          const styleLeft = window.getComputedStyle(el).left;
-          el.dataset.origLeft = parseFloat(styleLeft) || 0;
-        }
-        const base = parseFloat(el.dataset.origLeft);
-        const target = slid ? base : base + 60;
-        el.style.left = `${target}vw`;
-      });
-      slid = !slid;
-      if (typeof update === 'function') {
-        setTimeout(update, 710);
+document.querySelectorAll('.slide-trigger-reverse').forEach(strip => {
+  strip.addEventListener('click', e => {
+    e.stopPropagation();
+
+    accEls.forEach(el => {
+      // Record the original inline-left (in vw) once
+      if (!el.dataset.origLeft) {
+        const leftValue = el.style.left; // e.g., "-24.00vw"
+        el.dataset.origLeft = parseFloat(leftValue) || 0;
       }
+      const base   = parseFloat(el.dataset.origLeft);
+      const target = slid ? base : base + 60;
+      el.style.left = `${target}vw`;
     });
+
+    slid = !slid;
+
+    // If there's an update() function to handle clipping, call it
+    if (typeof window.update === 'function') {
+      setTimeout(window.update, 710);
+    }
   });
 });
 </script>

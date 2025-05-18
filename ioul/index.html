@@ -683,9 +683,9 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const SLIDE_DISTANCE_VW = 60;
-  const TRIGGER_MIN_VW = 32.43;
-  const TRIGGER_MAX_VW = 36;
-  const DURATION_MS = 700;
+  const BAND_MIN = 32.43;
+  const BAND_MAX = 36;
+  const DURATION = 700;
 
   const pxToVw = px => px / (window.innerWidth / 100);
 
@@ -694,41 +694,43 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.account-line')
   ].filter(Boolean);
 
+  // Record true initial left (in vw) using bounding box
   targets.forEach(el => {
     if (!el.dataset.initialLeftVw) {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-      el.dataset.initialLeftVw = pxToVw(leftPx);
+      const leftVw = pxToVw(el.getBoundingClientRect().left);
+      el.dataset.initialLeftVw = leftVw;
     }
   });
 
-  let isAnimating = false;
+  let moving = false;
 
   function slideRight() {
-    if (isAnimating) return;
+    if (moving) return;
     if (targets[0]?.dataset.slid === 'true') return;
 
-    isAnimating = true;
+    moving = true;
 
     targets.forEach(el => {
-      const baseVw = parseFloat(el.dataset.initialLeftVw);
-      el.style.left = baseVw + 'vw';     // set start
-      void el.offsetWidth;               // force reflow
-      el.style.transition = `left ${DURATION_MS}ms ease`;
-      requestAnimationFrame(() => {
-        el.style.left = (baseVw + SLIDE_DISTANCE_VW) + 'vw';
-      });
+      const base = parseFloat(el.dataset.initialLeftVw);
+      // Establish explicit start point
+      el.style.left = base + 'vw';
+      // Force reflow
+      void el.offsetWidth;
+      // Animate
+      el.style.transition = `left ${DURATION}ms ease`;
+      el.style.left = (base + SLIDE_DISTANCE_VW) + 'vw';
       el.dataset.slid = 'true';
     });
 
     setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
-      isAnimating = false;
-    }, DURATION_MS);
+      moving = false;
+    }, DURATION);
   }
 
   document.addEventListener('click', e => {
-    const clickVw = pxToVw(e.clientX);
-    if (clickVw >= TRIGGER_MIN_VW && clickVw <= TRIGGER_MAX_VW) {
+    const vw = pxToVw(e.clientX);
+    if (vw >= BAND_MIN && vw <= BAND_MAX) {
       slideRight();
     }
   });

@@ -192,7 +192,6 @@
   <div class="slide-triggers">
     <div class="slide-trigger"></div>
     <div class="slide-trigger-reverse"></div>
-    <div class="slide-trigger-reverse"></div>
   </div>
 
   <script>
@@ -678,39 +677,47 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-
-
+<!-- account-slide-trigger -->
 <script>
-// Inverse slide trigger: moves account texts and lines by +60vw relative to their original inline left
-const accEls = document.querySelectorAll('.account-text, .account-line');
-let slid = false;
+document.addEventListener('DOMContentLoaded', () => {
+  const SLIDE_DISTANCE_VW = 60;   // distance to move (vw)
+  const TRIGGER_MIN_VW = 32.43;   // trigger band start
+  const TRIGGER_MAX_VW = 36;      // trigger band end
+  const DURATION_MS = 700;        // animation duration
 
-document.querySelectorAll('.slide-trigger-reverse').forEach(strip => {
-  strip.addEventListener('click', e => {
-    e.stopPropagation();
+  const pxToVw = px => px / (window.innerWidth / 100);
 
-    accEls.forEach(el => {
-      // Record the original inline-left (in vw) once
-      if (!el.dataset.origLeft) {
-        const leftValue = el.style.left; // e.g., "-24.00vw"
-        el.dataset.origLeft = parseFloat(leftValue) || 0;
-      }
-      const base   = parseFloat(el.dataset.origLeft);
-      const target = slid ? base : base + 60;
-      el.style.left = `${target}vw`;
+  function slideRight() {
+    const targets = [
+      ...document.querySelectorAll('.account-text'),
+      document.querySelector('.account-line')
+    ].filter(Boolean);
+    targets.forEach(el => {
+      const leftPx = parseFloat(window.getComputedStyle(el).left);
+      const leftVw = pxToVw(leftPx);
+      el.style.transition = `left ${DURATION_MS}ms ease`;
+      el.style.left = (leftVw + SLIDE_DISTANCE_VW) + 'vw';
     });
+    // Recalculate visibility of account elements after they move
+    window.dispatchEvent(new Event('resize'));
+  }
 
-    slid = !slid;
-
-    // If there's an update() function to handle clipping, call it
-    if (typeof window.update === 'function') {
-      setTimeout(window.update, 710);
+  document.addEventListener('click', evt => {
+    const clickVw = pxToVw(evt.clientX);
+    if (clickVw >= TRIGGER_MIN_VW && clickVw <= TRIGGER_MAX_VW) {
+      slideRight();
     }
   });
+  const triggerEl = document.querySelector('.slide-trigger');
+  if (triggerEl) {
+    triggerEl.addEventListener('click', e => {
+      e.stopPropagation();
+      slideRight();
+    });
+  }
 });
 </script>
-
-
+<!-- end account-slide-trigger -->
 
 </body>
 </html>

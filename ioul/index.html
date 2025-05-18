@@ -665,32 +665,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
-<script>
-// Account visibility based on viewport rectangle
-// Hide if center lies within left -40vw..36vw and top 28.5vh..84vh
-document.addEventListener('DOMContentLoaded', () => {
-  const accountEls = document.querySelectorAll('.account-text, .account-line');
-  const update = () => {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    const leftMin = w * (-40 / 100);
-    const leftMax = w * (36 / 100);
-    const topMin = h * (28.5 / 100);
-    const topMax = h * (84 / 100);
-    accountEls.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      const hidden = cx >= leftMin && cx <= leftMax && cy >= topMin && cy <= topMax;
-      el.style.opacity = hidden ? '0' : '';
-      el.style.pointerEvents = hidden ? 'none' : '';
-    });
-  };
-  update();
-  window.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', update);
-});
-</script>
+
 
 
 
@@ -713,6 +688,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (slid) return;
     slid = true;
     targets.forEach(el => el.classList.add('account-slide-right'));
+    // ensure elements become visible during slide
+    targets.forEach(el => { el.style.opacity = ''; el.style.pointerEvents = ''; });
     // Re-run any clip/visibility logic after animation
     setTimeout(() => window.dispatchEvent(new Event('resize')), 750);
   };

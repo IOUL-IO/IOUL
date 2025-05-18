@@ -682,14 +682,13 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- account-slide-trigger -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const SLIDE_DISTANCE_VW = 60;      // move right by 60 vw
-  const TRIGGER_MIN_VW   = 32.43;    // click band start
-  const TRIGGER_MAX_VW   = 36;       // click band end
-  const DURATION_MS      = 700;      // animation length
+  const SLIDE_DISTANCE_VW = 60;
+  const TRIGGER_MIN_VW = 32.43;
+  const TRIGGER_MAX_VW = 36;
+  const DURATION_MS = 700;
 
   const pxToVw = px => px / (window.innerWidth / 100);
 
-  // Cache the targets and remember their ORIGINAL position
   const targets = [
     ...document.querySelectorAll('.account-text'),
     document.querySelector('.account-line')
@@ -705,40 +704,40 @@ document.addEventListener('DOMContentLoaded', () => {
   let isAnimating = false;
 
   function slideRight() {
-    if (isAnimating) return;                   // ignore rapid double‑clicks
-    if (targets[0]?.dataset.slid === 'true') return; // already slid? do nothing
+    if (isAnimating) return;
+    if (targets[0]?.dataset.slid === 'true') return;
 
     isAnimating = true;
+
     targets.forEach(el => {
       const baseVw = parseFloat(el.dataset.initialLeftVw);
+      el.style.left = baseVw + 'vw';     // set start
+      void el.offsetWidth;               // force reflow
       el.style.transition = `left ${DURATION_MS}ms ease`;
-      el.style.left       = (baseVw + SLIDE_DISTANCE_VW) + 'vw';
-      el.dataset.slid     = 'true';
+      requestAnimationFrame(() => {
+        el.style.left = (baseVw + SLIDE_DISTANCE_VW) + 'vw';
+      });
+      el.dataset.slid = 'true';
     });
 
-    // Refresh the "clip/hide" logic once the movement ends
     setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
       isAnimating = false;
     }, DURATION_MS);
   }
 
-  // Global click band 32.43‑36 vw
-  document.addEventListener('click', evt => {
-    const clickVw = pxToVw(evt.clientX);
+  document.addEventListener('click', e => {
+    const clickVw = pxToVw(e.clientX);
     if (clickVw >= TRIGGER_MIN_VW && clickVw <= TRIGGER_MAX_VW) {
       slideRight();
     }
   });
 
-  // Also wire the invisible hotspot element (if present)
   const hotspot = document.querySelector('.slide-trigger');
-  if (hotspot) {
-    hotspot.addEventListener('click', e => {
-      e.stopPropagation();
-      slideRight();
-    });
-  }
+  if (hotspot) hotspot.addEventListener('click', e => {
+    e.stopPropagation();
+    slideRight();
+  });
 });
 </script>
 <!-- end account-slide-trigger -->

@@ -11,17 +11,21 @@
 .hidden { display:none !important; }
 </style>
 
+
 <!-- account-slide-style -->
 <style>
-.account-text, .account-line {
+.account-text,
+.account-line {
   transition: transform 0.7s ease;
   will-change: transform;
 }
+
 .account-slide-right {
   transform: translateX(60vw);
 }
 </style>
 <!-- end account-slide-style -->
+
 </head>
 <body class="non-fullscreen">
 
@@ -690,12 +694,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+
 <!-- account-slide-trigger -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const BAND_MIN = 32.43;
-  const BAND_MAX = 36;
-  const pxToVw = px => px / (window.innerWidth / 100);
+  const BAND_MIN_VW = 32.43;
+  const BAND_MAX_VW = 36;
 
   const targets = [
     ...document.querySelectorAll('.account-text'),
@@ -703,28 +708,29 @@ document.addEventListener('DOMContentLoaded', () => {
   ].filter(Boolean);
 
   let slid = false;
-  let isAnimating = false;
 
-  function slideRight() {
-    if (slid || isAnimating) return;
-    isAnimating = true;
-    targets.forEach(el => el.classList.add('account-slide-right'));
+  const slideOnce = () => {
+    if (slid) return;
     slid = true;
-    // Allow interaction after animation
-    setTimeout(() => { isAnimating = false; }, 700);
-  }
+    targets.forEach(el => el.classList.add('account-slide-right'));
+    // Re-run any clip/visibility logic after animation
+    setTimeout(() => window.dispatchEvent(new Event('resize')), 750);
+  };
 
-  document.addEventListener('click', (e) => {
-    const vw = pxToVw(e.clientX);
-    if (vw >= BAND_MIN && vw <= BAND_MAX) {
-      slideRight();
+  // Global click band
+  document.addEventListener('click', e => {
+    const clickVw = (e.clientX / window.innerWidth) * 100;
+    if (clickVw >= BAND_MIN_VW && clickVw <= BAND_MAX_VW) {
+      slideOnce();
     }
   });
+
+  // Optional explicit hotspot
   const hotspot = document.querySelector('.slide-trigger');
   if (hotspot) {
     hotspot.addEventListener('click', e => {
       e.stopPropagation();
-      slideRight();
+      slideOnce();
     });
   }
 });

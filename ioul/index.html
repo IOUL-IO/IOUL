@@ -669,79 +669,80 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- account-slide-and-visibility -->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const HIDE_MIN = 6.37;
-const HIDE_MAX = 28.86;
-const TOP_MIN = 28.5;
-const TOP_MAX = 84;
-const CLICK_MIN = 32.43;
-const CLICK_MAX = 36;
-const DISTANCE = 60;
-const DURATION = 700;
+document.addEventListener('DOMContentLoaded', function() {
+  var TOP_MIN = 28.5;
+  var TOP_MAX = 84;
+  var CLICK_MIN = 32.43;
+  var CLICK_MAX = 36;
+  var DISTANCE = 60;
+  var DURATION = 700;
+  var HIDE_THRESHOLD = 36; // vw threshold: show account elements once crossing right of 36vw
 
-  const pxToVw = px => px/(window.innerWidth/100);
-  const pxToVh = px => px/(window.innerHeight/100);
+  var pxToVw = function(px) { return px / (window.innerWidth / 100); };
+  var pxToVh = function(px) { return px / (window.innerHeight / 100); };
 
-  const targets = [
-    ...document.querySelectorAll('.account-text'),
-    document.querySelector('.account-line')
-  ].filter(Boolean);
+  var targets = Array.prototype.slice.call(
+    document.querySelectorAll('.account-text')
+  );
+  var line = document.querySelector('.account-line');
+  if (line) targets.push(line);
 
-  // Capture base left positions
-  targets.forEach(el => {
+  // Capture base left positions in vw
+  targets.forEach(function(el) {
     if (!el.dataset.baseLeftVw) {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      var leftPx = parseFloat(getComputedStyle(el).left) || 0;
       el.dataset.baseLeftVw = pxToVw(leftPx);
     }
   });
 
   function updateVisibility() {
-    targets.forEach(el => {
-      const rect     = el.getBoundingClientRect();
-      const leftVw   = pxToVw(rect.left);
-      const rightVw  = pxToVw(rect.right);
-      const topVh    = pxToVh(rect.top);
+    targets.forEach(function(el) {
+      var rect = el.getBoundingClientRect();
+      var rightVw = pxToVw(rect.right);
+      var topVh = pxToVh(rect.top);
 
-      const hideHorizontally = leftVw <= HIDE_MAX && rightVw >= HIDE_MIN;
-      const hideVertically   = topVh  >= TOP_MIN  && topVh <= TOP_MAX;
-      const hide             = hideHorizontally && hideVertically;
+      var hideVertically = topVh >= TOP_MIN && topVh <= TOP_MAX;
+      var hideHorizontally = rightVw <= HIDE_THRESHOLD;
+      var hide = hideHorizontally && hideVertically;
 
-      el.style.opacity       = hide ? '0' : '';
+      el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
   }
+
   updateVisibility();
   window.addEventListener('resize', updateVisibility);
 
-  let sliding = false;
-
+  var sliding = false;
   function slideOnce() {
-    if (sliding || targets[0]?.dataset.slid === 'true') return;
+    if (sliding || targets[0].dataset.slid === 'true') return;
     sliding = true;
-    targets.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
+    targets.forEach(function(el) {
+      var base = parseFloat(el.dataset.baseLeftVw);
       el.style.left = base + 'vw';
       void el.offsetWidth;
-      el.style.transition = `left ${DURATION}ms ease`;
+      el.style.transition = 'left ' + DURATION + 'ms ease';
       el.style.left = (base + DISTANCE) + 'vw';
       el.dataset.slid = 'true';
     });
-
-    const poll = setInterval(updateVisibility, 20);
-    setTimeout(() => {
+    var poll = setInterval(updateVisibility, 20);
+    setTimeout(function() {
       clearInterval(poll);
       updateVisibility();
       sliding = false;
     }, DURATION);
   }
 
-  document.addEventListener('click', e => {
-    const vw = pxToVw(e.clientX);
+  document.addEventListener('click', function(e) {
+    var vw = pxToVw(e.clientX);
     if (vw >= CLICK_MIN && vw <= CLICK_MAX) slideOnce();
   });
 
-  document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
-    el.addEventListener('click', e => { e.stopPropagation(); slideOnce(); });
+  document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.stopPropagation();
+      slideOnce();
+    });
   });
 });
 </script>

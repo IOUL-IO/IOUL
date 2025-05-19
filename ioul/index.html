@@ -671,14 +671,13 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const HIDE_MIN = 6.37;
-const HIDE_MAX = 28.86;
-const TOP_MIN = 28.5;
-const TOP_MAX = 84;
-const CLICK_MIN = 32.43;
-const CLICK_MAX = 36;
-const DISTANCE = 60;
-const DURATION = 700;
-
+  const HIDE_MAX = 28.86;
+  const TOP_MIN = 28.5;
+  const TOP_MAX = 84;
+  const CLICK_MIN = 32.43;
+  const CLICK_MAX = 36;
+  const DISTANCE = 60;
+  const DURATION = 700;
   const pxToVw = px => px/(window.innerWidth/100);
   const pxToVh = px => px/(window.innerHeight/100);
 
@@ -687,7 +686,7 @@ const DURATION = 700;
     document.querySelector('.account-line')
   ].filter(Boolean);
 
-  // Capture base left positions
+  // Capture base positions (vw)
   targets.forEach(el => {
     if (!el.dataset.baseLeftVw) {
       const leftPx = parseFloat(getComputedStyle(el).left) || 0;
@@ -700,7 +699,13 @@ const DURATION = 700;
       const rect = el.getBoundingClientRect();
       const leftVw = pxToVw(rect.left);
       const topVh = pxToVh(rect.top);
-            const hide = leftVw >= HIDE_MIN && leftVw <= HIDE_MAX && topVh >= TOP_MIN && topVh <= TOP_MAX;
+      let hide;
+      if (el.classList.contains('account-line')) {
+        hide = leftVw >= HIDE_MIN && leftVw <= HIDE_MAX;
+      } else {
+        hide = leftVw >= HIDE_MIN && leftVw <= HIDE_MAX &&
+               topVh >= TOP_MIN && topVh <= TOP_MAX;
+      }
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -722,7 +727,6 @@ const DURATION = 700;
       el.style.left = (base + DISTANCE) + 'vw';
       el.dataset.slid = 'true';
     });
-
     const poll = setInterval(updateVisibility, 20);
     setTimeout(() => {
       clearInterval(poll);
@@ -736,9 +740,8 @@ const DURATION = 700;
     if (vw >= CLICK_MIN && vw <= CLICK_MAX) slideOnce();
   });
 
-  document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
-    el.addEventListener('click', e => { e.stopPropagation(); slideOnce(); });
-  });
+  document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container')
+    .forEach(el => el.addEventListener('click', e => { e.stopPropagation(); slideOnce(); }));
 });
 </script>
 <!-- end account-slide-and-visibility -->

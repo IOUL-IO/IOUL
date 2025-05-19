@@ -667,38 +667,79 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
-
-<!-- account-slide-script -->
+<!-- account-slide-and-visibility -->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const pxToVw = px => px / (window.innerWidth / 100);
-  const CLICK_MIN_VW = 32.43, CLICK_MAX_VW = 36, DISTANCE_VW = 60, DURATION_MS = 700;
-  const targets = [...document.querySelectorAll('.account-text'), document.querySelector('.account-line')].filter(Boolean);
+  // Constants
+  const HIDE_MIN = 6.37, HIDE_MAX = 28.86;
+  const TOP_MIN  = 11,   TOP_MAX  = 40;
+  const SLIDE_AMOUNT = 60;       // in vw
+  const SLIDE_DURATION = 700;    // ms
+
+  // Helpers
+  const pxToVw = px => (px / window.innerWidth) * 100;
+  const pxToVh = px => (px / window.innerHeight) * 100;
+
+  // Targets
+  const targets = [
+    ...document.querySelectorAll('.account-text'),
+    document.querySelector('.account-line'),
+  ];
+
+  // Visibility check hides when any part overlaps the hide band
+  function updateVisibility() {
+    targets.forEach(el => {
+      const rect     = el.getBoundingClientRect();
+      const leftVw   = pxToVw(rect.left);
+      const rightVw  = pxToVw(rect.right);
+      const topVh    = pxToVh(rect.top);
+
+      const hideH = leftVw <= HIDE_MAX && rightVw >= HIDE_MIN;
+      const hideV = topVh  >= TOP_MIN  && topVh   <= TOP_MAX;
+      const hide  = hideH && hideV;
+
+      el.style.opacity       = hide ? '0' : '';
+      el.style.pointerEvents = hide ? 'none' : '';
+    });
+  }
+
+  // Initial visibility and resize listener
+  updateVisibility();
+  window.addEventListener('resize', updateVisibility);
+
+  // Sliding logic with continuous visibility updates
+  const slideInTrigger  = document.querySelector('.hover-area');
+  const slideOutTrigger = document.querySelector('.inverse-hover-area');
   let sliding = false;
-  targets.forEach(el => {
-    const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-    el.dataset.startVw = pxToVw(leftPx);
-  });
-  function slideOnce() {
+
+  function startSlide(direction) {
     if (sliding) return;
     sliding = true;
+
+    // Continuous update loop
+    function tick() {
+      updateVisibility();
+      if (sliding) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    // Move elements
     targets.forEach(el => {
-      const base = parseFloat(el.dataset.startVw);
-      el.style.left = base + 'vw';
-      void el.offsetWidth;
-      el.style.transition = `left ${DURATION_MS}ms ease`;
-      el.style.left = (base + DISTANCE_VW) + 'vw';
+      const curLeft = pxToVw(el.getBoundingClientRect().left);
+      const op      = direction > 0 ? '+' : '-';
+      el.style.left = `calc(${curLeft}vw ${op} ${SLIDE_AMOUNT}vw)`;
     });
-    setTimeout(() => { sliding = false; }, DURATION_MS);
+
+    // End slide after duration
+    setTimeout(() => {
+      sliding = false;
+      updateVisibility();
+    }, SLIDE_DURATION);
   }
-  document.addEventListener('click', e => {
-    const vw = pxToVw(e.clientX);
-    if (vw >= CLICK_MIN_VW && vw <= CLICK_MAX_VW) slideOnce();
-  });
-});
+
+  slideInTrigger.addEventListener('mouseenter', () => startSlide(1));
+  slideOutTrigger.addEventListener('mouseenter', () => startSlide(-1));
 </script>
-<!-- end account-slide-script -->
+<!-- end account-slide-and-visibility -->
 
 </body>
 </html>

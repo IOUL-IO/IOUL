@@ -1,3 +1,4 @@
+
 .account-text {
   position: absolute;
   display: inline-block;
@@ -458,20 +459,8 @@ body.non-fullscreen {
   z-index: 9999;               /* above account texts */
 }
 
-/* Smooth slide */
-.account-text, .account-line {
+/* Ensure account text and line slide smoothly */
+.account-text,
+.account-line {
   transition: left 0.7s ease;
-}
-
-/* Clip area: hide elements within 6.37–28.86 vw and 28.5–84 vh */
-body::before {
-  content: "";
-  position: fixed !important;
-  top: 28.5vh !important;
-  left: 6.37vw !important;
-  width: 22.49vw !important; /* 28.86 - 6.37 */
-  height: 55.5vh !important; /* 84 - 28.5 */
-  background: #ffffff !important;
-  pointer-events: none !important;
-  z-index: 2147483647 !important;
 }

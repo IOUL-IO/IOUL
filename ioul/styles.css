@@ -458,9 +458,3 @@ body.non-fullscreen {
   pointer-events: none;
   z-index: 9999;               /* above account texts */
 }
-
-/* Ensure account text and line slide smoothly */
-.account-text,
-.account-line {
-  transition: left 0.7s ease;
-}

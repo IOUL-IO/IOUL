@@ -678,15 +678,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const CLICK_MAX = 36;
   const DISTANCE = 60;
   const DURATION = 700;
-  const pxToVw = px => px/(window.innerWidth/100);
-  const pxToVh = px => px/(window.innerHeight/100);
+  const pxToVw = px => px / (window.innerWidth / 100);
+  const pxToVh = px => px / (window.innerHeight / 100);
 
   const targets = [
     ...document.querySelectorAll('.account-text'),
     document.querySelector('.account-line')
   ].filter(Boolean);
 
-  // Capture base positions (vw)
+  // Store base left positions in vw
   targets.forEach(el => {
     if (!el.dataset.baseLeftVw) {
       const leftPx = parseFloat(getComputedStyle(el).left) || 0;
@@ -694,27 +694,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  
   function updateVisibility() {
     targets.forEach(el => {
       const rect = el.getBoundingClientRect();
       const leftVw = pxToVw(rect.left);
       const rightVw = pxToVw(rect.right);
       const topVh = pxToVh(rect.top);
-      let hide;
+      let hide = false;
       if (el.classList.contains('account-line')) {
-        // hide until the line's right edge passes HIDE_MAX
+        // hide line while its RIGHT edge is <= HIDE_MAX
         hide = rightVw <= HIDE_MAX;
       } else {
-        // hide account-texts only within the exact band
-        hide = leftVw >= HIDE_MIN && leftVw <= HIDE_MAX &&
+        // hide texts while overlapping the horizontal band AND vertical band
+        hide = rightVw > HIDE_MIN && leftVw < HIDE_MAX &&
                topVh >= TOP_MIN && topVh <= TOP_MAX;
       }
-      el.style.opacity = hide ? '0' : '';
-      el.style.pointerEvents = hide ? 'none' : '';
-    });
-  }
-
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -729,11 +723,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sliding || targets[0]?.dataset.slid === 'true') return;
     sliding = true;
     targets.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.left = base + 'vw';
+      const baseVw = parseFloat(el.dataset.baseLeftVw);
+      el.style.left = baseVw + 'vw';
       void el.offsetWidth;
       el.style.transition = `left ${DURATION}ms ease`;
-      el.style.left = (base + DISTANCE) + 'vw';
+      el.style.left = (baseVw + DISTANCE) + 'vw';
       el.dataset.slid = 'true';
     });
     const poll = setInterval(updateVisibility, 20);

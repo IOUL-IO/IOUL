@@ -712,14 +712,44 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <!-- end account-slide-trigger -->
+<!-- account-visibility -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const HIDE_LEFT_MAX_VW = 36;      // hide until left edge passes 36vw
+  const HIDE_TOP_MIN_VH  = 28.5;
+  const HIDE_TOP_MAX_VH  = 84;
 
+  const targets = [
+    ...document.querySelectorAll('.account-text'),
+    document.querySelector('.account-line')
+  ].filter(Boolean);
 
+  const pxToVw = px => px / (window.innerWidth / 100);
+  const pxToVh = px => px / (window.innerHeight / 100);
 
+  function updateVisibility() {
+    targets.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const leftVw = pxToVw(rect.left);
+      const topVh  = pxToVh(rect.top);
 
+      const mustHide = (leftVw <= HIDE_LEFT_MAX_VW &&
+                        topVh >= HIDE_TOP_MIN_VH && topVh <= HIDE_TOP_MAX_VH);
 
+      el.style.opacity = mustHide ? '0' : '';
+      el.style.pointerEvents = mustHide ? 'none' : '';
+    });
+  }
 
+  updateVisibility();
+  window.addEventListener('resize', updateVisibility);
+  targets.forEach(el => el.addEventListener('transitionend', updateVisibility));
 
-  <div class="account-mask"></div>
+  // expose globally
+  window.updateAccountVisibility = updateVisibility;
+});
+</script>
+<!-- end account-visibility -->
 
 </body>
 </html>

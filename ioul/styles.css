@@ -464,3 +464,8 @@ body.non-fullscreen {
 .account-line {
   transition: left 0.7s ease;
 }
+
+/* Start hidden for account elements if in hide zone */
+.account-text, .account-line {
+  visibility: visible;
+}

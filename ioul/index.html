@@ -671,82 +671,84 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+
+
 <!-- account-slide-trigger -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const BAND_MIN_VW = 32.43;
-  const BAND_MAX_VW = 36;
+  const CLICK_MIN_VW = 32.43;
+  const CLICK_MAX_VW = 36;
+  const DISTANCE_VW  = 60;
+  const DURATION_MS  = 700;
 
-  const targets = [
-    ...document.querySelectorAll('.account-text'),
-    document.querySelector('.account-line')
-  ].filter(Boolean);
+  const pxToVw = px => px / (window.innerWidth / 100);
+  const targets = [...document.querySelectorAll('.account-text'), document.querySelector('.account-line')].filter(Boolean);
 
-  let slid = false;
-
-  const slideOnce = () => {
-    if (slid) return;
-    slid = true;
-    targets.forEach(el => el.classList.add('account-slide-right'));
-    // ensure elements become visible during slide
-    // Re-run any clip/visibility logic after animation
-    setTimeout(() => window.dispatchEvent(new Event('resize')), 750);
-  };
-
-  // Global click band
-  document.addEventListener('click', e => {
-    const clickVw = (e.clientX / window.innerWidth) * 100;
-    if (clickVw >= BAND_MIN_VW && clickVw <= BAND_MAX_VW) {
-      slideOnce();
+  targets.forEach(el => {
+    if (!el.dataset.baseLeftVw) {
+      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      el.dataset.baseLeftVw = pxToVw(leftPx);
     }
   });
 
-  // Optional explicit hotspot
-  const hotspot = document.querySelector('.slide-trigger');
-  if (hotspot) {
-    hotspot.addEventListener('click', e => {
-      e.stopPropagation();
-      slideOnce();
+  let running = false;
+  function slideOnce() {
+    if (running || targets[0]?.dataset.slid === 'true') return;
+    running = true;
+
+    targets.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.left = base + 'vw';           // ensure explicit start
+      void el.offsetWidth;                   // reflow
+      el.style.left = (base + DISTANCE_VW) + 'vw';
+      el.dataset.slid = 'true';
     });
+
+    setTimeout(() => { running = false; }, DURATION_MS);
   }
+
+  // global click band
+  document.addEventListener('click', e => {
+    const vw = pxToVw(e.clientX);
+    if (vw >= CLICK_MIN_VW && vw <= CLICK_MAX_VW) slideOnce();
+  });
+
+  document.querySelector('.slide-trigger')?.addEventListener('click', e => {
+    e.stopPropagation();
+    slideOnce();
+  });
 });
 </script>
 <!-- end account-slide-trigger -->
+
 <!-- account-visibility -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const HIDE_LEFT_MAX_VW = 36;      // hide until left edge passes 36vw
-  const HIDE_TOP_MIN_VH  = 28.5;
-  const HIDE_TOP_MAX_VH  = 84;
-
-  const targets = [
-    ...document.querySelectorAll('.account-text'),
-    document.querySelector('.account-line')
-  ].filter(Boolean);
+  const BAND_RIGHT_VW = 36;
+  const BAND_TOP_MIN_VH = 28.5;
+  const BAND_TOP_MAX_VH = 84;
 
   const pxToVw = px => px / (window.innerWidth / 100);
   const pxToVh = px => px / (window.innerHeight / 100);
 
-  function updateVisibility() {
+  const targets = [...document.querySelectorAll('.account-text'), document.querySelector('.account-line')].filter(Boolean);
+
+  function update() {
     targets.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const leftVw = pxToVw(rect.left);
-      const topVh  = pxToVh(rect.top);
+      const r = el.getBoundingClientRect();
+      const rightVw = pxToVw(r.right);
+      const topVh   = pxToVh(r.top);
 
-      const mustHide = (leftVw <= HIDE_LEFT_MAX_VW &&
-                        topVh >= HIDE_TOP_MIN_VH && topVh <= HIDE_TOP_MAX_VH);
-
-      el.style.opacity = mustHide ? '0' : '';
-      el.style.pointerEvents = mustHide ? 'none' : '';
+      const hide = (rightVw <= BAND_RIGHT_VW) && (topVh >= BAND_TOP_MIN_VH && topVh <= BAND_TOP_MAX_VH);
+      el.style.opacity = hide ? '0' : '';
+      el.style.pointerEvents = hide ? 'none' : '';
     });
   }
 
-  updateVisibility();
-  window.addEventListener('resize', updateVisibility);
-  targets.forEach(el => el.addEventListener('transitionend', updateVisibility));
-
-  // expose globally
-  window.updateAccountVisibility = updateVisibility;
+  update();
+  window.addEventListener('resize', update);
+  targets.forEach(el => el.addEventListener('transitionend', update));
 });
 </script>
 <!-- end account-visibility -->

@@ -716,6 +716,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelector('.slide-trigger')?.addEventListener('click', e => {
     e.stopPropagation();
+  document.querySelector('.slide-triggers')?.addEventListener('click', e => { e.stopPropagation(); slideOnce(); });
     slideOnce();
   });
 });

@@ -671,9 +671,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
-
-
 <!-- account-slide-trigger -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -685,74 +682,50 @@ document.addEventListener('DOMContentLoaded', () => {
   const pxToVw = px => px / (window.innerWidth / 100);
   const targets = [...document.querySelectorAll('.account-text'), document.querySelector('.account-line')].filter(Boolean);
 
+  // Cache initial left in vw
   targets.forEach(el => {
-    if (!el.dataset.baseLeftVw) {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-      el.dataset.baseLeftVw = pxToVw(leftPx);
-    }
+    const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+    el.dataset.baseLeftVw = pxToVw(leftPx);
   });
 
   let running = false;
-  function slideOnce() {
+  const slideOnce = () => {
     if (running || targets[0]?.dataset.slid === 'true') return;
     running = true;
 
     targets.forEach(el => {
       const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.left = base + 'vw';           // ensure explicit start
-      void el.offsetWidth;                   // reflow
+      el.style.left = base + 'vw';
+      void el.offsetWidth;                     // force reflow
+      el.style.transition = `left ${DURATION_MS}ms ease`;
       el.style.left = (base + DISTANCE_VW) + 'vw';
       el.dataset.slid = 'true';
     });
 
     setTimeout(() => { running = false; }, DURATION_MS);
-  }
+  };
 
-  // global click band
+  // Direct element hotspots
+  const hotspots = document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container');
+  hotspots.forEach(h => h.addEventListener('click', e => {
+    e.stopPropagation();
+    slideOnce();
+  }));
+
+  // Fallback global click band
   document.addEventListener('click', e => {
     const vw = pxToVw(e.clientX);
     if (vw >= CLICK_MIN_VW && vw <= CLICK_MAX_VW) slideOnce();
-  });
-
-  document.querySelector('.slide-trigger')?.addEventListener('click', e => {
-    e.stopPropagation();
-  document.querySelector('.slide-triggers')?.addEventListener('click', e => { e.stopPropagation(); slideOnce(); });
-    slideOnce();
   });
 });
 </script>
 <!-- end account-slide-trigger -->
 
-<!-- account-visibility -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const BAND_RIGHT_VW = 36;
-  const BAND_TOP_MIN_VH = 28.5;
-  const BAND_TOP_MAX_VH = 84;
 
-  const pxToVw = px => px / (window.innerWidth / 100);
-  const pxToVh = px => px / (window.innerHeight / 100);
 
-  const targets = [...document.querySelectorAll('.account-text'), document.querySelector('.account-line')].filter(Boolean);
 
-  function update() {
-    targets.forEach(el => {
-      const r = el.getBoundingClientRect();
-      const rightVw = pxToVw(r.right);
-      const topVh   = pxToVh(r.top);
 
-      const hide = (rightVw <= BAND_RIGHT_VW) && (topVh >= BAND_TOP_MIN_VH && topVh <= BAND_TOP_MAX_VH);
-      el.style.opacity = hide ? '0' : '';
-      el.style.pointerEvents = hide ? 'none' : '';
-    });
-  }
 
-  update();
-  window.addEventListener('resize', update);
-  targets.forEach(el => el.addEventListener('transitionend', update));
-});
-</script>
-<!-- end account-visibility -->
 
 </body>
 </html>

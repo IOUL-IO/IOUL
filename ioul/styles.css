@@ -448,3 +448,13 @@ body.non-fullscreen {
 
 
 /* Mask overlay to hide account texts in left band */
+.account-mask {
+  position: fixed;             /* stay put during scroll */
+  top: 28.5vh;                 /* matches hide band top */
+  left: 0;
+  width: 36vw;                 /* hide until 36vw */
+  height: calc(84vh - 28.5vh); /* bottom 84vh */
+  background: var(--background, #fff);
+  pointer-events: none;
+  z-index: 9999;               /* above account texts */
+}

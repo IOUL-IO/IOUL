@@ -694,18 +694,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  
   function updateVisibility() {
     targets.forEach(el => {
       const rect = el.getBoundingClientRect();
       const leftVw = pxToVw(rect.left);
+      const rightVw = pxToVw(rect.right);
       const topVh = pxToVh(rect.top);
       let hide;
       if (el.classList.contains('account-line')) {
-        hide = leftVw >= HIDE_MIN && leftVw <= HIDE_MAX;
+        // hide until the line's right edge passes HIDE_MAX
+        hide = rightVw <= HIDE_MAX;
       } else {
+        // hide account-texts only within the exact band
         hide = leftVw >= HIDE_MIN && leftVw <= HIDE_MAX &&
                topVh >= TOP_MIN && topVh <= TOP_MAX;
       }
+      el.style.opacity = hide ? '0' : '';
+      el.style.pointerEvents = hide ? 'none' : '';
+    });
+  }
+
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });

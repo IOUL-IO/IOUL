@@ -671,52 +671,45 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const HIDE_MIN = 6.37;
-  const HIDE_MAX = 28.86;
-  const TOP_MIN = 28.5;
-  const TOP_MAX = 84;
-  const CLICK_MIN = 32.43;
-  const CLICK_MAX = 36;
-  const DISTANCE = 60;
-  const DURATION = 700;
-  const pxToVw = px => px / (window.innerWidth / 100);
-  const pxToVh = px => px / (window.innerHeight / 100);
+const HIDE_MAX = 28.86;
+const TOP_MIN = 28.5;
+const TOP_MAX = 84;
+const CLICK_MIN = 32.43;
+const CLICK_MAX = 36;
+const DISTANCE = 60;
+const DURATION = 700;
+
+  const pxToVw = px => px/(window.innerWidth/100);
+  const pxToVh = px => px/(window.innerHeight/100);
 
   const targets = [
     ...document.querySelectorAll('.account-text'),
     document.querySelector('.account-line')
   ].filter(Boolean);
 
-  // Store and apply base left positions in vw
+  // Capture base left positions
   targets.forEach(el => {
     if (!el.dataset.baseLeftVw) {
-      const rect = el.getBoundingClientRect();
-      const leftVw0 = pxToVw(rect.left);
-      el.dataset.baseLeftVw = leftVw0;
-      // Apply inline style for accurate transition
-      el.style.left = leftVw0 + 'vw';
+      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      el.dataset.baseLeftVw = pxToVw(leftPx);
     }
   });
 
   function updateVisibility() {
     targets.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const leftVw = pxToVw(rect.left);
-      const rightVw = pxToVw(rect.right);
-      const topVh = pxToVh(rect.top);
-      let hide = false;
-      if (el.classList.contains('account-line')) {
-        // hide line while its RIGHT edge <= HIDE_MAX
-        hide = rightVw <= HIDE_MAX;
-      } else {
-        // hide texts while overlapping horizontal band AND vertical band
-        hide = rightVw > HIDE_MIN && leftVw < HIDE_MAX &&
-               topVh >= TOP_MIN && topVh <= TOP_MAX;
-      }
-      el.style.opacity = hide ? '0' : '';
+      const rect     = el.getBoundingClientRect();
+      const leftVw   = pxToVw(rect.left);
+      const rightVw  = pxToVw(rect.right);
+      const topVh    = pxToVh(rect.top);
+
+      const hideHorizontally = leftVw <= HIDE_MAX && rightVw >= HIDE_MIN;
+      const hideVertically   = topVh  >= TOP_MIN  && topVh <= TOP_MAX;
+      const hide             = hideHorizontally && hideVertically;
+
+      el.style.opacity       = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
   }
-
   updateVisibility();
   window.addEventListener('resize', updateVisibility);
 
@@ -727,13 +720,13 @@ document.addEventListener('DOMContentLoaded', () => {
     sliding = true;
     targets.forEach(el => {
       const base = parseFloat(el.dataset.baseLeftVw);
-      // Ensure inline style start
       el.style.left = base + 'vw';
       void el.offsetWidth;
       el.style.transition = `left ${DURATION}ms ease`;
       el.style.left = (base + DISTANCE) + 'vw';
       el.dataset.slid = 'true';
     });
+
     const poll = setInterval(updateVisibility, 20);
     setTimeout(() => {
       clearInterval(poll);
@@ -747,8 +740,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (vw >= CLICK_MIN && vw <= CLICK_MAX) slideOnce();
   });
 
-  document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container')
-    .forEach(el => el.addEventListener('click', e => { e.stopPropagation(); slideOnce(); }));
+  document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
+    el.addEventListener('click', e => { e.stopPropagation(); slideOnce(); });
+  });
 });
 </script>
 <!-- end account-slide-and-visibility -->

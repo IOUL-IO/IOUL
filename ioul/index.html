@@ -679,26 +679,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 <script>
-// inverse slide trigger: click in the 32.43–36 vw band
-document.addEventListener('DOMContentLoaded', () => {
-  const invTrigger = document.querySelector('.slide-trigger');
-  invTrigger.addEventListener('click', e => {
-    e.stopPropagation();
-    const accountEls = document.querySelectorAll('.account-text, .account-line');
+// Account slide reveal on inverse trigger
+document.querySelector('.slide-trigger').addEventListener('click', (event) => {
+  event.stopPropagation();
+  const accountEls = Array.from(document.querySelectorAll('.account-text, .account-line'));
+  if (accountEls.length === 0) return;
+  accountEls.forEach(el => {
+    el.style.opacity = '0';
+    el.style.pointerEvents = 'none';
+    if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
+    el.style.transition = 'left 0.7s ease';
+    const currentLeft = parseFloat(el.dataset.originalLeft);
+    el.style.left = `${currentLeft + 60}vw`;
+  });
+  const threshold = window.innerWidth * 0.36;
+  function reveal() {
+    let allVisible = true;
     accountEls.forEach(el => {
-      // store original left in vw on first click
-      if (!el.dataset.originalLeftVW) {
-        el.dataset.originalLeftVW = parseFloat(el.style.left);
+      const rect = el.getBoundingClientRect();
+      if (rect.left >= threshold) {
+        el.style.opacity = '1';
+        el.style.pointerEvents = '';
+      } else {
+        allVisible = false;
       }
-      // animate 60vw to the right
-      el.style.transition = 'left 0.7s ease';
-      el.style.left = (parseFloat(el.dataset.originalLeftVW) + 60) + 'vw';
     });
-    // wait until slide finishes before updating visibility
-    setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
-    }, 750);
-  }, true);
+    if (!allVisible) {
+      requestAnimationFrame(reveal);
+    }
+  }
+  requestAnimationFrame(reveal);
 });
 </script>
 

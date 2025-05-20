@@ -186,7 +186,7 @@ body.non-fullscreen {
     left: 0;
     width: 100vw;
     height: 100vh;
-    clip-path: inset(0 0 0 28.86vw);
+    clip-path: inset(0 0 0 36vw);
 }
 
 .hover-area {

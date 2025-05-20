@@ -7,10 +7,9 @@
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
 
-<style>
-.hidden { display:none !important; }
-</style>
-
+  <style>
+  .hidden { display:none !important; }
+  </style>
 </head>
 <body class="non-fullscreen">
 
@@ -35,18 +34,9 @@
     </div>
 
     <div class="layer-four"></div>
-
-    <div class="community-items-container" style="position: absolute; z-index: 1;">
-      <!-- community items -->
-    </div>
-
-    <div class="zero-items-container" style="position: absolute; z-index: 1;">
-      <!-- zero items -->
-    </div>
-
-    <div class="other-content">
-      <!-- other content -->
-    </div>
+    <div class="community-items-container" style="position: absolute; z-index: 1;"></div>
+    <div class="zero-items-container" style="position: absolute; z-index: 1;"></div>
+    <div class="other-content"></div>
   </div>
 
   <div class="slide-triggers">
@@ -59,66 +49,50 @@
   </script>
 
 <script>
-// Account visibility based on viewport rectangle
-document.addEventListener('DOMContentLoaded', () => {
-  const accountEls = document.querySelectorAll('.account-text, .account-line');
-  const update = () => {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    const leftMin = w * (-40 / 100);
-    const leftMax = w * (36 / 100);
-    const topMin = h * (28.5 / 100);
-    const topMax = h * (84 / 100);
-    accountEls.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      const hidden = cx >= leftMin && cx <= leftMax && cy >= topMin && cy <= topMax;
-      el.style.opacity = hidden ? '0' : '';
-      el.style.pointerEvents = hidden ? 'none' : '';
-    });
-  };
-  update();
-  window.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', update);
-});
-</script>
+  // Enhanced inverse slide trigger for account elements
+  document.addEventListener('click', function(event) {
+    const vwUnit = window.innerWidth / 100;
+    const vhUnit = window.innerHeight / 100;
+    const leftMin = 32.43 * vwUnit;
+    const leftMax = 36 * vwUnit;
+    const topMin = 28.5 * vhUnit;
+    const topMax = 84 * vhUnit;
 
-<!-- New inverse slide trigger for account elements -->
-<script>
-document.addEventListener('click', function(event) {
-  const vwUnit = window.innerWidth / 100;
-  const vhUnit = window.innerHeight / 100;
-  const leftMin = 32.43 * vwUnit;
-  const leftMax = 36 * vwUnit;
-  const topMin = 28.5 * vhUnit;
-  const topMax = 84 * vhUnit;
-  if (event.clientX >= leftMin && event.clientX <= leftMax &&
-      event.clientY >= topMin && event.clientY <= topMax) {
-    event.stopPropagation();
-    const accountEls = document.querySelectorAll('.account-text, .account-line');
-    accountEls.forEach(el => {
-      if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
-      const currentLeft = parseFloat(el.dataset.originalLeft);
-      const newLeft = currentLeft + 60;
-      el.style.transition = 'left 0.7s ease';
-      // remain invisible until crossing >36vw
-      el.style.opacity = '0';
-      el.style.pointerEvents = 'none';
-      el.style.left = newLeft + 'vw';
-      el.addEventListener('transitionend', function handler(e) {
-        if (e.propertyName === 'left') {
-          const rect = el.getBoundingClientRect();
-          if (rect.left >= (36 * vwUnit)) {
-            el.style.opacity = '';
-            el.style.pointerEvents = '';
+    if (
+      event.clientX >= leftMin && event.clientX <= leftMax &&
+      event.clientY >= topMin && event.clientY <= topMax
+    ) {
+      event.stopPropagation();
+
+      document.querySelectorAll('.account-text, .account-line').forEach(el => {
+        // Compute current left in vw
+        const leftPx = parseFloat(getComputedStyle(el).left);
+        const currentVw = leftPx / vwUnit;
+        const targetVw  = currentVw + 60;
+
+        // Prepare transition & hide
+        el.style.transition     = 'left 0.7s ease';
+        el.style.opacity        = '0';
+        el.style.pointerEvents  = 'none';
+
+        // In next frame, move it
+        requestAnimationFrame(() => {
+          el.style.left = targetVw + 'vw';
+        });
+
+        // When transition ends, reveal if past 36vw
+        el.addEventListener('transitionend', function _onEnd(e) {
+          if (e.propertyName === 'left') {
+            if (el.getBoundingClientRect().left >= 36 * vwUnit) {
+              el.style.opacity       = '';
+              el.style.pointerEvents = '';
+            }
+            el.removeEventListener('transitionend', _onEnd);
           }
-          el.removeEventListener('transitionend', handler);
-        }
+        });
       });
-    });
-  }
-}, true);
+    }
+  }, true);
 </script>
 
 </body>

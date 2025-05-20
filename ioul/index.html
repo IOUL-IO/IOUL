@@ -679,50 +679,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 <script>
-  // Enhanced inverse slide trigger for account elements
-  document.addEventListener('click', function(event) {
-    const vwUnit = window.innerWidth / 100;
-    const vhUnit = window.innerHeight / 100;
-    const leftMin = 32.43 * vwUnit;
-    const leftMax = 36 * vwUnit;
-    const topMin = 28.5 * vhUnit;
-    const topMax = 84 * vhUnit;
-
-    if (
-      event.clientX >= leftMin && event.clientX <= leftMax &&
-      event.clientY >= topMin && event.clientY <= topMax
-    ) {
-      event.stopPropagation();
-
-      document.querySelectorAll('.account-text, .account-line').forEach(el => {
-        // Compute current left in vw
-        const leftPx = parseFloat(getComputedStyle(el).left);
-        const currentVw = leftPx / vwUnit;
-        const targetVw  = currentVw + 60;
-
-        // Prepare transition & hide
-        el.style.transition     = 'left 0.7s ease';
-        el.style.opacity        = '0';
-        el.style.pointerEvents  = 'none';
-
-        // In next frame, move it
-        requestAnimationFrame(() => {
-          el.style.left = targetVw + 'vw';
-        });
-
-        // When transition ends, reveal if past 36vw
-        el.addEventListener('transitionend', function _onEnd(e) {
-          if (e.propertyName === 'left') {
-            if (el.getBoundingClientRect().left >= 36 * vwUnit) {
-              el.style.opacity       = '';
-              el.style.pointerEvents = '';
-            }
-            el.removeEventListener('transitionend', _onEnd);
-          }
-        });
-      });
-    }
+// inverse slide trigger: click in the 32.43–36 vw band
+document.addEventListener('DOMContentLoaded', () => {
+  const invTrigger = document.querySelector('.slide-trigger');
+  invTrigger.addEventListener('click', e => {
+    e.stopPropagation();
+    const accountEls = document.querySelectorAll('.account-text, .account-line');
+    accountEls.forEach(el => {
+      // store original left in vw on first click
+      if (!el.dataset.originalLeftVW) {
+        el.dataset.originalLeftVW = parseFloat(el.style.left);
+      }
+      // animate 60vw to the right
+      el.style.transition = 'left 0.7s ease';
+      el.style.left = (parseFloat(el.dataset.originalLeftVW) + 60) + 'vw';
+    });
+    // wait until slide finishes before updating visibility
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 750);
   }, true);
+});
 </script>
 
 </body>

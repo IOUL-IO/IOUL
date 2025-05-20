@@ -671,7 +671,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const HIDE_MIN = 6.37;
-const HIDE_MAX = 28.86;
+const HIDE_MAX = 36;
 const TOP_MIN = 28.5;
 const TOP_MAX = 84;
 const CLICK_MIN = 32.43;
@@ -697,19 +697,15 @@ const DURATION = 700;
 
   function updateVisibility() {
     targets.forEach(el => {
-      const rect     = el.getBoundingClientRect();
-      const leftVw   = pxToVw(rect.left);
-      const rightVw  = pxToVw(rect.right);
-      const topVh    = pxToVh(rect.top);
-
-      const hideHorizontally = leftVw <= HIDE_MAX && rightVw >= HIDE_MIN;
-      const hideVertically   = topVh  >= TOP_MIN  && topVh <= TOP_MAX;
-      const hide             = hideHorizontally && hideVertically;
-
-      el.style.opacity       = hide ? '0' : '';
+      const rect = el.getBoundingClientRect();
+      const leftVw = pxToVw(rect.left);
+      const topVh = pxToVh(rect.top);
+            const hide = leftVw >= HIDE_MIN && leftVw < HIDE_MAX && topVh >= TOP_MIN && topVh <= TOP_MAX;
+      el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
   }
+
   updateVisibility();
   window.addEventListener('resize', updateVisibility);
 

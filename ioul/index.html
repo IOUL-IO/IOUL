@@ -700,7 +700,7 @@ const DURATION = 700;
       const rect = el.getBoundingClientRect();
       const leftVw = pxToVw(rect.left);
       const topVh = pxToVh(rect.top);
-            const hide = leftVw >= HIDE_MIN && leftVw < HIDE_MAX && topVh >= TOP_MIN && topVh <= TOP_MAX;
+                const hide = leftVw < HIDE_MAX;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });

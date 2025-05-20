@@ -446,25 +446,21 @@ body.non-fullscreen {
 .hidden { display:none !important; }
 
 
-/* Slide trigger area */
-.slide-triggers .slide-trigger {
-  position: absolute;
-  top: 28.5vh;
-  left: 32.43vw;
-  width: calc(36vw - 32.43vw);
-  height: calc(84vh - 28.5vh);
-  pointer-events: auto;
-  background: transparent;
-  z-index: 50;
+
+/* Mask overlay to hide account texts in left band */
+.account-mask {
+  position: fixed;             /* stay put during scroll */
+  top: 28.5vh;                 /* matches hide band top */
+  left: 0;
+  width: 36vw;                 /* hide until 36vw */
+  height: calc(84vh - 28.5vh); /* bottom 84vh */
+  background: var(--background, #fff);
+  pointer-events: none;
+  z-index: 9999;               /* above account texts */
 }
 
-/* Slide account-texts & line by 60vw, clipped by the container */
-.slide-container .account-text,
-.slide-container .account-line {
-  transition: transform 0.7s ease;
+/* Ensure account text and line slide smoothly */
+.account-text,
+.account-line {
+  transition: left 0.7s ease;
 }
-.slide-container.animate-account .account-text,
-.slide-container.animate-account .account-line {
-  transform: translateX(60vw);
-}
-

@@ -669,95 +669,79 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- account-slide-and-visibility -->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const SHOW_THRESHOLD = 36;      // vw: show once right edge > 36vw
-  const TOP_MIN       = 28.5;    // vh
-  const TOP_MAX       = 84;      // vh
-  const DISTANCE      = 60;      // vw slide distance
-  const DURATION      = 700;     // ms transition
-  const CLICK_MIN     = 6.37;    // vw forward trigger
-  const CLICK_MAX     = 28.86;   // vw forward trigger
-  const CLICK_MIN_REV = 32.43;   // vw reverse trigger
-  const CLICK_MAX_REV = 36;      // vw reverse trigger
+document.addEventListener('DOMContentLoaded', function() {
+  var TOP_MIN = 28.5;
+  var TOP_MAX = 84;
+  var CLICK_MIN = 32.43;
+  var CLICK_MAX = 36;
+  var DISTANCE = 60;
+  var DURATION = 700;
+  var HIDE_THRESHOLD = 36; // vw threshold: show account elements once crossing right of 36vw
 
-  const pxToVw = px => px / (window.innerWidth / 100);
-  const pxToVh = px => px / (window.innerHeight / 100);
+  var pxToVw = function(px) { return px / (window.innerWidth / 100); };
+  var pxToVh = function(px) { return px / (window.innerHeight / 100); };
 
-  const targets = [
-    ...document.querySelectorAll('.account-text'),
-    document.querySelector('.account-line')
-  ].filter(Boolean);
+  var targets = Array.prototype.slice.call(
+    document.querySelectorAll('.account-text')
+  );
+  var line = document.querySelector('.account-line');
+  if (line) targets.push(line);
 
-  // store base left in vw
-  targets.forEach(el => {
+  // Capture base left positions in vw
+  targets.forEach(function(el) {
     if (!el.dataset.baseLeftVw) {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      var leftPx = parseFloat(getComputedStyle(el).left) || 0;
       el.dataset.baseLeftVw = pxToVw(leftPx);
     }
   });
 
-  // visibility update
   function updateVisibility() {
-    targets.forEach(el => {
-      const rect    = el.getBoundingClientRect();
-      const rightVw = pxToVw(rect.right);
-      const topVh   = pxToVh(rect.top);
-      const slid    = el.dataset.slid === 'true';
-      const show    = slid && rightVw > SHOW_THRESHOLD && topVh >= TOP_MIN && topVh <= TOP_MAX;
-      el.style.opacity       = show ? '1' : '0';
-      el.style.pointerEvents = show ? 'auto' : 'none';
+    targets.forEach(function(el) {
+      var rect = el.getBoundingClientRect();
+      var rightVw = pxToVw(rect.right);
+      var topVh = pxToVh(rect.top);
+
+      var hideVertically = topVh >= TOP_MIN && topVh <= TOP_MAX;
+      var hideHorizontally = rightVw <= HIDE_THRESHOLD;
+      var hide = hideHorizontally;
+
+      el.style.opacity = hide ? '0' : '';
+      el.style.pointerEvents = hide ? 'none' : '';
     });
   }
 
-  // initial hide
-  targets.forEach(el => {
-    el.style.opacity = '0';
-    el.style.pointerEvents = 'none';
-  });
-
+  updateVisibility();
   window.addEventListener('resize', updateVisibility);
 
-  let sliding = false;
-  function slideOnce(direction = 'forward') {
-    if (sliding) return;
+  var sliding = false;
+  function slideOnce() {
+    if (sliding || targets[0].dataset.slid === 'true') return;
     sliding = true;
-
-    // reset and hide
-    targets.forEach(el => {
-      delete el.dataset.slid;
-      el.style.opacity = '0';
-      el.style.pointerEvents = 'none';
-    });
-
-    // slide
-    targets.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.left = `${base}vw`;
+    targets.forEach(function(el) {
+      var base = parseFloat(el.dataset.baseLeftVw);
+      el.style.left = base + 'vw';
       void el.offsetWidth;
-      el.style.transition = `left ${DURATION}ms ease`;
-      const offset = direction === 'reverse' ? base - DISTANCE : base + DISTANCE;
-      el.style.left = `${offset}vw`;
+      el.style.transition = 'left ' + DURATION + 'ms ease';
+      el.style.left = (base + DISTANCE) + 'vw';
+      el.dataset.slid = 'true';
     });
-
-    // reveal after transition
-    setTimeout(() => {
-      targets.forEach(el => { el.dataset.slid = 'true'; });
+    var poll = setInterval(updateVisibility, 20);
+    setTimeout(function() {
+      clearInterval(poll);
       updateVisibility();
       sliding = false;
     }, DURATION);
   }
 
-  document.addEventListener('click', e => {
-    const vw = pxToVw(e.clientX);
-    if (vw >= CLICK_MIN && vw <= CLICK_MAX) slideOnce('forward');
-    else if (vw >= CLICK_MIN_REV && vw <= CLICK_MAX_REV) slideOnce('reverse');
+  document.addEventListener('click', function(e) {
+    var vw = pxToVw(e.clientX);
+    if (vw >= CLICK_MIN && vw <= CLICK_MAX) slideOnce();
   });
 
-  document.querySelectorAll('.slide-trigger, .slide-trigger-reverse').forEach(el => {
-    el.addEventListener('click', e => {
+  document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(function(el) {
+    el.addEventListener('click', function(e) {
       e.stopPropagation();
-      const isReverse = el.classList.contains('slide-trigger-reverse');
-      slideOnce(isReverse ? 'reverse' : 'forward');
+      slideOnce();
     });
   });
 });

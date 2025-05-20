@@ -11,9 +11,6 @@
 .hidden { display:none !important; }
 </style>
 
-
-
-
 </head>
 <body class="non-fullscreen">
 
@@ -653,95 +650,32 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- account-slide-and-visibility -->
 <script>
+// Account visibility based on viewport rectangle
+// Hide if center lies within left -40vw..36vw and top 28.5vh..84vh
 document.addEventListener('DOMContentLoaded', () => {
-  const HIDE_MIN = 6.37;
-const HIDE_MAX = 36;
-const TOP_MIN = 28.5;
-const TOP_MAX = 84;
-const CLICK_MIN = 32.43;
-const CLICK_MAX = 36;
-const DISTANCE = 60;
-const DURATION = 700;
-
-  const pxToVw = px => px/(window.innerWidth/100);
-  const pxToVh = px => px/(window.innerHeight/100);
-
-  const targets = [
-    ...document.querySelectorAll('.account-text'),
-    document.querySelector('.account-line')
-  ].filter(Boolean);
-
-  // Capture base left positions
-  targets.forEach(el => {
-    if (!el.dataset.baseLeftVw) {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-      el.dataset.baseLeftVw = pxToVw(leftPx);
-    }
-  });
-
-  function updateVisibility() {
-    targets.forEach(el => {
+  const accountEls = document.querySelectorAll('.account-text, .account-line');
+  const update = () => {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const leftMin = w * (-40 / 100);
+    const leftMax = w * (36 / 100);
+    const topMin = h * (28.5 / 100);
+    const topMax = h * (84 / 100);
+    accountEls.forEach(el => {
       const rect = el.getBoundingClientRect();
-      const leftVw = pxToVw(rect.left);
-      const topVh = pxToVh(rect.top);
-                const hide = leftVw < HIDE_MAX;
-      el.style.opacity = hide ? '0' : '';
-      el.style.pointerEvents = hide ? 'none' : '';
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const hidden = cx >= leftMin && cx <= leftMax && cy >= topMin && cy <= topMax;
+      el.style.opacity = hidden ? '0' : '';
+      el.style.pointerEvents = hidden ? 'none' : '';
     });
-  }
-
-  updateVisibility();
-  window.addEventListener('resize', updateVisibility);
-
-  let sliding = false;
-
-  function slideOnce() {
-    if (sliding || targets[0]?.dataset.slid === 'true') return;
-    sliding = true;
-    targets.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.left = base + 'vw';
-      void el.offsetWidth;
-      el.style.transition = `left ${DURATION}ms ease`;
-      el.style.left = (base + DISTANCE) + 'vw';
-      el.dataset.slid = 'true';
-    });
-
-    const poll = setInterval(updateVisibility, 20);
-    setTimeout(() => {
-      clearInterval(poll);
-      updateVisibility();
-      sliding = false;
-    }, DURATION);
-  }
-
-  document.addEventListener('click', e => {
-    const vw = pxToVw(e.clientX);
-    if (vw >= CLICK_MIN && vw <= CLICK_MAX) slideOnce();
-  });
-
-  document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
-    el.addEventListener('click', e => { e.stopPropagation(); slideOnce(); });
-  });
+  };
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
 });
 </script>
-<!-- end account-slide-and-visibility -->
 
 </body>
 </html>

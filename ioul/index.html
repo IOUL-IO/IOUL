@@ -2,98 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IOUL</title>
-  <link rel="icon" href="favicon.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Page Title</title>
   <link rel="stylesheet" href="styles.css" />
-
-  <style>
-  .hidden { display:none !important; }
-  </style>
 </head>
-<body class="non-fullscreen">
+<body>
+  <!-- ... your existing HTML markup ... -->
 
-  <div class="layer-one"></div>
-  <div class="layer-two"></div>
-  <div class="layer-three"></div>
+  <!-- Sliding trigger element -->
+  <div class="slide-trigger"></div>
 
-  <div class="page-content">
-    <div class="menu-items">
-      <span class="custom-text menu-item" style="top:36.1vh; left:29vw;" id="online-assets">
-        OnL1nE ASSETS:
-      </span>
-      <span class="custom-text menu-item" style="top:43.2vh; left:29vw;" id="linkup-center">
-        L1nKUP cEnTER:
-      </span>
-      <span class="custom-text menu-item" style="top:50.3vh; left:29vw;" id="delivery-line">
-        DEL1VERY L1nE:
-      </span>
-      <span class="custom-text menu-item" style="top:57.4vh; left:29vw;" id="internal-unit">
-        1nTERnAL Un1T:
-      </span>
-    </div>
+  <!-- Your account-text and account-line elements -->
+  <div class="account-text" style="left: 10vw; top: 30vh;">Account 1</div>
+  <div class="account-text" style="left: 20vw; top: 40vh;">Account 2</div>
+  <div class="account-line" style="left: 15vw; top: 35vh;">–––––</div>
 
-    <div class="layer-four"></div>
-    <div class="community-items-container" style="position: absolute; z-index: 1;"></div>
-    <div class="zero-items-container" style="position: absolute; z-index: 1;"></div>
-    <div class="other-content"></div>
-  </div>
+  <!-- Existing scripts you already had -->
+  <script src="your-other-script.js"></script>
 
-  <div class="slide-triggers">
-    <div class="slide-trigger"></div>
-    <div class="slide-trigger-reverse"></div>
-  </div>
-
+  <!-- Inverse slide trigger script -->
   <script>
-    // Existing JS for fade-in, chat, menu, scrolling, account visibility...
-  </script>
-
-<script>
-  // Enhanced inverse slide trigger for account elements
-  document.addEventListener('click', function(event) {
-    const vwUnit = window.innerWidth / 100;
-    const vhUnit = window.innerHeight / 100;
-    const leftMin = 32.43 * vwUnit;
-    const leftMax = 36 * vwUnit;
-    const topMin = 28.5 * vhUnit;
-    const topMax = 84 * vhUnit;
-
-    if (
-      event.clientX >= leftMin && event.clientX <= leftMax &&
-      event.clientY >= topMin && event.clientY <= topMax
-    ) {
-      event.stopPropagation();
-
-      document.querySelectorAll('.account-text, .account-line').forEach(el => {
-        // Compute current left in vw
-        const leftPx = parseFloat(getComputedStyle(el).left);
-        const currentVw = leftPx / vwUnit;
-        const targetVw  = currentVw + 60;
-
-        // Prepare transition & hide
-        el.style.transition     = 'left 0.7s ease';
-        el.style.opacity        = '0';
-        el.style.pointerEvents  = 'none';
-
-        // In next frame, move it
-        requestAnimationFrame(() => {
-          el.style.left = targetVw + 'vw';
-        });
-
-        // When transition ends, reveal if past 36vw
-        el.addEventListener('transitionend', function _onEnd(e) {
-          if (e.propertyName === 'left') {
-            if (el.getBoundingClientRect().left >= 36 * vwUnit) {
-              el.style.opacity       = '';
-              el.style.pointerEvents = '';
-            }
-            el.removeEventListener('transitionend', _onEnd);
-          }
-        });
+  // inverse slide trigger: click in the 32.43–36 vw band
+  document.addEventListener('DOMContentLoaded', () => {
+    const invTrigger = document.querySelector('.slide-trigger');
+    invTrigger.addEventListener('click', e => {
+      e.stopPropagation();
+      const accountEls = document.querySelectorAll('.account-text, .account-line');
+      accountEls.forEach(el => {
+        // store original left in vw on first click
+        if (!el.dataset.originalLeftVW) {
+          el.dataset.originalLeftVW = parseFloat(el.style.left);
+        }
+        // animate 60vw to the right
+        el.style.transition = 'left 0.7s ease';
+        el.style.left = (parseFloat(el.dataset.originalLeftVW) + 60) + 'vw';
       });
-    }
-  }, true);
-</script>
-
+      // wait until slide finishes before updating visibility
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 750);
+    }, true);
+  });
+  </script>
 </body>
 </html>

@@ -649,16 +649,6 @@ document.addEventListener('DOMContentLoaded', () => {
       updateView();
     });
   });
-  // inverse of slideOnce: slide everything back to its original baseLeft
-  function slideBack() {
-    if (sliding || targets[0]?.dataset.slid !== 'true') return;
-    sliding = true;
-    targets.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DURATION}ms ease`;
-      el.style.left = base + 'vw';
-      delete el.dataset.slid;
-    });
     setTimeout(() => {
       updateVisibility();
       sliding = false;
@@ -760,6 +750,29 @@ const DURATION = 700;
   });
 
   document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
+    // inverse of slideOnce: slide everything back to its original baseLeftVw
+    function slideBack() {
+      if (sliding || targets[0]?.dataset.slid !== 'true') return;
+      sliding = true;
+      targets.forEach(el => {
+        const base = parseFloat(el.dataset.baseLeftVw);
+        el.style.transition = `left ${DURATION}ms ease`;
+        el.style.left = base + 'vw';
+        delete el.dataset.slid;
+      });
+      setTimeout(() => {
+        updateVisibility();
+        sliding = false;
+      }, DURATION);
+    }
+
+    // bind reverse trigger area to slideBack
+    document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        slideBack();
+      });
+    });
     el.addEventListener('click', e => { e.stopPropagation(); slideOnce(); });
   });
 });

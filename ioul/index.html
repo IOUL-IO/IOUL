@@ -671,16 +671,18 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const HIDE_MIN = 6.37;
-const HIDE_MAX = 28.86;
-const TOP_MIN = 28.5;
-const TOP_MAX = 84;
-const CLICK_MIN = 32.43;
-const CLICK_MAX = 36;
-const DISTANCE = 60;
-const DURATION = 700;
+  const HIDE_MAX = 28.86;
+  const TOP_MIN = 28.5;
+  const TOP_MAX = 84;
+  const CLICK_MIN = 32.43;
+  const CLICK_MAX = 36;
+  const REVERSE_MIN = 94;
+  const REVERSE_MAX = 100;
+  const DISTANCE = 60;
+  const DURATION = 700;
 
-  const pxToVw = px => px/(window.innerWidth/100);
-  const pxToVh = px => px/(window.innerHeight/100);
+  const pxToVw = px => px / (window.innerWidth / 100);
+  const pxToVh = px => px / (window.innerHeight / 100);
 
   const targets = [
     ...document.querySelectorAll('.account-text'),
@@ -700,7 +702,7 @@ const DURATION = 700;
       const rect = el.getBoundingClientRect();
       const leftVw = pxToVw(rect.left);
       const topVh = pxToVh(rect.top);
-            const hide = leftVw >= HIDE_MIN && leftVw < HIDE_MAX && topVh >= TOP_MIN && topVh <= TOP_MAX;
+      const hide = leftVw >= HIDE_MIN && leftVw < HIDE_MAX && topVh >= TOP_MIN && topVh <= TOP_MAX;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -731,9 +733,34 @@ const DURATION = 700;
     }, DURATION);
   }
 
+  function slideBack() {
+    if (sliding || targets[0]?.dataset.slid !== 'true') return;
+    sliding = true;
+    targets.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.left = (base + DISTANCE) + 'vw';
+      void el.offsetWidth;
+      el.style.transition = `left ${DURATION}ms ease`;
+      el.style.left = base + 'vw';
+      el.dataset.slid = 'false';
+    });
+
+    const poll = setInterval(updateVisibility, 20);
+    setTimeout(() => {
+      clearInterval(poll);
+      updateVisibility();
+      sliding = false;
+    }, DURATION);
+  }
+
   document.addEventListener('click', e => {
     const vw = pxToVw(e.clientX);
-    if (vw >= CLICK_MIN && vw <= CLICK_MAX) slideOnce();
+    const vh = pxToVh(e.clientY);
+    if (vw >= CLICK_MIN && vw <= CLICK_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
+      slideOnce();
+    } else if (vw >= REVERSE_MIN && vw <= REVERSE_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
+      slideBack();
+    }
   });
 
   document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {

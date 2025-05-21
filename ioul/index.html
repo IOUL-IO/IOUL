@@ -649,6 +649,29 @@ document.addEventListener('DOMContentLoaded', () => {
       updateView();
     });
   });
+  // inverse of slideOnce: slide everything back to its original baseLeft
+  function slideBack() {
+    if (sliding || targets[0]?.dataset.slid !== 'true') return;
+    sliding = true;
+    targets.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DURATION}ms ease`;
+      el.style.left = base + 'vw';
+      delete el.dataset.slid;
+    });
+    setTimeout(() => {
+      updateVisibility();
+      sliding = false;
+    }, DURATION);
+  }
+
+  // bind it to your forward-slide-reverse area (94–100vw × 28.5–84vh)
+  document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      slideBack();
+    });
+  });
 });
 </script>
 

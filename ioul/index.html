@@ -6,38 +6,6 @@
   <title>IOUL</title>
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    .slide-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      clip-path: inset(0 0 0 36vw);
-      z-index: 5;
-    }
-    /* account slide styles */
-    #account-slide-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 36vw;
-      height: 100vh;
-      overflow: hidden;
-      pointer-events: none;
-      z-index: 2;
-    }
-    #account-slide-container .account-container,
-    #account-slide-container .custom-line {
-      transition: transform 0.7s ease;
-      transform: translateX(-36vw);
-    }
-    #account-slide-container.slid-in .account-container,
-    #account-slide-container.slid-in .custom-line {
-      transform: translateX(0);
-    }
-  </style>
 
 <style>
 .hidden { display:none !important; }
@@ -204,22 +172,20 @@
         <span class="custom-text heading-flow">cLAnLOg</span>
       </div>
 
-      <div id="account-slide-container" class="account-slide-container">
-      <div class="account-container" style="top:35.4vh; left:29.11vw; " data-offset="-49" data-slide-group="account">
+      <div class="account-container" style="top:35.4vh; left:29.11vw; transform:translateX(-49vw);" data-offset="-49" data-slide-group="account">
         <span class="custom-text right-flow" style="position:absolute; right:0;">0</span>
       </div>
-      <div class="account-container" style="top:41.6vh; left:29.11vw; " data-offset="-49" data-slide-group="account">
+      <div class="account-container" style="top:41.6vh; left:29.11vw; transform:translateX(-49vw);" data-offset="-49" data-slide-group="account">
         <span class="custom-text right-flow" style="position:absolute; right:0;">0</span>
       </div>
-      <div class="account-container" style="top:54vh; left:29.11vw; " data-offset="-49" data-slide-group="account">
+      <div class="account-container" style="top:54vh; left:29.11vw; transform:translateX(-49vw);" data-offset="-49" data-slide-group="account">
         <span class="custom-text right-flow" style="position:absolute; right:0;">0</span>
       </div>
-      <div class="account-container" style="top:60.2vh; left:29.11vw; " data-offset="-49" data-slide-group="account">
+      <div class="account-container" style="top:60.2vh; left:29.11vw; transform:translateX(-49vw);" data-offset="-49" data-slide-group="account">
         <span class="custom-text right-flow" style="position:absolute; right:0;">0</span>
       </div>
 
       <div class="custom-line" style="left: -42.59vw;"></div>
-      </div>
 
       <div class="layer-five"></div>
       <div class="layer-six"></div>
@@ -704,25 +670,24 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- account-slide-and-visibility -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const HIDE_MIN = 0;
-  const HIDE_MAX = 36;
-  const TOP_MIN = 28.5;
-  const TOP_MAX = 84;
-  const CLICK_MIN = 32.43;
-  const CLICK_MAX = 36;
-  const REVERSE_MIN = 94;
-  const REVERSE_MAX = 100;
-  const DISTANCE = 60;
-  const DURATION = 700;
+  const HIDE_MIN = 6.37;
+const HIDE_MAX = 28.86;
+const TOP_MIN = 28.5;
+const TOP_MAX = 84;
+const CLICK_MIN = 32.43;
+const CLICK_MAX = 36;
+const DISTANCE = 60;
+const DURATION = 700;
 
-  const pxToVw = px => px / (window.innerWidth / 100);
-  const pxToVh = px => px / (window.innerHeight / 100);
+  const pxToVw = px => px/(window.innerWidth/100);
+  const pxToVh = px => px/(window.innerHeight/100);
 
   const targets = [
-    ...Array.from(document.querySelectorAll('.account-text')),
+    ...document.querySelectorAll('.account-text'),
     document.querySelector('.account-line')
   ].filter(Boolean);
 
+  // Capture base left positions
   targets.forEach(el => {
     if (!el.dataset.baseLeftVw) {
       const leftPx = parseFloat(getComputedStyle(el).left) || 0;
@@ -735,7 +700,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const rect = el.getBoundingClientRect();
       const leftVw = pxToVw(rect.left);
       const topVh = pxToVh(rect.top);
-      const hide = leftVw >= HIDE_MIN && leftVw < HIDE_MAX && topVh >= TOP_MIN && topVh <= TOP_MAX;
+            const hide = leftVw >= HIDE_MIN && leftVw < HIDE_MAX && topVh >= TOP_MIN && topVh <= TOP_MAX;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -753,51 +718,30 @@ document.addEventListener('DOMContentLoaded', () => {
       const base = parseFloat(el.dataset.baseLeftVw);
       el.style.left = base + 'vw';
       void el.offsetWidth;
-      el.style.transition = \`left \${DURATION}ms ease\`;
+      el.style.transition = `left ${DURATION}ms ease`;
       el.style.left = (base + DISTANCE) + 'vw';
       el.dataset.slid = 'true';
     });
-    const poll = setInterval(updateVisibility, 20);
-    setTimeout(() => { clearInterval(poll); updateVisibility(); sliding = false; }, DURATION);
-  }
 
-  function slideBack() {
-    if (sliding || targets[0]?.dataset.slid !== 'true') return;
-    sliding = true;
-    targets.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.left = (base + DISTANCE) + 'vw';
-      void el.offsetWidth;
-      el.style.transition = \`left \${DURATION}ms ease\`;
-      el.style.left = base + 'vw';
-      el.dataset.slid = 'false';
-    });
     const poll = setInterval(updateVisibility, 20);
-    setTimeout(() => { clearInterval(poll); updateVisibility(); sliding = false; }, DURATION);
+    setTimeout(() => {
+      clearInterval(poll);
+      updateVisibility();
+      sliding = false;
+    }, DURATION);
   }
 
   document.addEventListener('click', e => {
     const vw = pxToVw(e.clientX);
-    const vh = pxToVh(e.clientY);
-    if (vw >= CLICK_MIN && vw <= CLICK_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
-      slideOnce();
-    } else if (vw >= REVERSE_MIN && vw <= REVERSE_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
-      slideBack();
-    }
+    if (vw >= CLICK_MIN && vw <= CLICK_MAX) slideOnce();
+  });
+
+  document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
+    el.addEventListener('click', e => { e.stopPropagation(); slideOnce(); });
   });
 });
 </script>
 <!-- end account-slide-and-visibility -->
 
-  <!-- slide triggers -->
-  <div id="slide-in-trigger" style="position:fixed; left:32.43vw; top:28.5vh; width:3.57vw; height:55.5vh; cursor:pointer; z-index:3;"></div>
-  <div id="slide-out-trigger" style="position:fixed; left:94vw; top:28.5vh; width:6vw; height:55.5vh; cursor:pointer; z-index:3;"></div>
-  <script>
-  document.addEventListener('DOMContentLoaded', ()=>{
-    const container = document.getElementById('account-slide-container');
-    document.getElementById('slide-in-trigger').addEventListener('click', ()=> container.classList.add('slid-in'));
-    document.getElementById('slide-out-trigger').addEventListener('click', ()=> container.classList.remove('slid-in'));
-  });
-  </script>
 </body>
 </html>

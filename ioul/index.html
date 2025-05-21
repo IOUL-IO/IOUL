@@ -755,35 +755,6 @@ const DURATION = 700;
 });
 </script>
 <!-- end account-slide-and-visibility -->
-<script>
-// Standalone inverse slide script
-document.addEventListener('DOMContentLoaded', () => {
-  const DISTANCE = 60, DURATION = 700;
-  const pxToVw = px => px/(window.innerWidth/100);
-  const targets = [...document.querySelectorAll('.account-text'), document.querySelector('.account-line')].filter(Boolean);
-  targets.forEach(el => {
-    if (!el.dataset.baseLeftVw) {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-      el.dataset.baseLeftVw = pxToVw(leftPx);
-    }
-  });
-  function slideBack() {
-    if (targets.length && !targets[0].dataset.slid) return;
-    targets.forEach(el => {
-      el.style.transition = `left ${DURATION}ms ease`;
-      el.style.left = el.dataset.baseLeftVw + 'vw';
-      delete el.dataset.slid;
-    });
-  }
-  // Bind reverse trigger area
-  document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
-    el.addEventListener('click', e => {
-      e.stopPropagation();
-      slideBack();
-    });
-  });
-});
-</script>
 
 </body>
 </html>

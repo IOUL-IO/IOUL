@@ -581,6 +581,30 @@
           menuItems[i].classList.add("slide-down");
         }
       });
+  // inverse slide: slide everything back to its original baseLeft
+  function slideBack() {
+    if (sliding || targets[0]?.dataset.slid !== 'true') return;
+    sliding = true;
+    targets.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DURATION}ms ease`;
+      el.style.left = base + 'vw';
+      delete el.dataset.slid;
+    });
+    setTimeout(() => {
+      updateVisibility();
+      sliding = false;
+    }, DURATION);
+  }
+
+  // bind inverse slide to right-edge trigger area
+  document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      slideBack();
+    });
+  });
+
     }
     function addNewText(text, topVH, leftVW) {
       const span = document.createElement("span");
@@ -737,28 +761,11 @@ const DURATION = 700;
   });
 
   document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
-    // inverse slide: slide everything back to its original baseLeft
-  function slideBack() {
-    if (sliding || targets[0]?.dataset.slid !== 'true') return;
-    sliding = true;
-    targets.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DURATION}ms ease`;
-      el.style.left = base + 'vw';
-      delete el.dataset.slid;
-    });
-    setTimeout(() => {
-      updateVisibility();
-      sliding = false;
-    }, DURATION);
-  }
-  
-  // bind inverse slide to right-edge trigger area (94–100vw × 28.5–84vh)
-  document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
-    el.addEventListener('click', e => { e.stopPropagation(); slideBack(); });
-  });
-
-
     el.addEventListener('click', e => { e.stopPropagation(); slideOnce(); });
   });
 });
+</script>
+<!-- end account-slide-and-visibility -->
+
+</body>
+</html>

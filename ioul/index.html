@@ -653,41 +653,24 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- account-slide-and-visibility -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const HIDE_MIN = 6.37;
-const HIDE_MAX = 28.86;
-const TOP_MIN = 28.5;
-const TOP_MAX = 84;
-const CLICK_MIN = 32.43;
-const CLICK_MAX = 36;
-const DISTANCE = 60;
-const DURATION = 700;
+  const HIDE_MIN   =  6.37, HIDE_MAX   = 28.86;
+  const TOP_MIN    = 28.5,  TOP_MAX    = 84;
+  const CLICK_MIN  = 32.43, CLICK_MAX  = 36;
+  const REVERSE_MIN= 94,    REVERSE_MAX=100;
+  const DISTANCE   = 60,    DURATION   = 700;
 
-  const pxToVw = px => px/(window.innerWidth/100);
-  const pxToVh = px => px/(window.innerHeight/100);
+  const pxToVw = px => px/(window.innerWidth  /100);
+  const pxToVh = px => px/(window.innerHeight /100);
 
   const targets = [
     ...document.querySelectorAll('.account-text'),
     document.querySelector('.account-line')
   ].filter(Boolean);
 
-  // Capture base left positions
+  // — capture their “baseLeft” once —
   targets.forEach(el => {
     if (!el.dataset.baseLeftVw) {
       const leftPx = parseFloat(getComputedStyle(el).left) || 0;
@@ -695,54 +678,88 @@ const DURATION = 700;
     }
   });
 
+  // — hide anything in the “hole” area —
   function updateVisibility() {
-    if (targets\[0\]\.dataset\.slid !== 'true') return;
     targets.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const leftVw = pxToVw(rect.left);
-      const topVh = pxToVh(rect.top);
-            const hide = leftVw >= HIDE_MIN && leftVw < HIDE_MAX && topVh >= TOP_MIN && topVh <= TOP_MAX;
-      el.style.opacity = hide ? '0' : '';
+      const r = el.getBoundingClientRect();
+      const l = pxToVw(r.left), t = pxToVh(r.top);
+      const hide = l >= HIDE_MIN && l < HIDE_MAX && t >= TOP_MIN && t <= TOP_MAX;
+      el.style.opacity       = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
   }
-
   updateVisibility();
   window.addEventListener('resize', updateVisibility);
 
   let sliding = false;
 
+  // — slide everything forward one time —
   function slideOnce() {
-    if (sliding || targets[0]?.dataset.slid === 'true') return;
+    if (sliding || targets[0].dataset.slid==='true') return;
     sliding = true;
+
+    // 1) clear any lingering “hidden” styles
     targets.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.left = base + 'vw';
-      void el.offsetWidth;
-      el.style.transition = `left ${DURATION}ms ease`;
-      el.style.left = (base + DISTANCE) + 'vw';
-      el.dataset.slid = 'true';
+      el.style.opacity       = '';
+      el.style.pointerEvents = '';
     });
 
-    const poll = setInterval(updateVisibility, 20);
+    // 2) then slide them in
+    targets.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DURATION}ms ease`;
+      el.style.left       = (base + DISTANCE) + 'vw';
+      el.dataset.slid     = 'true';
+    });
+
+    // 3) once done, re-apply the “hide if still in the hole” logic
     setTimeout(() => {
-      clearInterval(poll);
       updateVisibility();
       sliding = false;
     }, DURATION);
   }
 
+  // — inverse slide back to baseLeft —
+  function slideBack() {
+    if (sliding || targets[0].dataset.slid!=='true') return;
+    sliding = true;
+    targets.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DURATION}ms ease`;
+      el.style.left       = base + 'vw';
+      delete el.dataset.slid;
+    });
+    setTimeout(() => {
+      updateVisibility();
+      sliding = false;
+    }, DURATION);
+  }
+
+  // — click‐zone triggers for both directions —
   document.addEventListener('click', e => {
-    const vw = pxToVw(e.clientX);
-    if (vw >= CLICK_MIN && vw <= CLICK_MAX) slideOnce();
+    const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
+    if (vw>=CLICK_MIN && vw<=CLICK_MAX) {
+      slideOnce();
+    } else if (vw>=REVERSE_MIN && vw<=REVERSE_MAX
+            && vh>=TOP_MIN     && vh<=TOP_MAX) {
+      slideBack();
+    }
   });
 
-  document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
-    el.addEventListener('click', e => { e.stopPropagation(); slideOnce(); });
-  });
+  // (optional) if you have explicitly‐positioned “.slide-trigger” elements:
+  document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container')
+    .forEach(el => el.addEventListener('click', e => {
+      e.stopPropagation();
+      slideOnce();
+    }));
+  document.querySelectorAll('.slide-trigger-reverse')
+    .forEach(el => el.addEventListener('click', e => {
+      e.stopPropagation();
+      slideBack();
+    }));
 });
 </script>
-<!-- end account-slide-and-visibility -->
+
 
 </body>
 </html>

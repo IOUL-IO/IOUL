@@ -640,7 +640,6 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
-<!-- account-slide-and-visibility -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const HIDE_MIN   =  6.37, HIDE_MAX   = 28.86;
@@ -657,7 +656,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.account-line')
   ].filter(Boolean);
 
-  // — capture their “baseLeft” once —
   targets.forEach(el => {
     if (!el.dataset.baseLeftVw) {
       const leftPx = parseFloat(getComputedStyle(el).left) || 0;
@@ -665,7 +663,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // — hide anything in the “hole” area —
   function updateVisibility() {
     targets.forEach(el => {
       const r = el.getBoundingClientRect();
@@ -680,18 +677,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let sliding = false;
 
-  // — slide everything forward one time —
   function slideOnce() {
     if (sliding || targets[0].dataset.slid==='true') return;
     sliding = true;
 
-    // 1) clear any lingering “hidden” styles
     targets.forEach(el => {
       el.style.opacity       = '';
       el.style.pointerEvents = '';
     });
 
-    // 2) then slide them in
     targets.forEach(el => {
       const base = parseFloat(el.dataset.baseLeftVw);
       el.style.transition = `left ${DURATION}ms ease`;
@@ -699,14 +693,12 @@ document.addEventListener('DOMContentLoaded', () => {
       el.dataset.slid     = 'true';
     });
 
-    // 3) once done, re-apply the “hide if still in the hole” logic
     setTimeout(() => {
       updateVisibility();
       sliding = false;
     }, DURATION);
   }
 
-  // — inverse slide back to baseLeft —
   function slideBack() {
     if (sliding || targets[0].dataset.slid!=='true') return;
     sliding = true;
@@ -722,7 +714,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, DURATION);
   }
 
-  // — click‐zone triggers for both directions —
   document.addEventListener('click', e => {
     const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
     if (vw>=CLICK_MIN && vw<=CLICK_MAX) {
@@ -733,7 +724,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // (optional) if you have explicitly‐positioned “.slide-trigger” elements:
   document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container')
     .forEach(el => el.addEventListener('click', e => {
       e.stopPropagation();

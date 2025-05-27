@@ -407,6 +407,8 @@ body.non-fullscreen {
 }
 
 
+}
+}
   .grid-number       { font-size: 6.1px   !important; }
 }
 
@@ -470,10 +472,12 @@ body.non-fullscreen {
 
 
 .item-line {
+    z-index: 0;
+    pointer-events:none;
     position: absolute;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
-    z-index: 0;
+    
 }
 
 @media (min-width: 1900px) {
@@ -486,5 +490,9 @@ body.non-fullscreen {
   .account-text,
   .item-text {
     font-size: 9px !important;
+  }
+
+  .grid-number {
+    font-size: 6.1px !important;
   }
 }

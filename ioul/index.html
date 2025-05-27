@@ -788,5 +788,77 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const CLICK_LEFT = 94, CLICK_RIGHT = 100;
+  const TOP_MIN = 28.5, TOP_MAX = 84;
+  const DISTANCE = 60, DURATION = 700;
+
+  const vw = () => window.innerWidth / 100;
+  const vh = () => window.innerHeight / 100;
+  const pxToVw = px => px / vw();
+
+  const itemTargets = [...document.querySelectorAll('.item-text'), ...document.querySelectorAll('.item-line')];
+
+  itemTargets.forEach(el => {
+    if (!el.dataset.baseLeftVw) {
+      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      el.dataset.baseLeftVw = pxToVw(leftPx);
+    }
+  });
+
+  let slidingItems = false;
+
+  function slideItemsIn() {
+    if (slidingItems || itemTargets.length === 0 || itemTargets[0].dataset.slid === 'true') return;
+    slidingItems = true;
+    itemTargets.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DURATION}ms ease`;
+      el.style.left = (base - DISTANCE) + 'vw';
+      el.dataset.slid = 'true';
+    });
+    setTimeout(() => { slidingItems = false; }, DURATION);
+  }
+
+  function slideItemsBack() {
+    if (slidingItems || itemTargets.length === 0 || itemTargets[0].dataset.slid !== 'true') return;
+    slidingItems = true;
+    itemTargets.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DURATION}ms ease`;
+      el.style.left = base + 'vw';
+      delete el.dataset.slid;
+    });
+    setTimeout(() => { slidingItems = false; }, DURATION);
+  }
+
+  document.addEventListener('click', (e) => {
+    const clickVw = pxToVw(e.clientX);
+    const clickVh = e.clientY / vh();
+    if (clickVw >= CLICK_LEFT && clickVw <= CLICK_RIGHT &&
+        clickVh >= TOP_MIN && clickVh <= TOP_MAX) {
+      e.stopPropagation();
+      if (itemTargets[0]?.dataset.slid === 'true') {
+        slideItemsBack();
+      } else {
+        slideItemsIn();
+      }
+    }
+  }, true);
+
+  document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (itemTargets[0]?.dataset.slid === 'true') {
+        slideItemsBack();
+      } else {
+        slideItemsIn();
+      }
+    });
+  });
+});
+</script>
+
 </body>
 </html>

@@ -416,7 +416,9 @@ body.non-fullscreen {
   .account-text       { font-size: 9px !important; 
   .item-text {
     font-size: 0.9rem;
-  }
+  
+  .item-text { font-size: 9px !important; }
+}
 }
   .grid-number       { font-size: 6.1px   !important; }
 }

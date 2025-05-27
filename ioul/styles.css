@@ -406,20 +406,7 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
-@media (min-width: 1900px) {
-  .chat-text,
-  .community-items-container span,
-  .zero-items-container span,
-  .index-input,
-  .custom-text,
-  .mail-text,
-  .account-text       { font-size: 9px !important; 
-  .item-text {
-    font-size: 0.9rem;
-  
-  .item-text { font-size: 9px !important; }
-}
-}
+
   .grid-number       { font-size: 6.1px   !important; }
 }
 
@@ -486,5 +473,18 @@ body.non-fullscreen {
     position: absolute;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
-    z-index: 1;
+    z-index: 0;
+}
+
+@media (min-width: 1900px) {
+  .chat-text,
+  .community-items-container span,
+  .zero-items-container span,
+  .index-input,
+  .custom-text,
+  .mail-text,
+  .account-text,
+  .item-text {
+    font-size: 9px !important;
+  }
 }

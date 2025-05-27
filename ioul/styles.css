@@ -406,7 +406,20 @@ body.non-fullscreen {
     transition: left 0.7s ease, transform 0.7s ease;
 }
 
-
+@media (min-width: 1900px) {
+  .chat-text,
+  .community-items-container span,
+  .zero-items-container span,
+  .index-input,
+  .custom-text,
+  .mail-text,
+  .account-text       { font-size: 9px !important; 
+  .item-text {
+    font-size: 0.9rem;
+  
+  .item-text { font-size: 9px !important; }
+}
+}
   .grid-number       { font-size: 6.1px   !important; }
 }
 
@@ -422,7 +435,7 @@ body.non-fullscreen {
     width: 2.8vw;
     height: 1px;
     background-color: rgba(172, 172, 172, 0.841);
-    z-index: 102;
+    z-index: 1;
 }
 
 .hidden { display:none !important; }
@@ -474,17 +487,4 @@ body.non-fullscreen {
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
     z-index: 1;
-}
-
-@media (min-width: 1900px) {
-  .chat-text,
-  .community-items-container span,
-  .zero-items-container span,
-  .index-input,
-  .custom-text,
-  .mail-text,
-  .account-text,
-  .item-text {
-    font-size: 9px !important;
-  }
 }

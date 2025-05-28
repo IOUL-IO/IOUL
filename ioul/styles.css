@@ -412,7 +412,6 @@ body.non-fullscreen {
   .zero-items-container span,
   .index-input,
   .custom-text,
-      .center-text,
   .mail-text,
   .account-text,
   .item-text {
@@ -490,28 +489,32 @@ body.non-fullscreen {
     z-index: 1;
 }
 
-
-
-.util-line {
-    z-index: 3 !important;
+.center-text {
+    z-index: 3;
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #111111;
+    letter-spacing: 0.28vw;
+    font-size: 0.47rem;
+    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
+    transition: left 0.7s ease, transform 0.7s ease;
+    line-height: 1.6;
+    overflow: visible;
 }
 
-
 .center-line {
+    z-index: 3;
     position: absolute;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
-    z-index: 2;
+    z-index: 1;
 }
 
-.center-text {
-    transition: none !important;
-    transform: none !important;
-    z-index: 2;
-}
 
-.center-right {
-    direction: rtl;
-    text-align: right;
-    white-space: nowrap;
+
+@media (min-width: 1900px) {
+  .center-text {
+    z-index: 3;
+    font-size: 9px !important;
+  }
 }

@@ -665,20 +665,20 @@ document.addEventListener('DOMContentLoaded', () => {
   let state = 0; // 0 = baseline (lines visible, others hidden)
 
   const updateView = () => {
-    if (state === 0) { // baseline
-      mailEls.forEach(el => el.classList.add('hidden'));
-      calendarEls.forEach(el => el.classList.add('hidden'));
-      specialLines.forEach(el => el.classList.remove('hidden'));
-    } else if (state === 1) { // show mail
-      mailEls.forEach(el => el.classList.remove('hidden'));
-      calendarEls.forEach(el => el.classList.add('hidden'));
-      specialLines.forEach(el => el.classList.remove('hidden'));
-    } else if (state === 2) { // show calendar, hide lines 5&6
-      mailEls.forEach(el => el.classList.add('hidden'));
-      calendarEls.forEach(el => el.classList.remove('hidden'));
-      specialLines.forEach(el => el.classList.add('hidden'));
-    }
-  };
+  if (state === 0) { // baseline
+    mailEls.forEach(el => { el.classList.add('hidden'); el.style.opacity = '0'; });
+    calendarEls.forEach(el => el.classList.add('hidden'));
+    specialLines.forEach(el => el.classList.remove('hidden'));
+  } else if (state === 1) { // show mail on first toggle
+    mailEls.forEach(el => { el.classList.remove('hidden'); el.style.opacity = '1'; });
+    calendarEls.forEach(el => { el.classList.add('hidden'); });
+    specialLines.forEach(el => el.classList.remove('hidden'));
+  } else if (state === 2) { // show calendar, hide lines 5&6
+    mailEls.forEach(el => { el.classList.add('hidden'); el.style.opacity = '0'; });
+    calendarEls.forEach(el => el.classList.remove('hidden'));
+    specialLines.forEach(el => el.classList.add('hidden'));
+  }
+};
 
   utilLines.forEach(line => {
     line.addEventListener('click', () => {

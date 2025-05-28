@@ -489,10 +489,28 @@ body.non-fullscreen {
     z-index: 1;
 }
 
-.center-text {
-    transition: none !important;
-}
+
 
 .util-line {
     z-index: 3 !important;
+}
+
+
+.center-line {
+    position: absolute;
+    height: 1px;
+    background-color: rgba(230, 230, 230, 0.28);
+    z-index: 2;
+}
+
+.center-text {
+    transition: none !important;
+    transform: none !important;
+    z-index: 2;
+}
+
+.center-right {
+    direction: rtl;
+    text-align: right;
+    white-space: nowrap;
 }

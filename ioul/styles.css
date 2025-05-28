@@ -412,17 +412,11 @@ body.non-fullscreen {
   .zero-items-container span,
   .index-input,
   .custom-text,
-  .center-text,
   .mail-text,
   .account-text,
   .item-text {
     font-size: 9px !important;
   }
-
-  .grid-number {
-    font-size: 6.1px !important;
-  }
-}
 
   .grid-number {
     font-size: 6.1px !important;
@@ -495,9 +489,10 @@ body.non-fullscreen {
     z-index: 1;
 }
 
-.center-line {
-    position: absolute;
-    height: 1px;
-    background-color: rgba(230, 230, 230, 0.28);
-    z-index: 1;
+.center-text {
+    transition: none !important;
+}
+
+.util-line {
+    z-index: 3 !important;
 }

@@ -284,14 +284,7 @@
     <div class="slide-trigger-reverse"></div>
   </div>
 
-  
-
-
-
-
-
-
-<script>
+  <script>
 document.addEventListener('DOMContentLoaded', () => {
   const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // inverse trigger (left edge)
@@ -299,175 +292,128 @@ document.addEventListener('DOMContentLoaded', () => {
   const DIST    = 60;                   // vw shift
   const DUR     = 700;                  // ms
 
-  const vw  = () => window.innerWidth / 100;
-  const vh  = () => window.innerHeight / 100;
+  const vw = () => window.innerWidth / 100;
+  const vh = () => window.innerHeight / 100;
   const toVw = px => px / vw();
   const toVh = px => px / vh();
 
-  const itemEls   = [...document.querySelectorAll('.item-text'),  ...document.querySelectorAll('.item-line')];
-  const centerEls = [...document.querySelectorAll('.center-text'), ...document.querySelectorAll('.center-line')];
+  const itemEls = [
+    ...document.querySelectorAll('.item-text'),
+    ...document.querySelectorAll('.item-line')
+  ];
 
   // Cache starting positions
-  [...itemEls, ...centerEls].forEach(el => {
+  itemEls.forEach(el => {
     if (!el.dataset.baseLeftVw) {
       const leftPx = parseFloat(getComputedStyle(el).left) || 0;
       el.dataset.baseLeftVw = toVw(leftPx);
     }
   });
 
-  let state = 0;      // 0 = initial, 1 = items in, 2 = center in
   let animating = false;
 
-  function setGroup(list, shift) {
-    list.forEach(el => {
+  function slideItemsIn() {
+    if (animating || itemEls.length === 0 || itemEls[0].dataset.slid === 'true') return;
+    animating = true;
+    itemEls.forEach(el => {
       const base = parseFloat(el.dataset.baseLeftVw);
       el.style.transition = `left ${DUR}ms ease`;
-      el.style.left = (base + shift) + 'vw';
+      el.style.left = `${base - DIST}vw`;
+      el.dataset.slid = 'true';
     });
+    setTimeout(() => animating = false, DUR);
   }
 
-  function forward() {
-    if (animating) return;
-    if (state === 0) {
-      animating = true;
-      setGroup(itemEls, -DIST); // items into view
-      setTimeout(() => { animating = false; state = 1; }, DUR);
-    } else if (state === 1) {
-      animating = true;
-      setGroup(itemEls, -DIST * 2); // items move under layer‑2
-      setGroup(centerEls, -DIST);   // center group into view
-      setTimeout(() => { animating = false; state = 2; }, DUR);
-    }
+  function slideItemsFurther() {
+    if (animating || itemEls.length === 0 || itemEls[0].dataset.slid !== 'true' || itemEls[0].dataset.further === 'true') return;
+    animating = true;
+    itemEls.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw) - DIST;
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left = `${base - DIST}vw`;
+      el.dataset.further = 'true';
+    });
+    setTimeout(() => animating = false, DUR);
   }
 
-  function reverse() {
-    if (animating) return;
-    if (state === 2) {
-      animating = true;
-      setGroup(itemEls, -DIST); // restore items to center
-      setGroup(centerEls, 0);   // hide center off‑screen right
-      setTimeout(() => { animating = false; state = 1; }, DUR);
-    } else if (state === 1) {
-      animating = true;
-      setGroup(itemEls, 0);     // hide items off‑screen right
-      setTimeout(() => { animating = false; state = 0; }, DUR);
-    }
-  }
-
-  // Click region handling
-  document.addEventListener('click', (e) => {
-    // Skip account-text trigger clicks    const vwPos = toVw(e.clientX);
-    const vhPos = toVh(e.clientY);
-    const onFwd = vwPos >= FWD_MIN && vwPos <= FWD_MAX && vhPos >= TOP_MIN && vhPos <= TOP_MAX;
-    const onRev = vwPos >= REV_MIN && vwPos <= REV_MAX && vhPos >= TOP_MIN && vhPos <= TOP_MAX;
-
-    if (onFwd) {
-      forward();
-      e.stopPropagation();
-    } else if (onRev) {
-      reverse();
-      e.stopPropagation();
-    }
-  }, true);
-
-  // Proxy triggers
-  document.querySelectorAll('.slide-trigger').forEach(el => {
-      el.addEventListener('click', e => {        e.stopPropagation(); forward();
-      });
+  function slideCenterIn() {
+    const centerEls = [
+      ...document.querySelectorAll('.center-text'),
+      ...document.querySelectorAll('.center-line')
+    ];
+    centerEls.forEach(el => {
+      if (!el.dataset.baseLeftVw) {
+        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+        el.dataset.baseLeftVw = toVw(leftPx);
+      }
     });
-  });
-  document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
-      el.addEventListener('click', e => {        e.stopPropagation(); reverse();
-      });
-    });
-  });
-});
-</script>
-
-
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const HIDE_MIN   =  6.37, HIDE_MAX   = 28.86;
-  const TOP_MIN    = 28.5,  TOP_MAX    = 84;
-  const CLICK_MIN  = 32.43, CLICK_MAX  = 36;
-  const REVERSE_MIN= 94,    REVERSE_MAX=100;
-  const DISTANCE   = 60,    DURATION   = 700;
-
-  const pxToVw = px => px / (window.innerWidth / 100);
-  const pxToVh = px => px / (window.innerHeight / 100);
-
-  const targets = [
-    ...document.querySelectorAll('.account-text'),
-    document.querySelector('.account-line')
-  ].filter(Boolean);
-
-  // Cache base positions
-  targets.forEach(el => {
-    if (!el.dataset.baseLeftVw) {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-      el.dataset.baseLeftVw = pxToVw(leftPx);
-    }
-  });
-
-  function updateVisibility() {
-    targets.forEach(el => {
-      const r = el.getBoundingClientRect();
-      const l = pxToVw(r.left), t = pxToVh(r.top);
-      const hide = l >= HIDE_MIN && l < HIDE_MAX && t >= TOP_MIN && t <= TOP_MAX;
-      el.style.opacity       = hide ? '0' : '';
-      el.style.pointerEvents = hide ? 'none' : '';
-    });
-  }
-  updateVisibility();
-  window.addEventListener('resize', updateVisibility);
-
-  let slidingAccount = false;
-
-  function slideOnce() {
-    if (slidingAccount || targets[0].dataset.slid === 'true') return;
-    slidingAccount = true;
-    targets.forEach(el => {
-      el.style.opacity       = '';
-      el.style.pointerEvents = '';
+    centerEls.forEach(el => {
       const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DURATION}ms ease`;
-      el.style.left       = (base + DISTANCE) + 'vw';
-      el.dataset.slid     = 'true';
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left = `${base - DIST}vw`;
+      el.dataset.centerSlid = 'true';
     });
-    setTimeout(() => {
-      updateVisibility();
-      slidingAccount = false;
-    }, DURATION);
   }
 
-  function slideBack() {
-    if (slidingAccount || targets[0].dataset.slid !== 'true') return;
-    slidingAccount = true;
-    targets.forEach(el => {
+  function slideCenterBack() {
+    const centerEls = [
+      ...document.querySelectorAll('.center-text'),
+      ...document.querySelectorAll('.center-line')
+    ];
+    centerEls.forEach(el => {
       const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DURATION}ms ease`;
-      el.style.left       = base + 'vw';
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left = `${base}vw`;
+      delete el.dataset.centerSlid;
+    });
+  }
+
+  function slideItemsBackOne() {
+    if (animating || itemEls.length === 0 || itemEls[0].dataset.further !== 'true') return;
+    animating = true;
+    itemEls.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw) - DIST;
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left = `${base}vw`;
+      delete el.dataset.further;
+    });
+    setTimeout(() => animating = false, DUR);
+  }
+
+  function slideItemsBackToOriginal() {
+    if (animating || itemEls.length === 0 || itemEls[0].dataset.slid !== 'true') return;
+    animating = true;
+    itemEls.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left = `${base}vw`;
       delete el.dataset.slid;
     });
-    setTimeout(() => {
-      updateVisibility();
-      slidingAccount = false;
-    }, DURATION);
+    setTimeout(() => animating = false, DUR);
   }
 
-  // One-time handlers
-  document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
-    el.addEventListener('click', function handler(e) {
-      e.stopPropagation();
-      slideOnce();
-      document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el2 => {
-        el2.addEventListener('click', function handler2(e2) {
-          e2.stopPropagation();
-          slideBack();
-        }, { once: true, capture: true });
-      });
-    }, { once: true, capture: true });
+  document.addEventListener('click', e => {
+    const vwX = toVw(e.clientX);
+    const vhY = toVh(e.clientY);
+    if (vhY >= TOP_MIN && vhY <= TOP_MAX) {
+      if (vwX >= FWD_MIN && vwX <= FWD_MAX) {
+        e.stopPropagation();
+        if (itemEls[0].dataset.slid !== 'true') {
+          slideItemsIn();
+        } else if (itemEls[0].dataset.further !== 'true') {
+          slideItemsFurther();
+          slideCenterIn();
+        }
+      } else if (vwX >= REV_MIN && vwX <= REV_MAX) {
+        e.stopPropagation();
+        if (itemEls[0].dataset.further === 'true') {
+          slideCenterBack();
+          slideItemsBackOne();
+        } else if (itemEls[0].dataset.slid === 'true') {
+          slideItemsBackToOriginal();
+        }
+      }
+    }
   });
 });
 </script>

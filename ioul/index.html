@@ -836,95 +836,149 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger (right edge)
-  const REV_MIN = 32.43, REV_MAX = 36;  // inverse trigger (left edge)
-  const TOP_MIN = 28.5, TOP_MAX = 84;
-  const DIST    = 60;                   // vw shift
-  const DUR     = 700;                  // ms
+  const FORWARD_MIN = 94, FORWARD_MAX = 100;   // right-edge click
+  const INVERSE_MIN = 32.43, INVERSE_MAX = 36; // left-edge click
+  const SHIFT       = 60;   // vw
+  const DURATION    = 700;  // ms
 
-  const vw  = () => window.innerWidth / 100;
-  const vh  = () => window.innerHeight / 100;
+  // Helpers for vw conversion and transitions
+  const vw = () => window.innerWidth / 100;
   const toVw = px => px / vw();
-  const toVh = px => px / vh();
-
-  const itemEls   = [...document.querySelectorAll('.item-text'),  ...document.querySelectorAll('.item-line')];
-  const centerEls = [...document.querySelectorAll('.center-text'), ...document.querySelectorAll('.center-line')];
-
-  // Cache starting positions
-  [...itemEls, ...centerEls].forEach(el => {
-    if (!el.dataset.baseLeftVw) {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-      el.dataset.baseLeftVw = toVw(leftPx);
-    }
-  });
-
-  let state = 0;      // 0 = initial, 1 = items in, 2 = center in
-  let animating = false;
-
-  function setGroup(list, shift) {
-    list.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DUR}ms ease`;
-      el.style.left = (base + shift) + 'vw';
+  const capture = selector =>
+    [...document.querySelectorAll(selector)].map(el => {
+      const base = toVw(parseFloat(getComputedStyle(el).left) || 0);
+      if (!el.style.transition)
+        el.style.transition = `left ${DURATION}ms ease`;
+      return { el, base };
     });
-  }
 
-  function forward() {
-    if (animating) return;
+  // Capture groups
+  const account = capture('.account-text, .account-line');
+  const items   = capture('.item-text, .item-line');
+  const center  = capture('.center-text, .center-line');
+
+  let state = 0;             // items/center state
+  let accountToggled = false;// account slide toggle
+
+  // Move a group by delta vw
+  const moveGroup = (group, delta) =>
+    group.forEach(({ el, base }) => el.style.left = `${base + delta}vw`);
+
+  // Advance items/center state machine
+  const advanceItems = () => {
     if (state === 0) {
-      animating = true;
-      setGroup(itemEls, -DIST); // items into view
-      setTimeout(() => { animating = false; state = 1; }, DUR);
-    } else if (state === 1) {
-      animating = true;
-      setGroup(itemEls, -DIST * 2); // items move under layer‑2
-      setGroup(centerEls, -DIST);   // center group into view
-      setTimeout(() => { animating = false; state = 2; }, DUR);
+      moveGroup(items, -SHIFT);
+      moveGroup(center, -SHIFT);
+      state = 1;
     }
-  }
+  };
 
-  function reverse() {
-    if (animating) return;
-    if (state === 2) {
-      animating = true;
-      setGroup(itemEls, -DIST); // restore items to center
-      setGroup(centerEls, 0);   // hide center off‑screen right
-      setTimeout(() => { animating = false; state = 1; }, DUR);
-    } else if (state === 1) {
-      animating = true;
-      setGroup(itemEls, 0);     // hide items off‑screen right
-      setTimeout(() => { animating = false; state = 0; }, DUR);
+  // Retreat items/center state machine
+  const retreatItems = () => {
+    if (state === 1) {
+      moveGroup(items, SHIFT);
+      moveGroup(center, SHIFT);
+      state = 2;
+    } else if (state === 2) {
+      moveGroup(items, SHIFT);
+      state = 0;
     }
-  }
+  };
 
-  // Click region handling
-  document.addEventListener('click', (e) => {
-    const vwPos = toVw(e.clientX);
-    const vhPos = toVh(e.clientY);
-    const onFwd = vwPos >= FWD_MIN && vwPos <= FWD_MAX && vhPos >= TOP_MIN && vhPos <= TOP_MAX;
-    const onRev = vwPos >= REV_MIN && vwPos <= REV_MAX && vhPos >= TOP_MIN && vhPos <= TOP_MAX;
-
-    if (onFwd) {
-      forward();
-      e.stopPropagation();
-    } else if (onRev) {
-      reverse();
-      e.stopPropagation();
+  // Click handling
+  document.body.addEventListener('click', e => {
+    const xvw = e.clientX / vw();
+    if (xvw >= FORWARD_MIN && xvw <= FORWARD_MAX) {
+      // Forward edge
+      if (state === 0 && accountToggled) {
+        // Return account group
+        moveGroup(account, SHIFT);
+        accountToggled = false;
+      } else {
+        advanceItems();
+      }
+    } else if (xvw >= INVERSE_MIN && xvw <= INVERSE_MAX) {
+      // Inverse edge
+      if (state === 0 && !accountToggled) {
+        // Slide account group out
+        moveGroup(account, -SHIFT);
+        accountToggled = true;
+      } else {
+        retreatItems();
+      }
     }
-  }, true);
-
-  // Proxy triggers
-  document.querySelectorAll('.slide-trigger').forEach(el => {
-    el.addEventListener('click', e => { e.stopPropagation(); forward(); });
-  });
-  document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
-    el.addEventListener('click', e => { e.stopPropagation(); reverse(); });
   });
 });
 </script>
 
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  /* ---------- CONFIG ---------- */
+  const FORWARD_MIN = 94, FORWARD_MAX = 100;   // right‑edge click
+  const INVERSE_MIN = 32.43, INVERSE_MAX = 36; // left‑edge click
+  const SHIFT       = 60;                      // vw to move per step
+  const DURATION    = 700;                     // ms (matches CSS)
+
+  /* ---------- HELPERS ---------- */
+  const vw = () => window.innerWidth / 100;
+  const toVw = px => px / vw();
+  const capture = selector =>
+    [...document.querySelectorAll(selector)].map(el => {
+      const base = toVw(parseFloat(getComputedStyle(el).left) || 0);
+      if (!el.style.transition)
+        el.style.transition = `left ${DURATION}ms ease`;
+      return { el, base };
+    });
+
+  /* ---------- GROUPS ---------- */
+  const items  = capture('.item-text, .item-line');
+  const center = capture('.center-text, .center-line');
+
+  /* ---------- STATE MACHINE ---------- */
+  // 0: items@center   -> fwd -> 1
+  // 1: items@left     -> inv -> 2
+  // 2: items@center   -> inv -> 0            (cycle)
+  let state = 0;
+
+  const move = (group, delta) =>
+    group.forEach(({ el, base }) => (el.style.left = `${base + delta}vw`));
+
+  const advance = () => {
+    if (state === 0) {
+      move(items, -SHIFT);
+      move(center, -SHIFT);
+      state = 1;
+    }
+  };
+
+  const retreat = () => {
+    if (state === 1) {
+      move(items,  SHIFT);
+      move(center, SHIFT);
+      state = 2;
+    } else if (state === 2) {
+      move(items,  SHIFT);
+      state = 0;
+    }
+  };
+
+  /* ---------- EVENT LISTENERS ---------- */
+  document.body.addEventListener('click', e => {
+    const xvw = e.clientX / vw();
+    if (xvw >= FORWARD_MIN && xvw <= FORWARD_MAX) {
+      advance();
+    } else if (xvw >= INVERSE_MIN && xvw <= INVERSE_MAX) {
+      retreat();
+    }
+  });
+});
+</script>
 
 </body>
 </html>

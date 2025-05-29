@@ -737,7 +737,102 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const HIDE_MIN   =  6.37, HIDE_MAX   = 28.86;
+  const TOP_MIN    = 28.5,  TOP_MAX    = 84;
+  const CLICK_MIN  = 32.43, CLICK_MAX  = 36;
+  const REVERSE_MIN= 94,    REVERSE_MAX=100;
+  const DISTANCE   = 60,    DURATION   = 700;
 
+  const pxToVw = px => px/(window.innerWidth  /100);
+  const pxToVh = px => px/(window.innerHeight /100);
+
+  const targets = [
+    ...document.querySelectorAll('.account-text'),
+    document.querySelector('.account-line')
+  ].filter(Boolean);
+
+  targets.forEach(el => {
+    if (!el.dataset.baseLeftVw) {
+      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      el.dataset.baseLeftVw = pxToVw(leftPx);
+    }
+  });
+
+  function updateVisibility() {
+    targets.forEach(el => {
+      const r = el.getBoundingClientRect();
+      const l = pxToVw(r.left), t = pxToVh(r.top);
+      const hide = l >= HIDE_MIN && l < HIDE_MAX && t >= TOP_MIN && t <= TOP_MAX;
+      el.style.opacity       = hide ? '0' : '';
+      el.style.pointerEvents = hide ? 'none' : '';
+    });
+  }
+  updateVisibility();
+  window.addEventListener('resize', updateVisibility);
+
+  let sliding = false;
+
+  function slideOnce() {
+    if (sliding || targets[0].dataset.slid==='true') return;
+    sliding = true;
+
+    targets.forEach(el => {
+      el.style.opacity       = '';
+      el.style.pointerEvents = '';
+    });
+
+    targets.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DURATION}ms ease`;
+      el.style.left       = (base + DISTANCE) + 'vw';
+      el.dataset.slid     = 'true';
+    });
+
+    setTimeout(() => {
+      updateVisibility();
+      sliding = false;
+    }, DURATION);
+  }
+
+  function slideBack() {
+    if (sliding || targets[0].dataset.slid!=='true') return;
+    sliding = true;
+    targets.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DURATION}ms ease`;
+      el.style.left       = base + 'vw';
+      delete el.dataset.slid;
+    });
+    setTimeout(() => {
+      updateVisibility();
+      sliding = false;
+    }, DURATION);
+  }
+
+  document.addEventListener('click', e => {
+    const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
+    if (vw>=CLICK_MIN && vw<=CLICK_MAX) {
+      slideOnce();
+    } else if (vw>=REVERSE_MIN && vw<=REVERSE_MAX
+            && vh>=TOP_MIN     && vh<=TOP_MAX) {
+      slideBack();
+    }
+  });
+
+  document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container')
+    .forEach(el => el.addEventListener('click', e => {
+      e.stopPropagation();
+      slideOnce();
+    }));
+  document.querySelectorAll('.slide-trigger-reverse')
+    .forEach(el => el.addEventListener('click', e => {
+      e.stopPropagation();
+      slideBack();
+    }));
+});
+</script>
 
 
 
@@ -745,92 +840,72 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const INVERSE_MIN = 94,  INVERSE_MAX = 100;   // right edge
-  const FORWARD_MIN = 32.43, FORWARD_MAX = 36;  // left edge
+  const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger (right edge)
+  const REV_MIN = 32.43, REV_MAX = 36;  // inverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;
-  const DIST = 60;
-  const DUR  = 700;
+  const SHIFT   = 60;                   // vw shift for each step
+  const DUR     = 700;                  // animation duration in ms
 
-  const vw  = () => window.innerWidth / 100;
-  const vh  = () => window.innerHeight / 100;
-  const toVw = px => px / vw();
-  const toVh = px => px / vh();
+  // Convert px to vw based on current viewport
+  const toVw = px => px / (window.innerWidth / 100);
 
-  // Cache baseline left-coordinate (in vw) for each element once
-  const cacheBase = el => {
-    if (!el.dataset.baseLeftVw) {
-      el.dataset.baseLeftVw = toVw(parseFloat(getComputedStyle(el).left) || 0);
-    }
-  };
+  // Utility – current left position of an element in vw
+  const currLeft = el => toVw(parseFloat(getComputedStyle(el).left) || 0);
 
-  const accountEls = [...document.querySelectorAll('.account-text'), document.querySelector('.account-line')].filter(Boolean);
-  const itemEls    = [...document.querySelectorAll('.item-text'),   ...document.querySelectorAll('.item-line')];
-  const centerEls  = [...document.querySelectorAll('.center-text'), ...document.querySelectorAll('.center-line')];
+  // Elements
+  const itemEls   = [...document.querySelectorAll('.item-text'),  ...document.querySelectorAll('.item-line')];
+  const centerEls = [...document.querySelectorAll('.center-text'), ...document.querySelectorAll('.center-line')];
 
-  [...accountEls, ...itemEls, ...centerEls].forEach(cacheBase);
+  let stage = 0;   // 0 = items hidden, 1 = items visible, 2 = center visible
+  let busy  = false;
 
-  let state = 'idle';   // idle → account → idle → items → center → items → idle ...
-  let anim  = false;
-
-  const shift = (els, offset) => {
-    els.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
+  function move(elems, delta) {
+    elems.forEach(el => {
       el.style.transition = `left ${DUR}ms ease`;
-      el.style.left = (base + offset) + 'vw';
+      el.style.left = (currLeft(el) + delta) + 'vw';
     });
-  };
+  }
 
-  const updateItemVisibility = () => {
-    itemEls.forEach(el => {
-      const l = toVw(el.getBoundingClientRect().left);
-      const hide = l < 36;
-      el.style.opacity       = hide ? '0' : '';
-      el.style.pointerEvents = hide ? 'none' : '';
-    });
-  };
-  updateItemVisibility();
-  window.addEventListener('resize', updateItemVisibility);
+  function forward() {
+    if (busy) return;
+    busy = true;
 
-  const activateAccount   = () => { anim=true; shift(accountEls,  DIST); setTimeout(()=>{state='account'; anim=false;}, DUR); };
-  const deactivateAccount = () => { anim=true; shift(accountEls,   0);   setTimeout(()=>{state='idle';    anim=false;}, DUR); };
-
-  const showItems         = () => { anim=true; shift(itemEls,   -DIST);  setTimeout(()=>{state='items';  anim=false; updateItemVisibility();}, DUR); };
-  const hideItems         = () => { anim=true; shift(itemEls,     0);    setTimeout(()=>{state='idle';   anim=false; updateItemVisibility();}, DUR); };
-  const pushItemsLeft     = () => { anim=true; shift(itemEls, -2*DIST);  setTimeout(()=>{anim=false; updateItemVisibility();}, DUR); };
-
-  const bringCentersIn    = () => { anim=true; shift(centerEls, -DIST);  setTimeout(()=>{state='center'; anim=false;}, DUR); };
-  const sendCentersOut    = () => { anim=true; shift(centerEls,    0);   setTimeout(()=>{state='items';  anim=false;}, DUR); };
-
-  const handleForward = () => {
-    if (anim) return;
-    switch (state) {
-      case 'account': deactivateAccount(); break;
-      case 'idle':    showItems(); break;
-      case 'items':   pushItemsLeft(); bringCentersIn(); break;
+    if (stage === 0) {               // bring items in
+      move(itemEls, -SHIFT);
+      stage = 1;
+    } else if (stage === 1) {        // swap: hide items, show center
+      move(itemEls, -SHIFT);         // items now at base - 2*SHIFT → clipped
+      move(centerEls, -SHIFT);       // center enters view
+      stage = 2;
     }
-  };
+    setTimeout(() => busy = false, DUR);
+  }
 
-  const handleInverse = () => {
-    if (anim) return;
-    switch (state) {
-      case 'idle':    activateAccount(); break;
-      case 'account': deactivateAccount(); break;
-      case 'items':   hideItems(); break;
-      case 'center':  sendCentersOut(); shift(itemEls, -DIST);   // bring items back into view
-                      setTimeout(updateItemVisibility, DUR);
-                      break;
+  function reverse() {
+    if (busy) return;
+    busy = true;
+
+    if (stage === 2) {               // hide center, reveal items again
+      move(centerEls,  SHIFT);       // return to off‑screen right
+      move(itemEls,    SHIFT);       // items return to visible position
+      stage = 1;
+    } else if (stage === 1) {        // hide items completely
+      move(itemEls,    SHIFT);       // back to off‑screen right
+      stage = 0;
     }
-  };
+    setTimeout(() => busy = false, DUR);
+  }
 
+  // Global click handler (capture so we can pre‑empt other listeners)
   document.addEventListener('click', e => {
-    const vx = toVw(e.clientX);
-    const vy = toVh(e.clientY);
-    if (vy < TOP_MIN || vy > TOP_MAX) return;
-    if (vx >= INVERSE_MIN && vx <= INVERSE_MAX) {
-      handleInverse();
+    const vwPos = toVw(e.clientX);
+    const vhPos = (e.clientY) / (window.innerHeight / 100);
+
+    if (vwPos >= FWD_MIN && vwPos <= FWD_MAX && vhPos >= TOP_MIN && vhPos <= TOP_MAX) {
+      forward();
       e.stopPropagation();
-    } else if (vx >= FORWARD_MIN && vx <= FORWARD_MAX) {
-      handleForward();
+    } else if (vwPos >= REV_MIN && vwPos <= REV_MAX) {
+      reverse();
       e.stopPropagation();
     }
   }, true);

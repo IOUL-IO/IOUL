@@ -286,127 +286,119 @@
 
   <script>
 document.addEventListener('DOMContentLoaded', () => {
-  /* ─────────────── Config ─────────────── */
-  const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger (right edge)
-  const REV_MIN = 32.43, REV_MAX = 36;  // inverse trigger (left edge)
-  const TOP_MIN = 28.5, TOP_MAX = 84;
-  const DIST    = 60;                   // vw shift
-  const DUR     = 700;                  // ms
+  /*────────────────────────────────────────
+      CONFIG
+  ────────────────────────────────────────*/
+  const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger – right edge
+  const REV_MIN = 32.43, REV_MAX = 36;  // inverse trigger – left edge
+  const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
+  const DIST    = 60;                   // movement in vw
+  const DUR     = 700;                  // transition duration (ms)
 
-  /* ─────────────── Helpers ─────────────── */
+  /*────────────────────────────────────────
+      HELPERS
+  ────────────────────────────────────────*/
   const vw = () => window.innerWidth / 100;
   const vh = () => window.innerHeight / 100;
   const toVw = px => px / vw();
   const toVh = px => px / vh();
 
-  const q = s => [...document.querySelectorAll(s)];
+  const itemEls   = [...document.querySelectorAll('.item-text'),  ...document.querySelectorAll('.item-line')];
+  const centerEls = [...document.querySelectorAll('.center-text'), ...document.querySelectorAll('.center-line')];
 
-  const accountEls = [...q('.account-text'), ...q('.account-line')];
-  const itemEls    = [...q('.item-text'),    ...q('.item-line')];
-  const centerEls  = [...q('.center-text'),  ...q('.center-line')];
-
-  // Cache each element's baseline left position in vw
-  [...accountEls, ...itemEls, ...centerEls].forEach(el => {
-    const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-    el.dataset.baseLeftVw = toVw(leftPx);
-    if (!el.dataset.slid) el.dataset.slid = 'false';
+  // Cache baseline left positions (in vw) once
+  [...itemEls, ...centerEls].forEach(el => {
+    if (!el.dataset.baseLeftVw) {
+      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      el.dataset.baseLeftVw = toVw(leftPx);
+    }
   });
 
-  const getAccountSlid = () => accountEls.length && accountEls[0].dataset.slid === 'true';
+  // Whether the account group is currently visible (dataset.slid handled by the separate account script)
+  const accountVisible = () => {
+    const acc = document.querySelector('.account-text');
+    return acc && acc.dataset.slid === 'true';
+  };
 
+  /*────────────────────────────────────────
+      STATE MACHINE
+        0 → HIDDEN   : items off‑screen right (96vw), centers off‑screen right
+        1 → ITEMS    : items at 36vw,         centers still off‑screen right
+        2 → CENTER   : items at -24vw,        centers at 36vw
+  ────────────────────────────────────────*/
+  const STATE = { HIDDEN: 0, ITEMS: 1, CENTER: 2 };
+  let state     = STATE.HIDDEN;
   let animating = false;
 
-  /* ─────────────── Generic shifter ─────────────── */
-  const shift = (elements, deltaVw) => {
-    elements.forEach(el => {
+  // Generic shifter
+  const shift = (els, deltaVw) => {
+    els.forEach(el => {
       const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DUR}ms ease`;
+      el.style.transition = \`left \${DUR}ms ease\`;
       el.style.left = (base + deltaVw) + 'vw';
     });
   };
 
-  /* ─────────────── Account transitions ─────────────── */
-  const slideAccountIn  = () => {
+  /*────────── Transition helpers ──────────*/
+  const gotoItems = () => {                    // 0 → 1  (items slide in)
     animating = true;
-    shift(accountEls, DIST);                       // -24vw + 60vw -> 36vw (in view)
-    setTimeout(() => {
-      accountEls.forEach(el => el.dataset.slid = 'true');
-      animating = false;
-    }, DUR);
-  };
-
-  const slideAccountOut = () => {
-    animating = true;
-    shift(accountEls, 0);                          // back to baseline (hidden off-left)
-    setTimeout(() => {
-      accountEls.forEach(el => el.dataset.slid = 'false');
-      animating = false;
-    }, DUR);
-  };
-
-  /* ─────────────── Items / Center FSM ─────────────── */
-  const STATE = { HIDDEN: 0, ITEMS: 1, CENTER: 2 };
-  let state = STATE.HIDDEN;
-
-  function gotoItems() {               // 0 → 1
-    animating = true;
-    shift(itemEls, -DIST);             // bring items into view
+    shift(itemEls, -DIST);
     setTimeout(() => { animating = false; state = STATE.ITEMS; }, DUR);
-  }
+  };
 
-  function gotoCenter() {              // 1 → 2
+  const gotoCenter = () => {                   // 1 → 2  (items left, centers in)
     animating = true;
-    shift(itemEls, -2 * DIST);         // items slide left under layer‑two
-    shift(centerEls, -DIST);           // centers slide in
+    shift(itemEls, -2 * DIST);                 // -DIST from 36vw → -24vw
+    shift(centerEls, -DIST);                   // centers 96vw → 36vw
     setTimeout(() => { animating = false; state = STATE.CENTER; }, DUR);
-  }
+  };
 
-  function backToItems() {             // 2 → 1
+  const backToItems = () => {                  // 2 → 1  (centers out, items right)
     animating = true;
-    shift(itemEls, -DIST);             // items back to 36vw
-    shift(centerEls, 0);               // centers off‑screen right
+    shift(itemEls, -DIST);                     // -2*DIST → -DIST
+    shift(centerEls, 0);                       // 36vw → 96vw (baseline)
     setTimeout(() => { animating = false; state = STATE.ITEMS; }, DUR);
-  }
+  };
 
-  function backToHidden() {            // 1 → 0
+  const backToHidden = () => {                 // 1 → 0  (items out right)
     animating = true;
-    shift(itemEls, 0);                 // items off‑screen right
+    shift(itemEls, 0);                         // -DIST → 0
     setTimeout(() => { animating = false; state = STATE.HIDDEN; }, DUR);
-  }
+  };
 
-  /* ─────────────── Global click handler ─────────────── */
-  document.addEventListener('click', event => {
-    if (animating) return;
+  /*────────────────────────────────────────
+      CLICK HANDLER
+  ────────────────────────────────────────*/
+  document.addEventListener('click', ev => {
+    if (animating) return;                     // ignore while animating
 
-    const xVW = toVw(event.clientX);
-    const yVH = toVh(event.clientY);
-    const inFwd = xVW >= FWD_MIN && xVW <= FWD_MAX && yVH >= TOP_MIN && yVH <= TOP_MAX;
-    const inRev = xVW >= REV_MIN && xVW <= REV_MAX && yVH >= TOP_MIN && yVH <= TOP_MAX;
+    const x = toVw(ev.clientX), y = toVh(ev.clientY);
+    const inFwd = x >= FWD_MIN && x <= FWD_MAX && y >= TOP_MIN && y <= TOP_MAX;
+    const inRev = x >= REV_MIN && x <= REV_MAX && y >= TOP_MIN && y <= TOP_MAX;
 
-    if (inRev) {
-      if (!getAccountSlid() && state === STATE.HIDDEN) {   // 1st inverse → show account
-        slideAccountIn();
-        event.stopPropagation();
-      } else if (state === STATE.CENTER) {                 // center→items
-        backToItems();
-        event.stopPropagation();
-      } else if (state === STATE.ITEMS) {                  // items→hidden
-        backToHidden();
-        event.stopPropagation();
-      }
-    } else if (inFwd) {
-      if (getAccountSlid() && state === STATE.HIDDEN) {    // hide account
-        slideAccountOut();
-        event.stopPropagation();
-      } else if (state === STATE.HIDDEN && !getAccountSlid()) { // items in
+    // FORWARD (right‑edge click)
+    if (inFwd) {
+      if (state === STATE.HIDDEN && !accountVisible()) {
         gotoItems();
-        event.stopPropagation();
-      } else if (state === STATE.ITEMS) {                  // items→center
+        ev.stopPropagation();
+      } else if (state === STATE.ITEMS) {
         gotoCenter();
-        event.stopPropagation();
+        ev.stopPropagation();
+      }
+      // If account is visible, the separate account script handles hiding it first
+    }
+
+    // REVERSE (left‑edge click)
+    if (inRev) {
+      if (state === STATE.CENTER) {
+        backToItems();
+        ev.stopPropagation();
+      } else if (state === STATE.ITEMS) {
+        backToHidden();
+        ev.stopPropagation();
       }
     }
-  }, true);  // capture phase to intercept before lower handlers
+  }, true);   // capture phase to outrank lower listeners
 });
 </script>
 

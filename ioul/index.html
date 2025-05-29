@@ -82,6 +82,53 @@
 <div class="item-line item-line-one" style="position:absolute; top:47.8vh; left:96vw; width:36vw;"></div>
 <div class="item-line item-line-two" style="position:absolute; top:47.8vh; left:139vw; width:14.8vw;"></div>
 
+
+    <!-- Center lines -->
+    <div class="center-line center-line-one" style="position:absolute; top:47.8vh; left:96vw; width:36vw;"></div>
+    <div class="center-line center-line-two" style="position:absolute; top:47.8vh; left:139vw; width:14.8vw;"></div>
+
+    <!-- Center texts -->
+    <span class="center-text" style="position:absolute; top:35.4vh; left:96vw;">UPDATES</span>
+    <span class="center-text" style="position:absolute; top:41.6vh; left:96vw;">cATALOg</span>
+
+    <span class="center-text right-flow" style="position:absolute; top:35.4vh; left:109vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:41.6vh; left:109vw;">0</span>
+
+    <span class="center-text" style="position:absolute; top:35.4vh; left:118vw;">T1cKETS</span>
+    <span class="center-text" style="position:absolute; top:41.6vh; left:118vw;">cOnTAcT</span>
+
+    <span class="center-text right-flow" style="position:absolute; top:35.4vh; left:131vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:41.6vh; left:131vw;">0</span>
+
+    <span class="center-text" style="position:absolute; top:35.4vh; left:139vw;">gET APP</span>
+    <span class="center-text" style="position:absolute; top:41.6vh; left:139vw;">AP1-LOg</span>
+
+    <span class="center-text right-flow" style="position:absolute; top:35.4vh; left:153vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:41.6vh; left:153vw;">0</span>
+
+    <span class="center-text" style="position:absolute; top:53vh; left:139vw;">LOg 0.01</span>
+    <span class="center-text" style="position:absolute; top:59.2vh; left:139vw;">LOg 0.02</span>
+    <span class="center-text" style="position:absolute; top:65.4vh; left:139vw;">LOg 0.03</span>
+    <span class="center-text" style="position:absolute; top:71.6vh; left:139vw;">LOg 0.04</span>
+
+    <span class="center-text right-flow" style="position:absolute; top:53vh; left:153vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:59.2vh; left:153vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:65.4vh; left:153vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:71.6vh; left:153vw;">0</span>
+
+    <span class="center-text" style="position:absolute; top:53vh; left:96vw;">LATEST</span>
+    <span class="center-text" style="position:absolute; top:59.2vh; left:96vw;">V1RALS</span>
+
+    <span class="center-text right-flow" style="position:absolute; top:53vh; left:109vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:59.2vh; left:109vw;">0</span>
+
+    <span class="center-text" style="position:absolute; top:53vh; left:118vw;">cAREERS</span>
+    <span class="center-text" style="position:absolute; top:59.2vh; left:118vw;">ARcH1VE</span>
+
+    <span class="center-text right-flow" style="position:absolute; top:53vh; left:131vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:59.2vh; left:131vw;">0</span>
+
+
 <!-- Item texts -->
 <span class="item-text" style="position:absolute; top:35.4vh; left:96vw;">1ncOME</span>
 <span class="item-text" style="position:absolute; top:41.6vh; left:96vw;">cL1EnT</span>
@@ -788,194 +835,130 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger (right edge)
-  const REV_MIN = 32.43, REV_MAX = 36;  // inverse trigger (left edge)
+  const FORWARD_MIN = 94,  FORWARD_MAX = 100;   // right edge trigger
+  const INVERSE_MIN = 32.43, INVERSE_MAX = 36;  // left edge trigger
   const TOP_MIN = 28.5, TOP_MAX = 84;
-  const DIST    = 60;                   // vw shift
-  const DUR     = 700;                  // ms
+  const SHIFT = 60;   // vw shift per step
+  const DUR = 700;    // ms (keep in sync with CSS)
 
-  const vw = () => window.innerWidth / 100;
-  const vh = () => window.innerHeight / 100;
-  const toVw = px => px / vw();
-  const toVh = px => px / vh();
+  const vwUnit = () => window.innerWidth / 100;
+  const vhUnit = () => window.innerHeight / 100;
+  const pxToVw = px => px / vwUnit();
+  const pxToVh = px => px / vhUnit();
 
+  // Item set (income / client / etc.)
   const itemEls = [
     ...document.querySelectorAll('.item-text'),
     ...document.querySelectorAll('.item-line')
   ];
+  // Center set (updates / catalog / etc.)
+  const centerEls = [
+    ...document.querySelectorAll('.center-text'),
+    ...document.querySelectorAll('.center-line')
+  ];
 
-  // Cache starting positions
-  itemEls.forEach(el => {
+  // Cache base positions so we can always return to original spot
+  [...itemEls, ...centerEls].forEach(el => {
     if (!el.dataset.baseLeftVw) {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-      el.dataset.baseLeftVw = toVw(leftPx);
+      el.dataset.baseLeftVw = pxToVw(parseFloat(getComputedStyle(el).left) || 0);
     }
   });
 
-  const getAccountSlid = () => {
+  /* stage:
+     0 = baseline (nothing visible, both groups off‑screen on the right)
+     1 = items visible (at 36vw)
+     2 = center visible, items hidden to the left
+  */
+  let stage = 0;
+  let animating = false;
+
+  function moveElements(els, offsetVw) {
+    els.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left = (base + offsetVw) + 'vw';
+    });
+  }
+
+  /* --- stage transition helpers --- */
+  function showItems() {           // 0 ➜ 1
+    moveElements(itemEls, -SHIFT);
+  }
+  function hideItemsLeft() {       // 1 ➜ 2
+    moveElements(itemEls, -2 * SHIFT);
+  }
+  function resetItemsRight() {     // 2 ➜ 0
+    moveElements(itemEls, 0);      // back to base (right off‑screen)
+  }
+
+  function showCenter() {          // 1 ➜ 2
+    moveElements(centerEls, -SHIFT);
+  }
+  function hideCenter() {          // 2 ➜ 0
+    moveElements(centerEls, 0);    // back to base (right off‑screen)
+  }
+
+  function forwardSequence() {
+    if (animating) return;
+    animating = true;
+
+    if (stage === 0) {
+      showItems();
+      stage = 1;
+    } else if (stage === 1) {
+      hideItemsLeft();
+      showCenter();
+      stage = 2;
+    }
+    setTimeout(() => animating = false, DUR);
+  }
+
+  function inverseSequence() {
+    if (animating) return;
+    animating = true;
+
+    if (stage === 2) {
+      hideCenter();
+      resetItemsRight();
+      stage = 0;
+    } else if (stage === 1) {
+      // Allow user to back out one step early if needed
+      resetItemsRight();
+      stage = 0;
+    }
+    setTimeout(() => animating = false, DUR);
+  }
+
+  // Check whether the account group is still visible.
+  const isAccountVisible = () => {
     const acc = document.querySelector('.account-text');
     return acc && acc.dataset.slid === 'true';
   };
 
-  let animating = false;
-
-  function slideItemsIn() {
-    if (animating || itemEls.length === 0 || itemEls[0].dataset.slid === 'true') return;
-    animating = true;
-    itemEls.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DUR}ms ease`;
-      el.style.left = (base - DIST) + 'vw';
-      el.dataset.slid = 'true';
-    });
-    setTimeout(() => animating = false, DUR);
-  }
-
-  function slideItemsBack() {
-    if (animating || itemEls.length === 0 || itemEls[0].dataset.slid !== 'true') return;
-    animating = true;
-    itemEls.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DUR}ms ease`;
-      el.style.left = base + 'vw';
-      delete el.dataset.slid;
-    });
-    setTimeout(() => animating = false, DUR);
-  }
-
-  // Unified click handler (capture phase so we can stop propagation if needed)
+  // Global click handler (capture so we can cancel bubbling to account script when needed)
   document.addEventListener('click', e => {
-    const vwPos = toVw(e.clientX);
-    const vhPos = toVh(e.clientY);
+    const vwPos = pxToVw(e.clientX);
+    const vhPos = pxToVh(e.clientY);
 
-    const inFwd = vwPos >= FWD_MIN && vwPos <= FWD_MAX && vhPos >= TOP_MIN && vhPos <= TOP_MAX;
-    const inRev = vwPos >= REV_MIN && vwPos <= REV_MAX;
+    const inForward = vwPos >= FORWARD_MIN && vwPos <= FORWARD_MAX &&
+                      vhPos >= TOP_MIN    && vhPos <= TOP_MAX;
+    const inInverse = vwPos >= INVERSE_MIN && vwPos <= INVERSE_MAX &&
+                      vhPos >= TOP_MIN     && vhPos <= TOP_MAX;
 
-    if (inFwd) {
-      // Only slide items in if account set is NOT slid and items aren't already slid
-      if (!getAccountSlid() && itemEls[0]?.dataset.slid !== 'true') {
-        slideItemsIn();
-        e.stopPropagation();          // prevent account slide‑back listener triggering
-      }
-      // Otherwise let the event bubble to account code
-    } else if (inRev) {
-      // Slide items back (if they are currently visible)
-      if (itemEls[0]?.dataset.slid === 'true') {
-        slideItemsBack();
-        e.stopPropagation();          // prevent account slide‑in listener triggering
-      }
-      // else let it bubble
+    if (inForward && !isAccountVisible()) {
+      forwardSequence();
+      e.stopPropagation(); // prevent existing listeners from sliding account group
+    } else if (inInverse) {
+      inverseSequence();
+      e.stopPropagation();
     }
-  }, true); // capture
+  }, true); // capture phase
 });
 </script>
 
-
-<!-- ✱ NEW / REPLACEMENT SCRIPT – Center/Item/Account controller -->
-<script id="center‑item‑controller">
-document.addEventListener('DOMContentLoaded', () => {
-  /* geometry --------------------------------------------------------- */
-  const FWD_MIN = 94,  FWD_MAX = 100;     // forward trigger (vw)
-  const REV_MIN = 32.43, REV_MAX = 36;    // inverse trigger (vw)
-  const TOP_MIN = 28.5, TOP_MAX = 84;     // active vertical band (vh)
-  const DIST    = 60;                     // shift distance (vw)
-  const DUR     = 700;                    // ms (same as other slides)
-
-  const vw = () => window.innerWidth  / 100;
-  const vh = () => window.innerHeight / 100;
-  const toVw = px => px / vw();
-  const toVh = px => px / vh();
-
-  /* element groups --------------------------------------------------- */
-  const itemEls   = [...document.querySelectorAll('.item-text, .item-line')];
-  const centerEls = [...document.querySelectorAll('.center-text, .center-line')];
-
-  /* cache base‑left values (vw) -------------------------------------- */
-  [...itemEls, ...centerEls].forEach(el => {
-    if (!el.dataset.baseLeftVw) {
-      el.dataset.baseLeftVw = toVw(parseFloat(getComputedStyle(el).left) || 0);
-    }
-  });
-
-  /* helpers ----------------------------------------------------------- */
-  const tween = (els, dx, flag) => {
-    els.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DUR}ms ease`;
-      el.style.left = (base + dx) + 'vw';
-      if (flag === 'set')      el.dataset.slid = 'true';
-      else if (flag === 'unset') delete el.dataset.slid;
-    });
-  };
-  const fade = (els, val) => els.forEach(el => el.style.opacity = val);
-  const showItems = () => fade(itemEls, '');
-  const clipItems = () => fade(itemEls, '0');
-
-  /* finite‑state machine -------------------------------------------- */
-  let state = 'base';   // base → account → base → items → centers ...
-  let busy  = false;
-
-  document.addEventListener('click', e => {
-    const x = toVw(e.clientX), y = toVh(e.clientY);
-    const inFwd = x >= FWD_MIN && x <= FWD_MAX && y >= TOP_MIN && y <= TOP_MAX;
-    const inRev = x >= REV_MIN && x <= REV_MAX && y >= TOP_MIN && y <= TOP_MAX;
-    if ((!inFwd && !inRev) || busy) return;
-
-    const run = fn => { busy = true; fn(); setTimeout(() => busy = false, DUR); };
-
-    /* ---------- forward clicks (right‑hand trigger) ---------- */
-    if (inFwd) {
-      if (state === 'account') { /* original handler will close account */ return; }
-
-      if (state === 'base') {            /* bring items in */
-        e.stopPropagation();
-        run(() => tween(itemEls, -DIST, 'set'));
-        state = 'items';
-        return;
-      }
-
-      if (state === 'items') {           /* tuck items & show centers */
-        e.stopPropagation();
-        run(() => {
-          tween(itemEls, -DIST, 'double');   // now –120 vw total
-          setTimeout(clipItems, DUR);        // hide once tucked
-          tween(centerEls, -DIST, 'set');    // centers in
-        });
-        state = 'centers';
-        return;
-      }
-      return; // ignore FWD when centers are visible
-    }
-
-    /* ---------- inverse clicks (left‑hand trigger) ---------- */
-    if (inRev) {
-      if (state === 'centers') {         /* hide centers, show items */
-        e.stopPropagation();
-        run(() => {
-          tween(centerEls,  DIST, 'unset');
-          showItems();
-          tween(itemEls,    DIST, 'unset');  // items visible at –60 vw
-        });
-        state = 'items';
-        return;
-      }
-
-      if (state === 'items') {           /* send items off‑right */
-        e.stopPropagation();
-        run(() => tween(itemEls,  DIST, 'unset')); // back to 0 vw
-        state = 'base';
-        return;
-      }
-
-      if (state === 'base') {            /* let original code open account */
-        return;
-      }
-    }
-  }, true);
-});
-</script>
 
 </body>
 </html>

@@ -835,7 +835,6 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
-
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger (right edge)
@@ -844,87 +843,182 @@ document.addEventListener('DOMContentLoaded', () => {
   const DIST    = 60;                   // vw shift
   const DUR     = 700;                  // ms
 
-  const vw  = () => window.innerWidth / 100;
-  const vh  = () => window.innerHeight / 100;
+  const vw = () => window.innerWidth / 100;
+  const vh = () => window.innerHeight / 100;
   const toVw = px => px / vw();
   const toVh = px => px / vh();
 
-  const itemEls   = [...document.querySelectorAll('.item-text'),  ...document.querySelectorAll('.item-line')];
-  const centerEls = [...document.querySelectorAll('.center-text'), ...document.querySelectorAll('.center-line')];
+  const itemEls = [
+    ...document.querySelectorAll('.item-text'),
+    ...document.querySelectorAll('.item-line')
+  ];
 
   // Cache starting positions
-  [...itemEls, ...centerEls].forEach(el => {
+  itemEls.forEach(el => {
     if (!el.dataset.baseLeftVw) {
       const leftPx = parseFloat(getComputedStyle(el).left) || 0;
       el.dataset.baseLeftVw = toVw(leftPx);
     }
   });
 
-  let state = 0;      // 0 = initial, 1 = items in, 2 = center in
+  const getAccountSlid = () => {
+    const acc = document.querySelector('.account-text');
+    return acc && acc.dataset.slid === 'true';
+  };
+
   let animating = false;
 
-  function setGroup(list, shift) {
-    list.forEach(el => {
+  function slideItemsIn() {
+    if (animating || itemEls.length === 0 || itemEls[0].dataset.slid === 'true') return;
+    animating = true;
+    itemEls.forEach(el => {
       const base = parseFloat(el.dataset.baseLeftVw);
       el.style.transition = `left ${DUR}ms ease`;
-      el.style.left = (base + shift) + 'vw';
+      el.style.left = (base - DIST) + 'vw';
+      el.dataset.slid = 'true';
     });
+    setTimeout(() => animating = false, DUR);
   }
 
-  function forward() {
-    if (animating) return;
-    if (state === 0) {
-      animating = true;
-      setGroup(itemEls, -DIST); // items into view
-      setTimeout(() => { animating = false; state = 1; }, DUR);
-    } else if (state === 1) {
-      animating = true;
-      setGroup(itemEls, -DIST * 2); // items move under layer‑2
-      setGroup(centerEls, -DIST);   // center group into view
-      setTimeout(() => { animating = false; state = 2; }, DUR);
-    }
+  function slideItemsBack() {
+    if (animating || itemEls.length === 0 || itemEls[0].dataset.slid !== 'true') return;
+    animating = true;
+    itemEls.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left = base + 'vw';
+      delete el.dataset.slid;
+    });
+    setTimeout(() => animating = false, DUR);
   }
 
-  function reverse() {
-    if (animating) return;
-    if (state === 2) {
-      animating = true;
-      setGroup(itemEls, -DIST); // restore items to center
-      setGroup(centerEls, 0);   // hide center off‑screen right
-      setTimeout(() => { animating = false; state = 1; }, DUR);
-    } else if (state === 1) {
-      animating = true;
-      setGroup(itemEls, 0);     // hide items off‑screen right
-      setTimeout(() => { animating = false; state = 0; }, DUR);
-    }
-  }
-
-  // Click region handling
-  document.addEventListener('click', (e) => {
+  // Unified click handler (capture phase so we can stop propagation if needed)
+  document.addEventListener('click', e => {
     const vwPos = toVw(e.clientX);
     const vhPos = toVh(e.clientY);
-    const onFwd = vwPos >= FWD_MIN && vwPos <= FWD_MAX && vhPos >= TOP_MIN && vhPos <= TOP_MAX;
-    const onRev = vwPos >= REV_MIN && vwPos <= REV_MAX && vhPos >= TOP_MIN && vhPos <= TOP_MAX;
 
-    if (onFwd) {
-      forward();
-      e.stopPropagation();
-    } else if (onRev) {
-      reverse();
-      e.stopPropagation();
+    const inFwd = vwPos >= FWD_MIN && vwPos <= FWD_MAX && vhPos >= TOP_MIN && vhPos <= TOP_MAX;
+    const inRev = vwPos >= REV_MIN && vwPos <= REV_MAX;
+
+    if (inFwd) {
+      // Only slide items in if account set is NOT slid and items aren't already slid
+      if (!getAccountSlid() && itemEls[0]?.dataset.slid !== 'true') {
+        slideItemsIn();
+        e.stopPropagation();          // prevent account slide‑back listener triggering
+      }
+      // Otherwise let the event bubble to account code
+    } else if (inRev) {
+      // Slide items back (if they are currently visible)
+      if (itemEls[0]?.dataset.slid === 'true') {
+        slideItemsBack();
+        e.stopPropagation();          // prevent account slide‑in listener triggering
+      }
+      // else let it bubble
     }
-  }, true);
-
-  // Proxy triggers
-  document.querySelectorAll('.slide-trigger').forEach(el => {
-    el.addEventListener('click', e => { e.stopPropagation(); forward(); });
-  });
-  document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
-    el.addEventListener('click', e => { e.stopPropagation(); reverse(); });
-  });
+  }, true); // capture
 });
 </script>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const FWD_MIN = 94, FWD_MAX = 100;
+  const REV_MIN = 32.43, REV_MAX = 36;
+  const TOP_MIN = 28.5, TOP_MAX = 84;
+  const DIST = 60;   // vw shift
+  const DUR = 700;   // ms
 
+  const vw = () => window.innerWidth / 100;
+  const vh = () => window.innerHeight / 100;
+  const toVw = px => px / vw();
+  const toVh = px => px / vh();
+
+  const itemEls    = [...document.querySelectorAll('.item-text'),   ...document.querySelectorAll('.item-line')];
+  const centerEls  = [...document.querySelectorAll('.center-text'), ...document.querySelectorAll('.center-line')];
+  const accountEls = [...document.querySelectorAll('.account-text'),...document.querySelectorAll('.account-line')];
+
+  // cache original left (in vw)
+  [...itemEls, ...centerEls, ...accountEls].forEach(el => {
+    if (!el.dataset.baseLeftVw) {
+      el.dataset.baseLeftVw = toVw(parseFloat(getComputedStyle(el).left) || 0);
+    }
+  });
+
+  let state = 0;      // 0=orig, 1=account in, 2=items in, 3=center in
+  let animating = false;
+
+  function animateGroup(group, offsetVw) {
+    group.forEach(el => {
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left = (parseFloat(el.dataset.baseLeftVw) + offsetVw) + 'vw';
+    });
+  }
+
+  function slideAccountIn() {
+    if (animating || state !== 0) return;
+    animating = true;
+    animateGroup(accountEls, DIST);
+    state = 1;
+    setTimeout(() => animating = false, DUR);
+  }
+  function slideAccountBack() {
+    if (animating || state !== 1) return;
+    animating = true;
+    animateGroup(accountEls, 0);
+    state = 0;
+    setTimeout(() => animating = false, DUR);
+  }
+
+  function slideItemsIn() {
+    if (animating || state !== 0) return;
+    animating = true;
+    animateGroup(itemEls, -DIST);
+    state = 2;
+    setTimeout(() => animating = false, DUR);
+  }
+
+  function slideCenterIn() {
+    if (animating || state !== 2) return;
+    animating = true;
+    animateGroup(itemEls,   -2 * DIST);
+    animateGroup(centerEls, -DIST);
+    state = 3;
+    setTimeout(() => animating = false, DUR);
+  }
+
+  function slideCenterOut() {
+    if (animating || state !== 3) return;
+    animating = true;
+    animateGroup(itemEls,   -DIST);
+    animateGroup(centerEls, 0);
+    state = 2;
+    setTimeout(() => animating = false, DUR);
+  }
+
+  function slideItemsBack() {
+    if (animating || state !== 2) return;
+    animating = true;
+    animateGroup(itemEls, 0);
+    state = 0;
+    setTimeout(() => animating = false, DUR);
+  }
+
+  document.addEventListener('click', e => {
+    const xPct = toVw(e.clientX), yPct = toVh(e.clientY);
+    const isFwd = xPct >= FWD_MIN && xPct <= FWD_MAX && yPct >= TOP_MIN && yPct <= TOP_MAX;
+    const isRev = xPct >= REV_MIN && xPct <= REV_MAX && yPct >= TOP_MIN && yPct <= TOP_MAX;
+
+    if (isRev) {
+      if      (state === 0) { slideAccountIn(); e.stopPropagation(); }
+      else if (state === 3) { slideCenterOut(); e.stopPropagation(); }
+      else if (state === 2) { slideItemsBack(); e.stopPropagation(); }
+    }
+    else if (isFwd) {
+      if      (state === 1) slideAccountBack();
+      else if (state === 0) slideItemsIn();
+      else if (state === 2) slideCenterIn();
+    }
+  }, true);
+});
+</script>
 </body>
 </html>

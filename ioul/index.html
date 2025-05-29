@@ -284,121 +284,78 @@
     <div class="slide-trigger-reverse"></div>
   </div>
 
-  <script>
+  <!-- removed old item script -->
+
+
+<script>
 document.addEventListener('DOMContentLoaded', () => {
-  /*────────────────────────────────────────
-      CONFIG
-  ────────────────────────────────────────*/
-  const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger – right edge
-  const REV_MIN = 32.43, REV_MAX = 36;  // inverse trigger – left edge
-  const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
-  const DIST    = 60;                   // movement in vw
-  const DUR     = 700;                  // transition duration (ms)
+  const DIST = 60;
+  const DUR = 700;
+  // Right‑edge trigger advances (forward), left‑edge trigger reverses
+  const forwardTrigger = document.querySelector('.slide-trigger-reverse');
+  const reverseTrigger = document.querySelector('.slide-trigger');
 
-  /*────────────────────────────────────────
-      HELPERS
-  ────────────────────────────────────────*/
   const vw = () => window.innerWidth / 100;
-  const vh = () => window.innerHeight / 100;
-  const toVw = px => px / vw();
-  const toVh = px => px / vh();
 
-  const itemEls   = [...document.querySelectorAll('.item-text'),  ...document.querySelectorAll('.item-line')];
-  const centerEls = [...document.querySelectorAll('.center-text'), ...document.querySelectorAll('.center-line')];
+  const itemEls   = Array.from(document.querySelectorAll('.item-text, .item-line'));
+  const centerEls = Array.from(document.querySelectorAll('.center-text, .center-line'));
 
-  // Cache baseline left positions (in vw) once
+  // Cache baseline positions in vw
   [...itemEls, ...centerEls].forEach(el => {
     if (!el.dataset.baseLeftVw) {
       const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-      el.dataset.baseLeftVw = toVw(leftPx);
+      el.dataset.baseLeftVw = (leftPx / vw());
     }
   });
 
-  // Whether the account group is currently visible (dataset.slid handled by the separate account script)
-  const accountVisible = () => {
+  let stage = 0;              // 0: items hidden, 1: items visible, 2: center visible & items clipped
+
+  const base = el => parseFloat(el.dataset.baseLeftVw);
+
+  function updatePositions(animated = true) {
+    const transition = animated ? \`left \${DUR}ms ease\` : 'none';
+    itemEls.forEach(el => {
+      el.style.transition = transition;
+      el.style.left = (base(el) - stage * DIST) + 'vw';
+    });
+    centerEls.forEach(el => {
+      el.style.transition = transition;
+      const offset = stage === 2 ? -DIST : 0;
+      el.style.left = (base(el) + offset) + 'vw';
+    });
+  }
+
+  const getAccountSlid = () => {
     const acc = document.querySelector('.account-text');
     return acc && acc.dataset.slid === 'true';
   };
 
-  /*────────────────────────────────────────
-      STATE MACHINE
-        0 → HIDDEN   : items off‑screen right (96vw), centers off‑screen right
-        1 → ITEMS    : items at 36vw,         centers still off‑screen right
-        2 → CENTER   : items at -24vw,        centers at 36vw
-  ────────────────────────────────────────*/
-  const STATE = { HIDDEN: 0, ITEMS: 1, CENTER: 2 };
-  let state     = STATE.HIDDEN;
-  let animating = false;
-
-  // Generic shifter
-  const shift = (els, deltaVw) => {
-    els.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = \`left \${DUR}ms ease\`;
-      el.style.left = (base + deltaVw) + 'vw';
-    });
-  };
-
-  /*────────── Transition helpers ──────────*/
-  const gotoItems = () => {                    // 0 → 1  (items slide in)
-    animating = true;
-    shift(itemEls, -DIST);
-    setTimeout(() => { animating = false; state = STATE.ITEMS; }, DUR);
-  };
-
-  const gotoCenter = () => {                   // 1 → 2  (items left, centers in)
-    animating = true;
-    shift(itemEls, -2 * DIST);                 // -DIST from 36vw → -24vw
-    shift(centerEls, -DIST);                   // centers 96vw → 36vw
-    setTimeout(() => { animating = false; state = STATE.CENTER; }, DUR);
-  };
-
-  const backToItems = () => {                  // 2 → 1  (centers out, items right)
-    animating = true;
-    shift(itemEls, -DIST);                     // -2*DIST → -DIST
-    shift(centerEls, 0);                       // 36vw → 96vw (baseline)
-    setTimeout(() => { animating = false; state = STATE.ITEMS; }, DUR);
-  };
-
-  const backToHidden = () => {                 // 1 → 0  (items out right)
-    animating = true;
-    shift(itemEls, 0);                         // -DIST → 0
-    setTimeout(() => { animating = false; state = STATE.HIDDEN; }, DUR);
-  };
-
-  /*────────────────────────────────────────
-      CLICK HANDLER
-  ────────────────────────────────────────*/
-  document.addEventListener('click', ev => {
-    if (animating) return;                     // ignore while animating
-
-    const x = toVw(ev.clientX), y = toVh(ev.clientY);
-    const inFwd = x >= FWD_MIN && x <= FWD_MAX && y >= TOP_MIN && y <= TOP_MAX;
-    const inRev = x >= REV_MIN && x <= REV_MAX && y >= TOP_MIN && y <= TOP_MAX;
-
-    // FORWARD (right‑edge click)
-    if (inFwd) {
-      if (state === STATE.HIDDEN && !accountVisible()) {
-        gotoItems();
-        ev.stopPropagation();
-      } else if (state === STATE.ITEMS) {
-        gotoCenter();
-        ev.stopPropagation();
-      }
-      // If account is visible, the separate account script handles hiding it first
+  forwardTrigger?.addEventListener('click', e => {
+    if (getAccountSlid()) return;     // ignore while account set is active
+    if (stage < 2) {
+      stage += 1;
+      updatePositions();
+      e.stopPropagation();            // suppress other slide handlers
     }
+  }, true);
 
-    // REVERSE (left‑edge click)
-    if (inRev) {
-      if (state === STATE.CENTER) {
-        backToItems();
-        ev.stopPropagation();
-      } else if (state === STATE.ITEMS) {
-        backToHidden();
-        ev.stopPropagation();
-      }
+  reverseTrigger?.addEventListener('click', e => {
+    if (getAccountSlid()) return;
+    if (stage > 0) {
+      stage -= 1;
+      updatePositions();
+      e.stopPropagation();
     }
-  }, true);   // capture phase to outrank lower listeners
+  }, true);
+
+  // When the account group slides (user clicked left trigger at stage 0),
+  // make sure our item/center groups are reset.
+  document.addEventListener('click', () => {
+    if (getAccountSlid() && stage !== 0) {
+      stage = 0;
+      updatePositions(false); // snap back, no animation
+    }
+  }, true);
 });
 </script>
 

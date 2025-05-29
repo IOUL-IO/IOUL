@@ -853,12 +853,26 @@ document.addEventListener('DOMContentLoaded', () => {
     ...document.querySelectorAll('.item-line')
   ];
 
+  const centerEls = [
+    ...document.querySelectorAll('.center-text'),
+    ...document.querySelectorAll('.center-line')
+  ];
+
+
   // Cache starting positions
   itemEls.forEach(el => {
     if (!el.dataset.baseLeftVw) {
       const leftPx = parseFloat(getComputedStyle(el).left) || 0;
       el.dataset.baseLeftVw = toVw(leftPx);
+    
+
+  centerEls.forEach(el => {
+    if (!el.dataset.baseLeftVw) {
+      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      el.dataset.baseLeftVw = toVw(leftPx);
     }
+  });
+}
   });
 
   const getAccountSlid = () => {
@@ -893,29 +907,78 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Unified click handler (capture phase so we can stop propagation if needed)
-  document.addEventListener('click', e => {
-    const vwPos = toVw(e.clientX);
-    const vhPos = toVh(e.clientY);
+  
 
-    const inFwd = vwPos >= FWD_MIN && vwPos <= FWD_MAX && vhPos >= TOP_MIN && vhPos <= TOP_MAX;
-    const inRev = vwPos >= REV_MIN && vwPos <= REV_MAX;
+  function slideItemsFurtherLeft() {
+    if (animating || itemEls.length === 0 || itemEls[0].dataset.double === 'true') return;
+    animating = true;
+    itemEls.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left = (base - 2 * DIST) + 'vw';
+      el.dataset.double = 'true';
+    });
+    setTimeout(() => animating = false, DUR);
+  }
 
-    if (inFwd) {
-      // Only slide items in if account set is NOT slid and items aren't already slid
-      if (!getAccountSlid() && itemEls[0]?.dataset.slid !== 'true') {
-        slideItemsIn();
-        e.stopPropagation();          // prevent account slide‑back listener triggering
-      }
-      // Otherwise let the event bubble to account code
-    } else if (inRev) {
-      // Slide items back (if they are currently visible)
-      if (itemEls[0]?.dataset.slid === 'true') {
-        slideItemsBack();
-        e.stopPropagation();          // prevent account slide‑in listener triggering
-      }
-      // else let it bubble
+  function slideCenterIn() {
+    if (animating || centerEls.length === 0 || centerEls[0].dataset.slid === 'true') return;
+    animating = true;
+    centerEls.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left = (base - DIST) + 'vw';
+      el.dataset.slid = 'true';
+    });
+    setTimeout(() => animating = false, DUR);
+  }
+
+  function slideCenterBack() {
+    if (animating || centerEls.length === 0 || centerEls[0].dataset.slid !== 'true') return;
+    animating = true;
+    centerEls.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left = base + 'vw';
+      delete el.dataset.slid;
+    });
+    setTimeout(() => animating = false, DUR);
+  }
+
+  const isCenterVisible = () => centerEls.length && centerEls[0].dataset.slid === 'true';
+
+document.addEventListener('click', e => {
+  const vwPos = toVw(e.clientX);
+  const vhPos = toVh(e.clientY);
+
+  const inFwd = vwPos >= FWD_MIN && vwPos <= FWD_MAX && vhPos >= TOP_MIN && vhPos <= TOP_MAX;
+  const inRev = vwPos >= REV_MIN && vwPos <= REV_MAX;
+
+  if (inFwd) {
+    if (!getAccountSlid() && itemEls[0]?.dataset.slid !== 'true') {
+      // First forward click – bring items in
+      slideItemsIn();
+      e.stopPropagation();
+    } else if (itemEls[0]?.dataset.slid === 'true' && !isCenterVisible()) {
+      // Second forward click – hide items left & bring center in
+      slideItemsFurtherLeft();
+      slideCenterIn();
+      e.stopPropagation();
     }
-  }, true); // capture
+  } else if (inRev) {
+    if (isCenterVisible()) {
+      // First inverse – hide center and move items off‑right
+      slideCenterBack();
+      slideItemsBack();
+      e.stopPropagation();
+    } else if (itemEls[0]?.dataset.slid !== 'true') {
+      // Second inverse – return items to visible
+      slideItemsIn();
+      e.stopPropagation();
+    }
+    // If items are visible already, let the event bubble so account logic can run
+  }
+}, true); // capture
 });
 </script>
 

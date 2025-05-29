@@ -389,111 +389,91 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 <!-- Center/Item/Account controller -->
+
+
 <script id="center-item-controller">
-document.addEventListener('DOMContentLoaded', () => {
-  const FWD_MIN = 94,  FWD_MAX = 100;
-  const REV_MIN = 32.43, REV_MAX = 36;
-  const TOP_MIN = 28.5, TOP_MAX = 84;
-  const DIST = 60;
-  const DUR  = 700;
+document.addEventListener('DOMContentLoaded',()=>{
 
-  const vw = () => innerWidth / 100;
-  const vh = () => innerHeight / 100;
-  const toVw = px => px / vw();
-  const toVh = px => px / vh();
+  /* constants */
+  const FWD_MIN=94, FWD_MAX=100, REV_MIN=32.43, REV_MAX=36;
+  const TOP_MIN=28.5, TOP_MAX=84;
+  const DIST=60, DUR=700;
 
-  const itemEls   = [...document.querySelectorAll('.item-text, .item-line')];
-  const centerEls = [...document.querySelectorAll('.center-text, .center-line')];
+  const vw=()=>innerWidth/100;
+  const vh=()=>innerHeight/100;
+  const toVw=px=>px/vw();
+  const toVh=px=>px/vh();
 
-  // Cache base positions
-  [...itemEls, ...centerEls].forEach(el => {
-    if (!el.dataset.baseLeftVw) {
-      el.dataset.baseLeftVw = toVw(parseFloat(getComputedStyle(el).left) || 0);
+  const itemEls=[...document.querySelectorAll('.item-text, .item-line')];
+  const centerEls=[...document.querySelectorAll('.center-text, .center-line')];
+
+  [...itemEls,...centerEls].forEach(el=>{
+    if(!el.dataset.baseLeftVw){
+      el.dataset.baseLeftVw=toVw(parseFloat(getComputedStyle(el).left)||0);
     }
   });
 
-  const tween = (els, dx) => {
-    els.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DUR}ms ease`;
-      el.style.left = (base + dx) + 'vw';
+  const tween=(els,dx)=>{
+    els.forEach(el=>{
+      const base=parseFloat(el.dataset.baseLeftVw);
+      el.style.transition=`left ${DUR}ms ease`;
+      el.style.left=(base+dx)+'vw';
     });
   };
-  const fade = (els, val) => els.forEach(el => el.style.opacity = val);
+  const fade=(els,val)=>els.forEach(el=>el.style.opacity=val);
 
-  const getAccountSlid = () => {
-    const acc = document.querySelector('.account-text');
-    return acc && acc.dataset.slid === 'true';
-  };
+  let state='base';
+  let busy=false;
 
-  let phase = 'base';   // base, account, items, centers
-  let busy  = false;
+  document.addEventListener('click',e=>{
+    const x=toVw(e.clientX), y=toVh(e.clientY);
+    const inFwd=x>=FWD_MIN&&x<=FWD_MAX&&y>=TOP_MIN&&y<=TOP_MAX;
+    const inRev=x>=REV_MIN&&x<=REV_MAX&&y>=TOP_MIN&&y<=TOP_MAX;
+    if((!inFwd&&!inRev)||busy) return;
 
-  const run = fn => { busy = true; fn(); setTimeout(() => busy = false, DUR); };
+    const run=fn=>{busy=true; fn(); setTimeout(()=>busy=false,DUR);};
 
-  document.addEventListener('click', e => {
-    const xvw = toVw(e.clientX);
-    const yvh = toVh(e.clientY);
-    const inFwd = xvw >= FWD_MIN && xvw <= FWD_MAX && yvh >= TOP_MIN && yvh <= TOP_MAX;
-    const inRev = xvw >= REV_MIN && xvw <= REV_MAX && yvh >= TOP_MIN && yvh <= TOP_MAX;
-    if ((!inFwd && !inRev) || busy) return;
-
-    /* ---------------- FORWARD -------------------- */
-    if (inFwd) {
-      if (phase === 'account') {
-        // allow original account handler to close
-        setTimeout(() => { phase = 'base'; }, DUR);
-        return;
-      }
-      if (phase === 'base') {
+    /* forward */
+    if(inFwd){
+      if(state==='account'){ state='base'; return; } // let original close account
+      if(state==='base'){
         e.stopPropagation();
-        run(() => {
-          tween(itemEls, -DIST); // slide in
-          fade(itemEls, '');     // ensure visible
-        });
-        phase = 'items';
-        return;
+        run(()=>{ tween(itemEls,-DIST); fade(itemEls,''); });
+        state='items'; return;
       }
-      if (phase === 'items') {
+      if(state==='items'){
         e.stopPropagation();
-        run(() => {
-          tween(itemEls, -DIST);           // tuck further left
-          setTimeout(() => fade(itemEls, '0'), DUR); // hide after tuck
-          tween(centerEls, -DIST);          // bring centers in
+        run(()=>{
+          tween(itemEls,-DIST); // reach -120vw
+          setTimeout(()=>fade(itemEls,'0'),DUR);
+          tween(centerEls,-DIST);
         });
-        phase = 'centers';
-        return;
+        state='centers'; return;
       }
-      return; // ignore further forward clicks
+      return;
     }
 
-    /* ---------------- INVERSE -------------------- */
-    if (inRev) {
-      if (phase === 'centers') {
+    /* inverse */
+    if(inRev){
+      if(state==='centers'){
         e.stopPropagation();
-        run(() => {
-          tween(centerEls,  DIST);   // slide centers out
-          tween(itemEls,     DIST);  // pull items right (visible)
-          fade(itemEls, '');         // ensure visible
+        run(()=>{
+          tween(centerEls,DIST);
+          tween(itemEls,DIST); // back to -60vw
+          fade(itemEls,'');
         });
-        phase = 'items';
-        return;
+        state='items'; return;
       }
-      if (phase === 'items') {
+      if(state==='items'){
         e.stopPropagation();
-        run(() => {
-          tween(itemEls,  DIST);   // send items off‑right
-        });
-        phase = 'base';
-        return;
+        run(()=>{ tween(itemEls,DIST); }); // back to base (0vw)
+        state='base'; return;
       }
-      if (phase === 'base') {
-        // allow original handler to open account
-        setTimeout(() => { phase = 'account'; }, DUR);
-        return;
-      }
+      if(state==='base'){ state='account'; return; } // let original open account
     }
-  }, true); // capture
+
+  },true);
+
 });
 </script>
 

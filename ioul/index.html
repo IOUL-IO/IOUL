@@ -811,26 +811,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }, DURATION);
   }
 
+  let accountSlid = false;
+
   document.addEventListener('click', e => {
     const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
-    // right-edge (inverse) triggers slide-out:
-    if (vw>=REVERSE_MIN && vw<=REVERSE_MAX && vh>=TOP_MIN && vh<=TOP_MAX) {
+    // initial slide-out on first load click in inverse area
+    if (!accountSlid && vw>=CLICK_MIN && vw<=CLICK_MAX && vh>=TOP_MIN && vh<=TOP_MAX) {
       slideOnce();
+      accountSlid = true;
     }
-    // left-edge (forward) triggers slide-back:
-    else if (vw>=CLICK_MIN && vw<=CLICK_MAX) {
+    // slide-back on forward area after slide-out
+    else if (accountSlid && vw>=REVERSE_MIN && vw<=REVERSE_MAX && vh>=TOP_MIN && vh<=TOP_MAX) {
       slideBack();
     }
   });
 
-  // Inverse (right-edge) triggers slideOnce()
-  document.querySelectorAll('.slide-trigger-reverse')
+  document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container')
     .forEach(el => el.addEventListener('click', e => {
       e.stopPropagation();
       slideOnce();
     }));
-  // Forward (left-edge) triggers slideBack()
-  document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container')
+  document.querySelectorAll('.slide-trigger-reverse')
     .forEach(el => el.addEventListener('click', e => {
       e.stopPropagation();
       slideBack();

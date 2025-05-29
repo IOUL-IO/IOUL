@@ -843,79 +843,94 @@ document.addEventListener('DOMContentLoaded', () => {
   const DIST    = 60;                   // vw shift
   const DUR     = 700;                  // ms
 
+  // Helper units
   const vw = () => window.innerWidth / 100;
   const vh = () => window.innerHeight / 100;
   const toVw = px => px / vw();
   const toVh = px => px / vh();
 
-  const itemEls = [
-    ...document.querySelectorAll('.item-text'),
-    ...document.querySelectorAll('.item-line')
-  ];
+  // Elements
+  const itemEls   = [...document.querySelectorAll('.item-text'),  ...document.querySelectorAll('.item-line')];
+  const centerEls = [...document.querySelectorAll('.center-text'),...document.querySelectorAll('.center-line')];
 
-  // Cache starting positions
-  itemEls.forEach(el => {
+  // Cache original positions in vw
+  [...itemEls, ...centerEls].forEach(el => {
     if (!el.dataset.baseLeftVw) {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-      el.dataset.baseLeftVw = toVw(leftPx);
+      const leftPx              = parseFloat(getComputedStyle(el).left) || 0;
+      el.dataset.baseLeftVw      = toVw(leftPx);
     }
   });
+
+  // State:
+  // itemStage: 0 = hidden (base), 1 = visible, 2 = shifted‑left/clipped
+  // centerStage: 0 = hidden, 1 = visible
+  let itemStage   = 0;
+  let centerStage = 0;
+  let animating   = false;
 
   const getAccountSlid = () => {
     const acc = document.querySelector('.account-text');
     return acc && acc.dataset.slid === 'true';
   };
 
-  let animating = false;
-
-  function slideItemsIn() {
-    if (animating || itemEls.length === 0 || itemEls[0].dataset.slid === 'true') return;
+  /** Utility: animate a group of elements by absolute offset (vw) from their base */
+  function animate(groups, callback) {
     animating = true;
-    itemEls.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DUR}ms ease`;
-      el.style.left = (base - DIST) + 'vw';
-      el.dataset.slid = 'true';
+    groups.forEach(({ els, offset }) => {
+      els.forEach(el => {
+        const base = parseFloat(el.dataset.baseLeftVw);
+        el.style.transition = `left ${DUR}ms ease`;
+        el.style.left       = (base + offset) + 'vw';
+      });
     });
-    setTimeout(() => animating = false, DUR);
+    setTimeout(() => {
+      animating = false;
+      if (typeof callback === 'function') callback();
+    }, DUR);
   }
 
-  function slideItemsBack() {
-    if (animating || itemEls.length === 0 || itemEls[0].dataset.slid !== 'true') return;
-    animating = true;
-    itemEls.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DUR}ms ease`;
-      el.style.left = base + 'vw';
-      delete el.dataset.slid;
-    });
-    setTimeout(() => animating = false, DUR);
-  }
+  const toStage1 = () => animate([{ els: itemEls, offset: -DIST }], () => { itemStage = 1; });
+  const toStage2 = () => animate([
+                                  { els: itemEls,   offset: -2 * DIST },
+                                  { els: centerEls, offset: -DIST }
+                                ], () => { itemStage = 2; centerStage = 1; });
 
-  // Unified click handler (capture phase so we can stop propagation if needed)
+  const backToStage1 = () => animate([
+                                      { els: itemEls,   offset: -DIST },
+                                      { els: centerEls, offset: 0 }
+                                    ], () => { itemStage = 1; centerStage = 0; });
+
+  const backToStage0 = () => animate([{ els: itemEls, offset: 0 }], () => { itemStage = 0; });
+
+  // Main click handler (capture phase so we can cancel before other listeners)
   document.addEventListener('click', e => {
+    if (animating) return;
+
     const vwPos = toVw(e.clientX);
     const vhPos = toVh(e.clientY);
-
     const inFwd = vwPos >= FWD_MIN && vwPos <= FWD_MAX && vhPos >= TOP_MIN && vhPos <= TOP_MAX;
-    const inRev = vwPos >= REV_MIN && vwPos <= REV_MAX;
+    const inRev = vwPos >= REV_MIN && vwPos <= REV_MAX && vhPos >= TOP_MIN && vhPos <= TOP_MAX;
 
     if (inFwd) {
-      // Only slide items in if account set is NOT slid and items aren't already slid
-      if (!getAccountSlid() && itemEls[0]?.dataset.slid !== 'true') {
-        slideItemsIn();
-        e.stopPropagation();          // prevent account slide‑back listener triggering
+      if (getAccountSlid()) return;          // let account handler run
+      if (itemStage === 0) {                 // first forward → show items
+        toStage1();
+        e.stopPropagation();
+      } else if (itemStage === 1 && centerStage === 0) { // second forward → shift items & show center
+        toStage2();
+        e.stopPropagation();
       }
-      // Otherwise let the event bubble to account code
     } else if (inRev) {
-      // Slide items back (if they are currently visible)
-      if (itemEls[0]?.dataset.slid === 'true') {
-        slideItemsBack();
-        e.stopPropagation();          // prevent account slide‑in listener triggering
+      if (centerStage === 1) {               // first back ← hide center & restore items
+        backToStage1();
+        e.stopPropagation();
+      } else if (itemStage === 1 && centerStage === 0) { // second back ← hide items
+        backToStage0();
+        e.stopPropagation();
       }
-      // else let it bubble
+      // If itemStage == 0 let event bubble for account logic
     }
-  }, true); // capture
+  }, true);
 });
 </script>
 

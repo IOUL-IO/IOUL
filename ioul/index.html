@@ -11,7 +11,6 @@
 .hidden { display:none !important; }
 </style>
 
-
 </head>
 <body class="non-fullscreen">
 
@@ -70,7 +69,6 @@
       <div class="line mail-line" style="position:absolute; top:47.8vh; left:36vw; width:57.8vw; height:1px; background-color:rgba(230,230,230,0.28); opacity:0; transition: opacity 0.3s ease; z-index:1;"></div>
     <div class="line sixth"></div>
 
-
       <div class="slide-container">
         <span class="account-text" style="position:absolute; top:35.4vh; left:-24.00vw;">AccOUnT&nbsp;nAME</span>
         <span class="account-text" style="position:absolute; top:35.4vh; left:26.00vw;">L1nK&nbsp;UP</span>
@@ -81,7 +79,6 @@
 <!-- Item lines -->
 <div class="item-line item-line-one" style="position:absolute; top:47.8vh; left:96vw; width:36vw;"></div>
 <div class="item-line item-line-two" style="position:absolute; top:47.8vh; left:139vw; width:14.8vw;"></div>
-
 
     <!-- Center lines -->
     <div class="center-line center-line-one" style="position:absolute; top:47.8vh; left:96vw; width:36vw;"></div>
@@ -127,7 +124,7 @@
 
     <span class="center-text right-flow" style="position:absolute; top:53vh; left:131vw;">0</span>
     <span class="center-text right-flow" style="position:absolute; top:59.2vh; left:131vw;">0</span>
-    
+
 <!-- Item texts -->
 <span class="item-text" style="position:absolute; top:35.4vh; left:96vw;">1ncOME</span>
 <span class="item-text" style="position:absolute; top:41.6vh; left:96vw;">cL1EnT</span>
@@ -169,7 +166,6 @@
 <span class="item-text right-flow" style="position:absolute; top:53vh; left:131vw;">0</span>
 <span class="item-text right-flow" style="position:absolute; top:59.2vh; left:131vw;">0</span>
 
-
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
       <span class="mail-text" style="position:absolute; top:35.4vh; left:36vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">TO:</span>
@@ -177,7 +173,6 @@
       <span class="mail-text" style="position:absolute; top:35.4vh; left:89vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">cc</span>
       <span class="mail-text" style="position:absolute; top:35.4vh; left:91.9vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">Bcc</span>
       <span class="mail-text" style="position:absolute; top:41.6vh; left:91.1vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">SEnD</span>
-
 
       <span class="grid-number num1">1</span>
       <span class="grid-number num2">2</span>
@@ -283,48 +278,42 @@
     <div class="slide-trigger-reverse"></div>
   </div>
 
-  <!-- ✱ NEW / REPLACEMENT SCRIPT – Center/Item/Account controller -->
-<script id="center‑item‑controller">
+  
+<script id="center-item-controller">
 document.addEventListener('DOMContentLoaded', () => {
-  /* geometry --------------------------------------------------------- */
-  const FWD_MIN = 94,  FWD_MAX = 100;     // forward trigger (vw)
-  const REV_MIN = 32.43, REV_MAX = 36;    // inverse trigger (vw)
-  const TOP_MIN = 28.5, TOP_MAX = 84;     // active vertical band (vh)
-  const DIST    = 60;                     // shift distance (vw)
-  const DUR     = 700;                    // ms (same as other slides)
+  /* constants */
+  const FWD_MIN = 94, FWD_MAX = 100;
+  const REV_MIN = 32.43, REV_MAX = 36;
+  const TOP_MIN = 28.5, TOP_MAX = 84;
+  const DIST = 60;
+  const DUR  = 700;
 
-  const vw = () => window.innerWidth  / 100;
-  const vh = () => window.innerHeight / 100;
+  const vw  = () => innerWidth  / 100;
+  const vh  = () => innerHeight / 100;
   const toVw = px => px / vw();
   const toVh = px => px / vh();
 
-  /* element groups --------------------------------------------------- */
+  /* groups */
   const itemEls   = [...document.querySelectorAll('.item-text, .item-line')];
   const centerEls = [...document.querySelectorAll('.center-text, .center-line')];
 
-  /* cache base‑left values (vw) -------------------------------------- */
+  /* cache bases */
   [...itemEls, ...centerEls].forEach(el => {
     if (!el.dataset.baseLeftVw) {
       el.dataset.baseLeftVw = toVw(parseFloat(getComputedStyle(el).left) || 0);
     }
   });
 
-  /* helpers ----------------------------------------------------------- */
-  const tween = (els, dx, flag) => {
-    els.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DUR}ms ease`;
-      el.style.left = (base + dx) + 'vw';
-      if (flag === 'set')      el.dataset.slid = 'true';
-      else if (flag === 'unset') delete el.dataset.slid;
-    });
-  };
+  /* helper */
+  const move = (els, dx) => els.forEach(el => {
+    const base = parseFloat(el.dataset.baseLeftVw);
+    el.style.transition = `left ${DUR}ms ease`;
+    el.style.left = (base + dx) + 'vw';
+  });
   const fade = (els, val) => els.forEach(el => el.style.opacity = val);
-  const showItems = () => fade(itemEls, '');
-  const clipItems = () => fade(itemEls, '0');
 
-  /* finite‑state machine -------------------------------------------- */
-  let state = 'base';   // base → account → base → items → centers ...
+  /* state machine */
+  let state = 'base';   // base, account, items, centers
   let busy  = false;
 
   document.addEventListener('click', e => {
@@ -333,147 +322,51 @@ document.addEventListener('DOMContentLoaded', () => {
     const inRev = x >= REV_MIN && x <= REV_MAX && y >= TOP_MIN && y <= TOP_MAX;
     if ((!inFwd && !inRev) || busy) return;
 
-    const run = fn => { busy = true; fn(); setTimeout(() => busy = false, DUR); };
+    const run = fn => { busy = true; fn(); setTimeout(()=>busy=false, DUR); };
 
-    /* ---------- forward clicks (right‑hand trigger) ---------- */
+    /* FORWARD */
     if (inFwd) {
-      if (state === 'account') { /* original handler will close account */ return; }
-
-      if (state === 'base') {            /* bring items in */
+      if (state === 'account') { state = 'base'; return; } // allow account slide back
+      if (state === 'base') {
         e.stopPropagation();
-        run(() => tween(itemEls, -DIST, 'set'));
+        run(()=> { move(itemEls, -DIST); fade(itemEls, ''); });
         state = 'items';
         return;
       }
-
-      if (state === 'items') {           /* tuck items & show centers */
+      if (state === 'items') {
         e.stopPropagation();
-        run(() => {
-          tween(itemEls, -DIST, 'double');   // now –120 vw total
-          setTimeout(clipItems, DUR);        // hide once tucked
-          tween(centerEls, -DIST, 'set');    // centers in
+        run(()=>{
+          move(itemEls, -DIST);         // items to -120vw
+          setTimeout(()=>fade(itemEls,'0'), DUR);
+          move(centerEls, -DIST);        // centers in to -60
         });
         state = 'centers';
         return;
       }
-      return; // ignore FWD when centers are visible
+      return;
     }
 
-    /* ---------- inverse clicks (left‑hand trigger) ---------- */
+    /* INVERSE */
     if (inRev) {
-      if (state === 'centers') {         /* hide centers, show items */
+      if (state === 'centers') {
         e.stopPropagation();
-        run(() => {
-          tween(centerEls,  DIST, 'unset');
-          showItems();
-          tween(itemEls,    DIST, 'unset');  // items visible at –60 vw
+        run(()=>{
+          move(centerEls,  DIST);       // centers back
+          move(itemEls,    DIST);       // items to -60 visible
+          fade(itemEls, '');
         });
         state = 'items';
         return;
       }
-
-      if (state === 'items') {           /* send items off‑right */
+      if (state === 'items') {
         e.stopPropagation();
-        run(() => tween(itemEls,  DIST, 'unset')); // back to 0 vw
+        run(()=> { move(itemEls,  DIST); }); // items return to base
         state = 'base';
         return;
       }
-
-      if (state === 'base') {            /* let original code open account */
-        return;
-      }
+      if (state === 'base') { state = 'account'; return; } // allow account slide-in
     }
   }, true);
-});
-</script>
-
-
-<!-- Center/Item/Account controller -->
-
-
-<script id="center-item-controller">
-document.addEventListener('DOMContentLoaded',()=>{
-
-  /* constants */
-  const FWD_MIN=94, FWD_MAX=100, REV_MIN=32.43, REV_MAX=36;
-  const TOP_MIN=28.5, TOP_MAX=84;
-  const DIST=60, DUR=700;
-
-  const vw=()=>innerWidth/100;
-  const vh=()=>innerHeight/100;
-  const toVw=px=>px/vw();
-  const toVh=px=>px/vh();
-
-  const itemEls=[...document.querySelectorAll('.item-text, .item-line')];
-  const centerEls=[...document.querySelectorAll('.center-text, .center-line')];
-
-  [...itemEls,...centerEls].forEach(el=>{
-    if(!el.dataset.baseLeftVw){
-      el.dataset.baseLeftVw=toVw(parseFloat(getComputedStyle(el).left)||0);
-    }
-  });
-
-  const tween=(els,dx)=>{
-    els.forEach(el=>{
-      const base=parseFloat(el.dataset.baseLeftVw);
-      el.style.transition=`left ${DUR}ms ease`;
-      el.style.left=(base+dx)+'vw';
-    });
-  };
-  const fade=(els,val)=>els.forEach(el=>el.style.opacity=val);
-
-  let state='base';
-  let busy=false;
-
-  document.addEventListener('click',e=>{
-    const x=toVw(e.clientX), y=toVh(e.clientY);
-    const inFwd=x>=FWD_MIN&&x<=FWD_MAX&&y>=TOP_MIN&&y<=TOP_MAX;
-    const inRev=x>=REV_MIN&&x<=REV_MAX&&y>=TOP_MIN&&y<=TOP_MAX;
-    if((!inFwd&&!inRev)||busy) return;
-
-    const run=fn=>{busy=true; fn(); setTimeout(()=>busy=false,DUR);};
-
-    /* forward */
-    if(inFwd){
-      if(state==='account'){ state='base'; return; } // let original close account
-      if(state==='base'){
-        e.stopPropagation();
-        run(()=>{ tween(itemEls,-DIST); fade(itemEls,''); });
-        state='items'; return;
-      }
-      if(state==='items'){
-        e.stopPropagation();
-        run(()=>{
-          tween(itemEls,-DIST); // reach -120vw
-          setTimeout(()=>fade(itemEls,'0'),DUR);
-          tween(centerEls,-DIST);
-        });
-        state='centers'; return;
-      }
-      return;
-    }
-
-    /* inverse */
-    if(inRev){
-      if(state==='centers'){
-        e.stopPropagation();
-        run(()=>{
-          tween(centerEls,DIST);
-          tween(itemEls,DIST); // back to -60vw
-          fade(itemEls,'');
-        });
-        state='items'; return;
-      }
-      if(state==='items'){
-        e.stopPropagation();
-        run(()=>{ tween(itemEls,DIST); }); // back to base (0vw)
-        state='base'; return;
-      }
-      if(state==='base'){ state='account'; return; } // let original open account
-    }
-
-  },true);
-
 });
 </script>
 

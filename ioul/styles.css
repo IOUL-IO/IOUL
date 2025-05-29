@@ -490,25 +490,31 @@ body.non-fullscreen {
 }
 
 .center-text {
-  position: absolute;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111111;
-  letter-spacing: 0.28vw;
-  font-size: 0.47rem;
-  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
-  transition: left 0.7s ease, transform 0.7s ease;
-  line-height: 1.6;
-  overflow: visible;
-  z-index: 3;
+    z-index: 3;
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #111111;
+    letter-spacing: 0.28vw;
+    font-size: 0.47rem;
+    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
+    transition: left 0.7s ease, transform 0.7s ease;
+    line-height: 1.6;
+    overflow: visible;
 }
 
 .center-line {
-  position: absolute;
-  height: 1px;
-  background-color: rgba(230, 230, 230, 0.28);
-  z-index: 3;
+    z-index: 3;
+    position: absolute;
+    height: 1px;
+    background-color: rgba(230, 230, 230, 0.28);
+    z-index: 1;
 }
 
+
+
 @media (min-width: 1900px) {
-  .center-text { font-size: 9px !important; }
+  .center-text {
+    z-index: 3;
+    font-size: 9px !important;
+  }
 }

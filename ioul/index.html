@@ -278,95 +278,60 @@
     <div class="slide-trigger-reverse"></div>
   </div>
 
-  
+
 <script id="center-item-controller">
-document.addEventListener('DOMContentLoaded', () => {
-  /* constants */
-  const FWD_MIN = 94, FWD_MAX = 100;
-  const REV_MIN = 32.43, REV_MAX = 36;
-  const TOP_MIN = 28.5, TOP_MAX = 84;
-  const DIST = 60;
-  const DUR  = 700;
+document.addEventListener('DOMContentLoaded',()=>{
 
-  const vw  = () => innerWidth  / 100;
-  const vh  = () => innerHeight / 100;
-  const toVw = px => px / vw();
-  const toVh = px => px / vh();
+  const FWD_MIN=94,FWD_MAX=100,REV_MIN=32.43,REV_MAX=36;
+  const TOP_MIN=28.5,TOP_MAX=84;
+  const DIST=60,DUR=700;
 
-  /* groups */
-  const itemEls   = [...document.querySelectorAll('.item-text, .item-line')];
-  const centerEls = [...document.querySelectorAll('.center-text, .center-line')];
+  const vw=()=>innerWidth/100, vh=()=>innerHeight/100;
+  const toVw=px=>px/vw(), toVh=px=>px/vh();
 
-  /* cache bases */
-  [...itemEls, ...centerEls].forEach(el => {
-    if (!el.dataset.baseLeftVw) {
-      el.dataset.baseLeftVw = toVw(parseFloat(getComputedStyle(el).left) || 0);
-    }
+  const items=[...document.querySelectorAll('.item-text, .item-line')];
+  const centers=[...document.querySelectorAll('.center-text, .center-line')];
+
+  [...items,...centers].forEach(el=>{
+    if(!el.dataset.base)return el.dataset.base=toVw(parseFloat(getComputedStyle(el).left)||0);
   });
 
-  /* helper */
-  const move = (els, dx) => els.forEach(el => {
-    const base = parseFloat(el.dataset.baseLeftVw);
-    el.style.transition = `left ${DUR}ms ease`;
-    el.style.left = (base + dx) + 'vw';
+  const move=(els,dx)=>els.forEach(el=>{
+    el.style.transition=`left ${DUR}ms ease`;
+    el.style.left=(parseFloat(el.dataset.base)+dx)+'vw';
   });
-  const fade = (els, val) => els.forEach(el => el.style.opacity = val);
+  const fade=(els,val)=>els.forEach(el=>el.style.opacity=val);
 
-  /* state machine */
-  let state = 'base';   // base, account, items, centers
-  let busy  = false;
+  let phase='base', busy=false;
+  const run=fn=>{busy=true;fn();setTimeout(()=>busy=false,DUR);};
 
-  document.addEventListener('click', e => {
-    const x = toVw(e.clientX), y = toVh(e.clientY);
-    const inFwd = x >= FWD_MIN && x <= FWD_MAX && y >= TOP_MIN && y <= TOP_MAX;
-    const inRev = x >= REV_MIN && x <= REV_MAX && y >= TOP_MIN && y <= TOP_MAX;
-    if ((!inFwd && !inRev) || busy) return;
+  document.addEventListener('click',e=>{
+    const x=toVw(e.clientX),y=toVh(e.clientY);
+    const fwd=x>=FWD_MIN&&x<=FWD_MAX&&y>=TOP_MIN&&y<=TOP_MAX;
+    const rev=x>=REV_MIN&&x<=REV_MAX&&y>=TOP_MIN&&y<=TOP_MAX;
+    if((!fwd&&!rev)||busy)return;
 
-    const run = fn => { busy = true; fn(); setTimeout(()=>busy=false, DUR); };
-
-    /* FORWARD */
-    if (inFwd) {
-      if (state === 'account') { state = 'base'; return; } // allow account slide back
-      if (state === 'base') {
-        e.stopPropagation();
-        run(()=> { move(itemEls, -DIST); fade(itemEls, ''); });
-        state = 'items';
-        return;
-      }
-      if (state === 'items') {
-        e.stopPropagation();
-        run(()=>{
-          move(itemEls, -DIST);         // items to -120vw
-          setTimeout(()=>fade(itemEls,'0'), DUR);
-          move(centerEls, -DIST);        // centers in to -60
-        });
-        state = 'centers';
-        return;
-      }
+    /* forward logic */
+    if(fwd){
+      if(phase==='account'){phase='base';return;}
+      if(phase==='base'){e.stopPropagation();run(()=>{move(items,-DIST);fade(items,'');});phase='items';return;}
+      if(phase==='items'){e.stopPropagation();run(()=>{
+        move(items,-DIST);setTimeout(()=>fade(items,'0'),DUR);
+        move(centers,-DIST);
+      });phase='centers';return;}
       return;
     }
 
-    /* INVERSE */
-    if (inRev) {
-      if (state === 'centers') {
-        e.stopPropagation();
-        run(()=>{
-          move(centerEls,  DIST);       // centers back
-          move(itemEls,    DIST);       // items to -60 visible
-          fade(itemEls, '');
-        });
-        state = 'items';
-        return;
-      }
-      if (state === 'items') {
-        e.stopPropagation();
-        run(()=> { move(itemEls,  DIST); }); // items return to base
-        state = 'base';
-        return;
-      }
-      if (state === 'base') { state = 'account'; return; } // allow account slide-in
+    /* inverse logic */
+    if(rev){
+      if(phase==='centers'){e.stopPropagation();run(()=>{
+        move(centers,DIST);
+        move(items,DIST);fade(items,'');
+      });phase='items';return;}
+      if(phase==='items'){e.stopPropagation();run(()=>move(items,DIST));phase='base';return;}
+      if(phase==='base'){phase='account';return;}
     }
-  }, true);
+  },true);
 });
 </script>
 

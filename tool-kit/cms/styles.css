@@ -32,12 +32,17 @@ body.non-fullscreen {
   font-family:'Distill Expanded', sans-serif;
   color:#111;
   letter-spacing:0.28vw;
-  font-size:0.47rem;
+  font-size:0.47rem; /* ~7.5px base */
   text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
   line-height:1.6;
   user-select:none;
 }
 .right-flow { direction:rtl; text-align:right; white-space:nowrap; }
+
+/* Increase font for ultra‑wide screens */
+@media screen and (min-width: 1900px){
+  .custom-text{ font-size:9px; }
+}
 
 /* Containers simply hold the text */
 .heading-container,

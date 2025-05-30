@@ -20,10 +20,10 @@
   <!-- Main content -->
   <div class="page-content">
 
-    <!-- Guiding grid / util & baseline lines -->
+    <!-- Guiding grid / baseline lines -->
     <div class="line original"></div>
     <div class="line second"></div>
-    <div class="line util-line"></div>
+    <div class="line custom-line"></div>
     <div class="line third"></div>
     <div class="line fourth"></div>
     <div class="line fifth"></div>
@@ -61,17 +61,12 @@
 
   <!-- Fade‑in & edge‑click full‑screen only -->
   <script>
-    const pageContent = document.querySelector('.page-content');
-    let pageFadedIn = false;
-    function fadeInPage() {
-      pageContent.style.opacity = '1';
-      pageFadedIn = true;
-    }
-    document.addEventListener('mousemove', function onFirstMouseMove() {
-      if (!pageFadedIn) { fadeInPage(); }
-      document.removeEventListener('mousemove', onFirstMouseMove);
+    // Immediate fade‑in once DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelector('.page-content').classList.add('fade-in');
     });
 
+    // Edge click → full‑screen
     const EDGE_MARGIN = 11; // px
     document.addEventListener('click', (event) => {
       const { clientX: x, clientY: y } = event;

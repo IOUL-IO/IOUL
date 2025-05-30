@@ -1,7 +1,7 @@
 @font-face{
   font-family:'Distill Expanded';
-  src:url('DistillExpanded-Regular.woff2') format('woff2'),
-      url('DistillExpanded-Regular.woff') format('woff');
+  src:url('font.woff2') format('woff2'),
+      url('font.woff') format('woff');
   font-weight:normal;
   font-style:normal;
   font-display:swap;
@@ -30,17 +30,18 @@ body.non-fullscreen{
 .layer-six  {top:84vh;left:36vw;width:58.7vw;height:16vh;}
 
 /* Page fade‑in */
-.page-content{position:relative;width:100vw;height:100vh;opacity:0;transition:opacity .6s ease;}
+.page-content{position:relative;width:100vw;height:100vh;opacity:0;transition:opacity .5s ease;}
+.page-content.fade-in{opacity:1;}
 
 /* Lines */
 .line{position:absolute;height:1px;background:rgba(172,172,172,.84);z-index:110;}
-.original{top:12.5vh;left:6.38vw;width:22.48vw;}
-.second  {top:28.5vh;left:6.38vw;width:18.68vw;}
-.util-line{top:28.5vh;left:26.06vw;width:2.8vw;}
-.third   {top:84vh;left:6.38vw;width:22.48vw;}
-.fourth  {top:12.5vh;left:36vw;width:57.8vw;}
-.fifth   {top:28.5vh;left:36vw;width:57.8vw;}
-.sixth   {top:84vh;left:36vw;width:57.8vw;}
+.original   {top:12.5vh;left:6.38vw;width:22.48vw;}
+.second     {top:28.5vh;left:6.38vw;width:18.68vw;}
+.custom-line{top:28.5vh;left:26.06vw;width:2.8vw;}
+.third      {top:84vh;left:6.38vw;width:22.48vw;}
+.fourth     {top:12.5vh;left:36vw;width:57.8vw;}
+.fifth      {top:28.5vh;left:36vw;width:57.8vw;}
+.sixth      {top:84vh;left:36vw;width:57.8vw;}
 
 /* Text styles */
 .custom-text{

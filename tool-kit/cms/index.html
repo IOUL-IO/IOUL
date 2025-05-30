@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IOUL</title>
+  <title>IOUL – Slimmed Layout</title>
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="non-fullscreen">
 
-  <!-- Fixed layout layers -->
+  <!-- Fixed edge‑mask layers -->
   <div class="layer-one"></div>
   <div class="layer-two"></div>
   <div class="layer-three"></div>
@@ -17,29 +17,72 @@
   <div class="layer-five"></div>
   <div class="layer-six"></div>
 
-  <!-- Primary guide lines -->
-  <div class="line original"></div>
-  <div class="line second"></div>
-  <div class="line third"></div>
-  <div class="line fourth"></div>
-  <div class="line fifth"></div>
-  <div class="line sixth"></div>
+  <!-- Main content -->
+  <div class="page-content">
 
-  <!-- Util line (click‑to‑toggle reserved for future use) -->
-  <div class="line util-line"></div>
+    <!-- Guiding grid / util & baseline lines -->
+    <div class="line original"></div>
+    <div class="line second"></div>
+    <div class="line util-line"></div>
+    <div class="line third"></div>
+    <div class="line fourth"></div>
+    <div class="line fifth"></div>
+    <div class="line sixth"></div>
 
-<script>
-/* ——— Edge‑trigger fullscreen toggle ——— */
-document.addEventListener('click', event => {
-  const { clientX: x, clientY: y } = event;
-  const { innerWidth: w, innerHeight: h } = window;
-  const EDGE = 11; // px from each edge
+    <!-- Heading column -->
+    <div class="heading-container" style="top:35.4vh; left:6.41vw;">
+      <span class="custom-text heading-flow">AccOUnT</span>
+    </div>
+    <div class="heading-container" style="top:41.6vh; left:6.41vw;">
+      <span class="custom-text heading-flow">AcT1V1TY</span>
+    </div>
+    <div class="heading-container" style="top:53vh; left:6.41vw;">
+      <span class="custom-text heading-flow">cHATLOg</span>
+    </div>
+    <div class="heading-container" style="top:59.2vh; left:6.41vw;">
+      <span class="custom-text heading-flow">cLAnLOg</span>
+    </div>
 
-  if (!document.fullscreenElement &&
-      (x <= EDGE || x >= w - EDGE || y <= EDGE || y >= h - EDGE)) {
-    document.documentElement.requestFullscreen().catch(() => {});
-  }
-});
-</script>
+    <!-- Account values column -->
+    <div class="account-container" style="top:35.4vh; left:29.11vw;">
+      <span class="custom-text right-flow">0</span>
+    </div>
+    <div class="account-container" style="top:41.6vh; left:29.11vw;">
+      <span class="custom-text right-flow">0</span>
+    </div>
+    <div class="account-container" style="top:53vh; left:29.11vw;">
+      <span class="custom-text right-flow">0</span>
+    </div>
+    <div class="account-container" style="top:59.2vh; left:29.11vw;">
+      <span class="custom-text right-flow">0</span>
+    </div>
+
+  </div><!-- /.page-content -->
+
+  <!-- Fade‑in & edge‑click full‑screen only -->
+  <script>
+    const pageContent = document.querySelector('.page-content');
+    let pageFadedIn = false;
+    function fadeInPage() {
+      pageContent.style.opacity = '1';
+      pageFadedIn = true;
+    }
+    document.addEventListener('mousemove', function onFirstMouseMove() {
+      if (!pageFadedIn) { fadeInPage(); }
+      document.removeEventListener('mousemove', onFirstMouseMove);
+    });
+
+    const EDGE_MARGIN = 11; // px
+    document.addEventListener('click', (event) => {
+      const { clientX: x, clientY: y } = event;
+      const { innerWidth: w, innerHeight: h } = window;
+      if (!document.fullscreenElement &&
+          (x <= EDGE_MARGIN || x >= w - EDGE_MARGIN ||
+           y <= EDGE_MARGIN || y >= h - EDGE_MARGIN)) {
+        document.documentElement.requestFullscreen();
+      }
+    });
+  </script>
+
 </body>
 </html>

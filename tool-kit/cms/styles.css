@@ -36,6 +36,7 @@ body.non-fullscreen {
   text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
   line-height:1.6;
   user-select:none;
+  white-space:nowrap;   /* keep each heading text on one line */
 }
 .right-flow { direction:rtl; text-align:right; white-space:nowrap; }
 

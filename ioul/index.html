@@ -841,7 +841,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const REV_MIN = 32.43, REV_MAX = 36;  // inverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;
   const DIST    = 60;                   // vw shift
-  const GAP     = 40;                    // ms delay between animation groups
+  const GAP     = 80;                    // ms delay between animation groups
   const DUR     = 700;                  // ms
 
   // Helper units
@@ -878,12 +878,15 @@ document.addEventListener('DOMContentLoaded', () => {
   function animate(groups, callback) {
     const totalDuration = DUR + (groups.length - 1) * GAP;
     animating = true;
-    groups.forEach(({ els, offset }) => {
-      els.forEach(el => {
-        const base = parseFloat(el.dataset.baseLeftVw);
-        el.style.transition = `left ${DUR}ms ease`;
-        el.style.left       = (base + offset) + 'vw';
-      });
+    groups.forEach(({ els, offset }, i) => {
+  setTimeout(() => {
+    els.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left       = (base + offset) + 'vw';
+    });
+  }, i * GAP);
+});
     });
     setTimeout(() => {
       animating = false;

@@ -841,7 +841,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const REV_MIN = 32.43, REV_MAX = 36;  // inverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;
   const DIST    = 60;                   // vw shift
-  const GAP     = 80;                    // ms delay between animation groups
   const DUR     = 700;                  // ms
 
   // Helper units
@@ -875,24 +874,20 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   /** Utility: animate a group of elements by absolute offset (vw) from their base */
-  
-function animate(groups, callback) {
-    const totalDuration = DUR + (groups.length - 1) * GAP;
+  function animate(groups, callback) {
     animating = true;
-    groups.forEach(({ els, offset }, i) => {
-        setTimeout(() => {
-            els.forEach(el => {
-                const base = parseFloat(el.dataset.baseLeftVw);
-                el.style.transition = `left ${DUR}ms ease`;
-                el.style.left       = (base + offset) + 'vw';
-            });
-        }, i * GAP);
+    groups.forEach(({ els, offset }) => {
+      els.forEach(el => {
+        const base = parseFloat(el.dataset.baseLeftVw);
+        el.style.transition = `left ${DUR}ms ease`;
+        el.style.left       = (base + offset) + 'vw';
+      });
     });
     setTimeout(() => {
-        animating = false;
-        if (typeof callback === 'function') callback();
-    }, totalDuration);
-}
+      animating = false;
+      if (typeof callback === 'function') callback();
+    }, DUR);
+  }
 
   const toStage1 = () => animate([{ els: itemEls, offset: -DIST }], () => { itemStage = 1; });
   const toStage2 = () => animate([
@@ -901,8 +896,8 @@ function animate(groups, callback) {
                                 ], () => { itemStage = 2; centerStage = 1; });
 
   const backToStage1 = () => animate([
-                                      { els: centerEls, offset: 0 },
-                                      { els: itemEls,   offset: -DIST }
+                                      { els: itemEls,   offset: -DIST },
+                                      { els: centerEls, offset: 0 }
                                     ], () => { itemStage = 1; centerStage = 0; });
 
   const backToStage0 = () => animate([{ els: itemEls, offset: 0 }], () => { itemStage = 0; });

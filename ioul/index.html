@@ -843,7 +843,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const DIST    = 60;                   // vw shift
   const DUR     = 700;                  // ms
 
-  // Helper units
+  
+  const CENTER_DELAY = 180;          // ms pause between item exit and center entry
+// Helper units
   const vw = () => window.innerWidth / 100;
   const vh = () => window.innerHeight / 100;
   const toVw = px => px / vw();
@@ -890,10 +892,33 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const toStage1 = () => animate([{ els: itemEls, offset: -DIST }], () => { itemStage = 1; });
-  const toStage2 = () => animate([
-                                  { els: itemEls,   offset: -2 * DIST },
-                                  { els: centerEls, offset: -DIST }
-                                ], () => { itemStage = 2; centerStage = 1; });
+  const toStage2 = () => {
+  animating = true;
+
+  /* 1️⃣ immediately shove the items farther left */
+  itemEls.forEach(el => {
+    const base = parseFloat(el.dataset.baseLeftVw);
+    el.style.transition = `left ${DUR}ms ease`;
+    el.style.left       = (base - 2 * DIST) + 'vw';
+  });
+
+  /* 2️⃣ after a short pause, bring in the centers */
+  setTimeout(() => {
+    centerEls.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left       = (base - DIST) + 'vw';
+    });
+  }, CENTER_DELAY);
+
+  /* 3️⃣ clear the “animating” flag and set stages once everything is done */
+  setTimeout(() => {
+    itemStage   = 2;
+    centerStage = 1;
+    animating   = false;
+  }, DUR + CENTER_DELAY);
+};
+
 
   const backToStage1 = () => animate([
                                       { els: itemEls,   offset: -DIST },

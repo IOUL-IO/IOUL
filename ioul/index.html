@@ -875,24 +875,24 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   /** Utility: animate a group of elements by absolute offset (vw) from their base */
-  function animate(groups, callback) {
+  
+function animate(groups, callback) {
     const totalDuration = DUR + (groups.length - 1) * GAP;
     animating = true;
     groups.forEach(({ els, offset }, i) => {
-  setTimeout(() => {
-    els.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DUR}ms ease`;
-      el.style.left       = (base + offset) + 'vw';
-    });
-  }, i * GAP);
-});
+        setTimeout(() => {
+            els.forEach(el => {
+                const base = parseFloat(el.dataset.baseLeftVw);
+                el.style.transition = `left ${DUR}ms ease`;
+                el.style.left       = (base + offset) + 'vw';
+            });
+        }, i * GAP);
     });
     setTimeout(() => {
-      animating = false;
-      if (typeof callback === 'function') callback();
+        animating = false;
+        if (typeof callback === 'function') callback();
     }, totalDuration);
-  }
+}
 
   const toStage1 = () => animate([{ els: itemEls, offset: -DIST }], () => { itemStage = 1; });
   const toStage2 = () => animate([

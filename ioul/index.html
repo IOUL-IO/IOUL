@@ -841,7 +841,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const REV_MIN = 32.43, REV_MAX = 36;  // inverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;
   const DIST    = 60;                   // vw shift
-  const GAP     = 40;                    // ms delay—small gap                  // ms delay between item and center groups                   // vw shift
+  const GAP     = 40;                    // ms delay between animation groups
   const DUR     = 700;                  // ms
 
   // Helper units
@@ -876,6 +876,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /** Utility: animate a group of elements by absolute offset (vw) from their base */
   function animate(groups, callback) {
+    const totalDuration = DUR + (groups.length - 1) * GAP;
     animating = true;
     groups.forEach(({ els, offset }) => {
       els.forEach(el => {
@@ -887,7 +888,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       animating = false;
       if (typeof callback === 'function') callback();
-    }, DUR);
+    }, totalDuration);
   }
 
   const toStage1 = () => animate([{ els: itemEls, offset: -DIST }], () => { itemStage = 1; });

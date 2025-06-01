@@ -103,18 +103,18 @@
     <span class="center-text" style="position:absolute; top:35.4vh; left:139vw;">gET APP</span>
     <span class="center-text" style="position:absolute; top:41.6vh; left:139vw;">AP1-LOg</span>
 
-    <span class="center-text right-flow" style="position:absolute; top:35.4vh; left:153.4vw;">0</span>
-    <span class="center-text right-flow" style="position:absolute; top:41.6vh; left:153.4vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:35.4vh; left:153vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:41.6vh; left:153vw;">0</span>
 
     <span class="center-text" style="position:absolute; top:53vh; left:139vw;">LOg 0.01</span>
     <span class="center-text" style="position:absolute; top:59.2vh; left:139vw;">LOg 0.02</span>
     <span class="center-text" style="position:absolute; top:65.4vh; left:139vw;">LOg 0.03</span>
     <span class="center-text" style="position:absolute; top:71.6vh; left:139vw;">LOg 0.04</span>
 
-    <span class="center-text right-flow" style="position:absolute; top:53vh; left:153.4vw;">0</span>
-    <span class="center-text right-flow" style="position:absolute; top:59.2vh; left:153.4vw;">0</span>
-    <span class="center-text right-flow" style="position:absolute; top:65.4vh; left:153.4vw;">0</span>
-    <span class="center-text right-flow" style="position:absolute; top:71.6vh; left:153.4vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:53vh; left:153vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:59.2vh; left:153vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:65.4vh; left:153vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:71.6vh; left:153vw;">0</span>
 
     <span class="center-text" style="position:absolute; top:53vh; left:96vw;">LATEST</span>
     <span class="center-text" style="position:absolute; top:59.2vh; left:96vw;">V1RALS</span>
@@ -842,8 +842,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const TOP_MIN = 28.5, TOP_MAX = 84;
   const DIST    = 60;                   // vw shift
   const DUR     = 700;                  // ms
-  const GAP_DELAY = 200;         // ms pause between outgoing and incoming groups (tweak 120‑180)
-
 
   // Helper units
   const vw = () => window.innerWidth / 100;
@@ -892,63 +890,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const toStage1 = () => animate([{ els: itemEls, offset: -DIST }], () => { itemStage = 1; });
-  const toStage2 = () => {
-  animating = true;
+  const toStage2 = () => animate([
+                                  { els: itemEls,   offset: -2 * DIST },
+                                  { els: centerEls, offset: -DIST }
+                                ], () => { itemStage = 2; centerStage = 1; });
 
-  /* 1️⃣ items slide farther left */
-  itemEls.forEach(el => {
-    const base = parseFloat(el.dataset.baseLeftVw);
-    el.style.transition = `left ${DUR}ms ease`;
-    el.style.left       = (base - 2 * DIST) + 'vw';
-  });
-
-  /* 2️⃣ after the gap, centers slide in */
-  setTimeout(() => {
-    centerEls.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DUR}ms ease`;
-      el.style.left       = (base - DIST) + 'vw';
-    });
-  }, GAP_DELAY);
-
-  /* 3️⃣ unlock once both movements complete */
-  setTimeout(() => {
-    itemStage   = 2;
-    centerStage = 1;
-    animating   = false;
-  }, DUR + GAP_DELAY);
-};
-
-centerStage = 1; });
-
-  const backToStage1 = () => {
-  animating = true;
-
-  /* 1️⃣ centers slide out */
-  centerEls.forEach(el => {
-    const base = parseFloat(el.dataset.baseLeftVw);
-    el.style.transition = `left ${DUR}ms ease`;
-    el.style.left       = base + 'vw';   // return to original (0 offset)
-  });
-
-  /* 2️⃣ after the gap, items slide back in */
-  setTimeout(() => {
-    itemEls.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DUR}ms ease`;
-      el.style.left       = (base - DIST) + 'vw';
-    });
-  }, GAP_DELAY);
-
-  /* 3️⃣ unlock once both movements complete */
-  setTimeout(() => {
-    itemStage   = 1;
-    centerStage = 0;
-    animating   = false;
-  }, DUR + GAP_DELAY);
-};
-
-centerStage = 0; });
+  const backToStage1 = () => animate([
+                                      { els: itemEls,   offset: -DIST },
+                                      { els: centerEls, offset: 0 }
+                                    ], () => { itemStage = 1; centerStage = 0; });
 
   const backToStage0 = () => animate([{ els: itemEls, offset: 0 }], () => { itemStage = 0; });
 

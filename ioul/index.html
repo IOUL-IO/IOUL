@@ -841,8 +841,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const REV_MIN = 32.43, REV_MAX = 36;  // inverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;
   const DIST    = 60;                   // vw shift
-  const DUR     = 700;
-  const CENTER_DELAY = 220;                  // ms
+  const DUR     = 700;                  // ms
+  const GAP_DELAY = 200;         // ms pause between outgoing and incoming groups (tweak 120‑180)
+
 
   // Helper units
   const vw = () => window.innerWidth / 100;
@@ -891,15 +892,63 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const toStage1 = () => animate([{ els: itemEls, offset: -DIST }], () => { itemStage = 1; });
-  const toStage2 = () => animate([
-                                  { els: itemEls,   offset: -2 * DIST },
-                                  { els: centerEls, offset: -DIST }
-                                ], () => { itemStage = 2; centerStage = 1; });
+  const toStage2 = () => {
+  animating = true;
 
-  const backToStage1 = () => animate([
-                                      { els: itemEls,   offset: -DIST },
-                                      { els: centerEls, offset: 0 }
-                                    ], () => { itemStage = 1; centerStage = 0; });
+  /* 1️⃣ items slide farther left */
+  itemEls.forEach(el => {
+    const base = parseFloat(el.dataset.baseLeftVw);
+    el.style.transition = `left ${DUR}ms ease`;
+    el.style.left       = (base - 2 * DIST) + 'vw';
+  });
+
+  /* 2️⃣ after the gap, centers slide in */
+  setTimeout(() => {
+    centerEls.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left       = (base - DIST) + 'vw';
+    });
+  }, GAP_DELAY);
+
+  /* 3️⃣ unlock once both movements complete */
+  setTimeout(() => {
+    itemStage   = 2;
+    centerStage = 1;
+    animating   = false;
+  }, DUR + GAP_DELAY);
+};
+
+centerStage = 1; });
+
+  const backToStage1 = () => {
+  animating = true;
+
+  /* 1️⃣ centers slide out */
+  centerEls.forEach(el => {
+    const base = parseFloat(el.dataset.baseLeftVw);
+    el.style.transition = `left ${DUR}ms ease`;
+    el.style.left       = base + 'vw';   // return to original (0 offset)
+  });
+
+  /* 2️⃣ after the gap, items slide back in */
+  setTimeout(() => {
+    itemEls.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left       = (base - DIST) + 'vw';
+    });
+  }, GAP_DELAY);
+
+  /* 3️⃣ unlock once both movements complete */
+  setTimeout(() => {
+    itemStage   = 1;
+    centerStage = 0;
+    animating   = false;
+  }, DUR + GAP_DELAY);
+};
+
+centerStage = 0; });
 
   const backToStage0 = () => animate([{ els: itemEls, offset: 0 }], () => { itemStage = 0; });
 

@@ -841,6 +841,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const REV_MIN = 32.43, REV_MAX = 36;  // inverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;
   const DIST    = 60;                   // vw shift
+  const GAP     = 80;                    // ms delay between animation groups
   const DUR     = 700;                  // ms
 
   // Helper units
@@ -874,78 +875,37 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   /** Utility: animate a group of elements by absolute offset (vw) from their base */
-  function animate(groups, callback) {
+  
+function animate(groups, callback) {
+    const totalDuration = DUR + (groups.length - 1) * GAP;
     animating = true;
-    groups.forEach(({ els, offset }) => {
-      els.forEach(el => {
-        const base = parseFloat(el.dataset.baseLeftVw);
-        el.style.transition = `left ${DUR}ms ease`;
-        el.style.left       = (base + offset) + 'vw';
-      });
+    groups.forEach(({ els, offset }, i) => {
+        setTimeout(() => {
+            els.forEach(el => {
+                const base = parseFloat(el.dataset.baseLeftVw);
+                el.style.transition = `left ${DUR}ms ease`;
+                el.style.left       = (base + offset) + 'vw';
+            });
+        }, i * GAP);
     });
     setTimeout(() => {
-      animating = false;
-      if (typeof callback === 'function') callback();
-    }, DUR);
-  }
+        animating = false;
+        if (typeof callback === 'function') callback();
+    }, totalDuration);
+}
 
   const toStage1 = () => animate([{ els: itemEls, offset: -DIST }], () => { itemStage = 1; });
-  
-  // ----- Adjusted timing with slight gap between item slide-out and center slide-in -----
-  const CENTER_DELAY = 120; // ms gap
+  const toStage2 = () => animate([
+                                  { els: itemEls,   offset: -2 * DIST },
+                                  { els: centerEls, offset: -DIST }
+                                ], () => { itemStage = 2; centerStage = 1; });
 
-  const toStage2 = () => {
-    animating = true;
+  const backToStage1 = () => animate([
+                                      { els: centerEls, offset: 0 },
+                                      { els: itemEls,   offset: -DIST }
+                                    ], () => { itemStage = 1; centerStage = 0; });
 
-    // Phase 1: items move further left
-    itemEls.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DUR}ms ease`;
-      el.style.left       = (base - 2 * DIST) + 'vw';
-    });
-
-    // Phase 2: center elements slide in slightly later
-    setTimeout(() => {
-      centerEls.forEach(el => {
-        const base = parseFloat(el.dataset.baseLeftVw);
-        el.style.transition = `left ${DUR}ms ease`;
-        el.style.left       = (base - DIST) + 'vw';
-      });
-    }, CENTER_DELAY);
-
-    setTimeout(() => {
-      animating   = false;
-      itemStage   = 2;
-      centerStage = 1;
-    }, DUR + CENTER_DELAY);
-  };
-
-  const backToStage1 = () => {
-    animating = true;
-
-    // Phase 1: center elements slide out first
-    centerEls.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DUR}ms ease`;
-      el.style.left       = base + 'vw';
-    });
-
-    // Phase 2: items slide back in after the gap
-    setTimeout(() => {
-      itemEls.forEach(el => {
-        const base = parseFloat(el.dataset.baseLeftVw);
-        el.style.transition = `left ${DUR}ms ease`;
-        el.style.left       = (base - DIST) + 'vw';
-      });
-    }, CENTER_DELAY);
-
-    setTimeout(() => {
-      animating   = false;
-      itemStage   = 1;
-      centerStage = 0;
-    }, DUR + CENTER_DELAY);
-  };
-const backToStage0 = () => animate([{ els: itemEls, offset: 0 }], () => { itemStage = 0; });
+  const backToStage0 = () => animate([{ els: itemEls, offset: 0 }], () => { itemStage = 0; });
 
   // Main click handler (capture phase so we can cancel before other listeners)
   document.addEventListener('click', e => {

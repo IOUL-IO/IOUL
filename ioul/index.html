@@ -840,8 +840,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // inverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;
-  const DIST    = 60;
-  const CENTER_EXTRA_GAP = 8; // Added gap between item and center containers                   // vw shift
+  const DIST = 60;
+  const GAP = 10;                   // vw shift
   const DUR     = 700;                  // ms
 
   // Helper units
@@ -890,14 +890,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }, DUR);
   }
 
-  const toStage1 = () => animate([{ els: itemEls, offset: -DIST }], () => { itemStage = 1; });
+  const toStage1 = () => animate([{ els: itemEls, offset: -(DIST+GAP) }], () => { itemStage = 1; });
   const toStage2 = () => animate([
-                                  { els: itemEls,   offset: -(2 * DIST + CENTER_EXTRA_GAP) },
+                                  { els: itemEls,   offset: -2 * DIST },
                                   { els: centerEls, offset: -DIST }
                                 ], () => { itemStage = 2; centerStage = 1; });
 
   const backToStage1 = () => animate([
-                                      { els: itemEls,   offset: -DIST => { itemStage = 1; centerStage = 0; });
+                                      { els: itemEls,   offset: -(DIST+GAP) },
+                                      { els: centerEls, offset: 0 }
+                                    ], () => { itemStage = 1; centerStage = 0; });
 
   const backToStage0 = () => animate([{ els: itemEls, offset: 0 }], () => { itemStage = 0; });
 
@@ -937,7 +939,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 /* ---- Item clipping script injected by ChatGPT on 2025‑05‑29 (v3) ---- */
 document.addEventListener('DOMContentLoaded', () => {
-  const HIDE_LEFT_VW = 28.86; // Updated threshold
+  const HIDE_LEFT_VW = 24.00; // Updated threshold
   const TOP_MIN_VH   = 28.5;  // Vertical bounds
   const TOP_MAX_VH   = 84;
 

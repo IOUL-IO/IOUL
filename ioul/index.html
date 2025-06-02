@@ -840,15 +840,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // inverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;
-
-  const DIST = 60;      // vw each group travels
-  const DUR  = 700;     // ms per animation
-  const DELAY = 120;    // ms stagger to widen perceived gap
+  const DIST    = 60;                   // vw shift
+  const DUR     = 700;                  // ms
 
   // Helper units
   const vw = () => window.innerWidth / 100;
-  const toVw = px => px / vw();
   const vh = () => window.innerHeight / 100;
+  const toVw = px => px / vw();
   const toVh = px => px / vh();
 
   // Elements
@@ -858,58 +856,101 @@ document.addEventListener('DOMContentLoaded', () => {
   // Cache original positions in vw
   [...itemEls, ...centerEls].forEach(el => {
     if (!el.dataset.baseLeftVw) {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-      el.dataset.baseLeftVw = toVw(leftPx);
+      const leftPx              = parseFloat(getComputedStyle(el).left) || 0;
+      el.dataset.baseLeftVw      = toVw(leftPx);
     }
   });
 
-  // Stages
-  let itemStage   = 0;  // 0 = hidden, 1 = visible, 2 = shifted‑left/clipped
-  let centerStage = 0;  // 0 = hidden, 1 = visible
+  // State:
+  // itemStage: 0 = hidden (base), 1 = visible, 2 = shifted‑left/clipped
+  // centerStage: 0 = hidden, 1 = visible
+  let itemStage   = 0;
+  let centerStage = 0;
   let animating   = false;
-  let pending     = 0;  // track parallel animations
 
-  /** tween a collection by offset (vw) */
-  function tween(els, offset, cb) {
-    pending++;
-    els.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = \`left \${DUR}ms ease\`;
-      el.style.left       = (base + offset) + 'vw';
+  const getAccountSlid = () => {
+    const acc = document.querySelector('.account-text');
+    return acc && acc.dataset.slid === 'true';
+  };
+
+  /** Utility: animate a group of elements by absolute offset (vw) from their base */
+  function animate(groups, callback) {
+    animating = true;
+    groups.forEach(({ els, offset }) => {
+      els.forEach(el => {
+        const base = parseFloat(el.dataset.baseLeftVw);
+        el.style.transition = `left ${DUR}ms ease`;
+        el.style.left       = (base + offset) + 'vw';
+      });
     });
     setTimeout(() => {
-      if (typeof cb === 'function') cb();
-      if (--pending === 0) animating = false;
+      animating = false;
+      if (typeof callback === 'function') callback();
     }, DUR);
   }
 
-  function toStage1() {
-    animating = true;
-    pending = 0;
-    tween(itemEls, -DIST, () => { itemStage = 1; });
-  }
+  const toStage1 = () => animate([{ els: itemEls, offset: -DIST }], () => { itemStage = 1; });
 
-  function toStage2() {
-    animating = true;
-    pending = 0;
-    tween(itemEls, -2 * DIST, () => { itemStage = 2; });
-    setTimeout(() => tween(centerEls, -DIST, () => { centerStage = 1; }), DELAY);
-  }
+  const GAP_DELAY = 120; // ms delay between item and center groups for larger gap
 
-  function backToStage1() {
+  const toStage2 = () => {
+    if (animating) return;
     animating = true;
-    pending = 0;
-    tween(centerEls, 0, () => { centerStage = 0; });
-    setTimeout(() => tween(itemEls, -DIST, () => { itemStage = 1; }), DELAY);
-  }
 
-  function backToStage0() {
+    // slide items out first
+    itemEls.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left = (base - 2 * DIST) + 'vw';
+    });
+
+    // slide center group in after a short delay
+    setTimeout(() => {
+      centerEls.forEach(el => {
+        const base = parseFloat(el.dataset.baseLeftVw);
+        el.style.transition = `left ${DUR}ms ease`;
+        el.style.left = (base - DIST) + 'vw';
+      });
+    }, GAP_DELAY);
+
+    // unlock after both animations complete
+    setTimeout(() => {
+      itemStage = 2;
+      centerStage = 1;
+      animating = false;
+    }, DUR + GAP_DELAY);
+  };
+
+  const backToStage1 = () => {
+    if (animating) return;
     animating = true;
-    pending = 0;
-    tween(itemEls, 0, () => { itemStage = 0; });
-  }
 
-  // Click logic (capture phase)
+    // hide center group first
+    centerEls.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left = base + 'vw';
+    });
+
+    // bring items back after a delay
+    setTimeout(() => {
+      itemEls.forEach(el => {
+        const base = parseFloat(el.dataset.baseLeftVw);
+        el.style.transition = `left ${DUR}ms ease`;
+        el.style.left = (base - DIST) + 'vw';
+      });
+    }, GAP_DELAY);
+
+    setTimeout(() => {
+      itemStage = 1;
+      centerStage = 0;
+      animating = false;
+    }, DUR + GAP_DELAY);
+  };
+
+  const backToStage0 = () => animate([{ els: itemEls, offset: 0 }], () => { itemStage = 0; });
+
+  // Main click handler (capture phase so we can cancel before other listeners)
   document.addEventListener('click', e => {
     if (animating) return;
 
@@ -919,11 +960,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const inRev = vwPos >= REV_MIN && vwPos <= REV_MAX && vhPos >= TOP_MIN && vhPos <= TOP_MAX;
 
     if (inFwd) {
-      if      (itemStage === 0)       toStage1();
-      else if (itemStage === 1)       toStage2();
+      if (getAccountSlid()) return;          // let account handler run
+      if (itemStage === 0) {                 // first forward → show items
+        toStage1();
+        e.stopPropagation();
+      } else if (itemStage === 1 && centerStage === 0) { // second forward → shift items & show center
+        toStage2();
+        e.stopPropagation();
+      }
     } else if (inRev) {
-      if      (itemStage === 2)       backToStage1();
-      else if (itemStage === 1)       backToStage0();
+      if (centerStage === 1) {               // first back ← hide center & restore items
+        backToStage1();
+        e.stopPropagation();
+      } else if (itemStage === 1 && centerStage === 0) { // second back ← hide items
+        backToStage0();
+        e.stopPropagation();
+      }
+      // If itemStage == 0 let event bubble for account logic
     }
   }, true);
 });

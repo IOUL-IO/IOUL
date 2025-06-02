@@ -894,59 +894,51 @@ document.addEventListener('DOMContentLoaded', () => {
   const GAP_DELAY = 120; // ms delay between item and center groups for larger gap
 
   const toStage2 = () => {
-    if (animating) return;
-    animating = true;
-
-    // slide items out first
-    itemEls.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DUR}ms ease`;
-      el.style.left = (base - 2 * DIST) + 'vw';
-    });
-
-    // slide center group in after a short delay
-    setTimeout(() => {
-      centerEls.forEach(el => {
-        const base = parseFloat(el.dataset.baseLeftVw);
-        el.style.transition = `left ${DUR}ms ease`;
-        el.style.left = (base - DIST) + 'vw';
-      });
-    }, GAP_DELAY);
-
-    // unlock after both animations complete
-    setTimeout(() => {
-      itemStage = 2;
-      centerStage = 1;
-      animating = false;
-    }, DUR + GAP_DELAY);
-  };
-
-  const backToStage1 = () => {
-    if (animating) return;
-    animating = true;
-
-    // hide center group first
+  animating = true;
+  // First move the items group
+  itemEls.forEach(el => {
+    const base = parseFloat(el.dataset.baseLeftVw);
+    el.style.transition = `left ${SUB_DUR}ms ease`;
+    el.style.left       = (base - 2 * DIST) + 'vw';
+  });
+  // Then, after the gap, move the centers group
+  setTimeout(() => {
     centerEls.forEach(el => {
       const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DUR}ms ease`;
-      el.style.left = base + 'vw';
+      el.style.transition = `left ${SUB_DUR}ms ease`;
+      el.style.left       = (base - DIST) + 'vw';
     });
+  }, GAP_DELAY);
+  // Finalise stage change at the original overall duration
+  setTimeout(() => {
+    animating   = false;
+    itemStage   = 2;
+    centerStage = 1;
+  }, DUR);
+};
 
-    // bring items back after a delay
-    setTimeout(() => {
-      itemEls.forEach(el => {
-        const base = parseFloat(el.dataset.baseLeftVw);
-        el.style.transition = `left ${DUR}ms ease`;
-        el.style.left = (base - DIST) + 'vw';
-      });
-    }, GAP_DELAY);
-
-    setTimeout(() => {
-      itemStage = 1;
-      centerStage = 0;
-      animating = false;
-    }, DUR + GAP_DELAY);
-  };
+  const backToStage1 = () => {
+  animating = true;
+  // First move the centers group back
+  centerEls.forEach(el => {
+    const base = parseFloat(el.dataset.baseLeftVw);
+    el.style.transition = `left ${SUB_DUR}ms ease`;
+    el.style.left       = base + 'vw';
+  });
+  // Then, after the gap, move the items group back
+  setTimeout(() => {
+    itemEls.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${SUB_DUR}ms ease`;
+      el.style.left       = (base - DIST) + 'vw';
+    });
+  }, GAP_DELAY);
+  setTimeout(() => {
+    animating   = false;
+    itemStage   = 1;
+    centerStage = 0;
+  }, DUR);
+};
 
   const backToStage0 = () => animate([{ els: itemEls, offset: 0 }], () => { itemStage = 0; });
 

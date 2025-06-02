@@ -892,14 +892,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const toStage1 = () => animate([{ els: itemEls, offset: -DIST }], () => { itemStage = 1; });
   const toStage2 = () => animate([
-                                  { els: itemEls,   offset: -2 * DIST },
-                                  { els: centerEls, offset: -(DIST - CENTER_EXTRA_GAP) }
+                                  { els: itemEls,   offset: -(2 * DIST + CENTER_EXTRA_GAP) },
+                                  { els: centerEls, offset: -DIST }
                                 ], () => { itemStage = 2; centerStage = 1; });
 
   const backToStage1 = () => animate([
-                                      { els: itemEls,   offset: -(DIST + CENTER_EXTRA_GAP) },
-                                      { els: centerEls, offset: 0 }
-                                    ], () => { itemStage = 1; centerStage = 0; });
+                                      { els: itemEls,   offset: -DIST => { itemStage = 1; centerStage = 0; });
 
   const backToStage0 = () => animate([{ els: itemEls, offset: 0 }], () => { itemStage = 0; });
 

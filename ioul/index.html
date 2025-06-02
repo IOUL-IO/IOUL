@@ -840,14 +840,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // inverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;
-  const DIST    = 60;
-  const GAP     = 10;                   // extra gap between item and center containers                   // vw shift
-  const DUR     = 700;                  // ms
+
+  const DIST = 60;      // vw each group travels
+  const DUR  = 700;     // ms per animation
+  const DELAY = 120;    // ms stagger to widen perceived gap
 
   // Helper units
   const vw = () => window.innerWidth / 100;
-  const vh = () => window.innerHeight / 100;
   const toVw = px => px / vw();
+  const vh = () => window.innerHeight / 100;
   const toVh = px => px / vh();
 
   // Elements
@@ -857,53 +858,58 @@ document.addEventListener('DOMContentLoaded', () => {
   // Cache original positions in vw
   [...itemEls, ...centerEls].forEach(el => {
     if (!el.dataset.baseLeftVw) {
-      const leftPx              = parseFloat(getComputedStyle(el).left) || 0;
-      el.dataset.baseLeftVw      = toVw(leftPx);
+      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      el.dataset.baseLeftVw = toVw(leftPx);
     }
   });
 
-  // State:
-  // itemStage: 0 = hidden (base), 1 = visible, 2 = shifted‑left/clipped
-  // centerStage: 0 = hidden, 1 = visible
-  let itemStage   = 0;
-  let centerStage = 0;
+  // Stages
+  let itemStage   = 0;  // 0 = hidden, 1 = visible, 2 = shifted‑left/clipped
+  let centerStage = 0;  // 0 = hidden, 1 = visible
   let animating   = false;
+  let pending     = 0;  // track parallel animations
 
-  const getAccountSlid = () => {
-    const acc = document.querySelector('.account-text');
-    return acc && acc.dataset.slid === 'true';
-  };
-
-  /** Utility: animate a group of elements by absolute offset (vw) from their base */
-  function animate(groups, callback) {
-    animating = true;
-    groups.forEach(({ els, offset }) => {
-      els.forEach(el => {
-        const base = parseFloat(el.dataset.baseLeftVw);
-        el.style.transition = `left ${DUR}ms ease`;
-        el.style.left       = (base + offset) + 'vw';
-      });
+  /** tween a collection by offset (vw) */
+  function tween(els, offset, cb) {
+    pending++;
+    els.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = \`left \${DUR}ms ease\`;
+      el.style.left       = (base + offset) + 'vw';
     });
     setTimeout(() => {
-      animating = false;
-      if (typeof callback === 'function') callback();
+      if (typeof cb === 'function') cb();
+      if (--pending === 0) animating = false;
     }, DUR);
   }
 
-  const toStage1 = () => animate([{ els: itemEls, offset: -DIST }], () => { itemStage = 1; });
-  const toStage2 = () => animate([
-                                  { els: itemEls,   offset: -2 * DIST - GAP },
-                                  { els: centerEls, offset: -DIST }
-                                ], () => { itemStage = 2; centerStage = 1; });
+  function toStage1() {
+    animating = true;
+    pending = 0;
+    tween(itemEls, -DIST, () => { itemStage = 1; });
+  }
 
-  const backToStage1 = () => animate([
-                                      { els: itemEls,   offset: -DIST },
-                                      { els: centerEls, offset: 0 }
-                                    ], () => { itemStage = 1; centerStage = 0; });
+  function toStage2() {
+    animating = true;
+    pending = 0;
+    tween(itemEls, -2 * DIST, () => { itemStage = 2; });
+    setTimeout(() => tween(centerEls, -DIST, () => { centerStage = 1; }), DELAY);
+  }
 
-  const backToStage0 = () => animate([{ els: itemEls, offset: 0 }], () => { itemStage = 0; });
+  function backToStage1() {
+    animating = true;
+    pending = 0;
+    tween(centerEls, 0, () => { centerStage = 0; });
+    setTimeout(() => tween(itemEls, -DIST, () => { itemStage = 1; }), DELAY);
+  }
 
-  // Main click handler (capture phase so we can cancel before other listeners)
+  function backToStage0() {
+    animating = true;
+    pending = 0;
+    tween(itemEls, 0, () => { itemStage = 0; });
+  }
+
+  // Click logic (capture phase)
   document.addEventListener('click', e => {
     if (animating) return;
 
@@ -913,23 +919,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const inRev = vwPos >= REV_MIN && vwPos <= REV_MAX && vhPos >= TOP_MIN && vhPos <= TOP_MAX;
 
     if (inFwd) {
-      if (getAccountSlid()) return;          // let account handler run
-      if (itemStage === 0) {                 // first forward → show items
-        toStage1();
-        e.stopPropagation();
-      } else if (itemStage === 1 && centerStage === 0) { // second forward → shift items & show center
-        toStage2();
-        e.stopPropagation();
-      }
+      if      (itemStage === 0)       toStage1();
+      else if (itemStage === 1)       toStage2();
     } else if (inRev) {
-      if (centerStage === 1) {               // first back ← hide center & restore items
-        backToStage1();
-        e.stopPropagation();
-      } else if (itemStage === 1 && centerStage === 0) { // second back ← hide items
-        backToStage0();
-        e.stopPropagation();
-      }
-      // If itemStage == 0 let event bubble for account logic
+      if      (itemStage === 2)       backToStage1();
+      else if (itemStage === 1)       backToStage0();
     }
   }, true);
 });

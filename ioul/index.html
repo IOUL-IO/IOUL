@@ -892,6 +892,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const toStage1 = () => animate([{ els: itemEls, offset: -DIST }], () => { itemStage = 1; });
 
   const GAP_DELAY = 120; // ms delay between item and center groups for larger gap
+const SUB_DUR = DUR - GAP_DELAY; // group travel duration
 
   const toStage2 = () => {
   animating = true;
@@ -919,13 +920,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const backToStage1 = () => {
   animating = true;
-  // First move the centers group back
+  // First move the center group back out
   centerEls.forEach(el => {
     const base = parseFloat(el.dataset.baseLeftVw);
     el.style.transition = `left ${SUB_DUR}ms ease`;
-    el.style.left       = base + 'vw';
+    el.style.left       = (base + DIST) + 'vw';
   });
-  // Then, after the gap, move the items group back
+  // Then, after the gap, move the items group back to stage‑1 position
   setTimeout(() => {
     itemEls.forEach(el => {
       const base = parseFloat(el.dataset.baseLeftVw);

@@ -876,17 +876,20 @@ document.addEventListener('DOMContentLoaded', () => {
   /** Utility: animate a group of elements by absolute offset (vw) from their base */
   function animate(groups, callback) {
     animating = true;
+    let maxDur = 0;
     groups.forEach(({ els, offset }) => {
+      const dur = Math.abs(offset) / DIST * DUR;
+      if (dur > maxDur) maxDur = dur;
       els.forEach(el => {
         const base = parseFloat(el.dataset.baseLeftVw);
-        el.style.transition = `left ${DUR}ms ease`;
+        el.style.transition = `left ${dur}ms ease`;
         el.style.left       = (base + offset) + 'vw';
       });
     });
     setTimeout(() => {
       animating = false;
       if (typeof callback === 'function') callback();
-    }, DUR);
+    }, maxDur);
   }
 
   const toStage1 = () => animate([{ els: itemEls, offset: -DIST }], () => { itemStage = 1; });

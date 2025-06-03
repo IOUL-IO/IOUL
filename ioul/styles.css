@@ -497,7 +497,7 @@ body.non-fullscreen {
     letter-spacing: 0.28vw;
     font-size: 0.47rem;
     text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
-    transition: left 0.7s ease, transform 0.7s ease;
+    transition: left 1.4s ease, transform 1.4s ease;
     line-height: 1.6;
     overflow: visible;
 }
@@ -508,6 +508,7 @@ body.non-fullscreen {
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
     z-index: 1;
+    transition: left 1.4s ease, transform 1.4s ease;
 }
 
 

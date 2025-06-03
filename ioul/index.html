@@ -892,7 +892,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const toStage1 = () => animate([{ els: itemEls, offset: -DIST }], () => { itemStage = 1; });
   const toStage2 = () => animate([
                                   { els: itemEls,   offset: -2 * DIST },
-                                  { els: centerEls, offset: -2 * DIST, dur: 2 * DUR }
+                                  { els: centerEls, offset: -2 * DIST}
                                 ], () => { itemStage = 2; centerStage = 1; });
 
   const backToStage1 = () => animate([

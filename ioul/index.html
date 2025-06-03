@@ -840,8 +840,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // inverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;
-  const DIST    = 60;
-  const CENTER_DIST = DIST + 40;                   // vw shift
+  const DIST    = 60;                   // vw shift
   const DUR     = 700;                  // ms
 
   // Helper units
@@ -892,8 +891,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const toStage1 = () => animate([{ els: itemEls, offset: -DIST }], () => { itemStage = 1; });
   const toStage2 = () => animate([
-                                  { els: itemEls,   offset: -2 * DIST },
-                                  { els: centerEls, offset: -CENTER_DIST }
+                                  { els: itemEls,   offset: -2 * DIST - EXTRA_GAP },
+                                  { els: centerEls, offset: -DIST }
                                 ], () => { itemStage = 2; centerStage = 1; });
 
   const backToStage1 = () => animate([

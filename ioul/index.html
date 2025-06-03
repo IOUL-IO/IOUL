@@ -842,7 +842,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const TOP_MIN = 28.5, TOP_MAX = 84;
   const DIST    = 60;                   // vw shift
   const DUR     = 700;                  // ms
-  const STAGGER = 120;            // ms gap between groups
+  const GAP_DELAY = 100;             // extra delay between groups (ms)
 
   // Helper units
   const vw = () => window.innerWidth / 100;
@@ -876,8 +876,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /** Utility: animate a group of elements by absolute offset (vw) from their base */
   function animate(groups, callback) {
-    animating = true;
-    groups.forEach(({ els, offset }) => {
+  animating = true;
+  let maxDelay = 0;
+  groups.forEach(({ els, offset, delay = 0 }) => {
+    maxDelay = Math.max(maxDelay, delay);
+    els.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DUR}ms ease ${delay}ms`;
+      el.style.left       = (base + offset) + 'vw';
+    });
+  });
+  setTimeout(() => {
+    animating = false;
+    if (typeof callback === 'function') callback();
+  }, DUR + maxDelay);
+}) => {
       els.forEach(el => {
         const base = parseFloat(el.dataset.baseLeftVw);
         el.style.transition = `left ${DUR}ms ease`;
@@ -890,32 +903,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }, DUR);
   }
 
-  function staggerAnimate(groups, callback, gap = STAGGER) {
-  animating = true;
-  groups.forEach(({ els, offset }, idx) => {
-    setTimeout(() => {
-      els.forEach(el => {
-        const base = parseFloat(el.dataset.baseLeftVw);
-        el.style.transition = `left ${DUR}ms ease`;
-        el.style.left       = (base + offset) + 'vw';
-      });
-    }, idx * gap);
-  });
-  setTimeout(() => {
-    animating = false;
-    if (typeof callback === 'function') callback();
-  }, DUR + (groups.length - 1) * gap);
-}
-
   const toStage1 = () => animate([{ els: itemEls, offset: -DIST }], () => { itemStage = 1; });
-    const toStage2 = () => staggerAnimate([
-                                  { els: itemEls,   offset: -2 * DIST },
-                                  { els: centerEls, offset: -DIST }
-                                ], () => { itemStage = 2; centerStage = 1; });
-    const backToStage1 = () => staggerAnimate([
-                                      { els: itemEls,   offset: -DIST },
-                                      { els: centerEls, offset: 0 }
-                                    ], () => { itemStage = 1; centerStage = 0; });
+  const toStage2 = () => animate([
+                                { els: itemEls,   offset: -2 * DIST, delay: 0 },
+                                { els: centerEls, offset: -DIST,     delay: GAP_DELAY }
+                              ], () => { itemStage = 2; centerStage = 1; });
+
+  const backToStage1 = () => animate([
+                                    { els: itemEls,   offset: -DIST, delay: 0 },
+                                    { els: centerEls, offset: 0,     delay: GAP_DELAY }
+                                  ], () => { itemStage = 1; centerStage = 0; });
+
   const backToStage0 = () => animate([{ els: itemEls, offset: 0 }], () => { itemStage = 0; });
 
   // Main click handler (capture phase so we can cancel before other listeners)

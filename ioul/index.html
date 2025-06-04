@@ -842,8 +842,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
   const DIST    = 60;                   // horizontal shift in vw
-  const DUR     = 420;                  // transition duration in ms
-  const STAGGER = 70;                  // delay between outgoing and incoming groups in ms
+  const DUR     = 600;                  // transition duration in ms
+  const STAGGER = 0;                  // delay between outgoing and incoming groups in ms
 
   // Helper unit conversions
   const vw = () => window.innerWidth / 100;
@@ -878,7 +878,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function move(els, offset) {
     els.forEach(el => {
       const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = `left ${DUR}ms linear`;
+      el.style.transition = `left ${DUR}ms ease`;
       el.style.left       = (base + offset) + 'vw';
     });
   }
@@ -893,7 +893,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function toStage2() { // shift items further + reveal center with stagger
     animating = true;
     move(itemEls, -2 * DIST);                       // items out first
-    setTimeout(() => move(centerEls, -DIST), STAGGER); // center follows
+    move(centerEls, -DIST); // center follows
     setTimeout(() => { animating=false; itemStage=2; centerStage=1; }, DUR + STAGGER);
   }
 
@@ -901,7 +901,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function backToStage1() { // hide center, restore items with stagger
     animating = true;
     move(centerEls, 0);                              // center leaves first
-    setTimeout(() => move(itemEls, -DIST), STAGGER); // items return after delay
+    move(itemEls, -DIST); // items return after delay
     setTimeout(() => { animating=false; itemStage=1; centerStage=0; }, DUR + STAGGER);
   }
 

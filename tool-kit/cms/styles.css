@@ -72,3 +72,6 @@ body.non-fullscreen {
 .line.util-line{
   top:28.5vh; left:26.06vw; width:2.8vw; z-index:1;
 }
+
+/* content block */
+.content-text, .content-line { z-index: 101; }

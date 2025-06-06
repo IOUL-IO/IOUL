@@ -30,46 +30,56 @@
 
     <div class="line util-line"></div>
 
-    <!-- Divider line that used to slide with the containers -->
+
+
+<!-- Divider line that used to slide with the containers -->
     <div class="custom-line"></div>
+  
+<!-- Column 1 (36 vw) -->
+<span class="custom-text content-text" style="position:absolute; top:35.4vh; left:36vw;">OPEN FOLDER:</span>
+<span class="custom-text content-text" style="position:absolute; top:41.6vh; left:36vw;">LOOK UP F1LE:</span>
 
-    <!-- Column 5 (79 vw) -->
-    <span class="custom-text content-text" style="position:absolute; top:35.4vh; left:79vw;">HE1gHT:</span>
-    <span class="custom-text content-text" style="position:absolute; top:41.6vh; left:79vw;">LENgTH:</span>
+<!-- Column 4 (71 vw) – right-flow counters -->
+<span class="custom-text content-text right-flow" style="position:absolute; top:35.4vh; left:71.4vw;">0</span>
+<span class="custom-text content-text right-flow" style="position:absolute; top:41.6vh; left:71.4vw;">0</span>
 
-    <span class="custom-text content-text" style="position:absolute; top:53vh;   left:79vw;">1-DOc</span>
-    <span class="custom-text content-text" style="position:absolute; top:59.2vh; left:79vw;">cELL</span>
-    <span class="custom-text content-text" style="position:absolute; top:65.4vh; left:79vw;">FORM</span>
-    <span class="custom-text content-text" style="position:absolute; top:71.6vh; left:79vw;">WALL</span>
+<!-- Column 5 (79 vw) -->
+<span class="custom-text content-text" style="position:absolute; top:35.4vh; left:79vw;">HE1gHT:</span>
+<span class="custom-text content-text" style="position:absolute; top:41.6vh; left:79vw;">LENgTH:</span>
+    
+<span class="custom-text content-text" style="position:absolute; top:53vh;   left:79vw;">1-DOc</span>
+<span class="custom-text content-text" style="position:absolute; top:59.2vh; left:79vw;">cELL</span>
+<span class="custom-text content-text" style="position:absolute; top:65.4vh; left:79vw;">FORM</span>
+<span class="custom-text content-text" style="position:absolute; top:71.6vh; left:79vw;">WALL</span>
 
-    <!-- Column 6 (93.4 vw) – right-flow counters -->
-    <span class="custom-text content-text right-flow" style="position:absolute; top:35.4vh; left:93.4vw;">0</span>
-    <span class="custom-text content-text right-flow" style="position:absolute; top:41.6vh; left:93.4vw;">0</span>
+<!-- Column 6 (93.4 vw) – right-flow counters -->
+<span class="custom-text content-text right-flow" style="position:absolute; top:35.4vh; left:93.4vw;">0</span>
+<span class="custom-text content-text right-flow" style="position:absolute; top:41.6vh; left:93.4vw;">0</span>
     <span class="custom-text content-text right-flow" style="position:absolute; top:53vh; left:93.4vw;">0</span>
     <span class="custom-text content-text right-flow" style="position:absolute; top:59.2vh; left:93.4vw;">0</span>
-    <span class="custom-text content-text right-flow" style="position:absolute; top:65.4vh; left:93.4vw;">0</span>
-    <span class="custom-text content-text right-flow" style="position:absolute; top:71.6vh; left:93.4vw;">0</span>
+<span class="custom-text content-text right-flow" style="position:absolute; top:65.4vh; left:93.4vw;">0</span>
+<span class="custom-text content-text right-flow" style="position:absolute; top:71.6vh; left:93.4vw;">0</span>
 
-    <!-- Horizontal guide lines -->
-    <div class="content-line content-line-one"
-         style="position:absolute; top:47.8vh; left:36vw; width:36vw; height:1px; background:rgba(230,230,230,0.28);"></div>
+<!-- Horizontal guide lines -->
+<div class="content-line content-line-one"
+     style="position:absolute; top:47.8vh; left:36vw; width:36vw; height:1px; background:rgba(230,230,230,0.28);"></div>
 
-    <div class="content-line content-line-two"
-         style="position:absolute; top:47.8vh; left:79vw; width:14.8vw; height:1px; background:rgba(230,230,230,0.28);"></div>
+<div class="content-line content-line-two"
+     style="position:absolute; top:47.8vh; left:79vw; width:14.8vw; height:1px; background:rgba(230,230,230,0.28);"></div>
 
-  </div>
+</div>
 
-  <!-- Full‑screen trigger (click near any screen edge) -->
-  <script>
-  const EDGE_MARGIN = 11; // px from any edge
-  document.addEventListener('click', ({clientX:x, clientY:y}) => {
-    const {innerWidth:w, innerHeight:h} = window;
-    const nearEdge = (x <= EDGE_MARGIN || x >= w - EDGE_MARGIN ||
-                      y <= EDGE_MARGIN || y >= h - EDGE_MARGIN);
-    if (nearEdge && !document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-    }
-  });
-  </script>
+<!-- Full‑screen trigger (click near any screen edge) -->
+<script>
+const EDGE_MARGIN = 11; // px from any edge
+document.addEventListener('click', ({clientX:x, clientY:y}) => {
+  const {innerWidth:w, innerHeight:h} = window;
+  const nearEdge = (x <= EDGE_MARGIN || x >= w - EDGE_MARGIN ||
+                    y <= EDGE_MARGIN || y >= h - EDGE_MARGIN);
+  if (nearEdge && !document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  }
+});
+</script>
 </body>
 </html>

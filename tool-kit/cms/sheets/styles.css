@@ -76,28 +76,8 @@ body.non-fullscreen {
 /* content block */
 
 
-/* === GRID OVERLAY (SVG‑based) – pixel‑perfect === */
-.grid-overlay{
-  position:fixed;
-  top:28.5vh;
-  left:36vw;
-  width:58vw;
-  height:55.5vh;
-  pointer-events:none;
-  z-index:2147483000;
-}
-
-.grid-svg{
-  width:100%;
-  height:100%;
-  stroke:rgba(230,230,230,0.4);
-  stroke-width:1;
-  vector-effect:non-scaling-stroke; /* keep 1px regardless of scale */
-  shape-rendering:crispEdges;       /* avoid anti‑alias blur */
-}
-
-/* Hide first vertical line at 36vw */
-.grid-svg line[x1="0"]{
+/* Mask ONLY the first vertical line (x1=x2=0) */
+.grid-svg line[x1="0"][x2="0"]{
   stroke:#ffffff;
 }
 

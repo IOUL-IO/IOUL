@@ -105,3 +105,21 @@ body.non-fullscreen {
 }
 
 
+
+
+/* === GRID OVERLAY (10×20) – SVG for pixel‑crisp lines === */
+.grid-overlay{
+  position:absolute;
+  top:28.5vh;
+  left:36vw;
+  width:57.7vw;             /* 36 → 93.7 vw */
+  height:55.5vh;            /* 28.5 → 84 vh */
+  color:rgba(230,230,230,0.28); /* inherits by currentColor */
+  pointer-events:none;
+  z-index:4;
+}
+.grid-overlay .grid-svg{
+  width:100%;
+  height:100%;
+  display:block;
+}

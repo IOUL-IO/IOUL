@@ -76,8 +76,31 @@ body.non-fullscreen {
 /* content block */
 
 
-/* Mask ONLY the first vertical line (x1=x2=0) */
-.grid-svg line[x1="0"][x2="0"]{
-  stroke:#ffffff;
+/* === GRID OVERLAY (10 × 20) – FIRST ITERATION with darker lines, mask first vertical === */
+.grid-overlay{
+  position:absolute;
+  top:28.5vh;
+  left:36vw;
+  width:58vw;                /* spans 36 → 94 vw */
+  height:55.5vh;             /* spans 28.5 → 84 vh */
+  background-image:
+    linear-gradient(to right, rgba(230,230,230,0.4) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(230,230,230,0.4) 1px, transparent 1px);
+  background-size:5.8vw 2.775vh; /* 58/10 , 55.5/20 */
+  pointer-events:none;
+  z-index:4;                 /* above .line.fifth (3) & layer-four (2) */
+}
+
+/* Mask the first vertical grid line at 36vw */
+.grid-overlay::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:1px;
+  height:100%;
+  background:#ffffff;
+  pointer-events:none;
+  z-index:5;
 }
 

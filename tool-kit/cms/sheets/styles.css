@@ -75,45 +75,26 @@ body.non-fullscreen {
 
 /* content block */
 
-/* Spreadsheet-style grid */
-#cell-grid{
-  position:absolute;
-  top:28.5vh;
-  left:36vw;
-  width:58vw;   /* 94 - 36 */
-  height:55.5vh; /* 84 - 28.5 */
-  background-image:
-    repeating-linear-gradient(
-      to right,
-      rgba(230,230,230,0.47) 0,
-      rgba(230,230,230,0.47) 1px,
-      transparent 1px,
-      transparent 80px
-    ),
-    repeating-linear-gradient(
-      to bottom,
-      rgba(230,230,230,0.47) 0,
-      rgba(230,230,230,0.47) 1px,
-      transparent 1px,
-      transparent 24px
-    );
-  box-sizing:border-box;
-}
-
 /* Spreadsheet grid */
 #sheet-container{
   position:absolute;
   top:28.5vh;
   left:36vw;
-  overflow:hidden;
+  width:58vw;
+  height:55.5vh;
+  overflow:auto;
+  background:#fff;
+  box-shadow:0 0 2px rgba(0,0,0,0.1);
 }
 
 .sheet-grid{
   border-collapse:collapse;
+  width:100%;
+  height:100%;
 }
 
 .sheet-grid td{
-  width:80px;
+  width:calc(100% / 10);
   height:24px;
-  border:1px solid rgba(230,230,230,0.47);
+  border:1px solid rgba(200,200,200,0.9);
 }

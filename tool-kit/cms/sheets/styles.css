@@ -56,7 +56,7 @@ body.non-fullscreen {
   left:6.38vw;
   width:22.48vw;
   height:1px;
-  background:rgba(230,230,230,0.28);
+  background:rgba(230,230,230,0.4);
 }
 
 /* Guide lines */
@@ -76,8 +76,58 @@ body.non-fullscreen {
 /* content block */
 
 
-/* Mask ONLY the first vertical line (x1=x2=0) */
-.grid-svg line[x1="0"][x2="0"]{
-  stroke:#ffffff;
+/* === GRID OVERLAY (10 × 20) – updated: correct span 36‑93.7vw, 28.5‑84vh, thin lines identical to .custom-line === */
+.grid-overlay{
+  position:absolute;
+  top:28.5vh;
+  left:36vw;
+  width:57.7vw;               /* spans 36 → 93.7 vw */
+  height:55.5vh;              /* spans 28.5 → 84 vh */
+  background-image:
+    linear-gradient(to right, rgba(230,230,230,0.4) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(230,230,230,0.4) 1px, transparent 1px);
+  background-size:5.77vw 2.775vh; /* 57.7/10 , 55.5/20 */
+  pointer-events:none;
+  z-index:4;                  /* above .line.fifth (3) & layer-four (2) */
 }
 
+/* Mask the first vertical grid line at 36vw */
+.grid-overlay::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:1px;
+  height:100%;
+  background:#ffffff;
+  pointer-events:none;
+  z-index:5;
+}
+
+
+
+
+/* === GRID OVERLAY (10×20) – SVG for pixel‑crisp lines === */
+.grid-overlay{
+  position:absolute;
+  top:28.5vh;
+  left:36vw;
+  width:57.7vw;             /* 36 → 93.7 vw */
+  height:55.5vh;            /* 28.5 → 84 vh */
+  color:rgba(230,230,230,0.4); /* inherits by currentColor */
+  pointer-events:none;
+  z-index:4;
+}
+.grid-overlay .grid-svg{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+/* === GRID OVERLAY PATCH: ensure transparent background & explicit stroke === */
+.grid-overlay{
+  background:transparent!important;
+}
+.grid-overlay .grid-svg{
+  display:block;
+}

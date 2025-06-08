@@ -75,17 +75,21 @@ body.non-fullscreen {
 
 /* content block */
 
-/* 10x20 cell grid overlay */
-.grid-overlay {
-  position: absolute;
-  top: 28.5vh;
-  left: 36vw;
-  width: 58vw;      /* 94vw - 36vw */
-  height: 55.5vh;   /* 84vh - 28.5vh */
+/* === Grid tweaks (darker lines & hide left border) === */
+.grid-overlay{
   background-image:
-    linear-gradient(to right, rgba(230,230,230,0.28) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(230,230,230,0.28) 1px, transparent 1px);
-  background-size: 5.8vw 2.775vh; /* Column width (58/10) and row height (55.5/20) */
-  pointer-events: none;
-  z-index: 4;       /* Above .line.fifth (z-index:3) and .layer-four (z-index:2) */
+    linear-gradient(to right, rgba(230,230,230,0.6) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(230,230,230,0.6) 1px, transparent 1px);
+}
+
+.grid-overlay::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:1px;
+  height:100%;
+  background:#ffffff;  /* mask the line at the grid’s left edge (36vw) */
+  pointer-events:none;
+  z-index:5;
 }

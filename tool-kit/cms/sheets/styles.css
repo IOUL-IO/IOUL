@@ -111,3 +111,32 @@ body.non-fullscreen {
   background-repeat: repeat !important;
   z-index: 100 !important;
 }
+
+
+/* === FINAL: Consolidated grid overlay (10×20) === */
+.grid-overlay{
+  position:absolute;
+  top:28.5vh;
+  left:36vw;
+  width:57.7vw;               /* spans 36vw → 93.7vw */
+  height:55.5vh;              /* spans 28.5vh → 84vh */
+  background-image:
+    linear-gradient(to right, rgba(230,230,230,0.6) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(230,230,230,0.6) 1px, transparent 1px);
+  background-size:5.77vw 2.775vh; /* 57.7/10 , 55.5/20 */
+  pointer-events:none;
+  z-index:200;                /* safely above white mask layers */
+}
+
+/* Mask the first vertical grid line at 36 vw */
+.grid-overlay::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:1px;
+  height:100%;
+  background:#ffffff;
+  pointer-events:none;
+  z-index:201;
+}

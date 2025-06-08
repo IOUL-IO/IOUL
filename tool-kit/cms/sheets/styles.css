@@ -76,37 +76,28 @@ body.non-fullscreen {
 /* content block */
 
 
-/* === GRID OVERLAY (10 × 20) – CRISP ===
-   Uses repeating-linear-gradient to minimise sub‑pixel blur.
-   Area: 28.5 vh – 84 vh × 36 vw – 94 vw
-*/
+/* === GRID OVERLAY (SVG‑based) – pixel‑perfect === */
 .grid-overlay{
   position:fixed;
   top:28.5vh;
   left:36vw;
   width:58vw;
   height:55.5vh;
-
-  background-image:
-    repeating-linear-gradient(to right,
-      rgba(230,230,230,0.4) 0 1px,
-      transparent 1px calc(100%/10)),
-    repeating-linear-gradient(to bottom,
-      rgba(230,230,230,0.4) 0 1px,
-      transparent 1px calc(100%/20));
-  background-size:100% 100%;
   pointer-events:none;
   z-index:2147483000;
 }
 
-.grid-overlay::before{
-  content:"";
-  position:absolute;
-  top:0;
-  left:0;
-  width:1px;
+.grid-svg{
+  width:100%;
   height:100%;
-  background:#ffffff;
-  pointer-events:none;
+  stroke:rgba(230,230,230,0.4);
+  stroke-width:1;
+  vector-effect:non-scaling-stroke; /* keep 1px regardless of scale */
+  shape-rendering:crispEdges;       /* avoid anti‑alias blur */
+}
+
+/* Hide first vertical line at 36vw */
+.grid-svg line[x1="0"]{
+  stroke:#ffffff;
 }
 

@@ -93,3 +93,21 @@ body.non-fullscreen {
   pointer-events:none;
   z-index:5;
 }
+
+/* === Grid width adjustment to 93.7vw right edge === */
+.grid-overlay{
+  width:57.7vw;          /* 93.7 - 36 */
+  background-size:5.77vw 2.775vh;  /* column width 57.7/10 */
+}
+
+/* === Grid visibility fix (ensure lines show) === */
+.grid-overlay{
+  width:57.7vw !important;          /* span 36vw to 93.7vw */
+  height:55.5vh !important;
+  background-image:
+    linear-gradient(to right, rgba(230,230,230,0.8) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(230,230,230,0.8) 1px, transparent 1px) !important;
+  background-size: 5.77vw 100%, 100% 2.775vh !important; /* column / row spacing */
+  background-repeat: repeat !important;
+  z-index: 100 !important;
+}

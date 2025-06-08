@@ -76,66 +76,46 @@ body.non-fullscreen {
 /* content block */
 
 /* === Grid tweaks (darker lines & hide left border) === */
-.grid-overlay{
-  background-image:
-    linear-gradient(to right, rgba(230,230,230,0.6) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(230,230,230,0.6) 1px, transparent 1px);
-}
 
-.grid-overlay::before{
-  content:"";
-  position:absolute;
-  top:0;
-  left:0;
-  width:1px;
-  height:100%;
-  background:#ffffff;  /* mask the line at the grid’s left edge (36vw) */
-  pointer-events:none;
-  z-index:5;
-}
+
+
 
 /* === Grid width adjustment to 93.7vw right edge === */
-.grid-overlay{
-  width:57.7vw;          /* 93.7 - 36 */
-  background-size:5.77vw 2.775vh;  /* column width 57.7/10 */
-}
+
 
 /* === Grid visibility fix (ensure lines show) === */
-.grid-overlay{
-  width:57.7vw !important;          /* span 36vw to 93.7vw */
-  height:55.5vh !important;
-  background-image:
-    linear-gradient(to right, rgba(230,230,230,0.8) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(230,230,230,0.8) 1px, transparent 1px) !important;
-  background-size: 5.77vw 100%, 100% 2.775vh !important; /* column / row spacing */
-  background-repeat: repeat !important;
-  z-index: 100 !important;
-}
+
 
 
 /* === FINAL: Consolidated grid overlay (10×20) === */
-.grid-overlay{
-  position:absolute;
-  top:28.5vh;
-  left:36vw;
-  width:57.7vw;               /* spans 36vw → 93.7vw */
-  height:55.5vh;              /* spans 28.5vh → 84vh */
-  background-image:
-    linear-gradient(to right, rgba(230,230,230,0.6) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(230,230,230,0.6) 1px, transparent 1px);
-  background-size:5.77vw 2.775vh; /* 57.7/10 , 55.5/20 */
-  pointer-events:none;
-  z-index:200;                /* safely above white mask layers */
-}
+
 
 /* Mask the first vertical grid line at 36 vw */
+
+
+/* === FINAL ONE: precise 10×20 grid overlay === */
+.grid-overlay{
+  position:fixed;
+  top:28.5vh;
+  left:36vw;
+  width:57.7vw;                /* 93.7vw - 36vw */
+  height:55.5vh;               /* 84vh - 28.5vh */
+  background-image:
+    linear-gradient(to right, rgba(17,17,17,0.6) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17,17,17,0.6) 1px, transparent 1px);
+  background-size:calc(57.7vw / 10) calc(55.5vh / 20); /* cell size */
+  pointer-events:none;
+  z-index:200;
+}
+
+/* Hide first vertical line at 36vw */
 .grid-overlay::before{
   content:"";
-  position:absolute;
-  top:0;
-  left:0;
+  position:fixed;
+  top:28.5vh;
+  left:36vw;
   width:1px;
-  height:100%;
+  height:55.5vh;
   background:#ffffff;
   pointer-events:none;
   z-index:201;

@@ -84,8 +84,8 @@ body.non-fullscreen {
   width:57.7vw;                /* spans 36 → 93.7 vw */
   height:55.5vh;             /* spans 28.5 → 84 vh */
   background-image:
-    linear-gradient(to right, rgba(230,230,230,0.4) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(230,230,230,0.4) 1px, transparent 1px);
+    linear-gradient(to right, rgba(230,230,230,0.471) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(230,230,230,0.471) 1px, transparent 1px);
   background-size:5.77vw 2.775vh; /* 57.7/10 , 55.5/20 */
   pointer-events:none;
   z-index:4;                 /* above .line.fifth (3) & layer-four (2) */

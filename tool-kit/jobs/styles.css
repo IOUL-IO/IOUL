@@ -126,3 +126,10 @@ body.non-fullscreen {
 .job-line {
   z-index: 102; /* > 101 on .content-text */
 }
+
+
+/* === Z‑index fix: ensure job elements slide UNDER mask layers (added 2025‑06‑11) === */
+.job-text,
+.job-line{
+  z-index: 90 !important; /* below .layer-two (100) but above background */
+}

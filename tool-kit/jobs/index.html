@@ -30,18 +30,18 @@
 
     <div class="line util-line"></div>
 
-    <span class="custom-text" style="position:absolute; top:35.4vh; left:6.41vw;">LABOR LOg</span>
-    <span class="custom-text" style="position:absolute; top:41.6vh; left:6.41vw;">LEgAL LOg</span>
-    <span class="custom-text" style="position:absolute; top:53vh; left:6.41vw;">LEDgER</span>
-    <span class="custom-text" style="position:absolute; top:59.2vh; left:6.41vw;">LADDER</span>
+    <span class="custom-text ledger-item" style="position:absolute; top:35.4vh; left:6.41vw;">LABOR LOg</span>
+    <span class="custom-text ledger-item" style="position:absolute; top:41.6vh; left:6.41vw;">LEgAL LOg</span>
+    <span class="custom-text ledger-item" style="position:absolute; top:53vh; left:6.41vw;">LEDgER</span>
+    <span class="custom-text ledger-item" style="position:absolute; top:59.2vh; left:6.41vw;">LADDER</span>
 
-    <span class="custom-text right-flow" style="position:absolute; top:35.4vh; left:28.41vw;">0</span>
-    <span class="custom-text right-flow" style="position:absolute; top:41.6vh; left:28.41vw;">0</span>
-    <span class="custom-text right-flow" style="position:absolute; top:53vh; left:28.41vw;">0</span>
-    <span class="custom-text right-flow" style="position:absolute; top:59.2vh; left:28.41vw;">0</span>
+    <span class="custom-text right-flow ledger-item" style="position:absolute; top:35.4vh; left:28.41vw;">0</span>
+    <span class="custom-text right-flow ledger-item" style="position:absolute; top:41.6vh; left:28.41vw;">0</span>
+    <span class="custom-text right-flow ledger-item" style="position:absolute; top:53vh; left:28.41vw;">0</span>
+    <span class="custom-text right-flow ledger-item" style="position:absolute; top:59.2vh; left:28.41vw;">0</span>
 
     <!-- Divider line that used to slide with the containers -->
-    <div class="custom-line"></div>
+    <div class="custom-line ledger-item"></div>
 
 
 <!-- Item lines -->
@@ -307,6 +307,47 @@ document.addEventListener('click', ({clientX:x, clientY:y}) => {
     document.documentElement.requestFullscreen();
   }
 });
+</script>
+<!-- Invisible click areas for ledger/community slide -->
+<div id="ledger-trigger-area" style="position:fixed; left:28.86vw; top:28.5vh; width:3.57vw; height:55.5vh; z-index:200; background:rgba(0,0,0,0);"></div>
+<div id="ledger-reset-area" style="position:fixed; left:0; top:28.5vh; width:6.37vw; height:55.5vh; z-index:200; background:rgba(0,0,0,0);"></div>
+<script>
+// Ledger & Community slide logic v1
+(function(){
+    const ledgerItems = document.querySelectorAll('.ledger-item');
+    const communityContainer = document.querySelector('.community-items-container');
+    const zeroContainer = document.querySelector('.zero-items-container');
+    const triggerArea = document.getElementById('ledger-trigger-area');
+    const resetArea = document.getElementById('ledger-reset-area');
+    let slid = false;
+
+    function slideOut(){
+        ledgerItems.forEach(el => el.classList.add('slide-left-40'));
+        if(communityContainer) communityContainer.classList.add('slide-left-29');
+        if(zeroContainer) zeroContainer.classList.add('slide-left-29');
+        slid = true;
+    }
+
+    function slideBack(){
+        ledgerItems.forEach(el => el.classList.remove('slide-left-40'));
+        if(communityContainer) communityContainer.classList.remove('slide-left-29');
+        if(zeroContainer) zeroContainer.classList.remove('slide-left-29');
+        slid = false;
+    }
+
+    if(triggerArea){
+        triggerArea.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if(!slid) slideOut();
+        });
+    }
+    if(resetArea){
+        resetArea.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if(slid) slideBack();
+        });
+    }
+})();
 </script>
 </body>
 </html>

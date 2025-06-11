@@ -174,3 +174,10 @@ body.non-fullscreen {
 .slide-left-29 {
     transform: translateX(-29vw) !important;
 }
+
+
+/* === Z-index fix: ensure freelance lines slide ABOVE mask layers (added 2025‑06‑11) === */
+.freelance-line{
+  z-index: 90 !important;  /* matches job-line, clears white mask */
+}
+

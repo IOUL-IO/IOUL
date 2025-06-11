@@ -145,10 +145,10 @@ body.non-fullscreen {
 
 
 /* ---- Ledger & Community slide classes (added 2025‑06‑11 v2) ---- */
-.ledger-item {
+.job-item {
     transition: transform 0.6s ease;
 }
-.community-items-container,
+.freelance-items-container,
 .zero-items-container {
     transition: transform 0.6s ease;
 }
@@ -161,10 +161,10 @@ body.non-fullscreen {
 
 
 /* ---- Ledger & Community slide classes (added 2025‑06‑11 v3) ---- */
-.ledger-item {
+.job-item {
     transition: transform 0.6s ease;
 }
-.community-items-container,
+.freelance-items-container,
 .zero-items-container {
     transition: transform 0.6s ease;
 }

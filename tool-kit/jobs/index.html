@@ -30,18 +30,18 @@
 
     <div class="line util-line"></div>
 
-    <span class="custom-text ledger-item" style="position:absolute; top:35.4vh; left:6.41vw;">LABOR LOg</span>
-    <span class="custom-text ledger-item" style="position:absolute; top:41.6vh; left:6.41vw;">LEgAL LOg</span>
-    <span class="custom-text ledger-item" style="position:absolute; top:53vh; left:6.41vw;">LEDgER</span>
-    <span class="custom-text ledger-item" style="position:absolute; top:59.2vh; left:6.41vw;">LADDER</span>
+    <span class="custom-text job-item" style="position:absolute; top:35.4vh; left:6.41vw;">LABOR LOg</span>
+    <span class="custom-text job-item" style="position:absolute; top:41.6vh; left:6.41vw;">LEgAL LOg</span>
+    <span class="custom-text job-item" style="position:absolute; top:53vh; left:6.41vw;">LEDgER</span>
+    <span class="custom-text job-item" style="position:absolute; top:59.2vh; left:6.41vw;">LADDER</span>
 
-    <span class="custom-text right-flow ledger-item" style="position:absolute; top:35.4vh; left:28.41vw;">0</span>
-    <span class="custom-text right-flow ledger-item" style="position:absolute; top:41.6vh; left:28.41vw;">0</span>
-    <span class="custom-text right-flow ledger-item" style="position:absolute; top:53vh; left:28.41vw;">0</span>
-    <span class="custom-text right-flow ledger-item" style="position:absolute; top:59.2vh; left:28.41vw;">0</span>
+    <span class="custom-text right-flow job-item" style="position:absolute; top:35.4vh; left:28.41vw;">0</span>
+    <span class="custom-text right-flow job-item" style="position:absolute; top:41.6vh; left:28.41vw;">0</span>
+    <span class="custom-text right-flow job-item" style="position:absolute; top:53vh; left:28.41vw;">0</span>
+    <span class="custom-text right-flow job-item" style="position:absolute; top:59.2vh; left:28.41vw;">0</span>
 
     <!-- Divider line that used to slide with the containers -->
-    <div class="custom-line ledger-item"></div>
+    <div class="custom-line job-item"></div>
 
 
 <!-- Item lines -->
@@ -139,7 +139,7 @@
 
       
 <!-- === Community & Zero items (added 2025‑06‑11) === -->
-<div class="community-items-container" style="position:absolute; z-index:1;">
+<div class="freelance-items-container" style="position:absolute; z-index:1;">
   <!-- labels -->
   <span class="custom-text" style="position:absolute; top:35.4vh; left:35.41vw;">cOMMUn1T1ES</span>
   <span class="custom-text" style="position:absolute; top:41.6vh; left:35.41vw;">OUR L1BRARY</span>
@@ -314,8 +314,8 @@ document.addEventListener('click', ({clientX:x, clientY:y}) => {
 <script>
 // Ledger & Community slide logic v1
 (function(){
-    const ledgerItems = document.querySelectorAll('.ledger-item');
-    const communityContainer = document.querySelector('.community-items-container');
+    const ledgerItems = document.querySelectorAll('.job-item');
+    const communityContainer = document.querySelector('.freelance-items-container');
     const zeroContainer = document.querySelector('.zero-items-container');
     const triggerArea = document.getElementById('ledger-trigger-area');
     const resetArea = document.getElementById('ledger-reset-area');

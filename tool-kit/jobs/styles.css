@@ -153,7 +153,7 @@ body.non-fullscreen {
     transition: transform 0.6s ease;
 }
 .slide-left-40 {
-    transform: translateX(-40vw);
+    transform: translateX(-29vw);
 }
 .slide-left-29 {
     transform: translateX(-29vw);
@@ -169,7 +169,7 @@ body.non-fullscreen {
     transition: transform 0.6s ease;
 }
 .slide-left-40 {
-    transform: translateX(-40vw) !important;
+    transform: translateX(-29vw) !important;
 }
 .slide-left-29 {
     transform: translateX(-29vw) !important;

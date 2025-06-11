@@ -128,6 +128,15 @@ body.non-fullscreen {
 }
 
 
+/* === Ultra‑wide font‑size fix (exact 9px) — added 2025‑06‑11 === */
+@media screen and (min-width: 1900px){
+  .job-text,
+  .freelance-text{
+    font-size: 9px !important;  /* match other headings */
+  }
+}
+
+
 /* === Z‑index fix: ensure job elements slide UNDER mask layers (added 2025‑06‑11) === */
 .job-text,
 .job-line{

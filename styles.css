@@ -106,7 +106,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second) {
 .second {
   top: 28.5vh;
   left: 6.38vw;
-  width: 22.48vw;
+  width: 18.68vw;
 }
 
 .third {
@@ -131,6 +131,10 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second) {
   top: 84vh;
   left: 36vw;
   width: 57.8vw;
+}
+
+.line.util-line{
+  top:28.5vh; left:26.06vw; width:2.8vw; z-index:1;
 }
 
 .login-text {

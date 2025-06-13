@@ -685,9 +685,9 @@
         span.classList.add("visible");
       }, 10);
     }
-    function openOnlineAssets()   { slideDownSiblings("online-assets"); setTimeout(()=>{ addNewText("- cMS",40.1,6.4); addNewText("- LMS",44.1,6.4); addNewText("- WEB",48.1,6.4); },700); }
+    function openOnlineAssets()   { slideDownSiblings("online-assets"); setTimeout(()=>{ addNewText("- cMS",40.1,6.4); addNewText("- LMS",44.1,6.4); },700); }
     function openLinkupCenter()   { slideDownSiblings("linkup-center"); setTimeout(()=>{ addNewText("- cOM",47.2,6.4); addNewText("- JOB",51.2,6.4); addNewText("- HR",55.2,6.4); },700); }
-    function openDeliveryLine()   { slideDownSiblings("delivery-line"); setTimeout(()=>{ addNewText("- cRM",54.3,6.4); addNewText("- OPS",58.3,6.4); addNewText("- PM",62.3,6.4); },700); }
+    function openDeliveryLine()   { slideDownSiblings("delivery-line"); setTimeout(()=>{ addNewText("- cRM",54.3,6.4); addNewText("- OPS",58.3,6.4); },700); }
     function openInternalUnit()   { slideDownSiblings("internal-unit"); setTimeout(()=>{ addNewText("- 1nV",61.4,6.4); addNewText("- FMS",65.4,6.4); addNewText("- 1T",69.4,6.4); },700); }
 
     document.getElementById("online-assets").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="online-assets")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openOnlineAssets(); currentMenu="online-assets";},300);} else{ openOnlineAssets(); currentMenu="online-assets"; } } });

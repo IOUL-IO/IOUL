@@ -89,6 +89,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second) {
 .hidden {
   opacity: 0 !important;
   transition: opacity 0.5s ease-in-out;
+  pointer-events: none;
 }
 
 .line {
@@ -184,26 +185,26 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second) {
   text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
-}
+left: 6.41vw; }
 
 body.non-fullscreen .open-text {
   top: 35.17vh;
-  left: 25.57vw;
+  
 }
 
 body.non-fullscreen .help-text {
   top: 43.17vh;
-  left: 25.57vw;
+  
 }
 
 body.fullscreen .open-text {
   top: 35.17vh;
-  left: 25.57vw;
+  
 }
 
 body.fullscreen .help-text {
   top: 43.17vh;
-  left: 25.57vw;
+  
 }
 
 .open-text.visible,
@@ -371,14 +372,97 @@ body.fullscreen .help-text {
   .login-text,
   .open-text,
   .help-text,
-  .account-text,
-  .help-text-area,
-  input.typing-input,
-  .grid-number {
+  .account-text, .help-text-area {
     font-size: 9px !important;
-  }
+  
 }
 
 .login-line.visible,
 .login-line-second.visible,
 .login-text.visible {}
+
+
+/* Ensure login group suppressed during initial fade */
+body.fade-in-trigger .username,
+body.fade-in-trigger .password,
+body.fade-in-trigger .login-line,
+body.fade-in-trigger .login-line-second {
+  opacity: 0;
+}
+
+
+/* ----- Wrapper fade overrides (ensure fade not slide)  ---- */
+.account-wrapper,
+.help-wrapper {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  left: 6.41vw !important;
+  clip-path: inset(0 0 0 0) !important;
+  pointer-events: none;
+}
+.account-wrapper.active,
+.help-wrapper.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+/* Style active editable text */
+.username[contenteditable], .password[contenteditable],
+.account-text[contenteditable], .help-text-area[contenteditable] {
+  border-bottom: 1px solid #aaa;
+  outline: none;
+}
+
+
+.account-text, .help-text-area {
+  pointer-events: auto;
+  cursor: text;
+
+.account-line,
+.help-line {
+  pointer-events: none;
+}
+
+.send-link{cursor:pointer;}
+
+
+/* Ensure editable texts sit above lines */
+.account-text, .help-text-area {
+  pointer-events: auto;
+  cursor: text;
+  
+  z-index: 50;
+
+.account-line,
+.help-line {
+  pointer-events: none;
+  
+  z-index: 10;
+}
+
+
+/* fix pointer events & stacking without altering position */
+.account-text,
+.help-text-area {
+  pointer-events: auto;
+  cursor: text;
+  z-index: 50;
+}
+
+.account-line,
+.help-line {
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* expand clickable area */
+.account-text,
+.help-text-area {
+  display: inline-block; /* expanded */
+  padding-right: 4vw;
+}
+.layer-one,
+.layer-two {
+  pointer-events: none;
+}

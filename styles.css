@@ -468,19 +468,18 @@ body.fade-in-trigger .login-line-second {
 }
 
 
-
-@media (min-width: 1900px) {
-  /* Increase key label sizes on very wide screens */
-  .login-text,
-  .open-text,
-  .help-text,
-  .account-text,
-  .help-text-area,
-  .time-text,
-  .second-time-text,
-  .third-time-text,
-  .fourth-time-text {
-    font-size: 1vw !important;   /* 1% of viewport width – e.g., 19px on 1920px screen */
-  }
+/* --- global fade override --- */
+/* Force fade-only behavior for account & help wrappers on all screen sizes */
+.account-wrapper,
+.help-wrapper {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    left: 6.41vw !important;
+    clip-path: inset(0 0 0 0) !important;
+    pointer-events: none;
 }
-
+.account-wrapper.active,
+.help-wrapper.active {
+    opacity: 1;
+    pointer-events: auto;
+}

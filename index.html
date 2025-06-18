@@ -104,14 +104,29 @@ document.addEventListener('DOMContentLoaded', () => {
   })));
 
   const fadeInWrap = (wrap) => { wrap.classList.add('active'); };
-  const fadeOutWrap = (wrap) => new Promise(res=>{
-      if(!wrap.classList.contains('active')) { res(); return; }
-      const end = (e)=>{ if(e.target===wrap && e.propertyName==='opacity'){ wrap.removeEventListener('transitionend', end); res(); }};
-      wrap.addEventListener('transitionend', end);
+  
+  /* Slide the wrapper out, then resolve when the first transition on the wrapper ends.
+     Works regardless of whether the browser reports 'left' or 'clip-path'. */
+  const fadeOutWrap = (wrap) => new Promise(res => {
+      if (!wrap.classList.contains('active')) { res(); return; }
+
+      let done = false;
+      const end = (e) => {
+          if (e.target !== wrap) return;         // ignore bubbling from children
+          if (done) return;
+          done = true;
+          wrap.removeEventListener('transitionend', end);
+          res();
+      };
+      wrap.addEventListener('transitionend', end, { once: true });
+
+      /* safety net: in case transitionend never fires (e.g., user reduced‑motion),
+         resolve after the expected duration + a tiny buffer */
+      setTimeout(() => { if (!done) { wrap.removeEventListener('transitionend', end); res(); }}, 800);
+
       wrap.classList.remove('active');
   });
-
-  /* ----- initial hover logic --------------------------------------------- */
+/* ----- initial hover logic --------------------------------------------- */
   let phase = 0; // 0: waiting for first pointer -> lines fade. 1: waiting for login zone hover
   function inLoginZone(x,y){
       const vw=innerWidth, vh=innerHeight;
@@ -138,7 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ----- main sequential logic ------------------------------------------- */
   let step=0; // 0:login, 1:open/help, 2:account, 3:help
-  let animating=false;
 
   utilLine.addEventListener('click', async ()=>{
       if(step!==0) return;
@@ -162,24 +176,22 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ----- inverse tap‑back zone ------------------------------------------- */
-  document.addEventListener('click', (e)=>{
+  document.addEventListener('click', async (e)=>{
       const {clientX:x, clientY:y}=e;
       const vw=innerWidth, vh=innerHeight;
       const back = x<=vw*0.0637 && y>=vh*0.285 && y<=vh*0.84;
-      if(!back || animating) return;
+      if(!back) return;
 
       if(step===1){ // open/help -> login
           await fadeOutEls([openText, helpText]);
           fadeInEls(loginEls);
           step=0;
       }else if(step===2){ // account -> open/help
-          animating=true;
-          fadeOutWrap(\1).finally(()=>{animating=false;});
+          await fadeOutWrap(accountWrap);
           fadeInEls([openText, helpText]);
           step=1;
       }else if(step===3){ // help -> open/help
-          animating=true;
-          fadeOutWrap(\1).finally(()=>{animating=false;});
+          await fadeOutWrap(helpWrap);
           fadeInEls([openText, helpText]);
           step=1;
       }
@@ -240,22 +252,6 @@ document.addEventListener('click', (ev) => {
     toggleFullScreen();
   }
 });
-
-  /* ----- direct click on wrappers to close -------------------------------- */
-  async function closeIfWrapper(el){
-    if(step===2 && el.closest('.account-wrapper')) {
-      await fadeOutWrap(accountWrap);
-      fadeInEls([openText, helpText]);
-      step = 1;
-    } else if(step===3 && el.closest('.help-wrapper')) {
-      await fadeOutWrap(helpWrap);
-      fadeInEls([openText, helpText]);
-      step = 1;
-    }
-  }
-  accountWrap.addEventListener('click', (e)=>{ closeIfWrapper(e.target); });
-  helpWrap.addEventListener('click', (e)=>{ closeIfWrapper(e.target); });
-
 });
 </script>
 </body>

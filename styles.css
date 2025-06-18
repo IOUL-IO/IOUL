@@ -467,24 +467,43 @@ body.fade-in-trigger .login-line-second {
   pointer-events: none;
 }
 
+}
+}
+}
 
-/* --- Added 2025-06-17: enforce fade-only for Account & Help wrappers --- */
+/* --- Added 2025-06-17: GLOBAL OVERRIDE to enforce FADE ONLY on all widths --- */
 .account-wrapper,
 .help-wrapper {
-  /* lock into final position so no slide motion */
+  left: 6.41vw !important;
+  clip-path: inset(0 0 0 0) !important;
+  opacity: 0 !important;
+  transition: opacity 0.5s ease !important;
+  pointer-events: none !important;
+}
+.account-wrapper.active,
+.help-wrapper.active {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+
+/* --- Added 2025‑06‑17: GLOBAL OVERRIDE to enforce FADE‑ONLY on ALL widths --- */
+.account-wrapper,
+.help-wrapper {
+  /* parked position so nothing slides */
   left: 6.41vw !important;
   clip-path: inset(0 0 0 0) !important;
 
   /* fade-only */
-  opacity: 0;
+  opacity: 0 !important;
   transition: opacity 0.5s ease !important;
 
-  /* interactive only when visible */
-  pointer-events: none;
+  /* disable click when hidden */
+  pointer-events: none !important;
 }
 
 .account-wrapper.active,
 .help-wrapper.active {
-  opacity: 1;
-  pointer-events: auto;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }

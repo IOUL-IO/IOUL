@@ -1,0 +1,468 @@
+@font-face {
+  font-family: 'Distill Expanded';
+  src: url('font.woff2') format('woff2'),
+       url('font.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --username-line-top: 38.9vh;
+  --password-line-top: 47vh;
+  --line-gap: 2.8vh;
+}
+
+body.non-fullscreen {
+  background-color: #ffffff;
+  min-height: 100vh;
+  min-width: 100vw;
+  overflow: hidden;
+}
+
+body.non-fullscreen .username {
+  top: 35.17vh;
+}
+
+body.non-fullscreen .password {
+  top: 43.17vh;
+}
+
+body.fullscreen .username {
+  top: 35.17vh;
+}
+
+body.fullscreen .password {
+  top: 43.17vh;
+}
+
+body.fade-in-trigger {
+  background-color: #ffffff;
+}
+
+.line:not(.login-line):not(.login-line-second) {
+     opacity: 0;
+     transition: opacity 0.5s ease-in-out;
+ }
+
+body.fade-in-trigger .line:not(.login-line):not(.login-line-second) {
+     opacity: 1;
+ }
+
+.login-line,
+.login-line-second,
+.login-text {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  transform: translateX(0) translateZ(0);
+}
+
+.login-text,
+.login-line,
+.login-line-second {
+  transition: transform 0.5s ease-in-out;
+}
+
+@keyframes reverseSlide {
+  from {
+    transform: translateX(-30vw) translateZ(0);
+  }
+  to {
+    transform: translateX(0) translateZ(0);
+  }
+}
+
+.reverse-slide {
+  animation: reverseSlide 0.5s forwards;
+}
+
+.visible {
+  opacity: 1 !important;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.hidden {
+  opacity: 0 !important;
+  transition: opacity 0.5s ease-in-out;
+  pointer-events: none;
+}
+
+.line {
+  position: absolute;
+  height: 1px;
+  background-color: rgba(172, 172, 172, 0.841)
+}
+
+.original {
+  top: 12.5vh;
+  left: 6.38vw;
+  width: 22.48vw;
+}
+
+.second {
+  top: 28.5vh;
+  left: 6.38vw;
+  width: 18.68vw;
+}
+
+.third {
+  top: 84vh;
+  left: 6.38vw;
+  width: 22.48vw;
+}
+
+.fourth {
+  top: 12.5vh;
+  left: 36vw;
+  width: 57.8vw;
+}
+
+.fifth {
+  top: 28.5vh;
+  left: 36vw;
+  width: 57.8vw;
+}
+
+.sixth {
+  top: 84vh;
+  left: 36vw;
+  width: 57.8vw;
+}
+
+.line.util-line{
+  top:28.5vh; left:26.06vw; width:2.8vw; z-index:1;
+}
+
+.login-text {
+  position: absolute;
+  font-family: 'Distill Expanded', sans-serif;
+  color: #111111;
+  letter-spacing: 0.28vw;
+  font-size: 0.47rem;
+  left: 6.41vw;
+  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
+  transform: translateX(0) translateZ(0);
+}
+
+.username {
+  top: calc(var(--username-line-top) - var(--line-gap));
+}
+
+.password {
+  top: calc(var(--password-line-top) - var(--line-gap));
+}
+
+.login-line {
+  position: absolute;
+  top: var(--username-line-top);
+  left: 6.4vw;
+  width: 22.48vw;
+  height: 1px;
+  background-color: rgba(230, 230, 230, 0.28);
+}
+
+.login-line-second {
+  position: absolute;
+  top: var(--password-line-top);
+  left: 6.4vw;
+  width: 22.48vw;
+  height: 1px;
+  background-color: rgba(230, 230, 230, 0.28);
+}
+
+.open-text,
+.help-text {
+  position: absolute;
+  font-family: 'Distill Expanded', sans-serif;
+  color: #111111;
+  letter-spacing: 0.28vw;
+  font-size: 0.47rem;
+  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+left: 6.41vw; }
+
+body.non-fullscreen .open-text {
+  top: 35.17vh;
+  
+}
+
+body.non-fullscreen .help-text {
+  top: 43.17vh;
+  
+}
+
+body.fullscreen .open-text {
+  top: 35.17vh;
+  
+}
+
+body.fullscreen .help-text {
+  top: 43.17vh;
+  
+}
+
+.open-text.visible,
+.help-text.visible {
+  opacity: 0.7 !important;
+}
+
+.open-text.visible:hover,
+.help-text.visible:hover {
+  opacity: 1 !important;
+}
+
+.slide-left {
+  transform: translateX(-30vw) translateZ(0);
+  transition: transform 0.5s ease-in-out, z-index 0s 0.5s;
+  z-index: 0;
+}
+
+.layer-one {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6.37vw;
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 100;
+}
+
+.layer-two {
+  position: fixed;
+  top: 0;
+  left: 28.87vw;
+  width: calc(36vw - 28.87vw);
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 100;
+}
+
+.account-wrapper {
+  position: fixed;
+  top: 0;
+  left: 28.88vw;
+  width: 22.48vw;
+  height: 100vh;
+  clip-path: inset(0 calc(100% - 31.7%) 0 0);
+  transition: left 0.7s ease, clip-path 0.7s ease;
+  z-index: 5;
+}
+
+.account-wrapper.active {
+  left: 6.41vw;
+  clip-path: inset(0 0 0 0);
+}
+
+.account-text {
+  position: absolute;
+  left: 0;
+  font-family: 'Distill Expanded', sans-serif;
+  color: #111111;
+  letter-spacing: 0.34vw;
+  font-size: 0.46rem;
+  line-height: 1.2;
+  padding: 0.1rem 0;
+  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
+}
+
+.account-text.account-email {
+  top: 35.2vh;
+}
+
+.account-text.account-username {
+  top: 43.3vh;
+}
+
+.account-text.account-sign-password {
+  top: 51.4vh;
+}
+
+.account-text.account-repeat-password {
+  top: 59.5vh;
+}
+
+.account-line {
+  position: absolute;
+  left: 0;
+  width: 22.48vw;
+  height: 1px;
+  background-color: rgba(230, 230, 230, 0.28);
+}
+
+.account-line.account-line1 {
+  top: 38.9vh;
+}
+
+.account-line.account-line2 {
+  top: 47vh;
+}
+
+.account-line.account-line3 {
+  top: 55.1vh;
+}
+
+.account-line.account-line4 {
+  top: 63.2vh;
+}
+
+.help-wrapper {
+  position: fixed;
+  top: 0;
+  left: 28.88vw;
+  width: 22.48vw;
+  height: 100vh;
+  clip-path: inset(0 calc(100% - 31.7%) 0 0);
+  transition: left 0.7s ease, clip-path 0.7s ease;
+  z-index: 5;
+}
+
+.help-wrapper.active {
+  left: 6.41vw;
+  clip-path: inset(0);
+}
+
+.help-text-area {
+  position: absolute;
+  font-family: 'Distill Expanded', sans-serif;
+  color: #111111;
+  letter-spacing: 0.34vw;
+  font-size: 0.47rem;
+  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
+  white-space: nowrap;
+}
+
+.help-text-area.email {
+  left: 0;
+  top: 35.17vh;
+}
+
+.help-text-area.sendlink {
+  left: 15.77vw;
+  top: 35.17vh;
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+  line-height: 1.2;
+  margin-top: -0.11rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+.help-line {
+  position: absolute;
+  top: 38.9vh;
+  left: 0;
+  width: 22.48vw;
+  height: 1px;
+  background-color: rgba(230, 230, 230, 0.28);
+}
+
+@media (min-width: 1800px) {
+  .time-text,
+  .second-time-text,
+  .third-time-text,
+  .fourth-time-text {
+    font-size: 6.1px !important;
+  }
+
+  .login-text,
+  .open-text,
+  .help-text,
+  .account-text, .help-text-area {
+    font-size: 9px !important;
+  
+}
+
+.login-line.visible,
+.login-line-second.visible,
+.login-text.visible {}
+
+
+/* Ensure login group suppressed during initial fade */
+body.fade-in-trigger .username,
+body.fade-in-trigger .password,
+body.fade-in-trigger .login-line,
+body.fade-in-trigger .login-line-second {
+  opacity: 0;
+}
+
+
+/* ----- Wrapper fade overrides (ensure fade not slide)  ---- */
+.account-wrapper,
+.help-wrapper {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  left: 6.41vw !important;
+  clip-path: inset(0 0 0 0) !important;
+  pointer-events: none;
+}
+.account-wrapper.active,
+.help-wrapper.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+/* Style active editable text */
+.username[contenteditable], .password[contenteditable],
+.account-text[contenteditable], .help-text-area[contenteditable] {
+  border-bottom: 1px solid #aaa;
+  outline: none;
+}
+
+
+.account-text, .help-text-area {
+  pointer-events: auto;
+  cursor: text;
+
+.account-line,
+.help-line {
+  pointer-events: none;
+}
+
+.send-link{cursor:pointer;}
+
+
+/* Ensure editable texts sit above lines */
+.account-text, .help-text-area {
+  pointer-events: auto;
+  cursor: text;
+  
+  z-index: 50;
+
+.account-line,
+.help-line {
+  pointer-events: none;
+  
+  z-index: 10;
+}
+
+
+/* fix pointer events & stacking without altering position */
+.account-text,
+.help-text-area {
+  pointer-events: auto;
+  cursor: text;
+  z-index: 50;
+}
+
+.account-line,
+.help-line {
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* expand clickable area */
+.account-text,
+.help-text-area {
+  display: inline-block; /* expanded */
+  padding-right: 4vw;
+}
+.layer-one,
+.layer-two {
+  pointer-events: none;
+}

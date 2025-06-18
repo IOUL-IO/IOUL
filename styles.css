@@ -467,19 +467,22 @@ body.fade-in-trigger .login-line-second {
   pointer-events: none;
 }
 
-
-/* --- global fade override --- */
-/* Force fade-only behavior for account & help wrappers on all screen sizes */
+/* --- fade only wrappers override (2025-06-17) --- */
 .account-wrapper,
-.help-wrapper {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    left: 6.41vw !important;
-    clip-path: inset(0 0 0 0) !important;
-    pointer-events: none;
+.help-wrapper{
+  /* keep panels parked in place */
+  left: 6.41vw !important;
+  clip-path: inset(0) !important;
+
+  /* fade not slide */
+  opacity: 0;
+  transition: opacity 0.5s ease !important;
+
+  /* don't accept clicks while hidden */
+  pointer-events: none;
 }
 .account-wrapper.active,
-.help-wrapper.active {
-    opacity: 1;
-    pointer-events: auto;
+.help-wrapper.active{
+  opacity: 1;
+  pointer-events: auto;
 }

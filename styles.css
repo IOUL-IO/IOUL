@@ -467,16 +467,19 @@ body.fade-in-trigger .login-line-second {
   pointer-events: none;
 }
 
-/* ---- Force identical fade‑in / fade‑out on every screen size ---- */
+
+/* --- Added 2025-06-17: enforce fade-only for Account & Help wrappers --- */
 .account-wrapper,
 .help-wrapper {
-  /* keep panels parked in their final position */
+  /* lock into final position so no slide motion */
   left: 6.41vw !important;
   clip-path: inset(0 0 0 0) !important;
 
-  /* fade only */
+  /* fade-only */
   opacity: 0;
-  transition: opacity 0.5s ease-in-out !important;
+  transition: opacity 0.5s ease !important;
+
+  /* interactive only when visible */
   pointer-events: none;
 }
 
@@ -484,12 +487,4 @@ body.fade-in-trigger .login-line-second {
 .help-wrapper.active {
   opacity: 1;
   pointer-events: auto;
-}
-
-/* disable the slide properties from being animated */
-.account-wrapper,
-.help-wrapper,
-.account-wrapper.active,
-.help-wrapper.active {
-  transition-property: opacity !important;     /* no left / clip‑path transition */
 }

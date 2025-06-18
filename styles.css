@@ -466,3 +466,30 @@ body.fade-in-trigger .login-line-second {
 .layer-two {
   pointer-events: none;
 }
+
+/* ---- Force identical fade‑in / fade‑out on every screen size ---- */
+.account-wrapper,
+.help-wrapper {
+  /* keep panels parked in their final position */
+  left: 6.41vw !important;
+  clip-path: inset(0 0 0 0) !important;
+
+  /* fade only */
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out !important;
+  pointer-events: none;
+}
+
+.account-wrapper.active,
+.help-wrapper.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* disable the slide properties from being animated */
+.account-wrapper,
+.help-wrapper,
+.account-wrapper.active,
+.help-wrapper.active {
+  transition-property: opacity !important;     /* no left / clip‑path transition */
+}

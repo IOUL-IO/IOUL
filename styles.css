@@ -37,7 +37,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .login-text,
 .login-line,
 .login-line-second{
-  transition:transform .7s ease-in-out;
+  transition:transform .7s ease-in-out, opacity .5s ease-in-out;
 }
 
 /* ===== Generic Visibility Helpers ===== */
@@ -234,7 +234,7 @@ body.stage-help .help-text{
 .password,
 .login-line,
 .login-line-second{
-  transition: transform 0.7s ease-in-out !important;
+  transition: transform 0.7s ease-in-out, opacity 0.5s ease-in-out !important;
   will-change: transform;
 }
 

@@ -172,11 +172,12 @@ document.addEventListener('DOMContentLoaded', () => {
       
       if(step===1){
           /* reverse util -> login */
-          fadeOutEls([openText, helpText]).then(()=>{
-               setStage('stage-util-pre');
-               setTimeout(()=>{ setStage('stage-login'); }, 10);
-          });
-          step = 0;
+setStage('stage-login');               // slide both groups back simultaneously
+fadeInEls(loginEls);                   // fade login texts & lines in
+setTimeout(()=>{                       // after slide completes
+    fadeOutEls([openText, helpText]);  // hide util texts once parked
+}, 700);
+step = 0;
 
       }else if(step===2){         /* account -> util */
           accountWrap.classList.remove('active');

@@ -128,7 +128,41 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('touchstart', initialPointer, {passive:true});
 
   /* ===== Sequential logic ===== */
-  let step = 0; // 0: login, 1: util, 2: account, 3: help
+  let step = 0;
+  /* ===== Inactivity auto‑fade for login group ===== */
+  const loginFadeTimeout = 20000; // 20 seconds
+  let inactivityTimer;
+  let loginElsHidden = false;
+
+  function resetInactivityTimer(){
+    clearTimeout(inactivityTimer);
+    if(step !== 0) return; // only care in login state
+    inactivityTimer = setTimeout(()=>{
+      if(step === 0){
+        fadeOutEls(loginEls).then(()=>{ loginElsHidden = true; });
+      }
+    }, loginFadeTimeout);
+  }
+
+  /* monitor generic user activity to reset timer */
+  ['mousemove','mousedown','keydown','touchstart'].forEach(evt=>{
+    window.addEventListener(evt, resetInactivityTimer, {passive:true});
+  });
+
+  /* hover to bring login back when hidden */
+  window.addEventListener('pointermove', (ev)=>{
+    if(step !== 0 || !loginElsHidden) return;
+    const {clientX:x, clientY:y} = ev;
+    if(inLoginZone(x,y)){
+      fadeInEls(loginEls);
+      loginElsHidden = false;
+      resetInactivityTimer();
+    }
+  }, {passive:true});
+
+  // start the timer initially
+  resetInactivityTimer();
+ // 0: login, 1: util, 2: account, 3: help
 
   
   

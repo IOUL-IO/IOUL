@@ -171,13 +171,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       
       if(step===1){
-          /* reverse util -> login */
-setStage('stage-login');               // slide both groups back simultaneously
-fadeInEls(loginEls);                   // fade login texts & lines in
-setTimeout(()=>{                       // after slide completes
-    fadeOutEls([openText, helpText]);  // hide util texts once parked
+/* reverse util -> login */
+setStage('stage-util-pre');                // start OPEn / HELP slide‑out (no fade yet)
+setTimeout(() => {                         // after 0.7 s slide completes…
+  fadeOutEls([openText, helpText]);        // …fade OPEn / HELP away
+  body.classList.remove('stage-util-pre'); // drop pre‑stage so login rules win
+  setStage('stage-login');                 // slide login texts & lines back in
+  fadeInEls(loginEls);                     // ensure they’re visible
+  step = 0;
 }, 700);
-step = 0;
 
       }else if(step===2){         /* account -> util */
           accountWrap.classList.remove('active');

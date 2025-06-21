@@ -250,3 +250,25 @@ body.stage-util-pre .open-text,
 body.stage-util-pre .help-text{
   transform:translateX(0);
 }
+
+
+/* === Override (2025‑06‑20): Remove hover opacity change; keep OPEn / HELP at full opacity === */
+body.stage-util .open-text,
+body.stage-util .help-text,
+body.stage-account .open-text,
+body.stage-account .help-text,
+body.stage-help .open-text,
+body.stage-help .help-text{
+  opacity: 1 !important;
+}
+
+.open-text.visible:hover,
+.help-text.visible:hover,
+body.stage-util .open-text:hover,
+body.stage-util .help-text:hover,
+body.stage-account .open-text:hover,
+body.stage-account .help-text:hover,
+body.stage-help .open-text:hover,
+body.stage-help .help-text:hover{
+  opacity: 1 !important;
+}

@@ -272,3 +272,36 @@ body.stage-help .open-text:hover,
 body.stage-help .help-text:hover{
   opacity: 1 !important;
 }
+
+/* === (2025-06-20) Clip OPEn / HELP text so anything beyond 36vw is hidden === */
+body.stage-login .open-text,
+body.stage-login .help-text,
+body.stage-util-pre .open-text,
+body.stage-util-pre .help-text{
+  width: calc(36vw - 29vw); /* match the visible strip between 29vw and 36vw */
+  overflow: hidden;
+}
+
+body.stage-util .open-text,
+body.stage-util .help-text,
+body.stage-account .open-text,
+body.stage-account .help-text,
+body.stage-help .open-text,
+body.stage-help .help-text{
+  width: 22.48vw;           /* restore full width once texts are slid into view */
+  overflow: visible;
+}
+
+/* === (2025-06-20) Keep OPEn / HELP on one line === */
+body.stage-login .open-text,
+body.stage-login .help-text,
+body.stage-util-pre .open-text,
+body.stage-util-pre .help-text,
+body.stage-util .open-text,
+body.stage-util .help-text,
+body.stage-account .open-text,
+body.stage-account .help-text,
+body.stage-help .open-text,
+body.stage-help .help-text{
+  white-space: nowrap;
+}

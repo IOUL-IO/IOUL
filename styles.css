@@ -352,3 +352,57 @@ body.stage-util-pre .help-text{
   }
 }
 
+
+/* === (2025-06-24c) Hard mask: guarantee OPEn / HELP never peek past 36vw === */
+.layer-two::after{
+  content:'';
+  position:fixed;
+  top:0;
+  left:36vw;
+  width:calc(100vw - 36vw);
+  height:100vh;
+  background:#fff;
+  pointer-events:none;
+  z-index:101; /* sits above util texts */
+}
+
+/* Reset util text width & remove reveal animation so they stay intact while sliding */
+body.stage-util .open-text,
+body.stage-util-pre .open-text,
+body.stage-util .help-text,
+body.stage-util-pre .help-text{
+  width:22.48vw !important;
+  overflow:visible !important;
+  animation:none !important;
+}
+
+
+/* === (2025‑06‑24d) Refined narrow masks for OPEn / HELP only === */
+/* Remove the full‑height curtain from 24c by overriding it */
+.layer-two::after{
+  all: unset;  /* wipe previous rules */
+}
+
+/* Two slim, fixed strips exactly where the util texts travel */
+.layer-two::before,
+.layer-two::after{
+  content:'';
+  position:fixed;
+  left:36vw;                     /* starts exactly at the 36 vw edge */
+  width:calc(100vw - 36vw);      /* cover everything to the right */
+  pointer-events:none;
+  background:#fff;               /* match page background */
+  z-index:101;                   /* sit just above util texts */
+}
+
+/* Top strip — covers OPEn AccOUnT line (center ~35 vh) */
+.layer-two::before{
+  top:calc(35.17vh - 2.5vh);     /* a little above the baseline */
+  height:5vh;                    /* tall enough to mask ascenders */
+}
+
+/* Bottom strip — covers HELP REQUEST line (center ~43 vh) */
+.layer-two::after{
+  top:calc(43.17vh - 2.5vh);
+  height:5vh;
+}

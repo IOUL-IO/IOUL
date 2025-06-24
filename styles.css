@@ -323,3 +323,32 @@ body.stage-util .help-text{
     overflow: visible;
   }
 }
+
+
+/* === (2025-06-24b) Dynamic width reveal for util texts === */
+body.stage-util .open-text,
+body.stage-util .help-text{
+  /* Start in 29→36 vw gap so nothing peeks past 36vw */
+  width: calc(36vw - 29vw);
+  overflow: hidden;
+  animation: utilRevealWidth 0.7s ease forwards;
+}
+
+body.stage-util-pre .open-text,
+body.stage-util-pre .help-text{
+  /* When sliding OUT we start at full width and shrink to stay hidden */
+  width: 22.48vw;
+  overflow: hidden;
+  animation: utilRevealWidth 0.7s ease reverse forwards;
+}
+
+@keyframes utilRevealWidth{
+  0%{
+    width: calc(36vw - 29vw);
+  }
+  100%{
+    width: 22.48vw;
+    overflow: visible;
+  }
+}
+

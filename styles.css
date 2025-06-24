@@ -305,3 +305,21 @@ body.stage-help .open-text,
 body.stage-help .help-text{
   white-space: nowrap;
 }
+
+
+/* === (2025-06-24) Keep OPEn/HELP fully masked behind layer‑two until slide completes === */
+body.stage-util .open-text,
+body.stage-util .help-text{
+  /* Narrow width equals visible gap (29vw → 36vw) so nothing peeks past 36vw while sliding */
+  width: calc(36vw - 29vw);
+  overflow: hidden;
+  /* Jump to full width after the 0.7s transform finishes */
+  animation: utilExpandWidth 0s 0.7s forwards;
+}
+
+@keyframes utilExpandWidth{
+  to{
+    width: 22.48vw;
+    overflow: visible;
+  }
+}

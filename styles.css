@@ -305,3 +305,13 @@ body.stage-help .open-text,
 body.stage-help .help-text{
   white-space: nowrap;
 }
+/* ===== Fix: prevent clipping of OPEn / HELP text by matching width to slide distance ===== */
+body.stage-util .open-text,
+body.stage-util .help-text,
+body.stage-account .open-text,
+body.stage-account .help-text,
+body.stage-help .open-text,
+body.stage-help .help-text{
+  width: var(--slide-dist);
+  overflow: visible;
+}

@@ -288,7 +288,7 @@ body.stage-account .open-text,
 body.stage-account .help-text,
 body.stage-help .open-text,
 body.stage-help .help-text{
-  width: var(--slide-dist);           /* full width equals slide distance */
+  width: 22.48vw;           /* restore full width once texts are slid into view */
   overflow: visible;
 }
 

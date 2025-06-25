@@ -42,7 +42,7 @@ body.non-fullscreen {
 
 /* Increase font for ultra‑wide screens */
 @media screen and (min-width: 1900px){
-  .custom-text{ font-size:8.2px; }
+  .custom-text{ font-size:8.7px; }
 }
 
 /* Containers simply hold the text */

@@ -44,7 +44,7 @@ body.non-fullscreen {
 @media screen and (min-width: 1900px){
   .custom-text,
   .job-text,
-  .freelance-text{ font-size:9px; }
+  .freelance-text{ font-size:0.56rem; }
 }
 
 /* Containers simply hold the text */

@@ -381,25 +381,25 @@
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "community") {
-            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+            (document.querySelectorAll('.menu-items .menu-item') as NodeListOf<HTMLElement>).forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
-            document.querySelectorAll('.community-items-container *:not(.custom-line)').forEach(el => {
+            (document.querySelectorAll('.community-items-container *:not(.custom-line)') as NodeListOf<HTMLElement>).forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
-            document.querySelectorAll('.community-items-container .custom-line').forEach(el => {
+            (document.querySelectorAll('.community-items-container .custom-line') as NodeListOf<HTMLElement>).forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
                 el.style.left = el.dataset.originalLeft;
               }
             });
-            document.querySelectorAll('.zero-items-container *').forEach(el => {
+            (document.querySelectorAll('.zero-items-container *') as NodeListOf<HTMLElement>).forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
@@ -408,7 +408,7 @@
             slideState = "menu";
             return;
           } else if (slideState === "menu") {
-            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+            (document.querySelectorAll('.menu-items .menu-item') as NodeListOf<HTMLElement>).forEach(el => {
               el.style.transition = "transform 0.7s ease";
               el.style.transform = "translateX(0)";
             });
@@ -423,16 +423,16 @@
             }
             slideState = "none";
           } else if (slideState === "heading" || slideState === "account") {
-            document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
+            (document.querySelectorAll('.heading-container[data-slide-group="heading"]') as NodeListOf<HTMLElement>).forEach(box => {
               box.style.transform = \`translateX(${box.dataset.offset}vw)\`;
             });
-            document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
+            (document.querySelectorAll('.account-container[data-slide-group="account"]') as NodeListOf<HTMLElement>).forEach(box => {
               box.style.transform = \`translateX(${box.dataset.offset}vw)\`;
             });
-            document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
+            (document.querySelectorAll('.other-content > .custom-text:not(.menu-item)') as NodeListOf<HTMLElement>).forEach(el => {
               if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
             });
-            document.querySelectorAll('.other-content > .custom-line').forEach(el => {
+            (document.querySelectorAll('.other-content > .custom-line') as NodeListOf<HTMLElement>).forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
                 el.style.left = el.dataset.originalLeft;
@@ -453,22 +453,22 @@
               chatTextEl.style.transition = "opacity 0.1s ease";
               chatTextEl.style.opacity = "0";
               setTimeout(() => {
-                document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
+                (document.querySelectorAll('.other-content > .custom-text:not(.menu-item)') as NodeListOf<HTMLElement>).forEach(el => {
                   if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
                   let original = parseFloat(el.dataset.originalLeft);
                   el.style.transition = "left 0.7s ease";
                   el.style.left = (original + 49) + "vw";
                 });
-                document.querySelectorAll('.other-content > .custom-line').forEach(el => {
+                (document.querySelectorAll('.other-content > .custom-line') as NodeListOf<HTMLElement>).forEach(el => {
                   if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
                   let originalLine = parseFloat(el.dataset.originalLeft);
                   el.style.transition = "left 0.7s ease";
                   el.style.left = (originalLine + 49) + "vw";
                 });
-                document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
+                (document.querySelectorAll('.heading-container[data-slide-group="heading"]') as NodeListOf<HTMLElement>).forEach(box => {
                   box.style.transform = "translateX(0)";
                 });
-                document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
+                (document.querySelectorAll('.account-container[data-slide-group="account"]') as NodeListOf<HTMLElement>).forEach(box => {
                   box.style.transform = "translateX(0)";
                 });
               }, 110);
@@ -492,19 +492,19 @@
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "menu") {
-            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+            (document.querySelectorAll('.menu-items .menu-item') as NodeListOf<HTMLElement>).forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft - 29) + "vw";
             });
-            document.querySelectorAll('.community-items-container *').forEach(el => {
+            (document.querySelectorAll('.community-items-container *') as NodeListOf<HTMLElement>).forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft - 29) + "vw";
             });
-            document.querySelectorAll('.zero-items-container *').forEach(el => {
+            (document.querySelectorAll('.zero-items-container *') as NodeListOf<HTMLElement>).forEach(el => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
@@ -512,16 +512,16 @@
             });
             slideState = "community";
           } else if (slideState === "heading" || slideState === "account") {
-            document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
+            (document.querySelectorAll('.heading-container[data-slide-group="heading"]') as NodeListOf<HTMLElement>).forEach(box => {
               box.style.transform = \`translateX(${box.dataset.offset}vw)\`;
             });
-            document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
+            (document.querySelectorAll('.account-container[data-slide-group="account"]') as NodeListOf<HTMLElement>).forEach(box => {
               box.style.transform = \`translateX(${box.dataset.offset}vw)\`;
             });
-            document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
+            (document.querySelectorAll('.other-content > .custom-text:not(.menu-item)') as NodeListOf<HTMLElement>).forEach(el => {
               if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
             });
-            document.querySelectorAll('.other-content > .custom-line').forEach(el => {
+            (document.querySelectorAll('.other-content > .custom-line') as NodeListOf<HTMLElement>).forEach(el => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
                 el.style.left = el.dataset.originalLeft;
@@ -542,7 +542,7 @@
               chatTextEl.style.transition = "opacity 0.1s ease";
               chatTextEl.style.opacity = "0";
               setTimeout(() => {
-                document.querySelectorAll('.menu-items .menu-item').forEach(el => {
+                (document.querySelectorAll('.menu-items .menu-item') as NodeListOf<HTMLElement>).forEach(el => {
                   if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
                   el.style.transition = "transform 0.7s ease";
                   el.style.transform = "translateX(-22.59vw)";
@@ -584,7 +584,7 @@
     let mailShownOnce = false;
     scrollArea.addEventListener('mousemove', () => {
       if (!mailShownOnce) {
-        document.querySelectorAll('.mail-text, .mail-line').forEach(el => el.style.opacity = '1');
+        (document.querySelectorAll('.mail-text, .mail-line') as NodeListOf<HTMLElement>).forEach(el => el.style.opacity = '1');
         mailShownOnce = true;
       }
     });

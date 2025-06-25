@@ -223,7 +223,7 @@ body.stage-help .help-text{
   .password,
   .account-text,
   .help-text-area{
-    font-size: 0.6rem !important;
+    font-size: 0.56rem !important;
     letter-spacing: 0.36vw !important;
   }
 }

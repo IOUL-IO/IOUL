@@ -41,7 +41,7 @@ body.non-fullscreen {
 .right-flow { direction:rtl; text-align:right; white-space:nowrap; }
 
 /* Increase font for ultra‑wide screens */
-@media screen and (min-width: 1920px){
+@media screen and (min-width: 1919px){
   .custom-text{ font-size:9px; }
 }
 

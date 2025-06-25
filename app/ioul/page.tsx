@@ -424,10 +424,10 @@
             slideState = "none";
           } else if (slideState === "heading" || slideState === "account") {
             document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
-              box.style.transform = \`translateX(${box.dataset.offset}vw)\`;
+              box.style.transform = \`translateX(\${box.dataset.offset}vw)\`;
             });
             document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
-              box.style.transform = \`translateX(${box.dataset.offset}vw)\`;
+              box.style.transform = \`translateX(\${box.dataset.offset}vw)\`;
             });
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
               if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
@@ -513,10 +513,10 @@
             slideState = "community";
           } else if (slideState === "heading" || slideState === "account") {
             document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
-              box.style.transform = \`translateX(${box.dataset.offset}vw)\`;
+              box.style.transform = \`translateX(\${box.dataset.offset}vw)\`;
             });
             document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
-              box.style.transform = \`translateX(${box.dataset.offset}vw)\`;
+              box.style.transform = \`translateX(\${box.dataset.offset}vw)\`;
             });
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
               if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
@@ -779,7 +779,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     targets.forEach(el => {
       const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = \`left ${DURATION}ms ease\`;
+      el.style.transition = \`left \${DURATION}ms ease\`;
       el.style.left       = (base + DISTANCE) + 'vw';
       el.dataset.slid     = 'true';
     });
@@ -795,7 +795,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sliding = true;
     targets.forEach(el => {
       const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = \`left ${DURATION}ms ease\`;
+      el.style.transition = \`left \${DURATION}ms ease\`;
       el.style.left       = base + 'vw';
       delete el.dataset.slid;
     });
@@ -873,7 +873,7 @@ const GAP = 10;                   // horizontal shift in vw
   function move(els, offset) {
     els.forEach(el => {
       const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = \`left ${DUR}ms ease\`;
+      el.style.transition = \`left \${DUR}ms ease\`;
       el.style.left       = (base + offset) + 'vw';
     });
   }

@@ -204,7 +204,7 @@ const GAP = 10;                   // horizontal shift in vw
   function move(els, offset) {
     els.forEach(el => {
       const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = \`left ${DUR}ms ease\`;
+      el.style.transition = \`left \${DUR}ms ease\`;
       el.style.left       = (base + offset) + 'vw';
     });
   }

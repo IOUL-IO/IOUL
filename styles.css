@@ -45,7 +45,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .hidden {opacity:0 !important;transition:transform 0.7s ease-in-out, opacity .5s ease-in-out;pointer-events:none;}
 
 /* ===== Static Geometry ===== */
-.line{position:absolute;height:1px;background:rgba(172,172,172,.71)}
+.line{position:absolute;height:1px;background:rgba(172,172,172,.84)}
 .original{top:12.5vh;left:6.38vw;width:22.48vw;}
 .second  {top:28.5vh;left:6.38vw;width:18.68vw;}
 .third   {top:84vh; left:6.38vw;width:22.48vw;}

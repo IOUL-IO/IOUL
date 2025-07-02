@@ -62,7 +62,7 @@ body.non-fullscreen {
 }
 
 /* Guide lines */
-.line         { position:absolute; height:1px; background:rgba(172,172,172,0.84); }
+.line         { position:absolute; height:1px; background:rgba(172,172,172,0.77); }
 .line.original{ top:12.5vh; left:6.38vw;  width:22.48vw; }
 .line.second  { top:28.5vh; left:6.38vw;  width:18.68vw; }
 .line.third   { top:84vh;   left:6.38vw;  width:22.48vw; }

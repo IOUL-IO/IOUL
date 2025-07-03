@@ -1,6 +1,10 @@
-/* ===== IOUL global overrides (updated 2025‑07‑03) =====
-   We keep the site visible immediately; absolutely NOTHING
-   that touches .layer-* or .line is left here so the legacy
-   CSS governs stacking order and pointer‑events.
+/* ===== IOUL global overrides (final July 3 2025) =====
+   1. Skip the original fade‑in so pages render instantly.
+   2. Give guideline lines a stable stacking layer (z‑index:1).
+   3. We TOUCH NOTHING on .layer-*, so the original legacy
+      styles keep their z‑indexes and pointer‑events.
 */
 .page-content { opacity: 1 !important; }
+
+/* Keep the guide lines above normal content but below layer‑four (z‑index:2) */
+.line { z-index: 1 !important; }

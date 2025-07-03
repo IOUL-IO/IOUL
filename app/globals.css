@@ -1,6 +1,0 @@
-/* original styles copied into public folders */
-/* Force guideline lines & mask layers to show across pages */
-.line{opacity:1 !important;}
-.layer-one,.layer-two,.layer-three,.layer-four,.layer-five,.layer-six{
-  opacity:1 !important; z-index:0 !important;
-}

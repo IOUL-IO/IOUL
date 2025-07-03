@@ -1,4 +1,23 @@
-/* ----- IOUL override updated 2025-07-03 -----
-   Ensure legacy pages display immediately without delay
------------------------------------------------------- */
-.page-content{opacity:1 !important;}
+/* ===== Legacy IOUL styles =====
+   Imported so every page has its original CSS
+   -------------------------------------------------- */
+@import "/IOUL-login/styles.css";
+
+/* ----- Behaviour overrides added 2025‑07‑03 -----
+   1. Skip the old fade‑in: show UI immediately
+   2. Ensure mask layers do not intercept clicks
+-------------------------------------------------- */
+body.fade-in-trigger,
+.page-content{
+  opacity:1 !important;
+}
+
+.layer-one,
+.layer-two,
+.layer-three,
+.layer-four,
+.layer-five,
+.layer-six{
+  /* pass clicks through to underlying interactive elements */
+  pointer-events:none;
+}

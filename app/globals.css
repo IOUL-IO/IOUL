@@ -1,0 +1,18 @@
+/* original styles copied into public folders */
+
+/* --- Legacy fix applied by ChatGPT on 2025‑07‑03 ---
+   Make legacy pages visible immediately and hide overlay masks
+---------------------------------------------------------------- */
+.page-content {
+  opacity: 1 !important;
+}
+
+.layer-one,
+.layer-two,
+.layer-three,
+.layer-four,
+.layer-five,
+.layer-six {
+  display: none !important;
+}
+/* -------------------------------------------------------------- */

@@ -1,11 +1,4 @@
-/* original styles copied into public folders */
-/* ----- IOUL override updated July 3, 2025 -----
-   Ensure legacy pages display immediately without disrupting stacking order
--------------------------------------------------------------- */
-.page-content{
-  opacity:1 !important;
-}
-
-/* All layer and line stacking is now controlled by the legacy CSS files themselves.
-   No z‑index or pointer‑events overrides here so that layers 1‑6 and guideline
-   lines retain their intended order and slide smoothly together. */
+/* ----- IOUL override updated 2025-07-03 -----
+   Ensure legacy pages display immediately without delay
+------------------------------------------------------ */
+.page-content{opacity:1 !important;}

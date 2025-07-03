@@ -1,21 +1,6 @@
-/* original styles copied into public folders */
-/* ----- IOUL override injected by ChatGPT July 3, 2025 -----
-   Ensure legacy pages display immediately with guidelines & layers
--------------------------------------------------------------- */
-.page-content{opacity:1 !important;}
-
-.layer-one,
-.layer-two,
-.layer-three,
-.layer-four,
-.layer-five,
-.layer-six{
-  opacity:1 !important;
-  pointer-events:none !important;
-  z-index:0 !important;
-}
-
-.line{
-  z-index:1 !important;
-  opacity:1 !important;
-}
+/* ===== IOUL global overrides (updated 2025‑07‑03) =====
+   We keep the site visible immediately; absolutely NOTHING
+   that touches .layer-* or .line is left here so the legacy
+   CSS governs stacking order and pointer‑events.
+*/
+.page-content { opacity: 1 !important; }

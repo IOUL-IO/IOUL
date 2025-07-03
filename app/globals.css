@@ -1,9 +1,7 @@
-/* ----- IOUL global overrides (July 3, 2025) -----
-   These tweaks preserve the original look while removing unwanted delays
------------------------------------------------------------------------ */
-
-/* Skip the initial fade-in triggered by legacy JS; pages display immediately */
-.page-content { opacity: 1 !important; }
-
-/* Preserve pointer-events behaviour on mask layers (already set in legacy CSS) */
-/* No z-index overrides here – we let the original styles control stacking order */
+/* ===== IOUL global overrides (updated 2025‑07‑03) =====
+   Keep original legacy stacking order – no z‑index overrides!
+   We skip the initial fade-in so the page shows instantly.
+*/
+.page-content {
+  opacity: 1 !important;
+}

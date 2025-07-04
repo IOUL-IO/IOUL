@@ -5,32 +5,6 @@
     export default function Page() {
       useEffect(() => {
         // TODO: any JS init from legacy project can be ported here
-      // Sliding stage logic injected 2025‑07‑04
-      const EDGE_RIGHT_MIN = 94, EDGE_RIGHT_MAX = 100;
-      const EDGE_LEFT_MIN  = 32.43, EDGE_LEFT_MAX = 36;
-      const DIST = 60; const GAP = 10;
-      let stage = 0;
-      const grp1 = Array.from(document.querySelectorAll('.item_text, .item-text, .item-line'));
-      const grp2 = Array.from(document.querySelectorAll('.center_text, .center-text, .center-line'));
-      const capture = (els)=>els.forEach(el=>{ if(!el.dataset.base) el.dataset.base=parseFloat(getComputedStyle(el).left)/(window.innerWidth/100); });
-      capture(grp1); capture(grp2);
-      const vw = v=>v+'vw';
-      const apply = () => {
-        grp1.forEach(el=>{ const b=parseFloat(el.dataset.base); el.style.left= stage===0?vw(b): stage===1?vw(b-DIST):vw(b-DIST-GAP); });
-        grp2.forEach(el=>{ const b=parseFloat(el.dataset.base); el.style.left= stage===2?vw(b-DIST):vw(b); });
-      };
-      apply();
-      const handler = (e) => {
-        const x = e.clientX/(window.innerWidth/100);
-        if(x>=EDGE_RIGHT_MIN && x<=EDGE_RIGHT_MAX) {
-          stage = Math.min(2, stage+1); apply();
-        } else if(x>=EDGE_LEFT_MIN && x<=EDGE_LEFT_MAX) {
-          stage = Math.max(0, stage-1); apply();
-        }
-      };
-      document.addEventListener('click', handler);
-      return () => document.removeEventListener('click', handler);
-
       }, []);
       return (
         <div dangerouslySetInnerHTML={ { __html: `<p style="display:none" lang="en">This page is already in English. No translation is needed.</p>

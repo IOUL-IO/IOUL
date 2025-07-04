@@ -1,4 +1,3 @@
-html, body{ overflow:hidden !important; }
 /* original styles copied into public folders */
 /* ----- IOUL global layering fix July 3, 2025 -----
    Ensures legacy pages render with proper stacking order and selectable text
@@ -29,8 +28,6 @@ html, body{ overflow:hidden !important; }
   user-select:text !important;
   z-index:101 !important; /* above most masks & lines */
 }
-/* sliding text layering fix 2025-07-04 */
-.item-text, .center-text, .freelance-text, .job-text,
-.item-line, .center-line, .freelance-line, .job-line{
-  z-index:3 !important;
+html, body {
+  overflow: hidden;
 }

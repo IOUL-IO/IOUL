@@ -28,25 +28,3 @@
   user-select:text !important;
   z-index:101 !important; /* above most masks & lines */
 }
-
-/* ---- 2025‑07‑04 patch: hide viewport scrollbars and elevate sliding texts ---- */
-html, body{
-  overflow:hidden;    /* prevent inadvertent scrollbars */
-}
-
-/* Ensure upper‑half sliding texts + util line stay above mask layers */
-.item-text,
-.center-text,
-.freelance-text,
-.job-text{
-  z-index:101 !important;
-  user-select:text !important;
-}
-
-.util-line{
-  z-index:101 !important;
-  pointer-events:auto !important;
-  cursor:pointer;
-}
-
-.hidden { display:none !important; }

@@ -64,3 +64,57 @@ html,body{
   z-index:1 !important;
   opacity:1 !important;
 }
+
+
+/* ----- Z-index adjustments July 4 2025 per user specs ----- */
+
+/* Ascending layers: topmost layer-one to layer-six lowest */
+.layer-one { z-index: 60 !important; }
+.layer-two { z-index: 50 !important; }
+.layer-three { z-index: 40 !important; }
+.layer-four { z-index: 30 !important; }
+.layer-five { z-index: 20 !important; }
+.layer-six { z-index: 10 !important; }
+
+/* IOUL page groups */
+.menu-items,
+.community-items-container,
+.zero-items-container,
+.chat-text,
+.account-container,
+.heading-container,
+.custom-line.menu-items,
+.custom-line.community-items,
+.custom-line.zero-items,
+.custom-line.account-container,
+.custom-line.heading-container {
+    z-index: 25 !important; /* under layers 1,2,4 */
+}
+
+.center-text,
+.center-line,
+.items-group,
+.items-container {
+    z-index: 35 !important; /* under layers 2,3 */
+}
+
+.account-text,
+.account-line {
+    z-index: 45 !important; /* under layer 2 */
+}
+
+/* Jobs page groups */
+.freelance-text,
+.freelance-line,
+.job-text,
+.job-line {
+    z-index: 35 !important; /* under layers 1,2,3 */
+}
+
+.freelance-items-container {
+    z-index: 25 !important; /* under layers 2,4 */
+}
+
+.custom-text.job-item {
+    z-index: 55 !important; /* under layer 1 */
+}

@@ -7,34 +7,7 @@
         // TODO: any JS init from legacy project can be ported here
       }, []);
       return (
-        <div dangerouslySetInnerHTML={ { __html: `
-<style>
-/* Page-specific z-index override for ioul page – July 4 2025 */
-.menu-item,
-.community-items-container *,
-.zero-items-container *,
-.chat-text,
-.account-text,
-.heading-container,
-.custom-line{
-  z-index:-1 !important;
-}
-
-/* Center texts and lines sit slightly below to slide under layer 2 & 3 only */
-.center-text,
-.center-line,
-.item-text,
-.item-line{
-  z-index:-2 !important;
-}
-
-/* Account texts and line under layer 2 only */
-.account-text,
-.account-line{
-  z-index:-1 !important;
-}
-</style>
-<p style="display:none" lang="en">This page is already in English. No translation is needed.</p>
+        <div dangerouslySetInnerHTML={ { __html: `<p style="display:none" lang="en">This page is already in English. No translation is needed.</p>
 
   <div class="layer-one"></div>
   <div class="layer-two"></div>

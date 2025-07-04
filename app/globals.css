@@ -28,3 +28,13 @@
   user-select:text !important;
   z-index:101 !important; /* above most masks & lines */
 }
+
+ /* ---- 2025‑07‑04c Scroll & Layering fix ---- */
+ html, body { overflow:hidden !important; }
+
+ .item-text, .center-text, .freelance-text, .job-text, .account-text,
+ .item-line, .center-line, .freelance-line, .job-line, .account-line {
+   z-index:5 !important;
+ }
+
+ 

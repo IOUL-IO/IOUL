@@ -835,7 +835,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
-  const DIST    = 60;
+  const DIST    = 64;
 const GAP = 10;                   // horizontal shift in vw
   const DUR     = 600;                  // transition duration in ms
   const STAGGER = 0;                  // delay between outgoing and incoming groups in ms

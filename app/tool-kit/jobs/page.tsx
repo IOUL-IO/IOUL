@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const DIST    = 60;
 const GAP = 10;                   // horizontal shift in vw
   const DUR     = 600;                  // transition duration in ms
-  const STAGGER = 200;                  // delay between outgoing and incoming groups in ms
+  const STAGGER = 0;                  // delay between outgoing and incoming groups in ms
 
   // Helper unit conversions
   const vw = () => window.innerWidth / 100;

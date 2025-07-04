@@ -1,54 +1,10 @@
-/* ----- IOUL layering & overflow fix – July 3 2025 ----- */
-
-/* Hide accidental scroll bars while still allowing scripted translation */
-html,body{
-  overflow:hidden !important;
-}
-
-/* Always show key text groups above the white mask columns (z‑index 2) */
-.item-text,
-.center-text,
-.account-text,
-.freelance-text,
-.job-text,
-.community-text,
-.zero-text{
-  z-index:3 !important;
-  user-select:text !important;
-}
-
-/* Keep masks visible but non‑interactive */
-.layer-one,
-.layer-two,
-.layer-three,
-.layer-four,
-.layer-five,
-.layer-six{
-  pointer-events:none !important;
-  opacity:1 !important;
-  z-index:2 !important;
-}
-
-/* Guidelines should sit on top of masks but below menu items (which get raised on hover) */
-.line{
-  z-index:4 !important;
-  opacity:1 !important;
-}
-
-/* Custom & content text sit highest so they’re never covered */
-.custom-text,
-.content-text{
-  z-index:5 !important;
-  user-select:text !important;
-}
-
-
 /* original styles copied into public folders */
-/* ----- IOUL override injected by ChatGPT July 3, 2025 -----
-   Ensure legacy pages display immediately with guidelines & layers
+/* ----- IOUL global layering fix July 3, 2025 -----
+   Ensures legacy pages render with proper stacking order and selectable text
 -------------------------------------------------------------- */
 .page-content{opacity:1 !important;}
 
+/* White mask columns — keep visible & non‑interactive */
 .layer-one,
 .layer-two,
 .layer-three,
@@ -56,11 +12,42 @@ html,body{
 .layer-five,
 .layer-six{
   opacity:1 !important;
-  pointer-events:none !important;
-  z-index:0 !important;
+  pointer-events:none !important; /* make sure masks never block clicks */
+  /* no global z‑index override to let per‑page CSS control stacking */
 }
 
+/* Guideline lines */
 .line{
-  z-index:1 !important;
-  opacity:1 !important;
+  opacity:1 !important; /* ensure lines visible */
+  /* allow per‑page z‑index to take precedence */
 }
+
+/* All visible text & UI above masks and selectable */
+.custom-text,
+.content-text{
+  user-select:text !important;
+  z-index:101 !important; /* above most masks & lines */
+}
+/* ----- Added July 4, 2025 to ensure sliders visible ----- */
+html, body{
+  overflow:hidden !important;
+  overscroll-behavior:none;
+}
+.item-text,
+.item-line,
+.center-text,
+.center-line,
+.freelance-text,
+.freelance-line,
+.job-text,
+.job-line,
+.community-items-container span,
+.zero-items-container span,
+.mail-text,
+.account-text{
+  z-index:101 !important;
+}
+.line.util-line{
+  z-index:101 !important;
+}
+/* -------------------------------------------------------- */

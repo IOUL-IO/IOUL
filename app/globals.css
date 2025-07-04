@@ -1,8 +1,0 @@
-/* ----- IOUL layering & overflow fix – July 3 2025 ----- */
-
-/* Hide accidental scroll bars while still allowing scripted translation */
-html,body{
-  overflow:hidden !important;
-}
-
-/* removed z-index overrides 2025-07-04 */

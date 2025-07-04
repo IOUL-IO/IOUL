@@ -535,3 +535,18 @@ html, body {
   position: absolute;
   z-index: 9999 !important; /* bring to front */
 }
+
+
+/* — ChatGPT patch 2025‑07‑04B — */
+html,body{overflow:hidden !important;}
+
+.item-text,.item-line,
+.center-text,.center-line,
+.account-text,.account-line,
+.freelance-text,.freelance-line,
+.job-text,.job-line{
+  position:absolute;
+  z-index:2147483647 !important;  /* Maximally above everything */
+  visibility:visible !important;
+  opacity:1 !important;
+}

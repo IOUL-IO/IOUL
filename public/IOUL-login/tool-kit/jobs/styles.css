@@ -189,34 +189,3 @@ body.non-fullscreen {
   z-index: 90 !important; /* keep lines visible throughout the slide */
 }
 
-
-/*--- ChatGPT patch 2025-07-04 ---*/
-
-html, body {
-  overflow: hidden !important; /* remove scrollbars */
-}
-
-/* Ensure upper-half sliding texts and lines sit above overlay layers */
-.item-text, .item-line,
-.center-text, .center-line,
-.account-text, .account-line,
-.freelance-text, .freelance-line,
-.job-text, .job-line {
-  position: absolute;
-  z-index: 9999 !important; /* bring to front */
-}
-
-
-/* — ChatGPT patch 2025‑07‑04B — */
-html,body{overflow:hidden !important;}
-
-.item-text,.item-line,
-.center-text,.center-line,
-.account-text,.account-line,
-.freelance-text,.freelance-line,
-.job-text,.job-line{
-  position:absolute;
-  z-index:2147483647 !important;  /* Maximally above everything */
-  visibility:visible !important;
-  opacity:1 !important;
-}

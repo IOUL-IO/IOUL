@@ -76,6 +76,7 @@ body.non-fullscreen {
 }
 
 /* content block */
+.content-text, .content-line { z-index: 101; }
 
 /* ==== Item & Center sliding styles imported ==== */
 .job-text {
@@ -188,20 +189,3 @@ body.non-fullscreen {
   z-index: 90 !important; /* keep lines visible throughout the slide */
 }
 
-
-/* ---------- definitive layer map for /tool-kit/jobs (2025-07-05) ---------- */
-/* Mask columns top out at z-index: 100 — everything below is safe */
-.freelance-text,
-.freelance-line,
-.job-text,
-.job-line{
-  z-index:90;
-}
-
-.freelance-items-container{
-  z-index:80;
-}
-
-.jobs-item .custom-text{
-  z-index:70;
-}

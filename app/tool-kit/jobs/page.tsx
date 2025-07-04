@@ -8,6 +8,27 @@
       }, []);
       return (
         <div dangerouslySetInnerHTML={ { __html: `
+<style>
+/* Page-specific z-index override for jobs page – July 4 2025 */
+.job-item,
+.job-line,
+.freelance-text,
+.freelance-line{
+  z-index:-1 !important;
+}
+
+/* Freelance items container sits beneath layer 2 & 4 */
+.freelance-items-container,
+.freelance-items-container *{
+  z-index:-2 !important;
+}
+
+/* Ensure right-flow numbers associated with job-item follow same stacking */
+.job-item.right-flow{
+  z-index:-1 !important;
+}
+</style>
+
 
   <!-- Fixed white mask layers -->
   <div class="layer-one"></div>

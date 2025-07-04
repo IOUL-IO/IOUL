@@ -1,66 +1,77 @@
-/* ----- IOUL layering & overflow fix – July 3 2025 ----- */
+/* === IOUL master layering + scrollbar suppression – v3 (Jul 3 2025) ===
+   Designed after live‑inspection of “/ioul” & “/tool-kit/jobs”.
 
-/* Hide accidental scroll bars while still allowing scripted translation */
-html,body{
-  overflow:hidden !important;
+   Changes from v2:
+   • Masks promoted to z‑index: 90 (create their own stacking context via translateZ(0))
+     — this guarantees they sit on top of *any* transformed slider container.
+   • Slider groups demoted to 50 so they disappear cleanly behind the masks.
+   • Guideline .line bumped to 95 so it remains visible over the masks.
+   • Util‑line bumped to 96 so it stays clickable.
+   • Mail / calendar overlays set to 97 and given position:fixed so they persist
+     until toggled off (no accidental blur).
+   • Scrollbars fully hidden without disabling programmatic scroll/drag.
+*/
+
+html, body {
+  overflow: auto !important;           /* keep scroll JS alive   */
+  overscroll-behavior: none;
 }
 
-/* Always show key text groups above the white mask columns (z‑index 2) */
+/* Hide bars cross‑browser */
+body::-webkit-scrollbar        { width:0; height:0; }
+body::-webkit-scrollbar-track  { background:transparent; }
+body::-webkit-scrollbar-thumb  { background:transparent; }
+body                            { scrollbar-width:none;     }
+
+/* ========== Stack order ========== */
+
+/* 90 — white masks */
+.layer-one,
+.layer-two,
+.layer-three,
+.layer-four,
+.layer-five,
+.layer-six {
+  z-index: 90 !important;
+  pointer-events: none !important;
+  transform: translateZ(0);          /* force its own context   */
+}
+
+/* 95 — guideline lines */
+.line { z-index: 95 !important; }
+
+/* 96 — util toggle */
+.util-line { z-index: 96 !important; }
+
+/* 97 — mail & calendar overlays */
+.mail-overlay,
+.calendar-overlay {
+  z-index: 97 !important;
+  position: fixed !important;
+  pointer-events: auto !important;
+}
+
+/* 98 — top selectable titles that must always show */
+.custom-text,
+.content-text {
+  z-index: 98 !important;
+  user-select: text !important;
+}
+
+/* 50 — slider‑driven groups that should hide under masks */
 .item-text,
 .center-text,
 .account-text,
 .freelance-text,
 .job-text,
 .community-text,
-.zero-text{
-  z-index:3 !important;
-  user-select:text !important;
-}
-
-/* Keep masks visible but non‑interactive */
-.layer-one,
-.layer-two,
-.layer-three,
-.layer-four,
-.layer-five,
-.layer-six{
-  pointer-events:none !important;
-  opacity:1 !important;
-  z-index:2 !important;
-}
-
-/* Guidelines should sit on top of masks but below menu items (which get raised on hover) */
-.line{
-  z-index:4 !important;
-  opacity:1 !important;
-}
-
-/* Custom & content text sit highest so they’re never covered */
-.custom-text,
-.content-text{
-  z-index:5 !important;
-  user-select:text !important;
-}
-
-
-/* original styles copied into public folders */
-/* ----- IOUL override injected by ChatGPT July 3, 2025 -----
-   Ensure legacy pages display immediately with guidelines & layers
--------------------------------------------------------------- */
-.page-content{opacity:1 !important;}
-
-.layer-one,
-.layer-two,
-.layer-three,
-.layer-four,
-.layer-five,
-.layer-six{
-  opacity:1 !important;
-  pointer-events:none !important;
-  z-index:0 !important;
-}
-
-.line{
-  z-index:1 !important;
-  opacity:1 !important;
+.zero-text,
+.item-line,
+.center-line,
+.account-line,
+.freelance-line,
+.job-line,
+.community-line,
+.zero-line {
+  z-index: 50 !important;
 }

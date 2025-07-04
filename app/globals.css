@@ -1,77 +1,45 @@
-/* === IOUL master layering + scrollbar suppression – v3 (Jul 3 2025) ===
-   Designed after live‑inspection of “/ioul” & “/tool-kit/jobs”.
-
-   Changes from v2:
-   • Masks promoted to z‑index: 90 (create their own stacking context via translateZ(0))
-     — this guarantees they sit on top of *any* transformed slider container.
-   • Slider groups demoted to 50 so they disappear cleanly behind the masks.
-   • Guideline .line bumped to 95 so it remains visible over the masks.
-   • Util‑line bumped to 96 so it stays clickable.
-   • Mail / calendar overlays set to 97 and given position:fixed so they persist
-     until toggled off (no accidental blur).
-   • Scrollbars fully hidden without disabling programmatic scroll/drag.
+/* === IOUL baseline layer fix (original working version) — revert ===
+   This rolls back to the first patch you confirmed looked “very good”,
+   *without* any of the z‑index or transform tweaks that caused the regressions.
+   It also hides scroll‑bars *visually* while keeping the page fully scrollable.
 */
 
-html, body {
-  overflow: auto !important;           /* keep scroll JS alive   */
-  overscroll-behavior: none;
-}
+/* 1 — visual scrollbar suppression */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar          { display:none; }
+html, body                        { -ms-overflow-style:none; scrollbar-width:none; }
 
-/* Hide bars cross‑browser */
-body::-webkit-scrollbar        { width:0; height:0; }
-body::-webkit-scrollbar-track  { background:transparent; }
-body::-webkit-scrollbar-thumb  { background:transparent; }
-body                            { scrollbar-width:none;     }
+/* 2 — keep default overflow so JS animations based on scroll still work */
+html, body                        { overflow:auto; overscroll-behavior:none; }
 
-/* ========== Stack order ========== */
-
-/* 90 — white masks */
+/* 3 — column masks: revert to z-index:0 (they sit *under* guidelines, *over* slider groups) */
 .layer-one,
 .layer-two,
 .layer-three,
 .layer-four,
 .layer-five,
 .layer-six {
-  z-index: 90 !important;
-  pointer-events: none !important;
-  transform: translateZ(0);          /* force its own context   */
+  z-index: 0 !important;
+  pointer-events:none !important;
 }
 
-/* 95 — guideline lines */
-.line { z-index: 95 !important; }
-
-/* 96 — util toggle */
-.util-line { z-index: 96 !important; }
-
-/* 97 — mail & calendar overlays */
-.mail-overlay,
-.calendar-overlay {
-  z-index: 97 !important;
-  position: fixed !important;
-  pointer-events: auto !important;
+/* 4 — guidelines regain control of their own stacking */
+.line {
+  /* Remove any forced z-index (falls back to page‑specific settings) */
+  z-index: auto !important;
 }
 
-/* 98 — top selectable titles that must always show */
+/* 5 — selectable headings stay on top */
 .custom-text,
 .content-text {
-  z-index: 98 !important;
-  user-select: text !important;
+  z-index: 101 !important;
+  user-select:text !important;
 }
 
-/* 50 — slider‑driven groups that should hide under masks */
-.item-text,
-.center-text,
-.account-text,
-.freelance-text,
-.job-text,
-.community-text,
-.zero-text,
-.item-line,
-.center-line,
-.account-line,
-.freelance-line,
-.job-line,
-.community-line,
-.zero-line {
-  z-index: 50 !important;
+/* 6 — mail / calendar overlays persist until user toggles again */
+.mail-overlay,
+.calendar-overlay {
+  position: fixed !important;
+  z-index: 102 !important;
+  pointer-events:auto !important;
 }

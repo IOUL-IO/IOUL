@@ -28,11 +28,3 @@
   user-select:text !important;
   z-index:101 !important; /* above most masks & lines */
 }
-
-/* stacking fixes 2025-07-04 */
-body { overflow:hidden; }
-
-.item-text, .center-text, .account-text, .freelance-text, .job-text,
-.item-line, .center-line, .account-line, .freelance-line, .job-line {
-    z-index: 101 !important;
-}

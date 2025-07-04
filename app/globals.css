@@ -28,10 +28,3 @@
   user-select:text !important;
   z-index:101 !important; /* above most masks & lines */
 }
-
-/* ----- Global overflow patch 2025-07-04 ----- */
-html, body{
-  overflow:hidden !important;
-  overscroll-behavior:none;
-}
-

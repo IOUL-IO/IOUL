@@ -853,14 +853,8 @@ const GAP = 10;                   // horizontal shift in vw
   // Cache base positions
   [...itemEls, ...centerEls].forEach(el => {
     if (!el.dataset.baseLeftVw) {
-      const leftRaw = getComputedStyle(el).left || '0';
-let baseVw;
-if (leftRaw.includes('vw')) {
-  baseVw = parseFloat(leftRaw);        // already in vw units
-} else {
-  baseVw = toVw(parseFloat(leftRaw));  // convert px → vw
-}
-el.dataset.baseLeftVw = baseVw;
+      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      el.dataset.baseLeftVw = toVw(leftPx);
     }
   });
 

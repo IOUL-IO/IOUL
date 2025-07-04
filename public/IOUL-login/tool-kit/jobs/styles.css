@@ -43,7 +43,8 @@ body.non-fullscreen {
 /* Increase font for ultra‑wide screens */
 @media screen and (min-width: 1900px){
   .custom-text,
-  
+  .job-text,
+  .freelance-text{ font-size:9px; }
 }
 
 /* Containers simply hold the text */
@@ -75,7 +76,6 @@ body.non-fullscreen {
 }
 
 /* content block */
-.content-text, .content-line { z-index: 101; }
 
 /* ==== Item & Center sliding styles imported ==== */
 .job-text {
@@ -189,29 +189,19 @@ body.non-fullscreen {
 }
 
 
-
-
-
-.item-text, .center-text, .freelance-text, .job-text {
-  
-}
-
-
-
-/* ---------- definitive layer map for /tool-kit/jobs (2025-07-04) ---------- */
-/* Mask columns top out at z-index: 100  —  everything below is safe */
+/* ---------- definitive layer map for /tool-kit/jobs (2025-07-05) ---------- */
+/* Mask columns top out at z-index: 100 — everything below is safe */
 .freelance-text,
 .freelance-line,
 .job-text,
-.job-line {
-  z-index: 90; /* under layers 1-3 */
+.job-line{
+  z-index:90;
 }
 
-.freelance-items-container {
-  z-index: 80; /* under layers 2 & 4 */
+.freelance-items-container{
+  z-index:80;
 }
 
-/* job “custom-text” overlays that must be only under layer-1 mask */
-.jobs-item .custom-text {
-  z-index: 70;
+.jobs-item .custom-text{
+  z-index:70;
 }

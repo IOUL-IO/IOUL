@@ -520,12 +520,3 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
-
-/* ----- Stack-visibility patch 2025-07-04 ----- */
-.item-text, .item-line, .center-text, .center-line, .freelance-text, .freelance-line, .job-text, .job-line {
-  z-index:101 !important;
-}
-.item-text, .center-text, .freelance-text, .job-text {
-  opacity:1 !important;
-}
-

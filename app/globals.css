@@ -28,3 +28,20 @@
   user-select:text !important;
   z-index:101 !important; /* above most masks & lines */
 }
+
+/* === Patch A – hide scrollbars & force upper slider texts visible (Jul 3 2025) === */
+
+/* Hide scrollbars visually while retaining scroll capability */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0; height: 0;
+}
+html { scrollbar-width:none; }
+
+/* Ensure all slider-driven text/line groups are visible */
+.item-text,.center-text,.account-text,.freelance-text,.job-text,
+.community-text,.zero-text,
+.item-line,.center-line,.account-line,.freelance-line,.job-line,
+.community-line,.zero-line{
+  opacity:1 !important;
+}

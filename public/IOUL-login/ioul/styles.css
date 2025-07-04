@@ -520,21 +520,3 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
-
-/* Added by ChatGPT on 2025-07-04 -- hide scrollbars & ensure sliding texts visible */
-html { overflow: hidden; }
-
-.item-text,
-.center-text,
-.account-text,
-.account-line {
-    z-index: 5 !important;
-}
-
-
-
-.freelance-text,
-.job-text {
-    z-index: 5 !important;
-}
-

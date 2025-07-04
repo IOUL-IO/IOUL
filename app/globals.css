@@ -1,3 +1,4 @@
+html, body { overflow: hidden; }
 /* original styles copied into public folders */
 /* ----- IOUL global layering fix July 3, 2025 -----
    Ensures legacy pages render with proper stacking order and selectable text

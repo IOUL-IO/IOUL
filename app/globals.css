@@ -1,54 +1,10 @@
-/* ----- IOUL layering & overflow fix – July 3 2025 ----- */
-
-/* Hide accidental scroll bars while still allowing scripted translation */
-html,body{
-  overflow:hidden !important;
-}
-
-/* Always show key text groups above the white mask columns (z‑index 2) */
-.item-text,
-.center-text,
-.account-text,
-.freelance-text,
-.job-text,
-.community-text,
-.zero-text{
-  z-index:3 !important;
-  user-select:text !important;
-}
-
-/* Keep masks visible but non‑interactive */
-.layer-one,
-.layer-two,
-.layer-three,
-.layer-four,
-.layer-five,
-.layer-six{
-  pointer-events:none !important;
-  opacity:1 !important;
-  z-index:2 !important;
-}
-
-/* Guidelines should sit on top of masks but below menu items (which get raised on hover) */
-.line{
-  z-index:4 !important;
-  opacity:1 !important;
-}
-
-/* Custom & content text sit highest so they’re never covered */
-.custom-text,
-.content-text{
-  z-index:5 !important;
-  user-select:text !important;
-}
-
-
 /* original styles copied into public folders */
-/* ----- IOUL override injected by ChatGPT July 3, 2025 -----
-   Ensure legacy pages display immediately with guidelines & layers
+/* ----- IOUL global layering fix July 3, 2025 -----
+   Ensures legacy pages render with proper stacking order and selectable text
 -------------------------------------------------------------- */
 .page-content{opacity:1 !important;}
 
+/* White mask columns — keep visible & non‑interactive */
 .layer-one,
 .layer-two,
 .layer-three,
@@ -56,65 +12,41 @@ html,body{
 .layer-five,
 .layer-six{
   opacity:1 !important;
-  pointer-events:none !important;
-  z-index:0 !important;
+  pointer-events:none !important; /* make sure masks never block clicks */
+  /* no global z‑index override to let per‑page CSS control stacking */
 }
 
+/* Guideline lines */
 .line{
-  z-index:1 !important;
-  opacity:1 !important;
+  opacity:1 !important; /* ensure lines visible */
+  /* allow per‑page z‑index to take precedence */
 }
 
-
-/* ----- Z-index adjustments July 4 2025 per user specs ----- */
-
-/* Ascending layers: topmost layer-one to layer-six lowest */
-.layer-one { z-index: 60 !important; }
-.layer-two { z-index: 50 !important; }
-.layer-three { z-index: 40 !important; }
-.layer-four { z-index: 30 !important; }
-.layer-five { z-index: 20 !important; }
-.layer-six { z-index: 10 !important; }
-
-/* IOUL page groups */
-.menu-items,
-.community-items-container,
-.zero-items-container,
-.chat-text,
-.account-container,
-.heading-container,
-.custom-line.menu-items,
-.custom-line.community-items,
-.custom-line.zero-items,
-.custom-line.account-container,
-.custom-line.heading-container {
-    z-index: 25 !important; /* under layers 1,2,4 */
+/* All visible text & UI above masks and selectable */
+.custom-text,
+.content-text{
+  user-select:text !important;
+  z-index:101 !important; /* above most masks & lines */
 }
 
+/* ---- 2025‑07‑04 patch: hide viewport scrollbars and elevate sliding texts ---- */
+html, body{
+  overflow:hidden;    /* prevent inadvertent scrollbars */
+}
+
+/* Ensure upper‑half sliding texts + util line stay above mask layers */
+.item-text,
 .center-text,
-.center-line,
-.items-group,
-.items-container {
-    z-index: 35 !important; /* under layers 2,3 */
-}
-
-.account-text,
-.account-line {
-    z-index: 45 !important; /* under layer 2 */
-}
-
-/* Jobs page groups */
 .freelance-text,
-.freelance-line,
-.job-text,
-.job-line {
-    z-index: 35 !important; /* under layers 1,2,3 */
+.job-text{
+  z-index:101 !important;
+  user-select:text !important;
 }
 
-.freelance-items-container {
-    z-index: 25 !important; /* under layers 2,4 */
+.util-line{
+  z-index:101 !important;
+  pointer-events:auto !important;
+  cursor:pointer;
 }
 
-.custom-text.job-item {
-    z-index: 55 !important; /* under layer 1 */
-}
+.hidden { display:none !important; }

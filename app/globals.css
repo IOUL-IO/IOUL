@@ -1,0 +1,64 @@
+/* original styles copied into public folders */
+/* ----- IOUL global layering fix July 3, 2025 -----
+   Ensures legacy pages render with proper stacking order and selectable text
+-------------------------------------------------------------- */
+.page-content{opacity:1 !important;}
+
+/* White mask columns — keep visible & non‑interactive */
+.layer-one,
+.layer-two,
+.layer-three,
+.layer-four,
+.layer-five,
+.layer-six{
+  opacity:1 !important;
+  pointer-events:none !important; /* make sure masks never block clicks */
+  /* no global z‑index override to let per‑page CSS control stacking */
+}
+
+/* Guideline lines */
+.line{
+  opacity:1 !important; /* ensure lines visible */
+  /* allow per‑page z‑index to take precedence */
+}
+
+/* All visible text & UI above masks and selectable */
+.custom-text,
+.content-text{
+  user-select:text !important;
+  z-index:101 !important; /* above most masks & lines */
+}
+
+/* ----- ChatGPT fix July 3, 2025 (2nd attempt) -----
+   • Remove viewport scrollbars
+   • Guarantee upper‑half sliding text & lines are above white masks
+-------------------------------------------------------------*/
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;      /* no manual scrolling on legacy slides */
+}
+
+.item-text,
+.center-text,
+.freelance-text,
+.job-text,
+.account-text,
+.item-line,
+.center-line,
+.freelance-line,
+.job-line,
+.account-line{
+  z-index:105 !important;  /* ensure text/line sits above all mask layers */
+}
+
+/* raise legacy sliding groups themselves */
+.community-items-container,
+.zero-items-container,
+.heading-container,
+.account-container,
+.freelance-items-container,
+.jobs-items-container,
+.slide-container{
+  z-index:5 !important;
+}

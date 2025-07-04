@@ -937,7 +937,7 @@ const GAP = 10;                   // horizontal shift in vw
 <script>
 /* ---- Item clipping script injected by ChatGPT on 2025‑05‑29 (v3) ---- */
 document.addEventListener('DOMContentLoaded', () => {
-  const HIDE_LEFT_VW = 6.37; // Updated threshold
+  const HIDE_LEFT_VW = 28.86; // Updated threshold
   const TOP_MIN_VH   = 28.5;  // Vertical bounds
   const TOP_MAX_VH   = 84;
 

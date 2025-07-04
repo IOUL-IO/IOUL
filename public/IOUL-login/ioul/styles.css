@@ -520,3 +520,18 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
+/*--- ChatGPT patch 2025-07-04 ---*/
+
+html, body {
+  overflow: hidden !important; /* remove scrollbars */
+}
+
+/* Ensure upper-half sliding texts and lines sit above overlay layers */
+.item-text, .item-line,
+.center-text, .center-line,
+.account-text, .account-line,
+.freelance-text, .freelance-line,
+.job-text, .job-line {
+  position: absolute;
+  z-index: 9999 !important; /* bring to front */
+}

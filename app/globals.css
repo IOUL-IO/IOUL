@@ -29,9 +29,10 @@
   z-index:101 !important; /* above most masks & lines */
 }
 
-/* ----- Global overflow patch 2025-07-04 ----- */
-html, body{
-  overflow:hidden !important;
-  overscroll-behavior:none;
-}
+/* stacking fixes 2025-07-04 */
+body { overflow:hidden; }
 
+.item-text, .center-text, .account-text, .freelance-text, .job-text,
+.item-line, .center-line, .account-line, .freelance-line, .job-line {
+    z-index: 101 !important;
+}

@@ -16,6 +16,16 @@
 </style>
 
 
+
+<script>
+  // Ensure item-text and center-text join the sliding animation by marking them as custom-text
+  document.addEventListener('DOMContentLoaded', function(){
+    document.querySelectorAll('.item-text, .center-text').forEach(function(el){
+      el.classList.add('custom-text');
+    });
+  });
+</script>
+
 </head>
 <body class="non-fullscreen" translate="no"><p style="display:none" lang="en">This page is already in English. No translation is needed.</p>
 

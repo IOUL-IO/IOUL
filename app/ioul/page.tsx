@@ -7,41 +7,7 @@
         // TODO: any JS init from legacy project can be ported here
       }, []);
       return (
-        <div dangerouslySetInnerHTML={ { __html: `
-<style id="ioul-layer-fix">
-/* Layer z-index map */
-.layer-one { z-index: 60 !important; }
-.layer-two { z-index: 50 !important; }
-.layer-three { z-index: 40 !important; }
-.layer-four { z-index: 30 !important; }
-.layer-five { z-index: 20 !important; }
-.layer-six  { z-index: 10 !important; }
-
-/* Group A: menu, community, zero, chat, account heading, related lines */
-.menu-items .custom-text,
-.community-items-container .custom-text,
-.zero-items-container .custom-text,
-.chat-text,
-.heading-container .custom-text,
-.custom-line{
-  z-index: 45 !important;
-}
-
-/* Group B: center & item groups */
-.center-text,
-.center-line,
-.items-group .custom-text,
-.items-group .custom-line{
-  z-index: 35 !important;
-}
-
-/* Account numbers/texts/line */
-.account-text,
-.account-line{
-  z-index: 45 !important;
-}
-</style>
-<p style="display:none" lang="en">This page is already in English. No translation is needed.</p>
+        <div dangerouslySetInnerHTML={ { __html: `<p style="display:none" lang="en">This page is already in English. No translation is needed.</p>
 
   <div class="layer-one"></div>
   <div class="layer-two"></div>
@@ -887,8 +853,14 @@ const GAP = 10;                   // horizontal shift in vw
   // Cache base positions
   [...itemEls, ...centerEls].forEach(el => {
     if (!el.dataset.baseLeftVw) {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-      el.dataset.baseLeftVw = toVw(leftPx);
+      const leftRaw = getComputedStyle(el).left || '0';
+let baseVw;
+if (leftRaw.includes('vw')) {
+  baseVw = parseFloat(leftRaw);        // already in vw units
+} else {
+  baseVw = toVw(parseFloat(leftRaw));  // convert px → vw
+}
+el.dataset.baseLeftVw = baseVw;
     }
   });
 

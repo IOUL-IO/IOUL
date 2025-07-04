@@ -43,8 +43,7 @@ body.non-fullscreen {
 /* Increase font for ultra‑wide screens */
 @media screen and (min-width: 1900px){
   .custom-text,
-  .job-text,
-  .freelance-text{ font-size:9px; }
+  
 }
 
 /* Containers simply hold the text */
@@ -191,11 +190,28 @@ body.non-fullscreen {
 
 
 
-/* ----- Stack-visibility patch 2025-07-04 ----- */
-.item-text, .item-line, .center-text, .center-line, .freelance-text, .freelance-line, .job-text, .job-line {
-  z-index:101 !important;
-}
+
+
 .item-text, .center-text, .freelance-text, .job-text {
-  opacity:1 !important;
+  
 }
 
+
+
+/* ---------- definitive layer map for /tool-kit/jobs (2025-07-04) ---------- */
+/* Mask columns top out at z-index: 100  —  everything below is safe */
+.freelance-text,
+.freelance-line,
+.job-text,
+.job-line {
+  z-index: 90; /* under layers 1-3 */
+}
+
+.freelance-items-container {
+  z-index: 80; /* under layers 2 & 4 */
+}
+
+/* job “custom-text” overlays that must be only under layer-1 mask */
+.jobs-item .custom-text {
+  z-index: 70;
+}

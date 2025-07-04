@@ -8,34 +8,6 @@
       }, []);
       return (
         <div dangerouslySetInnerHTML={ { __html: `
-<style id="jobs-layer-fix">
-/* Layer z-index map */
-.layer-one { z-index: 60 !important; }
-.layer-two { z-index: 50 !important; }
-.layer-three { z-index: 40 !important; }
-.layer-four { z-index: 30 !important; }
-.layer-five { z-index: 20 !important; }
-.layer-six  { z-index: 10 !important; }
-
-/* Freelance & Jobs texts and lines */
-.freelance-text,
-.freelance-line,
-.job-item,
-.line{
-  z-index: 35 !important;
-}
-
-/* Freelance items container – behind layer2 & 4 */
-.freelance-items-container{
-  z-index: 25 !important;  /* below layer-four (30) but above layer-five/six */
-}
-
-/* custom-texts jobs-item under layer1 */
-.custom-text.jobs-item{
-  z-index: 55 !important; /* between layer-two (50) & layer-one (60) */
-}
-</style>
-
 
   <!-- Fixed white mask layers -->
   <div class="layer-one"></div>

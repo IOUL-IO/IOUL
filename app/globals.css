@@ -28,3 +28,19 @@
   user-select:text !important;
   z-index:101 !important; /* above most masks & lines */
 }
+/* === IOUL July-2025 hot-fixes ===================================== */
+
+/* 1. Lock the viewport – no scroll-bars can appear while the attribute
+      is present (we toggle it per-page in the React code below). */
+html[data-lock-scroll],
+body[data-lock-scroll] {
+  overflow-x: hidden;   /* kills the long bottom bar  */
+  overflow-y: hidden;   /* kills the long side bar    */
+}
+
+/* 2. “right-flow” numbers/text vanished because the RTL base-direction
+      flips their visual box; force LTR instead, keep right alignment. */
+.right-flow {
+  direction: ltr !important;
+  text-align: right !important;
+}

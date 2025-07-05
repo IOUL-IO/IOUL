@@ -4,9 +4,12 @@
 
     export default function Page() {
       useEffect(() => {
-        // TODO: any JS init from legacy project can be ported here
-      }, []);
-      return (
+  document.documentElement.setAttribute("data-lock-scroll", "");
+  return () => {
+    document.documentElement.removeAttribute("data-lock-scroll");
+  };
+}, []);
+return (
         <div dangerouslySetInnerHTML={ { __html: `
 
   <!-- Fixed white mask layers -->

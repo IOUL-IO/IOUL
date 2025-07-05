@@ -4,9 +4,12 @@
 
     export default function Page() {
       useEffect(() => {
-        // TODO: any JS init from legacy project can be ported here
-      }, []);
-      return (
+  document.documentElement.setAttribute("data-lock-scroll", "");
+  return () => {
+    document.documentElement.removeAttribute("data-lock-scroll");
+  };
+}, []);
+return (
         <div dangerouslySetInnerHTML={ { __html: `<p style="display:none" lang="en">This page is already in English. No translation is needed.</p>
 
   <div class="layer-one"></div>
@@ -424,7 +427,32 @@
             slideState = "none";
           } else if (slideState === "heading" || slideState === "account") {
             document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
-              box.style.transform = \`translateX(\${box.dataset.offset}vw)\`;
+              box.style.transform = \
+<script>
+  /* --- IOUL July‑2025 helper to nudge item- and center-groups --- */
+  (function(){
+    function nudge(offset){
+      document.querySelectorAll('.item-text,.item-line,.center-text,.center-line').forEach(function(el){
+        var current = parseFloat(el.style.left || '0');
+        el.style.transition = 'left 0.7s ease';
+        el.style.left = (current + offset) + 'vw';
+      });
+    }
+    document.addEventListener('DOMContentLoaded', function(){
+      var old = window.forceCloseSubmenuThen;
+      if(typeof old === 'function'){
+        window.forceCloseSubmenuThen = function(cb){
+          old(function(){
+            if(window.slideState === 'none'){ nudge(-29); }
+            else if(window.slideState === 'center'){ nudge(29); }
+            if(typeof cb === 'function') cb();
+          });
+        };
+      }
+    });
+  })();
+</script>
+`translateX(\${box.dataset.offset}vw)\`;
             });
             document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
               box.style.transform = \`translateX(\${box.dataset.offset}vw)\`;

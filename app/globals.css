@@ -29,12 +29,9 @@
   z-index:101 !important; /* above most masks & lines */
 }
 
-/* ----- Visibility fix July 5, 2025 -----
-   Hide middle mask layers that were unintentionally covering content‑texts
- */
-.layer-four,
-.layer-five,
-.layer-six{
-  display:none !important;  /* keep DOM⁠—offscreen for fullscreen toggle but fully transparent */
+/* PATCHED content-text visibility */
+.content-text, .custom-text {
+  z-index: 150 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
-

@@ -7,7 +7,7 @@
         // TODO: any JS init from legacy project can be ported here
       }, []);
       return (
-        <div dangerouslySetInnerHTML={ { __html: `
+        <div className="jobs-page" dangerouslySetInnerHTML={ { __html: `
 
   <!-- Fixed white mask layers -->
   <div class="layer-one"></div>

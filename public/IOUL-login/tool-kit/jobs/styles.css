@@ -255,7 +255,7 @@ body.non-fullscreen{
 .freelance-text,
 .job-line,
 .freelance-line{
-  z-index:111 !important;
+  z-index: 90 !important;
 }
 
 /* Left‑column headings: remain beneath mask #1 */
@@ -265,22 +265,14 @@ body.non-fullscreen{
 }
 
 
-/* --- Fix: ensure job-texts & job-lines get clipped by layer‑two --- */
-@supports (clip-path: inset(0 0 0 0)) {
-  .job-text,
-  .job-line {
-    /* Hide anything that moves into the left 36vw column */
-    clip-path: inset(0 0 0 36vw);
-  }
+/* PATCHED content-text visibility */
+.content-text, .custom-text {
+  z-index: 150 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
-/* Fallback for browsers that ignore clip‑path */
-@supports not (clip-path: inset(0 0 0 0)) {
-  .job-text,
-  .job-line {
-    /* Keep them under the mask by lowering stack order */
-    z-index: 50 !important;
-  }
+/* Hide scrollbars for jobs page */
+.jobs-page {
+  overflow: hidden !important;
 }
-/* --- end fix --- */
-

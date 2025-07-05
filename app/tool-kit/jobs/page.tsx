@@ -10,20 +10,7 @@
         <div dangerouslySetInnerHTML={ { __html: `
 
   <!-- Fixed white mask layers -->
-  
-<style id="jobs-layer-fix">
-  .job-text,
-  .job-line{
-    z-index:90 !important; /* below .layer-two (100) */
-  }
-  .zero-items-container,
-  .zero-items-container .freelance-text,
-  .zero-items-container .freelance-line,
-  .zero-items-container .right-flow{
-    z-index:105 !important; /* above layer-four (2) but below .layer-two/three */
-  }
-</style>
-<div class="layer-one"></div>
+  <div class="layer-one"></div>
   <div class="layer-two"></div>
   <div class="layer-three"></div>
   <div class="layer-four"></div>
@@ -165,7 +152,7 @@
   </div>
 </div>
 
-<div class="zero-items-container" style="position:absolute; z-index:105;">
+<div class="zero-items-container" style="position:absolute; z-index:1;">
   <span class="custom-text right-flow" style="position:absolute; top:35.4vh; left:57.4vw;">0</span>
   <span class="custom-text right-flow" style="position:absolute; top:41.6vh; left:57.4vw;">0</span>
   <span class="custom-text right-flow" style="position:absolute; top:53vh;  left:57.4vw;">0</span>

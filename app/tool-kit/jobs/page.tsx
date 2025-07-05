@@ -14,24 +14,6 @@
   <div class="layer-two"></div>
   <div class="layer-three"></div>
   <div class="layer-four"></div>
-  <style>
-    /* Job page stacking context fix (July 4, 2025) */
-    .layer-two, .layer-three {
-      z-index: 200 !important;  /* masks above everything */
-    }
-    /* Put sliding text/lines below mask */
-    .job-item, .job-text, .job-line,
-    .freelance-text, .freelance-line,
-    .job-line, .freelance-line {
-      z-index: 10 !important;
-    }
-    /* Keep zero 0s visible even over other sliding items but still under masks */
-    .zero-items-container { 
-      overflow: visible !important; 
-      z-index: 15 !important; 
-    }
-  </style>
-
   <div class="layer-five"></div>
   <div class="layer-six"></div>
 

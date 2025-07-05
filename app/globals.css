@@ -28,10 +28,3 @@
   user-select:text !important;
   z-index:101 !important; /* above most masks & lines */
 }
-/* Added by update on 2025-07-04 to lock viewport and clip item groups */
-html, body { overflow: hidden; }
-.community-items-container, .zero-items-container {
-  width: 36vw;
-  height: 100vh;
-  overflow: hidden;
-}

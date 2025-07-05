@@ -882,18 +882,13 @@ const GAP = 10;                   // horizontal shift in vw
   function toStage1() { // show items
     animating = true;
     move(itemEls, -DIST);
-    itemEls.forEach(el=> el.style.zIndex="101");
-    centerEls.forEach(el=> el.style.zIndex="99");
-    itemEls.forEach(el=> el.style.zIndex="101");
     setTimeout(() => { animating = false; itemStage = 1; }, DUR);
   }
 
   function toStage2() { // shift items further + reveal center with stagger
     animating = true;
     move(itemEls, -2 * DIST - GAP);                       // items out first
-    move(centerEls, -DIST - GAP);
-    centerEls.forEach(el=> el.style.zIndex="101");
-    itemEls.forEach(el=> el.style.zIndex="99"); // center follows
+    move(centerEls, -DIST - GAP); // center follows
     setTimeout(() => { animating=false; itemStage=2; centerStage=1; }, DUR + STAGGER);
   }
 
@@ -901,17 +896,13 @@ const GAP = 10;                   // horizontal shift in vw
   function backToStage1() { // hide center, restore items with stagger
     animating = true;
     move(centerEls, 0);                              // center leaves first
-    move(itemEls, -DIST);
-    itemEls.forEach(el=> el.style.zIndex="101");
-    centerEls.forEach(el=> el.style.zIndex="99");
-    itemEls.forEach(el=> el.style.zIndex="101"); // items return after delay
+    move(itemEls, -DIST); // items return after delay
     setTimeout(() => { animating=false; itemStage=1; centerStage=0; }, DUR + STAGGER);
   }
 
   function backToStage0() { // hide items
     animating = true;
     move(itemEls, 0);
-    itemEls.forEach(el=> el.style.zIndex="99");
     setTimeout(() => { animating=false; itemStage=0; }, DUR);
   }
 

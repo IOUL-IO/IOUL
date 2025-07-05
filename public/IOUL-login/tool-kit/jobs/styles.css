@@ -189,12 +189,3 @@ body.non-fullscreen {
   z-index: 90 !important; /* keep lines visible throughout the slide */
 }
 
-
-
-/* IOUL fix v2 - restore proper stacking for job & freelance texts so they slide beneath masks */
-.job-text,
-.freelance-text,
-.job-line,
-.freelance-line{
-  z-index:2 !important;
-}

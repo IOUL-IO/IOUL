@@ -28,16 +28,3 @@
   user-select:text !important;
   z-index:101 !important; /* above most masks & lines */
 }
-/* ----- IOUL patch July 4 2025 v2 ----- */
-/* Lock viewport */
-html, body{ overflow:hidden !important; }
-
-/* Elevate IOUL ioul-page sliding texts above masks while visible */
-.item-text,
-.center-text,
-.account-text,
-.mail-text,
-.mail-line{
-  z-index:101 !important;
-}
-/* DO NOT touch job/freelance z-index here */

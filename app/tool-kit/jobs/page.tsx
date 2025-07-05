@@ -269,7 +269,7 @@ const GAP = 10;                   // horizontal shift in vw
 <script>
 /* ---- Item clipping script injected by ChatGPT on 2025‑05‑29 (v3) ---- */
 document.addEventListener('DOMContentLoaded', () => {
-  const HIDE_LEFT_VW = 36; // Updated threshold
+  const HIDE_LEFT_VW = 28.86; // Updated threshold
   const TOP_MIN_VH   = 28.5;  // Vertical bounds
   const TOP_MAX_VH   = 84;
 
@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function update() {
     items.forEach(el => {
       // Skip divider lines so they stay visible throughout the slide
-      if (el.classList.contains('freelance-line')) return;
+      if (el.classList.contains('job-line') || el.classList.contains('freelance-line')) return;
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);

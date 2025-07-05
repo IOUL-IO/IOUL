@@ -207,3 +207,25 @@ body.non-fullscreen {
 .custom-text.job-item{
   z-index: 99 !important; /* ensure headings slide under left mask */
 }
+
+
+/* LAYER STACK FIX 2025-07-04d */
+/* Raise mask columns so texts can stay visible yet remain underneath */
+.layer-one,
+.layer-two,
+.layer-three{
+  z-index:110 !important;
+}
+
+/* Job & freelance labels and their lines: visible, but still tuck under the masks */
+.job-text,
+.freelance-text,
+.job-line,
+.freelance-line{
+  z-index:102 !important;
+}
+
+/* Main left‑column items stay behind layer‑one */
+.custom-text.job-item{
+  z-index:99 !important;
+}

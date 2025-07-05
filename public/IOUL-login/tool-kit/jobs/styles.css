@@ -189,3 +189,21 @@ body.non-fullscreen {
   z-index: 90 !important; /* keep lines visible throughout the slide */
 }
 
+
+
+/* BUGFIX 2025-07-04 (z‑index lift): keep job & freelance labels above mask layers */
+.job-text,
+.freelance-text{
+  z-index:110 !important; /* above .layer-one (100) */
+}
+
+
+/* BUGFIX 2025-07-04c (layer ordering): keep job & freelance text UNDER mask columns but above base */
+.job-text,
+.freelance-text{
+  z-index: 99 !important; /* below .layer-one/2/3 (100) but above most content */
+}
+
+.custom-text.job-item{
+  z-index: 99 !important; /* ensure headings slide under left mask */
+}

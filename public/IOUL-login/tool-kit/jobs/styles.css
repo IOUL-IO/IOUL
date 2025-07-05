@@ -1,7 +1,3 @@
-html, body {
-  overflow: hidden;
-}
-
 @font-face {
   font-family: 'Distill Expanded';
   src: url('font.woff2') format('woff2'),
@@ -193,3 +189,40 @@ body.non-fullscreen {
   z-index: 90 !important; /* keep lines visible throughout the slide */
 }
 
+
+
+/* FINAL PATCH 2025-07-04 option1
+   Quick CSS-only fix: lock scrollbars, narrow middle mask, set explicit layer stack */
+
+/* 0. Viewport lock */
+html, body {
+  overflow: hidden !important;
+}
+
+/* 1. White masks */
+.layer-one {
+  z-index: 105 !important;          /* left mask */
+}
+.layer-two {
+  width: 6.80vw !important;         /* slightly narrower than before */
+  z-index: 110 !important;          /* middle mask that clips labels */
+}
+.layer-three {
+  z-index: 120 !important;          /* right mask */
+}
+
+/* 2. Labels that must be seen (but still clip under layer-two) */
+.job-text,
+.job-line,
+.freelance-text,
+.freelance-line {
+  z-index: 108 !important;
+}
+
+/* 3. Left-column headings stay beneath layer-one */
+.custom-text.job-item,
+.custom-line.job-item {
+  z-index: 101 !important;
+}
+
+/* END FINAL PATCH 2025-07-04 option1 */

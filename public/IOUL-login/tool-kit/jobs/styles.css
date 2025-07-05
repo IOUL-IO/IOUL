@@ -263,3 +263,37 @@ body.non-fullscreen{
 .custom-line.job-item{
   z-index:100 !important;
 }
+
+
+/* FINAL STACK FIX 2025-07-04g */
+/* Ensure scrollbars are removed via body.non-fullscreen */
+body.non-fullscreen {
+  overflow: hidden !important;
+}
+
+/* Mask layers ordering */
+.layer-one {
+  z-index: 110 !important; /* left mask */
+}
+
+.layer-two {
+  z-index: 112 !important; /* middle mask, above job labels */
+}
+
+.layer-three {
+  z-index: 120 !important; /* right mask, always on top */
+}
+
+/* Job & freelance labels + lines: above layer-one, below layer-two */
+.job-text,
+.freelance-text,
+.job-line,
+.freelance-line {
+  z-index: 111 !important;
+}
+
+/* Left column headings stay beneath layer-one */
+.custom-text.job-item,
+.custom-line.job-item {
+  z-index: 100 !important;
+}

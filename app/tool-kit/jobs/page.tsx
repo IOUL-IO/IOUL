@@ -4,8 +4,7 @@
 
     export default function Page() {
       useEffect(() => {
-        document.body.classList.add('non-fullscreen');
-        return () => { document.body.classList.remove('non-fullscreen'); };
+        // TODO: any JS init from legacy project can be ported here
       }, []);
       return (
         <div dangerouslySetInnerHTML={ { __html: `

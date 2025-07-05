@@ -29,9 +29,9 @@
   z-index:101 !important; /* above most masks & lines */
 }
 
-/* PATCHED content-text visibility */
-.content-text, .custom-text {
-  z-index: 150 !important;
-  opacity: 1 !important;
-  visibility: visible !important;
+/* Restore visibility for custom-text and content-text across all pages */
+.custom-text, .content-text {
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 101 !important;
 }

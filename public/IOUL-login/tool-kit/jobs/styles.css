@@ -263,11 +263,3 @@ body.non-fullscreen{
 .custom-line.job-item{
   z-index:100 !important;
 }
-
-
-/* PATCHED content-text visibility */
-.content-text, .custom-text {
-  z-index: 150 !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}

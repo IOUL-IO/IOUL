@@ -4,6 +4,8 @@
 
     export default function Page() {
       useEffect(() => {
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
         // TODO: any JS init from legacy project can be ported here
       }, []);
       return (
@@ -96,6 +98,7 @@
 
 
 <!-- Item texts -->
+    <div class="job-items-container" style="position:absolute; top:0; left:0; width:36vw; height:100vh; overflow:hidden; z-index:1;">
 <span class="job-text" style="position:absolute; top:35.4vh; left:36vw;">LOOK UP:</span>
 <span class="job-text" style="position:absolute; top:41.6vh; left:36vw;">OPT FOR:</span>
 
@@ -138,6 +141,7 @@
 
 
 <!-- === Community & Zero items (added 2025‑06‑11) === -->
+    </div>
 <div class="freelance-items-container" style="position:absolute; z-index:1;">
   <!-- labels -->
   <span class="custom-text" style="position:absolute; top:35.4vh; left:35.41vw;">OFFER LOg</span>

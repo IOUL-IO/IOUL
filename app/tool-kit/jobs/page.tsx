@@ -45,15 +45,20 @@
 
 
 <!-- Item lines -->
+<div class="job-items-container" style="position:absolute; z-index:1;">
 <div class="job-line job-line-one" style="position:absolute; top:47.8vh; left:36vw; width:36vw;"></div>
 <div class="job-line job-line-two" style="position:absolute; top:47.8vh; left:79vw; width:14.8vw;"></div>
 
 
+</div>
     <!-- Center lines -->
+<div class="freelance-items-container" style="position:absolute; z-index:1;">
     <div class="freelance-line freelance-line-one" style="position:absolute; top:47.8vh; left:106.0vw; width:36vw;"></div>
     <div class="freelance-line freelance-line-two" style="position:absolute; top:47.8vh; left:149.0vw; width:14.8vw;"></div>
 
+</div>
     <!-- Center texts -->
+<div class="freelance-items-container" style="position:absolute; z-index:1;">
     <span class="freelance-text" style="position:absolute; top:35.4vh; left:106.0vw;">LOOK UP:</span>
     <span class="freelance-text" style="position:absolute; top:41.6vh; left:106.0vw;">JOB LOg:</span>
 
@@ -95,7 +100,9 @@
     <span class="freelance-text right-flow" style="position:absolute; top:59.2vh; left:141.0vw;">0</span>  
 
 
+</div>
 <!-- Item texts -->
+<div class="job-items-container" style="position:absolute; z-index:1;">
 <span class="job-text" style="position:absolute; top:35.4vh; left:36vw;">LOOK UP:</span>
 <span class="job-text" style="position:absolute; top:41.6vh; left:36vw;">OPT FOR:</span>
 
@@ -137,6 +144,7 @@
 <span class="job-text right-flow" style="position:absolute; top:59.2vh; left:71vw;">0</span>  
 
 
+</div>
 <!-- === Community & Zero items (added 2025‑06‑11) === -->
 <div class="freelance-items-container" style="position:absolute; z-index:1;">
   <!-- labels -->
@@ -356,6 +364,40 @@ document.addEventListener('click', ({clientX:x, clientY:y}) => {
     }
 })();
   /* --- JobShift patch 2025-06-11 --- */
+</script>
+
+<style id="util-toggle-style">
+.mail-text,
+.calendar-grid,
+.dashed-line,
+.mail-line { opacity:0; transition:opacity .3s ease;}
+</style>
+
+<script id="utilLineToggle">
+(function(){
+  const util = document.querySelector('.util-line');
+  if(!util) return;
+  const mailElems = document.querySelectorAll('.mail-text, .mail-line');
+  const calElems = document.querySelectorAll('.grid-number, .dashed-line');
+  let state = 0; // 0 blank,1 mail,2 calendar
+  function update(){
+    if(state===0){
+      mailElems.forEach(e=>e.style.opacity='0');
+      calElems.forEach(e=>e.style.opacity='0');
+    } else if(state===1){
+      mailElems.forEach(e=>e.style.opacity='1');
+      calElems.forEach(e=>e.style.opacity='0');
+    } else {
+      mailElems.forEach(e=>e.style.opacity='0');
+      calElems.forEach(e=>e.style.opacity='1');
+    }
+  }
+  update();
+  util.addEventListener('click', ()=>{
+    state = (state+1)%3;
+    update();
+  });
+})();
 </script>
 ` } } />
       );

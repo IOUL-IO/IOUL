@@ -73,15 +73,20 @@
         <div class="line account-line" style="position:absolute; top:41.6vh; left:-24.00vw; width:57.8vw; height:1px; background-color: rgba(230, 230, 230, 0.28); z-index:1;"></div>
       </div>
 <!-- Item lines -->
+<div class="items-container" style="position:absolute; z-index:1;">
 <div class="item-line item-line-one" style="position:absolute; top:47.8vh; left:96vw; width:36vw;"></div>
 <div class="item-line item-line-two" style="position:absolute; top:47.8vh; left:139vw; width:14.8vw;"></div>
 
 
+</div>
     <!-- Center lines -->
+<div class="center-items-container" style="position:absolute; z-index:1;">
     <div class="center-line center-line-one" style="position:absolute; top:47.8vh; left:106.0vw; width:36vw;"></div>
     <div class="center-line center-line-two" style="position:absolute; top:47.8vh; left:149.0vw; width:14.8vw;"></div>
 
+</div>
     <!-- Center texts -->
+<div class="center-items-container" style="position:absolute; z-index:1;">
     <span class="center-text" style="position:absolute; top:35.4vh; left:106.0vw;">UPDATES</span>
     <span class="center-text" style="position:absolute; top:41.6vh; left:106.0vw;">cATALOg</span>
 
@@ -123,7 +128,9 @@
     <span class="center-text right-flow" style="position:absolute; top:59.2vh; left:141.0vw;">0</span>
 
 
+</div>
 <!-- Item texts -->
+<div class="items-container" style="position:absolute; z-index:1;">
 <span class="item-text" style="position:absolute; top:35.4vh; left:96vw;">1ncOME</span>
 <span class="item-text" style="position:absolute; top:41.6vh; left:96vw;">cL1EnT</span>
 
@@ -165,6 +172,7 @@
 <span class="item-text right-flow" style="position:absolute; top:59.2vh; left:131vw;">0</span>
 
 
+</div>
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
       <span class="mail-text" style="position:absolute; top:35.4vh; left:36vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">TO:</span>
@@ -970,6 +978,40 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+
+<style id="util-toggle-style">
+.mail-text,
+.calendar-grid,
+.dashed-line,
+.mail-line { opacity:0; transition:opacity .3s ease;}
+</style>
+
+<script id="utilLineToggle">
+(function(){
+  const util = document.querySelector('.util-line');
+  if(!util) return;
+  const mailElems = document.querySelectorAll('.mail-text, .mail-line');
+  const calElems = document.querySelectorAll('.grid-number, .dashed-line');
+  let state = 0; // 0 blank,1 mail,2 calendar
+  function update(){
+    if(state===0){
+      mailElems.forEach(e=>e.style.opacity='0');
+      calElems.forEach(e=>e.style.opacity='0');
+    } else if(state===1){
+      mailElems.forEach(e=>e.style.opacity='1');
+      calElems.forEach(e=>e.style.opacity='0');
+    } else {
+      mailElems.forEach(e=>e.style.opacity='0');
+      calElems.forEach(e=>e.style.opacity='1');
+    }
+  }
+  update();
+  util.addEventListener('click', ()=>{
+    state = (state+1)%3;
+    update();
+  });
+})();
+</script>
 ` } } />
       );
     }

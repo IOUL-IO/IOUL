@@ -28,3 +28,11 @@
   user-select:text !important;
   z-index:101 !important; /* above most masks & lines */
 }
+
+/* Added by ChatGPT 2025‑07‑04 — lock viewport & remove scrollbars */
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  overscroll-behavior: none;
+}

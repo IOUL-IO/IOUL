@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function update() {
     items.forEach(el => {
       // Skip divider lines so they stay visible throughout the slide
-      if (el.classList.contains('freelance-line')) return;
+      if (el.classList.contains('job-line') || el.classList.contains('freelance-line')) return;
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);

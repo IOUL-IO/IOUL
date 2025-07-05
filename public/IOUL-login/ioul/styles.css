@@ -415,11 +415,11 @@ body.non-fullscreen {
   .mail-text,
   .account-text,
   .item-text {
-    font-size: 0.56rem !important;
+    font-size: 9px !important;
   }
 
   .grid-number {
-    font-size: 0.38rem !important;
+    font-size: 6.1px !important;
   }
 }
 
@@ -517,6 +517,6 @@ body.non-fullscreen {
 @media (min-width: 1900px) {
   .center-text {
     z-index: 3;
-    font-size: 0.56rem !important;
+    font-size: 9px !important;
   }
 }

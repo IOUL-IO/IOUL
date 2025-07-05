@@ -263,11 +263,3 @@ body.non-fullscreen{
 .custom-line.job-item{
   z-index:100 !important;
 }
-
-/* --- JobText under Layer2 fix 2025-07-04 --- */
-.job-text,
-.freelance-text,
-.job-line,
-.freelance-line{
-  z-index: 99 !important; /* ensure job labels slide beneath layer-two mask */
-}

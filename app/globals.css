@@ -28,6 +28,11 @@
   user-select:text !important;
   z-index:101 !important; /* above most masks & lines */
 }
-html, body {
-  overflow: hidden;
+html, body { overflow:hidden !important; }
+
+/* Sliding container stacking fix July 4, 2025 */
+.community-items-container,
+.zero-items-container,
+.freelance-items-container{
+  z-index:3 !important;
 }

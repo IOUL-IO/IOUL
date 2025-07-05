@@ -263,3 +263,19 @@ body.non-fullscreen{
 .custom-line.job-item{
   z-index:100 !important;
 }
+
+/* --- Fix: ensure job-texts & job-lines are hidden once they reach 36 vw --- */
+@supports (clip-path: inset(0 0 0 0)) {
+  .job-text,
+  .job-line {
+    clip-path: inset(0 0 0 36vw);
+  }
+}
+
+@supports not (clip-path: inset(0 0 0 0)) {
+  .job-text,
+  .job-line {
+    z-index: 50 !important;   /* still below .layer-two (z-index 100) */
+  }
+}
+/* --- end fix --- */

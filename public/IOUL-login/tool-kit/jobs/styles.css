@@ -1,7 +1,3 @@
-html, body {
-  overflow: hidden;
-}
-
 @font-face {
   font-family: 'Distill Expanded';
   src: url('font.woff2') format('woff2'),
@@ -193,3 +189,36 @@ body.non-fullscreen {
   z-index: 90 !important; /* keep lines visible throughout the slide */
 }
 
+
+
+/* PATCH 2025-07-04k: restore mask widths, tighten middle mask, hide scrollbars */
+/* Ensure viewport stays locked (no scrollbars) */
+body.non-fullscreen{ overflow:hidden !important; }
+html{ overflow:hidden !important; }
+
+/* Restore original left mask width */
+.layer-one{
+    width:6.37vw !important;
+    left:0 !important;
+    z-index:105 !important; /* below other masks */
+}
+
+/* Narrow middle mask so first job labels are initially visible */
+.layer-two{
+    left:28.87vw !important;   /* unchanged */
+    width:6.90vw !important;   /* was ~7.13 */
+    z-index:110 !important;    /* above job labels */
+}
+
+/* Keep right mask unchanged but ensure top z‑index */
+.layer-three{ z-index:120 !important; }
+
+/* Job & Freelance labels and lines: sit beneath layer-two/three to be clipped, above left mask */
+.job-text, .freelance-text, .job-line, .freelance-line{
+    z-index:108 !important;
+}
+
+/* Left‑column headers under layer-one */
+.custom-text.job-item, .custom-line.job-item{
+    z-index:101 !important;
+}

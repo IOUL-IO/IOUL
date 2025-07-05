@@ -10,6 +10,25 @@
         <div dangerouslySetInnerHTML={ { __html: `
 
   <!-- Fixed white mask layers -->
+<style id="jobs-layer-fix-20250704">
+  /* Ensure left‑side mask (layer‑two) sits above sliding job items */
+  .layer-two{
+    position:fixed; /* anchor to viewport */
+    top:0;
+    left:0;
+    width:36vw;
+    height:100vh;
+    background:#fff;
+    z-index:120;
+    pointer-events:none;
+  }
+  /* Keep job texts & lines below the mask but above background */
+  .job-text,
+  .job-line{
+    z-index:110;
+  }
+</style>
+
   <div class="layer-one"></div>
   <div class="layer-two"></div>
   <div class="layer-three"></div>

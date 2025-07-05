@@ -263,10 +263,3 @@ body.non-fullscreen{
 .custom-line.job-item{
   z-index:100 !important;
 }
-
-
-/* === 2025‑07‑04 FIX: Ensure .job-text and .job-line slide UNDER .layer-two === */
-.job-text,
-.job-line{
-  z-index: 90 !important; /* .layer-two has z-index 100 */
-}

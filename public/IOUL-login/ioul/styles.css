@@ -1,3 +1,32 @@
+/* Allow overflow (so slides can move) but hide scrollbars */
+html, body {
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+html {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Slide text layers under UI masks */
+.item-text,
+.item-text.right-flow,
+.center-text,
+.center-text.right-flow,
+.job-text,
+.job-text.right-flow,
+.freelance-text,
+.freelance-text.right-flow {
+  z-index: 50 !important;
+}
+
 @font-face {
     font-family: 'Distill Expanded';
     src: url('font.woff2') format('woff2'),
@@ -12,12 +41,6 @@
     box-sizing: border-box;
 }
 
-body.non-fullscreen {
-    background-color: #ffffff;
-    min-height: 100vh;
-    min-width: 100vw;
-    overflow: hidden;
-}
 
 .layer-one {
     position: fixed;

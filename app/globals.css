@@ -28,24 +28,16 @@
   user-select:text !important;
   z-index:101 !important; /* above most masks & lines */
 }
+/* ----- IOUL patch July 4 2025 v2 ----- */
+/* Lock viewport */
+html, body{ overflow:hidden !important; }
 
-/* ----- IOUL July 4 2025 scroll & z-index fix ----- */
-html, body{
-  overflow:hidden !important; /* lock viewport, remove scrollbars */
-}
-
-/* Keep every sliding text/line above white mask columns */
+/* Elevate IOUL ioul-page sliding texts above masks while visible */
 .item-text,
 .center-text,
-.job-text,
-.freelance-text,
 .account-text,
-.grid-number,
-.item-line,
-.center-line,
-.job-line,
-.freelance-line,
-.account-line{
-  z-index:101 !important; /* same as .custom-text */
+.mail-text,
+.mail-line{
+  z-index:101 !important;
 }
-/* -------------------------------------------------- */
+/* DO NOT touch job/freelance z-index here */

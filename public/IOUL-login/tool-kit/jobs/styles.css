@@ -1,3 +1,12 @@
+/* Lock viewport and hide scrollbars */
+html, body {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 @font-face {
   font-family: 'Distill Expanded';
   src: url('font.woff2') format('woff2'),
@@ -189,43 +198,9 @@ body.non-fullscreen {
   z-index: 90 !important; /* keep lines visible throughout the slide */
 }
 
-
-
-/* BUGFIX 2025-07-04 (z‑index lift): keep job & freelance labels above mask layers */
+/* Ensure job-text spans stack correctly under masks */
 .job-text,
-.freelance-text{
-  z-index:110 !important; /* above .layer-one (100) */
+.job-text.right-flow {
+  z-index: 150;
 }
 
-
-/* BUGFIX 2025-07-04c (layer ordering): keep job & freelance text UNDER mask columns but above base */
-.job-text,
-.freelance-text{
-  z-index: 99 !important; /* below .layer-one/2/3 (100) but above most content */
-}
-
-.custom-text.job-item{
-  z-index: 99 !important; /* ensure headings slide under left mask */
-}
-
-
-/* LAYER STACK FIX 2025-07-04d */
-/* Raise mask columns so texts can stay visible yet remain underneath */
-.layer-one,
-.layer-two,
-.layer-three{
-  z-index:110 !important;
-}
-
-/* Job & freelance labels and their lines: visible, but still tuck under the masks */
-.job-text,
-.freelance-text,
-.job-line,
-.freelance-line{
-  z-index:102 !important;
-}
-
-/* Main left‑column items stay behind layer‑one */
-.custom-text.job-item{
-  z-index:99 !important;
-}

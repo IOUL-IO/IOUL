@@ -3,10 +3,9 @@
     import React, { useEffect } from 'react';
 
     export default function Page() {
-  useEffect(() => {
-    document.body.classList.add('non-fullscreen');
-    return () => document.body.classList.remove('non-fullscreen');
-  }, []);
+      useEffect(() => {
+        // TODO: any JS init from legacy project can be ported here
+      }, []);
       return (
         <div dangerouslySetInnerHTML={ { __html: `
 

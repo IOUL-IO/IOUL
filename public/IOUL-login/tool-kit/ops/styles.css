@@ -75,3 +75,11 @@ body.non-fullscreen {
 
 /* content block */
 .content-text, .content-line { z-index: 101; }
+
+
+/* PATCHED content-text visibility */
+.content-text, .custom-text {
+  z-index: 150 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}

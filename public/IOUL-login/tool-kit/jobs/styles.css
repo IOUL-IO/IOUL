@@ -1,3 +1,33 @@
+/* Allow overflow (so slides can move) but hide scrollbars */
+html, body {
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+html {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Slide text layers under UI masks */
+.item-text,
+.item-text.right-flow,
+.center-text,
+.center-text.right-flow,
+.job-text,
+.job-text.right-flow,
+.freelance-text,
+.freelance-text.right-flow {
+  z-index: 50 !important;
+}
+
+
 @font-face {
   font-family: 'Distill Expanded';
   src: url('font.woff2') format('woff2'),
@@ -189,111 +219,9 @@ body.non-fullscreen {
   z-index: 90 !important; /* keep lines visible throughout the slide */
 }
 
-
-
-/* BUGFIX 2025-07-04 (z‑index lift): keep job & freelance labels above mask layers */
+/* Ensure job-text spans stack correctly under masks */
 .job-text,
-.freelance-text{
-  z-index:110 !important; /* above .layer-one (100) */
+.job-text.right-flow {
+  z-index: 150;
 }
 
-
-/* BUGFIX 2025-07-04c (layer ordering): keep job & freelance text UNDER mask columns but above base */
-.job-text,
-.freelance-text{
-  z-index: 99 !important; /* below .layer-one/2/3 (100) but above most content */
-}
-
-.custom-text.job-item{
-  z-index: 99 !important; /* ensure headings slide under left mask */
-}
-
-
-/* FINAL STACK FIX 2025-07-04e */
-/* 1. Lock scrollbars while on this page */
-body.non-fullscreen {
-  overflow:hidden !important;
-}
-
-/* 2. Definitive z-index stack */
-.layer-one,
-.layer-two,
-.layer-three{
-  z-index:120 !important;   /* Top white mask strips */
-}
-
-.job-text,
-.freelance-text,
-.job-line,
-.freelance-line{
-  z-index:110 !important;   /* Labels & thin gray lines: visible, but under masks */
-}
-
-.custom-text.job-item,
-.custom-line.job-item{
-  z-index:100 !important;   /* Left-column headings */
-}
-
-
-/* FINAL STACK FIX 2025-07-04f */
-/* Lock viewport: remove both scrollbars every time Jobs page is mounted */
-body.non-fullscreen{
-  overflow:hidden !important; /* priority */
-}
-
-/* Layer hierarchy (left → right masks) */
-.layer-one,
-.layer-two{
-  z-index:110 !important;   /* cover left & middle columns */
-}
-.layer-three{
-  z-index:120 !important;   /* rightmost mask, stays above everything else */
-}
-
-/* Sliding labels & counters: appear above masks 1–2, tuck under mask 3 */
-.job-text,
-.freelance-text,
-.job-line,
-.freelance-line{
-  z-index:111 !important;
-}
-
-/* Left‑column headings: remain beneath mask #1 */
-.custom-text.job-item,
-.custom-line.job-item{
-  z-index:100 !important;
-}
-
-
-/* FINAL STACK FIX 2025-07-04g */
-/* Ensure scrollbars are removed via body.non-fullscreen */
-body.non-fullscreen {
-  overflow: hidden !important;
-}
-
-/* Mask layers ordering */
-.layer-one {
-  z-index: 110 !important; /* left mask */
-}
-
-.layer-two {
-  z-index: 112 !important; /* middle mask, above job labels */
-}
-
-.layer-three {
-  z-index: 120 !important; /* right mask, always on top */
-}
-
-/* Job & freelance labels + lines: above layer-one, below layer-two */
-.job-text,
-.freelance-text,
-.job-line,
-.freelance-line {
-  z-index: 111 !important;
-}
-
-/* Left column headings stay beneath layer-one */
-.custom-text.job-item,
-.custom-line.job-item {
-  z-index: 100 !important;
-}

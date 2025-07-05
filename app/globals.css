@@ -1,3 +1,40 @@
+/* Allow overflow (so slides can move) but hide scrollbars */
+html, body {
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+html {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Slide text layers under UI masks */
+.item-text,
+.item-text.right-flow,
+.center-text,
+.center-text.right-flow,
+.job-text,
+.job-text.right-flow,
+.freelance-text,
+.freelance-text.right-flow {
+  z-index: 50 !important;
+}
+
+html, body {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 /* original styles copied into public folders */
 /* ----- IOUL global layering fix July 3, 2025 -----
    Ensures legacy pages render with proper stacking order and selectable text
@@ -27,4 +64,15 @@
 .content-text{
   user-select:text !important;
   z-index:101 !important; /* above most masks & lines */
+}/* Ensure slide-out text spans stack correctly under masks */
+.item-text,
+.item-text.right-flow,
+.center-text,
+.center-text.right-flow,
+.job-text,
+.job-text.right-flow,
+.freelance-text,
+.freelance-text.right-flow {
+  z-index: 150 !important;
 }
+

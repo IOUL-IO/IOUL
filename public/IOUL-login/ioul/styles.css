@@ -1,3 +1,20 @@
+/* Hide scrollbars but allow scrolling */
+html, body {
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+html {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 @font-face {
     font-family: 'Distill Expanded';
     src: url('font.woff2') format('woff2'),

@@ -1,3 +1,20 @@
+/* Hide scrollbars but allow scrolling */
+html, body {
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+html {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* original styles copied into public folders */
 /* ----- IOUL global layering fix July 3, 2025 -----
    Ensures legacy pages render with proper stacking order and selectable text

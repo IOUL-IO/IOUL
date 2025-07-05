@@ -856,9 +856,6 @@ const GAP = 10;                   // horizontal shift in vw
   const toVw = px => px / vw();
   const toVh = px => px / vh();
 
-  // Layer reference
-  const layerThree = document.querySelector('.layer-three');
-
   // Groups
   const itemEls   = [...document.querySelectorAll('.item-text'),  ...document.querySelectorAll('.item-line')];
   const centerEls = [...document.querySelectorAll('.center-text'),...document.querySelectorAll('.center-line')];
@@ -892,15 +889,13 @@ const GAP = 10;                   // horizontal shift in vw
   }
 
   /* ---------------- Forward (→) transitions ---------------- */
-  function toStage1() {
-    layerThree.style.zIndex = '1'; // show items
+  function toStage1() { // show items
     animating = true;
     move(itemEls, -DIST);
     setTimeout(() => { animating = false; itemStage = 1; }, DUR);
   }
 
-  function toStage2() {
-    layerThree.style.zIndex = \'1\'; // shift items further + reveal center with stagger
+  function toStage2() { // shift items further + reveal center with stagger
     animating = true;
     move(itemEls, -2 * DIST - GAP);                       // items out first
     move(centerEls, -DIST - GAP); // center follows
@@ -915,8 +910,7 @@ const GAP = 10;                   // horizontal shift in vw
     setTimeout(() => { animating=false; itemStage=1; centerStage=0; }, DUR + STAGGER);
   }
 
-  function backToStage0() {
-    layerThree.style.zIndex = '100'; // hide items
+  function backToStage0() { // hide items
     animating = true;
     move(itemEls, 0);
     setTimeout(() => { animating=false; itemStage=0; }, DUR);

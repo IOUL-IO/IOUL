@@ -175,9 +175,6 @@ const GAP = 10;                   // horizontal shift in vw
   const toVw = px => px / vw();
   const toVh = px => px / vh();
 
-  // Layer reference
-  const layerThree = document.querySelector('.layer-three');
-
   // Groups
   const jobEls   = [    ...document.querySelectorAll('.job-text'),
     ...document.querySelectorAll('.job-line') ];
@@ -213,18 +210,16 @@ const GAP = 10;                   // horizontal shift in vw
   }
 
   /* ---------------- Forward (→) transitions ---------------- */
-  function toStage1() {
-    layerThree.style.zIndex = '1'; // show items
+  function toStage1() { // show items
     animating = true;
     move(jobEls, -DIST);
     jobShifted = true; /* --- JobShift patch 2025-06-11 --- */
     setTimeout(() => { animating = false; jobStage = 1; }, DUR);
   }
 
-  function toStage2() {
-    layerThree.style.zIndex = \'1\'; // shift items further + reveal center with stagger
+  function toStage2() { // shift items further + reveal center with stagger
     animating = true;
-    move(jobEls, -2 * DIST - GAP);                       // items out first
+    move(jobEls, -DIST - GAP);                       // items out first
     jobShifted = true; /* --- JobShift patch 2025-06-11 --- */
     move(freelanceEls, -DIST - GAP); // center follows
     setTimeout(() => { animating=false; jobStage=2; freelanceStage=1; }, DUR + STAGGER);
@@ -238,8 +233,7 @@ const GAP = 10;                   // horizontal shift in vw
     setTimeout(() => { animating=false; jobStage=1; freelanceStage=0; jobShifted=false; /* --- JobShift patch --- */ }, DUR + STAGGER);
   }
 
-  function backToStage0() {
-    layerThree.style.zIndex = '100'; // hide items
+  function backToStage0() { // hide items
     animating = true;
     move(jobEls, 0);
     setTimeout(() => { animating=false; jobStage=0; jobShifted=false; /* --- JobShift patch --- */ }, DUR);

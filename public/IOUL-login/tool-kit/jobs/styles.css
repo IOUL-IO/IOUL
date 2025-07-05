@@ -189,3 +189,110 @@ body.non-fullscreen {
   z-index: 90 !important; /* keep lines visible throughout the slide */
 }
 
+
+
+/* BUGFIX 2025-07-04 (z‑index lift): keep job & freelance labels above mask layers */
+.job-text,
+.freelance-text{
+  z-index:110 !important; /* above .layer-one (100) */
+}
+
+
+/* BUGFIX 2025-07-04c (layer ordering): keep job & freelance text UNDER mask columns but above base */
+.job-text,
+.freelance-text{
+  z-index: 99 !important; /* below .layer-one/2/3 (100) but above most content */
+}
+
+.custom-text.job-item{
+  z-index: 99 !important; /* ensure headings slide under left mask */
+}
+
+
+/* FINAL STACK FIX 2025-07-04e */
+/* 1. Lock scrollbars while on this page */
+body.non-fullscreen {
+  overflow:hidden !important;
+}
+
+/* 2. Definitive z-index stack */
+.layer-one,
+.layer-two,
+.layer-three{
+  z-index:120 !important;   /* Top white mask strips */
+}
+
+.job-text,
+.freelance-text,
+.job-line,
+.freelance-line{
+  z-index:110 !important;   /* Labels & thin gray lines: visible, but under masks */
+}
+
+.custom-text.job-item,
+.custom-line.job-item{
+  z-index:100 !important;   /* Left-column headings */
+}
+
+
+/* FINAL STACK FIX 2025-07-04f */
+/* Lock viewport: remove both scrollbars every time Jobs page is mounted */
+body.non-fullscreen{
+  overflow:hidden !important; /* priority */
+}
+
+/* Layer hierarchy (left → right masks) */
+.layer-one,
+.layer-two{
+  z-index:110 !important;   /* cover left & middle columns */
+}
+.layer-three{
+  z-index:120 !important;   /* rightmost mask, stays above everything else */
+}
+
+/* Sliding labels & counters: appear above masks 1–2, tuck under mask 3 */
+.job-text,
+.freelance-text,
+.job-line,
+.freelance-line{
+  z-index:111 !important;
+}
+
+/* Left‑column headings: remain beneath mask #1 */
+.custom-text.job-item,
+.custom-line.job-item{
+  z-index:100 !important;
+}
+
+
+/* FINAL PATCH 2025-07-05 definitive layer stack */
+/* Lock viewport */
+html, body {
+  overflow:hidden !important;
+}
+
+/* White mask columns */
+.layer-one {
+  z-index:105 !important;
+}
+.layer-two {
+  z-index:110 !important;
+}
+.layer-three {
+  z-index:120 !important;
+}
+
+/* Job & Freelance labels & lines must be under mask-two but above mask-one */
+.job-text,
+.job-line,
+.freelance-text,
+.freelance-line {
+  z-index:108 !important;
+}
+
+/* Custom job column headers under left mask */
+.custom-text.job-item,
+.custom-line.job-item {
+  z-index:101 !important;
+}
+/* END FINAL PATCH 2025-07-05 */

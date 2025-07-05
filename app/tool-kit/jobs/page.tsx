@@ -3,8 +3,206 @@
     import React, { useEffect } from 'react';
 
     export default function Page() {
+      
       useEffect(() => {
-        // TODO: any JS init from legacy project can be ported here
+        // legacy scripts injection
+        const script = document.createElement('script');
+        script.id = 'legacy-jobs-script';
+        script.textContent = `/* --- Updated staggered gap logic injected by ChatGPT on 2025‑06‑02 --- */
+document.addEventListener('DOMContentLoaded', () => {
+  const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger (right edge)
+  const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
+  const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
+  const DIST    = 60;
+const GAP = 10;                   // horizontal shift in vw
+  const DUR     = 600;                  // transition duration in ms
+  const STAGGER = 0;                  // delay between outgoing and incoming groups in ms
+
+  // Helper unit conversions
+  const vw = () => window.innerWidth / 100;
+  const vh = () => window.innerHeight / 100;
+  const toVw = px => px / vw();
+  const toVh = px => px / vh();
+
+  // Groups
+  const jobEls   = [    ...document.querySelectorAll('.job-text'),
+    ...document.querySelectorAll('.job-line') ];
+  const freelanceEls = [...document.querySelectorAll('.freelance-text'), ...document.querySelectorAll('.freelance-line')];
+
+  // Cache base positions
+  [...jobEls, ...freelanceEls].forEach(el => {
+    if (!el.dataset.baseLeftVw) {
+      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      el.dataset.baseLeftVw = toVw(leftPx);
+    }
+  });
+
+  // Stage flags
+  let jobStage   = 1;  // 0 = hidden, 1 = visible (left column), 2 = shifted left / clipped
+  let jobShifted = false; /* --- JobShift patch 2025-06-11 --- */
+  let freelanceStage = 0;  // 0 = hidden, 1 = visible (center column)
+  let animating   = false;
+
+  // External dependency: account slide logic (unchanged)
+  const getAccountSlid = () => {
+    const acc = document.querySelector('.account-text');
+    return acc && acc.dataset.slid === 'true';
+  };
+
+  // Reusable animator
+  function move(els, offset) {
+    els.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left       = (base + offset) + 'vw';
+    });
+  }
+
+  /* ---------------- Forward (→) transitions ---------------- */
+  function toStage1() { // show items
+    animating = true;
+    move(jobEls, -DIST);
+    jobShifted = true; /* --- JobShift patch 2025-06-11 --- */
+    setTimeout(() => { animating = false; jobStage = 1; }, DUR);
+  }
+
+  function toStage2() { // shift items further + reveal center with stagger
+    animating = true;
+    move(jobEls, -DIST - GAP);                       // items out first
+    jobShifted = true; /* --- JobShift patch 2025-06-11 --- */
+    move(freelanceEls, -DIST - GAP); // center follows
+    setTimeout(() => { animating=false; jobStage=2; freelanceStage=1; }, DUR + STAGGER);
+  }
+
+  /* ---------------- Reverse (←) transitions ---------------- */
+  function backToStage1() { // hide center, restore items with stagger
+    animating = true;
+    move(freelanceEls, 0);                              // center leaves first
+    move(jobEls, 0); // items return after delay
+    setTimeout(() => { animating=false; jobStage=1; freelanceStage=0; jobShifted=false; /* --- JobShift patch --- */ }, DUR + STAGGER);
+  }
+
+  function backToStage0() { // hide items
+    animating = true;
+    move(jobEls, 0);
+    setTimeout(() => { animating=false; jobStage=0; jobShifted=false; /* --- JobShift patch --- */ }, DUR);
+  }
+
+  /* ---------------- Click handling ---------------- */
+  document.addEventListener('click', e => {
+    if (animating) return;
+
+    const xVw = toVw(e.clientX);
+    const yVh = toVh(e.clientY);
+    const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
+    const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
+
+    if (inFwd) {
+      if (getAccountSlid()) return;             // hand off to account logic
+      if (jobStage === 0) {
+        toStage1(); e.stopPropagation();
+      } else if (jobStage === 1 && freelanceStage === 0) {
+        toStage2(); e.stopPropagation();
+      }
+    } else if (inRev) {
+      if (freelanceStage === 1) {
+        backToStage1(); e.stopPropagation();
+      } else if (jobStage === 1 && freelanceStage === 0 && jobShifted) { /* --- JobShift patch --- */
+        backToStage0(); e.stopPropagation();
+      }
+    }
+  }, true);
+});
+  /* --- JobShift patch 2025-06-11 --- */
+
+
+/* ---- Item clipping script injected by ChatGPT on 2025‑05‑29 (v3) ---- */
+document.addEventListener('DOMContentLoaded', () => {
+  const HIDE_LEFT_VW = 28.86; // Updated threshold
+  const TOP_MIN_VH   = 28.5;  // Vertical bounds
+  const TOP_MAX_VH   = 84;
+
+  const items = [    ...document.querySelectorAll('.job-text'),
+    ...document.querySelectorAll('.job-line') ];
+
+  const toVw = px => px / (window.innerWidth  / 100);
+  const toVh = px => px / (window.innerHeight / 100);
+
+  function update() {
+    items.forEach(el => {
+      // Skip divider lines so they stay visible throughout the slide
+      if (el.classList.contains('job-line') || el.classList.contains('freelance-line')) return;
+      const rect = el.getBoundingClientRect();
+      const l = toVw(rect.left);
+      const t = toVh(rect.top);
+      const hide = l < HIDE_LEFT_VW && t >= TOP_MIN_VH && t <= TOP_MAX_VH;
+      el.style.opacity       = hide ? '0' : '';
+      el.style.pointerEvents = hide ? 'none' : '';
+    });
+  }
+
+  function loop() {
+    update();
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  window.addEventListener('resize', update);
+});
+  /* --- JobShift patch 2025-06-11 --- */
+
+
+const EDGE_MARGIN = 11; // px from any edge
+document.addEventListener('click', ({clientX:x, clientY:y}) => {
+  const {innerWidth:w, innerHeight:h} = window;
+  const nearEdge = (x <= EDGE_MARGIN || x >= w - EDGE_MARGIN ||
+                    y <= EDGE_MARGIN || y >= h - EDGE_MARGIN);
+  if (nearEdge && !document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  }
+});
+  /* --- JobShift patch 2025-06-11 --- */
+
+
+// Ledger & Community slide logic v1
+(function(){
+    const ledgerItems = document.querySelectorAll('.job-item');
+    const communityContainer = document.querySelector('.freelance-items-container');
+    const zeroContainer = document.querySelector('.zero-items-container');
+    const triggerArea = document.getElementById('ledger-trigger-area');
+    const resetArea = document.getElementById('ledger-reset-area');
+    let slid = false;
+
+    function slideOut(){
+        ledgerItems.forEach(el => el.classList.add('slide-left-40'));
+        if(communityContainer) communityContainer.classList.add('slide-left-29');
+        if(zeroContainer) zeroContainer.classList.add('slide-left-29');
+        slid = true;
+    }
+
+    function slideBack(){
+        ledgerItems.forEach(el => el.classList.remove('slide-left-40'));
+        if(communityContainer) communityContainer.classList.remove('slide-left-29');
+        if(zeroContainer) zeroContainer.classList.remove('slide-left-29');
+        slid = false;
+    }
+
+    if(triggerArea){
+        triggerArea.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if(!slid) slideOut();
+        });
+    }
+    if(resetArea){
+        resetArea.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if(slid) slideBack();
+        });
+    }
+})();
+  /* --- JobShift patch 2025-06-11 --- */`;
+        document.body.appendChild(script);
+        return () => document.getElementById('legacy-jobs-script')?.remove();
       }, []);
       return (
         <div dangerouslySetInnerHTML={ { __html: `

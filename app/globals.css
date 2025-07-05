@@ -1,12 +1,3 @@
-/* Lock viewport and hide scrollbars */
-html, body {
-  overflow: hidden;
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
 /* original styles copied into public folders */
 /* ----- IOUL global layering fix July 3, 2025 -----
    Ensures legacy pages render with proper stacking order and selectable text
@@ -36,15 +27,4 @@ html, body {
 .content-text{
   user-select:text !important;
   z-index:101 !important; /* above most masks & lines */
-}/* Ensure slide-out text spans stack correctly under masks */
-.item-text,
-.item-text.right-flow,
-.center-text,
-.center-text.right-flow,
-.job-text,
-.job-text.right-flow,
-.freelance-text,
-.freelance-text.right-flow {
-  z-index: 150 !important;
 }
-

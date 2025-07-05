@@ -4,12 +4,10 @@
 
     export default function Page() {
       useEffect(() => {
-  document.documentElement.setAttribute("data-lock-scroll", "");
-  return () => {
-    document.documentElement.removeAttribute("data-lock-scroll");
-  };
-}, []);
-return (
+        document.body.classList.add('non-fullscreen');
+        return () => { document.body.classList.remove('non-fullscreen'); };
+      }, []);
+      return (
         <div dangerouslySetInnerHTML={ { __html: `
 
   <!-- Fixed white mask layers -->

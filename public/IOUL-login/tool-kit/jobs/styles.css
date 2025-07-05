@@ -189,3 +189,10 @@ body.non-fullscreen {
   z-index: 90 !important; /* keep lines visible throughout the slide */
 }
 
+
+
+/* BUGFIX 2025-07-04: ensure job & freelance text above mask layers */
+.job-text,
+.freelance-text{
+  z-index: 90 !important;
+}

@@ -8,6 +8,7 @@
 
 /* Global reset */
 * { margin:0; padding:0; box-sizing:border-box; }
+html, body { overflow:hidden; }
 
 body.non-fullscreen {
   background:#ffffff;
@@ -49,7 +50,7 @@ body.non-fullscreen {
 
 /* Containers simply hold the text */
 .heading-container,
-.account-container { position:absolute; overflow:visible; }
+.account-container { position:absolute; overflow:hidden; }
 
 /* Divider / custom line */
 .custom-line {
@@ -255,7 +256,7 @@ body.non-fullscreen{
 .freelance-text,
 .job-line,
 .freelance-line{
-  z-index: 90 !important;
+  z-index:111 !important;
 }
 
 /* Left‑column headings: remain beneath mask #1 */
@@ -270,9 +271,4 @@ body.non-fullscreen{
   z-index: 150 !important;
   opacity: 1 !important;
   visibility: visible !important;
-}
-
-/* Hide scrollbars for jobs page */
-.jobs-page {
-  overflow: hidden !important;
 }

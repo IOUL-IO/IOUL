@@ -265,34 +265,53 @@ body.non-fullscreen{
 }
 
 
-/* FINAL PATCH 2025-07-05 definitive layer stack */
-/* Lock viewport */
-html, body {
-  overflow:hidden !important;
+/* ASSISTANT PATCH 2025-07-05 (definitive) 
+   Goal: 
+   1. Keep all job/freelance texts visible at rest
+   2. Clip job/freelance texts under middle (.layer-two) and right (.layer-three) masks
+   3. Preserve left-column mask behaviour
+   4. Remove scrollbars
+*/
+
+/* Viewport lock */
+html, body { overflow:hidden !important; }
+
+/* ----- Mask Columns ----- */
+/* Left mask unchanged */
+.layer-one { 
+    left: 0;
+    width: 6.37vw;               /* original width */
+    z-index: 105 !important;     /* sits above headers, below labels */
 }
 
-/* White mask columns */
-.layer-one {
-  z-index:105 !important;
-}
+/* Middle mask slightly narrowed so labels (left:36vw) are visible until slide begins */
 .layer-two {
-  z-index:110 !important;
-}
-.layer-three {
-  z-index:120 !important;
+    left: 28.87vw;               /* original start */
+    width: 6.80vw !important;    /* ends at 35.67vw (< 36vw) */
+    z-index: 110 !important;     /* above labels for clipping */
 }
 
-/* Job & Freelance labels & lines must be under mask-two but above mask-one */
+/* Right mask unchanged, ensures clipping on exit */
+.layer-three {
+    left: 94.17vw;
+    width: 5.83vw;
+    z-index: 120 !important;
+}
+
+/* ----- Sliding Elements ----- */
+/* Job & freelance labels/lines: appear above layer-one, but under layer-two */
 .job-text,
 .job-line,
 .freelance-text,
 .freelance-line {
-  z-index:108 !important;
+    z-index: 108 !important;
 }
 
-/* Custom job column headers under left mask */
+/* Left‑column headings stay under layer-one */
 .custom-text.job-item,
 .custom-line.job-item {
-  z-index:101 !important;
+    z-index: 101 !important;
 }
-/* END FINAL PATCH 2025-07-05 */
+
+/* END ASSISTANT PATCH 2025-07-05 */
+/* END ASSISTANT PATCH */

@@ -256,7 +256,7 @@ body.non-fullscreen{
 .freelance-text,
 .job-line,
 .freelance-line{
-  z-index:  99 !important; /* under layer-two mask (110) */;
+  z-index:111 !important;
 }
 
 /* Left‑column headings: remain beneath mask #1 */
@@ -272,6 +272,3 @@ body.non-fullscreen{
   opacity: 1 !important;
   visibility: visible !important;
 }
-
-/* Prevent all scrollbars on Jobs page */
-html, body { overflow:hidden !important; }

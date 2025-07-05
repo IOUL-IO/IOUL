@@ -1,3 +1,7 @@
+html, body {
+  overflow: hidden;
+}
+
 @font-face {
   font-family: 'Distill Expanded';
   src: url('font.woff2') format('woff2'),
@@ -189,18 +193,3 @@ body.non-fullscreen {
   z-index: 90 !important; /* keep lines visible throughout the slide */
 }
 
-
-
-/* VISIBILITY FIX 2025-07-04j */
-/* Narrow left mask so first column labels are initially visible */
-.layer-one{
-  width:35vw !important;   /* original ~? trimmed */
-}
-
-/* Shift middle mask accordingly */
-.layer-two{
-  left:35vw !important;    /* start where layer-one ends */
-  width:7vw !important;    /* keep same thickness */
-}
-
-/* Right mask keeps its existing left & width */

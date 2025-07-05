@@ -897,7 +897,7 @@ const GAP = 10;                   // horizontal shift in vw
 
   function toStage2() { // shift items further + reveal center with stagger
     animating = true;
-    move(itemEls, -2 * DIST - GAP);                       // items out first
+    move(itemEls, -DIST - GAP);                       // items out first
     move(centerEls, -DIST - GAP); // center follows
     setTimeout(() => { animating=false; itemStage=2; centerStage=1; }, DUR + STAGGER);
   }

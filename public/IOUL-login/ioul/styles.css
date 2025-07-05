@@ -1,3 +1,7 @@
+html, body {
+  overflow: hidden;
+}
+
 @font-face {
     font-family: 'Distill Expanded';
     src: url('font.woff2') format('woff2'),

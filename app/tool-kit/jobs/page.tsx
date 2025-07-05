@@ -6,22 +6,7 @@
       useEffect(() => {
         // TODO: any JS init from legacy project can be ported here
       }, []);
-      
-useEffect(() => {
-  // lock scrollbars when Jobs page mounts
-  const origHtmlOverflow = document.documentElement.style.overflow;
-  const origBodyOverflow = document.body.style.overflow;
-  document.body.classList.add('non-fullscreen');
-  document.documentElement.style.overflow = 'hidden';
-  document.body.style.overflow = 'hidden';
-  return () => {
-    document.body.classList.remove('non-fullscreen');
-    document.documentElement.style.overflow = origHtmlOverflow;
-    document.body.style.overflow = origBodyOverflow;
-  };
-}, []);
-
-  return (
+      return (
         <div dangerouslySetInnerHTML={ { __html: `
 
   <!-- Fixed white mask layers -->

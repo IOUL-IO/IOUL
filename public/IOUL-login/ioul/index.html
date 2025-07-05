@@ -301,7 +301,8 @@
       if (!pageFadedIn) { fadeInPage(); }
       document.removeEventListener('mousemove', onFirstMouseMove);
     });
-    const EDGE_MARGIN = 11;
+    const layerThree = document.querySelector('.layer-three');
+  const EDGE_MARGIN = 11;
     document.addEventListener('click', (event) => {
       const { clientX: x, clientY: y } = event;
       const { innerWidth: width, innerHeight: height } = window;
@@ -845,7 +846,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
-  const DIST    = 60;
+  const DIST = 60;
 const GAP = 10;                   // horizontal shift in vw
   const DUR     = 600;                  // transition duration in ms
   const STAGGER = 0;                  // delay between outgoing and incoming groups in ms
@@ -890,14 +891,20 @@ const GAP = 10;                   // horizontal shift in vw
 
   /* ---------------- Forward (→) transitions ---------------- */
   function toStage1() { // show items
+    // temporarily lower right mask so all texts stay visible
+    layerThree.style.zIndex = 1;
+
     animating = true;
     move(itemEls, -DIST);
     setTimeout(() => { animating = false; itemStage = 1; }, DUR);
   }
 
   function toStage2() { // shift items further + reveal center with stagger
+    // restore mask when items slide away
+    layerThree.style.zIndex = 100;
+
     animating = true;
-    move(itemEls, -2 * DIST - GAP);                       // items out first
+    move(itemEls, -DIST - GAP);                       // items out first
     move(centerEls, -DIST - GAP); // center follows
     setTimeout(() => { animating=false; itemStage=2; centerStage=1; }, DUR + STAGGER);
   }

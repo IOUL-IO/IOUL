@@ -35,3 +35,30 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+
+/* IOUL Z-index stacking fix: masks, guidelines, sliding UI, content */
+body.non-fullscreen {
+  overflow:hidden !important;
+}
+.layer-one,
+.layer-two,
+.layer-three {
+  z-index: 110 !important;
+}
+.line {
+  z-index: 115 !important;
+}
+.item-line,
+.center-line,
+.item-text,
+.center-text {
+  z-index: 120 !important;
+}
+/* Ensure custom text and content always visible */
+.content-text,
+.custom-text {
+  z-index: 150 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}

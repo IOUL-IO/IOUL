@@ -31,13 +31,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" translate="no" className="notranslate">
+    <html lang="en">
       <head>
         {legacyCssFiles.map((href) => (
           <link key={href} rel="stylesheet" href={href} />
         ))}
       </head>
-      <body className="non-fullscreen" translate="no">
+      <body>
         {children}
         <LegacyScripts />
       </body>

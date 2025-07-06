@@ -16,7 +16,14 @@
   --slide-dist:22.59vw;            /* primary horizontal shift */
 }
 
-body.non-fullscreen{background:#fff;min-height:100vh;min-width:100vw;overflow:hidden;}
+body.non-fullscreen {
+  background: #fff;
+  min-height: 100vh;
+  min-width: 100vw;
+  /* allow horizontal overflow, keep vertical scroll hidden */
+  overflow-x: visible;
+  overflow-y: hidden;
+}
 body.non-fullscreen .username{top:35.17vh;}
 body.non-fullscreen .password{top:43.17vh;}
 
@@ -405,4 +412,14 @@ body.stage-util-pre .help-text{
 .layer-two::after{
   top:calc(43.17vh - 2.5vh);
   height:5vh;
+}
+
+
+/* bring item- and center-text labels above grid lines */
+.item-text,
+.item-text.right-flow,
+.center-text,
+.center-text.right-flow {
+  position: absolute !important;
+  z-index: 9999 !important;
 }

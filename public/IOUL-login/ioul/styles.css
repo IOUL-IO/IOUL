@@ -520,7 +520,3 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
-/* Added z-index to ensure texts appear above lines */
-.item-text, .center-text, .account-text {
-    z-index: 2 !important;
-}

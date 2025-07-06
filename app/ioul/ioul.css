@@ -1,41 +1,30 @@
-
-/* ioul complete fixes */
-
-/* no scrollbars */
-html, body {
+.clipped {
   overflow: hidden;
-  margin: 0;
-  padding: 0;
-}
-
-/* mask layers */
-#layer-2, #layer-3 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
-}
-
-/* containers clipped at CLIP_VW */
-.items-container, .center-container, .community-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 36vw;
-  height: 100vh;
-  overflow: hidden;
-}
-
-/* inner groups slide under masks */
-.items-inner, .center-inner, .community-inner {
   position: relative;
+  width: 36vw;
+}
+.items-group, .centers-group {
+  position: absolute;
+  top: 35.4vh;
+  left: 35.41vw;
+  transition: transform 0.7s ease;
+}
+.slide-in-items {
+  transform: translateX(-70vw);
+}
+.slide-items-under {
+  transform: translateX(-70vw);
+  z-index: 0;
+}
+.slide-in-centers {
+  transform: translateX(-70vw);
   z-index: 1;
 }
-
-/* trigger button */
-.trigger-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 20;
+.mail-group {
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
+.mail-visible {
+  opacity: 1;
+}
+/* Add calendar-grid and dashed-line styles as needed */

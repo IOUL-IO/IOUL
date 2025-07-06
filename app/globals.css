@@ -36,25 +36,37 @@
   visibility: visible !important;
 }
 
-/* Legacy item and center text & line styles to match original */
-/* Slide labels */
-.item-text, .center-text {
-  position: absolute;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111111 !important;
-  letter-spacing: 0.28vw;
-  font-size: 0.47rem;
-  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
-  line-height: 1.6;
-  overflow: visible;
-  transition: left 0.6s ease, transform 0.6s ease;
-  z-index: 111 !important;
+
+/* === Z-index fixes inspired by Jobs page === */
+/* Ensure mask layers stack correctly */
+.layer-one,
+.layer-two,
+.layer-three {
+  z-index: 100 !important;
 }
-/* Slide lines */
-.item-line, .center-line {
-  position: absolute;
-  height: 1px;
-  background-color: rgba(230, 230, 230, 0.28) !important;
-  transition: left 0.6s ease, transform 0.6s ease;
-  z-index: 111 !important;
+
+.layer-four {
+  z-index: 2 !important;
+}
+
+/* Ensure item & center lines slide ABOVE mask layers */
+.item-line,
+.center-line {
+  z-index: 102 !important;
+}
+
+/* Ensure item & center texts slide ABOVE mask layers and lines */
+.item-text,
+.center-text {
+  z-index: 110 !important;
+}
+
+/* Global override: make all custom and content text visible above everything */
+.content-text,
+.custom-text,
+.item-text,
+.center-text {
+  z-index: 150 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }

@@ -520,3 +520,8 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
+/* Override hide logic for item and center elements */
+.item-text, .item-line, .center-text, .center-line {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}

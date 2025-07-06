@@ -520,3 +520,12 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
+/* slide-in text & lines must float above mask layers */
+.item-text,
+.center-text,
+.item-line,
+.center-line {
+  z-index: 101 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}

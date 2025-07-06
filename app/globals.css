@@ -29,9 +29,16 @@
   z-index:101 !important; /* above most masks & lines */
 }
 
-/* PATCHED content-text visibility */
-.content-text, .custom-text {
+/* PATCHED content-text and slide-texts visibility */
+.content-text,
+.custom-text,
+.item-text,
+.center-text,
+.item-line,
+.center-line {
   z-index: 150 !important;
   opacity: 1 !important;
   visibility: visible !important;
+  user-select: text !important;
 }
+

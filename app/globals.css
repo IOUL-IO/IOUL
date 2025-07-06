@@ -35,3 +35,16 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+/* ────────────────────────────────────────────── */
+/* override to force visibility of texts & lines */
+.item-text,
+.item-line,
+.center-text,
+.center-line,
+.mail-text,
+.mail-line {
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 150 !important;
+}

@@ -520,26 +520,3 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
-
-/* Stacking fix: bring community-items and center content above masks */
-.community-items-container,
-.other-content {
-    z-index: 200 !important;
-}
-
-
-/* Reset stacking for specific containers back to defaults */
-.community-items-container { z-index: 1 !important; }
-.other-content { z-index: 3 !important; }
-
-/* Unmask only the initial row items above layer-three mask */
-.item-text[style*="top:35.4vh"],
-.item-text[style*="top:41.6vh"],
-.item-text.right-flow[style*="top:35.4vh"],
-.item-text.right-flow[style*="top:41.6vh"],
-.center-text[style*="top:35.4vh"],
-.center-text[style*="top:41.6vh"],
-.center-text.right-flow[style*="top:35.4vh"],
-.center-text.right-flow[style*="top:41.6vh"] {
-  z-index: 101 !important;
-}

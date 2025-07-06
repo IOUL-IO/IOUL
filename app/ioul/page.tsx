@@ -73,96 +73,96 @@
         <div class="line account-line" style="position:absolute; top:41.6vh; left:-24.00vw; width:57.8vw; height:1px; background-color: rgba(230, 230, 230, 0.28); z-index:1;"></div>
       </div>
 <!-- Item lines -->
-<div class="item-line item-line-one" style="position:absolute; top:47.8vh; left:96vw; width:36vw; z-index:3;"></div>
-<div class="item-line item-line-two" style="position:absolute; top:47.8vh; left:139vw; width:14.8vw; z-index:3;"></div>
+<div class="item-line item-line-one" style="position:absolute; top:47.8vh; left:96vw; width:36vw;"></div>
+<div class="item-line item-line-two" style="position:absolute; top:47.8vh; left:139vw; width:14.8vw;"></div>
 
 
     <!-- Center lines -->
-    <div class="center-line center-line-one" style="position:absolute; top:47.8vh; left:106.0vw; width:36vw; z-index:3;"></div>
-    <div class="center-line center-line-two" style="position:absolute; top:47.8vh; left:149.0vw; width:14.8vw; z-index:3;"></div>
+    <div class="center-line center-line-one" style="position:absolute; top:47.8vh; left:106.0vw; width:36vw;"></div>
+    <div class="center-line center-line-two" style="position:absolute; top:47.8vh; left:149.0vw; width:14.8vw;"></div>
 
     <!-- Center texts -->
-    <span class="center-text" style="position:absolute; top:35.4vh; left:106.0vw; z-index:4;">UPDATES</span>
-    <span class="center-text" style="position:absolute; top:41.6vh; left:106.0vw; z-index:4;">cATALOg</span>
+    <span class="center-text" style="position:absolute; top:35.4vh; left:106.0vw;">UPDATES</span>
+    <span class="center-text" style="position:absolute; top:41.6vh; left:106.0vw;">cATALOg</span>
 
-    <span class="center-text right-flow" style="position:absolute; top:35.4vh; left:119.0vw; z-index:4;">0</span>
-    <span class="center-text right-flow" style="position:absolute; top:41.6vh; left:119.0vw; z-index:4;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:35.4vh; left:119.0vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:41.6vh; left:119.0vw;">0</span>
 
-    <span class="center-text" style="position:absolute; top:35.4vh; left:128.0vw; z-index:4;">T1cKETS</span>
-    <span class="center-text" style="position:absolute; top:41.6vh; left:128.0vw; z-index:4;">cOnTAcT</span>
+    <span class="center-text" style="position:absolute; top:35.4vh; left:128.0vw;">T1cKETS</span>
+    <span class="center-text" style="position:absolute; top:41.6vh; left:128.0vw;">cOnTAcT</span>
 
-    <span class="center-text right-flow" style="position:absolute; top:35.4vh; left:141.0vw; z-index:4;">0</span>
-    <span class="center-text right-flow" style="position:absolute; top:41.6vh; left:141.0vw; z-index:4;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:35.4vh; left:141.0vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:41.6vh; left:141.0vw;">0</span>
 
-    <span class="center-text" style="position:absolute; top:35.4vh; left:149.0vw; z-index:4;">gET APP</span>
-    <span class="center-text" style="position:absolute; top:41.6vh; left:149.0vw; z-index:4;">AP1-LOg</span>
+    <span class="center-text" style="position:absolute; top:35.4vh; left:149.0vw;">gET APP</span>
+    <span class="center-text" style="position:absolute; top:41.6vh; left:149.0vw;">AP1-LOg</span>
 
-    <span class="center-text right-flow" style="position:absolute; top:35.4vh; left:163.4vw; z-index:4;">0</span>
-    <span class="center-text right-flow" style="position:absolute; top:41.6vh; left:163.4vw; z-index:4;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:35.4vh; left:163.4vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:41.6vh; left:163.4vw;">0</span>
 
-    <span class="center-text" style="position:absolute; top:53vh; left:149.0vw; z-index:4;">LOg 0.01</span>
-    <span class="center-text" style="position:absolute; top:59.2vh; left:149.0vw; z-index:4;">LOg 0.02</span>
-    <span class="center-text" style="position:absolute; top:65.4vh; left:149.0vw; z-index:4;">LOg 0.03</span>
-    <span class="center-text" style="position:absolute; top:71.6vh; left:149.0vw; z-index:4;">LOg 0.04</span>
+    <span class="center-text" style="position:absolute; top:53vh; left:149.0vw;">LOg 0.01</span>
+    <span class="center-text" style="position:absolute; top:59.2vh; left:149.0vw;">LOg 0.02</span>
+    <span class="center-text" style="position:absolute; top:65.4vh; left:149.0vw;">LOg 0.03</span>
+    <span class="center-text" style="position:absolute; top:71.6vh; left:149.0vw;">LOg 0.04</span>
 
-    <span class="center-text right-flow" style="position:absolute; top:53vh; left:163.4vw; z-index:4;">0</span>
-    <span class="center-text right-flow" style="position:absolute; top:59.2vh; left:163.4vw; z-index:4;">0</span>
-    <span class="center-text right-flow" style="position:absolute; top:65.4vh; left:163.4vw; z-index:4;">0</span>
-    <span class="center-text right-flow" style="position:absolute; top:71.6vh; left:163.4vw; z-index:4;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:53vh; left:163.4vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:59.2vh; left:163.4vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:65.4vh; left:163.4vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:71.6vh; left:163.4vw;">0</span>
 
-    <span class="center-text" style="position:absolute; top:53vh; left:106.0vw; z-index:4;">LATEST</span>
-    <span class="center-text" style="position:absolute; top:59.2vh; left:106.0vw; z-index:4;">V1RALS</span>
+    <span class="center-text" style="position:absolute; top:53vh; left:106.0vw;">LATEST</span>
+    <span class="center-text" style="position:absolute; top:59.2vh; left:106.0vw;">V1RALS</span>
 
-    <span class="center-text right-flow" style="position:absolute; top:53vh; left:119.0vw; z-index:4;">0</span>
-    <span class="center-text right-flow" style="position:absolute; top:59.2vh; left:119.0vw; z-index:4;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:53vh; left:119.0vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:59.2vh; left:119.0vw;">0</span>
 
-    <span class="center-text" style="position:absolute; top:53vh; left:128.0vw; z-index:4;">cAREERS</span>
-    <span class="center-text" style="position:absolute; top:59.2vh; left:128.0vw; z-index:4;">ARcH1VE</span>
+    <span class="center-text" style="position:absolute; top:53vh; left:128.0vw;">cAREERS</span>
+    <span class="center-text" style="position:absolute; top:59.2vh; left:128.0vw;">ARcH1VE</span>
 
-    <span class="center-text right-flow" style="position:absolute; top:53vh; left:141.0vw; z-index:4;">0</span>
-    <span class="center-text right-flow" style="position:absolute; top:59.2vh; left:141.0vw; z-index:4;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:53vh; left:141.0vw;">0</span>
+    <span class="center-text right-flow" style="position:absolute; top:59.2vh; left:141.0vw;">0</span>
 
 
 <!-- Item texts -->
-<span class="item-text" style="position:absolute; top:35.4vh; left:96vw; z-index:4;">1ncOME</span>
-<span class="item-text" style="position:absolute; top:41.6vh; left:96vw; z-index:4;">cL1EnT</span>
+<span class="item-text" style="position:absolute; top:35.4vh; left:96vw;">1ncOME</span>
+<span class="item-text" style="position:absolute; top:41.6vh; left:96vw;">cL1EnT</span>
 
-<span class="item-text right-flow" style="position:absolute; top:35.4vh; left:109vw; z-index:4;">0</span>
-<span class="item-text right-flow" style="position:absolute; top:41.6vh; left:109vw; z-index:4;">0</span>
+<span class="item-text right-flow" style="position:absolute; top:35.4vh; left:109vw;">0</span>
+<span class="item-text right-flow" style="position:absolute; top:41.6vh; left:109vw;">0</span>
 
-<span class="item-text" style="position:absolute; top:35.4vh; left:118vw; z-index:4;">T1cKETS</span>
-<span class="item-text" style="position:absolute; top:41.6vh; left:118vw; z-index:4;">1nQU1RY</span>
+<span class="item-text" style="position:absolute; top:35.4vh; left:118vw;">T1cKETS</span>
+<span class="item-text" style="position:absolute; top:41.6vh; left:118vw;">1nQU1RY</span>
 
-<span class="item-text right-flow" style="position:absolute; top:35.4vh; left:131vw; z-index:4;">0</span>
-<span class="item-text right-flow" style="position:absolute; top:41.6vh; left:131vw; z-index:4;">0</span>
+<span class="item-text right-flow" style="position:absolute; top:35.4vh; left:131vw;">0</span>
+<span class="item-text right-flow" style="position:absolute; top:41.6vh; left:131vw;">0</span>
 
-<span class="item-text" style="position:absolute; top:35.4vh; left:139vw; z-index:4;">OnL1nE</span>
-<span class="item-text" style="position:absolute; top:41.6vh; left:139vw; z-index:4;">JO1nED</span>
+<span class="item-text" style="position:absolute; top:35.4vh; left:139vw;">OnL1nE</span>
+<span class="item-text" style="position:absolute; top:41.6vh; left:139vw;">JO1nED</span>
 
-<span class="item-text right-flow" style="position:absolute; top:35.4vh; left:153.4vw; z-index:4;">0</span>
-<span class="item-text right-flow" style="position:absolute; top:41.6vh; left:153.4vw; z-index:4;">0</span>
+<span class="item-text right-flow" style="position:absolute; top:35.4vh; left:153.4vw;">0</span>
+<span class="item-text right-flow" style="position:absolute; top:41.6vh; left:153.4vw;">0</span>
 
-<span class="item-text" style="position:absolute; top:53vh; left:139vw; z-index:4;">JOBLOg</span>
-<span class="item-text" style="position:absolute; top:59.2vh; left:139vw; z-index:4;">H1R1ngS</span>
-<span class="item-text" style="position:absolute; top:65.4vh; left:139vw; z-index:4;">ORDERS</span>
-<span class="item-text" style="position:absolute; top:71.6vh; left:139vw; z-index:4;">1nV1TES</span>
+<span class="item-text" style="position:absolute; top:53vh; left:139vw;">JOBLOg</span>
+<span class="item-text" style="position:absolute; top:59.2vh; left:139vw;">H1R1ngS</span>
+<span class="item-text" style="position:absolute; top:65.4vh; left:139vw;">ORDERS</span>
+<span class="item-text" style="position:absolute; top:71.6vh; left:139vw;">1nV1TES</span>
 
-<span class="item-text right-flow" style="position:absolute; top:53vh; left:153.4vw; z-index:4;">0</span>
-<span class="item-text right-flow" style="position:absolute; top:59.2vh; left:153.4vw; z-index:4;">0</span>
-<span class="item-text right-flow" style="position:absolute; top:65.4vh; left:153.4vw; z-index:4;">0</span>
-<span class="item-text right-flow" style="position:absolute; top:71.6vh; left:153.4vw; z-index:4;">0</span>
+<span class="item-text right-flow" style="position:absolute; top:53vh; left:153.4vw;">0</span>
+<span class="item-text right-flow" style="position:absolute; top:59.2vh; left:153.4vw;">0</span>
+<span class="item-text right-flow" style="position:absolute; top:65.4vh; left:153.4vw;">0</span>
+<span class="item-text right-flow" style="position:absolute; top:71.6vh; left:153.4vw;">0</span>
 
-<span class="item-text" style="position:absolute; top:53vh; left:96vw; z-index:4;">cL1cKS</span>
-<span class="item-text" style="position:absolute; top:59.2vh; left:96vw; z-index:4;">LEADS</span>
+<span class="item-text" style="position:absolute; top:53vh; left:96vw;">cL1cKS</span>
+<span class="item-text" style="position:absolute; top:59.2vh; left:96vw;">LEADS</span>
 
-<span class="item-text right-flow" style="position:absolute; top:53vh; left:109vw; z-index:4;">0</span>
-<span class="item-text right-flow" style="position:absolute; top:59.2vh; left:109vw; z-index:4;">0</span>
+<span class="item-text right-flow" style="position:absolute; top:53vh; left:109vw;">0</span>
+<span class="item-text right-flow" style="position:absolute; top:59.2vh; left:109vw;">0</span>
 
-<span class="item-text" style="position:absolute; top:53vh; left:118vw; z-index:4;">AD cTR</span>
-<span class="item-text" style="position:absolute; top:59.2vh; left:118vw; z-index:4;">AD cPc</span>
+<span class="item-text" style="position:absolute; top:53vh; left:118vw;">AD cTR</span>
+<span class="item-text" style="position:absolute; top:59.2vh; left:118vw;">AD cPc</span>
 
-<span class="item-text right-flow" style="position:absolute; top:53vh; left:131vw; z-index:4;">0</span>
-<span class="item-text right-flow" style="position:absolute; top:59.2vh; left:131vw; z-index:4;">0</span>
+<span class="item-text right-flow" style="position:absolute; top:53vh; left:131vw;">0</span>
+<span class="item-text right-flow" style="position:absolute; top:59.2vh; left:131vw;">0</span>
 
 
       <div class="hover-area"></div>

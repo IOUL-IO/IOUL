@@ -838,7 +838,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const DIST    = 60;
 const GAP = 10;                   // horizontal shift in vw
   const DUR     = 600;                  // transition duration in ms
-  const STAGGER = DUR;                  // delay between outgoing and incoming groups in ms
+  const STAGGER = 0;                  // delay between outgoing and incoming groups in ms
 
   // Helper unit conversions
   const vw = () => window.innerWidth / 100;
@@ -888,20 +888,16 @@ const GAP = 10;                   // horizontal shift in vw
   function toStage2() { // shift items further + reveal center with stagger
     animating = true;
     move(itemEls, -2 * DIST - GAP);                       // items out first
-    // Delay center slide
-    setTimeout(() => { move(centerEls, -DIST - GAP); }, STAGGER);
+    move(centerEls, -DIST - GAP); // center follows
     setTimeout(() => { animating=false; itemStage=2; centerStage=1; }, DUR + STAGGER);
-}, DUR + STAGGER);
   }
 
   /* ---------------- Reverse (←) transitions ---------------- */
   function backToStage1() { // hide center, restore items with stagger
     animating = true;
     move(centerEls, 0);                              // center leaves first
-    // Delay item return
-    setTimeout(() => { move(itemEls, -DIST); }, STAGGER);
+    move(itemEls, -DIST); // items return after delay
     setTimeout(() => { animating=false; itemStage=1; centerStage=0; }, DUR + STAGGER);
-}, DUR + STAGGER);
   }
 
   function backToStage0() { // hide items

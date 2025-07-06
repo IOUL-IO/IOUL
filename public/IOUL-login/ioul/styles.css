@@ -520,3 +520,24 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
+/* Z-index fixes for item and center sliding groups */
+.item-line,
+.center-line {
+  z-index: 3 !important;
+}
+
+.item-text,
+.center-text {
+  z-index: 4 !important;
+}
+
+/* BUGFIX 2025-07-05: ensure item & center lines and texts slide above mask layers */
+.item-line, .center-line {
+  z-index: 101 !important;
+}
+
+.item-text, .center-text {
+  z-index: 102 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}

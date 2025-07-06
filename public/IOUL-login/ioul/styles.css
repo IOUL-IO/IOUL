@@ -16,6 +16,7 @@ body.non-fullscreen {
     background-color: #ffffff;
     min-height: 100vh;
     min-width: 100vw;
+    overflow-x: visible;
     overflow: hidden;
 }
 

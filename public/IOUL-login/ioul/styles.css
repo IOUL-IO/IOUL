@@ -520,14 +520,3 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
-/* === Z-index fix: ensure item & center lines slide ABOVE mask layers === */
-.item-line,
-.center-line {
-    z-index: 90 !important; /* above .layer-one (100)? adjust as needed */
-}
-
-/* BUGFIX: keep item & center text labels ABOVE mask layers */
-.item-text,
-.center-text {
-    z-index: 110 !important; /* above mask layers */
-}

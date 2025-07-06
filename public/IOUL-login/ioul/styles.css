@@ -13,12 +13,10 @@
 }
 
 body.non-fullscreen {
-  background: #fff;
-  min-height: 100vh;
-  min-width: 100vw;
-  /* allow horizontal overflow, keep vertical scroll hidden */
-  overflow-x: visible;
-  overflow-y: hidden;
+    background-color: #ffffff;
+    min-height: 100vh;
+    min-width: 100vw;
+    overflow: hidden;
 }
 
 .layer-one {
@@ -522,12 +520,7 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
-
-/* bring item- and center-text labels above grid lines */
-.item-text,
-.item-text.right-flow,
-.center-text,
-.center-text.right-flow {
-  position: absolute !important;
-  z-index: 9999 !important;
+/* Added z-index to ensure texts appear above lines */
+.item-text, .center-text, .account-text {
+    z-index: 2 !important;
 }

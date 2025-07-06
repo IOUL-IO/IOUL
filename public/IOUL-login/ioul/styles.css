@@ -520,19 +520,3 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
-
-/* Ensure item and center texts visible above masks */
-.item-text, .center-text {
-  user-select: text !important;
-  z-index: 150 !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-/* Ensure item and center lines visible and styled */
-.item-line, .center-line {
-  position: absolute !important;
-  height: 1px !important;
-  background-color: rgba(172,172,172,0.841) !important;
-  z-index: 150 !important;
-}

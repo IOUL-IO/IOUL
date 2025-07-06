@@ -22,16 +22,27 @@
   /* allow per‑page z‑index to take precedence */
 }
 
-/* All visible text & UI above masks and selectable */
-.custom-text,
-.content-text{
-  user-select:text !important;
-  z-index:101 !important; /* above most masks & lines */
+
+
+
+
+/* Refined layer z-index assignments */
+.layer-one   { z-index: 10; }
+.layer-two   { z-index: 20; }
+.layer-three { z-index: 30; }
+.layer-four  { z-index: 40; }
+.layer-five  { z-index: 50; }
+.layer-six   { z-index: 60; }
+
+/* Calendar grid numbers and mail elements under layer-four */
+.grid-number,
+.mail-line,
+.mail-text {
+  z-index: 35 !important;
 }
 
-/* PATCHED content-text visibility */
-.content-text, .custom-text {
-  z-index: 150 !important;
-  opacity: 1 !important;
-  visibility: visible !important;
+/* Item and center texts above layer-four */
+.item-text,
+.center-text {
+  z-index: 45 !important;
 }

@@ -36,13 +36,15 @@
   visibility: visible !important;
 }
 
-
-/* Force item and center elements above mask layers */
+/* ────────────────────────────────────────────── */
+/* override to force visibility of texts & lines */
 .item-text,
 .item-line,
 .center-text,
-.center-line {
-  z-index: 150 !important;
+.center-line,
+.mail-text,
+.mail-line {
   visibility: visible !important;
-  pointer-events: auto !important;
+  opacity: 1 !important;
+  z-index: 150 !important;
 }

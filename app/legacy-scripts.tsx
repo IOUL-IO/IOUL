@@ -1,37 +1,48 @@
-
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
-export default function runSlideAnimations() {
-  useEffect(() => {
-    const itemsGroup = document.querySelector('.items-group');
-    const centersGroup = document.querySelector('.centers-group');
-    const itemTexts = document.querySelectorAll('.item-texts');
-    const centerTexts = document.querySelectorAll('.center-texts');
-    const trigger = document.querySelector('.slide-trigger');
+/**
+ * Executes all legacy <script> tags exactly once per page.
+ *  – Inline scripts are evaluated via new Function.
+ *  – External scripts are cloned and appended so the browser fetches & executes them.
+ * After execution we dispatch a synthetic DOMContentLoaded to satisfy old code.
+ */
+function runLegacyScripts() {
+  const scripts = Array.from(document.querySelectorAll('script'))
+    .filter((s) => !(s as HTMLScriptElement).dataset.legacyDone);
 
-    const slideInItems = () => {
-      itemsGroup?.classList.add('slide-in-items');
-      centersGroup?.classList.add('slide-in-centers');
-      itemTexts.forEach(text => text.style.visibility = 'visible');
-      centerTexts.forEach(text => text.style.visibility = 'visible');
-    };
-
-    const slideOutItems = () => {
-      itemsGroup?.classList.remove('slide-in-items');
-      itemsGroup?.classList.add('slide-items-under');
-      centersGroup?.classList.remove('slide-in-centers');
-    };
-
-    slideInItems();
-
-    trigger?.addEventListener('click', () => {
-      if (itemsGroup?.classList.contains('slide-in-items')) {
-        slideOutItems();
-      } else {
-        slideInItems();
+  scripts.forEach((oldEl) => {
+    const el = oldEl as HTMLScriptElement;
+    if (el.src) {
+      // External script
+      const newEl = document.createElement('script');
+      Array.from(el.attributes).forEach((attr) =>
+        newEl.setAttribute(attr.name, attr.value),
+      );
+      newEl.dataset.legacyDone = 'true';
+      document.body.appendChild(newEl);
+    } else {
+      try {
+        // eslint-disable-next-line no-new-func
+        new Function(el.textContent || '')();
+      } catch (err) {
+        console.error('Legacy inline script error:', err);
       }
-    });
-  }, []);
+      el.dataset.legacyDone = 'true';
+    }
+  });
+
+  document.dispatchEvent(new Event('DOMContentLoaded', { bubbles: true }));
+}
+
+export default function LegacyScripts() {
+  const pathname = usePathname();
+
+  useEffect(() => {
+    runLegacyScripts();
+  }, [pathname]);
+
+  return null;
 }

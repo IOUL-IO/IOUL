@@ -35,3 +35,11 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+/* Override to ensure item-text and center-text appear above masks */
+.item-text,
+.center-text {
+  z-index: 200 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}

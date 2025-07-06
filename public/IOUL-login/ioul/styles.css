@@ -16,7 +16,6 @@ body.non-fullscreen {
     background-color: #ffffff;
     min-height: 100vh;
     min-width: 100vw;
-    overflow-x: visible;
     overflow: hidden;
 }
 
@@ -520,4 +519,12 @@ body.non-fullscreen {
     z-index: 3;
     font-size: 9px !important;
   }
+}
+/* Layer and overflow fixes */
+body.non-fullscreen {
+    overflow-x: visible !important;
+    overflow-y: hidden !important;
+}
+.item-text, .item-text.right-flow, .center-text, .center-text.right-flow {
+    z-index: 999 !important;
 }

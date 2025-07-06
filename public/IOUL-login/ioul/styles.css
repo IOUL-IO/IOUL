@@ -16,8 +16,9 @@ body.non-fullscreen {
     background-color: #ffffff;
     min-height: 100vh;
     min-width: 100vw;
-    overflow-x: auto;
-    overflow-y: hidden; /* modified to allow horizontal scrolling */
+    overflow-x: visible;
+
+    overflow-y: hidden;
 }
 
 .layer-one {

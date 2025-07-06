@@ -35,38 +35,3 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
-
-
-/* === Z-index fixes inspired by Jobs page === */
-/* Ensure mask layers stack correctly */
-.layer-one,
-.layer-two,
-.layer-three {
-  z-index: 100 !important;
-}
-
-.layer-four {
-  z-index: 2 !important;
-}
-
-/* Ensure item & center lines slide ABOVE mask layers */
-.item-line,
-.center-line {
-  z-index: 102 !important;
-}
-
-/* Ensure item & center texts slide ABOVE mask layers and lines */
-.item-text,
-.center-text {
-  z-index: 110 !important;
-}
-
-/* Global override: make all custom and content text visible above everything */
-.content-text,
-.custom-text,
-.item-text,
-.center-text {
-  z-index: 150 !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}

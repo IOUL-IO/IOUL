@@ -35,3 +35,25 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+/* FINAL STACK FIX for IOUL page (Jobs page logic) */
+body.non-fullscreen {
+  overflow: hidden !important;
+}
+
+/* Mask layers: left two masks above sliding content, third mask above everything */
+.layer-one,
+.layer-two {
+  z-index: 110 !important;
+}
+.layer-three {
+  z-index: 120 !important;
+}
+
+/* Sliding texts & lines: above masks 1-2, tuck under mask 3 */
+.item-text,
+.center-text,
+.item-line,
+.center-line {
+  z-index: 111 !important;
+}

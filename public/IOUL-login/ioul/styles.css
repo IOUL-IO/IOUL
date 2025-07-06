@@ -520,13 +520,3 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
-/* Z-index fixes for item and center sliding groups */
-.item-line,
-.center-line {
-  z-index: 3 !important;
-}
-
-.item-text,
-.center-text {
-  z-index: 4 !important;
-}

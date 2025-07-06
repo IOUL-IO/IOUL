@@ -1,6 +1,7 @@
 
     "use client";
     import React, { useEffect } from 'react';
+import Script from 'next/script';
 
     export default function Page() {
       useEffect(() => {
@@ -971,5 +972,68 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 ` } } />
+<Script id="ioul-slide" strategy="afterInteractive">
+{`
+(function() {
+  let slideState = 0;
+  const moveEls = (selector, deltaVW) => {
+    document.querySelectorAll(selector).forEach(el => {
+      if (!el.dataset.origLeft) {
+        const left = parseFloat(el.style.left) || 0;
+        el.dataset.origLeft = left;
+      }
+      el.style.transition = 'transform 0.7s ease, left 0.7s ease';
+      el.style.left = (parseFloat(el.dataset.origLeft) + deltaVW) + 'vw';
+    });
+  };
+  document.addEventListener('DOMContentLoaded', () => {
+    const fwd = document.querySelector('.slide-trigger');
+    if (fwd) fwd.addEventListener('click', () => {
+      switch (slideState) {
+        case 0:
+          moveEls('.item-text, .item-line', -70);
+          slideState = 1;
+          break;
+        case 1:
+          moveEls('.item-text, .item-line', -70);
+          moveEls('.center-text, .center-line', -70);
+          moveEls('.community-items-container *:not(.custom-line), .zero-items-container *', 76.41);
+          slideState = 2;
+          break;
+        case 2:
+          moveEls('.center-text, .center-line', 70);
+          moveEls('.item-text, .item-line', 70);
+          slideState = 3;
+          break;
+        case 3:
+          moveEls('.item-text, .item-line', 70);
+          slideState = 0;
+          break;
+      }
+    });
+    const util = document.querySelector('.util-line');
+    let utilState = 0;
+    if (util) util.addEventListener('click', () => {
+      utilState = (utilState + 1) % 3;
+      document.querySelectorAll('.mail-text, .mail-line, .grid-number, .dashed-line').forEach(el => {
+        el.style.opacity = 0; el.style.visibility = 'hidden';
+      });
+      if (utilState === 1) {
+        document.querySelectorAll('.mail-text, .mail-line').forEach(el => {
+          el.style.opacity = 1; el.style.visibility = 'visible';
+        });
+      } else if (utilState === 2) {
+        document.querySelectorAll('.grid-number, .dashed-line').forEach(el => {
+          el.style.opacity = 1; el.style.visibility = 'visible';
+        });
+      } else {
+        document.querySelectorAll('.grid-number, .dashed-line').forEach(el => {
+          el.style.opacity = ''; el.style.visibility = '';
+        });
+      }
+    });
+  });
+})();
+`}
+</Script>
       );
-    }

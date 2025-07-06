@@ -899,7 +899,7 @@ const GAP = 10;                   // horizontal shift in vw
     animating = true;
     move(itemEls, -2 * DIST - GAP);                       // items out first
     move(centerEls, -DIST - GAP); // center follows
-    setTimeout(() => { animating=false; itemStage=2; centerStage=1; }
+    setTimeout(() => { animating=false; itemStage=2; centerStage=1; }, DUR + STAGGER);
   }
 
   /* ---------------- Reverse (←) transitions ---------------- */
@@ -907,7 +907,7 @@ const GAP = 10;                   // horizontal shift in vw
     animating = true;
     move(centerEls, 0);                              // center leaves first
     move(itemEls, -DIST); // items return after delay
-    setTimeout(() => { animating=false; itemStage=1; centerStage=0; }
+    setTimeout(() => { animating=false; itemStage=1; centerStage=0; }, DUR + STAGGER);
   }
 
   function backToStage0() { // hide items

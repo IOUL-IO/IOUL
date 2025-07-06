@@ -222,7 +222,7 @@ const GAP = 10;                   // horizontal shift in vw
     move(jobEls, -DIST - GAP);                       // items out first
     jobShifted = true; /* --- JobShift patch 2025-06-11 --- */
     move(freelanceEls, -DIST - GAP); // center follows
-    setTimeout(() => { animating=false; jobStage=2; freelanceStage=1; }
+    setTimeout(() => { animating=false; jobStage=2; freelanceStage=1; }, DUR + STAGGER);
   }
 
   /* ---------------- Reverse (←) transitions ---------------- */
@@ -230,7 +230,7 @@ const GAP = 10;                   // horizontal shift in vw
     animating = true;
     move(freelanceEls, 0);                              // center leaves first
     move(jobEls, 0); // items return after delay
-    setTimeout(() => { animating=false; jobStage=1; freelanceStage=0; jobShifted=false; /* --- JobShift patch --- */ }
+    setTimeout(() => { animating=false; jobStage=1; freelanceStage=0; jobShifted=false; /* --- JobShift patch --- */ }, DUR + STAGGER);
   }
 
   function backToStage0() { // hide items

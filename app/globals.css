@@ -35,3 +35,22 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+/* Ensure item-, center-, and account-text sit above their lines */
+.item-text,
+.center-text,
+.account-text {
+  position: relative;
+  z-index: 150 !important;
+  pointer-events: auto;
+}
+
+/* Ensure lines stay underneath and are clickable */
+.item-line,
+.center-line,
+.line.util-line {
+  position: relative;
+  z-index: 100 !important;
+  pointer-events: auto;
+  cursor: pointer;
+}

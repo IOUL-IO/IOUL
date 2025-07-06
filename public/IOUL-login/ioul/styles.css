@@ -520,11 +520,3 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
-/* Layer and overflow fixes */
-body.non-fullscreen {
-    overflow-x: visible !important;
-    overflow-y: hidden !important;
-}
-.item-text, .item-text.right-flow, .center-text, .center-text.right-flow {
-    z-index: 999 !important;
-}

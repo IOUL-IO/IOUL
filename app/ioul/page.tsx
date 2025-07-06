@@ -5,6 +5,13 @@
     export default function Page() {
       useEffect(() => {
         // TODO: any JS init from legacy project can be ported here
+        // Ensure legacy item and center texts are visible above masks
+        const texts = Array.from(document.querySelectorAll('.item-text, .center-text'));
+        texts.forEach(el => {
+          el.style.zIndex = '2000';
+          el.style.opacity = '1';
+          el.style.visibility = 'visible';
+        });
       }, []);
       return (
         <div dangerouslySetInnerHTML={ { __html: `<p style="display:none" lang="en">This page is already in English. No translation is needed.</p>

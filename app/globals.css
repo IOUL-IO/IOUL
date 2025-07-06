@@ -43,3 +43,9 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+
+/* Ensure horizontal overflow so items off-viewport can be seen/scrollable */
+html, body, #__next {
+  overflow-x: visible !important;
+}

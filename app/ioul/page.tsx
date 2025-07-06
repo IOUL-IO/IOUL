@@ -1,15 +1,13 @@
-"use client";
-import Head from 'next/head';
-import Script from 'next/script';
-import React from 'react';
 
-export default function IoulPage() {
-  return (
-    <>
-      <Head>
-        <link rel="stylesheet" href="/IOUL-login/ioul/styles.css" />
-      </Head>
-      <div dangerouslySetInnerHTML={ __html: `<p style="display:none" lang="en">This page is already in English. No translation is needed.</p>
+    "use client";
+    import React, { useEffect } from 'react';
+
+    export default function Page() {
+      useEffect(() => {
+        // TODO: any JS init from legacy project can be ported here
+      }, []);
+      return (
+        <div dangerouslySetInnerHTML={ { __html: `<p style="display:none" lang="en">This page is already in English. No translation is needed.</p>
 
   <div class="layer-one"></div>
   <div class="layer-two"></div>
@@ -280,9 +278,7 @@ export default function IoulPage() {
     <div class="slide-trigger-reverse"></div>
   </div>
 
-  ` } />
-      <Script id="ioul-script" strategy="afterInteractive">
-
+  <script>
 
 
     const pageContent = document.querySelector('.page-content');
@@ -428,10 +424,10 @@ export default function IoulPage() {
             slideState = "none";
           } else if (slideState === "heading" || slideState === "account") {
             document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
-              box.style.transform = `translateX(${box.dataset.offset}vw)`;
+              box.style.transform = \`translateX(\${box.dataset.offset}vw)\`;
             });
             document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
-              box.style.transform = `translateX(${box.dataset.offset}vw)`;
+              box.style.transform = \`translateX(\${box.dataset.offset}vw)\`;
             });
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
               if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
@@ -517,10 +513,10 @@ export default function IoulPage() {
             slideState = "community";
           } else if (slideState === "heading" || slideState === "account") {
             document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
-              box.style.transform = `translateX(${box.dataset.offset}vw)`;
+              box.style.transform = \`translateX(\${box.dataset.offset}vw)\`;
             });
             document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
-              box.style.transform = `translateX(${box.dataset.offset}vw)`;
+              box.style.transform = \`translateX(\${box.dataset.offset}vw)\`;
             });
             document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
               if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
@@ -595,10 +591,10 @@ export default function IoulPage() {
 
     scrollArea.addEventListener('wheel', (e) => {
       e.preventDefault();
-      
+
       if (isScrolling) return;
       isScrolling = true;
-      
+
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         isScrolling = false;
@@ -606,7 +602,7 @@ export default function IoulPage() {
 
       // Create a wrapper for all elements to move as one unit
       const allElements = [...numbers1to16, ...numbers17to31, ...dashed1to16, ...dashed17to31];
-      
+
       // Set transition timing for all elements at once
       requestAnimationFrame(() => {
         allElements.forEach(el => {
@@ -633,7 +629,7 @@ export default function IoulPage() {
             const currentTransform = allElements[0]?.style.transform || '';
             const currentY = currentTransform.includes('translate') ? 
               currentTransform.match(/translateY\(([^)]+)\)/)?.[1] || '0' : '0';
-            
+
             if (currentY === '-111vh') {
               // If we're at the bottom (29-31), scroll up to middle (17-28)
               allElements.forEach(el => {
@@ -692,8 +688,288 @@ export default function IoulPage() {
     document.getElementById("linkup-center").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="linkup-center")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openLinkupCenter(); currentMenu="linkup-center";},300);} else{ openLinkupCenter(); currentMenu="linkup-center"; } } });
     document.getElementById("delivery-line").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="delivery-line")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openDeliveryLine(); currentMenu="delivery-line";},300);} else{ openDeliveryLine(); currentMenu="delivery-line"; } } });
     document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
-  
-      </Script>
-    </>
-  );
-}
+  </script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const utilLines = document.querySelectorAll('.util-line');
+  const mailEls = document.querySelectorAll('.mail-text, .mail-line');
+  const calendarEls = document.querySelectorAll('.grid-number, .grid-dashed');
+  const specialLines = document.querySelectorAll('.line.fifth, .line.sixth');
+
+  // Initial visibility: hide mail & calendar, show lines 5 & 6
+  mailEls.forEach(el => el.classList.add('hidden'));
+  calendarEls.forEach(el => el.classList.add('hidden'));
+  specialLines.forEach(el => el.classList.remove('hidden'));
+
+  let state = 0; // 0 = baseline (lines visible, others hidden)
+
+  const updateView = () => {
+  if (state === 0) { // baseline
+    mailEls.forEach(el => { el.classList.add('hidden'); el.style.opacity = '0'; });
+    calendarEls.forEach(el => el.classList.add('hidden'));
+    specialLines.forEach(el => el.classList.remove('hidden'));
+  } else if (state === 1) { // show mail on first toggle
+    mailEls.forEach(el => { el.classList.remove('hidden'); el.style.opacity = '1'; });
+    calendarEls.forEach(el => { el.classList.add('hidden'); });
+    specialLines.forEach(el => el.classList.remove('hidden'));
+  } else if (state === 2) { // show calendar, hide lines 5&6
+    mailEls.forEach(el => { el.classList.add('hidden'); el.style.opacity = '0'; });
+    calendarEls.forEach(el => el.classList.remove('hidden'));
+    specialLines.forEach(el => el.classList.add('hidden'));
+  }
+};
+
+  utilLines.forEach(line => {
+    line.addEventListener('click', () => {
+      state = (state + 1) % 3; // cycle 0 → 1 → 2 → 0 ...
+      updateView();
+    });
+  });
+});
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const HIDE_MIN   =  6.37, HIDE_MAX   = 28.86;
+  const TOP_MIN    = 28.5,  TOP_MAX    = 84;
+  const CLICK_MIN  = 32.43, CLICK_MAX  = 36;
+  const REVERSE_MIN= 94,    REVERSE_MAX=100;
+  const DISTANCE   = 60,    DURATION   = 700;
+
+  const pxToVw = px => px/(window.innerWidth  /100);
+  const pxToVh = px => px/(window.innerHeight /100);
+
+  const targets = [
+    ...document.querySelectorAll('.account-text'),
+    document.querySelector('.account-line')
+  ].filter(Boolean);
+
+  targets.forEach(el => {
+    if (!el.dataset.baseLeftVw) {
+      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      el.dataset.baseLeftVw = pxToVw(leftPx);
+    }
+  });
+
+  function updateVisibility() {
+    targets.forEach(el => {
+      const r = el.getBoundingClientRect();
+      const l = pxToVw(r.left), t = pxToVh(r.top);
+      const hide = l >= HIDE_MIN && l < HIDE_MAX && t >= TOP_MIN && t <= TOP_MAX;
+      el.style.opacity       = hide ? '0' : '';
+      el.style.pointerEvents = hide ? 'none' : '';
+    });
+  }
+  updateVisibility();
+  window.addEventListener('resize', updateVisibility);
+
+  let sliding = false;
+
+  function slideOnce() {
+    if (sliding || targets[0].dataset.slid==='true') return;
+    sliding = true;
+
+    targets.forEach(el => {
+      el.style.opacity       = '';
+      el.style.pointerEvents = '';
+    });
+
+    targets.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = \`left \${DURATION}ms ease\`;
+      el.style.left       = (base + DISTANCE) + 'vw';
+      el.dataset.slid     = 'true';
+    });
+
+    setTimeout(() => {
+      updateVisibility();
+      sliding = false;
+    }, DURATION);
+  }
+
+  function slideBack() {
+    if (sliding || targets[0].dataset.slid!=='true') return;
+    sliding = true;
+    targets.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = \`left \${DURATION}ms ease\`;
+      el.style.left       = base + 'vw';
+      delete el.dataset.slid;
+    });
+    setTimeout(() => {
+      updateVisibility();
+      sliding = false;
+    }, DURATION);
+  }
+
+  document.addEventListener('click', e => {
+    const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
+    if (vw>=CLICK_MIN && vw<=CLICK_MAX) {
+      slideOnce();
+    } else if (vw>=REVERSE_MIN && vw<=REVERSE_MAX
+            && vh>=TOP_MIN     && vh<=TOP_MAX) {
+      slideBack();
+    }
+  });
+
+  document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container')
+    .forEach(el => el.addEventListener('click', e => {
+      e.stopPropagation();
+      slideOnce();
+    }));
+  document.querySelectorAll('.slide-trigger-reverse')
+    .forEach(el => el.addEventListener('click', e => {
+      e.stopPropagation();
+      slideBack();
+    }));
+});
+</script>
+
+
+<script>
+/* --- Updated staggered gap logic injected by ChatGPT on 2025‑06‑02 --- */
+document.addEventListener('DOMContentLoaded', () => {
+  const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger (right edge)
+  const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
+  const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
+  const DIST    = 60;
+const GAP = 10;                   // horizontal shift in vw
+  const DUR     = 600;                  // transition duration in ms
+  const STAGGER = 0;                  // delay between outgoing and incoming groups in ms
+
+  // Helper unit conversions
+  const vw = () => window.innerWidth / 100;
+  const vh = () => window.innerHeight / 100;
+  const toVw = px => px / vw();
+  const toVh = px => px / vh();
+
+  // Groups
+  const itemEls   = [...document.querySelectorAll('.item-text'),  ...document.querySelectorAll('.item-line')];
+  const centerEls = [...document.querySelectorAll('.center-text'),...document.querySelectorAll('.center-line')];
+
+  // Cache base positions
+  [...itemEls, ...centerEls].forEach(el => {
+    if (!el.dataset.baseLeftVw) {
+      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      el.dataset.baseLeftVw = toVw(leftPx);
+    }
+  });
+
+  // Stage flags
+  let itemStage   = 0;  // 0 = hidden, 1 = visible (left column), 2 = shifted left / clipped
+  let centerStage = 0;  // 0 = hidden, 1 = visible (center column)
+  let animating   = false;
+
+  // External dependency: account slide logic (unchanged)
+  const getAccountSlid = () => {
+    const acc = document.querySelector('.account-text');
+    return acc && acc.dataset.slid === 'true';
+  };
+
+  // Reusable animator
+  function move(els, offset) {
+    els.forEach(el => {
+      const base = parseFloat(el.dataset.baseLeftVw);
+      el.style.transition = \`left \${DUR}ms ease\`;
+      el.style.left       = (base + offset) + 'vw';
+    });
+  }
+
+  /* ---------------- Forward (→) transitions ---------------- */
+  function toStage1() { // show items
+    animating = true;
+    move(itemEls, -DIST);
+    setTimeout(() => { animating = false; itemStage = 1; }, DUR);
+  }
+
+  function toStage2() { // shift items further + reveal center with stagger
+    animating = true;
+    move(itemEls, -2 * DIST - GAP);                       // items out first
+    move(centerEls, -DIST - GAP); // center follows
+    setTimeout(() => { animating=false; itemStage=2; centerStage=1; }, DUR + STAGGER);
+  }
+
+  /* ---------------- Reverse (←) transitions ---------------- */
+  function backToStage1() { // hide center, restore items with stagger
+    animating = true;
+    move(centerEls, 0);                              // center leaves first
+    move(itemEls, -DIST); // items return after delay
+    setTimeout(() => { animating=false; itemStage=1; centerStage=0; }, DUR + STAGGER);
+  }
+
+  function backToStage0() { // hide items
+    animating = true;
+    move(itemEls, 0);
+    setTimeout(() => { animating=false; itemStage=0; }, DUR);
+  }
+
+  /* ---------------- Click handling ---------------- */
+  document.addEventListener('click', e => {
+    if (animating) return;
+
+    const xVw = toVw(e.clientX);
+    const yVh = toVh(e.clientY);
+    const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
+    const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
+
+    if (inFwd) {
+      if (getAccountSlid()) return;             // hand off to account logic
+      if (itemStage === 0) {
+        toStage1(); e.stopPropagation();
+      } else if (itemStage === 1 && centerStage === 0) {
+        toStage2(); e.stopPropagation();
+      }
+    } else if (inRev) {
+      if (centerStage === 1) {
+        backToStage1(); e.stopPropagation();
+      } else if (itemStage === 1 && centerStage === 0) {
+        backToStage0(); e.stopPropagation();
+      }
+    }
+  }, true);
+});
+</script>
+
+
+<script>
+/* ---- Item clipping script injected by ChatGPT on 2025‑05‑29 (v3) ---- */
+document.addEventListener('DOMContentLoaded', () => {
+  const HIDE_LEFT_VW = 28.86; // Updated threshold
+  const TOP_MIN_VH   = 28.5;  // Vertical bounds
+  const TOP_MAX_VH   = 84;
+
+  const items = [
+    ...document.querySelectorAll('.item-text'),
+    ...document.querySelectorAll('.item-line')
+  ];
+
+  const toVw = px => px / (window.innerWidth  / 100);
+  const toVh = px => px / (window.innerHeight / 100);
+
+  function update() {
+    items.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const l = toVw(rect.left);
+      const t = toVh(rect.top);
+      const hide = l < HIDE_LEFT_VW && t >= TOP_MIN_VH && t <= TOP_MAX_VH;
+      el.style.opacity       = hide ? '0' : '';
+      el.style.pointerEvents = hide ? 'none' : '';
+    });
+  }
+
+  function loop() {
+    update();
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  window.addEventListener('resize', update);
+});
+</script>
+
+` } } />
+      );
+    }

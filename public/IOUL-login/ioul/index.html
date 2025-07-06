@@ -774,8 +774,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   updateVisibility();
-    // auto-advance on load
-    slideOnce();
   window.addEventListener('resize', updateVisibility);
 
   let sliding = false;
@@ -798,8 +796,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setTimeout(() => {
       updateVisibility();
-    // auto-advance on load
-    slideOnce();
       sliding = false;
     }, DURATION);
   }
@@ -815,8 +811,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     setTimeout(() => {
       updateVisibility();
-    // auto-advance on load
-    slideOnce();
       sliding = false;
     }, DURATION);
   }

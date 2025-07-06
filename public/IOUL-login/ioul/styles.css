@@ -16,7 +16,8 @@ body.non-fullscreen {
     background-color: #ffffff;
     min-height: 100vh;
     min-width: 100vw;
-    overflow: hidden;
+    overflow-x: visible;
+    overflow-y: hidden;
 }
 
 .layer-one {
@@ -430,6 +431,7 @@ body.non-fullscreen {
 
 .line.util-line {
     position: absolute;
+    z-index: 2;
     top: 28.5vh;
     left: 26.06vw;
     width: 2.8vw;
@@ -471,6 +473,7 @@ body.non-fullscreen {
 
 .item-text {
     position: absolute;
+    z-index: 2;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
     letter-spacing: 0.28vw;

@@ -35,3 +35,24 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+/* FINAL STACK FIX (Jobs-page logic) */
+/* Lock scrollbars */
+body.non-fullscreen {
+  overflow: hidden !important;
+}
+
+/* Definitive z-index stack */
+.layer-one,
+.layer-two,
+.layer-three {
+  z-index: 120 !important; /* Top masks */
+}
+
+/* Sliding items/center texts & lines */
+.item-text,
+.center-text,
+.item-line,
+.center-line {
+  z-index: 110 !important; /* Visible under top masks */
+}

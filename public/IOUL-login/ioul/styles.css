@@ -520,10 +520,11 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
-/* Patch: ensure item/center texts & lines are above others (Jobs-page logic) */
-.item-text,
-.item-line,
-.center-text,
-.center-line {
-    z-index: 102 !important;
+
+/* Override Z-index to fix layering of item and center text */
+.item-text, .item-line {
+    z-index: 4 !important;
+}
+.center-text, .center-line {
+    z-index: 2 !important;
 }

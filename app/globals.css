@@ -35,29 +35,3 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
-
-/* FINAL STACK FIX FOR IOUL PAGE (Jobs-page logic adapted) */
-.layer-one,
-.layer-two,
-.layer-three {
-  z-index: 110 !important; /* masks 1-3 above sliding content */
-}
-.layer-four {
-  z-index: 120 !important; /* mask 4 stays above sliding texts/lines */
-}
-
-/* Sliding labels & counters: above masks 1-3, tuck under mask 4 */
-.item-text,
-.center-text,
-.item-line,
-.center-line {
-  z-index: 111 !important;
-}
-
-/* Ensure custom-text spans are visible above all */
-.content-text,
-.custom-text {
-  z-index: 150 !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}

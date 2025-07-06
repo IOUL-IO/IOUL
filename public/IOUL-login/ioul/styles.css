@@ -520,3 +520,9 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
+
+/* Stacking fix: bring community-items and center content above masks */
+.community-items-container,
+.other-content {
+    z-index: 200 !important;
+}

@@ -36,16 +36,5 @@
   visibility: visible !important;
 }
 
-/* Override to ensure item-text and center-text appear above masks */
-.item-text,
-.center-text {
-  z-index: 200 !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-
-/* Ensure horizontal overflow so items off-viewport can be seen/scrollable */
-html, body, #__next {
-  overflow-x: visible !important;
-}
+/* Ensure item and center texts are above lines */
+.item-text, .center-text { z-index: 200 !important; }

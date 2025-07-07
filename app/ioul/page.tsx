@@ -1,209 +1,177 @@
+
 "use client";
-import React, { useState } from "react";
-import "./styles.css"; // ensure this file is alongside
 
-// element interfaces
-interface Elem {
-  top: string;
-  left: number;
-  className: string;
-  text: string;
-}
-interface LineElem {
-  top: string;
-  left: number;
-  width: number;
-  className: string;
+import React, { useEffect, useState } from "react";
+import Script from "next/script";
+import "./globals.css";
+
+interface TextGroup {
+  texts: [string, string];
+  baseLeft: number;
+  rightFlow?: boolean;
 }
 
-// DATA ARRAYS
-const itemTexts: Elem[] = [
-  { top: '35.4vh', left: 96.0, className: 'item-text', text: '1ncOME' },
-  { top: '41.6vh', left: 96.0, className: 'item-text', text: 'cL1EnT' },
-  { top: '35.4vh', left: 109.0, className: 'item-text right-flow', text: '0' },
-  { top: '41.6vh', left: 109.0, className: 'item-text right-flow', text: '0' },
-  { top: '35.4vh', left: 118.0, className: 'item-text', text: 'T1cKETS' },
-  { top: '41.6vh', left: 118.0, className: 'item-text', text: '1nQU1RY' },
-  { top: '35.4vh', left: 131.0, className: 'item-text right-flow', text: '0' },
-  { top: '41.6vh', left: 131.0, className: 'item-text right-flow', text: '0' },
-  { top: '35.4vh', left: 139.0, className: 'item-text', text: 'OnL1nE' },
-  { top: '41.6vh', left: 139.0, className: 'item-text', text: 'JO1nED' },
-  { top: '35.4vh', left: 153.4, className: 'item-text right-flow', text: '0' },
-  { top: '41.6vh', left: 153.4, className: 'item-text right-flow', text: '0' },
-  { top: '53vh',  left: 139.0, className: 'item-text', text: 'JOBLOg' },
-  { top: '59.2vh', left: 139.0, className: 'item-text', text: 'H1R1ngS' },
-  { top: '65.4vh', left: 139.0, className: 'item-text', text: 'ORDERS' },
-  { top: '71.6vh', left: 139.0, className: 'item-text', text: '1nV1TES' },
-  { top: '53vh',  left: 153.4, className: 'item-text right-flow', text: '0' },
-  { top: '59.2vh', left: 153.4, className: 'item-text right-flow', text: '0' },
-  { top: '65.4vh', left: 153.4, className: 'item-text right-flow', text: '0' },
-  { top: '71.6vh', left: 153.4, className: 'item-text right-flow', text: '0' },
-  { top: '53vh',  left: 96.0, className: 'item-text', text: 'cL1cKS' },
-  { top: '59.2vh', left: 96.0, className: 'item-text', text: 'LEADS' },
-  { top: '53vh',  left: 109.0, className: 'item-text right-flow', text: '0' },
-  { top: '59.2vh', left: 109.0, className: 'item-text right-flow', text: '0' },
-  { top: '53vh',  left: 118.0, className: 'item-text', text: 'AD cTR' },
-  { top: '59.2vh', left: 118.0, className: 'item-text', text: 'AD cPc' },
-  { top: '53vh',  left: 131.0, className: 'item-text right-flow', text: '0' },
-  { top: '59.2vh', left: 131.0, className: 'item-text right-flow', text: '0' },
-];
-
-const centerTexts: Elem[] = [
-  { top: '35.4vh', left: 106.0, className: 'center-text', text: 'UPDATES' },
-  { top: '41.6vh', left: 106.0, className: 'center-text', text: 'cATALOg' },
-  { top: '35.4vh', left: 119.0, className: 'center-text right-flow', text: '0' },
-  { top: '41.6vh', left: 119.0, className: 'center-text right-flow', text: '0' },
-  { top: '35.4vh', left: 128.0, className: 'center-text', text: 'T1cKETS' },
-  { top: '41.6vh', left: 128.0, className: 'center-text', text: 'cOnTAcT' },
-  { top: '35.4vh', left: 141.0, className: 'center-text right-flow', text: '0' },
-  { top: '41.6vh', left: 141.0, className: 'center-text right-flow', text: '0' },
-  { top: '35.4vh', left: 149.0, className: 'center-text', text: 'gET APP' },
-  { top: '41.6vh', left: 149.0, className: 'center-text', text: 'AP1-LOg' },
-  { top: '35.4vh', left: 163.4, className: 'center-text right-flow', text: '0' },
-  { top: '41.6vh', left: 163.4, className: 'center-text right-flow', text: '0' },
-  { top: '53vh',   left: 149.0, className: 'center-text', text: 'LOg 0.01' },
-  { top: '59.2vh', left: 149.0, className: 'center-text', text: 'LOg 0.02' },
-  { top: '65.4vh', left: 149.0, className: 'center-text', text: 'LOg 0.03' },
-  { top: '71.6vh', left: 149.0, className: 'center-text', text: 'LOg 0.04' },
-  { top: '53vh',   left: 163.4, className: 'center-text right-flow', text: '0' },
-  { top: '59.2vh', left: 163.4, className: 'center-text right-flow', text: '0' },
-  { top: '65.4vh', left: 163.4, className: 'center-text right-flow', text: '0' },
-  { top: '71.6vh', left: 163.4, className: 'center-text right-flow', text: '0' },
-  { top: '53vh',   left: 106.0, className: 'center-text', text: 'LATEST' },
-  { top: '59.2vh', left: 106.0, className: 'center-text', text: 'V1RALS' },
-  { top: '53vh',   left: 119.0, className: 'center-text right-flow', text: '0' },
-  { top: '59.2vh', left: 119.0, className: 'center-text right-flow', text: '0' },
-  { top: '53vh',   left: 128.0, className: 'center-text', text: 'cAREERS' },
-  { top: '59.2vh', left: 128.0, className: 'center-text', text: 'ARcH1VE' },
-  { top: '53vh',   left: 141.0, className: 'center-text right-flow', text: '0' },
-  { top: '59.2vh', left: 141.0, className: 'center-text right-flow', text: '0' },
-];
-
-const accountTexts: Elem[] = [
-  { top: '35.4vh', left: -24.0, className: 'account-text', text: 'AccOUnT nAME' },
-  { top: '35.4vh', left:  26.0, className: 'account-text', text: 'L1nK UP' },
-  { top: '35.4vh', left:  33.19, className: 'account-text right-flow', text: '0' },
-  { top: '77vh',   left: -24.0, className: 'account-text', text: '. . .' },
-];
-
-const itemLines: LineElem[] = [
-  { top: '47.8vh', left: 96.0, className: 'item-line item-line-one', width: 36.0 },
-  { top: '47.8vh', left: 139.0, className: 'item-line item-line-two', width: 14.8 },
-];
-const centerLines: LineElem[] = [
-  { top: '47.8vh', left: 106.0, className: 'center-line center-line-one', width: 36.0 },
-  { top: '47.8vh', left: 149.0, className: 'center-line center-line-two', width: 14.8 },
-];
-
-// COMPONENT
 export default function IOULPage() {
-  const [stage, setStage] = useState(0);
-  const handleClick = () => setStage((s) => (s + 1) % 4);
-  const offsetVW = (group: 'item' | 'center' | 'account') => {
-    if (stage === 0) return 0;
-    if (stage === 1 || stage === 3) {
-      if (group === 'item' || group === 'account') return -60;
-      return 0;
-    }
-    // stage === 2
-    if (group === 'item' || group === 'account') return -120;
-    return -60;
+  const DIST = 60; // vw shift amount per stage
+  const [itemStage, setItemStage] = useState(0); // 0 or 1
+  const [centerStage, setCenterStage] = useState(0); // 0 or 1
+
+  const itemGroups: TextGroup[] = [
+    { texts: ["1ncOME", "cL1EnT"], baseLeft: 96 },
+    { texts: ["0", "0"], baseLeft: 109, rightFlow: true },
+    { texts: ["T1cKETS", "1nQU1RY"], baseLeft: 118 },
+    { texts: ["0", "0"], baseLeft: 131, rightFlow: true },
+    { texts: ["OnL1nE", "JO1nED"], baseLeft: 139 },
+    { texts: ["0", "0"], baseLeft: 153.4, rightFlow: true },
+  ];
+
+  const centerGroups: TextGroup[] = [
+    { texts: ["UPDATES", "cATALOg"], baseLeft: 106 },
+    { texts: ["0", "0"], baseLeft: 119, rightFlow: true },
+    { texts: ["T1cKETS", "cOnTAcT"], baseLeft: 128 },
+    { texts: ["0", "0"], baseLeft: 141, rightFlow: true },
+    { texts: ["gET APP", "AP1-LOg"], baseLeft: 149 },
+    { texts: ["0", "0"], baseLeft: 163.4, rightFlow: true },
+  ];
+
+  const accountGroups: { text: string; baseLeft: number; rightFlow?: boolean }[] = [
+    { text: "AccOUnT nAME", baseLeft: -24 },
+    { text: "L1nK UP", baseLeft: 26 },
+    { text: "0", baseLeft: 33.19, rightFlow: true },
+  ];
+
+  const computeLeft = (base: number, stage: number) => {
+    if (stage === 0) return base;
+    // stage 1 for items moves left by DIST, stage 1 for centers moves left by DIST
+    return base - DIST * stage;
   };
 
+  const handleForward = () => {
+    if (itemStage === 0) {
+      setItemStage(1);
+    } else if (itemStage === 1 && centerStage === 0) {
+      setCenterStage(1);
+    }
+  };
+
+  const handleReverse = () => {
+    if (centerStage === 1) {
+      setCenterStage(0);
+    } else if (itemStage === 1 && centerStage === 0) {
+      setItemStage(0);
+    }
+  };
+
+  // Fade in page content on mount
+  useEffect(() => {
+    const content = document.querySelector(".page-content") as HTMLElement;
+    if (content) {
+      content.style.opacity = "1";
+    }
+  }, []);
+
   return (
-    <div
-      className="ioul-container"
-      style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}
-      onClick={handleClick}
-    >
-      {/* Item Texts */}
-      {itemTexts.map((e, i) => (
-        <span
-          key={i}
-          className={e.className}
-          style={{
-            position: "absolute",
-            top: e.top,
-            left: \`\${e.left + offsetVW("item")}vw\`,
-            transition: "left 0.7s ease",
-            lineHeight: 1.6,
-            overflow: "visible",
-          }}
-        >
-          {e.text}
-        </span>
-      ))}
-      {/* Center Texts */}
-      {centerTexts.map((e, i) => (
-        <span
-          key={i}
-          className={e.className}
-          style={{
-            position: "absolute",
-            top: e.top,
-            left: \`\${e.left + offsetVW("center")}vw\`,
-            transition: "left 0.7s ease",
-            lineHeight: 1.6,
-            overflow: "visible",
-          }}
-        >
-          {e.text}
-        </span>
-      ))}
-      {/* Account Texts */}
-      {accountTexts.map((e, i) => (
-        <span
-          key={i}
-          className={e.className}
-          style={{
-            position: "absolute",
-            top: e.top,
-            left: \`\${e.left + offsetVW("account")}vw\`,
-            transition: "left 0.7s ease",
-            lineHeight: 1.6,
-            overflow: "visible",
-          }}
-        >
-          {e.text}
-        </span>
-      ))}
-      {/* Item Lines */}
-      {itemLines.map((e, i) => (
+    <>
+      {/* Ensure legacy lines and masks are in place */}
+      <div className="layer-one" />
+      <div className="layer-two" />
+      <div className="layer-three" />
+      <div className="page-content" style={{ position: "relative", opacity: 0, transition: "opacity 0.7s ease" }}>
+        {/* Render item text groups */}
+        {itemGroups.map((grp, idx) => (
+          <React.Fragment key={`item-${idx}`}>
+            <span
+              className={`item-text${grp.rightFlow ? " right-flow" : ""}`}
+              style={{
+                position: "absolute",
+                top: "35.4vh",
+                left: `${computeLeft(grp.baseLeft, itemStage)}vw`,
+                transition: "left 0.7s ease",
+                lineHeight: 1.6,
+                overflow: "visible",
+              }}
+            >
+              {grp.texts[0]}
+            </span>
+            <span
+              className={`item-text${grp.rightFlow ? " right-flow" : ""}`}
+              style={{
+                position: "absolute",
+                top: "41.6vh",
+                left: `${computeLeft(grp.baseLeft, itemStage)}vw`,
+                transition: "left 0.7s ease",
+                lineHeight: 1.6,
+                overflow: "visible",
+              }}
+            >
+              {grp.texts[1]}
+            </span>
+          </React.Fragment>
+        ))}
+
+        {/* Render center text groups */}
+        {centerGroups.map((grp, idx) => (
+          <React.Fragment key={`center-${idx}`}>
+            <span
+              className={`center-text${grp.rightFlow ? " right-flow" : ""}`}
+              style={{
+                position: "absolute",
+                top: "35.4vh",
+                left: `${computeLeft(grp.baseLeft, centerStage)}vw`,
+                transition: "left 0.7s ease",
+                lineHeight: 1.6,
+                overflow: "visible",
+              }}
+            >
+              {grp.texts[0]}
+            </span>
+            <span
+              className={`center-text${grp.rightFlow ? " right-flow" : ""}`}
+              style={{
+                position: "absolute",
+                top: "41.6vh",
+                left: `${computeLeft(grp.baseLeft, centerStage)}vw`,
+                transition: "left 0.7s ease",
+                lineHeight: 1.6,
+                overflow: "visible",
+              }}
+            >
+              {grp.texts[1]}
+            </span>
+          </React.Fragment>
+        ))}
+
+        {/* Render account text */}
+        {accountGroups.map((grp, idx) => (
+          <span
+            key={`acct-${idx}`}
+            className={`account-text${grp.rightFlow ? " right-flow" : ""}`}
+            style={{
+              position: "absolute",
+              top: "35.4vh",
+              left: `${computeLeft(grp.baseLeft, itemStage)}vw`,
+              transition: "left 0.7s ease",
+            }}
+          >
+            {grp.text}
+          </span>
+        ))}
+
+        {/* Slide triggers */}
         <div
-          key={i}
-          className={e.className}
-          style={{
-            position: "absolute",
-            top: e.top,
-            left: \`\${e.left + offsetVW("item")}vw\`,
-            width: \`\${e.width}vw\`,
-            height: "0.2vh",
-            background: "currentColor",
-            transition: "left 0.7s ease",
-            zIndex: 1,
-          }}
+          className="slide-trigger"
+          onClick={handleForward}
+          style={{ position: "absolute", top: 0, right: 0, width: "6vw", height: "100vh", cursor: "pointer" }}
         />
-      ))}
-      {/* Center Lines */}
-      {centerLines.map((e, i) => (
         <div
-          key={i}
-          className={e.className}
-          style={{
-            position: "absolute",
-            top: e.top,
-            left: \`\${e.left + offsetVW("center")}vw\`,
-            width: \`\${e.width}vw\`,
-            height: "0.2vh",
-            background: "currentColor",
-            transition: "left 0.7s ease",
-            zIndex: 1,
-          }}
+          className="slide-trigger-reverse"
+          onClick={handleReverse}
+          style={{ position: "absolute", top: 0, left: 0, width: "6vw", height: "100vh", cursor: "pointer" }}
         />
-      ))}
-      {/* Additional Elements */}
-      <div className="hover-area" />
-      <span id="chatText" className="chat-text">cHAT . . .</span>
-    </div>
+      </div>
+      <div className="layer-four" />
+
+      {/* Include any legacy external scripts if needed */}
+    </>
   );
 }

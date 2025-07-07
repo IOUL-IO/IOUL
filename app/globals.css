@@ -49,3 +49,11 @@
     opacity: 1 !important;
 }
 
+
+/* Ensure item-text and center-text visible above masks */
+.item-text,
+.center-text {
+    z-index: 102 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}

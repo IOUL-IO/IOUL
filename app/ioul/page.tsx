@@ -1,11 +1,11 @@
 "use client";
-import React, {{ useEffect }} from 'react';
+import React, { useEffect } from 'react';
 import './styles.css';
 
-export default function Page() {{
-  useEffect(() => {{
+export default function Page() {
+  useEffect(() => {
     // Legacy sliding logic
-    const runSliding = () => {{
+    const runSliding = () => {
       const FWD_MIN = 94, FWD_MAX = 100;
       const REV_MIN = 32.43, REV_MAX = 36;
       const TOP_MIN = 28.5, TOP_MAX = 84;
@@ -18,46 +18,46 @@ export default function Page() {{
       const itemEls = Array.from(document.querySelectorAll('.item-text, .item-line'));
       const centerEls = Array.from(document.querySelectorAll('.center-text, .center-line'));
 
-      [...itemEls, ...centerEls].forEach(el => {{
-        if (!el.dataset.baseLeftVw) {{
+      [...itemEls, ...centerEls].forEach(el => {
+        if (!el.dataset.baseLeftVw) {
           const leftPx = parseFloat(getComputedStyle(el).left) || 0;
           el.dataset.baseLeftVw = toVw(leftPx);
-        }}
-      }});
+        }
+      });
 
       let itemStage = 0, centerStage = 0, animating = false;
-      function move(els, offset) {{
-        els.forEach(el => {{
+      function move(els, offset) {
+        els.forEach(el => {
           const base = parseFloat(el.dataset.baseLeftVw);
           el.style.transition = `left ${DUR}ms ease`;
           el.style.left = (base + offset) + 'vw';
-        }});
-      }}
-      function toStage1() {{ animating = true; move(itemEls, -DIST); setTimeout(() => {{ animating = false; itemStage = 1; }}, DUR); }}
-      function toStage2() {{ animating = true; move(itemEls, -2 * DIST - GAP); move(centerEls, -DIST - GAP); setTimeout(() => {{ animating = false; itemStage = 2; centerStage = 1; }}, DUR); }}
-      function backToStage1() {{ animating = true; move(centerEls, 0); move(itemEls, -DIST); setTimeout(() => {{ animating = false; itemStage = 1; centerStage = 0; }}, DUR); }}
-      function backToStage0() {{ animating = true; move(itemEls, 0); setTimeout(() => {{ animating = false; itemStage = 0; }}, DUR); }}
+        });
+      }
+      function toStage1() { animating = true; move(itemEls, -DIST); setTimeout(() => { animating = false; itemStage = 1; }, DUR); }
+      function toStage2() { animating = true; move(itemEls, -2 * DIST - GAP); move(centerEls, -DIST - GAP); setTimeout(() => { animating = false; itemStage = 2; centerStage = 1; }, DUR); }
+      function backToStage1() { animating = true; move(centerEls, 0); move(itemEls, -DIST); setTimeout(() => { animating = false; itemStage = 1; centerStage = 0; }, DUR); }
+      function backToStage0() { animating = true; move(itemEls, 0); setTimeout(() => { animating = false; itemStage = 0; }, DUR); }
 
-      document.addEventListener('click', e => {{
+      document.addEventListener('click', e => {
         if (animating) return;
         const xVw = toVw(e.clientX), yVh = e.clientY / vh();
         const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
         const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
-        if (inFwd) {{
+        if (inFwd) {
           if (itemStage === 0) toStage1();
           else if (itemStage === 1 && centerStage === 0) toStage2();
           else if (itemStage === 2) backToStage1();
           else if (itemStage === 1) backToStage0();
           e.stopPropagation();
-        }} else if (inRev) {{
+        } else if (inRev) {
           if (centerStage === 1) backToStage1();
           else if (itemStage === 1 && centerStage === 0) backToStage0();
           e.stopPropagation();
-        }}
-      }}, true);
-    }};
+        }
+      }, true);
+    };
     runSliding();
-  }}, []);
+  }, []);
 
   return (
     <div>
@@ -308,4 +308,4 @@ export default function Page() {{
       
     </div>
   );
-}}
+}

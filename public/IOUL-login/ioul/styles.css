@@ -533,3 +533,12 @@ body.non-fullscreen {
     opacity: 1 !important;
 }
 
+
+/* Ensure right-flow items are visible and slideable */
+.item-text.right-flow,
+.center-text.right-flow,
+.item-line.right-flow,
+.center-line.right-flow {
+  visibility: visible !important;
+  opacity: 1 !important;
+}

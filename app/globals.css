@@ -35,3 +35,10 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+/* Ensure item-text and center-text visible above mask layers */
+.item-text, .center-text {
+    z-index: 200 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}

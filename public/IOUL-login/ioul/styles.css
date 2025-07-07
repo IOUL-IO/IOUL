@@ -534,17 +534,13 @@ body.non-fullscreen {
 }
 
 
-
-/* Added overrides to ensure sliding texts are visible */
+/* Override to ensure sliding texts and lines are visible */
 .item-text,
 .center-text,
-.account-text {
-    z-index: 102 !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
+.account-text,
 .item-line,
 .center-line {
-    z-index: 102 !important;
+  z-index: 102 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }

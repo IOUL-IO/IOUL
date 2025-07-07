@@ -474,6 +474,13 @@
               }, 110);
             }
             slideState = "heading";
+            // Slide center, item, and account texts for heading view
+            document.querySelectorAll(".center-text, .item-text, .account-text").forEach(el => {
+              if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
+              el.style.transition = "left 0.7s ease";
+              let current = parseFloat(el.style.left);
+              el.style.left = (current + 49) + "vw";
+            });
           }
         });
       }
@@ -511,6 +518,13 @@
               el.style.left = (currentLeft - 29) + "vw";
             });
             slideState = "community";
+            // Slide center, item, and account texts for community view
+            document.querySelectorAll(".center-text, .item-text, .account-text").forEach(el => {
+              if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
+              el.style.transition = "left 0.7s ease";
+              let current = parseFloat(el.style.left);
+              el.style.left = (current - 29) + "vw";
+            });
           } else if (slideState === "heading" || slideState === "account") {
             document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
               box.style.transform = \`translateX(\${box.dataset.offset}vw)\`;

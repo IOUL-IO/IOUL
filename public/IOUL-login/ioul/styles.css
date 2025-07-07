@@ -533,10 +533,3 @@ body.non-fullscreen {
     opacity: 1 !important;
 }
 
-
-/* Overriding sliding elements visibility and layering */
-.item-text, .item-line, .center-text, .center-line, .account-text, .right-flow {
-  z-index: 1000 !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}

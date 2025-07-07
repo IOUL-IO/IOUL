@@ -16,7 +16,7 @@ body.non-fullscreen {
     background-color: #ffffff;
     min-height: 100vh;
     min-width: 100vw;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .layer-one {
@@ -519,8 +519,4 @@ body.non-fullscreen {
     z-index: 3;
     font-size: 9px !important;
   }
-}
-/* Hide upper-half mask to reveal all item, center, and account texts */
-.layer-four { 
-    display: none !important; 
 }

@@ -37,15 +37,25 @@
 }
 
 
-/* Bring slide container and text layers above mask layers */
-.slide-container {
-    z-index: 101 !important;
-}
-.slide-container .item-text,
-.slide-container .center-text,
-.slide-container .account-text {
-    z-index: 102 !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+/* Ensure item-text and center-text appear above masks */
+.item-text,
+.center-text {
+  z-index: 150 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
+
+/* Reveal hidden texts behind masks and clipping */
+.layer-one,
+.layer-two,
+.layer-three,
+.layer-four,
+.layer-five,
+.layer-six,
+.slide-container,
+.account-mask {
+  background-color: transparent !important;
+  clip-path: none !important;
+  overflow: visible !important;
+}

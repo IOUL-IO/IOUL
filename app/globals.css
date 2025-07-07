@@ -41,9 +41,9 @@
 .slide-container {
     z-index: 101 !important;
 }
-.item-text,
-.center-text,
-.account-text {
+.slide-container .item-text,
+.slide-container .center-text,
+.slide-container .account-text {
     z-index: 102 !important;
     visibility: visible !important;
     opacity: 1 !important;

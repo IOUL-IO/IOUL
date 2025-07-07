@@ -16,7 +16,7 @@ body.non-fullscreen {
     background-color: #ffffff;
     min-height: 100vh;
     min-width: 100vw;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .layer-one {
@@ -519,12 +519,4 @@ body.non-fullscreen {
     z-index: 3;
     font-size: 9px !important;
   }
-}
-/* Allow overflow-x to show off-canvas items */
-body.non-fullscreen {
-    overflow-x: visible !important;
-    overflow-y: hidden !important;
-}
-.page-content {
-    overflow-x: visible !important;
 }

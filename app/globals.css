@@ -36,11 +36,11 @@
   visibility: visible !important;
 }
 
-/* Allow overflow-x to show off-canvas items */
-body.non-fullscreen {
-    overflow-x: visible !important;
-    overflow-y: hidden !important;
-}
-.page-content {
-    overflow-x: visible !important;
+
+/* Ensure item-text and center-text appear above masks */
+.item-text,
+.center-text {
+  z-index: 150 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }

@@ -520,10 +520,3 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
-
-/* Disable clipping on slide-container to reveal all off-canvas text */
-.slide-container {
-    clip-path: none !important;
-    overflow: visible !important;
-}
-

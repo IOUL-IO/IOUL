@@ -520,3 +520,9 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
+
+/* Ensure center-text and item-text are above mask layers */
+.center-text, .item-text {
+    z-index: 150 !important;
+    visibility: visible !important;
+}

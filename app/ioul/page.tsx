@@ -71,7 +71,6 @@
         <span class="account-text right-flow" style="position:absolute; top:35.4vh; left:33.19vw;">0</span>
         <span class="account-text" style="position:absolute; top:77vh; left:-24.00vw; color:#111111;">. . .</span>
         <div class="line account-line" style="position:absolute; top:41.6vh; left:-24.00vw; width:57.8vw; height:1px; background-color: rgba(230, 230, 230, 0.28); z-index:1;"></div>
-      </div>
 <!-- Item lines -->
 <div class="item-line item-line-one" style="position:absolute; top:47.8vh; left:96vw; width:36vw;"></div>
 <div class="item-line item-line-two" style="position:absolute; top:47.8vh; left:139vw; width:14.8vw;"></div>
@@ -165,6 +164,7 @@
 <span class="item-text right-flow" style="position:absolute; top:59.2vh; left:131vw;">0</span>
 
 
+      </div>
       <div class="hover-area"></div>
       <span class="chat-text" id="chatText">cHAT . . .</span>
       <span class="mail-text" style="position:absolute; top:35.4vh; left:36vw; z-index:1; font-family:'Distill Expanded',sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; opacity:0; transition: opacity 0.3s ease;">TO:</span>

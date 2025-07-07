@@ -907,27 +907,21 @@ const GAP = 10;                   // horizontal shift in vw
   }
 
   /* ---------------- Click handling ---------------- */
+  const forwardFns = [toStage1, toStage2, backToStage1, backToStage0];
+  let cycleIndex = 0;
   document.addEventListener('click', e => {
     if (animating) return;
-
     const xVw = toVw(e.clientX);
     const yVh = toVh(e.clientY);
     const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
     const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
-
     if (inFwd) {
-      if (getAccountSlid()) return;             // hand off to account logic
-      if (itemStage === 0) {
-        toStage1(); e.stopPropagation();
-      } else if (itemStage === 1 && centerStage === 0) {
-        toStage2(); e.stopPropagation();
-      }
+      if (getAccountSlid()) return;
+      forwardFns[cycleIndex](); e.stopPropagation();
+      cycleIndex = (cycleIndex + 1) % forwardFns.length;
     } else if (inRev) {
-      if (centerStage === 1) {
-        backToStage1(); e.stopPropagation();
-      } else if (itemStage === 1 && centerStage === 0) {
-        backToStage0(); e.stopPropagation();
-      }
+      if (centerStage === 1) { backToStage1(); e.stopPropagation(); }
+      else if (itemStage === 1 && centerStage === 0) { backToStage0(); e.stopPropagation(); }
     }
   }, true);
 });

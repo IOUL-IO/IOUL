@@ -71,7 +71,6 @@
         <span class="account-text right-flow" style="position:absolute; top:35.4vh; left:33.19vw;">0</span>
         <span class="account-text" style="position:absolute; top:77vh; left:-24.00vw; color:#111111;">. . .</span>
         <div class="line account-line" style="position:absolute; top:41.6vh; left:-24.00vw; width:57.8vw; height:1px; background-color: rgba(230, 230, 230, 0.28); z-index:1;"></div>
-      </div>
 <!-- Item lines -->
 <div class="item-line item-line-one" style="position:absolute; top:47.8vh; left:96vw; width:36vw;"></div>
 <div class="item-line item-line-two" style="position:absolute; top:47.8vh; left:139vw; width:14.8vw;"></div>
@@ -278,6 +277,7 @@
     <div class="slide-trigger-reverse"></div>
   </div>
 
+      </div>
   <script>
 
 

@@ -35,3 +35,12 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+/* Allow overflow-x to show off-canvas items */
+body.non-fullscreen {
+    overflow-x: visible !important;
+    overflow-y: hidden !important;
+}
+.page-content {
+    overflow-x: visible !important;
+}

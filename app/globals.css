@@ -35,8 +35,3 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
-
-/* Unmask the rightmost white mask (layer-three) to reveal all panels */
-.layer-three {
-    display: none !important;
-}

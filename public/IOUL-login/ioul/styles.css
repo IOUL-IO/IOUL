@@ -16,7 +16,7 @@ body.non-fullscreen {
     background-color: #ffffff;
     min-height: 100vh;
     min-width: 100vw;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .layer-one {

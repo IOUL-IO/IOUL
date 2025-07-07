@@ -885,11 +885,15 @@ const GAP = 10;                   // horizontal shift in vw
     setTimeout(() => { animating = false; itemStage = 1; }, DUR);
   }
 
-  function toStage2() { // shift items further + reveal center with stagger
+  function toStage2() {
     animating = true;
-    move(itemEls, -2 * DIST - GAP);                       // items out first
-    move(centerEls, -DIST - GAP); // center follows
-    setTimeout(() => { animating=false; itemStage=2; centerStage=1; }, DUR + STAGGER);
+    move(itemEls, -2 * DIST - GAP);
+    move(centerEls, -DIST - GAP);
+    setTimeout(() => {
+      animating   = false;
+      itemStage   = 2;
+      centerStage = 1;
+    }, DUR + STAGGER);
   }
 
   /* ---------------- Reverse (←) transitions ---------------- */

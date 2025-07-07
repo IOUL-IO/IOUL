@@ -967,6 +967,11 @@ document.addEventListener('DOMContentLoaded', () => {
   loop();
 
   window.addEventListener('resize', update);
+      // Auto-reveal first slide on load
+      if (itemStage === 0) {
+        toStage1();
+      }
+
 });
 </script>
 

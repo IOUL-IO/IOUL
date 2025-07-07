@@ -1,14 +1,13 @@
-"use client";
-import React, { useEffect } from 'react';
-import { runLegacyScripts } from '../legacy-scripts';
 
-export default function Page() {
-  useEffect(() => {
-    runLegacyScripts();
-  }, []);
+    "use client";
+    import React, { useEffect } from 'react';
 
-  return (
-    <div dangerouslySetInnerHTML={{ __html: `<p style="display:none" lang="en">This page is already in English. No translation is needed.</p>
+    export default function Page() {
+      useEffect(() => {
+        // TODO: any JS init from legacy project can be ported here
+      }, []);
+      return (
+        <div dangerouslySetInnerHTML={ { __html: `<p style="display:none" lang="en">This page is already in English. No translation is needed.</p>
 
   <div class="layer-one"></div>
   <div class="layer-two"></div>
@@ -971,6 +970,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-` }} />
-  );
-}
+` } } />
+      );
+    }

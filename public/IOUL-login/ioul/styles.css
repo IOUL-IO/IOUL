@@ -16,7 +16,7 @@ body.non-fullscreen {
     background-color: #ffffff;
     min-height: 100vh;
     min-width: 100vw;
-    overflow: visible;
+    overflow: hidden;
 }
 
 .layer-one {
@@ -520,3 +520,16 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
+
+/* Bring slide container and text layers above mask layers */
+.slide-container {
+    z-index: 101 !important;
+}
+.slide-container .item-text,
+.slide-container .center-text,
+.slide-container .account-text {
+    z-index: 102 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+

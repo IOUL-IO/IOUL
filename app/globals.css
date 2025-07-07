@@ -37,8 +37,15 @@
 }
 
 
-/* Texts should slide above layer-four but remain below layer-two masks */
-.item-text, .center-text, .account-text {
-    z-index: 50 !important;
+/* Bring slide container and text layers above mask layers */
+.slide-container {
+    z-index: 101 !important;
+}
+.slide-container .item-text,
+.slide-container .center-text,
+.slide-container .account-text {
+    z-index: 102 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 

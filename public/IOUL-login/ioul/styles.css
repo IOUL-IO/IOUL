@@ -521,15 +521,9 @@ body.non-fullscreen {
   }
 }
 
-/* Bring slide container and text layers above mask layers */
+/* Disable clipping on slide-container to reveal all off-canvas text */
 .slide-container {
-    z-index: 101 !important;
-}
-.slide-container .item-text,
-.slide-container .center-text,
-.slide-container .account-text {
-    z-index: 102 !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+    clip-path: none !important;
+    overflow: visible !important;
 }
 

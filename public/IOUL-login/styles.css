@@ -17,8 +17,8 @@
 }
 
 body.non-fullscreen{background:#fff;min-height:100vh;min-width:100vw;overflow:hidden;}
-body.non-fullscreen .username{top:35.17vh;}
-body.non-fullscreen .password{top:43.17vh;}
+body.non-fullscreen .username{top:35.17vh; !important; }
+body.non-fullscreen .password{top:43.17vh; !important; }
 
 body.fade-in-trigger{background:#fff;}
 
@@ -32,7 +32,15 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 
 .login-line,
 .login-line-second,
-.login-text{opacity:0;transition:opacity .5s ease-in-out;}
+.login-text{
+  position:absolute !important;
+  font-family:'Distill Expanded',sans-serif !important;
+  color:#111 !important;
+  letter-spacing:.28vw !important;
+  font-size:.47rem !important;
+  left:6.41vw !important;
+  text-shadow:.001rem .001rem 0 #717171, -.001rem -.001rem 0 #717171 !important;
+}
 
 .login-text,
 .login-line,
@@ -56,13 +64,17 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .line.util-line{top:28.5vh;left:26.06vw;width:2.8vw;z-index:1;}
 
 .login-text{
-  position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
-  letter-spacing:.34vw;font-size:.46rem;left:6.41vw;
-  text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
+  position:absolute !important;
+  font-family:'Distill Expanded',sans-serif !important;
+  color:#111 !important;
+  letter-spacing:.28vw !important;
+  font-size:.47rem !important;
+  left:6.41vw !important;
+  text-shadow:.001rem .001rem 0 #717171, -.001rem -.001rem 0 #717171 !important;
 }
 
-.username{top:calc(var(--username-line-top) - var(--line-gap));}
-.password{top:calc(var(--password-line-top) - var(--line-gap));}
+.username{top:calc(var(--username-line-top) - var(--line-gap)); !important; }
+.password{top:calc(var(--password-line-top) - var(--line-gap)); !important; }
 
 .login-line,
 .login-line-second{
@@ -75,16 +87,20 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 /* ===== Utility Texts (OPEn / HELP) ===== */
 .open-text,
 .help-text{
-  transition: transform 0.7s ease, opacity 0.3s ease;
-  position:absolute;top:35.17vh;                 /* overwritten for help later */
-  font-family:'Distill Expanded',sans-serif;
-  color:#111;letter-spacing:.34vw;font-size:.46rem;
-  text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
-  left:29vw;                                     /* parked behind layer-two */
-  opacity:0;/* start hidden */                                     /* start fully transparent */
-  transition:transform .7s ease,opacity .3s ease;
+  position:absolute !important;
+  font-family:'Distill Expanded',sans-serif !important;
+  color:#111 !important;
+  letter-spacing:.28vw !important;
+  font-size:.47rem !important;
+  text-shadow:.001rem .001rem 0 #717171, -.001rem -.001rem 0 #717171 !important;
+  left:29vw !important;
+  top:35.17vh !important;
+  opacity:0 !important;
+  transition:transform .7s ease !important, opacity .3s ease !important;
 }
-.help-text{top:43.17vh;}
+.help-text{
+  top:43.17vh !important;
+}
 
 /* Hover brighten when visible */
 .open-text.visible:hover,
@@ -132,7 +148,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 /* ===== Help specific ===== */
 .help-text-area{
   position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
-  letter-spacing:.34vw;font-size:.46rem;white-space:nowrap;
+  letter-spacing:.34vw;font-size:.47rem;white-space:nowrap;
   text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
 }
 .help-text-area.email   {left:0;top:35.17vh;}

@@ -83,3 +83,59 @@ body.non-fullscreen {
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+/* ==== Consistent font sizing across stages ==== */
+@media screen and (max-width: 1899px) {
+  body.stage-login .login-text,
+  body.stage-util  .login-text,
+  body.stage-login .open-text,
+  body.stage-util  .open-text,
+  body.stage-login .help-text,
+  body.stage-util  .help-text,
+  body.stage-login .help-text-area,
+  body.stage-util  .help-text-area {
+    font-size: .46rem !important;
+    letter-spacing: .34vw  !important;
+  }
+}
+
+@media screen and (min-width: 1900px) {
+  body.stage-login .login-text,
+  body.stage-util  .login-text,
+  body.stage-login .open-text,
+  body.stage-util  .open-text,
+  body.stage-login .help-text,
+  body.stage-util  .help-text,
+  body.stage-login .help-text-area,
+  body.stage-util  .help-text-area {
+    font-size: .56rem !important;
+    letter-spacing: .36vw  !important;
+  }
+}
+
+/* ==== Sliding transforms for login, open, and help texts ==== */
+.login-text,
+.open-text,
+.help-text {
+  transition: transform .7s ease-in-out !important;
+}
+
+body.stage-login .login-text,
+body.stage-login .open-text,
+body.stage-login .help-text {
+  transform: translateX(0) !important;
+}
+
+body.stage-util  .login-text {
+  transform: translateX(-100%) !important;
+}
+
+body.stage-login .open-text,
+body.stage-login .help-text {
+  transform: translateX(100%) !important;
+}
+
+body.stage-util  .open-text,
+body.stage-util  .help-text {
+  transform: translateX(0) !important;
+}

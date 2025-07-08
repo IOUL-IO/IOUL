@@ -1,109 +1,262 @@
 "use client";
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
 export default function Page() {
   useEffect(() => {
-    // Legacy script logic (unchanged)...
+    // Full-screen toggle on edge click
+    const EDGE = 11;
+    const fullscreenHandler = ({ clientX: x, clientY: y }: MouseEvent) => {
+      const { innerWidth: w, innerHeight: h } = window;
+      const nearEdge =
+        x <= EDGE || x >= w - EDGE || y <= EDGE || y >= h - EDGE;
+      if (nearEdge && !document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      }
+    };
+    document.addEventListener("click", fullscreenHandler);
+
+    // Slide animation params
+    const FWD_MIN = 94,
+      FWD_MAX = 100;
+    const REV_MIN = 32.43,
+      REV_MAX = 36;
+    const TOP_MIN = 28.5,
+      TOP_MAX = 84;
+    const DIST = 60,
+      GAP = 10,
+      DUR = 600,
+      STAGGER = 0;
+    const vw = () => window.innerWidth / 100;
+    const vh = () => window.innerHeight / 100;
+    const toVw = (px: number) => px / vw();
+    const toVh = (px: number) => px / vh();
+
+    const jobEls = Array.from(
+      document.querySelectorAll<HTMLElement>(".job-text, .job-line")
+    );
+    const freelanceEls = Array.from(
+      document.querySelectorAll<HTMLElement>(".freelance-text, .freelance-line")
+    );
+
+    // Cache base positions
+    [...jobEls, ...freelanceEls].forEach((el) => {
+      if (!el.dataset.baseLeftVw) {
+        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+        el.dataset.baseLeftVw = toVw(leftPx).toString();
+      }
+    });
+
+    let animating = false;
+    let jobStage = 1;
+    let freelanceStage = 0;
+    let jobShifted = false;
+
+    const getAccountSlid = () =>
+      document.querySelector<HTMLElement>(".account-text")
+        ?.dataset.slid === "true";
+    function move(els: HTMLElement[], offset: number) {
+      els.forEach((el) => {
+        const base = parseFloat(el.dataset.baseLeftVw || "0");
+        el.style.transition = `left ${DUR}ms ease`;
+        el.style.left = `${base + offset}vw`;
+      });
+    }
+    function toStage1() {
+      animating = true;
+      move(jobEls, -DIST);
+      jobShifted = true;
+      setTimeout(() => {
+        animating = false;
+        jobStage = 1;
+      }, DUR);
+    }
+    function toStage2() {
+      animating = true;
+      move(jobEls, -DIST - GAP);
+      jobShifted = true;
+      move(freelanceEls, -DIST - GAP);
+      setTimeout(() => {
+        animating = false;
+        jobStage = 2;
+        freelanceStage = 1;
+      }, DUR + STAGGER);
+    }
+    function backToStage1() {
+      animating = true;
+      move(freelanceEls, 0);
+      move(jobEls, 0);
+      setTimeout(() => {
+        animating = false;
+        jobStage = 1;
+        freelanceStage = 0;
+        jobShifted = false;
+      }, DUR + STAGGER);
+    }
+    function backToStage0() {
+      animating = true;
+      move(jobEls, 0);
+      setTimeout(() => {
+        animating = false;
+        jobStage = 0;
+        jobShifted = false;
+      }, DUR);
+    }
+
+    const pageClickHandler = (e: MouseEvent) => {
+      if (animating) return;
+      const xVw = toVw(e.clientX);
+      const yVh = toVh(e.clientY);
+      const inFwd =
+        xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
+      const inRev =
+        xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
+      if (inFwd) {
+        if (getAccountSlid()) return;
+        if (jobStage === 0) {
+          toStage1();
+          e.stopPropagation();
+        } else if (jobStage === 1 && freelanceStage === 0) {
+          toStage2();
+          e.stopPropagation();
+        }
+      } else if (inRev) {
+        if (freelanceStage === 1) {
+          backToStage1();
+          e.stopPropagation();
+        } else if (jobStage === 1 && freelanceStage === 0 && jobShifted) {
+          backToStage0();
+          e.stopPropagation();
+        }
+      }
+    };
+    document.addEventListener("click", pageClickHandler, true);
+
+    // Clipping logic
+    const HIDE_LEFT_VW = 35.97;
+    function updateClip() {
+      jobEls.forEach((el) => {
+        if (el.classList.contains("freelance-line")) return;
+        const rect = el.getBoundingClientRect();
+        const l = toVw(rect.left);
+        const t = toVh(rect.top);
+        const hide = l < HIDE_LEFT_VW && t >= TOP_MIN && t <= TOP_MAX;
+        el.style.opacity = hide ? "0" : "";
+        el.style.pointerEvents = hide ? "none" : "";
+      });
+    }
+    updateClip();
+    requestAnimationFrame(function loop() {
+      updateClip();
+      requestAnimationFrame(loop);
+    });
+    window.addEventListener("resize", updateClip);
+    // Cleanup
+    return () => {
+      document.removeEventListener("click", fullscreenHandler);
+      document.removeEventListener("click", pageClickHandler, true);
+      window.removeEventListener("resize", updateClip);
+    };
   }, []);
 
   return (
-    <div
-      dangerouslySetInnerHTML={{
-        __html: `
-<!-- Fixed white mask layers -->
-  <div class="layer-one"></div>
-  <div class="layer-two"></div>
-  <div class="layer-three"></div>
-  <div class="layer-four"></div>
-  <div class="layer-five"></div>
-  <div class="layer-six"></div>
+    <>
+      {/* Fixed white mask layers */}
+      <div className="layer-one" />
+      <div className="layer-two" />
+      <div className="layer-three" />
+      <div className="layer-four" />
+      <div className="layer-five" />
+      <div className="layer-six" />
 
-  <!-- All visible UI sits inside page‑content -->
-  <div class="page-content">
+      {/* All visible UI sits inside page-content */}
+      <div className="page-content">
+        {/* Primary guideline lines */}
+        <div className="line original" />
+        <div className="line second" />
+        <div className="line third" />
+        <div className="line fourth" />
+        <div className="line fifth" />
+        <div className="line sixth" />
+        <div className="line util-line" />
 
-    <!-- Primary guideline lines -->
-    <div class="line original"></div>
-    <div class="line second"></div>
-    <div class="line third"></div>
-    <div class="line fourth"></div>
-    <div class="line fifth"></div>
-    <div class="line sixth"></div>
+        {/* Job items */}
+<span className="custom-text job-item" style={{ position: 'absolute', top: '35.4vh', left: '6.41vw' }}>JOB LOg</span>
+<span className="custom-text job-item" style={{ position: 'absolute', top: '41.6vh', left: '6.41vw' }}>APPL1ED</span>
+<span className="custom-text job-item" style={{ position: 'absolute', top: '53vh',   left: '6.41vw' }}>QUAL1FY</span>
+<span className="custom-text job-item" style={{ position: 'absolute', top: '59.2vh', left: '6.41vw' }}>1n1T1ATE</span>
 
-    <div class="line util-line"></div>
+{/* Job counters */}
+<span className="custom-text right-flow job-item" style={{ position: 'absolute', top: '35.4vh', left: '28.41vw' }}>0</span>
+<span className="custom-text right-flow job-item" style={{ position: 'absolute', top: '41.6vh', left: '28.41vw' }}>0</span>
+<span className="custom-text right-flow job-item" style={{ position: 'absolute', top: '53vh',   left: '28.41vw' }}>0</span>
+<span className="custom-text right-flow job-item" style={{ position: 'absolute', top: '59.2vh', left: '28.41vw' }}>0</span>
 
-    <span class="custom-text job-item" style="position:absolute; top:35.4vh; left:6.41vw;">JOB LOg</span>
-    <span class="custom-text job-item" style="position:absolute; top:41.6vh; left:6.41vw;">APPL1ED</span>
-    <span class="custom-text job-item" style="position:absolute; top:53vh; left:6.41vw;">QUAL1FY</span>
-    <span class="custom-text job-item" style="position:absolute; top:59.2vh; left:6.41vw;">1n1T1ATE</span>
+        {/* Divider line */}
+<div className="custom-line job-item" />
 
-    <span class="custom-text right-flow job-item" style="position:absolute; top:35.4vh; left:28.41vw;">0</span>
-    <span class="custom-text right-flow job-item" style="position:absolute; top:41.6vh; left:28.41vw;">0</span>
-    <span class="custom-text right-flow job-item" style="position:absolute; top:53vh; left:28.41vw;">0</span>
-    <span class="custom-text right-flow job-item" style="position:absolute; top:59.2vh; left:28.41vw;">0</span>
+{/* Job‐line bars */}
+<div className="job-line job-line-one" style={{ position: 'absolute', top: '47.8vh', left: '36vw', width: '36vw' }} />
+<div className="job-line job-line-two" style={{ position: 'absolute', top: '47.8vh', left: '79vw', width: '14.8vw' }} />
 
-    <!-- Divider line that used to slide with the containers -->
-    <div class="custom-line job-item"></div>
+        {/* Freelance lines */}
+<div className="freelance-line freelance-line-one"   style={{ position: 'absolute', top: '47.8vh', left: '106.0vw', width: '36vw' }} />
+<div className="freelance-line freelance-line-two"   style={{ position: 'absolute', top: '47.8vh', left: '149.0vw', width: '14.8vw' }} />
 
-    <!-- Item lines -->
-    <div class="job-line job-line-one" style="position:absolute; top:47.8vh; left:36vw; width:36vw;"></div>
-    <div class="job-line job-line-two" style="position:absolute; top:47.8vh; left:79vw; width:14.8vw;"></div>
+{/* Freelance texts & counters */}
+<span className="freelance-text"            style={{ position: 'absolute', top: '35.4vh', left: '106.0vw' }}>LOOK UP:</span>
+<span className="freelance-text"            style={{ position: 'absolute', top: '41.6vh', left: '106.0vw' }}>JOB LOg:</span>
+<span className="custom-text right-flow freelance-text" style={{ position: 'absolute', top: '35.4vh', left: '119.7vw' }}>0</span>
+<span className="custom-text right-flow freelance-text" style={{ position: 'absolute', top: '41.6vh', left: '119.7vw' }}>0</span>
 
-    <!-- Center lines -->
-    <div class="freelance-line freelance-line-one" style="position:absolute; top:47.8vh; left:106.0vw; width:36vw;"></div>
-    <div class="freelance-line freelance-line-two" style="position:absolute; top:47.8vh; left:149.0vw; width:14.8vw;"></div>
+<span className="freelance-text"            style={{ position: 'absolute', top: '35.4vh', left: '128.0vw' }}>PER1OD:</span>
+<span className="freelance-text"            style={{ position: 'absolute', top: '41.6vh', left: '128.0vw' }}>F1LTER:</span>
+<span className="custom-text right-flow freelance-text" style={{ position: 'absolute', top: '35.4vh', left: '141.0vw' }}>0</span>
+<span className="custom-text right-flow freelance-text" style={{ position: 'absolute', top: '41.6vh', left: '141.0vw' }}>0</span>
 
-    <!-- Center texts -->
-    <span class="freelance-text" style="position:absolute; top:35.4vh; left:106.0vw;">LOOK UP:</span>
-    <span class="freelance-text" style="position:absolute; top:41.6vh; left:106.0vw;">JOB LOg:</span>
-    <span class="freelance-text right-flow" style="position:absolute; top:35.4vh; left:119.7vw;">0</span>
-    <span class="freelance-text right-flow" style="position:absolute; top:41.6vh; left:119.7vw;">0</span>
-    <span class="freelance-text" style="position:absolute; top:35.4vh; left:128.0vw;">PER1OD:</span>
-    <span class="freelance-text" style="position:absolute; top:41.6vh; left:128.0vw;">F1LTER:</span>
-    <span class="freelance-text right-flow" style="position:absolute; top:35.4vh; left:141.0vw;">0</span>
-    <span class="freelance-text right-flow" style="position:absolute; top:41.6vh; left:141.0vw;">0</span>
-    <span class="freelance-text" style="position:absolute; top:35.4vh; left:149.0vw;">RAT1ngS</span>
-    <span class="freelance-text" style="position:absolute; top:41.6vh; left:149.0vw;">REcE1PT</span>
-    <span class="freelance-text right-flow" style="position:absolute; top:53vh; left:163.4vw;">0</span>
-    <span class="freelance-text right-flow" style="position:absolute; top:59.2vh; left:163.4vw;">0</span>
+        {/* Extra job-text columns */}
+<span className="job-text"       style={{ position: 'absolute', top: '35.4vh', left: '36vw' }}>LOOK UP:</span>
+<span className="job-text"       style={{ position: 'absolute', top: '41.6vh', left: '36vw' }}>OPT FOR:</span>
+<span className="job-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '49.7vw' }}>0</span>
+<span className="job-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '49.7vw' }}>0</span>
 
-    <!-- Item texts -->
-    <span class="job-text" style="position:absolute; top:35.4vh; left:36vw;">LOOK UP:</span>
-    <span class="job-text" style="position:absolute; top:41.6vh; left:36vw;">OPT FOR:</span>
-    <span class="job-text right-flow" style="position:absolute; top:35.4vh; left:49.7vw;">0</span>
-    <span class="job-text right-flow" style="position:absolute; top:41.6vh; left:49.7vw;">0</span>
-    <span class="job-text" style="position:absolute; top:35.4vh; left:58vw;">PER1OD:</span>
-    <span class="job-text" style="position:absolute; top:41.6vh; left:58vw;">F1LTER:</span>
-    <span class="job-text right-flow" style="position:absolute; top:35.4vh; left:71vw;">0</span>
-    <span class="job-text right-flow" style="position:absolute; top:41.6vh; left:71vw;">0</span>
-    <span class="job-text" style="position:absolute; top:35.4vh; left:79vw;">AcT1VE</span>
-    <span class="job-text" style="position:absolute; top:41.6vh; left:79vw;">JO1nED</span>
-    <span class="job-text right-flow" style="position:absolute; top:35.4vh; left:93.4vw;">0</span>
-    <span class="job-text right-flow" style="position:absolute; top:41.6vh; left:93.4vw;">0</span>
-    <span class="job-text" style="position:absolute; top:53vh; left:79vw;">JA:</span>
-    <span class="job-text" style="position:absolute; top:59.2vh; left:79vw;">JA:</span>
-    <span class="job-text" style="position:absolute; top:65.4vh; left:79vw;">JA:</span>
-    <span class="job-text" style="position:absolute; top:71.6vh; left:79vw;">JL:</span>
-    <span class="job-text right-flow" style="position:absolute; top:53vh; left:93.4vw;">0</span>
-    <span class="job-text right-flow" style="position:absolute; top:59.2vh; left:93.4vw;">0</span>
-    <span class="job-text right-flow" style="position:absolute; top:65.4vh; left:93.4vw;">0</span>
-    <span class="job-text right-flow" style="position:absolute; top:71.6vh; left:93.4vw;">0</span>
+<span className="job-text"       style={{ position: 'absolute', top: '35.4vh', left: '58vw' }}>PER1OD:</span>
+<span className="job-text"       style={{ position: 'absolute', top: '41.6vh', left: '58vw' }}>F1LTER:</span>
+<span className="job-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '71vw' }}>0</span>
+<span className="job-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '71vw' }}>0</span>
 
-    <!-- Community & Zero items -->
-    <div class="freelance-items-container" style="position:absolute; z-index:1;">
-      <span class="custom-text" style="position:absolute; top:35.4vh; left:35.41vw;">OFFER LOg</span>
-      <span class="custom-text" style="position:absolute; top:41.6vh; left:35.41vw;">ORDER LOg</span>
-      <span class="custom-text" style="position:absolute; top:53vh; left:35.41vw;">HELP LOg</span>
-      <span class="custom-text" style="position:absolute; top:59.2vh; left:35.41vw;">JUnK LOg</span>
-      <div class="custom-line" style="position:absolute; top:47.8vh; left:35.41vw; width:22.48vw; height:1px; background:rgba(230,230,230,0.28);"></div>
-    </div>
-    <div class="zero-items-container" style="position:absolute; z-index:1;">
-      <span class="custom-text right-flow" style="position:absolute; top:35.4vh; left:57.4vw;">0</span>
-      <span class="custom-text right-flow" style="position:absolute; top:41.6vh; left:57.4vw;">0</span>
-      <span class="custom-text right-flow" style="position:absolute; top:53vh; left:57.4vw;">0</span>
-      <span class="custom-text right-flow" style="position:absolute; top:59.2vh; left:57.4vw;">0</span>
-    </div>
-`
-      }}
-    />
+<span className="job-text"       style={{ position: 'absolute', top: '35.4vh', left: '79vw' }}>AcT1VE</span>
+<span className="job-text"       style={{ position: 'absolute', top: '41.6vh', left: '79vw' }}>JO1nED</span>
+<span className="job-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '93.4vw' }}>0</span>
+<span className="job-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '93.4vw' }}>0</span>
+
+        {/* Community container */}
+<div className="freelance-items-container" style={{ position: 'absolute', zIndex: 1 }}>
+  {/* 4 labels */}
+  <span className="custom-text" style={{ position: 'absolute', top: '35.4vh', left: '35.41vw' }}>OFFER LOg</span>
+  <span className="custom-text" style={{ position: 'absolute', top: '41.6vh', left: '35.41vw' }}>ORDER LOg</span>
+  <span className="custom-text" style={{ position: 'absolute', top: '53vh',   left: '35.41vw' }}>HELP LOg</span>
+  <span className="custom-text" style={{ position: 'absolute', top: '59.2vh', left: '35.41vw' }}>JUnK LOg</span>
+
+  {/* horizontal divider */}
+  <div className="custom-line" style={{
+    position: 'absolute',
+    top: '47.8vh',
+    left: '35.41vw',
+    width: '22.48vw',
+    height: '1px',
+    background: 'rgba(230,230,230,0.28)'
+  }} />
+</div>
+
+{/* Zero container */}
+<div className="zero-items-container" style={{ position: 'absolute', zIndex: 1 }}>
+  <span className="custom-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '57.4vw' }}>0</span>
+  <span className="custom-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '57.4vw' }}>0</span>
+  <span className="custom-text right-flow" style={{ position: 'absolute', top: '53vh',   left: '57.4vw' }}>0</span>
+  <span className="custom-text right-flow" style={{ position: 'absolute', top: '59.2vh', left: '57.4vw' }}>0</span>
+</div>
+
+        {/* Full‐screen grid overlay */}      </div>
+    </>
   );
 }

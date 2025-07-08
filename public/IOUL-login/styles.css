@@ -464,29 +464,59 @@ body.stage-util .help-text-area {
   letter-spacing: .36vw !important;
 }
 
-/* ==== Persist text sizing across sliding ==== */
-/* Large screens (>=1900px): keep larger text in both login and util stages */
-@media screen and (min-width: 1900px) {
-  body.stage-login .login-text,
-  body.stage-util  .login-text,
-  body.stage-login .open-text,
-  body.stage-util  .open-text,
-  body.stage-login .help-text,
-  body.stage-util  .help-text {
-    font-size:      .56rem  !important;
-    letter-spacing: .36vw   !important;
-  }
-}
+/* === Updated overrides for sliding behavior and consistent styling === */
 
-/* Smaller screens (<1900px): revert to default sizes */
+/* Persistent font sizing */
 @media screen and (max-width: 1899px) {
   body.stage-login .login-text,
   body.stage-util  .login-text,
   body.stage-login .open-text,
   body.stage-util  .open-text,
   body.stage-login .help-text,
-  body.stage-util  .help-text {
-    font-size:      .47rem  !important;
-    letter-spacing: .28vw   !important;
+  body.stage-util  .help-text,
+  body.stage-login .help-text-area,
+  body.stage-util  .help-text-area {
+    font-size: .47rem !important;
+    letter-spacing: .28vw !important;
   }
+}
+
+@media screen and (min-width: 1900px) {
+  body.stage-login .login-text,
+  body.stage-util  .login-text,
+  body.stage-login .open-text,
+  body.stage-util  .open-text,
+  body.stage-login .help-text,
+  body.stage-util  .help-text,
+  body.stage-login .help-text-area,
+  body.stage-util  .help-text-area {
+    font-size: .56rem !important;
+    letter-spacing: .36vw !important;
+  }
+}
+
+/* Sliding transitions */
+.login-text,
+.open-text,
+.help-text {
+  transition: transform .7s ease-in-out !important;
+}
+
+/* Login text slides left out, open/help are offscreen right by default */
+body.stage-login .login-text { transform: translateX(0) !important; }
+body.stage-util  .login-text { transform: translateX(-100%) !important; }
+
+body.stage-login .open-text,
+body.stage-login .help-text { transform: translateX(100%) !important; }
+body.stage-util  .open-text,
+body.stage-util  .help-text { transform: translateX(0) !important; }
+
+/* Ensure login-lines keep thin, light-gray style during sliding */
+body.stage-login .login-line,
+body.stage-login .login-line-second,
+body.stage-util  .login-line,
+body.stage-util  .login-line-second {
+  background: rgba(230,230,230,.28) !important;
+  height: 1px !important;
+  transition: transform .7s ease-in-out, background 0s !important;
 }

@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import LegacyScripts from './legacy-scripts';
 
 const legacyCssFiles = [
-    '/login.css',
+  '/IOUL-login/styles.css',
   '/IOUL-login/center/add-ons/styles.css',
   '/IOUL-login/center/community/styles.css',
   '/IOUL-login/center/ioul center/styles.css',

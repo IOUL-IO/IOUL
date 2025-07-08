@@ -1,6 +1,7 @@
 
     "use client";
     import React from 'react';
+import './login.css';
     export default function Page() {
       return <div dangerouslySetInnerHTML={ { __html: `
   <!-- Static lines -->

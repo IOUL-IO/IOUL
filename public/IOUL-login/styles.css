@@ -406,3 +406,18 @@ body.stage-util-pre .help-text{
   top:calc(43.17vh - 2.5vh);
   height:5vh;
 }
+
+/* ==== Login page inline overrides ==== */
+body.stage-login .login-text {
+  letter-spacing: .34vw !important;
+  font-size: .46rem !important;
+  line-height: 1.2 !important;
+  padding: .1rem 0 !important;
+  z-index: 10 !important;
+  overflow: visible !important;
+}
+
+body.stage-login .login-line,
+body.stage-login .login-line-second {
+  background: rgba(230,230,230,.28) !important;
+}

@@ -13,6 +13,7 @@
   <div class="layer-two"></div>
   <div class="layer-three"></div>
 
+  <style> .page-content, .slide-container { overflow: visible !important; } </style>
   <div class="page-content">
     <div class="menu-items">
       <span class="custom-text menu-item" style="top:36.1vh; left:29vw;" id="online-assets">
@@ -829,26 +830,18 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
-<script>
-/* --- Updated staggered gap logic injected by ChatGPT on 2025‑06‑02 --- */
-document.addEventListener('DOMContentLoaded', () => {
-  const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger (right edge)
-  const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
-  const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
-  const DIST    = 60;
-const GAP = 10;                   // horizontal shift in vw
-  const DUR     = 600;                  // transition duration in ms
-  const STAGGER = 0;                  // delay between outgoing and incoming groups in ms
 
-  // Helper unit conversions
+<script>
+// Group and center sliding logic
+document.addEventListener('DOMContentLoaded', () => {
+  const fwdBtn = document.querySelector('.slide-trigger');
+  const revBtn = document.querySelector('.slide-trigger-reverse');
+  const itemEls = [...document.querySelectorAll('.item-text'), ...document.querySelectorAll('.item-line')];
+  const centerEls = [...document.querySelectorAll('.center-text'), ...document.querySelectorAll('.center-line')];
   const vw = () => window.innerWidth / 100;
   const vh = () => window.innerHeight / 100;
   const toVw = px => px / vw();
   const toVh = px => px / vh();
-
-  // Groups
-  const itemEls   = [...document.querySelectorAll('.item-text'),  ...document.querySelectorAll('.item-line')];
-  const centerEls = [...document.querySelectorAll('.center-text'),...document.querySelectorAll('.center-line')];
 
   // Cache base positions
   [...itemEls, ...centerEls].forEach(el => {
@@ -858,80 +851,59 @@ const GAP = 10;                   // horizontal shift in vw
     }
   });
 
-  // Stage flags
-  let itemStage   = 0;  // 0 = hidden, 1 = visible (left column), 2 = shifted left / clipped
-  let centerStage = 0;  // 0 = hidden, 1 = visible (center column)
-  let animating   = false;
+  let itemStage = 0, centerStage = 0, animating = false;
+  const DIST = 60, GAP = 10, DUR = 600, STAGGER = 0;
 
-  // External dependency: account slide logic (unchanged)
-  const getAccountSlid = () => {
-    const acc = document.querySelector('.account-text');
-    return acc && acc.dataset.slid === 'true';
-  };
-
-  // Reusable animator
   function move(els, offset) {
     els.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = \`left \${DUR}ms ease\`;
-      el.style.left       = (base + offset) + 'vw';
+      const base = parseFloat(el.dataset.baseLeftVw) || 0;
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left = (base + offset) + 'vw';
     });
   }
 
-  /* ---------------- Forward (→) transitions ---------------- */
-  function toStage1() { // show items
+  function toStage1() {
     animating = true;
     move(itemEls, -DIST);
     setTimeout(() => { animating = false; itemStage = 1; }, DUR);
   }
 
-  function toStage2() { // shift items further + reveal center with stagger
+  function toStage2() {
     animating = true;
-    move(itemEls, -2 * DIST - GAP);                       // items out first
-    move(centerEls, -DIST - GAP); // center follows
-    setTimeout(() => { animating=false; itemStage=2; centerStage=1; }, DUR + STAGGER);
+    move(itemEls, -2 * DIST - GAP);
+    move(centerEls, -DIST - GAP);
+    setTimeout(() => { animating = false; itemStage = 2; centerStage = 1; }, DUR + STAGGER);
   }
 
-  /* ---------------- Reverse (←) transitions ---------------- */
-  function backToStage1() { // hide center, restore items with stagger
+  function backToStage1() {
     animating = true;
-    move(centerEls, 0);                              // center leaves first
-    move(itemEls, -DIST); // items return after delay
-    setTimeout(() => { animating=false; itemStage=1; centerStage=0; }, DUR + STAGGER);
+    move(centerEls, 0);
+    move(itemEls, -DIST);
+    setTimeout(() => { animating = false; itemStage = 1; centerStage = 0; }, DUR + STAGGER);
   }
 
-  function backToStage0() { // hide items
+  function backToStage0() {
     animating = true;
     move(itemEls, 0);
-    setTimeout(() => { animating=false; itemStage=0; }, DUR);
+    setTimeout(() => { animating = false; itemStage = 0; }, DUR);
   }
 
-  /* ---------------- Click handling ---------------- */
-  document.addEventListener('click', e => {
+  fwdBtn && fwdBtn.addEventListener('click', e => {
+    e.stopPropagation();
     if (animating) return;
+    if (itemStage === 0) toStage1();
+    else if (itemStage === 1 && centerStage === 0) toStage2();
+  });
 
-    const xVw = toVw(e.clientX);
-    const yVh = toVh(e.clientY);
-    const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
-    const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
-
-    if (inFwd) {
-      if (getAccountSlid()) return;             // hand off to account logic
-      if (itemStage === 0) {
-        toStage1(); e.stopPropagation();
-      } else if (itemStage === 1 && centerStage === 0) {
-        toStage2(); e.stopPropagation();
-      }
-    } else if (inRev) {
-      if (centerStage === 1) {
-        backToStage1(); e.stopPropagation();
-      } else if (itemStage === 1 && centerStage === 0) {
-        backToStage0(); e.stopPropagation();
-      }
-    }
-  }, true);
+  revBtn && revBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    if (animating) return;
+    if (centerStage === 1) backToStage1();
+    else if (itemStage === 1 && centerStage === 0) backToStage0();
+  });
 });
 </script>
+
 
 
 <script>

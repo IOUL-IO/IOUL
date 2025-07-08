@@ -1,0 +1,11 @@
+/* Login lines styling */
+.login-line,
+.login-line-second {
+  position: absolute;
+  left: 6.4vw;
+  width: 22.48vw;
+  height: 1px;
+  background: rgba(230, 230, 230, 0.28);
+}
+.login-line { top: var(--username-line-top); }
+.login-line-second { top: var(--password-line-top); }

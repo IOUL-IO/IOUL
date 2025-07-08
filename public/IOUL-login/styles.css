@@ -67,7 +67,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .login-line,
 .login-line-second{
   position:absolute;left:6.4vw;width:22.48vw;height:1px;
-  
+  background:rgba(230,230,230,.28);
 }
 .login-line {top:var(--username-line-top);}
 .login-line-second{top:var(--password-line-top);}
@@ -405,11 +405,4 @@ body.stage-util-pre .help-text{
 .layer-two::after{
   top:calc(43.17vh - 2.5vh);
   height:5vh;
-}
-
-
-/* Login line overrides */
-.line.login-line,
-.line.login-line-second {
-  background: rgba(230,230,230,0.28) !important;
 }

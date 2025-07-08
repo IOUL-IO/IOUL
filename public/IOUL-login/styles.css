@@ -57,7 +57,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 
 .login-text{
   position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
-  letter-spacing:.28vw;font-size:.47rem;left:6.41vw;
+  letter-spacing:.34vw;font-size:.46rem;left:6.41vw;
   text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
 }
 
@@ -78,7 +78,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
   transition: transform 0.7s ease, opacity 0.3s ease;
   position:absolute;top:35.17vh;                 /* overwritten for help later */
   font-family:'Distill Expanded',sans-serif;
-  color:#111;letter-spacing:.28vw;font-size:.47rem;
+  color:#111;letter-spacing:.34vw;font-size:.46rem;
   text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
   left:29vw;                                     /* parked behind layer-two */
   opacity:0;/* start hidden */                                     /* start fully transparent */
@@ -132,7 +132,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 /* ===== Help specific ===== */
 .help-text-area{
   position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
-  letter-spacing:.34vw;font-size:.47rem;white-space:nowrap;
+  letter-spacing:.34vw;font-size:.46rem;white-space:nowrap;
   text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
 }
 .help-text-area.email   {left:0;top:35.17vh;}

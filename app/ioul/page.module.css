@@ -1,0 +1,4 @@
+:global(.page-content),
+:global(.slide-container) {
+  overflow: visible !important;
+}

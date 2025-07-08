@@ -1,4 +1,3 @@
-import './globals.css';
 import type { Metadata } from 'next';
 import LegacyScripts from './legacy-scripts';
 
@@ -33,9 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        {legacyCssFiles.map((href) => (
-          <link key={href} rel="stylesheet" href={href} />
-        ))}
+        <link rel="stylesheet" href="/IOUL-login/styles.css" />
       </head>
       <body className="non-fullscreen stage-login">
         {children}

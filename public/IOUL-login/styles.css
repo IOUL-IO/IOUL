@@ -463,3 +463,61 @@ body.stage-util .help-text-area {
   font-size: .56rem !important;
   letter-spacing: .36vw !important;
 }
+
+
+/* ==== Login Page Overrides ==== */
+/* Sliding transforms */
+.login-text,
+.open-text,
+.help-text {
+  transition: transform 0.5s ease-in-out !important;
+}
+body.stage-login .login-text {
+  transform: translateX(0) !important;
+}
+body.stage-util  .login-text {
+  transform: translateX(-100%) !important;
+}
+body.stage-login .open-text,
+body.stage-login .help-text {
+  transform: translateX(100%) !important;
+}
+body.stage-util  .open-text,
+body.stage-util  .help-text {
+  transform: translateX(0) !important;
+}
+
+/* Persistent login-line styling */
+body.stage-login .login-line,
+body.stage-login .login-line-second,
+body.stage-util  .login-line,
+body.stage-util  .login-line-second {
+  background: rgba(230,230,230,0.28) !important;
+  height: 1px !important;
+}
+
+/* Persistent sizing */
+/* Small screens (<1900px) */
+@media screen and (max-width: 1899px) {
+  body.stage-login .login-text,
+  body.stage-util  .login-text,
+  body.stage-login .open-text,
+  body.stage-util  .open-text,
+  body.stage-login .help-text,
+  body.stage-util  .help-text {
+    font-size:      0.47rem !important;
+    letter-spacing: 0.28vw  !important;
+  }
+}
+/* Large screens (>=1900px) */
+@media screen and (min-width: 1900px) {
+  body.stage-login .login-text,
+  body.stage-util  .login-text,
+  body.stage-login .open-text,
+  body.stage-util  .open-text,
+  body.stage-login .help-text,
+  body.stage-util  .help-text {
+    font-size:      0.56rem !important;
+    letter-spacing: 0.36vw  !important;
+  }
+}

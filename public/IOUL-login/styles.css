@@ -428,7 +428,27 @@ body.stage-login .login-line-second {
 }
 
 
+/* ==== Force login text size and line color in all stages ==== */
+.login-text {
+  letter-spacing: .34vw !important;
+  font-size: .46rem !important;
+  line-height: 1.2 !important;
+  padding: .1rem 0 !important;
+}
+.login-line,
+.login-line-second {
+  background: rgba(230,230,230,.28) !important;
+}
 
+@media screen and (min-width: 1900px) {
+  body.stage-login .login-text,
+  body.stage-login .open-text,
+  body.stage-login .help-text,
+  body.stage-login .help-text-area {
+    font-size: .56rem !important;
+    letter-spacing: .36vw !important;
+  }
+}
 
 
 /* ==== Persist text sizing during sliding stages ==== */
@@ -444,18 +464,29 @@ body.stage-util .help-text-area {
   letter-spacing: .36vw !important;
 }
 
-
-/* ==== Persistent large-screen sizing only ==== */
+/* ==== Persist text sizing across sliding ==== */
+/* Large screens (>=1900px): keep larger text in both login and util stages */
 @media screen and (min-width: 1900px) {
   body.stage-login .login-text,
   body.stage-util  .login-text,
   body.stage-login .open-text,
   body.stage-util  .open-text,
   body.stage-login .help-text,
-  body.stage-util  .help-text,
-  body.stage-login .help-text-area,
-  body.stage-util  .help-text-area {
+  body.stage-util  .help-text {
     font-size:      .56rem  !important;
     letter-spacing: .36vw   !important;
+  }
+}
+
+/* Smaller screens (<1900px): revert to default sizes */
+@media screen and (max-width: 1899px) {
+  body.stage-login .login-text,
+  body.stage-util  .login-text,
+  body.stage-login .open-text,
+  body.stage-util  .open-text,
+  body.stage-login .help-text,
+  body.stage-util  .help-text {
+    font-size:      .47rem  !important;
+    letter-spacing: .28vw   !important;
   }
 }

@@ -1,51 +1,51 @@
+"use client";
+import React from 'react';
 
-    "use client";
-    import React from 'react';
-    export default function Page() {
-      return <div dangerouslySetInnerHTML={ { __html: `
-  <!-- Static lines -->
-  <div class="line original"></div>
-  <div class="line second"></div>
-  <div class="line third"></div>
-  <div class="line fourth"></div>
-  <div class="line fifth"></div>
-  <div class="line sixth"></div>
-  <div class="line util-line"></div>
+export default function LoginPage() {
+  return (
+    <main dangerouslySetInnerHTML={{ __html: `<!-- Static lines -->
+  <div className="line original"></div>
+  <div className="line second"></div>
+  <div className="line third"></div>
+  <div className="line fourth"></div>
+  <div className="line fifth"></div>
+  <div className="line sixth"></div>
+  <div className="line util-line"></div>
 
   <!-- Login -->
-  <span class="login-text username hidden">USERnAME</span>
-  <span class="login-text password hidden">PASSWORD</span>
+  <span className="login-text username hidden">USERnAME</span>
+  <span className="login-text password hidden">PASSWORD</span>
 
   <!-- Util texts -->
-  <span class="login-text open-text hidden">OPEn AccOUnT</span>
-  <span class="login-text help-text hidden">HELP REQUEST</span>
+  <span className="login-text open-text hidden">OPEn AccOUnT</span>
+  <span className="login-text help-text hidden">HELP REQUEST</span>
 
   <!-- Login entry lines -->
-  <div class="line login-line hidden"></div>
-  <div class="line login-line-second hidden"></div>
+  <div className="line login-line hidden"></div>
+  <div className="line login-line-second hidden"></div>
 
   <!-- Account creation wrapper -->
-  <div class="account-wrapper">
-    <span class="account-text account-email">E-MA1L ADDRESS</span>
-    <span class="account-text account-username">YOUR USERnAME</span>
-    <span class="account-text account-sign-password">YOUR PASSWORD</span>
-    <span class="account-text account-repeat-password">REDO PASSWORD</span>
-    <div class="account-line account-line1"></div>
-    <div class="account-line account-line2"></div>
-    <div class="account-line account-line3"></div>
-    <div class="account-line account-line4"></div>
+  <div className="account-wrapper">
+    <span className="account-text account-email">E-MA1L ADDRESS</span>
+    <span className="account-text account-username">YOUR USERnAME</span>
+    <span className="account-text account-sign-password">YOUR PASSWORD</span>
+    <span className="account-text account-repeat-password">REDO PASSWORD</span>
+    <div className="account-line account-line1"></div>
+    <div className="account-line account-line2"></div>
+    <div className="account-line account-line3"></div>
+    <div className="account-line account-line4"></div>
   </div>
 
   <!-- Help wrapper -->
-  <div class="help-wrapper">
-    <span class="help-text-area email">YOUR EMA1L</span>
-    <span class="help-text-area sendlink">SEnD L1nK</span>
-    <div class="help-line"></div>
+  <div className="help-wrapper">
+    <span className="help-text-area email">YOUR EMA1L</span>
+    <span className="help-text-area sendlink">SEnD L1nK</span>
+    <div className="help-line"></div>
   </div>
 
   <!-- Masking layers -->
-  <div class="layer-one"></div>
-  <div class="layer-two"></div>
+  <div className="layer-one"></div>
+  <div className="layer-two"></div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -135,8 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
   resetInactivityTimer();
  // 0: login, 1: util, 2: account, 3: help
 
-
-
+  
+  
   utilLine.addEventListener('click', () => {
       if(step!==0) return;
       /* Phase 1: slide login items left */
@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const backZone = x<=vw*0.0637 && y>=vh*0.285 && y<=vh*0.84;
       if(!backZone) return;
 
-
+      
       if(step===1){
 /* reverse util -> login */
 setStage('stage-util-pre');                // start OPEn / HELP slide‑out (no fade yet)
@@ -248,6 +248,6 @@ setTimeout(() => {                         // after 0.7 s slide completes…
     }
   });
 });
-</script>
-` } } />;
-    }
+</script>` }} />
+  );
+}

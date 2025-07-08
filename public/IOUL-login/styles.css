@@ -32,7 +32,19 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 
 .login-line,
 .login-line-second,
-.login-text{opacity:0;transition:opacity .5s ease-in-out;}
+.login-text{
+  position:absolute;
+  z-index:10;
+  overflow:visible;
+  font-family:'Distill Expanded',sans-serif;
+  color:#111;
+  letter-spacing:.34vw;
+  font-size:.46rem;
+  line-height:1.2;
+  padding:.1rem 0;
+  text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
+  left:6.41vw;
+}
 
 .login-text,
 .login-line,
@@ -56,9 +68,17 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .line.util-line{top:28.5vh;left:26.06vw;width:2.8vw;z-index:1;}
 
 .login-text{
-  position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
-  letter-spacing:.28vw;font-size:.47rem;left:6.41vw;
+  position:absolute;
+  z-index:10;
+  overflow:visible;
+  font-family:'Distill Expanded',sans-serif;
+  color:#111;
+  letter-spacing:.34vw;
+  font-size:.46rem;
+  line-height:1.2;
+  padding:.1rem 0;
   text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
+  left:6.41vw;
 }
 
 .username{top:calc(var(--username-line-top) - var(--line-gap));}
@@ -67,7 +87,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .login-line,
 .login-line-second{
   position:absolute;left:6.4vw;width:22.48vw;height:1px;
-  background:rgba(230,230,230,.28);
+  background:rgba(230,230,230,.28); !important;
 }
 .login-line {top:var(--username-line-top);}
 .login-line-second{top:var(--password-line-top);}
@@ -123,7 +143,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .account-text.account-sign-password  {top:51.4vh;}
 .account-text.account-repeat-password{top:59.5vh;}
 
-.account-line{position:absolute;left:0;width:22.48vw;height:1px;background:rgba(230,230,230,.28);}
+.account-line{position:absolute;left:0;width:22.48vw;height:1px;background:rgba(230,230,230,.28); !important;}
 .account-line.account-line1{top:38.9vh;}
 .account-line.account-line2{top:47vh;}
 .account-line.account-line3{top:55.1vh;}
@@ -138,7 +158,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .help-text-area.email   {left:0;top:35.17vh;}
 .help-text-area.sendlink{left:15.77vw;top:35.17vh;opacity:.7;transition:opacity .3s ease;}
 .help-text-area.sendlink:hover{opacity:1;}
-.help-line{position:absolute;top:38.9vh;left:0;width:22.48vw;height:1px;background:rgba(230,230,230,.28);}
+.help-line{position:absolute;top:38.9vh;left:0;width:22.48vw;height:1px;background:rgba(230,230,230,.28); !important;}
 
 /* ========= Dynamic Stage‑based Sliding ======== */
 
@@ -405,19 +425,4 @@ body.stage-util-pre .help-text{
 .layer-two::after{
   top:calc(43.17vh - 2.5vh);
   height:5vh;
-}
-
-/* ==== Login page inline overrides ==== */
-body.stage-login .login-text {
-  letter-spacing: .34vw !important;
-  font-size: .46rem !important;
-  line-height: 1.2 !important;
-  padding: .1rem 0 !important;
-  z-index: 10 !important;
-  overflow: visible !important;
-}
-
-body.stage-login .login-line,
-body.stage-login .login-line-second {
-  background: rgba(230,230,230,.28) !important;
 }

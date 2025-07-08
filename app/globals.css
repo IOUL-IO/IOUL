@@ -35,3 +35,6 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+/* Override login-line color */
+.login-line, .login-line-second { background: rgba(230, 230, 230, 0.28) !important; }

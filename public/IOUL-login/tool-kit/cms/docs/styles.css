@@ -74,3 +74,10 @@ body.non-fullscreen {
 }
 
 /* content block */
+
+
+/* Login line overrides */
+.line.login-line,
+.line.login-line-second {
+  background: rgba(230,230,230,0.28) !important;
+}

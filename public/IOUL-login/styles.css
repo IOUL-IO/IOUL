@@ -17,8 +17,8 @@
 }
 
 body.non-fullscreen{background:#fff;min-height:100vh;min-width:100vw;overflow:hidden;}
-body.non-fullscreen .username{top:35.17vh; !important; }
-body.non-fullscreen .password{top:43.17vh; !important; }
+body.non-fullscreen .username{top:35.17vh;}
+body.non-fullscreen .password{top:43.17vh;}
 
 body.fade-in-trigger{background:#fff;}
 
@@ -32,15 +32,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 
 .login-line,
 .login-line-second,
-.login-text{
-  position:absolute !important;
-  font-family:'Distill Expanded',sans-serif !important;
-  color:#111 !important;
-  letter-spacing:.28vw !important;
-  font-size:.47rem !important;
-  left:6.41vw !important;
-  text-shadow:.001rem .001rem 0 #717171, -.001rem -.001rem 0 #717171 !important;
-}
+.login-text{opacity:0;transition:opacity .5s ease-in-out;}
 
 .login-text,
 .login-line,
@@ -64,17 +56,13 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .line.util-line{top:28.5vh;left:26.06vw;width:2.8vw;z-index:1;}
 
 .login-text{
-  position:absolute !important;
-  font-family:'Distill Expanded',sans-serif !important;
-  color:#111 !important;
-  letter-spacing:.28vw !important;
-  font-size:.47rem !important;
-  left:6.41vw !important;
-  text-shadow:.001rem .001rem 0 #717171, -.001rem -.001rem 0 #717171 !important;
+  position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
+  letter-spacing:.28vw;font-size:.47rem;left:6.41vw;
+  text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
 }
 
-.username{top:calc(var(--username-line-top) - var(--line-gap)); !important; }
-.password{top:calc(var(--password-line-top) - var(--line-gap)); !important; }
+.username{top:calc(var(--username-line-top) - var(--line-gap));}
+.password{top:calc(var(--password-line-top) - var(--line-gap));}
 
 .login-line,
 .login-line-second{
@@ -87,20 +75,16 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 /* ===== Utility Texts (OPEn / HELP) ===== */
 .open-text,
 .help-text{
-  position:absolute !important;
-  font-family:'Distill Expanded',sans-serif !important;
-  color:#111 !important;
-  letter-spacing:.28vw !important;
-  font-size:.47rem !important;
-  text-shadow:.001rem .001rem 0 #717171, -.001rem -.001rem 0 #717171 !important;
-  left:29vw !important;
-  top:35.17vh !important;
-  opacity:0 !important;
-  transition:transform .7s ease !important, opacity .3s ease !important;
+  transition: transform 0.7s ease, opacity 0.3s ease;
+  position:absolute;top:35.17vh;                 /* overwritten for help later */
+  font-family:'Distill Expanded',sans-serif;
+  color:#111;letter-spacing:.28vw;font-size:.47rem;
+  text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
+  left:29vw;                                     /* parked behind layer-two */
+  opacity:0;/* start hidden */                                     /* start fully transparent */
+  transition:transform .7s ease,opacity .3s ease;
 }
-.help-text{
-  top:43.17vh !important;
-}
+.help-text{top:43.17vh;}
 
 /* Hover brighten when visible */
 .open-text.visible:hover,
@@ -421,23 +405,4 @@ body.stage-util-pre .help-text{
 .layer-two::after{
   top:calc(43.17vh - 2.5vh);
   height:5vh;
-}
-
-
-/* ===== Static inline overrides for login page ===== */
-.login-text{
-  position:absolute !important;
-  z-index:10 !important;
-  overflow:visible !important;
-  font-family:'Distill Expanded',sans-serif !important;
-  color:#111 !important;
-  letter-spacing:.34vw !important;
-  font-size:.46rem !important;
-  line-height:1.2 !important;
-  padding:.1rem 0 !important;
-  text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171 !important;
-  left:6.41vw !important;
-}
-.help-text-area.sendlink{
-  margin-top:-.05rem !important;
 }

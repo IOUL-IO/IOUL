@@ -37,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <link key={href} rel="stylesheet" href={href} />
         ))}
       </head>
-      <body>
+      <body className="non-fullscreen stage-login">
         {children}
         <LegacyScripts />
       </body>

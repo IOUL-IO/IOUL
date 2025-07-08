@@ -463,3 +463,18 @@ body.stage-util .help-text-area {
   font-size: .56rem !important;
   letter-spacing: .36vw !important;
 }
+
+/* ==== Ensure large-screen sizing persists during sliding ==== */
+@media screen and (min-width: 1900px) {
+  body.stage-login .login-text,
+  body.stage-util .login-text,
+  body.stage-login .open-text,
+  body.stage-util .open-text,
+  body.stage-login .help-text,
+  body.stage-util .help-text,
+  body.stage-login .help-text-area,
+  body.stage-util .help-text-area {
+    font-size: .56rem !important;
+    letter-spacing: .36vw !important;
+  }
+}

@@ -408,27 +408,15 @@ body.stage-util-pre .help-text{
 }
 
 
-/* ==== Persistent Responsive Sizing Override ==== */
+/* Persistent Responsive Sizing Override */
 @media screen and (max-width: 1899px) {
-  .login-text,
-  .open-text,
-  .help-text,
-  .username,
-  .password,
-  .account-text,
-  .help-text-area {
+  .login-text, .open-text, .help-text, .help-text-area {
     font-size: .47rem !important;
     letter-spacing: .28vw !important;
   }
 }
 @media screen and (min-width: 1900px) {
-  .login-text,
-  .open-text,
-  .help-text,
-  .username,
-  .password,
-  .account-text,
-  .help-text-area {
+  .login-text, .open-text, .help-text, .help-text-area {
     font-size: .56rem !important;
     letter-spacing: .36vw !important;
   }

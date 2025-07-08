@@ -30,9 +30,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
   opacity:1;
 }
 
-.login-line,
-.login-line-second,
-.login-text{opacity:0;transition:opacity .5s ease-in-out;}
+
 
 .login-text,
 .login-line,
@@ -406,3 +404,7 @@ body.stage-util-pre .help-text{
   top:calc(43.17vh - 2.5vh);
   height:5vh;
 }
+
+.login-line,
+.login-line-second,
+.login-text{opacity:0;transition:opacity .5s ease-in-out;}

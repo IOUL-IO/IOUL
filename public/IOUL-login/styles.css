@@ -30,7 +30,16 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
   opacity:1;
 }
 
+.login-line,
+.login-line-second,
+.login-text{opacity:0;transition:opacity .5s ease-in-out;}
+
 .login-text,
+.login-line,
+.login-line-second{
+  transition:transform .7s ease-in-out, opacity .5s ease-in-out;
+}
+
 /* ===== Generic Visibility Helpers ===== */
 .visible{opacity:1 !important;transition:transform 0.7s ease-in-out, opacity .5s ease-in-out;}
 .hidden {opacity:0 !important;transition:transform 0.7s ease-in-out, opacity .5s ease-in-out;pointer-events:none;}
@@ -47,22 +56,19 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .line.util-line{top:28.5vh;left:26.06vw;width:2.8vw;z-index:1;}
 
 .login-text{
-  position:absolute;
-  z-index:10;
-  overflow:visible;
-  font-family:'Distill Expanded',sans-serif;
-  color:#111;
-  letter-spacing:.34vw;
-  font-size:.46rem;
-  line-height:1.2;
-  padding:.1rem 0;
+  position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
+  letter-spacing:.28vw;font-size:.47rem;left:6.41vw;
   text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
-  left:6.41vw;
 }
 
 .username{top:calc(var(--username-line-top) - var(--line-gap));}
 .password{top:calc(var(--password-line-top) - var(--line-gap));}
 
+.login-line,
+.login-line-second{
+  position:absolute;left:6.4vw;width:22.48vw;height:1px;
+  background:rgba(230,230,230,.28);
+}
 .login-line {top:var(--username-line-top);}
 .login-line-second{top:var(--password-line-top);}
 
@@ -117,7 +123,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .account-text.account-sign-password  {top:51.4vh;}
 .account-text.account-repeat-password{top:59.5vh;}
 
-.account-line{position:absolute;left:0;width:22.48vw;height:1px;background:rgba(230,230,230,.28); !important;}
+.account-line{position:absolute;left:0;width:22.48vw;height:1px;background:rgba(230,230,230,.28);}
 .account-line.account-line1{top:38.9vh;}
 .account-line.account-line2{top:47vh;}
 .account-line.account-line3{top:55.1vh;}
@@ -132,20 +138,35 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .help-text-area.email   {left:0;top:35.17vh;}
 .help-text-area.sendlink{left:15.77vw;top:35.17vh;opacity:.7;transition:opacity .3s ease;}
 .help-text-area.sendlink:hover{opacity:1;}
-.help-line{position:absolute;top:38.9vh;left:0;width:22.48vw;height:1px;background:rgba(230,230,230,.28); !important;}
+.help-line{position:absolute;top:38.9vh;left:0;width:22.48vw;height:1px;background:rgba(230,230,230,.28);}
 
 /* ========= Dynamic Stage‑based Sliding ======== */
 
 /* LOGIN (default) – everything parked */
 body.stage-login .username,
 body.stage-login .password,
-body.stage-login body.stage-login .open-text,
+body.stage-login .login-line,
+body.stage-login .login-line-second{transform:translateX(0);}
+body.stage-login .open-text,
 body.stage-login .help-text{transform:translateX(0);}
 
 /* UTIL (OPEn / HELP visible) */
 body.stage-util .username,
 body.stage-util .password,
-body.stage-util body.stage-util .open-text,
+body.stage-util .login-line,
+body.stage-util .login-line-second,
+body.stage-account .username,
+body.stage-account .password,
+body.stage-account .login-line,
+body.stage-account .login-line-second,
+body.stage-help .username,
+body.stage-help .password,
+body.stage-help .login-line,
+body.stage-help .login-line-second{
+  transform:translateX(calc(-1 * var(--slide-dist)));
+}
+
+body.stage-util .open-text,
 body.stage-util .help-text{transform:translateX(calc(-1 * var(--slide-dist)));opacity:.7 !important;}
 
 /* ACCOUNT / HELP detail layers */
@@ -188,6 +209,12 @@ body.stage-help .help-text{
 
 
 .login-text,
+.login-line,
+.login-line-second{
+  will-change: transform;
+}
+
+
 @media (min-width: 1900px){
   .login-text,
   .open-text,
@@ -205,10 +232,21 @@ body.stage-help .help-text{
 /* Ensure smooth slide for login group */
 .username,
 .password,
+.login-line,
+.login-line-second{
+  transition: transform 0.7s ease-in-out, opacity 0.5s ease-in-out !important;
+  will-change: transform;
+}
+
+
 /* ===== Two‑phase util slide: login first ===== */
 body.stage-util-pre .username,
 body.stage-util-pre .password,
-body.stage-util-pre body.stage-util-pre .open-text,
+body.stage-util-pre .login-line,
+body.stage-util-pre .login-line-second{
+  transform:translateX(calc(-1 * var(--slide-dist)));
+}
+body.stage-util-pre .open-text,
 body.stage-util-pre .help-text{
   transform:translateX(0);
 }
@@ -370,22 +408,34 @@ body.stage-util-pre .help-text{
 }
 
 
-/* Override login-line thickness and color */
-.login-line,
-.login-line-second {
+/* ==== Inline Login Tweaks from Original HTML ==== */
+body.stage-login .login-text {
   position: absolute;
-  left: 6.4vw;
-  width: 22.48vw;
-  height: 1px !important;
-  background: rgba(230, 230, 230, 0.28) !important;
+  z-index: 10;
+  overflow: visible;
+  font-family: 'Distill Expanded', sans-serif;
+  color: #111;
+  letter-spacing: .34vw;
+  font-size: .46rem;
+  line-height: 1.2;
+  padding: .1rem 0;
+  text-shadow: .001rem .001rem 0 #717171, -.001rem -.001rem 0 #717171;
 }
 
-/* Prevent font enlargement on large screens for login texts */
-@media (min-width: 1900px) {
-  body.stage-login .login-text,
-  body.stage-login .open-text,
-  body.stage-login .help-text {
-    font-size: 0.46rem !important;
-    letter-spacing: 0.34vw !important;
-  }
+body.stage-login .login-line,
+body.stage-login .login-line-second {
+  background: rgba(230,230,230,.28) !important;
+}
+
+
+/* ==== Force login text size and line color in all stages ==== */
+.login-text {
+  letter-spacing: .34vw !important;
+  font-size: .46rem !important;
+  line-height: 1.2 !important;
+  padding: .1rem 0 !important;
+}
+.login-line,
+.login-line-second {
+  background: rgba(230,230,230,.28) !important;
 }

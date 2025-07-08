@@ -35,26 +35,3 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
-
-/* Inline tweaks from original index.html */
-/* inline tweaks for login fonts (unchanged) */
-  .login-text{
-    position:absolute;
-    z-index:10;
-    overflow:visible;
-    font-family:'Distill Expanded',sans-serif;
-    color:#111;
-    letter-spacing:.34vw;
-    font-size:.46rem;
-    line-height:1.2;
-    padding:.1rem 0;
-    text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
-  }
-  input.typing-input{
-    font-family:'Distill Expanded',sans-serif;font-size:.46rem;line-height:1.2;
-    color:#111;letter-spacing:.34vw;border:none;outline:none;background:transparent;
-    position:absolute;caret-color:#717171;padding:.1rem 0;width:calc(22.48vw + 4vw);
-    text-shadow:.001rem .001rem 0 #717171,-.007rem -.001rem 0 #717171;text-align:left;
-  }
-  .help-text-area.sendlink{opacity:.7;transition:opacity .3s ease;margin-top:-.05rem;}
-  .help-text-area.sendlink:hover{opacity:1;}

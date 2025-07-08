@@ -278,46 +278,61 @@
     <div class="slide-trigger-reverse"></div>
   </div>
 
-  <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const vw = () => window.innerWidth / 100;
-  const DIST = 60;
-  const GAP  = 10;
-  const DUR  = 600;
-  const itemEls   = [...document.querySelectorAll('.item-text, .item-line')];
-  const centerEls = [...document.querySelectorAll('.center-text, .center-line')];
-  [...itemEls, ...centerEls].forEach(el => {
-    const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-    el.dataset.base = (leftPx / vw()).toFixed(3);
-    el.style.transition = `left ${DUR}ms ease`;
-  });
-  let stage = 0;
-  const FORWARD_MIN = 94, FORWARD_MAX = 100;
-  const REVERSE_MIN = 32.43, REVERSE_MAX = 36;
-  const offsets = {0: 0, 1: -DIST, 2: -2 * DIST - GAP};
-  document.querySelector('.page-content').addEventListener('click', e => {
-    const clickVw = e.clientX / vw();
-    if (clickVw >= FORWARD_MIN && clickVw <= FORWARD_MAX) {
-      if (stage === 0) stage = 1;
-      else if (stage === 1) stage = 2;
-    } else if (clickVw >= REVERSE_MIN && clickVw <= REVERSE_MAX) {
-      if (stage === 2) stage = 1;
-      else if (stage === 1) stage = 0;
-    } else {
-      return;
-    }
-    const itemOffset = offsets[stage];
-    itemEls.forEach(el => {
-      el.style.left = `${parseFloat(el.dataset.base) + itemOffset}vw`;
-    });
-    const centerOffset = stage === 2 ? offsets[stage] + DIST + GAP : offsets[0];
-    centerEls.forEach(el => {
-      el.style.left = `${parseFloat(el.dataset.base) + centerOffset}vw`;
-    });
-  });
-});
-</script>
+  
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script>
+    (function() {
+      const vw = () => window.innerWidth / 100;
+      const DIST = 60, GAP = 10, DUR = 600;
+      const itemEls = [...document.querySelectorAll('.item-text, .item-line')];
+      const centerEls = [...document.querySelectorAll('.center-text, .center-line')];
+      [...itemEls, ...centerEls].forEach(el => {
+        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+        el.dataset.base = (leftPx / vw()).toFixed(3);
+        el.style.transition = 'left ' + DUR + 'ms ease';
+      });
+      let stage = 0;
+      const FORWARD_MIN = 94, FORWARD_MAX = 100;
+      const REVERSE_MIN = 32.43, REVERSE_MAX = 36;
+      const offsets = {0: 0, 1: -DIST, 2: -2 * DIST - GAP};
+      document.querySelector('.page-content')
+        .addEventListener('click', e => {
+          const clickVw = e.clientX / vw();
+          if (clickVw >= FORWARD_MIN && clickVw <= FORWARD_MAX) {
+            if (stage === 0) stage = 1;
+            else if (stage === 1) stage = 2;
+          } else if (clickVw >= REVERSE_MIN && clickVw <= REVERSE_MAX) {
+            if (stage === 2) stage = 1;
+            else if (stage === 1) stage = 0;
+          } else {
+            return;
+          }
+          const itemOffset = offsets[stage];
+          itemEls.forEach(el => {
+            el.style.left = (parseFloat(el.dataset.base) + itemOffset) + 'vw';
+          });
+          const centerOffset = stage === 2
+            ? offsets[stage] + DIST + GAP
+            : offsets[0];
+          centerEls.forEach(el => {
+            el.style.left = (parseFloat(el.dataset.base) + centerOffset) + 'vw';
+          });
+        });
+    })();
+  </script>
 ` } } />
       );
     }

@@ -36,8 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {legacyCssFiles.map((href) => (
           <link key={href} rel="stylesheet" href={href} />
         ))}
-          <link rel=\"stylesheet\" href=\"/IOUL-login/styles.css\" />
-</head>
+      </head>
       <body className="non-fullscreen stage-login">
         {children}
         <LegacyScripts />

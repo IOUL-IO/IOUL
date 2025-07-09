@@ -108,13 +108,47 @@ document.addEventListener('DOMContentLoaded', () => {
   function resetInactivityTimer(){
     clearTimeout(inactivityTimer);
     if(step !== 0) return; // only care in login state
-    inactivityTimer = setTimeout(() => {
-            body.classList.remove('stage-util-pre');
-            requestAnimationFrame(() => {
-                setStage('stage-util');
-                fadeInEls([openText, helpText]);
-            });
-        }, 700);
+    inactivityTimer = setTimeout(()=>{
+      if(step === 0){
+        fadeOutEls(loginEls).then(()=>{ loginElsHidden = true; });
+      }
+    }, loginFadeTimeout);
+  }
+
+  /* monitor generic user activity to reset timer */
+  ['mousemove','mousedown','keydown','touchstart'].forEach(evt=>{
+    window.addEventListener(evt, resetInactivityTimer, {passive:true});
+  });
+
+  /* hover to bring login back when hidden */
+  window.addEventListener('pointermove', (ev)=>{
+    if(step !== 0 || !loginElsHidden) return;
+    const {clientX:x, clientY:y} = ev;
+    if(inLoginZone(x,y)){
+      fadeInEls(loginEls);
+      loginElsHidden = false;
+      resetInactivityTimer();
+    }
+  }, {passive:true});
+
+  // start the timer initially
+  resetInactivityTimer();
+ // 0: login, 1: util, 2: account, 3: help
+
+
+
+  utilLine.addEventListener('click', () => {
+      if(step!==0) return;
+      /* Phase 1: slide login items left */
+      setStage('stage-util-pre');
+      fadeInEls(loginEls);
+      step = 1;
+      /* Phase 2 after slide completes */
+      setTimeout(() => {
+          fadeInEls([openText, helpText]);
+          body.classList.remove('stage-util-pre'); // remove pre-stage so util rules win
+          setStage('stage-util');
+      }, 700);
   });
 
 

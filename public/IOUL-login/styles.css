@@ -451,17 +451,24 @@ body.stage-login .login-line-second {
 }
 
 
+/* ==== Persist text sizing during sliding stages ==== */
+body.stage-login .login-text,
+body.stage-login .open-text,
+body.stage-login .help-text,
+body.stage-login .help-text-area,
+body.stage-util .login-text,
+body.stage-util .open-text,
+body.stage-util .help-text,
+body.stage-util .help-text-area {
+  font-size: .56rem !important;
+  letter-spacing: .36vw !important;
+}
 
-
-
-/* >>>>> Text sizing overrides <<<<< */
+/* ===== Responsive text sizing overrides ===== */
 
 /* Small screens (<1900px) */
 @media screen and (max-width: 1899px) {
-  .login-text,
-  .open-text,
-  .help-text,
-  .help-text-area {
+  .login-text {
     font-size: .47rem !important;
     letter-spacing: .28vw !important;
   }

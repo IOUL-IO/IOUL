@@ -1,3 +1,35 @@
+/* === Final Responsive & Slide Overrides === */
+/* Base small-screen text sizing */
+.login-text {
+  font-size: .47rem !important;
+  letter-spacing: .28vw !important;
+}
+
+/* Large-screen text sizing override (>=1900px) */
+@media screen and (min-width: 1900px) {
+  .login-text {
+    font-size: .56rem !important;
+    letter-spacing: .36vw !important;
+  }
+}
+
+/* OPEN/HELP initial off-screen */
+.open-text,
+.help-text {
+  transform: translateX(-6.41vw) !important;
+  opacity: 0 !important;
+  transition: transform .7s ease .7s, opacity .7s ease .7s !important;
+}
+
+/* OPEN/HELP slide in */
+body.stage-util .open-text,
+body.stage-util .help-text {
+  transform: translateX(0) !important;
+  opacity: 1 !important;
+}
+
+/* ==================================== */
+
 @font-face {
   font-family: 'Distill Expanded';
   src: url('font.woff2') format('woff2'),
@@ -428,7 +460,7 @@ body.stage-login .login-line-second {
 }
 
 
-
+/* ==== Force login text size and line color in all stages ==== */
 .login-text {
   letter-spacing: .34vw !important;
   font-size: .46rem !important;
@@ -462,46 +494,4 @@ body.stage-util .help-text,
 body.stage-util .help-text-area {
   font-size: .56rem !important;
   letter-spacing: .36vw !important;
-}
-
-
-/* Ensure util texts slide smoothly */
-.open-text,
-.help-text {
-  transition: transform 0.7s ease, opacity 0.3s ease;
-}
-
-
-/* ==== Issue 1 & 2: Enforce consistent sizing ===== */
-.login-text,
-.open-text,
-.help-text,
-.help-text-area {
-  font-size: 0.47rem !important;
-  letter-spacing: 0.28vw !important;
-  line-height: 1.2 !important;
-}
-@media (min-width: 1900px) {
-  .login-text,
-  .open-text,
-  .help-text,
-  .help-text-area {
-    font-size: 0.6rem !important;
-    letter-spacing: 0.36vw !important;
-  }
-}
-
-/* ==== Issue 3: Slide OPEn + HELP texts smoothly ==== */
-.open-text,
-.help-text {
-  position: relative;
-  left: 29vw;
-  opacity: 0;
-  transition: left 0.7s ease, opacity 0.3s ease;
-}
-
-body.stage-util .open-text,
-body.stage-util .help-text {
-  left: 6.41vw;
-  opacity: 1;
 }

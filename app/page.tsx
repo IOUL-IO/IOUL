@@ -144,11 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
       fadeInEls(loginEls);
       step = 1;
       /* Phase 2 after slide completes */
-      setTimeout(() => {
-          fadeInEls([openText, helpText]);
-          body.classList.remove('stage-util-pre'); // remove pre-stage so util rules win
-          setStage('stage-util');
-      }, 700);
+setTimeout(() => {
+    body.classList.remove('stage-util-pre');
+    setStage('stage-util');
+}, 700);
   });
 
 

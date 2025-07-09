@@ -465,13 +465,13 @@ body.stage-util .help-text-area {
 }
 
 
-/* ===== Global large-screen override (>=1900px) ===== */
-@media screen and (min-width: 1900px) {
+/* ===== Enforce small-screen text sizing (<1900px) ===== */
+@media screen and (max-width: 1899px) {
   .login-text,
   .open-text,
   .help-text,
   .help-text-area {
-    font-size: .56rem !important;
-    letter-spacing: .36vw !important;
+    font-size: .47rem !important;
+    letter-spacing: .28vw !important;
   }
 }

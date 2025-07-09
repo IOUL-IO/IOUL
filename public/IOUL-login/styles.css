@@ -1,35 +1,3 @@
-/* === Final Responsive & Slide Overrides === */
-/* Base small-screen text sizing */
-.login-text {
-  font-size: .47rem !important;
-  letter-spacing: .28vw !important;
-}
-
-/* Large-screen text sizing override (>=1900px) */
-@media screen and (min-width: 1900px) {
-  .login-text {
-    font-size: .56rem !important;
-    letter-spacing: .36vw !important;
-  }
-}
-
-/* OPEN/HELP initial off-screen */
-.open-text,
-.help-text {
-  transform: translateX(-6.41vw) !important;
-  opacity: 0 !important;
-  transition: transform .7s ease .7s, opacity .7s ease .7s !important;
-}
-
-/* OPEN/HELP slide in */
-body.stage-util .open-text,
-body.stage-util .help-text {
-  transform: translateX(0) !important;
-  opacity: 1 !important;
-}
-
-/* ==================================== */
-
 @font-face {
   font-family: 'Distill Expanded';
   src: url('font.woff2') format('woff2'),

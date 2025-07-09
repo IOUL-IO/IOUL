@@ -145,8 +145,12 @@ document.addEventListener('DOMContentLoaded', () => {
       step = 1;
       /* Phase 2 after slide completes */
 setTimeout(() => {
+    // remove pre-stage so util rules win
     body.classList.remove('stage-util-pre');
-    setStage('stage-util');
+    // trigger CSS-based slide-in of OPEN/HELP
+    requestAnimationFrame(() => {
+        setStage('stage-util');
+    });
 }, 700);
   });
 

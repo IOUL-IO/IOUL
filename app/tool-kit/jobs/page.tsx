@@ -150,6 +150,35 @@ export default function Page() {
       requestAnimationFrame(loop);
     });
     window.addEventListener("resize", updateClip);
+    
+    // Ledger & Community slide logic
+    const ledgerItems = Array.from(document.querySelectorAll('.job-item'));
+    const communityContainer = document.querySelector('.freelance-items-container');
+    const zeroContainer = document.querySelector('.zero-items-container');
+    const triggerArea = document.getElementById('ledger-trigger-area');
+    const resetArea = document.getElementById('ledger-reset-area');
+    let slid = false;
+    function slideOut() {
+      ledgerItems.forEach(el => el.classList.add('slide-left-40'));
+      communityContainer?.classList.add('slide-left-29');
+      zeroContainer?.classList.add('slide-left-29');
+      slid = true;
+    }
+    function slideBack() {
+      ledgerItems.forEach(el => el.classList.remove('slide-left-40'));
+      communityContainer?.classList.remove('slide-left-29');
+      zeroContainer?.classList.remove('slide-left-29');
+      slid = false;
+    }
+    triggerArea?.addEventListener('click', e => {
+      e.stopPropagation();
+      if (!slid) slideOut();
+    });
+    resetArea?.addEventListener('click', e => {
+      e.stopPropagation();
+      if (slid) slideBack();
+    });
+
     // Cleanup
     return () => {
       document.removeEventListener("click", fullscreenHandler);
@@ -167,6 +196,33 @@ export default function Page() {
       <div className="layer-four" />
       <div className="layer-five" />
       <div className="layer-six" />
+
+      {/* Invisible trigger/reset zones */}
+      <div
+        id="ledger-trigger-area"
+        style={{
+          position: "fixed",
+          top: 0,
+          bottom: 0,
+          right: 0,
+          width: "5vw",
+          zIndex: 10,
+          cursor: "pointer",
+        }}
+      />
+      <div
+        id="ledger-reset-area"
+        style={{
+          position: "fixed",
+          top: 0,
+          bottom: 0,
+          left: 0,
+          width: "5vw",
+          zIndex: 10,
+          cursor: "pointer",
+        }}
+      />
+
 
       {/* All visible UI sits inside page-content */}
       <div className="page-content">

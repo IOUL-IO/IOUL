@@ -1,3 +1,30 @@
+/* === Unified Responsive Text Sizing === */
+/* Base: small screens (<1900px) */
+.login-text,
+.login-line,
+.login-line-second,
+.open-text,
+.help-text,
+.help-text-area {
+  font-size: .47rem !important;
+  letter-spacing: .28vw !important;
+}
+
+/* Large screens (>=1900px) */
+@media screen and (min-width: 1900px) {
+  .login-text,
+  .login-line,
+  .login-line-second,
+  .open-text,
+  .help-text,
+  .help-text-area {
+    font-size: .56rem !important;
+    letter-spacing: .36vw !important;
+  }
+}
+
+/* ================================ */
+
 @font-face {
   font-family: 'Distill Expanded';
   src: url('font.woff2') format('woff2'),
@@ -428,7 +455,7 @@ body.stage-login .login-line-second {
 }
 
 
-
+/* ==== Force login text size and line color in all stages ==== */
 .login-text {
   letter-spacing: .34vw !important;
   font-size: .46rem !important;
@@ -462,72 +489,4 @@ body.stage-util .help-text,
 body.stage-util .help-text-area {
   font-size: .56rem !important;
   letter-spacing: .36vw !important;
-}
-
-/* ===== Consistent Login and Utility Text Sizing ===== */
-.login-text,
-.open-text,
-.help-text,
-.help-text-area {
-  font-size: .47rem !important;
-  letter-spacing: .28vw !important;
-  line-height: 1.2 !important;
-}
-@media (min-width: 1900px) {
-  .login-text,
-  .open-text,
-  .help-text,
-  .help-text-area {
-    font-size: 0.6rem !important;
-    letter-spacing: 0.36vw !important;
-  }
-}
-/* Ensure util texts slide smoothly */
-.open-text,
-.help-text {
-  transition: transform 0.7s ease, opacity 0.3s ease;
-}
-
-/* ===== Responsive font-size for OPEn/HELP texts ===== */
-@media (max-width: 1900px) {
-  .open-text,
-  .help-text {
-    font-size: 0.47rem !important;
-  }
-}
-
-/* ===== Slide in OPEn/HELP texts smoothly ===== */
-@keyframes openHelpSlideIn {
-  from {
-    transform: translateX(0);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(calc(-1 * var(--slide-dist)));
-    opacity: 1;
-  }
-}
-
-/* ===== Slide out OPEn/HELP texts smoothly ===== */
-@keyframes openHelpSlideOut {
-  from {
-    transform: translateX(calc(-1 * var(--slide-dist)));
-    opacity: 1;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 0;
-  }
-}
-
-/* Apply slide-in on util stage */
-body.stage-util .open-text,
-body.stage-util .help-text {
-  animation: openHelpSlideIn 0.7s ease forwards !important;
-}
-
-/* Apply slide-out on reverse (util-pre) */
-body.stage-util-pre .open-text,
-body.stage-util-pre .help-text {
-  animation: openHelpSlideOut 0.7s ease forwards !important;
 }

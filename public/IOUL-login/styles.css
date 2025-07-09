@@ -465,17 +465,16 @@ body.stage-util .help-text-area {
 }
 
 
-/* ===== Small-screen (.login-text font-size & spacing) ===== */
-@media screen and (max-width: 1899px) {
-  .login-text {
-    font-size: .47rem !important;
-    letter-spacing: .28vw !important;
-  }
-}
-
-/* ===== Large-screen (.login-text font-size & spacing) ===== */
 @media screen and (min-width: 1900px) {
-  .login-text {
+  /* ==== Persist text sizing during sliding stages ==== */
+  body.stage-login .login-text,
+  body.stage-login .open-text,
+  body.stage-login .help-text,
+  body.stage-login .help-text-area,
+  body.stage-util .login-text,
+  body.stage-util .open-text,
+  body.stage-util .help-text,
+  body.stage-util .help-text-area {
     font-size: .56rem !important;
     letter-spacing: .36vw !important;
   }

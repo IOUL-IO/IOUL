@@ -428,7 +428,7 @@ body.stage-login .login-line-second {
 }
 
 
-/* ==== Force login text size and line color in all stages ==== */
+
 .login-text {
   letter-spacing: .34vw !important;
   font-size: .46rem !important;
@@ -464,32 +464,44 @@ body.stage-util .help-text-area {
   letter-spacing: .36vw !important;
 }
 
-/* === Responsive Text Sizing Overrides === */
-/* Base: small screens (<1900px) */
-@media screen and (max-width: 1899px) {
-  .login-text,
-  .login-line,
-  .login-line-second,
-  .open-text,
-  .help-text {
-    font-size: .47rem !important;
-    letter-spacing: .28vw !important;
-  }
-}
-/* Large screens (>=1900px) */
-@media screen and (min-width: 1900px) {
-  .login-text,
-  .login-line,
-  .login-line-second,
-  .open-text,
-  .help-text {
-    font-size: .56rem !important;
-    letter-spacing: .36vw !important;
-  }
-}
-/* === Ensure OPEN/HELP transform transitions === */
+
+/* Ensure util texts slide smoothly */
 .open-text,
 .help-text {
-  transition: transform .7s ease-in-out, opacity .5s ease-in-out !important;
-  will-change: transform, opacity !important;
+  transition: transform 0.7s ease, opacity 0.3s ease;
+}
+
+
+/* ==== Issue 1 & 2: Enforce consistent sizing ===== */
+.login-text,
+.open-text,
+.help-text,
+.help-text-area {
+  font-size: 0.47rem !important;
+  letter-spacing: 0.28vw !important;
+  line-height: 1.2 !important;
+}
+@media (min-width: 1900px) {
+  .login-text,
+  .open-text,
+  .help-text,
+  .help-text-area {
+    font-size: 0.6rem !important;
+    letter-spacing: 0.36vw !important;
+  }
+}
+
+/* ==== Issue 3: Slide OPEn + HELP texts smoothly ==== */
+.open-text,
+.help-text {
+  position: relative;
+  left: 29vw;
+  opacity: 0;
+  transition: left 0.7s ease, opacity 0.3s ease;
+}
+
+body.stage-util .open-text,
+body.stage-util .help-text {
+  left: 6.41vw;
+  opacity: 1;
 }

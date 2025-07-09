@@ -190,8 +190,6 @@ body.stage-login .account-wrapper,
 body.stage-login .help-wrapper{pointer-events:none;}
 
 
-}
-
 
 /* Disable clicks on util texts when parked behind layer‑two */
 body.stage-login .open-text,

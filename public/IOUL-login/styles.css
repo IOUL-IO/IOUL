@@ -451,28 +451,15 @@ body.stage-login .login-line-second {
 }
 
 
-
-/* ==== Enforce consistent text sizing ==== */
+/* ==== Persist text sizing during sliding stages ==== */
 body.stage-login .login-text,
-body.stage-login .login-line,
-body.stage-login .login-line-second,
 body.stage-login .open-text,
 body.stage-login .help-text,
-body.stage-login .account-text,
-body.stage-login .help-text-area {
-  font-size: 0.47rem !important;
-  letter-spacing: 0.28vw !important;
-}
-
-@media screen and (min-width: 1900px) {
-  body.stage-login .login-text,
-  body.stage-login .login-line,
-  body.stage-login .login-line-second,
-  body.stage-login .open-text,
-  body.stage-login .help-text,
-  body.stage-login .account-text,
-  body.stage-login .help-text-area {
-    font-size: 0.56rem !important;
-    letter-spacing: 0.36vw !important;
-  }
+body.stage-login .help-text-area,
+body.stage-util .login-text,
+body.stage-util .open-text,
+body.stage-util .help-text,
+body.stage-util .help-text-area {
+  font-size: .56rem !important;
+  letter-spacing: .36vw !important;
 }

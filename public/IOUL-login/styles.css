@@ -53,30 +53,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .fifth   {top:28.5vh;left:36vw; width:57.8vw;}
 .sixth   {top:84vh; left:36vw; width:57.8vw;}
 
-.line.util-line {
-  position: absolute;
-  top: 28.5vh;
-  left: 26.06vw;
-  width: 2.8vw;
-  height: 2vh;
-  padding-top: calc(1vh - 0.5px);
-  padding-bottom: calc(1vh - 0.5px);
-  background: transparent;
-  cursor: pointer;
-  z-index: 1;
-}
-.line.util-line::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: rgba(172,172,172,.84);
-}
-.line.util-line:hover::before {
-  background: rgba(172,172,172,1);
-}
+.line.util-line{top:28.5vh;left:26.06vw;width:2.8vw;z-index:1;}
 
 .login-text{
   position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;

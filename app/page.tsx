@@ -114,17 +114,31 @@ export default function LoginPage() {
     );
     resetTimer();
 
+    
     // Util-line click
-    utilLine.addEventListener("click", () => {
+    utilLine.addEventListener("pointerdown", () => {
+      console.log("util-line clicked");
       if (step !== 0) return;
       setStage("stage-util-pre");
-      fadeIn(loginEls as any);
+      // Force reflow-triggered slide for login elements
+      loginEls.forEach(el => {
+        el.classList.remove("hidden");
+        // Force a reflow to restart CSS transition
+        void (el as HTMLElement).offsetWidth;
+        el.classList.add("visible");
+      });
       step = 1;
       setTimeout(() => {
-        fadeIn(document.querySelectorAll(".open-text, .help-text") as any);
+        const openHelpEls = document.querySelectorAll(".open-text, .help-text");
+        openHelpEls.forEach(el => {
+          el.classList.remove("hidden");
+          void (el as HTMLElement).offsetWidth;
+          el.classList.add("visible");
+        });
         setStage("stage-util");
       }, 700);
     });
+
 
     // Open account / help click
     openText.addEventListener("click", () => {

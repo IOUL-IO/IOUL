@@ -1,25 +1,3 @@
-/* ——— Base text sizing ——— */
-.login-text,
-.open-text,
-.help-text,
-.help-text-area {
-  font-size: .47rem !important;
-  letter-spacing: .28vw !important;
-}
-
-/* ——— Large-screen override (>=1900px) ——— */
-@media screen and (min-width: 1900px) {
-  .login-text,
-  .open-text,
-  .help-text,
-  .help-text-area {
-    font-size: .56rem !important;
-    letter-spacing: .36vw !important;
-  }
-}
-
-/* ============================================ */
-
 @font-face {
   font-family: 'Distill Expanded';
   src: url('font.woff2') format('woff2'),
@@ -450,13 +428,7 @@ body.stage-login .login-line-second {
 }
 
 
-/* ==== Force login text size and line color in all stages ==== */
-.login-text {
-  letter-spacing: .34vw !important;
-  font-size: .46rem !important;
-  line-height: 1.2 !important;
-  padding: .1rem 0 !important;
-}
+
 .login-line,
 .login-line-second {
   background: rgba(230,230,230,.28) !important;
@@ -473,15 +445,53 @@ body.stage-login .login-line-second {
 }
 
 
-/* ==== Persist text sizing during sliding stages ==== */
-body.stage-login .login-text,
-body.stage-login .open-text,
-body.stage-login .help-text,
-body.stage-login .help-text-area,
-body.stage-util .login-text,
+
+
+/* ===== Custom Login & Utility Text Overrides ===== */
+.login-text,
+.open-text,
+.help-text {
+  font-size: .47rem !important;
+  letter-spacing: .28vw !important;
+  line-height: 1.2 !important;
+}
+@media screen and (min-width: 1900px) {
+  .login-text,
+  .open-text,
+  .help-text {
+    font-size: .6rem !important;
+    letter-spacing: .36vw !important;
+  }
+}
+
+/* ===== Unified Slide Transitions ===== */
+.login-text,
+.login-line,
+.login-line-second,
+.open-text,
+.help-text {
+  transition: transform 0.7s ease, opacity 0.5s ease !important;
+}
+
+/* Start positions */
+.open-text,
+.help-text {
+  left: 6.41vw !important;
+  transform: translateX(23vw) !important;
+  opacity: 0 !important;
+}
+
+/* Slide in on util stage */
 body.stage-util .open-text,
-body.stage-util .help-text,
-body.stage-util .help-text-area {
-  font-size: .56rem !important;
-  letter-spacing: .36vw !important;
+body.stage-util .help-text {
+  transform: translateX(0) !important;
+  opacity: 1 !important;
+}
+
+/* Slide out login texts on util stage */
+body.stage-util .login-text,
+body.stage-util .login-line,
+body.stage-util .login-line-second {
+  transform: translateX(-23vw) !important;
+  opacity: 0 !important;
 }

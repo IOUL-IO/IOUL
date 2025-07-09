@@ -464,7 +464,17 @@ body.stage-util .help-text-area {
   letter-spacing: .36vw !important;
 }
 
-/* Enforce small-screen text sizing (for widths <1900px) */
+
+/* ===== Base sizes (small screens) ===== */
+.login-text,
+.open-text,
+.help-text,
+.help-text-area {
+  font-size: .47rem;
+  letter-spacing: .28vw;
+}
+
+/* ===== Enforce small-screen text sizing (<1900px) ===== */
 @media screen and (max-width: 1899px) {
   .login-text,
   .open-text,
@@ -472,5 +482,16 @@ body.stage-util .help-text-area {
   .help-text-area {
     font-size: .47rem !important;
     letter-spacing: .28vw !important;
+  }
+}
+
+/* ===== Enforce large-screen text sizing (>=1900px) ===== */
+@media screen and (min-width: 1900px) {
+  .login-text,
+  .open-text,
+  .help-text,
+  .help-text-area {
+    font-size: .56rem !important;
+    letter-spacing: .36vw !important;
   }
 }

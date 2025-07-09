@@ -32,7 +32,10 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 
 .login-line,
 .login-line-second,
-.login-text{opacity:0;transition:opacity .5s ease-in-out;}
+.login-text{opacity:0;transition:opacity .5s ease-in-out;
+  font-size: .47rem;
+  letter-spacing: .28vw;
+}
 
 .login-text,
 .login-line,
@@ -59,6 +62,9 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
   position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
   letter-spacing:.28vw;font-size:.47rem;left:6.41vw;
   text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
+
+  font-size: .47rem;
+  letter-spacing: .28vw;
 }
 
 .username{top:calc(var(--username-line-top) - var(--line-gap));}
@@ -366,7 +372,15 @@ body.stage-util-pre .help-text{
   z-index:101; /* sits above util texts */
 }
 
-
+/* Reset util text width & remove reveal animation so they stay intact while sliding */
+body.stage-util .open-text,
+body.stage-util-pre .open-text,
+body.stage-util .help-text,
+body.stage-util-pre .help-text{
+  width:22.48vw !important;
+  overflow:visible !important;
+  animation:none !important;
+}
 
 
 /* === (2025‑06‑24d) Refined narrow masks for OPEn / HELP only === */
@@ -412,6 +426,9 @@ body.stage-login .login-text {
   line-height: 1.2;
   padding: .1rem 0;
   text-shadow: .001rem .001rem 0 #717171, -.001rem -.001rem 0 #717171;
+
+  font-size: .47rem;
+  letter-spacing: .28vw;
 }
 
 body.stage-login .login-line,
@@ -426,6 +443,9 @@ body.stage-login .login-line-second {
   font-size: .46rem !important;
   line-height: 1.2 !important;
   padding: .1rem 0 !important;
+
+  font-size: .47rem;
+  letter-spacing: .28vw;
 }
 .login-line,
 .login-line-second {
@@ -437,37 +457,21 @@ body.stage-login .login-line-second {
   body.stage-login .open-text,
   body.stage-login .help-text,
   body.stage-login .help-text-area {
-    font-size: 0.6rem !important;
+    font-size: .56rem !important;
     letter-spacing: .36vw !important;
   }
 }
-}
 
 
-/* ==== Persist text sizing during sliding stages ==== */
-@media (max-width: 1899px) {
-  body.stage-login .login-text,
-  body.stage-login .open-text,
-  body.stage-login .help-text,
-  body.stage-login .help-text-area,
-  body.stage-util .login-text,
-  body.stage-util .open-text,
-  body.stage-util .help-text,
-  body.stage-util .help-text-area {
-    font-size: .47rem !important;
-    letter-spacing: .28vw !important;
-  }
-}
-@media (min-width: 1900px) {
-  body.stage-login .login-text,
-  body.stage-login .open-text,
-  body.stage-login .help-text,
-  body.stage-login .help-text-area,
-  body.stage-util .login-text,
-  body.stage-util .open-text,
-  body.stage-util .help-text,
-  body.stage-util .help-text-area {
-    font-size: 0.6rem !important;
+
+
+/* ——— Large-screen text sizing override (>=1900px) ——— */
+@media screen and (min-width: 1900px) {
+  .login-text,
+  .open-text,
+  .help-text,
+  .help-text-area {
+    font-size: .56rem !important;
     letter-spacing: .36vw !important;
   }
 }

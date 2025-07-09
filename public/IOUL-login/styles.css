@@ -445,7 +445,7 @@ body.stage-login .login-line-second {
   body.stage-login .open-text,
   body.stage-login .help-text,
   body.stage-login .help-text-area {
-    font-size: .56rem !important;
+    font-size: .6rem !important;
     letter-spacing: .36vw !important;
   }
 }
@@ -457,12 +457,30 @@ body.stage-login .login-text,
 body.stage-login .open-text,
 body.stage-login .help-text,
 body.stage-login .help-text-area,
-body.stage-util .login-text,
+
+  body.stage-util-pre .login-text,
+  body.stage-util-pre .open-text,
+  body.stage-util-pre .help-text,
+  body.stage-util-pre .help-text-area,body.stage-util .login-text,
 body.stage-util .open-text,
 body.stage-util .help-text,
 body.stage-util .help-text-area {
-  font-size: .56rem !important;
+  font-size: .6rem !important;
   letter-spacing: .36vw !important;
 }
 }
 
+
+
+/* ==== Force large-screen text sizing for sliding stages ==== */
+@media screen and (min-width: 1900px) {
+  body.stage-login .login-text,
+  body.stage-login .login-lines,
+  body.stage-util .login-text,
+  body.stage-util .login-lines,
+  body.stage-util .open-text,
+  body.stage-util .help-text {
+    font-size: .56rem !important;
+    letter-spacing: .36vw !important;
+  }
+}

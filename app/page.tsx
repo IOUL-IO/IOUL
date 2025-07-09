@@ -140,14 +140,14 @@ document.addEventListener('DOMContentLoaded', () => {
   utilLine.addEventListener('click', () => {
       if(step!==0) return;
       /* Phase 1: slide login items left */
-      setStage('stage-util-pre');
+     requestAnimationFrame(() => { setStage('stage-util-pre'); });
       fadeInEls(loginEls);
       step = 1;
       /* Phase 2 after slide completes */
       setTimeout(() => {
           fadeInEls([openText, helpText]);
           body.classList.remove('stage-util-pre'); // remove pre-stage so util rules win
-          requestAnimationFrame(() => { setStage('stage-util'); });
+         requestAnimationFrame(() => { setStage('stage-util'); });
       }, 700);
   });
 
@@ -156,14 +156,14 @@ document.addEventListener('DOMContentLoaded', () => {
   openText.addEventListener('click', () => {
       if(step!==1) return;
       accountWrap.classList.add('active');
-      setStage('stage-account');
+     requestAnimationFrame(() => { setStage('stage-account'); });
       step=2;
   });
 
   helpText.addEventListener('click', () => {
       if(step!==1) return;
       helpWrap.classList.add('active');
-      requestAnimationFrame(() => { setStage('stage-help'); });
+     requestAnimationFrame(() => { setStage('stage-help'); });
       step=3;
   });
 
@@ -176,23 +176,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
       if(step===1){
-/* reverse util -> login */
-setStage('stage-util-pre');                // start OPEn / HELP slide‑out (no fade yet)
+/* reverse util -> login */requestAnimationFrame(() => { setStage('stage-util-pre'); });                // start OPEn / HELP slide‑out (no fade yet)
 setTimeout(() => {                         // after 0.7 s slide completes…
   fadeOutEls([openText, helpText]);        // …fade OPEn / HELP away
   body.classList.remove('stage-util-pre'); // drop pre‑stage so login rules win
-  setStage('stage-login');                 // slide login texts & lines back in
+ requestAnimationFrame(() => { setStage('stage-login'); });                 // slide login texts & lines back in
   fadeInEls(loginEls);                     // ensure they’re visible
   step = 0;
 }, 700);
 
       }else if(step===2){         /* account -> util */
           accountWrap.classList.remove('active');
-          requestAnimationFrame(() => { setStage('stage-util'); });
+         requestAnimationFrame(() => { setStage('stage-util'); });
           step=1;
       }else if(step===3){         /* help -> util */
           helpWrap.classList.remove('active');
-          requestAnimationFrame(() => { setStage('stage-util'); });
+         requestAnimationFrame(() => { setStage('stage-util'); });
           step=1;
       }
   });

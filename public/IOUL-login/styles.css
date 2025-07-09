@@ -428,60 +428,48 @@ body.stage-login .login-line-second {
 }
 
 
-/* ==== Force login text size and line color in all stages ==== */
-.login-text {
-  letter-spacing: .34vw !important;
-  font-size: .46rem !important;
+
+}
+
+
+
+
+
+/* ===== Override: Consistent sizing and smooth util sliding ===== */
+/* Issue 1 & 2: enforce correct font-size and letter-spacing */
+.login-text,
+.open-text,
+.help-text,
+.help-text-area {
+  font-size: .47rem !important;
+  letter-spacing: .28vw !important;
   line-height: 1.2 !important;
-  padding: .1rem 0 !important;
 }
-.login-line,
-.login-line-second {
-  background: rgba(230,230,230,.28) !important;
-}
-
 @media screen and (min-width: 1900px) {
-  body.stage-login .login-text,
-  body.stage-login .open-text,
-  body.stage-login .help-text,
-  body.stage-login .help-text-area {
-    font-size: .56rem !important;
+  .login-text,
+  .open-text,
+  .help-text,
+  .help-text-area {
+    font-size: .6rem !important;
     letter-spacing: .36vw !important;
   }
 }
 
-
-
-
-
-/* === Responsive Text Sizing Overrides === */
-
-/* Small screens (<1900px) */
-@media screen and (max-width: 1899px) {
-  body.stage-login .login-text,
-  body.stage-login .open-text,
-  body.stage-login .help-text,
-  body.stage-login .help-text-area,
-  body.stage-util .login-text,
-  body.stage-util .open-text,
-  body.stage-util .help-text,
-  body.stage-util .help-text-area {
-    font-size: .47rem !important;
-    letter-spacing: .28vw !important;
-  }
+/* Issue 3: slide OPEn/HELP using left */
+.open-text,
+.help-text {
+  transform: none !important;
+  transition: left 0.7s ease, opacity 0.3s ease !important;
 }
-
-/* Large screens (>=1900px) */
-@media screen and (min-width: 1900px) {
-  body.stage-login .login-text,
-  body.stage-login .open-text,
-  body.stage-login .help-text,
-  body.stage-login .help-text-area,
-  body.stage-util .login-text,
-  body.stage-util .open-text,
-  body.stage-util .help-text,
-  body.stage-util .help-text-area {
-    font-size: .56rem !important;
-    letter-spacing: .36vw !important;
-  }
+body.stage-login .open-text,
+body.stage-login .help-text,
+body.stage-util-pre .open-text,
+body.stage-util-pre .help-text {
+  left: 29vw !important;
+  opacity: 0 !important;
+}
+body.stage-util .open-text,
+body.stage-util .help-text {
+  left: 6.41vw !important;
+  opacity: 1 !important;
 }

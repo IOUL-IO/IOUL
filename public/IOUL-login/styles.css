@@ -451,7 +451,6 @@ body.stage-login .login-line-second {
 }
 
 
-@media screen and (min-width: 1900px) {
 /* ==== Persist text sizing during sliding stages ==== */
 body.stage-login .login-text,
 body.stage-login .open-text,
@@ -464,5 +463,15 @@ body.stage-util .help-text-area {
   font-size: .56rem !important;
   letter-spacing: .36vw !important;
 }
-}
 
+
+/* ===== Global large-screen override (>=1900px) ===== */
+@media screen and (min-width: 1900px) {
+  .login-text,
+  .open-text,
+  .help-text,
+  .help-text-area {
+    font-size: .56rem !important;
+    letter-spacing: .36vw !important;
+  }
+}

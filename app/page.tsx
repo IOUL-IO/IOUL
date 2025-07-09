@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
           fadeInEls([openText, helpText]);
           body.classList.remove('stage-util-pre'); // remove pre-stage so util rules win
-          requestAnimationFrame(() => { setStage('stage-util'); });
+          setStage('stage-util');
       }, 700);
   });
 

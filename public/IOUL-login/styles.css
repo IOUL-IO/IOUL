@@ -1,23 +1,3 @@
-/* ——— Base text sizing ——— */
-.login-text,
-.open-text,
-.help-text,
-.help-text-area {
-  font-size: .47rem !important;
-  letter-spacing: .28vw !important;
-}
-
-/* ——— Large-screen override (>=1900px) ——— */
-@media screen and (min-width: 1900px) {
-  .login-text,
-  .open-text,
-  .help-text,
-  .help-text-area {
-    font-size: .56rem !important;
-    letter-spacing: .36vw !important;
-  }
-}
-
 @font-face {
   font-family: 'Distill Expanded';
   src: url('font.woff2') format('woff2'),
@@ -327,45 +307,7 @@ body.stage-help .help-text{
 }
 
 
-/* === (2025-06-24) Keep OPEn/HELP fully masked behind layer‑two until slide completes === */
-body.stage-util .open-text,
-body.stage-util .help-text{
-  /* Narrow width equals visible gap (29vw → 36vw) so nothing peeks past 36vw while sliding */
-  width: calc(36vw - 29vw);
-  overflow: hidden;
-  /* Jump to full width after the 0.7s transform finishes */
-  animation: utilExpandWidth 0s 0.7s forwards;
-}
 
-@keyframes utilExpandWidth{
-  to{
-    width: 22.48vw;
-    overflow: visible;
-  }
-}
-
-
-/* === (2025-06-24b) Dynamic width reveal for util texts === */
-body.stage-util .open-text,
-body.stage-util .help-text{
-  /* Start in 29→36 vw gap so nothing peeks past 36vw */
-  width: calc(36vw - 29vw);
-  overflow: hidden;
-  animation: utilRevealWidth 0.7s ease forwards;
-}
-
-body.stage-util-pre .open-text,
-body.stage-util-pre .help-text{
-  /* When sliding OUT we start at full width and shrink to stay hidden */
-  width: 22.48vw;
-  overflow: hidden;
-  animation: utilRevealWidth 0.7s ease reverse forwards;
-}
-
-@keyframes utilRevealWidth{
-  0%{
-    width: calc(36vw - 29vw);
-  }
   100%{
     width: 22.48vw;
     overflow: visible;
@@ -482,4 +424,19 @@ body.stage-util .help-text,
 body.stage-util .help-text-area {
   font-size: .56rem !important;
   letter-spacing: .36vw !important;
+}
+
+
+/* === Override util sliding with transform === */
+.open-text,
+.help-text {
+  transform: translateX(calc(-1 * var(--slide-dist))) !important;
+  transition: transform .7s ease-in-out, opacity .5s ease-in-out !important;
+  width: auto !important;
+  overflow: visible !important;
+}
+
+body.stage-util .open-text,
+body.stage-util .help-text {
+  transform: translateX(0) !important;
 }

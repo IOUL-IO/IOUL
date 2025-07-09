@@ -1,3 +1,23 @@
+/* ——— Base text sizing ——— */
+.login-text,
+.open-text,
+.help-text,
+.help-text-area {
+  font-size: .47rem !important;
+  letter-spacing: .28vw !important;
+}
+
+/* ——— Large-screen override (>=1900px) ——— */
+@media screen and (min-width: 1900px) {
+  .login-text,
+  .open-text,
+  .help-text,
+  .help-text-area {
+    font-size: .56rem !important;
+    letter-spacing: .36vw !important;
+  }
+}
+
 @font-face {
   font-family: 'Distill Expanded';
   src: url('font.woff2') format('woff2'),
@@ -462,26 +482,4 @@ body.stage-util .help-text,
 body.stage-util .help-text-area {
   font-size: .56rem !important;
   letter-spacing: .36vw !important;
-}
-
-/* >>>>> Responsive text sizing fixes <<<<< */
-
-/* Small screens (<1900px) */
-@media screen and (max-width: 1899px) {
-  .login-text,
-  .open-text,
-  .help-text {
-    font-size: .47rem !important;
-    letter-spacing: .28vw !important;
-  }
-}
-
-/* Large screens (>=1900px) */
-@media screen and (min-width: 1900px) {
-  .login-text,
-  .open-text,
-  .help-text {
-    font-size: .56rem !important;
-    letter-spacing: .36vw !important;
-  }
 }

@@ -325,15 +325,21 @@ body.stage-util .help-text{
 }
 
 
-/* Slide in util texts: transform only; width reveal removed */
+/* === (2025-06-24b) Dynamic width reveal for util texts === */
 body.stage-util .open-text,
 body.stage-util .help-text{
-  overflow: visible;
+  /* Start in 29→36 vw gap so nothing peeks past 36vw */
+  width: calc(36vw - 29vw);
+  overflow: hidden;
+  animation: utilRevealWidth 0.7s ease forwards;
 }
 
 body.stage-util-pre .open-text,
 body.stage-util-pre .help-text{
-  overflow: visible;
+  /* When sliding OUT we start at full width and shrink to stay hidden */
+  width: 22.48vw;
+  overflow: hidden;
+  animation: utilRevealWidth 0.7s ease reverse forwards;
 }
 
 @keyframes utilRevealWidth{
@@ -422,7 +428,7 @@ body.stage-login .login-line-second {
 }
 
 
-
+/* ==== Force login text size and line color in all stages ==== */
 .login-text {
   letter-spacing: .34vw !important;
   font-size: .46rem !important;
@@ -456,28 +462,4 @@ body.stage-util .help-text,
 body.stage-util .help-text-area {
   font-size: .56rem !important;
   letter-spacing: .36vw !important;
-}
-
-/* ===== Consistent Login and Utility Text Sizing ===== */
-.login-text,
-.open-text,
-.help-text,
-.help-text-area {
-  font-size: .47rem !important;
-  letter-spacing: .28vw !important;
-  line-height: 1.2 !important;
-}
-@media (min-width: 1900px) {
-  .login-text,
-  .open-text,
-  .help-text,
-  .help-text-area {
-    font-size: 0.6rem !important;
-    letter-spacing: 0.36vw !important;
-  }
-}
-/* Ensure util texts slide smoothly */
-.open-text,
-.help-text {
-  transition: transform 0.7s ease, opacity 0.3s ease;
 }

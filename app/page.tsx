@@ -144,11 +144,15 @@ document.addEventListener('DOMContentLoaded', () => {
       fadeInEls(loginEls);
       step = 1;
       /* Phase 2 after slide completes */
-      setTimeout(() => {
-          fadeInEls([openText, helpText]);
-          body.classList.remove('stage-util-pre'); // remove pre-stage so util rules win
-          setStage('stage-util');
-      }, 700);
+setTimeout(() => {
+    // reveal OPEn and HELP elements
+    fadeInEls([openText, helpText]);
+    // next animation frame, switch to util stage for transform slide
+    requestAnimationFrame(() => {
+        body.classList.remove('stage-util-pre');
+        setStage('stage-util');
+    });
+}, 700);
   });
 
 

@@ -55,7 +55,11 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 
 .line.util-line{top:28.5vh;left:26.06vw;width:2.8vw;z-index:1;}
 
-
+.login-text{
+  position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
+  letter-spacing:.28vw;font-size:.47rem;left:6.41vw;
+  text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
+}
 
 .username{top:calc(var(--username-line-top) - var(--line-gap));}
 .password{top:calc(var(--password-line-top) - var(--line-gap));}
@@ -405,7 +409,18 @@ body.stage-util-pre .help-text{
 
 
 /* ==== Inline Login Tweaks from Original HTML ==== */
-body.stage-login 
+body.stage-login .login-text {
+  position: absolute;
+  z-index: 10;
+  overflow: visible;
+  font-family: 'Distill Expanded', sans-serif;
+  color: #111;
+  letter-spacing: .34vw;
+  font-size: .46rem;
+  line-height: 1.2;
+  padding: .1rem 0;
+  text-shadow: .001rem .001rem 0 #717171, -.001rem -.001rem 0 #717171;
+}
 
 body.stage-login .login-line,
 body.stage-login .login-line-second {
@@ -414,7 +429,12 @@ body.stage-login .login-line-second {
 
 
 /* ==== Force login text size and line color in all stages ==== */
-
+.login-text {
+  letter-spacing: .34vw !important;
+  font-size: .46rem !important;
+  line-height: 1.2 !important;
+  padding: .1rem 0 !important;
+}
 .login-line,
 .login-line-second {
   background: rgba(230,230,230,.28) !important;
@@ -445,7 +465,7 @@ body.stage-util .help-text-area {
 }
 
 
-/* ===== Small-screen text sizing (<1900px) ===== */
+/* ===== Small-screen (.login-text font-size & spacing) ===== */
 @media screen and (max-width: 1899px) {
   .login-text {
     font-size: .47rem !important;
@@ -453,7 +473,7 @@ body.stage-util .help-text-area {
   }
 }
 
-/* ===== Large-screen text sizing (>=1900px) ===== */
+/* ===== Large-screen (.login-text font-size & spacing) ===== */
 @media screen and (min-width: 1900px) {
   .login-text {
     font-size: .56rem !important;

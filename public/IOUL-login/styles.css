@@ -464,7 +464,7 @@ body.stage-util .help-text-area {
   letter-spacing: .36vw !important;
 }
 
-/* === Always enforce text sizing per screen width === */
+/* Enforce small-screen text sizing (for widths <1900px) */
 @media screen and (max-width: 1899px) {
   .login-text,
   .open-text,
@@ -472,14 +472,5 @@ body.stage-util .help-text-area {
   .help-text-area {
     font-size: .47rem !important;
     letter-spacing: .28vw !important;
-  }
-}
-@media screen and (min-width: 1900px) {
-  .login-text,
-  .open-text,
-  .help-text,
-  .help-text-area {
-    font-size: .56rem !important;
-    letter-spacing: .36vw !important;
   }
 }

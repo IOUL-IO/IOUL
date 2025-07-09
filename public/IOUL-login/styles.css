@@ -1,3 +1,31 @@
+/* ——— Universal Base Text Sizing ——— */
+.login-text,
+.open-text,
+.help-text,
+.username,
+.password,
+.account-text,
+.help-text-area {
+  font-size: 0.47rem !important;
+  letter-spacing: 0.28vw !important;
+}
+
+/* ——— Large-Screen Override (≥1900px) ——— */
+@media (min-width: 1900px) {
+  .login-text,
+  .open-text,
+  .help-text,
+  .username,
+  .password,
+  .account-text,
+  .help-text-area {
+    font-size: 0.56rem !important;
+    letter-spacing: 0.36vw !important;
+  }
+}
+
+/* ===================================== */
+
 @font-face {
   font-family: 'Distill Expanded';
   src: url('font.woff2') format('woff2'),
@@ -223,7 +251,7 @@ body.stage-help .help-text{
   .password,
   .account-text,
   .help-text-area{
-    font-size: 0.56rem !important;
+    font-size: 0.6rem !important;
     letter-spacing: 0.36vw !important;
   }
 }
@@ -405,4 +433,61 @@ body.stage-util-pre .help-text{
 .layer-two::after{
   top:calc(43.17vh - 2.5vh);
   height:5vh;
+}
+
+
+/* ==== Inline Login Tweaks from Original HTML ==== */
+body.stage-login .login-text {
+  position: absolute;
+  z-index: 10;
+  overflow: visible;
+  font-family: 'Distill Expanded', sans-serif;
+  color: #111;
+  letter-spacing: .34vw;
+  font-size: .46rem;
+  line-height: 1.2;
+  padding: .1rem 0;
+  text-shadow: .001rem .001rem 0 #717171, -.001rem -.001rem 0 #717171;
+}
+
+body.stage-login .login-line,
+body.stage-login .login-line-second {
+  background: rgba(230,230,230,.28) !important;
+}
+
+
+/* ==== Force login text size and line color in all stages ==== */
+.login-text {
+  letter-spacing: .34vw !important;
+  font-size: .46rem !important;
+  line-height: 1.2 !important;
+  padding: .1rem 0 !important;
+}
+.login-line,
+.login-line-second {
+  background: rgba(230,230,230,.28) !important;
+}
+
+@media screen and (min-width: 1900px) {
+  body.stage-login .login-text,
+  body.stage-login .open-text,
+  body.stage-login .help-text,
+  body.stage-login .help-text-area {
+    font-size: .56rem !important;
+    letter-spacing: .36vw !important;
+  }
+}
+
+
+/* ==== Persist text sizing during sliding stages ==== */
+body.stage-login .login-text,
+body.stage-login .open-text,
+body.stage-login .help-text,
+body.stage-login .help-text-area,
+body.stage-util .login-text,
+body.stage-util .open-text,
+body.stage-util .help-text,
+body.stage-util .help-text-area {
+  font-size: .56rem !important;
+  letter-spacing: .36vw !important;
 }

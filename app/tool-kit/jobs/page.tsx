@@ -132,11 +132,22 @@ export default function Page() {
     document.addEventListener("click", pageClickHandler, true);
 
     
+    
     // Ledger & Community slide logic by region
+    function slideOut() {
+      document.querySelectorAll('.job-item').forEach(el => el.classList.add('slide-left-40'));
+      document.querySelector('.freelance-items-container')?.classList.add('slide-left-29');
+      document.querySelector('.zero-items-container')?.classList.add('slide-left-29');
+    }
+    function slideBack() {
+      document.querySelectorAll('.job-item').forEach(el => el.classList.remove('slide-left-40'));
+      document.querySelector('.freelance-items-container')?.classList.remove('slide-left-29');
+      document.querySelector('.zero-items-container')?.classList.remove('slide-left-29');
+    }
     const LEDGER_MIN = 28.86, LEDGER_MAX = 32.43;
     const BACK_MIN = 0, BACK_MAX = 6.37;
     let ledgerSlid = false;
-    const ledgerClickHandler = (e: MouseEvent) => {
+    const ledgerClickHandler = (e) => {
       const xVw = toVw(e.clientX);
       const yVh = toVh(e.clientY);
       if (yVh >= TOP_MIN && yVh <= TOP_MAX) {
@@ -151,27 +162,7 @@ export default function Page() {
     };
     document.addEventListener('click', ledgerClickHandler);
 
-    // Clipping logic
-    const HIDE_LEFT_VW = 35.97;
-    function updateClip() {
-      jobEls.forEach((el) => {
-        if (el.classList.contains("freelance-line")) return;
-        const rect = el.getBoundingClientRect();
-        const l = toVw(rect.left);
-        const t = toVh(rect.top);
-        const hide = l < HIDE_LEFT_VW && t >= TOP_MIN && t <= TOP_MAX;
-        el.style.opacity = hide ? "0" : "";
-        el.style.pointerEvents = hide ? "none" : "";
-      });
-    }
-    updateClip();
-    requestAnimationFrame(function loop() {
-      updateClip();
-      requestAnimationFrame(loop);
-    });
-    window.addEventListener("resize", updateClip);
     // Cleanup
-    return () => {
       document.removeEventListener("click", fullscreenHandler);
       document.removeEventListener("click", pageClickHandler, true);
       window.removeEventListener("resize", updateClip);

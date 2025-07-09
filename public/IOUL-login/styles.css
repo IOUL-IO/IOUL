@@ -1,3 +1,25 @@
+/* ——— Base text sizing ——— */
+.login-text,
+.open-text,
+.help-text,
+.help-text-area {
+  font-size: .47rem !important;
+  letter-spacing: .28vw !important;
+}
+
+/* ——— Large-screen override (>=1900px) ——— */
+@media screen and (min-width: 1900px) {
+  .login-text,
+  .open-text,
+  .help-text,
+  .help-text-area {
+    font-size: .56rem !important;
+    letter-spacing: .36vw !important;
+  }
+}
+
+/* ============================================ */
+
 @font-face {
   font-family: 'Distill Expanded';
   src: url('font.woff2') format('woff2'),
@@ -428,7 +450,7 @@ body.stage-login .login-line-second {
 }
 
 
-
+/* ==== Force login text size and line color in all stages ==== */
 .login-text {
   letter-spacing: .34vw !important;
   font-size: .46rem !important;
@@ -462,28 +484,4 @@ body.stage-util .help-text,
 body.stage-util .help-text-area {
   font-size: .56rem !important;
   letter-spacing: .36vw !important;
-}
-
-/* ===== Consistent Login and Utility Text Sizing ===== */
-.login-text,
-.open-text,
-.help-text,
-.help-text-area {
-  font-size: .47rem !important;
-  letter-spacing: .28vw !important;
-  line-height: 1.2 !important;
-}
-@media (min-width: 1900px) {
-  .login-text,
-  .open-text,
-  .help-text,
-  .help-text-area {
-    font-size: 0.6rem !important;
-    letter-spacing: 0.36vw !important;
-  }
-}
-/* Ensure util texts slide smoothly */
-.open-text,
-.help-text {
-  transition: transform 0.7s ease, opacity 0.3s ease;
 }

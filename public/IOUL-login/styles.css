@@ -406,3 +406,26 @@ body.stage-util-pre .help-text{
   top:calc(43.17vh - 2.5vh);
   height:5vh;
 }
+
+
+/* —— Login slide-in transforms —— */
+/* Start off-screen to the left */
+.login-text.hidden,
+.login-line.hidden,
+.login-line-second.hidden {
+  transform: translateX(-30vw);
+}
+
+/* When visible, slide back into place */
+.login-text.visible,
+.login-line.visible,
+.login-line-second.visible {
+  transform: translateX(0);
+}
+
+/* Ensure the transform transition matches the original timing */
+.login-text,
+.login-line,
+.login-line-second {
+  transition: transform 0.7s ease-in-out, opacity 0.5s ease-in-out;
+}

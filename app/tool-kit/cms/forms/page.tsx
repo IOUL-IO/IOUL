@@ -1,45 +1,46 @@
-"use client";
-import React, { useEffect } from 'react';
 
-export default function Page() {
-  useEffect(() => {
-    // Edge-trigger fullscreen toggle
-    const EDGE = 11; // px from each edge
-    const handler = (event: MouseEvent) => {
-      const { clientX: x, clientY: y } = event as MouseEvent;
-      const { innerWidth: w, innerHeight: h } = window;
-      if (
-        !document.fullscreenElement &&
-        (x <= EDGE || x >= w - EDGE || y <= EDGE || y >= h - EDGE)
-      ) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
-    };
+    "use client";
+    import React, { useEffect } from 'react';
 
-    document.addEventListener('click', handler);
-    return () => document.removeEventListener('click', handler);
-  }, []);
+    export default function Page() {
+      useEffect(() => {
+        // TODO: any JS init from legacy project can be ported here
+      }, []);
+      return (
+        <div dangerouslySetInnerHTML={ { __html: `
 
-  return (
-    <div>
-      {/* Fixed layout layers */}
-      <div className="layer-one" />
-      <div className="layer-two" />
-      <div className="layer-three" />
-      <div className="layer-four" />
-      <div className="layer-five" />
-      <div className="layer-six" />
+  <!-- Fixed layout layers -->
+  <div class="layer-one"></div>
+  <div class="layer-two"></div>
+  <div class="layer-three"></div>
+  <div class="layer-four"></div>
+  <div class="layer-five"></div>
+  <div class="layer-six"></div>
 
-      {/* Primary guide lines */}
-      <div className="line original" />
-      <div className="line second" />
-      <div className="line third" />
-      <div className="line fourth" />
-      <div className="line fifth" />
-      <div className="line sixth" />
+  <!-- Primary guide lines -->
+  <div class="line original"></div>
+  <div class="line second"></div>
+  <div class="line third"></div>
+  <div class="line fourth"></div>
+  <div class="line fifth"></div>
+  <div class="line sixth"></div>
 
-      {/* Util line (click-to-toggle reserved for future use) */}
-      <div className="line util-line" />
-    </div>
-  );
-}
+  <!-- Util line (click‑to‑toggle reserved for future use) -->
+  <div class="line util-line"></div>
+
+<script>
+/* ——— Edge‑trigger fullscreen toggle ——— */
+document.addEventListener('click', event => {
+  const { clientX: x, clientY: y } = event;
+  const { innerWidth: w, innerHeight: h } = window;
+  const EDGE = 11; // px from each edge
+
+  if (!document.fullscreenElement &&
+      (x <= EDGE || x >= w - EDGE || y <= EDGE || y >= h - EDGE)) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  }
+});
+</script>
+` } } />
+      );
+    }

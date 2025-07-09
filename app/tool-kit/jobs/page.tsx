@@ -155,7 +155,33 @@ export default function Page() {
       document.removeEventListener("click", fullscreenHandler);
       document.removeEventListener("click", pageClickHandler, true);
       window.removeEventListener("resize", updateClip);
-    };
+      
+        const ledgerItems = Array.from(document.querySelectorAll('.job-item'));
+    const communityContainer = document.querySelector('.freelance-items-container');
+    const zeroContainer = document.querySelector('.zero-items-container');
+    const triggerArea = document.getElementById('ledger-trigger-area');
+    const resetArea   = document.getElementById('ledger-reset-area');
+    let slid = false;
+    function slideOut() {
+      ledgerItems.forEach(el => el.classList.add('slide-left-40'));
+      communityContainer?.classList.add('slide-left-29');
+      zeroContainer?.classList.add('slide-left-29');
+      slid = true;
+    }
+    function slideBack() {
+      ledgerItems.forEach(el => el.classList.remove('slide-left-40'));
+      communityContainer?.classList.remove('slide-left-29');
+      zeroContainer?.classList.remove('slide-left-29');
+      slid = false;
+    }
+    triggerArea?.addEventListener('click', e => {
+      e.stopPropagation();
+      if (!slid) slideOut();
+    });
+    resetArea?.addEventListener('click', e => {
+      e.stopPropagation();
+      if (slid) slideBack();
+    });
   }, []);
 
   return (

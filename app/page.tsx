@@ -8,8 +8,7 @@ export default function LoginPage() {
   const helpTextRef = useRef<HTMLElement | null>(null);
   const accountWrapRef = useRef<HTMLElement | null>(null);
   const helpWrapRef = useRef<HTMLElement | null>(null);
-  const bodyRef = useRef<HTMLBodyElement | null>(null);
-
+  
   useEffect(() => {
     // assign refs
     loginElsRef.current = document.querySelectorAll(
@@ -20,8 +19,7 @@ export default function LoginPage() {
     helpTextRef.current = document.querySelector(".help-text");
     accountWrapRef.current = document.querySelector(".account-wrapper");
     helpWrapRef.current = document.querySelector(".help-wrapper");
-    bodyRef.current = document.body;
-
+    
     // fade helper
     const fadeInEls = (els: NodeListOf<HTMLElement>) =>
       els.forEach((el) => el.classList.replace("hidden", "visible"));
@@ -107,15 +105,15 @@ export default function LoginPage() {
     // util click
     utilLineRef.current?.addEventListener("click", () => {
       if (step !== 0) return;
-      bodyRef.current!.classList.add("stage-util-pre");
+      document.body.classList.add("stage-util-pre");
       fadeInEls(loginElsRef.current!);
       step = 1;
       setTimeout(() => {
         fadeInEls(
           document.querySelectorAll<HTMLElement>(".open-text, .help-text")
         );
-        bodyRef.current!.classList.remove("stage-util-pre");
-        bodyRef.current!.classList.add("stage-util");
+        document.body.classList.remove("stage-util-pre");
+        document.body.classList.add("stage-util");
       }, 700);
     });
 
@@ -123,14 +121,14 @@ export default function LoginPage() {
     openTextRef.current?.addEventListener("click", () => {
       if (step !== 1) return;
       accountWrapRef.current!.classList.add("active");
-      bodyRef.current!.classList.add("stage-account");
+      document.body.classList.add("stage-account");
       step = 2;
     });
 
     helpTextRef.current?.addEventListener("click", () => {
       if (step !== 1) return;
       helpWrapRef.current!.classList.add("active");
-      bodyRef.current!.classList.add("stage-help");
+      document.body.classList.add("stage-help");
       step = 3;
     });
 
@@ -143,23 +141,23 @@ export default function LoginPage() {
       const backZone = x <= vw * 0.0637 && y >= vh * 0.285 && y <= vh * 0.84;
       if (!backZone) return;
       if (step === 1) {
-        bodyRef.current!.classList.add("stage-util-pre");
+        document.body.classList.add("stage-util-pre");
         setTimeout(() => {
           fadeOutEls(
             document.querySelectorAll<HTMLElement>(".open-text, .help-text")
           );
-          bodyRef.current!.classList.remove("stage-util-pre");
-          bodyRef.current!.classList.add("stage-login");
+          document.body.classList.remove("stage-util-pre");
+          document.body.classList.add("stage-login");
           fadeInEls(loginElsRef.current!);
           step = 0;
         }, 700);
       } else if (step === 2) {
         accountWrapRef.current!.classList.remove("active");
-        bodyRef.current!.classList.add("stage-util");
+        document.body.classList.add("stage-util");
         step = 1;
       } else if (step === 3) {
         helpWrapRef.current!.classList.remove("active");
-        bodyRef.current!.classList.add("stage-util");
+        document.body.classList.add("stage-util");
         step = 1;
       }
     });

@@ -145,10 +145,10 @@ document.addEventListener('DOMContentLoaded', () => {
       step = 1;
       /* Phase 2 after slide completes */
       setTimeout(() => {
-            body.classList.remove('stage-util-pre'); // remove pre-stage so util rules win
-            requestAnimationFrame(() => { setStage('stage-util'); });
-            fadeInEls([openText, helpText]);
-        }, 700);
+          fadeInEls([openText, helpText]);
+          body.classList.remove('stage-util-pre'); // remove pre-stage so util rules win
+          setStage('stage-util');
+      }, 700);
   });
 
 
@@ -156,14 +156,14 @@ document.addEventListener('DOMContentLoaded', () => {
   openText.addEventListener('click', () => {
       if(step!==1) return;
       accountWrap.classList.add('active');
-      setStage('stage-account');
+      requestAnimationFrame(() => { setStage('stage-account'); });
       step=2;
   });
 
   helpText.addEventListener('click', () => {
       if(step!==1) return;
       helpWrap.classList.add('active');
-      setStage('stage-help');
+      requestAnimationFrame(() => { setStage('stage-help'); });
       step=3;
   });
 

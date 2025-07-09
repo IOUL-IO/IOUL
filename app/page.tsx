@@ -138,37 +138,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   utilLine.addEventListener('click', () => {
-      if(step!==0) return;
-      /* Phase 1: slide login items left */
-      setStage('stage-util-pre');
-      fadeInEls(loginEls);
-      step = 1;
-      /* Phase 2 after slide completes */
-setTimeout(() => {
-    // remove pre-stage so util rules win
-    body.classList.remove('stage-util-pre');
-    // next frame: set util stage and fade in options
-    requestAnimationFrame(() => {
-        setStage('stage-util');
-        fadeInEls([openText, helpText]);
+        if (step !== 0) return;
+        // Phase 1: slide login items left
+        setStage('stage-util-pre');
+        fadeInEls(loginEls);
+        step = 1;
+        // Phase 2 after slide completes
+        setTimeout(() => {
+            // reveal util texts first frame
+            fadeInEls([openText, helpText]);
+            // next frame, apply util slide-in
+            requestAnimationFrame(() => {
+                setStage('stage-util');
+            });
+        }, 700);
     });
-}, 700);
-  });
-
-
-
-  openText.addEventListener('click', () => {
-      if(step!==1) return;
-      accountWrap.classList.add('active');
-      setStage('stage-account');
-      step=2;
+openText.addEventListener('click', () => {
+        if (step !== 1) return;
+        // slide util texts further left then show account
+        setStage('stage-account');
+        setTimeout(() => {
+            accountWrap.classList.add('active');
+            step = 2;
+        }, 700);
   });
 
   helpText.addEventListener('click', () => {
-      if(step!==1) return;
-      helpWrap.classList.add('active');
-      setStage('stage-help');
-      step=3;
+        if (step !== 1) return;
+        // slide util texts further left then show help
+        setStage('stage-help');
+        setTimeout(() => {
+            helpWrap.classList.add('active');
+            step = 3;
+        }, 700);
   });
 
   /* ===== Back‑tap area ===== */

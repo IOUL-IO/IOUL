@@ -144,16 +144,11 @@ document.addEventListener('DOMContentLoaded', () => {
       fadeInEls(loginEls);
       step = 1;
       /* Phase 2 after slide completes */
-setTimeout(() => {
-  // remove the 'pre' stage so util rules can take effect
-  body.classList.remove('stage-util-pre');
-
-  // schedule everything in one rAF so transitions fire
-  requestAnimationFrame(() => {
-    setStage('stage-util');
-    fadeInEls([openText, helpText]);
-  });
-}, 700);
+      setTimeout(() => {
+          fadeInEls([openText, helpText]);
+          body.classList.remove('stage-util-pre'); // remove pre-stage so util rules win
+          setStage('stage-util');
+      }, 700);
   });
 
 

@@ -6,7 +6,7 @@
   font-style: normal;
 }
 
-
+/* ===== Reset & Base ===== */
 *{margin:0;padding:0;box-sizing:border-box;}
 
 :root{
@@ -22,7 +22,7 @@ body.non-fullscreen .password{top:43.17vh;}
 
 body.fade-in-trigger{background:#fff;}
 
-
+/* ===== Lines ===== */
 .line:not(.login-line):not(.login-line-second){
   opacity:0;transition:opacity .5s ease-in-out;
 }
@@ -40,11 +40,11 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
   transition:transform .7s ease-in-out, opacity .5s ease-in-out;
 }
 
-
+/* ===== Generic Visibility Helpers ===== */
 .visible{opacity:1 !important;transition:transform 0.7s ease-in-out, opacity .5s ease-in-out;}
 .hidden {opacity:0 !important;transition:transform 0.7s ease-in-out, opacity .5s ease-in-out;pointer-events:none;}
 
-
+/* ===== Static Geometry ===== */
 .line{position:absolute;height:1px;background:rgba(172,172,172,.84)}
 .original{top:12.5vh;left:6.38vw;width:22.48vw;}
 .second  {top:28.5vh;left:6.38vw;width:18.68vw;}
@@ -72,7 +72,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .login-line {top:var(--username-line-top);}
 .login-line-second{top:var(--password-line-top);}
 
-
+/* ===== Utility Texts (OPEn / HELP) ===== */
 .open-text,
 .help-text{
   transition: transform 0.7s ease, opacity 0.3s ease;
@@ -90,7 +90,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .open-text.visible:hover,
 .help-text.visible:hover{opacity:1 !important;}
 
-
+/* ===== Layers ===== */
 .layer-one{
   position:fixed;top:0;left:0;width:6.37vw;height:100vh;background:#fff;z-index:100;
 }
@@ -98,7 +98,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
   position:fixed;top:0;left:28.87vw;width:calc(36vw - 28.87vw);height:100vh;background:#fff;z-index:100;
 }
 
-
+/* ===== Account & Help Wrappers ===== */
 .account-wrapper,
 .help-wrapper{
   position:fixed;top:0;left:29vw;
@@ -112,7 +112,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
   left:6.41vw;clip-path: inset(0);pointer-events:auto;
 }
 
-
+/* ===== Account specific ===== */
 .account-text{
   position:absolute;left:0;font-family:'Distill Expanded',sans-serif;color:#111;
   letter-spacing:.34vw;font-size:.46rem;line-height:1.2;padding:.1rem 0;
@@ -129,7 +129,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .account-line.account-line3{top:55.1vh;}
 .account-line.account-line4{top:63.2vh;}
 
-
+/* ===== Help specific ===== */
 .help-text-area{
   position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
   letter-spacing:.34vw;font-size:.47rem;white-space:nowrap;
@@ -140,7 +140,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .help-text-area.sendlink:hover{opacity:1;}
 .help-line{position:absolute;top:38.9vh;left:0;width:22.48vw;height:1px;background:rgba(230,230,230,.28);}
 
-
+/* ========= Dynamic Stage‑based Sliding ======== */
 
 /* LOGIN (default) – everything parked */
 body.stage-login .username,
@@ -239,7 +239,7 @@ body.stage-help .help-text{
 }
 
 
-
+/* ===== Two‑phase util slide: login first ===== */
 body.stage-util-pre .username,
 body.stage-util-pre .password,
 body.stage-util-pre .login-line,
@@ -465,21 +465,42 @@ body.stage-util .help-text-area {
 }
 
 
-/* ===== Text sizing overrides ===== */
-.login-text,
-.open-text,
-.help-text,
-.help-text-area {
-  font-size: .47rem !important;
-  letter-spacing: .28vw !important;
-  line-height: 1.2 !important;
-}
-@media (min-width: 1900px) {
+/* === Responsive Text Sizing Overrides === */
+
+/* Small screens (<1900px) */
+@media screen and (max-width: 1899px) {
   .login-text,
+  .login-line,
+  .login-line-second,
   .open-text,
-  .help-text,
-  .help-text-area {
-    font-size: .6rem !important;
+  .help-text {
+    font-size: .47rem !important;
+    letter-spacing: .28vw !important;
+  }
+}
+
+/* Large screens (>=1900px) */
+@media screen and (min-width: 1900px) {
+  .login-text,
+  .login-line,
+  .login-line-second,
+  .open-text,
+  .help-text {
+    font-size: .56rem !important;
     letter-spacing: .36vw !important;
   }
+}
+
+/* === OPEN/HELP Slide Override for Util Stage === */
+.open-text,
+.help-text {
+  width: auto !important;
+  left: 29vw !important;
+  opacity: 0 !important;
+  transition: left .7s ease, opacity .7s ease !important;
+}
+body.stage-util .open-text,
+body.stage-util .help-text {
+  left: 6.41vw !important;
+  opacity: 1 !important;
 }

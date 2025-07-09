@@ -1,3 +1,10 @@
+@media screen and (max-width: 1899px) {
+  .login-text {
+    font-size: .47rem;
+    letter-spacing: .28vw;
+  }
+}
+
 @font-face {
   font-family: 'Distill Expanded';
   src: url('font.woff2') format('woff2'),
@@ -462,15 +469,4 @@ body.stage-util .help-text,
 body.stage-util .help-text-area {
   font-size: .56rem !important;
   letter-spacing: .36vw !important;
-}
-
-/* Large-screen persistent text sizing for login, OPEN, and HELP */
-@media screen and (min-width: 1900px) {
-  .login-text,
-  .open-text,
-  .help-text,
-  .help-text-area {
-    font-size: .56rem !important;
-    letter-spacing: .36vw !important;
-  }
 }

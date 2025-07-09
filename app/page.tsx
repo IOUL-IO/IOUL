@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
           fadeInEls([openText, helpText]);
           body.classList.remove('stage-util-pre'); // remove pre-stage so util rules win
-          setStage('stage-util');
+          requestAnimationFrame(() => { setStage('stage-util'); });
       }, 700);
   });
 
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
   helpText.addEventListener('click', () => {
       if(step!==1) return;
       helpWrap.classList.add('active');
-      setStage('stage-help');
+      requestAnimationFrame(() => { setStage('stage-help'); });
       step=3;
   });
 
@@ -188,11 +188,11 @@ setTimeout(() => {                         // after 0.7 s slide completes…
 
       }else if(step===2){         /* account -> util */
           accountWrap.classList.remove('active');
-          setStage('stage-util');
+          requestAnimationFrame(() => { setStage('stage-util'); });
           step=1;
       }else if(step===3){         /* help -> util */
           helpWrap.classList.remove('active');
-          setStage('stage-util');
+          requestAnimationFrame(() => { setStage('stage-util'); });
           step=1;
       }
   });

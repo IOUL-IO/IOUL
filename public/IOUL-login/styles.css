@@ -132,7 +132,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 /* ===== Help specific ===== */
 .help-text-area{
   position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
-  letter-spacing: .28vw;font-size:.47rem;white-space:nowrap;
+  letter-spacing:.34vw;font-size:.47rem;white-space:nowrap;
   text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
 }
 .help-text-area.email   {left:0;top:35.17vh;}
@@ -428,7 +428,17 @@ body.stage-login .login-line-second {
 }
 
 
-
+/* ==== Force login text size and line color in all stages ==== */
+.login-text {
+  letter-spacing: .34vw !important;
+  font-size: .46rem !important;
+  line-height: 1.2 !important;
+  padding: .1rem 0 !important;
+}
+.login-line,
+.login-line-second {
+  background: rgba(230,230,230,.28) !important;
+}
 
 @media screen and (min-width: 1900px) {
   body.stage-login .login-text,
@@ -455,13 +465,40 @@ body.stage-util .help-text-area {
 }
 
 
-/* === Override 2025-07-09: ensure baseline text size on sub‑1900px screens === */
-@media screen and (max-width: 1899px) {
+
+/* === IOUL July 9 2025 Patch: unify text sizing & line thickness === */
+
+/* Base sizing for all screens */
+.login-text,
+.open-text,
+.help-text,
+.help-text-area,
+.account-text{
+  font-size:0.47rem !important;
+  letter-spacing:0.28vw !important;
+}
+
+/* Lines thickness/colour preserved */
+.login-line,
+.login-line-second{
+  height:1px !important;
+  background:rgba(230,230,230,.28) !important;
+}
+
+/* Ultra‑wide screens bump */
+@media screen and (min-width:1900px){
   .login-text,
   .open-text,
   .help-text,
-  .help-text-area {
-    font-size: 0.47rem !important;
-    letter-spacing: 0.28vw !important;
+  .help-text-area,
+  .account-text{
+    font-size:0.56rem !important;
+    letter-spacing:0.36vw !important;
   }
+}
+
+/* Remove scaling artifacts: ensure only translateX/translateY (no scale) */
+.login-line,
+.login-line-second{
+  transform-origin:left center !important;
 }

@@ -59,28 +59,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const body        = document.body;
 
   /* ===== Helper functions ===== */
-
+/* === unified fade helpers 2025‑07‑10 === */
 const fadeInEls = (els) => {
-  els.forEach(el => {
-    if (el.classList.contains('visible')) return;
-    el.classList.remove('hidden');         // opacity 0
-    requestAnimationFrame(()=>{            // next frame
-      el.classList.add('visible');         // triggers .5s fade to 1
+    els.forEach(el => {
+        if (el.classList.contains('visible')) return;
+        // ensure starting opacity 0
+        el.classList.remove('hidden');
+        // two frames to guarantee separate paint
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{
+            el.classList.add('visible');   // 0 -> 1 over .5s
+        }));
     });
-  });
 };
 
 const fadeOutEls = (els) => Promise.all(
-  Array.from(els).map(el => new Promise(res=>{
-    if(!el.classList.contains('visible')){ res(); return; }
-    const end=(e)=>{ if(e.propertyName==='opacity'){ el.removeEventListener('transitionend', end); res(); } };
-    el.addEventListener('transitionend', end, { once:true });
-    requestAnimationFrame(()=>{
-      el.classList.add('hidden');          // fade to 0 over .5s
-      el.classList.remove('visible');
-    });
-  }))
+    Array.from(els).map(el => new Promise(res=>{
+        if (!el.classList.contains('visible')) { res(); return; }
+        const end = (e)=>{ if(e.propertyName==='opacity'){ el.removeEventListener('transitionend', end); res(); } };
+        el.addEventListener('transitionend', end, { once:true });
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{
+            el.classList.add('hidden');    // 1 -> 0 over .5s
+            el.classList.remove('visible');
+        }));
+    }))
 );
+
   el.classList.add('visible'); });
   return; }
       const end = (e)=>{ if(e.propertyName==='opacity'){ el.removeEventListener('transitionend', end); res(); } };

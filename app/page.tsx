@@ -145,10 +145,12 @@ document.addEventListener('DOMContentLoaded', () => {
       step = 1;
       /* Phase 2 after slide completes */
       setTimeout(() => {
-          fadeInEls([openText, helpText]);
-          body.classList.remove('stage-util-pre'); // remove pre-stage so util rules win
-          setStage('stage-util');
-      }, 700);
+      fadeInEls([openText, helpText]);      // 1. show them
+      requestAnimationFrame(() => {         // 2. next frame → move them
+        body.classList.remove('stage-util-pre');
+        setStage('stage-util');
+      });
+    }, 350);
   });
 
 

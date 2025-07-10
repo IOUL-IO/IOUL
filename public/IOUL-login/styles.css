@@ -75,18 +75,17 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 /* ===== Utility Texts (OPEn / HELP) ===== */
 .open-text,
 .help-text{
-  transition: transform 0.7s ease-in-out, opacity 0.5s ease-in-out !important;
-  will-change: transform;
-  position: absolute;
-  top: 35.17vh;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111;
-  letter-spacing: .28vw;
-  font-size: .47rem;
-  text-shadow: .001rem .001rem 0 #717171, -.001rem -.001rem 0 #717171;
-  left: 29vw;
-  opacity: 0;
+  transition: transform 0.7s ease, opacity 0.3s ease;
+  position:absolute;top:35.17vh;                 /* overwritten for help later */
+  font-family:'Distill Expanded',sans-serif;
+  color:#111;letter-spacing:.28vw;font-size:.47rem;
+  text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
+  left:29vw;                                     /* parked behind layer-two */
+  opacity:0;/* start hidden */                                     /* start fully transparent */
+  transition:transform .7s ease,opacity .3s ease;
 }
+.help-text{top:43.17vh;}
+
 /* Hover brighten when visible */
 .open-text.visible:hover,
 .help-text.visible:hover{opacity:1 !important;}
@@ -224,7 +223,7 @@ body.stage-help .help-text{
   .password,
   .account-text,
   .help-text-area{
-    font-size: 0.56rem !important;
+    font-size: 0.6rem !important;
     letter-spacing: 0.36vw !important;
   }
 }
@@ -464,3 +463,35 @@ body.stage-util .help-text-area {
   font-size: .56rem !important;
   letter-spacing: .36vw !important;
 }
+
+/* ---------- 2025-07-09 consistency patch ---------- */
+html{
+  --fs-login: .47rem;   /* default  <1900 px */
+  --ls-login: .28vw;
+}
+@media (min-width:1900px){
+  html{
+    --fs-login: .56rem; /* large viewports */
+    --ls-login: .36vw;
+  }
+}
+
+/* use the vars everywhere, any stage */
+.login-text,
+.open-text,
+.help-text,
+.username,
+.password,
+.account-text,
+.help-text-area{
+  font-size: var(--fs-login) !important;
+  letter-spacing: var(--ls-login) !important;
+}
+
+/* let util texts be visible while they slide */
+body.stage-util-pre .open-text,
+body.stage-util-pre .help-text{ opacity:1; }
+
+/* smoother wrapper motion */
+.account-wrapper,
+.help-wrapper{ will-change:left,clip-path; }

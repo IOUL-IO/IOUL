@@ -121,7 +121,6 @@ export default function Page() {
             } else {
                 requestAnimationFrame(waitForUtil);
             }
-        })();
     });
 
 

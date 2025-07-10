@@ -142,23 +142,24 @@ export default function Page() {
     );
 
     /* =====================================================
-       UTIL-STRIP CLICK → STAGE UTIL
+       /* =====================================================
+          UTIL-STRIP CLICK → STAGE UTIL
+       ====================================================== */
        const handleUtilClick = (ev: Event) => {
          const hit = (ev.target as HTMLElement).closest(".util-line, .util-hitbox");
          if (!hit || step) return;
-    ====================================================== */
-      if (!hit || step) return;
 
-      fadeInEls(loginEls);
-      fadeInEls([openText as any, helpText as any]);
+         fadeInEls(loginEls);
+         fadeInEls([openText as any, helpText as any]);
 
-requestAnimationFrame(() =>
-  requestAnimationFrame(() => setStage("stage-util"))
-);
-      step = 1;
+         requestAnimationFrame(() =>
+           requestAnimationFrame(() => setStage("stage-util"))
+         );
+         step = 1;
        };
-       document.addEventListener('click', handleUtilClick);
-       document.querySelector('.util-hitbox')?.addEventListener('click', handleUtilClick);
+
+       document.addEventListener("click", handleUtilClick);
+       document.querySelector(".util-hitbox")?.addEventListener("click", handleUtilClick);
 
     /* =====================================================
        OPEN / HELP BUTTONS

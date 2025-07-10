@@ -550,16 +550,3 @@ body.stage-help .open-text,
 body.stage-help .help-text{
   transition: transform 0.7s ease, opacity .3s ease !important;
 }
-
-
-/* === (2025-07-10) util-line clickability & layer pass-through === */
-.line.util-line{
-  pointer-events:auto !important;
-  cursor:pointer;
-}
-
-/* Masks should not block pointer events */
-.layer-one,
-.layer-two{
-  pointer-events:none !important;
-}

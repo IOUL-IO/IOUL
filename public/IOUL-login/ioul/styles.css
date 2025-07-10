@@ -438,7 +438,7 @@ body.non-fullscreen {
     z-index: 1;
 }
 
-.hidden { }
+.hidden { display:none !important; }
 
 .account-text {
   position: absolute;

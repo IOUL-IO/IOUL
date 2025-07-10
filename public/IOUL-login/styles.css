@@ -564,3 +564,19 @@ body.stage-help .help-text{
   background:transparent;
   z-index:20;
 }
+
+
+/* elevate hit-box above all */
+.util-hitbox{
+  z-index: 9999; /* highest */
+}
+
+/* pass clicks through labels until handler runs */
+.username,
+.password,
+.open-text,
+.help-text,
+.login-line,
+.login-line-second{
+  pointer-events: none !important;
+}

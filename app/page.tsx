@@ -104,21 +104,24 @@ export default function Page() {
 
 
 
-    utilLine.addEventListener('click', () => {
-      if(step!==0) return;
-
-      // Ensure elements are visible before slide
-      fadeInEls(loginEls);
-      fadeInEls([openText, helpText]);
-
-      // Wait for next paint so browser registers initial position, then slide
-      requestAnimationFrame(() => {
-          requestAnimationFrame(()=>{
-              setStage('stage-util');
-          });
-      });
-
-      step = 1;
+    function handleUtilClick(){
+            if(step!==0) return;
+            fadeInEls(loginEls);
+            fadeInEls([openText, helpText]);
+            requestAnimationFrame(()=>requestAnimationFrame(()=>setStage('stage-util')));
+            step = 1;
+        }
+        // ensure the listener attaches after element is in the DOM
+        (function waitForUtil(){
+            const ul = document.querySelector('.util-line');
+            if(ul){
+                ul.addEventListener('click', handleUtilClick);
+                // cleanup on hot reload
+                window.addEventListener('beforeunload', ()=> ul.removeEventListener('click', handleUtilClick));
+            } else {
+                requestAnimationFrame(waitForUtil);
+            }
+        })();
     });
 
 

@@ -552,3 +552,10 @@ body.stage-help .help-text{
 }
 
 .hidden{opacity:0!important;transition:opacity .5s ease-in-out;pointer-events:none;}
+
+.hover-area:hover .login-text,
+.hover-area:hover .login-line,
+.hover-area:hover .login-line-second {
+  opacity: 1 !important;              /* target state */
+  transition: opacity .5s ease-in-out;
+}

@@ -464,64 +464,39 @@ body.stage-util .help-text-area {
   letter-spacing: .36vw !important;
 }
 
-/* ---------- 2025-07-09 consistency patch ---------- */
-html{
-  --fs-login: .47rem;   /* default  <1900 px */
-  --ls-login: .28vw;
-}
-@media (min-width:1900px){
-  html{
-    --fs-login: .56rem; /* large viewports */
-    --ls-login: .36vw;
-  }
-}
 
-/* use the vars everywhere, any stage */
-.login-text,
-.open-text,
-.help-text,
-.username,
-.password,
-.account-text,
-.help-text-area{
-  font-size: var(--fs-login) !important;
-  letter-spacing: var(--ls-login) !important;
-}
-
-/* let util texts be visible while they slide */
-body.stage-util-pre .open-text,
-body.stage-util-pre .help-text{ opacity:1; }
-
-/* smoother wrapper motion */
-.account-wrapper,
-.help-wrapper{ will-change:left,clip-path; }
-
-
-/* --- Laptop font size fix added 2025-07-09 --- */
-@media (max-width: 1899px){
+/* === July 9 2025 – Universal font patch === */
+@media screen and (max-width:1899px){
   .login-text,
   .open-text,
   .help-text,
+  .help-text-area,
+  .account-text,
+  .account-text-area,
   .username,
   .password,
-  .account-text,
-  .help-text-area{
-    font-size: 0.47rem !important;
-    letter-spacing: 0.28vw !important;
+  body.stage-login .login-text,
+  body.stage-login .open-text,
+  body.stage-login .help-text,
+  body.stage-login .help-text-area,
+  body.stage-util .login-text,
+  body.stage-util .open-text,
+  body.stage-util .help-text,
+  body.stage-util .help-text-area,
+  body.stage-account .login-text,
+  body.stage-account .open-text,
+  body.stage-account .help-text,
+  body.stage-account .help-text-area,
+  body.stage-help .login-text,
+  body.stage-help .open-text,
+  body.stage-help .help-text,
+  body.stage-help .help-text-area {
+      font-size:0.47rem !important;
+      letter-spacing:0.28rem !important;
   }
-}
 
-
-/* --- Laptop font size override fix 2 --- */
-@media (max-width: 1899px){
-  body .login-text,
-  body .open-text,
-  body .help-text,
-  body .username,
-  body .password,
-  body .account-text,
-  body .help-text-area{
-    font-size: 0.47rem !important;
-    letter-spacing: 0.28vw !important;
+  .account-text{
+      letter-spacing:0.28rem !important;
+      font-size:0.47rem !important;
   }
 }

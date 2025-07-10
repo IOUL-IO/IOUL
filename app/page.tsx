@@ -59,7 +59,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const body        = document.body;
 
   /* ===== Helper functions ===== */
-  const fadeInEls  = (els) => els.forEach(el => { el.classList.remove('hidden'); el.classList.add('visible'); });
+  
+const fadeInEls = (els) => {
+  els.forEach(el => {
+    if(el.classList.contains('visible')) return; // already visible
+    el.classList.remove('hidden');               // ensure starting opacity 0
+    // wait two animation frames so the browser paints the 0‑opacity state first
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        el.classList.add('visible');             // triggers .5s opacity fade to 1
+      });
+    });
+  });
+};
+ el.classList.add('visible'); });
   const fadeOutEls = (els) => Promise.all(Array.from(els).map(el => new Promise(res => {
       if (!el.classList.contains('visible')) { res(); return; }
       const end = (e)=>{ if(e.propertyName==='opacity'){ el.removeEventListener('transitionend', end); res(); } };

@@ -142,10 +142,11 @@ export default function Page() {
     );
 
     /* =====================================================
-       UTIL‑LINE CLICK → STAGE UTIL
+       UTIL-STRIP CLICK → STAGE UTIL
+       const handleUtilClick = (ev: Event) => {
+         const hit = (ev.target as HTMLElement).closest(".util-line, .util-hitbox");
+         if (!hit || step) return;
     ====================================================== */
-    document.addEventListener("click", ev => {
-      const hit = (ev.target as HTMLElement).closest(".util-line, .util-hitbox");
       if (!hit || step) return;
 
       fadeInEls(loginEls);
@@ -155,7 +156,9 @@ export default function Page() {
         requestAnimationFrame(() => setStage("stage-util"))
       );
       step = 1;
-    });
+       };
+       document.addEventListener('click', handleUtilClick);
+       document.querySelector('.util-hitbox')?.addEventListener('click', handleUtilClick);
 
     /* =====================================================
        OPEN / HELP BUTTONS
@@ -283,7 +286,6 @@ export default function Page() {
       <div className="line fifth"></div>
       <div className="line sixth"></div>
       <div className="line util-line"></div>
-      <div className="util-hitbox"></div>
 
       <span className="login-text username hidden">USERnAME</span>
       <span className="login-text password hidden">PASSWORD</span>

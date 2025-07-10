@@ -62,17 +62,15 @@ document.addEventListener('DOMContentLoaded', () => {
   
 const fadeInEls = (els) => {
   els.forEach(el => {
-    if(el.classList.contains('visible')) return; // already visible
-    el.classList.remove('hidden');               // ensure starting opacity 0
-    // wait two animation frames so the browser paints the 0‑opacity state first
-    requestAnimationFrame(()=>{
-      requestAnimationFrame(()=>{
-        el.classList.add('visible');             // triggers .5s opacity fade to 1
-      });
+    if (el.classList.contains('visible')) return; // already visible
+    el.classList.remove('hidden');                // start at opacity 0
+    // Wait a paint so the 0‑opacity frame is rendered, then start fade
+    requestAnimationFrame(() => {
+      el.classList.add('visible');                // opacity animates to 1 (.5s)
     });
   });
 };
- el.classList.add('visible'); });
+
   const fadeOutEls = (els) => Promise.all(Array.from(els).map(el => new Promise(res => {
       if (!el.classList.contains('visible')) { res(); return; }
       const end = (e)=>{ if(e.propertyName==='opacity'){ el.removeEventListener('transitionend', end); res(); } };

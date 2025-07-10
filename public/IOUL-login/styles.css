@@ -53,8 +53,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .fifth   {top:28.5vh;left:36vw; width:57.8vw;}
 .sixth   {top:84vh; left:36vw; width:57.8vw;}
 
-.line.util-line{top:28.5vh;left:26.06vw;width:2.8vw;z-index:1;
-  pointer-events:auto !important;}
+.line.util-line{top:28.5vh;left:26.06vw;width:2.8vw;z-index:1;}
 
 .login-text{
   position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
@@ -94,13 +93,9 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 /* ===== Layers ===== */
 .layer-one{
   position:fixed;top:0;left:0;width:6.37vw;height:100vh;background:#fff;z-index:100;
-
-  pointer-events:none !important;
 }
 .layer-two{
   position:fixed;top:0;left:28.87vw;width:calc(36vw - 28.87vw);height:100vh;background:#fff;z-index:100;
-
-  pointer-events:none !important;
 }
 
 /* ===== Account & Help Wrappers ===== */

@@ -137,18 +137,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-  
-utilLine.addEventListener('click', () => {
-    if(step!==0) return;
-    /* Simultaneous slide: login group + OPEn / HELP */
-    fadeInEls(loginEls);                   // ensure login group visible
-    fadeInEls([openText, helpText]);       // reveal util texts immediately
-    setStage('stage-util');                // trigger slide animation for all
-    step = 1;
-    /* after animation completes, clear any lingering hidden classes */
-    setTimeout(()=>{ openText.classList.add('visible'); helpText.classList.add('visible'); }, 10);
-});
-
+  utilLine.addEventListener('click', () => {
+      if(step!==0) return;
+      /* Phase 1: slide login items left */
+      setStage('stage-util-pre');
+      fadeInEls(loginEls);
+      step = 1;
+      /* Phase 2 after slide completes */
+      setTimeout(() => {
+          fadeInEls([openText, helpText]);
+          body.classList.remove('stage-util-pre'); // remove pre-stage so util rules win
+          setStage('stage-util');
+      }, 700);
+  });
 
 
 
@@ -174,17 +175,16 @@ utilLine.addEventListener('click', () => {
       if(!backZone) return;
 
 
-      
-if(step===1){
-    /* util → login reverse slide */
-    setStage('stage-login');                 // slide everything back concurrently
-    /* keep OPEn / HELP visible during slide */
-    setTimeout(() => {
-        fadeOutEls([openText, helpText]);    // fade out after slide finishes
-        step = 0;
-    }, 700);
-}
-, 700);
+      if(step===1){
+/* reverse util -> login */
+setStage('stage-util-pre');                // start OPEn / HELP slide‑out (no fade yet)
+setTimeout(() => {                         // after 0.7 s slide completes…
+  fadeOutEls([openText, helpText]);        // …fade OPEn / HELP away
+  body.classList.remove('stage-util-pre'); // drop pre‑stage so login rules win
+  setStage('stage-login');                 // slide login texts & lines back in
+  fadeInEls(loginEls);                     // ensure they’re visible
+  step = 0;
+}, 700);
 
       }else if(step===2){         /* account -> util */
           accountWrap.classList.remove('active');

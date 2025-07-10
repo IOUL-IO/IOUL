@@ -14,6 +14,9 @@
   --password-line-top:47vh;
   --line-gap:2.8vh;
   --slide-dist:22.59vw;            /* primary horizontal shift */
+
+  --ioul-font-size: var(--ioul-font-size);
+  --ioul-letter-spacing: var(--ioul-letter-spacing);
 }
 
 body.non-fullscreen{background:#fff;min-height:100vh;min-width:100vw;overflow:hidden;}
@@ -57,7 +60,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 
 .login-text{
   position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
-  letter-spacing:.28vw;font-size:.47rem;left:6.41vw;
+  letter-spacing: var(--ioul-letter-spacing);font-size: var(--ioul-font-size);left:6.41vw;
   text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
 }
 
@@ -78,7 +81,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
   transition: transform 0.7s ease, opacity 0.3s ease;
   position:absolute;top:35.17vh;                 /* overwritten for help later */
   font-family:'Distill Expanded',sans-serif;
-  color:#111;letter-spacing:.28vw;font-size:.47rem;
+  color:#111;letter-spacing: var(--ioul-letter-spacing);font-size: var(--ioul-font-size);
   text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
   left:29vw;                                     /* parked behind layer-two */
   opacity:0;/* start hidden */                                     /* start fully transparent */
@@ -115,7 +118,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 /* ===== Account specific ===== */
 .account-text{
   position:absolute;left:0;font-family:'Distill Expanded',sans-serif;color:#111;
-  letter-spacing:.34vw;font-size:.46rem;line-height:1.2;padding:.1rem 0;
+  letter-spacing: var(--ioul-letter-spacing);font-size: var(--ioul-font-size);line-height:1.2;padding:.1rem 0;
   text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
 }
 .account-text.account-email          {top:35.2vh;}
@@ -132,7 +135,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 /* ===== Help specific ===== */
 .help-text-area{
   position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
-  letter-spacing:.34vw;font-size:.47rem;white-space:nowrap;
+  letter-spacing: var(--ioul-letter-spacing);font-size: var(--ioul-font-size);white-space:nowrap;
   text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
 }
 .help-text-area.email   {left:0;top:35.17vh;}
@@ -223,8 +226,8 @@ body.stage-help .help-text{
   .password,
   .account-text,
   .help-text-area{
-    font-size: 0.6rem !important;
-    letter-spacing: 0.36vw !important;
+    font-size: var(--ioul-font-size);
+    letter-spacing: var(--ioul-letter-spacing);
   }
 }
 
@@ -415,8 +418,8 @@ body.stage-login .login-text {
   overflow: visible;
   font-family: 'Distill Expanded', sans-serif;
   color: #111;
-  letter-spacing: .34vw;
-  font-size: .46rem;
+  
+  
   line-height: 1.2;
   padding: .1rem 0;
   text-shadow: .001rem .001rem 0 #717171, -.001rem -.001rem 0 #717171;
@@ -430,8 +433,8 @@ body.stage-login .login-line-second {
 
 /* ==== Force login text size and line color in all stages ==== */
 .login-text {
-  letter-spacing: .34vw !important;
-  font-size: .46rem !important;
+  letter-spacing: var(--ioul-letter-spacing);
+  font-size: var(--ioul-font-size);
   line-height: 1.2 !important;
   padding: .1rem 0 !important;
 }
@@ -445,8 +448,8 @@ body.stage-login .login-line-second {
   body.stage-login .open-text,
   body.stage-login .help-text,
   body.stage-login .help-text-area {
-    font-size: .56rem !important;
-    letter-spacing: .36vw !important;
+    
+    
   }
 }
 
@@ -460,36 +463,13 @@ body.stage-util .login-text,
 body.stage-util .open-text,
 body.stage-util .help-text,
 body.stage-util .help-text-area {
-  font-size: .56rem !important;
-  letter-spacing: .36vw !important;
+  
+  
 }
 
-/* === IOUL Patch 2025-07-09: Fix global text sizing + line consistency === */
-@media screen and (max-width: 1899px){
-  .login-text,
-  .open-text,
-  .help-text,
-  .account-text,
-  .help-text-area{
-    font-size:0.47rem !important;
-    letter-spacing:.28vw !important;
+@media (min-width: 1900px){
+  :root{
+    --ioul-font-size: var(--ioul-font-size);
+    --ioul-letter-spacing: var(--ioul-letter-spacing);
   }
-}
-@media screen and (min-width: 1900px){
-  .login-text,
-  .open-text,
-  .help-text,
-  .account-text,
-  .help-text-area{
-    font-size:0.56rem !important;
-    letter-spacing:.36vw !important;
-  }
-}
-/* ensure login lines never thicken or recolor */
-.login-line,
-.login-line-second{
-  height:1px !important;
-  background:rgba(230,230,230,.28) !important;
-  transform-origin:left center !important;
-  will-change:transform;
 }

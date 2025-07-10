@@ -59,13 +59,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const body        = document.body;
 
   /* ===== Helper functions ===== */
-  const fadeInEls  = (els) => els.forEach(el => {
-  el.classList.remove('hidden');
-  // ensure browser applies initial opacity 0 before we set visible
-  requestAnimationFrame(() => {
-    el.classList.add('visible');
+  
+const fadeInEls = (els) => {
+  els.forEach(el => {
+    el.classList.remove('hidden');  // start at opacity 0
+    requestAnimationFrame(() => {   // ensure 1 frame delay
+      el.classList.add('visible');  // fade to 1
+    });
   });
-}););
+};
+ el.classList.add('visible'); });
   const fadeOutEls = (els) => Promise.all(Array.from(els).map(el => new Promise(res => {
       if (!el.classList.contains('visible')) { res(); return; }
       const end = (e)=>{ if(e.propertyName==='opacity'){ el.removeEventListener('transitionend', end); res(); } };

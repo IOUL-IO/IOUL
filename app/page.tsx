@@ -104,23 +104,21 @@ export default function Page() {
 
 
 
-    function handleUtilClick(){
-            if(step!==0) return;
-            fadeInEls(loginEls);
-            fadeInEls([openText, helpText]);
-            requestAnimationFrame(()=>requestAnimationFrame(()=>setStage('stage-util')));
-            step = 1;
-        }
-        // ensure the listener attaches after element is in the DOM
-        (function waitForUtil(){
-            const ul = document.querySelector('.util-line');
-            if(ul){
-                ul.addEventListener('click', handleUtilClick);
-                // cleanup on hot reload
-                window.addEventListener('beforeunload', ()=> ul.removeEventListener('click', handleUtilClick));
-            } else {
-                requestAnimationFrame(waitForUtil);
-            }
+    utilLine.addEventListener('click', () => {
+      if(step!==0) return;
+
+      // Ensure elements are visible before slide
+      fadeInEls(loginEls);
+      fadeInEls([openText, helpText]);
+
+      // Wait for next paint so browser registers initial position, then slide
+      requestAnimationFrame(() => {
+          requestAnimationFrame(()=>{
+              setStage('stage-util');
+          });
+      });
+
+      step = 1;
     });
 
 
@@ -223,7 +221,6 @@ export default function Page() {
 
   return (
     <>
-      {/* Static lines */}
       <div className="line original"></div>
       <div className="line second"></div>
       <div className="line third"></div>
@@ -231,20 +228,12 @@ export default function Page() {
       <div className="line fifth"></div>
       <div className="line sixth"></div>
       <div className="line util-line"></div>
-
-      {/* Login */}
       <span className="login-text username hidden">USERnAME</span>
       <span className="login-text password hidden">PASSWORD</span>
-
-      {/* Util texts */}
       <span className="login-text open-text hidden">OPEn AccOUnT</span>
       <span className="login-text help-text hidden">HELP REQUEST</span>
-
-      {/* Login entry lines */}
       <div className="line login-line hidden"></div>
       <div className="line login-line-second hidden"></div>
-
-      {/* Account creation wrapper */}
       <div className="account-wrapper">
       <span className="account-text account-email">E-MA1L ADDRESS</span>
       <span className="account-text account-username">YOUR USERnAME</span>
@@ -255,15 +244,11 @@ export default function Page() {
       <div className="account-line account-line3"></div>
       <div className="account-line account-line4"></div>
       </div>
-
-      {/* Help wrapper */}
       <div className="help-wrapper">
       <span className="help-text-area email">YOUR EMA1L</span>
       <span className="help-text-area sendlink">SEnD L1nK</span>
       <div className="help-line"></div>
       </div>
-
-      {/* Masking layers */}
       <div className="layer-one"></div>
       <div className="layer-two"></div>
     </>

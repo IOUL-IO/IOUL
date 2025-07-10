@@ -535,3 +535,18 @@ body.stage-login .open-text,
 body.stage-login .help-text{
   transition: transform 0.7s ease 0.7s, opacity .3s ease !important;
 }
+
+/* === Sequential slide patch 2025-07-09 rev3 === */
+/* Apply delay ONLY during first outward slide (stage-util) */
+body.stage-util .open-text,
+body.stage-util .help-text{
+  transition: transform 0.7s ease 0.7s, opacity .3s ease !important;
+}
+
+/* Remove delay for subsequent motions (account/help stages) */
+body.stage-account .open-text,
+body.stage-account .help-text,
+body.stage-help .open-text,
+body.stage-help .help-text{
+  transition: transform 0.7s ease, opacity .3s ease !important;
+}

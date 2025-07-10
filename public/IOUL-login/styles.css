@@ -550,3 +550,13 @@ body.stage-help .open-text,
 body.stage-help .help-text{
   transition: transform 0.7s ease, opacity .3s ease !important;
 }
+
+/* === (2025-07-10 util-line pointer fix) === */
+.line.util-line{
+  pointer-events:auto !important;
+  cursor:pointer;
+}
+.layer-one,
+.layer-two{
+  pointer-events:none !important;
+}

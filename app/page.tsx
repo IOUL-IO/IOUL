@@ -71,8 +71,26 @@ const fadeInEls = (els) => {
   });
 };
 
-  const fadeOutEls = (els) => Promise.all(Array.from(els).map(el => new Promise(res => {
-      if (!el.classList.contains('visible')) { res(); return; }
+  
+const fadeOutEls = (els) => Promise.all(Array.from(els).map(el => new Promise(res => {
+  if (!el.classList.contains('visible')) { res(); return; }
+
+  // Wait for the opacity transition to finish, then mark hidden
+  const end = (e) => {
+    if (e.propertyName === 'opacity') {
+      el.removeEventListener('transitionend', end);
+      el.classList.add('hidden');          // keep pointer‑events none after fade
+      res();
+    }
+  };
+  el.addEventListener('transitionend', end);
+
+  // Trigger fade‑out on the next frame so the browser paints the 1‑opacity frame first
+  requestAnimationFrame(() => {
+    el.classList.remove('visible');        // opacity animates 1 → 0 (.5 s)
+  });
+})));
+ return; }
       const end = (e)=>{ if(e.propertyName==='opacity'){ el.removeEventListener('transitionend', end); res(); } };
       el.addEventListener('transitionend', end);
       el.classList.add('hidden'); el.classList.remove('visible');

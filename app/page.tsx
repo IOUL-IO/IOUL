@@ -137,21 +137,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-  utilLine.addEventListener('click', () => {
-      if(step!==0) return;
-      /* Phase 1: slide login items left */
-      setStage('stage-util-pre');
-      fadeInEls(loginEls);
-      step = 1;
-      /* Phase 2 after slide completes */
-      setTimeout(() => {
-      fadeInEls([openText, helpText]);      // 1. show them
-      requestAnimationFrame(() => {         // 2. next frame → move them
-        body.classList.remove('stage-util-pre');
-        setStage('stage-util');
-      });
-    }, 350);
-  });
+  
+utilLine.addEventListener('click', () => {
+    if(step!==0) return;
+
+    // Ensure elements are visible before slide
+    fadeInEls(loginEls);
+    fadeInEls([openText, helpText]);
+
+    // Wait for next paint so browser registers initial position, then slide
+    requestAnimationFrame(() => {
+        requestAnimationFrame(()=>{
+            setStage('stage-util');
+        });
+    });
+
+    step = 1;
+});
+
 
 
 
@@ -181,7 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
 /* reverse util -> login */
 setStage('stage-util-pre');                // start OPEn / HELP slide‑out (no fade yet)
 setTimeout(() => {                         // after 0.7 s slide completes…
-  fadeOutEls([openText, helpText]);        // …fade OPEn / HELP away
   body.classList.remove('stage-util-pre'); // drop pre‑stage so login rules win
   setStage('stage-login');                 // slide login texts & lines back in
   fadeInEls(loginEls);                     // ensure they’re visible

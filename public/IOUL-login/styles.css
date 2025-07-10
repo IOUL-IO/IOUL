@@ -513,11 +513,12 @@ body.stage-util .help-text-area {
   }
 }
 
-/* === Slower OPEn/HELP slide speed patch 2025-07-09 === */
+/* === Sequential slide patch 2025-07-09 === */
 :root{
-  --open-help-speed:1.2s;
+  --open-help-delay:0.7s;      /* delay equals login slide duration */
 }
 .open-text,
 .help-text{
-  transition: transform var(--open-help-speed) ease !important;
+  /* keep same duration but add delay so they start AFTER login texts/lines finish */
+  transition: transform 0.7s ease var(--open-help-delay), opacity .3s ease !important;
 }

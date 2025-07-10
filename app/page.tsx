@@ -60,16 +60,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ===== Helper functions ===== */
   
-  const fadeInEls  = (els) => els.forEach(el => {
-      el.classList.remove('hidden');
-      void el.offsetWidth; // force reflow to enable transition
+const fadeInEls = (els) => {
+  els.forEach(el => {
+    if (el.classList.contains('visible')) return;
+    el.classList.remove('hidden');
+    requestAnimationFrame(() => {
       el.classList.add('visible');
+    });
   });
-  const fadeOutEls = (els) => Promise.all(Array.from(els).map(el => new Promise(res => {
-      if (!el.classList.contains('visible')) { res(); return; }
+};
+el.classList.add('visible'); });
+  
+const fadeOutEls = (els) => Promise.all(
+  Array.from(els).map(el => new Promise(res => {
+    if (!el.classList.contains('visible')) { res(); return; }
+    const end = (e) => { if (e.propertyName === 'opacity') { el.removeEventListener('transitionend', end); res(); } };
+    el.addEventListener('transitionend', end);
+    requestAnimationFrame(() => {
+      el.classList.add('hidden');
+      el.classList.remove('visible');
+    });
+  }))
+);
+ return; }
       const end = (e)=>{ if(e.propertyName==='opacity'){ el.removeEventListener('transitionend', end); res(); } };
       el.addEventListener('transitionend', end);
-      el.classList.remove('visible'); void el.offsetWidth; el.classList.add('hidden');
+      el.classList.add('hidden'); el.classList.remove('visible');
   })));
 
   /* ===== Stage management ===== */

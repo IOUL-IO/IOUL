@@ -59,29 +59,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const body        = document.body;
 
   /* ===== Helper functions ===== */
-  const fadeInEls  = (els) => els.forEach(el => { el.classList.remove('hidden'); el.classList.add('visible'); });
-  
+
+const fadeInEls = (els) => {
+  els.forEach(el => {
+    if (el.classList.contains('visible')) return;
+    el.classList.remove('hidden');         // opacity 0
+    requestAnimationFrame(()=>{            // next frame
+      el.classList.add('visible');         // triggers .5s fade to 1
+    });
+  });
+};
+
 const fadeOutEls = (els) => Promise.all(
-  Array.from(els).map(el => new Promise(res => {
-    if (!el.classList.contains('visible')) { res(); return; }
-
-    // Listen for transition end to resolve
-    const end = (e) => {
-      if (e.propertyName === 'opacity') {
-        el.removeEventListener('transitionend', end);
-        res();
-      }
-    };
-    el.addEventListener('transitionend', end, { once: true });
-
-    // Next frame: swap classes so opacity animates 1 -> 0
-    requestAnimationFrame(() => {
-      el.classList.add('hidden');   // opacity 0
+  Array.from(els).map(el => new Promise(res=>{
+    if(!el.classList.contains('visible')){ res(); return; }
+    const end=(e)=>{ if(e.propertyName==='opacity'){ el.removeEventListener('transitionend', end); res(); } };
+    el.addEventListener('transitionend', end, { once:true });
+    requestAnimationFrame(()=>{
+      el.classList.add('hidden');          // fade to 0 over .5s
       el.classList.remove('visible');
     });
   }))
 );
- return; }
+  el.classList.add('visible'); });
+  return; }
       const end = (e)=>{ if(e.propertyName==='opacity'){ el.removeEventListener('transitionend', end); res(); } };
       el.addEventListener('transitionend', end);
       el.classList.add('hidden'); el.classList.remove('visible');

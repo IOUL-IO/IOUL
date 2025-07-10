@@ -550,3 +550,5 @@ body.stage-help .open-text,
 body.stage-help .help-text{
   transition: transform 0.7s ease, opacity .3s ease !important;
 }
+
+.hidden{opacity:0!important;transition:opacity .5s ease-in-out;pointer-events:none;}

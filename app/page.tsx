@@ -51,17 +51,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   /* ===== Element groups ===== */
   const loginEls    = document.querySelectorAll('.username, .password, .login-line, .login-line-second');
-
-// Hover fade-in for login texts and lines
-const hoverArea = document.querySelector('.hover-area');
-if (hoverArea) {
-  hoverArea.addEventListener('mouseenter', () => {
-    if (!loginEls[0].classList.contains('visible')) {
-      fadeInEls(loginEls);
-    }
-  });
-}
-
   const utilLine    = document.querySelector('.util-line');
   const openText    = document.querySelector('.open-text');
   const helpText    = document.querySelector('.help-text');
@@ -70,14 +59,7 @@ if (hoverArea) {
   const body        = document.body;
 
   /* ===== Helper functions ===== */
-  const fadeInEls = (els) => {
-  els.forEach(el => {
-    el.classList.remove('hidden');          // set opacity to 0
-    requestAnimationFrame(() => {           // next paint
-      el.classList.add('visible');          // fade to 1 over 0.5s
-    });
-  });
-};);
+  const fadeInEls  = (els) => els.forEach(el => { el.classList.remove('hidden'); el.classList.add('visible'); });
   const fadeOutEls = (els) => Promise.all(Array.from(els).map(el => new Promise(res => {
       if (!el.classList.contains('visible')) { res(); return; }
       const end = (e)=>{ if(e.propertyName==='opacity'){ el.removeEventListener('transitionend', end); res(); } };

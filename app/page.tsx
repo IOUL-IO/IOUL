@@ -48,6 +48,34 @@
   <div class="layer-two"></div>
 
 <script>
+const fadeInEls = (els) => {
+  els.forEach(el => {
+    if (el.classList.contains('visible')) return;
+    el.classList.remove('hidden');        // start at opacity 0
+    requestAnimationFrame(() => {         // paint once
+      el.classList.add('visible');        // animate to 1
+    });
+  });
+};
+
+
+const fadeOutEls = (els) => {
+  els.forEach(el => {
+    if (!el.classList.contains('visible')) return; // already hidden
+    const onEnd = (e) => {
+      if (e.propertyName === 'opacity') {
+        el.removeEventListener('transitionend', onEnd);
+        el.classList.add('hidden');        // keep 0 opacity & pointer-events none
+      }
+    };
+    el.addEventListener('transitionend', onEnd, { once: true });
+    requestAnimationFrame(() => {          // paint current 1 opacity first
+      el.classList.remove('visible');      // triggers 1 → 0 fade
+    });
+  });
+};
+
+
 document.addEventListener('DOMContentLoaded', () => {
   /* ===== Element groups ===== */
   const loginEls    = document.querySelectorAll('.username, .password, .login-line, .login-line-second');
@@ -60,20 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ===== Helper functions ===== */
   
-const fadeInEls = (els) => {
-  els.forEach(el => {
-    if(el.classList.contains('visible')) return;
-    el.classList.remove('hidden');
-    requestAnimationFrame(()=>{ el.classList.add('visible'); });
-  });
-};
-  
-const fadeOutEls = (els) => Promise.all(Array.from(els).map(el => new Promise(res=>{
-  if(!el.classList.contains('visible')) {res(); return;}
-  const end=(e)=>{ if(e.propertyName==='opacity'){ el.removeEventListener('transitionend', end); el.classList.add('hidden'); res(); } };
-  el.addEventListener('transitionend', end);
-  requestAnimationFrame(()=>{ el.classList.remove('visible'); });
-})));
       el.addEventListener('transitionend', end);
       el.classList.add('hidden'); el.classList.remove('visible');
   })));

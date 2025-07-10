@@ -502,3 +502,16 @@ body.stage-util .help-text-area {
 .login-line-second{
   transform-origin:left center !important;
 }
+
+/* === July 9 2025 Text‑size hot‑fix < 1900 px === */
+@media screen and (max-width:1899px){
+  html{font-size:16px !important;}          /* lock base rem so 0.47 rem = ~7.5 px */
+  .login-text,
+  .open-text,
+  .help-text,
+  .help-text-area,
+  .account-text{
+    font-size:0.47rem !important;
+    letter-spacing:0.28vw !important;
+  }
+}

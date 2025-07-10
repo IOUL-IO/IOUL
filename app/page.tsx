@@ -59,49 +59,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const body        = document.body;
 
   /* ===== Helper functions ===== */
-
-  // Improved fade helpers ensure CSS animation runs
-  const fadeInEls = (els) => {
-    els.forEach(el => {
-      if (el.classList.contains('visible')) return;
-      el.classList.remove('hidden');      // opacity 0
-      requestAnimationFrame(() => {       // wait a frame
-        el.classList.add('visible');      // fade to 1
-      });
-    });
-  };
-
-  const fadeOutEls = (els) => Promise.all(Array.from(els).map(el => new Promise(res => {
-    if (!el.classList.contains('visible')) { res(); return; }
-
-    const end = (e) => {
-      if (e.propertyName === 'opacity') {
-        el.removeEventListener('transitionend', end);
-        res();
-      }
-    };
-    el.addEventListener('transitionend', end);
-
-    requestAnimationFrame(() => {
-      el.classList.add('hidden');         // opacity 0
-      el.classList.remove('visible');     // remove 1
-    });
-  })));
-
   
 const fadeInEls = (els) => {
   els.forEach(el => {
-    if (el.classList.contains('visible')) return; // already visible
-    el.classList.remove('hidden');                // start at opacity 0
-    // Wait a paint so the 0‑opacity frame is rendered, then start fade
-    requestAnimationFrame(() => {
-      el.classList.add('visible');                // opacity animates to 1 (.5s)
-    });
+    if(el.classList.contains('visible')) return;
+    el.classList.remove('hidden');
+    requestAnimationFrame(()=>{ el.classList.add('visible'); });
   });
 };
-
-  /* replaced by improved fadeOutEls below */ return; }
-      const end = (e)=>{ if(e.propertyName==='opacity'){ el.removeEventListener('transitionend', end); res(); } };
+  
+const fadeOutEls = (els) => Promise.all(Array.from(els).map(el => new Promise(res=>{
+  if(!el.classList.contains('visible')) {res(); return;}
+  const end=(e)=>{ if(e.propertyName==='opacity'){ el.removeEventListener('transitionend', end); el.classList.add('hidden'); res(); } };
+  el.addEventListener('transitionend', end);
+  requestAnimationFrame(()=>{ el.classList.remove('visible'); });
+})));
       el.addEventListener('transitionend', end);
       el.classList.add('hidden'); el.classList.remove('visible');
   })));

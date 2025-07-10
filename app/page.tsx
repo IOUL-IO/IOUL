@@ -152,9 +152,9 @@ export default function Page() {
       fadeInEls(loginEls);
       fadeInEls([openText as any, helpText as any]);
 
-      requestAnimationFrame(() =>
-        requestAnimationFrame(() => setStage("stage-util"))
-      );
+requestAnimationFrame(() =>
+  requestAnimationFrame(() => setStage("stage-util"))
+);
       step = 1;
        };
        document.addEventListener('click', handleUtilClick);

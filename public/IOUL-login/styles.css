@@ -512,3 +512,12 @@ body.stage-util .help-text-area {
     letter-spacing:0.36vw !important;
   }
 }
+
+/* === Slower OPEn/HELP slide speed patch 2025-07-09 === */
+:root{
+  --open-help-speed:1.2s;
+}
+.open-text,
+.help-text{
+  transition: transform var(--open-help-speed) ease !important;
+}

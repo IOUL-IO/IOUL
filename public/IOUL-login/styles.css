@@ -41,7 +41,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 }
 
 /* ===== Generic Visibility Helpers ===== */
-.visible{opacity:1!important;transition:opacity .5s ease-in-out;}
+.visible{opacity:1 !important;transition:transform 0.7s ease-in-out, opacity .5s ease-in-out;}
 .hidden {opacity:0 !important;transition:transform 0.7s ease-in-out, opacity .5s ease-in-out;pointer-events:none;}
 
 /* ===== Static Geometry ===== */
@@ -550,5 +550,3 @@ body.stage-help .open-text,
 body.stage-help .help-text{
   transition: transform 0.7s ease, opacity .3s ease !important;
 }
-
-.hidden{opacity:0!important;transition:opacity .5s ease-in-out;pointer-events:none;}

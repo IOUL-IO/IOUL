@@ -48,34 +48,6 @@
   <div class="layer-two"></div>
 
 <script>
-/* ─── Fade helpers (clean) ─── */
-const fadeInEls = (els) => {
-  els.forEach(el => {
-    if (el.classList.contains('visible')) return;
-    el.classList.remove('hidden');          // opacity 0
-    requestAnimationFrame(() => {           // next frame
-      el.classList.add('visible');          // fades 0 → 1 (0.5 s)
-    });
-  });
-};
-
-const fadeOutEls = (els) => {
-  els.forEach(el => {
-    if (!el.classList.contains('visible')) return;
-    const end = (e) => {
-      if (e.propertyName === 'opacity') {
-        el.removeEventListener('transitionend', end);
-        el.classList.add('hidden');         // keep pointer-events:none
-      }
-    };
-    el.addEventListener('transitionend', end, { once: true });
-    requestAnimationFrame(() => {
-      el.classList.remove('visible');       // fades 1 → 0 (0.5 s)
-    });
-  });
-};
-/* ─── End helpers ─── */
-
 document.addEventListener('DOMContentLoaded', () => {
   /* ===== Element groups ===== */
   const loginEls    = document.querySelectorAll('.username, .password, .login-line, .login-line-second');
@@ -87,7 +59,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const body        = document.body;
 
   /* ===== Helper functions ===== */
+  const fadeInEls  = (els) => els.forEach(el => { el.classList.remove('hidden'); el.classList.add('visible'); });
   
+const fadeOutEls = (els) => Promise.all(
+  Array.from(els).map(el => new Promise(res => {
+    if (!el.classList.contains('visible')) { res(); return; }
+
+    // Listen for transition end to resolve
+    const end = (e) => {
+      if (e.propertyName === 'opacity') {
+        el.removeEventListener('transitionend', end);
+        res();
+      }
+    };
+    el.addEventListener('transitionend', end, { once: true });
+
+    // Next frame: swap classes so opacity animates 1 -> 0
+    requestAnimationFrame(() => {
+      el.classList.add('hidden');   // opacity 0
+      el.classList.remove('visible');
+    });
+  }))
+);
+ return; }
+      const end = (e)=>{ if(e.propertyName==='opacity'){ el.removeEventListener('transitionend', end); res(); } };
       el.addEventListener('transitionend', end);
       el.classList.add('hidden'); el.classList.remove('visible');
   })));
@@ -276,6 +271,7 @@ setTimeout(() => {                         // after 0.7 s slide completes…
       toggleFullScreen();
     }
   });
-});</script>
+});
+</script>
 ` } } />;
     }

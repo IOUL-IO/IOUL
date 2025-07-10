@@ -1,280 +1,125 @@
+
 // @ts-nocheck
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 export default function Page() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const openTextRef = useRef<HTMLSpanElement>(null);
+  const helpTextRef = useRef<HTMLSpanElement>(null);
+  const accountWrapperRef = useRef<HTMLDivElement>(null);
+  const helpWrapperRef   = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    /* ===== Element groups ===== */
-    const loginEls    = document.querySelectorAll('.username, .password, .login-line, .login-line-second');
-    const utilLine    = document.querySelector('.util-line');
-    const openText    = document.querySelector('.open-text');
-    const helpText    = document.querySelector('.help-text');
-    const accountWrap = document.querySelector('.account-wrapper');
-    const helpWrap    = document.querySelector('.help-wrapper');
-    const layers      = document.querySelectorAll('.layer-one, .layer-two');
-    const body        = document.body;
-
-    /* Clickability fixes */
-    utilLine && ((utilLine as HTMLElement).style.pointerEvents = "auto");
-    layers.forEach(l => ((l as HTMLElement).style.pointerEvents = "none"));
-
-    /* ===== Helper functions ===== */
-    const fadeInEls = (els: NodeListOf<Element> | ArrayLike<Element>) => Array.from(els).forEach((el: any) => {
-      el.classList.remove('hidden');
-      void (el as HTMLElement).offsetWidth;
-      el.classList.add('visible');
-    });
-
-    const fadeOutEls = (els: NodeListOf<Element> | ArrayLike<Element>) => Promise.all(
-      Array.from(els).map((el: any) => new Promise<void>(res => {
-        if (!el.classList.contains('visible')) { res(); return; }
-        const end = (e: any) => {
-          if (e.propertyName === 'opacity') {
-            el.removeEventListener('transitionend', end);
-            res();
-          }
-        };
-        el.addEventListener('transitionend', end);
-        el.classList.remove('visible');
-        void (el as HTMLElement).offsetWidth;
-        el.classList.add('hidden');
-      }))
+    const body = document.body;
+    const loginEls = containerRef.current!.querySelectorAll(
+      ".username, .password, .login-line, .login-line-second"
     );
 
-    /* ===== Stage management ===== */
-    function setStage(name: string){
-      body.classList.remove('stage-login','stage-util','stage-account','stage-help','stage-util-pre');
-      body.classList.add(name);
-    }
-
-    /* ===== Initial hover logic ===== */
-    let phase = 0; // 0: waiting for first pointer -> lines fade. 1: waiting for login zone hover
-    function inLoginZone(x: number, y: number){
-        const vw = innerWidth, vh = innerHeight;
-        return x >= vw*0.0641 && x <= vw*0.2886 && y >= vh*0.285 && y <= vh*0.84;
-    }
-    function initialPointer(e: any){
-        const p = (e.touches ? e.touches[0] : e);
-        const {clientX:x, clientY:y} = p;
-
-        if(phase===0){
-            body.classList.add('fade-in-trigger'); // lines & util fade in
-            phase=1;
-            return;
-        }
-        if(phase===1 && inLoginZone(x,y)){
-            fadeInEls(loginEls);                            // login group fade in
-            phase=2;
-            window.removeEventListener('pointermove',initialPointer);
-            window.removeEventListener('touchstart',initialPointer);
-        }
-    }
-    window.addEventListener('pointermove', initialPointer, {passive:true});
-    window.addEventListener('touchstart', initialPointer, {passive:true});
-
-    /* ===== Sequential logic ===== */
-    let step = 0; // 0: login, 1: util, 2: account, 3: help
-
-    /* ===== Inactivity auto‑fade for login group ===== */
-    const loginFadeTimeout = 20000; // 20 seconds
-    let inactivityTimer: any;
-    let loginElsHidden = false;
-
-    function resetInactivityTimer(){
-      clearTimeout(inactivityTimer);
-      if(step !== 0) return; // only care in login state
-      inactivityTimer = setTimeout(()=>{
-        if(step === 0){
-          fadeOutEls(loginEls).then(()=>{ loginElsHidden = true; });
-        }
-      }, loginFadeTimeout);
-    }
-
-    /* monitor generic user activity to reset timer */
-    ['mousemove','mousedown','keydown','touchstart'].forEach(evt=>{
-      window.addEventListener(evt, resetInactivityTimer, {passive:true});
-    });
-
-    /* hover to bring login back when hidden */
-    window.addEventListener('pointermove', (ev: PointerEvent)=>{
-      if(step !== 0 || !loginElsHidden) return;
-      const {clientX:x, clientY:y} = ev;
-      if(inLoginZone(x,y)){
-        fadeInEls(loginEls);
-        loginElsHidden = false;
-        resetInactivityTimer();
-      }
-    }, {passive:true});
-
-    // start the timer initially
-    resetInactivityTimer();
-
-    /* ===== Util strip click ===== */
-    utilLine?.addEventListener('click', () => {
-        if(step!==0) return;
-
-        // Ensure elements are visible before slide
-        fadeInEls(loginEls);
-        fadeInEls([openText as Element, helpText as Element]);
-
-        // Wait for next paint so browser registers initial position, then slide
-        requestAnimationFrame(() => {
-            requestAnimationFrame(()=>{
-                setStage('stage-util');
-            });
-        });
-
-        step = 1;
-    });
-
-    openText?.addEventListener('click', () => {
-        if(step!==1) return;
-        accountWrap?.classList.add('active');
-        setStage('stage-account');
-        step=2;
-    });
-
-    helpText?.addEventListener('click', () => {
-        if(step!==1) return;
-        helpWrap?.classList.add('active');
-        setStage('stage-help');
-        step=3;
-    });
-
-    /* ===== Back‑tap area ===== */
-    document.addEventListener('click', (e: MouseEvent)=>{
-        const {clientX:x, clientY:y} = e;
-        const vw = innerWidth, vh = innerHeight;
-        const backZone = x <= vw*0.0637 && y >= vh*0.285 && y <= vh*0.84;
-        if(!backZone) return;
-
-        if(step===1){
-            /* reverse util -> login */
-            setStage('stage-util-pre');                // start OPEn / HELP slide‑out (no fade yet)
-            setTimeout(() => {                         // after 0.7 s slide completes…
-              body.classList.remove('stage-util-pre'); // drop pre‑stage so login rules win
-              setStage('stage-login');                 // slide login texts & lines back in
-              fadeInEls(loginEls);                     // ensure they’re visible
-              step = 0;
-            }, 700);
-
-        }else if(step===2){         /* account -> util */
-            accountWrap?.classList.remove('active');
-            setStage('stage-util');
-            step=1;
-        }else if(step===3){         /* help -> util */
-            helpWrap?.classList.remove('active');
-            setStage('stage-util');
-            step=1;
-        }
-    });
-
-    /* ===== Editable text logic ===== */
-    const editableSel = '.username, .password, .account-text, .help-text-area';
-    function findEditable(ev: any){
-      let el = (ev.target as HTMLElement).closest(editableSel);
-      if(!el){
-        const alt = document.elementFromPoint(ev.clientX, ev.clientY);
-        if(alt) el = (alt as HTMLElement).closest(editableSel);
-      }
-      return el;
-    }
-
-    document.addEventListener('pointerdown', (ev:any)=>{
-      const el = findEditable(ev);
-      if(!el) return;
-
-      // skip send link triggers
-      if(/send\s*l1nk/i.test(el.textContent || '') || /send\s*link/i.test(el.textContent || '') ||
-         (el as HTMLElement).classList.contains('sendlink') || (el as HTMLElement).id === 'sendlink') return;
-
-      if((el as HTMLElement).isContentEditable) return;
-      ev.preventDefault();
-      (el as HTMLElement).dataset.placeholder = (el as HTMLElement).textContent || '';
-      (el as HTMLElement).textContent = '';
-      (el as HTMLElement).setAttribute('contenteditable','true');
-      (el as HTMLElement).focus({preventScroll:true});
-    }, true);
-
-    document.addEventListener('focusout', (ev: any)=>{
-      const el = ev.target as HTMLElement;
-      if(!el || !el.matches || !el.matches(editableSel) || !el.isContentEditable) return;
-      if(el.textContent!.trim()===''){
-        el.textContent = (el.dataset as any).placeholder || '';
-        el.removeAttribute('contenteditable');
-      }
-    }, true);
-
-    /* ===== Edge‑click fullscreen toggle ===== */
-    function toggleFullScreen(){
-      if(!document.fullscreenElement){
-        document.documentElement.requestFullscreen().catch(()=>{});
-      }else{
-        document.exitFullscreen().catch(()=>{});
-      }
-    }
-    document.addEventListener('click', (ev: MouseEvent) => {
-      const x = ev.clientX, y = ev.clientY;
-      if (x <= 11 || x >= innerWidth - 11 || y <= 11 || y >= innerHeight - 11) {
-        toggleFullScreen();
-      }
-    });
-
-    /* ===== Cleanup ===== */
-    return () => {
-      window.removeEventListener('pointermove', initialPointer);
-      window.removeEventListener('touchstart', initialPointer);
-      ['mousemove','mousedown','keydown','touchstart'].forEach(evt=>{
-        window.removeEventListener(evt, resetInactivityTimer);
+    const fadeIn = (els: NodeListOf<Element> | Element[]) =>
+      Array.from(els).forEach(el => {
+        el.classList.remove("hidden");
+        void (el as HTMLElement).offsetWidth;
+        el.classList.add("visible");
       });
+
+    const setStage = (s: string) => {
+      body.classList.remove(
+        "stage-login",
+        "stage-util",
+        "stage-account",
+        "stage-help",
+        "stage-util-pre"
+      );
+      body.classList.add(s);
     };
+
+    /* Show lines & util on first pointer */
+    let phase = 0;
+    const inLogin = (x: number, y: number) => {
+      const vw = innerWidth, vh = innerHeight;
+      return x >= vw*0.0641 && x <= vw*0.2886 && y >= vh*0.285 && y <= vh*0.84;
+    };
+    const firstMove = (e: PointerEvent | TouchEvent) => {
+      const p = "touches" in e ? (e as TouchEvent).touches[0] : (e as PointerEvent);
+      const {clientX:x, clientY:y}=p;
+
+      if(phase===0){
+        body.classList.add("fade-in-trigger");
+        phase=1;
+        return;
+      }
+      if(phase===1 && inLogin(x,y)){
+        fadeIn(loginEls);
+        phase=2;
+        window.removeEventListener("pointermove",firstMove);
+        window.removeEventListener("touchstart",firstMove);
+      }
+    };
+    window.addEventListener("pointermove",firstMove,{passive:true});
+    window.addEventListener("touchstart",firstMove,{passive:true});
+
   }, []);
 
-  return (
-    <div>
-      {/* Static lines */}
-      <div className="line original" />
-      <div className="line second" />
-      <div className="line third" />
-      <div className="line fourth" />
-      <div className="line fifth" />
-      <div className="line sixth" />
-      <div className="line util-line" />
+  const handleUtilClick = () =>{
+    const body = document.body;
+    const loginEls = containerRef.current!.querySelectorAll(
+      ".username, .password, .login-line, .login-line-second"
+    );
+    fadeIn([...loginEls, openTextRef.current!, helpTextRef.current!]);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>setStage("stage-util")));
 
-      {/* Login */}
+    function fadeIn(els:Element[]|NodeListOf<Element>){
+      Array.from(els).forEach(el=>{
+        el.classList.remove("hidden");
+        void (el as HTMLElement).offsetWidth;
+        el.classList.add("visible");
+      });
+    }
+    function setStage(s:string){
+      body.classList.remove("stage-login","stage-util-pre","stage-account","stage-help","stage-util");
+      body.classList.add(s);
+    }
+  };
+
+  return (
+    <div ref={containerRef}>
+      <div className="line original"/>
+      <div className="line second"/>
+      <div className="line third"/>
+      <div className="line fourth"/>
+      <div className="line fifth"/>
+      <div className="line sixth"/>
+      <div className="line util-line" onClick={handleUtilClick}/>
+
       <span className="login-text username hidden">USERnAME</span>
       <span className="login-text password hidden">PASSWORD</span>
 
-      {/* Util texts */}
-      <span className="login-text open-text hidden">OPEn AccOUnT</span>
-      <span className="login-text help-text hidden">HELP REQUEST</span>
+      <span className="login-text open-text hidden" ref={openTextRef}>OPEn AccOUnT</span>
+      <span className="login-text help-text hidden" ref={helpTextRef}>HELP REQUEST</span>
 
-      {/* Login entry lines */}
-      <div className="line login-line hidden" />
-      <div className="line login-line-second hidden" />
+      <div className="line login-line hidden"/>
+      <div className="line login-line-second hidden"/>
 
-      {/* Account creation wrapper */}
-      <div className="account-wrapper">
+      <div className="account-wrapper" ref={accountWrapperRef}>
         <span className="account-text account-email">E-MA1L ADDRESS</span>
         <span className="account-text account-username">YOUR USERnAME</span>
         <span className="account-text account-sign-password">YOUR PASSWORD</span>
         <span className="account-text account-repeat-password">REDO PASSWORD</span>
-        <div className="account-line account-line1" />
-        <div className="account-line account-line2" />
-        <div className="account-line account-line3" />
-        <div className="account-line account-line4" />
+        <div className="account-line account-line1"/>
+        <div className="account-line account-line2"/>
+        <div className="account-line account-line3"/>
+        <div className="account-line account-line4"/>
       </div>
 
-      {/* Help wrapper */}
-      <div className="help-wrapper">
+      <div className="help-wrapper" ref={helpWrapperRef}>
         <span className="help-text-area email">YOUR EMA1L</span>
         <span className="help-text-area sendlink">SEnD L1nK</span>
-        <div className="help-line" />
+        <div className="help-line"/>
       </div>
 
-      {/* Masking layers */}
-      <div className="layer-one" />
-      <div className="layer-two" />
+      <div className="layer-one"/>
+      <div className="layer-two"/>
     </div>
   );
 }

@@ -53,9 +53,7 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .fifth   {top:28.5vh;left:36vw; width:57.8vw;}
 .sixth   {top:84vh; left:36vw; width:57.8vw;}
 
-.line.util-line{top:28.5vh;left:26.06vw;width:2.8vw;z-index:1;
-  pointer-events:none;
-}
+.line.util-line{top:28.5vh;left:26.06vw;width:2.8vw;z-index:1;}
 
 .login-text{
   position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
@@ -551,32 +549,4 @@ body.stage-account .help-text,
 body.stage-help .open-text,
 body.stage-help .help-text{
   transition: transform 0.7s ease, opacity .3s ease !important;
-}
-
-/* invisible click target for util strip */
-.util-hitbox{
-  position:fixed;
-  left:26.06vw;
-  top:28.5vh;
-  width:2.8vw;
-  height:56vh; /* 28.5–84 vh */
-  pointer-events:auto;
-  background:transparent;
-  z-index:20;
-}
-
-
-/* elevate hit-box above all */
-.util-hitbox{
-  z-index: 9999; /* highest */
-}
-
-/* pass clicks through labels until handler runs */
-.username,
-.password,
-.open-text,
-.help-text,
-.login-line,
-.login-line-second{
-  pointer-events: none !important;
 }

@@ -3,16 +3,16 @@
 import React, { useEffect, useRef } from "react";
 
 export default function Page() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const utilLineRef  = useRef<HTMLDivElement>(null);
-  const openTextRef  = useRef<HTMLSpanElement>(null);
-  const helpTextRef  = useRef<HTMLSpanElement>(null);
+  const containerRef   = useRef<HTMLDivElement>(null);
+  const utilLineRef    = useRef<HTMLDivElement>(null);
+  const openTextRef    = useRef<HTMLSpanElement>(null);
+  const helpTextRef    = useRef<HTMLSpanElement>(null);
   const accountWrapRef = useRef<HTMLDivElement>(null);
   const helpWrapRef    = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    /* ===== Select groups ===== */
-    const loginEls    = containerRef.current!.querySelectorAll(
+    /* ===== Cached node groups ===== */
+    const loginEls = containerRef.current!.querySelectorAll(
       ".username, .password, .login-line, .login-line-second"
     );
     const utilLine    = utilLineRef.current!;
@@ -22,31 +22,41 @@ export default function Page() {
     const helpWrap    = helpWrapRef.current!;
     const body        = document.body;
 
-    /* ===== Helper: fade in/out ===== */
-    const fadeInEls = (els: NodeListOf<Element>|Element[]) => {
-      Array.from(els).forEach(el => {
+    /* --- GUARANTEE util strip receives clicks, masks do not --- */
+    utilLine.style.pointerEvents = "auto";
+    utilLine.style.zIndex        = "9999";           // float above mask layers
+    containerRef.current!
+      .querySelectorAll(".layer-one, .layer-two")
+      .forEach((l) => ((l as HTMLElement).style.pointerEvents = "none"));
+
+    /* ===== Helper: fade ===== */
+    const fadeInEls = (els: NodeListOf<Element> | Element[]) =>
+      Array.from(els).forEach((el) => {
         el.classList.remove("hidden");
         void (el as HTMLElement).offsetWidth;
         el.classList.add("visible");
       });
-    };
 
-    const fadeOutEls = (els: NodeListOf<Element>|Element[]) =>
+    const fadeOutEls = (els: NodeListOf<Element> | Element[]) =>
       Promise.all(
-        Array.from(els).map(el =>
-          new Promise<void>(res => {
-            if (!el.classList.contains("visible")) { res(); return; }
-            const end = (e: TransitionEvent) => {
-              if (e.propertyName === "opacity") {
-                el.removeEventListener("transitionend", end);
+        Array.from(els).map(
+          (el) =>
+            new Promise<void>((res) => {
+              if (!el.classList.contains("visible")) {
                 res();
+                return;
               }
-            };
-            el.addEventListener("transitionend", end);
-            el.classList.remove("visible");
-            void (el as HTMLElement).offsetWidth;
-            el.classList.add("hidden");
-          })
+              const end = (e: TransitionEvent) => {
+                if (e.propertyName === "opacity") {
+                  el.removeEventListener("transitionend", end);
+                  res();
+                }
+              };
+              el.addEventListener("transitionend", end);
+              el.classList.remove("visible");
+              void (el as HTMLElement).offsetWidth;
+              el.classList.add("hidden");
+            })
         )
       );
 
@@ -62,169 +72,130 @@ export default function Page() {
       body.classList.add(name);
     };
 
-    /* ===== Initial hover logic ===== */
-    let phase = 0; // 0: wait first pointer, 1: wait login zone, 2: done
-    const inLoginZone = (x:number, y:number) => {
-      const vw = innerWidth, vh = innerHeight;
-      return x >= vw*0.0641 && x <= vw*0.2886 && y >= vh*0.285 && y <= vh*0.84;
+    /* ===== First‑pointer / login fade‑in logic ===== */
+    let phase = 0; // 0 waiting first pointer, 1 waiting login zone, 2 done
+    const inLoginZone = (x: number, y: number) => {
+      const vw = innerWidth,
+        vh = innerHeight;
+      return x >= vw * 0.0641 && x <= vw * 0.2886 && y >= vh * 0.285 && y <= vh * 0.84;
     };
-    const initialPointer = (e: PointerEvent | TouchEvent) => {
+    const firstPointer = (e: PointerEvent | TouchEvent) => {
       const p = "touches" in e ? (e as TouchEvent).touches[0] : (e as PointerEvent);
-      const {clientX:x, clientY:y} = p;
+      const { clientX: x, clientY: y } = p;
+
       if (phase === 0) {
         body.classList.add("fade-in-trigger");
         phase = 1;
         return;
       }
-      if (phase === 1 && inLoginZone(x,y)) {
+      if (phase === 1 && inLoginZone(x, y)) {
         fadeInEls(loginEls);
         phase = 2;
-        window.removeEventListener("pointermove", initialPointer);
-        window.removeEventListener("touchstart", initialPointer);
+        window.removeEventListener("pointermove", firstPointer);
+        window.removeEventListener("touchstart", firstPointer);
       }
     };
-    window.addEventListener("pointermove", initialPointer, {passive:true});
-    window.addEventListener("touchstart", initialPointer, {passive:true});
-
-    /* ===== Sequential logic ===== */
-    let step = 0; // 0 login, 1 util, 2 account, 3 help
+    window.addEventListener("pointermove", firstPointer, { passive: true });
+    window.addEventListener("touchstart", firstPointer, { passive: true });
 
     /* ===== Inactivity auto‑fade ===== */
     const loginFadeTimeout = 20000;
-    let inactivityTimer: number;
     let loginElsHidden = false;
+    let inactivityTimer: number;
 
     const resetInactivity = () => {
       clearTimeout(inactivityTimer);
-      if (step !== 0) return;
       inactivityTimer = window.setTimeout(() => {
-        if (step === 0) {
-          fadeOutEls(loginEls).then(()=>{ loginElsHidden = true; });
-        }
+        if (step.current === 0) fadeOutEls(loginEls).then(() => (loginElsHidden = true));
       }, loginFadeTimeout);
     };
-    ["mousemove","mousedown","keydown","touchstart"].forEach(evt =>
-      window.addEventListener(evt, resetInactivity, {passive:true})
+
+    /* ===== Sequential step tracker ===== */
+    const step = { current: 0 }; // 0 login, 1 util, 2 account, 3 help
+
+    /* Monitor generic activity */
+    ["mousemove", "mousedown", "keydown", "touchstart"].forEach((evt) =>
+      window.addEventListener(evt, resetInactivity, { passive: true })
     );
 
-    window.addEventListener("pointermove", ev => {
-      if (step !== 0 || !loginElsHidden) return;
-      const {clientX:x, clientY:y} = ev;
-      if (inLoginZone(x,y)) {
-        fadeInEls(loginEls);
-        loginElsHidden = false;
-        resetInactivity();
-      }
-    }, {passive:true});
+    /* Hover brings login back if hidden */
+    window.addEventListener(
+      "pointermove",
+      (ev) => {
+        if (step.current !== 0 || !loginElsHidden) return;
+        const { clientX: x, clientY: y } = ev;
+        if (inLoginZone(x, y)) {
+          fadeInEls(loginEls);
+          loginElsHidden = false;
+          resetInactivity();
+        }
+      },
+      { passive: true }
+    );
     resetInactivity();
 
-    /* ===== Click handlers ===== */
-    utilLine.addEventListener("click", () => {
-      if (step !== 0) return;
+    /* ===== Util strip click ===== */
+    const onUtilClick = () => {
+      if (step.current !== 0) return;
       fadeInEls(loginEls);
       fadeInEls([openText, helpText]);
-      requestAnimationFrame(()=>{
-        requestAnimationFrame(()=> setStage("stage-util"));
-      });
-      step = 1;
-    });
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => setStage("stage-util"))
+      );
+      step.current = 1;
+    };
+    utilLine.addEventListener("click", onUtilClick);
 
+    /* ===== OPEN / HELP clicks ===== */
     openText.addEventListener("click", () => {
-      if (step !== 1) return;
+      if (step.current !== 1) return;
       accountWrap.classList.add("active");
       setStage("stage-account");
-      step = 2;
+      step.current = 2;
     });
-
     helpText.addEventListener("click", () => {
-      if (step !== 1) return;
+      if (step.current !== 1) return;
       helpWrap.classList.add("active");
       setStage("stage-help");
-      step = 3;
+      step.current = 3;
     });
 
     /* ===== Back‑tap area ===== */
-    document.addEventListener("click", e => {
-      const {clientX:x, clientY:y} = e;
-      const vw = innerWidth, vh = innerHeight;
-      const back = x <= vw*0.0637 && y >= vh*0.285 && y <= vh*0.84;
+    document.addEventListener("click", (e) => {
+      const { clientX: x, clientY: y } = e;
+      const vw = innerWidth,
+        vh = innerHeight;
+      const back = x <= vw * 0.0637 && y >= vh * 0.285 && y <= vh * 0.84;
       if (!back) return;
-      if (step === 1) {
+
+      if (step.current === 1) {
         setStage("stage-util-pre");
-        setTimeout(()=>{
+        setTimeout(() => {
           body.classList.remove("stage-util-pre");
           setStage("stage-login");
           fadeInEls(loginEls);
-          step = 0;
+          step.current = 0;
         }, 700);
-      } else if (step === 2) {
+      } else if (step.current === 2) {
         accountWrap.classList.remove("active");
         setStage("stage-util");
-        step = 1;
-      } else if (step === 3) {
+        step.current = 1;
+      } else if (step.current === 3) {
         helpWrap.classList.remove("active");
         setStage("stage-util");
-        step = 1;
-      }
-    });
-
-    /* ===== Editable text ===== */
-    const editableSel = ".username, .password, .account-text, .help-text-area";
-    const findEditable = (ev:any) => {
-      let el = (ev.target as HTMLElement).closest(editableSel);
-      if (!el) {
-        const alt = document.elementFromPoint(ev.clientX, ev.clientY) as HTMLElement;
-        if (alt) el = alt.closest(editableSel);
-      }
-      return el;
-    };
-
-    document.addEventListener("pointerdown", ev => {
-      const el = findEditable(ev);
-      if (!el) return;
-      if (/send\s*l1nk/i.test(el.textContent || "") || /send\s*link/i.test(el.textContent || "")) return;
-      if (el.classList.contains("sendlink") || el.id==="sendlink") return;
-      if ((el as HTMLElement).isContentEditable) return;
-      ev.preventDefault();
-      el.dataset.placeholder = el.textContent || "";
-      el.textContent = "";
-      el.setAttribute("contenteditable","true");
-      el.focus({preventScroll:true});
-    }, true);
-
-    document.addEventListener("focusout", ev => {
-      const el = ev.target as HTMLElement;
-      if (!el || !el.matches || !el.matches(editableSel) || !el.isContentEditable) return;
-      if (el.textContent!.trim() === "") {
-        el.textContent = el.dataset.placeholder || "";
-        el.removeAttribute("contenteditable");
-      }
-    }, true);
-
-    /* ===== Edge click fullscreen ===== */
-    const toggleFull = () => {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(()=>{});
-      } else {
-        document.exitFullscreen().catch(()=>{});
-      }
-    };
-    document.addEventListener("click", ev => {
-      const {clientX:x, clientY:y} = ev;
-      if (x <= 11 || x >= innerWidth - 11 || y <= 11 || y >= innerHeight - 11) {
-        toggleFull();
+        step.current = 1;
       }
     });
 
     /* ===== Cleanup ===== */
     return () => {
-      window.removeEventListener("pointermove", initialPointer);
-      window.removeEventListener("touchstart", initialPointer);
-      ["mousemove","mousedown","keydown","touchstart"].forEach(evt =>
+      utilLine.removeEventListener("click", onUtilClick);
+      window.removeEventListener("pointermove", firstPointer);
+      window.removeEventListener("touchstart", firstPointer);
+      ["mousemove", "mousedown", "keydown", "touchstart"].forEach((evt) =>
         window.removeEventListener(evt, resetInactivity)
       );
     };
-
   }, []);
 
   return (
@@ -242,15 +213,19 @@ export default function Page() {
       <span className="login-text username hidden">USERnAME</span>
       <span className="login-text password hidden">PASSWORD</span>
 
-      {/* Util texts */}
-      <span className="login-text open-text hidden" ref={openTextRef}>OPEn AccOUnT</span>
-      <span className="login-text help-text hidden" ref={helpTextRef}>HELP REQUEST</span>
+      {/* Util */}
+      <span className="login-text open-text hidden" ref={openTextRef}>
+        OPEn AccOUnT
+      </span>
+      <span className="login-text help-text hidden" ref={helpTextRef}>
+        HELP REQUEST
+      </span>
 
       {/* Login entry lines */}
       <div className="line login-line hidden" />
       <div className="line login-line-second hidden" />
 
-      {/* Account wrapper */}
+      {/* Account */}
       <div className="account-wrapper" ref={accountWrapRef}>
         <span className="account-text account-email">E-MA1L ADDRESS</span>
         <span className="account-text account-username">YOUR USERnAME</span>
@@ -262,7 +237,7 @@ export default function Page() {
         <div className="account-line account-line4" />
       </div>
 
-      {/* Help wrapper */}
+      {/* Help */}
       <div className="help-wrapper" ref={helpWrapRef}>
         <span className="help-text-area email">YOUR EMA1L</span>
         <span className="help-text-area sendlink">SEnD L1nK</span>

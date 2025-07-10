@@ -59,34 +59,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const body        = document.body;
 
   /* ===== Helper functions ===== */
-
-/* === unified fade helpers 2025‑07‑10 === */
-const fadeInEls = (els) => {
-    els.forEach(el => {
-        if (el.classList.contains('visible')) return;
-        el.classList.remove('hidden');  // start at opacity 0
-        requestAnimationFrame(() =>
-            requestAnimationFrame(() => el.classList.add('visible'))); // fade to 1
-    });
-};
-
-const fadeOutEls = (els) => Promise.all(
-    Array.from(els).map(el => new Promise(res => {
-        if (!el.classList.contains('visible')) { res(); return; }
-        const done = (e) => { if (e.propertyName === 'opacity') res(); };
-        el.addEventListener('transitionend', done, { once: true });
-        requestAnimationFrame(() =>
-            requestAnimationFrame(() => {
-                el.classList.add('hidden');   // fade to 0
-                el.classList.remove('visible');
-            }));
-    }))
-);
-  el.classList.add('visible'); });
-  return; }
+  
+  const fadeInEls  = (els) => els.forEach(el => {
+      el.classList.remove('hidden');
+      void el.offsetWidth; // force reflow to enable transition
+      el.classList.add('visible');
+  });
+  const fadeOutEls = (els) => Promise.all(Array.from(els).map(el => new Promise(res => {
+      if (!el.classList.contains('visible')) { res(); return; }
       const end = (e)=>{ if(e.propertyName==='opacity'){ el.removeEventListener('transitionend', end); res(); } };
       el.addEventListener('transitionend', end);
-      el.classList.add('hidden'); el.classList.remove('visible');
+      el.classList.remove('visible'); void el.offsetWidth; el.classList.add('hidden');
   })));
 
   /* ===== Stage management ===== */

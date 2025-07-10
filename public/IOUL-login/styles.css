@@ -464,17 +464,40 @@ body.stage-util .help-text-area {
   letter-spacing: .36vw !important;
 }
 
+/* ---------- 2025-07-09 consistency patch ---------- */
+html{
+  --fs-login: .47rem;   /* default  <1900 px */
+  --ls-login: .28vw;
+}
+@media (min-width:1900px){
+  html{
+    --fs-login: .56rem; /* large viewports */
+    --ls-login: .36vw;
+  }
+}
 
-/* === July 9 2025 – Universal font patch === */
-@media screen and (max-width:1899px){
-  .login-text,
-  .open-text,
-  .help-text,
-  .help-text-area,
-  .account-text,
-  .account-text-area,
-  .username,
-  .password,
+/* use the vars everywhere, any stage */
+.login-text,
+.open-text,
+.help-text,
+.username,
+.password,
+.account-text,
+.help-text-area{
+  font-size: var(--fs-login) !important;
+  letter-spacing: var(--ls-login) !important;
+}
+
+/* let util texts be visible while they slide */
+body.stage-util-pre .open-text,
+body.stage-util-pre .help-text{ opacity:1; }
+
+/* smoother wrapper motion */
+.account-wrapper,
+.help-wrapper{ will-change:left,clip-path; }
+
+/* --- 2025-07-09 laptop size fix (<=1899px) --- */
+@media (max-width: 1899px){
   body.stage-login .login-text,
   body.stage-login .open-text,
   body.stage-login .help-text,
@@ -482,21 +505,8 @@ body.stage-util .help-text-area {
   body.stage-util .login-text,
   body.stage-util .open-text,
   body.stage-util .help-text,
-  body.stage-util .help-text-area,
-  body.stage-account .login-text,
-  body.stage-account .open-text,
-  body.stage-account .help-text,
-  body.stage-account .help-text-area,
-  body.stage-help .login-text,
-  body.stage-help .open-text,
-  body.stage-help .help-text,
-  body.stage-help .help-text-area {
-      font-size:0.47rem !important;
-      letter-spacing:0.28rem !important;
-  }
-
-  .account-text{
-      letter-spacing:0.28rem !important;
-      font-size:0.47rem !important;
+  body.stage-util .help-text-area{
+    font-size: 0.47rem !important;
+    letter-spacing: 0.28vw !important;
   }
 }

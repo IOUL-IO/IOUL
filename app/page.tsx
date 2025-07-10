@@ -137,24 +137,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-  
-utilLine.addEventListener('click', () => {
-    if(step!==0) return;
-
-    // Ensure elements are visible before slide
-    fadeInEls(loginEls);
-    fadeInEls([openText, helpText]);
-
-    // Wait for next paint so browser registers initial position, then slide
-    requestAnimationFrame(() => {
-        requestAnimationFrame(()=>{
-            setStage('stage-util');
-        });
-    });
-
-    step = 1;
-});
-
+  utilLine.addEventListener('click', () => {
+      if(step!==0) return;
+      /* Phase 1: slide login items left */
+      setStage('stage-util-pre');
+      fadeInEls(loginEls);
+      step = 1;
+      /* Phase 2 after slide completes */
+      setTimeout(() => {
+      fadeInEls([openText, helpText]);      // 1. show them
+      requestAnimationFrame(() => {         // 2. next frame → move them
+        body.classList.remove('stage-util-pre');
+        setStage('stage-util');
+      });
+    }, 350);
+  });
 
 
 

@@ -35,24 +35,3 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
-
-/* --- CLICK TARGET FOR UTIL STRIP --- */
-.util-hitbox{
-  position:fixed;
-  left:26.06vw;
-  top:28.5vh;
-  width:2.8vw;
-  height:56vh;          /* 28.5–84 vh */
-  pointer-events:auto;
-  background:transparent;
-  z-index:20;
-}
-
-/* overlays must let clicks through */
-.layer-one,
-.layer-two{
-  pointer-events:none !important;
-}
-
-/* util-line is visual only */
-.line.util-line{ pointer-events:none; }

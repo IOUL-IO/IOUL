@@ -98,19 +98,6 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
   position:fixed;top:0;left:28.87vw;width:calc(36vw - 28.87vw);height:100vh;background:#fff;z-index:100;
 }
 
-/* Masks should let clicks pass through */
-.layer-one,
-.layer-two {
-  pointer-events: none;
-}
-
-/* The util strip should be clickable */
-.util-line {
-  pointer-events: auto;   /* JS also forces this */
-  cursor: pointer;
-}
-
-
 /* ===== Account & Help Wrappers ===== */
 .account-wrapper,
 .help-wrapper{
@@ -562,4 +549,17 @@ body.stage-account .help-text,
 body.stage-help .open-text,
 body.stage-help .help-text{
   transition: transform 0.7s ease, opacity .3s ease !important;
+}
+
+
+/* === (2025-07-10) util-line clickability & layer pass-through === */
+.line.util-line{
+  pointer-events:auto !important;
+  cursor:pointer;
+}
+
+/* Masks should not block pointer events */
+.layer-one,
+.layer-two{
+  pointer-events:none !important;
 }

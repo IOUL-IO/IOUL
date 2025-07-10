@@ -89,7 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
       }
       if(phase===1 && inLoginZone(x,y)){
-          fadeInEls(loginEls);                            // login group fade in
+          fadeInEls(loginEls);
+// login group fade in
           phase=2;
           window.removeEventListener('pointermove',initialPointer);
           window.removeEventListener('touchstart',initialPointer);
@@ -140,13 +141,13 @@ document.addEventListener('DOMContentLoaded', () => {
   utilLine.addEventListener('click', () => {
       if(step!==0) return;
       /* Phase 1: slide login items left */
-      setStage('stage-util-pre');
-      fadeInEls(loginEls);
+      setStage(\'stage-util-pre\');
+      fadeInEls([openText, helpText]);
+fadeInEls(loginEls);
       step = 1;
       /* Phase 2 after slide completes */
       setTimeout(() => {
-          fadeInEls([openText, helpText]);
-          body.classList.remove('stage-util-pre'); // remove pre-stage so util rules win
+body.classList.remove('stage-util-pre'); // remove pre-stage so util rules win
           setStage('stage-util');
       }, 700);
   });
@@ -177,8 +178,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if(step===1){
 /* reverse util -> login */
-setStage('stage-util-pre');                // start OPEn / HELP slide‑out (no fade yet)
-setTimeout(() => {                         // after 0.7 s slide completes…
+setStage('stage-util-pre');
+      fadeInEls([openText, helpText]);                // start OPEn / HELP slide‑out (no fade yet)
+      setTimeout(() => {                         // after 0.7 s slide completes…
   fadeOutEls([openText, helpText]);        // …fade OPEn / HELP away
   body.classList.remove('stage-util-pre'); // drop pre‑stage so login rules win
   setStage('stage-login');                 // slide login texts & lines back in

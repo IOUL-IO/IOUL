@@ -1,5 +1,12 @@
 // @ts-nocheck
 "use client";
+import React from 'react';
+
+export default function Page() {
+  return (
+    <div
+      dangerouslySetInnerHTML={ { __html: `// @ts-nocheck
+"use client";
 import React, { useEffect } from 'react';
 
 export default function Page() {
@@ -120,5 +127,9 @@ export default function Page() {
             <div className="layer-one"></div>
             <div className="layer-two"></div>
     </>
+  );
+}
+` } }
+    />
   );
 }

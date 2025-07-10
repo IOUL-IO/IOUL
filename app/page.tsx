@@ -48,33 +48,33 @@
   <div class="layer-two"></div>
 
 <script>
+/* ─── Fade helpers (clean) ─── */
 const fadeInEls = (els) => {
   els.forEach(el => {
     if (el.classList.contains('visible')) return;
-    el.classList.remove('hidden');        // start at opacity 0
-    requestAnimationFrame(() => {         // paint once
-      el.classList.add('visible');        // animate to 1
+    el.classList.remove('hidden');          // opacity 0
+    requestAnimationFrame(() => {           // next frame
+      el.classList.add('visible');          // fades 0 → 1 (0.5 s)
     });
   });
 };
-
 
 const fadeOutEls = (els) => {
   els.forEach(el => {
-    if (!el.classList.contains('visible')) return; // already hidden
-    const onEnd = (e) => {
+    if (!el.classList.contains('visible')) return;
+    const end = (e) => {
       if (e.propertyName === 'opacity') {
-        el.removeEventListener('transitionend', onEnd);
-        el.classList.add('hidden');        // keep 0 opacity & pointer-events none
+        el.removeEventListener('transitionend', end);
+        el.classList.add('hidden');         // keep pointer-events:none
       }
     };
-    el.addEventListener('transitionend', onEnd, { once: true });
-    requestAnimationFrame(() => {          // paint current 1 opacity first
-      el.classList.remove('visible');      // triggers 1 → 0 fade
+    el.addEventListener('transitionend', end, { once: true });
+    requestAnimationFrame(() => {
+      el.classList.remove('visible');       // fades 1 → 0 (0.5 s)
     });
   });
 };
-
+/* ─── End helpers ─── */
 
 document.addEventListener('DOMContentLoaded', () => {
   /* ===== Element groups ===== */
@@ -276,7 +276,6 @@ setTimeout(() => {                         // after 0.7 s slide completes…
       toggleFullScreen();
     }
   });
-});
-</script>
+});</script>
 ` } } />;
     }

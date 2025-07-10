@@ -59,34 +59,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const body        = document.body;
 
   /* ===== Helper functions ===== */
-  
-const fadeInEls = (els) => {
-  els.forEach(el => {
-    if (el.classList.contains('visible')) return;
-    el.classList.remove('hidden');
-    requestAnimationFrame(() => {
-      el.classList.add('visible');
-    });
-  });
-};
-el.classList.add('visible'); });
-  
-const fadeOutEls = (els) => Promise.all(
-  Array.from(els).map(el => new Promise(res => {
-    if (!el.classList.contains('visible')) { res(); return; }
-    const end = (e) => { if (e.propertyName === 'opacity') { el.removeEventListener('transitionend', end); res(); } };
-    el.addEventListener('transitionend', end);
-    requestAnimationFrame(() => {
-      el.classList.add('hidden');
-      el.classList.remove('visible');
-    });
-  }))
-);
- return; }
-      const end = (e)=>{ if(e.propertyName==='opacity'){ el.removeEventListener('transitionend', end); res(); } };
-      el.addEventListener('transitionend', end);
-      el.classList.add('hidden'); el.classList.remove('visible');
-  })));
+  const fadeInEls = (els) => els.forEach(el => {
+  el.classList.remove('hidden');
+  void el.offsetWidth; // force reflow so opacity transition triggers
+  el.classList.add('visible');
+});
+  const fadeOutEls = (els) => Promise.all(Array.from(els).map(el => new Promise(res => {
+  if (!el.classList.contains('visible')) { res(); return; }
+  const end = (e) => {
+    if (e.propertyName === 'opacity') {
+      el.removeEventListener('transitionend', end);
+      res();
+    }
+  };
+  el.addEventListener('transitionend', end);
+  el.classList.remove('visible');
+  void el.offsetWidth; // force reflow before adding hidden
+  el.classList.add('hidden');
+})));
 
   /* ===== Stage management ===== */
   function setStage(name){

@@ -463,27 +463,3 @@ body.stage-util .help-text-area {
   font-size: .56rem !important;
   letter-spacing: .36vw !important;
 }
-
-
-/* === Global text sizing override per July 9, 2025 requirement === */
-:root{
-  --global-font-size:0.47rem;
-  --global-letter-spacing:0.28rem;
-}
-@media (min-width:1900px){
-  :root{
-    --global-font-size:0.56rem;
-    --global-letter-spacing:0.36rem;
-  }
-}
-/* Apply to all visible text elements on login screens */
-.login-text,
-.open-text,
-.help-text,
-.account-text,
-.menu-item,
-.custom-text,
-.item-text{
-  font-size:var(--global-font-size) !important;
-  letter-spacing:var(--global-letter-spacing) !important;
-}

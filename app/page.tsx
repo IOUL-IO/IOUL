@@ -6,7 +6,6 @@ export default function Page() {
   useEffect(() => {
 /* ===== Element groups ===== */
 const loginEls    = document.querySelectorAll('.username, .password, .login-line, .login-line-second');
-const utilLine    = document.querySelector('.util-line');
 const openText    = document.querySelector('.open-text');
 const helpText    = document.querySelector('.help-text');
 const accountWrap = document.querySelector('.account-wrapper');
@@ -86,14 +85,46 @@ function resetInactivityTimer(){
 });
 resetInactivityTimer();
 
-/* ===== Util line click => toggle util stage ===== */
-utilLine?.addEventListener('click', () => {
-  if(step!==0) return;
-  setStage('stage-util');
-  step=1;
-  if(loginElsHidden){
-    fadeInEls(loginEls);
-    loginElsHidden=false;
+/* ===== Coordinate-based click detection ===== */
+function inUtilZone(x,y){
+  const vw=innerWidth, vh=innerHeight;
+  return x>=vw*0.2886 && x<=vw*0.3243 && y>=vh*0.285 && y<=vh*0.84;
+}
+function inBackZone(x,y){
+  const vw=innerWidth, vh=innerHeight;
+  return x<=vw*0.0637 && y>=vh*0.285 && y<=vh*0.84;
+}
+
+document.addEventListener('click', (e)=>{
+  const {{clientX:x, clientY:y}} = e;
+
+  /* ----- util click ----- */
+  if(step===0 && inUtilZone(x,y)){
+    setStage('stage-util');
+    step=1;
+    if(loginElsHidden){
+      fadeInEls(loginEls);
+      loginElsHidden=false;
+    }
+    return; // stop; don't treat as back‑tap
+  }
+
+  /* ----- back‑tap ----- */
+  if(inBackZone(x,y)){
+    if(step===1){
+      /* util -> login */
+      setStage('stage-util-pre');
+      setTimeout(()=>{
+        body.classList.remove('stage-util-pre');
+        step=0;
+        setStage('stage-login');
+        resetInactivityTimer();
+      }, 700);
+    } else if(step===2){
+      /* account/help -> util */
+      setStage('stage-util');
+      step=1;
+    }
   }
 });
 
@@ -109,29 +140,6 @@ helpText?.addEventListener('click', () => {
   step=2;
 });
 
-/* ===== Back‑tap area ===== */
-document.addEventListener('click', (e)=>{
-  const {clientX:x, clientY:y}=e;
-  const vw=innerWidth, vh=innerHeight;
-  const backZone = x<=vw*0.0637 && y>=vh*0.285 && y<=vh*0.84;
-  if(!backZone) return;
-
-  if(step===1){
-    /* util -> login */
-    setStage('stage-util-pre');
-    setTimeout(()=>{
-      body.classList.remove('stage-util-pre');
-      step=0;
-      setStage('stage-login');
-      resetInactivityTimer();
-    }, 700);
-  } else if(step===2){
-    /* account/help -> util */
-    setStage('stage-util');
-    step=1;
-  }
-});
-
 /* ===== Form focus handling ===== */
 document.addEventListener('pointerdown', (ev)=>{
   const t = ev.target;
@@ -141,7 +149,7 @@ document.addEventListener('pointerdown', (ev)=>{
     setStage('stage-help-focus');
   }
 });
-document.addEventListener('focusout', (ev)=>{
+document.addEventListener('focusout', ()=>{
   if(step===2){
     if(body.classList.contains('stage-account-focus')){
       setStage('stage-account');
@@ -162,7 +170,6 @@ document.addEventListener('click', (ev)=>{
   }
 });
 
-    return () => {};
   }, []);
 
   return (

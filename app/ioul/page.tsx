@@ -813,6 +813,7 @@ const PageScripts: React.FC = () => {
       <div className="slide-trigger-reverse" />
     </div>
   </>
-);
+  );
+};
 
 export default PageScripts;

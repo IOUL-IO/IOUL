@@ -171,10 +171,10 @@ const PageScripts: React.FC = () => {
           } else if (['heading','account'].includes(slideState)) {
             document
               .querySelectorAll<HTMLElement>('[data-slide-group="heading"]')
-              .forEach(el => { el.style.transform = translateX(`${el.dataset.offset}vw`); });
+              .forEach(el => { el.style.transform = `translateX(${el.dataset.offset}vw)`; });
             document
               .querySelectorAll<HTMLElement>('[data-slide-group="account"]')
-              .forEach(el => { el.style.transform = translateX(`${el.dataset.offset}vw`); });
+              .forEach(el => { el.style.transform = `translateX(${el.dataset.offset}vw)`; });
             document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)')
               .forEach(el => { if (el.dataset.originalLeft) el.style.left = el.dataset.originalLeft; });
             document.querySelectorAll<HTMLElement>('.other-content > .custom-line')
@@ -263,10 +263,10 @@ const PageScripts: React.FC = () => {
           } else if (['heading','account'].includes(slideState)) {
             document
               .querySelectorAll<HTMLElement>('[data-slide-group="heading"]')
-              .forEach(el => { el.style.transform = translateX(`${el.dataset.offset}vw`); });
+              .forEach(el => { el.style.transform = `translateX(${el.dataset.offset}vw)`; });
             document
               .querySelectorAll<HTMLElement>('[data-slide-group="account"]')
-              .forEach(el => { el.style.transform = translateX(`${el.dataset.offset}vw`); });
+              .forEach(el => { el.style.transform = `translateX(${el.dataset.offset}vw)`; });
             document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)')
               .forEach(el => { if (el.dataset.originalLeft) el.style.left = el.dataset.originalLeft; });
             document.querySelectorAll<HTMLElement>('.other-content > .custom-line')
@@ -518,7 +518,7 @@ const PageScripts: React.FC = () => {
       });
       targets.forEach(el => {
         const base = parseFloat(el.dataset.baseLeftVw!);
-        el.style.transition = left ${DURATION}ms ease;
+        el.style.transition = `left ${DURATION}ms ease`;
         el.style.left =`${base + DISTANCE}vw`;
         el.dataset.slid = 'true';
       });
@@ -529,7 +529,7 @@ const PageScripts: React.FC = () => {
       sliding = true;
       targets.forEach(el => {
         const base = parseFloat(el.dataset.baseLeftVw!);
-        el.style.transition = left ${DURATION}ms ease;
+        el.style.transition = `left ${DURATION}ms ease`;
         el.style.left =`${base}vw`;
         delete el.dataset.slid;
       });

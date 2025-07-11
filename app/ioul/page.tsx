@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect } from 'react';
-import './styles.css';
 
 const PageScripts: React.FC = () => {
   useEffect(() => {

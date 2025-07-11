@@ -550,3 +550,6 @@ body.stage-help .open-text,
 body.stage-help .help-text{
   transition: transform 0.7s ease, opacity .3s ease !important;
 }
+
+/* === (2025-07-11) allow clicks through top mask === */
+.layer-three{ pointer-events:none !important; }

@@ -4,151 +4,185 @@ import React, { useEffect } from 'react';
 export default function Page() {
   useEffect(() => {
     /* ===== Element groups ===== */
-    const loginEls = document.querySelectorAll<HTMLElement>(
-      '.username, .password, .login-line, .login-line-second'
-    );
-    const utilLine = document.querySelector<HTMLElement>('.util-line')!;
-    const openText = document.querySelector<HTMLElement>('.open-text')!;
-    const helpText = document.querySelector<HTMLElement>('.help-text')!;
-    const accountWrap = document.querySelector<HTMLElement>('.account-wrapper')!;
-    const helpWrap = document.querySelector<HTMLElement>('.help-wrapper')!;
+    const loginEls = document.querySelectorAll('.username, .password, .login-line, .login-line-second');
+    const utilLine = document.querySelector('.util-line');
+    const openText = document.querySelector('.open-text');
+    const helpText = document.querySelector('.help-text');
+    const accountWrap = document.querySelector('.account-wrapper');
+    const helpWrap = document.querySelector('.help-wrapper');
     const body = document.body;
 
     /* ===== Helper functions ===== */
-    const fadeInEls = (els: Iterable<Element>) =>
-      Array.from(els).forEach((el) => {
+    const fadeInEls = (els: NodeListOf<Element>) => {
+      els.forEach(el => {
         el.classList.remove('hidden');
-        // force reflow so opacity transition triggers
         void (el as HTMLElement).offsetWidth;
         el.classList.add('visible');
       });
-
-    const fadeOutEls = (els: Iterable<Element>) =>
-      Promise.all(
-        Array.from(els).map(
-          (el) =>
-            new Promise<void>((res) => {
-              if (!el.classList.contains('visible')) {
-                res();
-                return;
-              }
-              const end = (e: TransitionEvent) => {
-                if (e.propertyName === 'opacity') {
-                  el.removeEventListener('transitionend', end);
-                  res();
-                }
-              };
-              el.addEventListener('transitionend', end);
-              // force reflow before adding hidden
-              void (el as HTMLElement).offsetWidth;
-              el.classList.remove('visible');
-              el.classList.add('hidden');
-            })
-        )
-      );
+    };
+    const fadeOutEls = (els: NodeListOf<Element>) =>
+      Promise.all(Array.from(els).map(el => new Promise<void>(res => {
+        if (!el.classList.contains('visible')) { res(); return; }
+        const end = (e: TransitionEvent) => {
+          if (e.propertyName === 'opacity') {
+            el.removeEventListener('transitionend', end);
+            res();
+          }
+        };
+        el.addEventListener('transitionend', end);
+        el.classList.remove('visible');
+        void (el as HTMLElement).offsetWidth;
+        el.classList.add('hidden');
+      })));
 
     /* ===== Stage management ===== */
     function setStage(name: string) {
-      body.classList.remove('stage-login', 'stage-util', 'stage-account', 'stage-help');
+      body.classList.remove('stage-login','stage-util','stage-account','stage-help');
       body.classList.add(name);
     }
 
-    /* ===== Initial hover logic (unchanged) ===== */
-    let phase = 0; // 0: waiting for first pointer -> lines fade. 1: waiting for login zone hover
+    /* ===== Initial hover logic ===== */
+    let phase = 0;
     function inLoginZone(x: number, y: number) {
-      const { innerWidth: w, innerHeight: h } = window;
-      const top = h * 0.35,
-        bottom = h * 0.55,
-        left = w * 0.35,
-        right = w * 0.65;
-      return x >= left && x <= right && y >= top && y <= bottom;
+      const vw = window.innerWidth, vh = window.innerHeight;
+      return x >= vw * 0.0641 && x <= vw * 0.2886 && y >= vh * 0.285 && y <= vh * 0.84;
     }
-    function initialPointer(p: PointerEvent | Touch) {
-      const { clientX: x, clientY: y } = p as PointerEvent;
-
+    function initialPointer(e: PointerEvent | TouchEvent) {
+      const p = (e as TouchEvent).touches ? (e as TouchEvent).touches[0] : (e as PointerEvent);
+      const x = p.clientX, y = p.clientY;
       if (phase === 0) {
-        document.body.classList.add('fade-in-trigger'); // lines & util fade in
+        document.body.classList.add('fade-in-trigger');
         phase = 1;
         return;
       }
       if (phase === 1 && inLoginZone(x, y)) {
         fadeInEls(loginEls);
         phase = 2;
-        window.removeEventListener('pointermove', initialPointer as any);
-        window.removeEventListener('touchstart', initialPointer as any);
+        window.removeEventListener('pointermove', initialPointer);
+        window.removeEventListener('touchstart', initialPointer);
       }
     }
-    window.addEventListener('pointermove', initialPointer as any);
-    window.addEventListener('touchstart', initialPointer as any);
+    window.addEventListener('pointermove', initialPointer, { passive: true });
+    window.addEventListener('touchstart', initialPointer, { passive: true });
 
-    /* ===== Utility text hover ===== */
-    utilLine.addEventListener('mouseenter', () => {
-      fadeInEls([openText, helpText]);
-    });
-    utilLine.addEventListener('mouseleave', () => {
-      fadeOutEls([openText, helpText]);
+    /* ===== Sequential logic ===== */
+    let step = 0;
+    const loginFadeTimeout = 20000; // 20 seconds
+    let inactivityTimer: number;
+    let loginElsHidden = false;
+
+    function resetInactivityTimer() {
+      clearTimeout(inactivityTimer);
+      if (step !== 0) return;
+      inactivityTimer = window.setTimeout(() => {
+        if (step === 0) {
+          fadeOutEls(loginEls).then(() => { loginElsHidden = true; });
+        }
+      }, loginFadeTimeout);
+    }
+
+    ['mousemove','mousedown','keydown','touchstart'].forEach(evt => {
+      window.addEventListener(evt, resetInactivityTimer, { passive: true });
     });
 
-    /* ===== Utility text click ===== */
-    openText.addEventListener('click', () => {
-      fadeOutEls(loginEls);
+    window.addEventListener('pointermove', (ev: PointerEvent) => {
+      if (step !== 0 || !loginElsHidden) return;
+      const x = ev.clientX, y = ev.clientY;
+      if (inLoginZone(x, y)) {
+        fadeInEls(loginEls);
+        loginElsHidden = false;
+        resetInactivityTimer();
+      }
+    }, { passive: true });
+
+    // start the timer initially
+    resetInactivityTimer();
+
+    /* ===== Click handlers ===== */
+    utilLine?.addEventListener('click', () => {
+      if (step !== 0) return;
+      fadeInEls(loginEls);
+      fadeInEls([openText!, helpText!] as unknown as NodeListOf<Element>);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setStage('stage-util');
+        });
+      });
+      step = 1;
+    });
+
+    openText?.addEventListener('click', () => {
+      if (step !== 1) return;
+      accountWrap?.classList.add('active');
       setStage('stage-account');
-      fadeInEls(accountWrap.querySelectorAll('*'));
+      step = 2;
     });
 
-    helpText.addEventListener('click', () => {
-      fadeOutEls(loginEls);
+    helpText?.addEventListener('click', () => {
+      if (step !== 1) return;
+      helpWrap?.classList.add('active');
       setStage('stage-help');
-      fadeInEls(helpWrap.querySelectorAll('*'));
+      step = 3;
     });
 
-    /* ===== Editable text zones ===== */
+    /* ===== Back‑tap area ===== */
+    document.addEventListener('click', (e: MouseEvent) => {
+      const x = e.clientX, y = e.clientY;
+      const vw = window.innerWidth, vh = window.innerHeight;
+      const backZone = x <= vw * 0.0637 && y >= vh * 0.285 && y <= vh * 0.84;
+      if (!backZone) return;
+      if (step === 1) {
+        setStage('stage-util-pre');
+        setTimeout(() => {
+          body.classList.remove('stage-util-pre');
+          setStage('stage-login');
+          fadeInEls(loginEls);
+          step = 0;
+        }, 700);
+      } else if (step === 2) {
+        accountWrap?.classList.remove('active');
+        setStage('stage-util');
+        step = 1;
+      } else if (step === 3) {
+        helpWrap?.classList.remove('active');
+        setStage('stage-util');
+        step = 1;
+      }
+    });
+
+    /* ===== Editable text logic ===== */
     const editableSel = '.username, .password, .account-text, .help-text-area';
-    function findEditable(ev: PointerEvent): HTMLElement | null {
-      let el = (ev.target as HTMLElement)?.closest(editableSel) as HTMLElement | null;
+    function findEditable(ev: any): HTMLElement | null {
+      let el = (ev.target as HTMLElement).closest(editableSel) as HTMLElement;
       if (!el) {
-        const alt = document.elementFromPoint(ev.clientX, ev.clientY) as HTMLElement | null;
-        if (alt) el = alt.closest(editableSel) as HTMLElement | null;
+        const alt = document.elementFromPoint(ev.clientX, ev.clientY);
+        if (alt) el = (alt as HTMLElement).closest(editableSel) as HTMLElement;
       }
       return el;
     }
 
-    document.addEventListener(
-      'pointerdown',
-      (ev) => {
-        const el = findEditable(ev as PointerEvent);
-        if (!el) return;
+    document.addEventListener('pointerdown', (ev: PointerEvent) => {
+      const el = findEditable(ev);
+      if (!el) return;
+      if (/send\s*l1nk/i.test(el.textContent || '') || el.classList.contains('send-link') || el.id === 'send-link') return;
+      if (el.isContentEditable) return;
+      ev.preventDefault();
+      el.dataset.placeholder = el.textContent || '';
+      el.textContent = '';
+      el.setAttribute('contenteditable', 'true');
+      el.focus({ preventScroll: true });
+    }, true);
 
-        // skip send link
-        if (
-          /send\s*l1nk/i.test(el.textContent || '') ||
-          /send\s*link/i.test(el.textContent || '') ||
-          el.classList.contains('send-link') ||
-          el.id === 'send-link'
-        )
-          return;
-
-        if (el.isContentEditable) return;
-        ev.preventDefault();
-        (el as any).dataset.placeholder = el.textContent;
-        el.textContent = '';
-        el.setAttribute('contenteditable', 'true');
-        el.focus({ preventScroll: true });
-      },
-      true
-    );
-
-    document.addEventListener('focusout', (ev) => {
+    document.addEventListener('focusout', (ev: FocusEvent) => {
       const el = ev.target as HTMLElement;
-      if (!el || !el.matches || !el.matches(editableSel) || !el.isContentEditable) return;
+      if (!el || !el.matches(editableSel) || !el.isContentEditable) return;
       if (el.textContent?.trim() === '') {
-        el.textContent = (el as any).dataset.placeholder || '';
+        el.textContent = el.dataset.placeholder || '';
+        el.removeAttribute('contenteditable');
       }
-      el.removeAttribute('contenteditable');
-      delete (el as any).dataset.placeholder;
-    });
+    }, true);
 
-    /* ===== Fullscreen toggle on corner click ===== */
+    /* ===== Fullscreen toggle ===== */
     function toggleFullScreen() {
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(() => {});
@@ -156,25 +190,24 @@ export default function Page() {
         document.exitFullscreen().catch(() => {});
       }
     }
-    document.addEventListener('click', (ev) => {
-      const x = ev.clientX,
-        y = ev.clientY;
-      if (x <= 11 || x >= innerWidth - 11 || y <= 11 || y >= innerHeight - 11) {
+    document.addEventListener('click', (ev: MouseEvent) => {
+      const x = ev.clientX, y = ev.clientY;
+      if (x <= 11 || x >= window.innerWidth - 11 || y <= 11 || y >= window.innerHeight - 11) {
         toggleFullScreen();
       }
     });
   }, []);
 
   return (
-    <main>
+    <>
       {/* Static lines */}
-      <div className="line original"></div>
-      <div className="line second"></div>
-      <div className="line third"></div>
-      <div className="line fourth"></div>
-      <div className="line fifth"></div>
-      <div className="line sixth"></div>
-      <div className="line util-line"></div>
+      <div className="line original" />
+      <div className="line second" />
+      <div className="line third" />
+      <div className="line fourth" />
+      <div className="line fifth" />
+      <div className="line sixth" />
+      <div className="line util-line" />
 
       {/* Login */}
       <span className="login-text username hidden">USERnAME</span>
@@ -185,8 +218,8 @@ export default function Page() {
       <span className="login-text help-text hidden">HELP REQUEST</span>
 
       {/* Login entry lines */}
-      <div className="line login-line hidden"></div>
-      <div className="line login-line-second hidden"></div>
+      <div className="line login-line hidden" />
+      <div className="line login-line-second hidden" />
 
       {/* Account creation wrapper */}
       <div className="account-wrapper">
@@ -194,22 +227,22 @@ export default function Page() {
         <span className="account-text account-username">YOUR USERnAME</span>
         <span className="account-text account-sign-password">YOUR PASSWORD</span>
         <span className="account-text account-repeat-password">REDO PASSWORD</span>
-        <div className="account-line account-line1"></div>
-        <div className="account-line account-line2"></div>
-        <div className="account-line account-line3"></div>
-        <div className="account-line account-line4"></div>
+        <div className="account-line account-line1" />
+        <div className="account-line account-line2" />
+        <div className="account-line account-line3" />
+        <div className="account-line account-line4" />
       </div>
 
       {/* Help wrapper */}
       <div className="help-wrapper">
         <span className="help-text-area email">YOUR EMA1L</span>
         <span className="help-text-area sendlink">SEnD L1nK</span>
-        <div className="help-line"></div>
+        <div className="help-line" />
       </div>
 
       {/* Masking layers */}
-      <div className="layer-one"></div>
-      <div className="layer-two"></div>
-    </main>
+      <div className="layer-one" />
+      <div className="layer-two" />
+    </>
   );
 }

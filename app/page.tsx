@@ -1,221 +1,284 @@
-// @ts-nocheck
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from 'react';
 
 export default function Page() {
-  /* === Refs === */
-  const step     = useRef(0); // 0 login, 1 util, 2 account, 3 help
-  const wrap     = useRef<HTMLDivElement>(null);
-  const utilLine = useRef<HTMLDivElement>(null);
-  const openTxt  = useRef<HTMLSpanElement>(null);
-  const helpTxt  = useRef<HTMLSpanElement>(null);
-  const accountW = useRef<HTMLDivElement>(null);
-  const helpW    = useRef<HTMLDivElement>(null);
-
-  /* === useEffect: hook up all legacy behaviour === */
   useEffect(() => {
+    /* ===== Element groups ===== */
+    const loginEls = document.querySelectorAll<HTMLElement>('.username, .password, .login-line, .login-line-second');
+    const utilLine = document.querySelector<HTMLElement>('.util-line');
+    const openText = document.querySelector<HTMLElement>('.open-text');
+    const helpText = document.querySelector<HTMLElement>('.help-text');
+    const accountWrap = document.querySelector<HTMLElement>('.account-wrapper');
+    const helpWrap = document.querySelector<HTMLElement>('.help-wrapper');
     const body = document.body;
-    const loginEls = wrap.current!.querySelectorAll(
-      ".username, .password, .login-line, .login-line-second"
-    );
 
-    /* --- guarantee util-line clickability --- */
-    const utilEl = utilLine.current!;
-    utilEl.style.pointerEvents = "auto";
-    utilEl.style.zIndex = "9999";
-    wrap.current!
-      .querySelectorAll(".layer-one, .layer-two")
-      .forEach((l) => ((l as HTMLElement).style.pointerEvents = "none"));
-
-    /* --- fade helpers --- */
-    const fadeIn = (els: NodeListOf<Element>|Element[]) =>
+    /* ===== Helper functions ===== */
+    const fadeInEls = (els: Iterable<HTMLElement>) =>
       Array.from(els).forEach((el) => {
-        el.classList.remove("hidden");
-        void (el as HTMLElement).offsetWidth;
-        el.classList.add("visible");
+        el.classList.remove('hidden');
+        // Force reflow so opacity transition triggers
+        void el.offsetWidth;
+        el.classList.add('visible');
       });
 
-    const fadeOut = (els: NodeListOf<Element>|Element[]) =>
+    const fadeOutEls = (els: Iterable<HTMLElement>) =>
       Promise.all(
         Array.from(els).map(
           (el) =>
             new Promise<void>((res) => {
-              if (!el.classList.contains("visible")) {res();return;}
-              const end = (e:TransitionEvent)=>{
-                if(e.propertyName==="opacity"){
-                  el.removeEventListener("transitionend", end);
+              if (!el.classList.contains('visible')) {
+                res();
+                return;
+              }
+              const end = (e: TransitionEvent) => {
+                if (e.propertyName === 'opacity') {
+                  el.removeEventListener('transitionend', end);
+                  el.classList.add('hidden');
+                  el.classList.remove('visible');
                   res();
                 }
               };
-              el.addEventListener("transitionend", end);
-              el.classList.remove("visible");
-              void (el as HTMLElement).offsetWidth;
-              el.classList.add("hidden");
+              el.addEventListener('transitionend', end, { once: true });
+              el.classList.remove('visible');
             })
         )
       );
 
-    /* --- setStage helper --- */
-    const setStage = (s:string)=>{
-      body.classList.remove(
-        "stage-login","stage-util","stage-account","stage-help","stage-util-pre"
-      );
-      body.classList.add(s);
+    let phase = 0; // 0 = intro, 1 = login shown, 2 = account, 3 = help
+
+    const vw = () => window.innerWidth;
+    const vh = () => window.innerHeight;
+
+    const inLoginZone = (x: number, y: number) => {
+      // login zone matches original rectangular hotspot
+      return x >= vw() * 0.085 && x <= vw() * 0.91 && y >= vh() * 0.46 && y <= vh() * 0.7;
     };
 
-    /* === Initial pointer logic === */
-    let phase = 0;
-    const inLoginZone = (x:number,y:number)=>{
-      const vw = innerWidth, vh = innerHeight;
-      return x>=vw*0.0641 && x<=vw*0.2886 && y>=vh*0.285 && y<=vh*0.84;
+    /* ===== Stage helpers (toggle body class) ===== */
+    const setStage = (name: string) => {
+      body.classList.remove(
+        'stage-intro',
+        'stage-login',
+        'stage-util-pre',
+        'stage-util',
+        'stage-account',
+        'stage-help'
+      );
+      body.classList.add(name);
     };
-    const firstPointer = (e:PointerEvent|TouchEvent)=>{
-      const p = "touches" in e ? (e as TouchEvent).touches[0] : (e as PointerEvent);
-      const {clientX:x, clientY:y} = p;
-      if(phase===0){
-        body.classList.add("fade-in-trigger");
-        phase=1;
+
+    /* ===== Intro pointer‑move ===== */
+    function initialPointer(p: PointerEvent | TouchEvent) {
+      const { clientX: x, clientY: y } = 'touches' in p ? p.touches[0] : (p as PointerEvent);
+
+      if (phase === 0) {
+        body.classList.add('fade-in-trigger'); // lines & util fade in
+        phase = 1;
         return;
       }
-      if(phase===1 && inLoginZone(x,y)){
-        fadeIn(loginEls);
-        phase=2;
-        window.removeEventListener("pointermove",firstPointer);
-        window.removeEventListener("touchstart",firstPointer);
+      if (phase === 1 && inLoginZone(x, y)) {
+        fadeInEls(loginEls); // login group fade in
+        phase = 2;
+        window.removeEventListener('pointermove', initialPointer);
+        window.removeEventListener('touchstart', initialPointer);
       }
-    };
-    window.addEventListener("pointermove",firstPointer,{passive:true});
-    window.addEventListener("touchstart",firstPointer,{passive:true});
+    }
+    window.addEventListener('pointermove', initialPointer, { passive: true });
+    window.addEventListener('touchstart', initialPointer, { passive: true });
 
-    /* === Inactivity auto-fade === */
-    const loginFadeTimeout = 20000;
-    let hidden=false;
-    let timer:number;
-    const resetTimer=()=>{
-      clearTimeout(timer);
-      if(step.current!==0) return;
-      timer = window.setTimeout(()=>{
-        if(step.current===0){
-          fadeOut(loginEls).then(()=> hidden=true);
+    /* ===== Sequential logic ===== */
+    let step = 0;
+
+    /* ===== Inactivity auto‑fade for login group ===== */
+    const loginFadeTimeout = 20000; // 20 seconds
+    let inactivityTimer: any;
+    let loginElsHidden = false;
+
+    function resetInactivityTimer() {
+      clearTimeout(inactivityTimer);
+      if (step !== 0) return; // only care in login state
+      inactivityTimer = setTimeout(async () => {
+        if (step === 0) {
+          await fadeOutEls(loginEls);
+          loginElsHidden = true;
         }
       }, loginFadeTimeout);
-    };
-    ["mousemove","mousedown","keydown","touchstart"].forEach(evt=>
-      window.addEventListener(evt,resetTimer,{passive:true})
-    );
-    window.addEventListener("pointermove",(ev)=>{
-      if(step.current!==0 || !hidden) return;
-      const {clientX:x, clientY:y}=ev;
-      if(inLoginZone(x,y)){
-        fadeIn(loginEls);
-        hidden=false;
-        resetTimer();
-      }
-    },{passive:true});
-    resetTimer();
+    }
 
-    /* === Back‑tap to reverse === */
-    document.addEventListener("click",(e)=>{
-      const {clientX:x, clientY:y}=e;
-      const vw=innerWidth, vh=innerHeight;
-      const back=x<=vw*0.0637 && y>=vh*0.285 && y<=vh*0.84;
-      if(!back) return;
-      if(step.current===1){
-        setStage("stage-util-pre");
-        setTimeout(()=>{
-          body.classList.remove("stage-util-pre");
-          setStage("stage-login");
-          fadeIn(loginEls);
-          step.current=0;
-        },700);
-      }else if(step.current===2){
-        accountW.current!.classList.remove("active");
-        setStage("stage-util");
-        step.current=1;
-      }else if(step.current===3){
-        helpW.current!.classList.remove("active");
-        setStage("stage-util");
-        step.current=1;
+    // Track pointer activity to reset inactivity timer
+    ['pointermove', 'touchstart'].forEach((ev) =>
+      window.addEventListener(ev, resetInactivityTimer, { passive: true })
+    );
+
+    /* ===== Util‑line click (login → util) ===== */
+    utilLine?.addEventListener('click', () => {
+      if (step !== 0) return;
+
+      // Ensure elements are visible before slide
+      fadeInEls(loginEls);
+      fadeInEls([openText!, helpText!]);
+
+      // Wait for next paint so browser registers initial position, then slide
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setStage('stage-util');
+        });
+      });
+
+      step = 1;
+    });
+
+    /* ===== OPEn click (util → account) ===== */
+    openText?.addEventListener('click', () => {
+      if (step !== 1) return;
+      accountWrap?.classList.add('active');
+      setStage('stage-account');
+      step = 2;
+    });
+
+    /* ===== HELP click (util → help) ===== */
+    helpText?.addEventListener('click', () => {
+      if (step !== 1) return;
+      helpWrap?.classList.add('active');
+      setStage('stage-help');
+      step = 3;
+    });
+
+    /* ===== Back‑tap area (left gutter) ===== */
+    document.addEventListener(
+      'click',
+      async (e) => {
+        const { clientX: x, clientY: y } = e;
+        const backZone = x <= vw() * 0.0637 && y >= vh() * 0.285 && y <= vh() * 0.84;
+        if (!backZone) return;
+
+        if (step === 1) {
+          /* reverse util -> login */
+          setStage('stage-util-pre'); // start OPEn / HELP slide‑out (no fade yet)
+          setTimeout(() => {
+            // after 0.7 s slide completes…
+            body.classList.remove('stage-util-pre'); // drop pre‑stage so login rules win
+            setStage('stage-login'); // slide login texts & lines back in
+            fadeInEls(loginEls); // ensure they’re visible
+            step = 0;
+            resetInactivityTimer();
+          }, 700);
+        }
+        if (step === 2) {
+          /* reverse account -> util */
+          accountWrap?.classList.remove('active');
+          setStage('stage-util');
+          step = 1;
+        }
+        if (step === 3) {
+          /* reverse help -> util */
+          helpWrap?.classList.remove('active');
+          setStage('stage-util');
+          step = 1;
+        }
+      },
+      true
+    );
+
+    /* ===== Inline placeholder-to-input trick ===== */
+    document.addEventListener(
+      'click',
+      (ev) => {
+        const el = ev.target as HTMLElement | null;
+        if (
+          !el ||
+          !el.matches ||
+          !(
+            el.classList.contains('account-text') ||
+            el.classList.contains('help-text-area')
+          )
+        )
+          return;
+
+        // skip send link
+        if (
+          /send\s*l1nk/i.test(el.textContent || '') ||
+          /send\s*link/i.test(el.textContent || '') ||
+          el.classList.contains('send-link') ||
+          el.id === 'send-link'
+        )
+          return;
+
+        if (el.isContentEditable) return;
+        ev.preventDefault();
+        el.dataset.placeholder = el.textContent || '';
+        el.textContent = '';
+        el.setAttribute('contenteditable', 'true');
+        el.focus({ preventScroll: true });
+      },
+      true
+    );
+
+    document.addEventListener('focusout', (ev) => {
+      const el = ev.target as HTMLElement | null;
+      if (
+        !el ||
+        !el.matches ||
+        (!el.classList.contains('account-text') && !el.classList.contains('help-text-area'))
+      )
+        return;
+      if (el.textContent?.trim() === '') {
+        el.textContent = el.dataset.placeholder ?? '';
       }
     });
 
-    /* cleanup */
-    return ()=>{
-      window.removeEventListener("pointermove",firstPointer);
-      window.removeEventListener("touchstart",firstPointer);
-      ["mousemove","mousedown","keydown","touchstart"].forEach(evt=>
-        window.removeEventListener(evt,resetTimer)
-      );
+    /* ===== Cleanup on unmount ===== */
+    return () => {
+      window.removeEventListener('pointermove', initialPointer);
+      window.removeEventListener('touchstart', initialPointer);
     };
   }, []);
 
-  /* === util-line click (React handler) === */
-  const onUtilClick = ()=>{
-    if(step.current!==0) return;
-    const body=document.body;
-    // show login els + util texts
-    const loginEls = wrap.current!.querySelectorAll(
-      ".username, .password, .login-line, .login-line-second"
-    );
-    loginEls.forEach(el=>{
-      el.classList.remove("hidden");
-      void (el as HTMLElement).offsetWidth;
-      el.classList.add("visible");
-    });
-    openTxt.current!.classList.remove("hidden");
-    helpTxt.current!.classList.remove("hidden");
-
-    // trigger stage
-    requestAnimationFrame(()=>requestAnimationFrame(()=>body.classList.add("stage-util")));
-    step.current=1;
-  };
-
   return (
-    <div ref={wrap}>
-      {/* lines */}
-      <div className="line original"/>
-      <div className="line second"/>
-      <div className="line third"/>
-      <div className="line fourth"/>
-      <div className="line fifth"/>
-      <div className="line sixth"/>
-      <div className="line util-line" ref={utilLine} onClick={onUtilClick}
-           style={{pointerEvents:"auto",zIndex:9999}}/>
+    <>
+      {/* Static lines */}
+      <div className="line original" />
+      <div className="line second" />
+      <div className="line third" />
+      <div className="line fourth" />
+      <div className="line fifth" />
+      <div className="line sixth" />
+      <div className="line util-line" />
 
-      {/* login */}
+      {/* Login */}
       <span className="login-text username hidden">USERnAME</span>
       <span className="login-text password hidden">PASSWORD</span>
 
-      {/* util */}
-      <span className="login-text open-text hidden" ref={openTxt}>OPEn AccOUnT</span>
-      <span className="login-text help-text hidden" ref={helpTxt}>HELP REQUEST</span>
+      {/* Util texts */}
+      <span className="login-text open-text hidden">OPEn AccOUnT</span>
+      <span className="login-text help-text hidden">HELP REQUEST</span>
 
-      {/* login entry lines */}
-      <div className="line login-line hidden"/>
-      <div className="line login-line-second hidden"/>
+      {/* Login entry lines */}
+      <div className="line login-line hidden" />
+      <div className="line login-line-second hidden" />
 
-      {/* account */}
-      <div className="account-wrapper" ref={accountW}>
+      {/* Account creation wrapper */}
+      <div className="account-wrapper">
         <span className="account-text account-email">E-MA1L ADDRESS</span>
         <span className="account-text account-username">YOUR USERnAME</span>
         <span className="account-text account-sign-password">YOUR PASSWORD</span>
         <span className="account-text account-repeat-password">REDO PASSWORD</span>
-        <div className="account-line account-line1"/>
-        <div className="account-line account-line2"/>
-        <div className="account-line account-line3"/>
-        <div className="account-line account-line4"/>
+        <div className="account-line account-line1" />
+        <div className="account-line account-line2" />
+        <div className="account-line account-line3" />
+        <div className="account-line account-line4" />
       </div>
 
-      {/* help */}
-      <div className="help-wrapper" ref={helpW}>
+      {/* Help wrapper */}
+      <div className="help-wrapper">
         <span className="help-text-area email">YOUR EMA1L</span>
         <span className="help-text-area sendlink">SEnD L1nK</span>
-        <div className="help-line"/>
+        <div className="help-line" />
       </div>
 
-      {/* masks */}
-      <div className="layer-one" style={{pointerEvents:"none"}}/>
-      <div className="layer-two" style={{pointerEvents:"none"}}/>
-    </div>
+      {/* Masking layers */}
+      <div className="layer-one" />
+      <div className="layer-two" />
+    </>
   );
 }

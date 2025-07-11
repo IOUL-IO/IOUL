@@ -1,5 +1,7 @@
-
-/* Util-line slide behavior */
+/* styles.css */
+.line.util-line {
+  pointer-events: auto;
+}
 .login-text,
 .login-line {
   transform: translateX(0);

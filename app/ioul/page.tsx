@@ -813,6 +813,6 @@ const PageScripts: React.FC = () => {
     </div>
   </>
   );
-};
+  };
 
 export default PageScripts;

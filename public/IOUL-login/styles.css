@@ -1,19 +1,17 @@
-/* === IOUL login overrides (July 10 2025) ==========================
-   These rules restore the legacy click behaviour in React / Next:
-   • util trigger bar is now clickable again
-   • transparent overlay masks can never intercept clicks
-=================================================================== */
+PLACEHOLDER_ORIGINAL_CSS
 
-/* 1 px util bar — now carries both classes `.line.util-line` */
+
+/* === React overrides (2025‑07‑10) =============================
+   Ensures util-line clickable and masks click-through in React build
+================================================================ */
 .line.util-line,
-.util-line {
-  pointer-events: auto !important; /* must accept clicks */
-  cursor: pointer;
-  z-index: 10;                     /* above decorative lines */
+.util-line{
+  pointer-events:auto !important;
+  cursor:pointer;
+  z-index:10;
 }
 
-/* Make both overlay masks fully click‑through */
 .layer-one,
-.layer-two {
-  pointer-events: none !important;
+.layer-two{
+  pointer-events:none !important;
 }

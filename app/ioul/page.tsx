@@ -402,7 +402,7 @@ const PageScripts: React.FC = () => {
       if (slideState !== 'menu') return;
       const span = document.createElement('span');
       span.className = 'custom-text new-text';
-      span.style.top = `topVHvh`;
+      span.style.top = ${topVH}vh;
       span.style.left = `leftVWvw`;
       span.textContent = text;
       document.querySelector('.other-content')?.appendChild(span);

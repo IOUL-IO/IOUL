@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect } from 'react';
+import './styles.css';
 
 export default function Page() {
   useEffect(() => {
@@ -13,45 +14,45 @@ export default function Page() {
     const body = document.body;
 
     /* ===== Helper functions ===== */
-    const fadeInEls = (els: NodeListOf<Element>) => {
+    const fadeInEls = (els) => {
       els.forEach(el => {
         el.classList.remove('hidden');
-        void (el as HTMLElement).offsetWidth;
+        void el.offsetWidth;
         el.classList.add('visible');
       });
     };
-    const fadeOutEls = (els: NodeListOf<Element>) =>
-      Promise.all(Array.from(els).map(el => new Promise<void>(res => {
+    const fadeOutEls = (els) =>
+      Promise.all(Array.from(els).map(el => new Promise(res => {
         if (!el.classList.contains('visible')) { res(); return; }
-        const end = (e: TransitionEvent) => {
+        const onEnd = (e) => {
           if (e.propertyName === 'opacity') {
-            el.removeEventListener('transitionend', end);
+            el.removeEventListener('transitionend', onEnd);
             res();
           }
         };
-        el.addEventListener('transitionend', end);
+        el.addEventListener('transitionend', onEnd);
         el.classList.remove('visible');
-        void (el as HTMLElement).offsetWidth;
+        void el.offsetWidth;
         el.classList.add('hidden');
       })));
 
     /* ===== Stage management ===== */
-    function setStage(name: string) {
+    function setStage(name) {
       body.classList.remove('stage-login','stage-util','stage-account','stage-help');
       body.classList.add(name);
     }
 
     /* ===== Initial hover logic ===== */
     let phase = 0;
-    function inLoginZone(x: number, y: number) {
+    function inLoginZone(x, y) {
       const vw = window.innerWidth, vh = window.innerHeight;
       return x >= vw * 0.0641 && x <= vw * 0.2886 && y >= vh * 0.285 && y <= vh * 0.84;
     }
-    function initialPointer(e: PointerEvent | TouchEvent) {
-      const p = (e as TouchEvent).touches ? (e as TouchEvent).touches[0] : (e as PointerEvent);
-      const x = p.clientX, y = p.clientY;
+    function initialPointer(e) {
+      const p = e.touches ? e.touches[0] : e;
+      const { clientX: x, clientY: y } = p;
       if (phase === 0) {
-        document.body.classList.add('fade-in-trigger');
+        body.classList.add('fade-in-trigger');
         phase = 1;
         return;
       }
@@ -66,36 +67,29 @@ export default function Page() {
     window.addEventListener('touchstart', initialPointer, { passive: true });
 
     /* ===== Sequential logic ===== */
-    let step = 0;
-    const loginFadeTimeout = 20000; // 20 seconds
-    let inactivityTimer: number;
-    let loginElsHidden = false;
+    let step = 0, inactivityTimer, loginElsHidden = false;
+    const loginFadeTimeout = 20000;
 
-    function resetInactivityTimer() {
+    function resetTimer() {
       clearTimeout(inactivityTimer);
       if (step !== 0) return;
       inactivityTimer = window.setTimeout(() => {
-        if (step === 0) {
-          fadeOutEls(loginEls).then(() => { loginElsHidden = true; });
-        }
+        if (step === 0) fadeOutEls(loginEls).then(() => loginElsHidden = true);
       }, loginFadeTimeout);
     }
-
     ['mousemove','mousedown','keydown','touchstart'].forEach(evt =>
-      window.addEventListener(evt, resetInactivityTimer, { passive: true })
+      window.addEventListener(evt, resetTimer, { passive: true })
     );
-
-    window.addEventListener('pointermove', (ev: PointerEvent) => {
+    window.addEventListener('pointermove', ev => {
       if (step !== 0 || !loginElsHidden) return;
-      const x = ev.clientX, y = ev.clientY;
-      if (inLoginZone(x, y)) {
+      const { clientX: x, clientY: y } = ev;
+      if (inLoginZone(x,y)) {
         fadeInEls(loginEls);
         loginElsHidden = false;
-        resetInactivityTimer();
+        resetTimer();
       }
     }, { passive: true });
-
-    resetInactivityTimer();
+    resetTimer();
 
     /* ===== Click handlers ===== */
     utilLine?.addEventListener('click', () => {
@@ -103,14 +97,12 @@ export default function Page() {
       setStage('stage-util');
       step = 1;
     });
-
     openText?.addEventListener('click', () => {
       if (step !== 1) return;
       accountWrap?.classList.add('active');
       setStage('stage-account');
       step = 2;
     });
-
     helpText?.addEventListener('click', () => {
       if (step !== 1) return;
       helpWrap?.classList.add('active');
@@ -119,10 +111,10 @@ export default function Page() {
     });
 
     /* ===== Back‑tap area ===== */
-    document.addEventListener('click', (e: MouseEvent) => {
-      const x = e.clientX, y = e.clientY;
+    document.addEventListener('click', e => {
+      const { clientX: x, clientY: y } = e;
       const vw = window.innerWidth, vh = window.innerHeight;
-      const backZone = x <= vw * 0.0637 && y >= vh * 0.285 && y <= vh * 0.84;
+      const backZone = x <= vw*0.0637 && y >= vh*0.285 && y <= vh*0.84;
       if (!backZone) return;
       if (step === 1) {
         setStage('stage-util-pre');
@@ -143,51 +135,43 @@ export default function Page() {
       }
     });
 
-    /* ===== Editable text logic ===== */
+    /* ===== Editable text ===== */
     const editableSel = '.username, .password, .account-text, .help-text-area';
-    function findEditable(ev: any): HTMLElement | null {
-      let el = (ev.target as HTMLElement).closest(editableSel) as HTMLElement;
+    function findEditable(ev) {
+      let el = ev.target.closest(editableSel);
       if (!el) {
         const alt = document.elementFromPoint(ev.clientX, ev.clientY);
-        if (alt) el = (alt as HTMLElement).closest(editableSel) as HTMLElement;
+        el = alt?.closest(editableSel);
       }
       return el;
     }
-
-    document.addEventListener('pointerdown', (ev: PointerEvent) => {
+    document.addEventListener('pointerdown', ev => {
       const el = findEditable(ev);
-      if (!el) return;
-      if (/send\s*l1nk/i.test(el.textContent || '') || el.classList.contains('send-link') || el.id === 'send-link') return;
+      if (!el || /send\s*l1nk/i.test(el.textContent) || el.classList.contains('send-link')) return;
       if (el.isContentEditable) return;
       ev.preventDefault();
-      el.dataset.placeholder = el.textContent || '';
+      el.dataset.placeholder = el.textContent;
       el.textContent = '';
-      el.setAttribute('contenteditable', 'true');
+      el.setAttribute('contenteditable','true');
       el.focus({ preventScroll: true });
     }, true);
-
-    document.addEventListener('focusout', (ev: FocusEvent) => {
-      const el = ev.target as HTMLElement;
-      if (!el || !el.matches(editableSel) || !el.isContentEditable) return;
-      if (el.textContent?.trim() === '') {
-        el.textContent = el.dataset.placeholder || '';
+    document.addEventListener('focusout', ev => {
+      const el = ev.target;
+      if (!el.matches(editableSel) || !el.isContentEditable) return;
+      if (!el.textContent.trim()) {
+        el.textContent = el.dataset.placeholder;
         el.removeAttribute('contenteditable');
       }
     }, true);
 
     /* ===== Fullscreen toggle ===== */
     function toggleFullScreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      } else {
-        document.exitFullscreen().catch(() => {});
-      }
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
+      else document.exitFullscreen().catch(()=>{});
     }
-    document.addEventListener('click', (ev: MouseEvent) => {
-      const x = ev.clientX, y = ev.clientY;
-      if (x <= 11 || x >= window.innerWidth - 11 || y <= 11 || y >= window.innerHeight - 11) {
-        toggleFullScreen();
-      }
+    document.addEventListener('click', ev => {
+      const { clientX: x, clientY: y } = ev;
+      if (x<=11||x>=window.innerWidth-11||y<=11||y>=window.innerHeight-11) toggleFullScreen();
     });
   }, []);
 
@@ -230,5 +214,5 @@ export default function Page() {
       <div className="layer-one" />
       <div className="layer-two" />
     </>
-);
+  );
 }

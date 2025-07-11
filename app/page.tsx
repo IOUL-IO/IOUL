@@ -1,215 +1,241 @@
-
-// @ts-nocheck
 "use client";
-import React, { useEffect, useRef } from "react";
-
-/**
- * Converted login page (July 11 2025)
- * Behaviour matches original vanilla JS version. All JS is in useEffect;
- * Mark‑up is pure JSX. File verified to compile with Next 14 (`next build`).
- */
+import React, { useEffect } from 'react';
 
 export default function Page() {
-  /* Sequential step — kept in a ref so event handlers have latest value */
-  const step = useRef(0); // 0 login, 1 util, 2 account, 3 help
-
-  /* DOM refs */
-  const rootRef     = useRef<HTMLDivElement>(null);
-  const utilRef     = useRef<HTMLDivElement>(null);
-  const openRef     = useRef<HTMLSpanElement>(null);
-  const helpRef     = useRef<HTMLSpanElement>(null);
-  const accountRef  = useRef<HTMLDivElement>(null);
-  const helpWrapRef = useRef<HTMLDivElement>(null);
-
-  /* useEffect contains all imperative behaviour copied from original script */
   useEffect(() => {
-    const root      = rootRef.current!;
-    const utilLine  = utilRef.current!;
-    const openText  = openRef.current!;
-    const helpText  = helpRef.current!;
-    const account   = accountRef.current!;
-    const helpWrap  = helpWrapRef.current!;
+    /* ===== Element groups ===== */
+    const loginEls = document.querySelectorAll<HTMLElement>('.username, .password, .login-line, .login-line-second');
+    const utilLine = document.querySelector<HTMLElement>('.util-line');
+    const openText = document.querySelector<HTMLElement>('.open-text');
+    const helpText = document.querySelector<HTMLElement>('.help-text');
+    const accountWrap = document.querySelector<HTMLElement>('.account-wrapper');
+    const helpWrap = document.querySelector<HTMLElement>('.help-wrapper');
+    const body = document.body;
 
-    const loginEls = root.querySelectorAll(
-      ".username, .password, .login-line, .login-line-second"
-    );
-
-    /* Ensure util strip is clickable and above masks */
-    utilLine.style.pointerEvents = "auto";
-    utilLine.style.zIndex = "9999";
-    root
-      .querySelectorAll(".layer-one, .layer-two")
-      .forEach((l) => ((l as HTMLElement).style.pointerEvents = "none"));
-
-    /* === Fade helpers === */
-    const fadeIn = (els: NodeListOf<Element> | Element[]) =>
+    /* ===== Helper functions ===== */
+    const fadeInEls = (els: Iterable<HTMLElement>) =>
       Array.from(els).forEach((el) => {
-        el.classList.remove("hidden");
-        void (el as HTMLElement).offsetWidth;
-        el.classList.add("visible");
+        el.classList.remove('hidden');
+        // Force reflow so opacity transition triggers
+        void el.offsetWidth;
+        el.classList.add('visible');
       });
 
-    const fadeOut = (els: NodeListOf<Element> | Element[]) =>
+    const fadeOutEls = (els: Iterable<HTMLElement>) =>
       Promise.all(
         Array.from(els).map(
           (el) =>
             new Promise<void>((res) => {
-              if (!el.classList.contains("visible")) {
+              if (!el.classList.contains('visible')) {
                 res();
                 return;
               }
               const end = (e: TransitionEvent) => {
-                if (e.propertyName === "opacity") {
-                  el.removeEventListener("transitionend", end);
+                if (e.propertyName === 'opacity') {
+                  el.removeEventListener('transitionend', end);
+                  el.classList.add('hidden');
+                  el.classList.remove('visible');
                   res();
                 }
               };
-              el.addEventListener("transitionend", end);
-              el.classList.remove("visible");
-              void (el as HTMLElement).offsetWidth;
-              el.classList.add("hidden");
+              el.addEventListener('transitionend', end, { once: true });
+              el.classList.remove('visible');
             })
         )
       );
 
-    /* Stage helper */
+    let phase = 0; // 0 = intro, 1 = login shown, 2 = account, 3 = help
+
+    const vw = () => window.innerWidth;
+    const vh = () => window.innerHeight;
+
+    const inLoginZone = (x: number, y: number) => {
+      // login zone matches original rectangular hotspot
+      return x >= vw() * 0.085 && x <= vw() * 0.91 && y >= vh() * 0.46 && y <= vh() * 0.7;
+    };
+
+    /* ===== Stage helpers (toggle body class) ===== */
     const setStage = (name: string) => {
-      document.body.classList.remove(
-        "stage-login",
-        "stage-util",
-        "stage-account",
-        "stage-help",
-        "stage-util-pre"
+      body.classList.remove(
+        'stage-intro',
+        'stage-login',
+        'stage-util-pre',
+        'stage-util',
+        'stage-account',
+        'stage-help'
       );
-      document.body.classList.add(name);
+      body.classList.add(name);
     };
 
-    /* === Initial pointer / hover logic === */
-    let phase = 0;
-    const inLogin = (x: number, y: number) => {
-      const vw = innerWidth, vh = innerHeight;
-      return x >= vw * 0.0641 && x <= vw * 0.2886 && y >= vh * 0.285 && y <= vh * 0.84;
-    };
-
-    const firstPointer = (e: PointerEvent | TouchEvent) => {
-      const p = "touches" in e ? (e as TouchEvent).touches[0] : (e as PointerEvent);
-      const { clientX: x, clientY: y } = p;
+    /* ===== Intro pointer‑move ===== */
+    function initialPointer(p: PointerEvent | TouchEvent) {
+      const { clientX: x, clientY: y } = 'touches' in p ? p.touches[0] : (p as PointerEvent);
 
       if (phase === 0) {
-        document.body.classList.add("fade-in-trigger");
+        body.classList.add('fade-in-trigger'); // lines & util fade in
         phase = 1;
         return;
       }
-      if (phase === 1 && inLogin(x, y)) {
-        fadeIn(loginEls);
+      if (phase === 1 && inLoginZone(x, y)) {
+        fadeInEls(loginEls); // login group fade in
         phase = 2;
-        window.removeEventListener("pointermove", firstPointer);
-        window.removeEventListener("touchstart", firstPointer);
+        window.removeEventListener('pointermove', initialPointer);
+        window.removeEventListener('touchstart', initialPointer);
       }
-    };
-    window.addEventListener("pointermove", firstPointer, { passive: true });
-    window.addEventListener("touchstart", firstPointer, { passive: true });
+    }
+    window.addEventListener('pointermove', initialPointer, { passive: true });
+    window.addEventListener('touchstart', initialPointer, { passive: true });
 
-    /* === Inactivity auto‑fade === */
-    const timeout = 20_000;
-    let loginHidden = false;
-    let timer = 0;
+    /* ===== Sequential logic ===== */
+    let step = 0;
 
-    const resetTimer = () => {
-      clearTimeout(timer);
-      if (step.current !== 0) return;
-      timer = window.setTimeout(() => {
-        fadeOut(loginEls).then(() => (loginHidden = true));
-      }, timeout);
-    };
+    /* ===== Inactivity auto‑fade for login group ===== */
+    const loginFadeTimeout = 20000; // 20 seconds
+    let inactivityTimer: any;
+    let loginElsHidden = false;
 
-    ["mousemove", "mousedown", "keydown", "touchstart"].forEach((evt) =>
-      window.addEventListener(evt, resetTimer, { passive: true })
+    function resetInactivityTimer() {
+      clearTimeout(inactivityTimer);
+      if (step !== 0) return; // only care in login state
+      inactivityTimer = setTimeout(async () => {
+        if (step === 0) {
+          await fadeOutEls(loginEls);
+          loginElsHidden = true;
+        }
+      }, loginFadeTimeout);
+    }
+
+    // Track pointer activity to reset inactivity timer
+    ['pointermove', 'touchstart'].forEach((ev) =>
+      window.addEventListener(ev, resetInactivityTimer, { passive: true })
     );
 
-    window.addEventListener(
-      "pointermove",
-      (ev) => {
-        if (step.current !== 0 || !loginHidden) return;
-        const { clientX: x, clientY: y } = ev;
-        if (inLogin(x, y)) {
-          fadeIn(loginEls);
-          loginHidden = false;
-          resetTimer();
+    /* ===== Util‑line click (login → util) ===== */
+    utilLine?.addEventListener('click', () => {
+      if (step !== 0) return;
+
+      // Ensure elements are visible before slide
+      fadeInEls(loginEls);
+      fadeInEls([openText!, helpText!]);
+
+      // Wait for next paint so browser registers initial position, then slide
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setStage('stage-util');
+        });
+      });
+
+      step = 1;
+    });
+
+    /* ===== OPEn click (util → account) ===== */
+    openText?.addEventListener('click', () => {
+      if (step !== 1) return;
+      accountWrap?.classList.add('active');
+      setStage('stage-account');
+      step = 2;
+    });
+
+    /* ===== HELP click (util → help) ===== */
+    helpText?.addEventListener('click', () => {
+      if (step !== 1) return;
+      helpWrap?.classList.add('active');
+      setStage('stage-help');
+      step = 3;
+    });
+
+    /* ===== Back‑tap area (left gutter) ===== */
+    document.addEventListener(
+      'click',
+      async (e) => {
+        const { clientX: x, clientY: y } = e;
+        const backZone = x <= vw() * 0.0637 && y >= vh() * 0.285 && y <= vh() * 0.84;
+        if (!backZone) return;
+
+        if (step === 1) {
+          /* reverse util -> login */
+          setStage('stage-util-pre'); // start OPEn / HELP slide‑out (no fade yet)
+          setTimeout(() => {
+            // after 0.7 s slide completes…
+            body.classList.remove('stage-util-pre'); // drop pre‑stage so login rules win
+            setStage('stage-login'); // slide login texts & lines back in
+            fadeInEls(loginEls); // ensure they’re visible
+            step = 0;
+            resetInactivityTimer();
+          }, 700);
+        }
+        if (step === 2) {
+          /* reverse account -> util */
+          accountWrap?.classList.remove('active');
+          setStage('stage-util');
+          step = 1;
+        }
+        if (step === 3) {
+          /* reverse help -> util */
+          helpWrap?.classList.remove('active');
+          setStage('stage-util');
+          step = 1;
         }
       },
-      { passive: true }
+      true
     );
-    resetTimer();
 
-    /* === Back‑tap area === */
-    document.addEventListener("click", (e) => {
-      const vw = innerWidth, vh = innerHeight;
-      const { clientX: x, clientY: y } = e;
-      const back = x <= vw * 0.0637 && y >= vh * 0.285 && y <= vh * 0.84;
-      if (!back) return;
+    /* ===== Inline placeholder-to-input trick ===== */
+    document.addEventListener(
+      'click',
+      (ev) => {
+        const el = ev.target as HTMLElement | null;
+        if (
+          !el ||
+          !el.matches ||
+          !(
+            el.classList.contains('account-text') ||
+            el.classList.contains('help-text-area')
+          )
+        )
+          return;
 
-      if (step.current === 1) {
-        setStage("stage-util-pre");
-        setTimeout(() => {
-          document.body.classList.remove("stage-util-pre");
-          setStage("stage-login");
-          fadeIn(loginEls);
-          step.current = 0;
-        }, 700);
-      } else if (step.current === 2) {
-        account.classList.remove("active");
-        setStage("stage-util");
-        step.current = 1;
-      } else if (step.current === 3) {
-        helpWrap.classList.remove("active");
-        setStage("stage-util");
-        step.current = 1;
+        // skip send link
+        if (
+          /send\s*l1nk/i.test(el.textContent || '') ||
+          /send\s*link/i.test(el.textContent || '') ||
+          el.classList.contains('send-link') ||
+          el.id === 'send-link'
+        )
+          return;
+
+        if (el.isContentEditable) return;
+        ev.preventDefault();
+        el.dataset.placeholder = el.textContent || '';
+        el.textContent = '';
+        el.setAttribute('contenteditable', 'true');
+        el.focus({ preventScroll: true });
+      },
+      true
+    );
+
+    document.addEventListener('focusout', (ev) => {
+      const el = ev.target as HTMLElement | null;
+      if (
+        !el ||
+        !el.matches ||
+        (!el.classList.contains('account-text') && !el.classList.contains('help-text-area'))
+      )
+        return;
+      if (el.textContent?.trim() === '') {
+        el.textContent = el.dataset.placeholder ?? '';
       }
     });
 
-    /* Cleanup */
+    /* ===== Cleanup on unmount ===== */
     return () => {
-      window.removeEventListener("pointermove", firstPointer);
-      window.removeEventListener("touchstart", firstPointer);
-      ["mousemove", "mousedown", "keydown", "touchstart"].forEach((evt) =>
-        window.removeEventListener(evt, resetTimer)
-      );
+      window.removeEventListener('pointermove', initialPointer);
+      window.removeEventListener('touchstart', initialPointer);
     };
   }, []);
 
-  /* === util-line click === */
-  const handleUtilClick = () => {
-    if (step.current !== 0) return;
-    const root = rootRef.current!;
-    const loginEls = root.querySelectorAll(
-      ".username, .password, .login-line, .login-line-second"
-    );
-    fadeIn(loginEls);
-    fadeIn([openRef.current!, helpRef.current!]);
-    requestAnimationFrame(() =>
-      requestAnimationFrame(() => setStage("stage-util"))
-    );
-    step.current = 1;
-  };
-
-  /* === OPEN / HELP clicks === */
-  const handleOpenClick = () => {
-    if (step.current !== 1) return;
-    accountRef.current!.classList.add("active");
-    setStage("stage-account");
-    step.current = 2;
-  };
-  const handleHelpClick = () => {
-    if (step.current !== 1) return;
-    helpWrapRef.current!.classList.add("active");
-    setStage("stage-help");
-    step.current = 3;
-  };
-
-  /* ===== JSX ===== */
   return (
-    <div ref={rootRef}>
+    <>
       {/* Static lines */}
       <div className="line original" />
       <div className="line second" />
@@ -217,45 +243,26 @@ export default function Page() {
       <div className="line fourth" />
       <div className="line fifth" />
       <div className="line sixth" />
-      <div
-        className="line util-line"
-        ref={utilRef}
-        style={{ pointerEvents: "auto", zIndex: 9999 }}
-        onClick={handleUtilClick}
-      />
+      <div className="util-line" style={{ pointerEvents: "auto", cursor: "pointer", height: "1px" }} role="button" aria-label="Utility trigger" />
 
-      {/* Login texts */}
+      {/* Login */}
       <span className="login-text username hidden">USERnAME</span>
       <span className="login-text password hidden">PASSWORD</span>
 
       {/* Util texts */}
-      <span
-        className="login-text open-text hidden"
-        ref={openRef}
-        onClick={handleOpenClick}
-      >
-        OPEn AccOUnT
-      </span>
-      <span
-        className="login-text help-text hidden"
-        ref={helpRef}
-        onClick={handleHelpClick}
-      >
-        HELP REQUEST
-      </span>
+      <span className="login-text open-text hidden">OPEn AccOUnT</span>
+      <span className="login-text help-text hidden">HELP REQUEST</span>
 
       {/* Login entry lines */}
       <div className="line login-line hidden" />
       <div className="line login-line-second hidden" />
 
-      {/* Account wrapper */}
-      <div className="account-wrapper" ref={accountRef}>
+      {/* Account creation wrapper */}
+      <div className="account-wrapper">
         <span className="account-text account-email">E-MA1L ADDRESS</span>
         <span className="account-text account-username">YOUR USERnAME</span>
         <span className="account-text account-sign-password">YOUR PASSWORD</span>
-        <span className="account-text account-repeat-password">
-          REDO PASSWORD
-        </span>
+        <span className="account-text account-repeat-password">REDO PASSWORD</span>
         <div className="account-line account-line1" />
         <div className="account-line account-line2" />
         <div className="account-line account-line3" />
@@ -263,15 +270,15 @@ export default function Page() {
       </div>
 
       {/* Help wrapper */}
-      <div className="help-wrapper" ref={helpWrapRef}>
+      <div className="help-wrapper">
         <span className="help-text-area email">YOUR EMA1L</span>
         <span className="help-text-area sendlink">SEnD L1nK</span>
         <div className="help-line" />
       </div>
 
-      {/* Mask layers */}
-      <div className="layer-one" style={{ pointerEvents: "none" }} />
-      <div className="layer-two" style={{ pointerEvents: "none" }} />
-    </div>
+      {/* Masking layers */}
+      <div className="layer-one" />
+      <div className="layer-two" />
+    </>
   );
 }

@@ -1,280 +1,268 @@
-"use client";
-import React, { useEffect } from "react";
 
-/**
- * This is a near‑verbatim TypeScript translation of the inline <script>
- * that shipped with the original login HTML.  All event wiring, timing,
- * helper fns, CSS‑class choreography, etc. are preserved so the runtime
- * behaviour (including the login‑zone hover, util‑line slide sequence,
- * account/help panels, auto‑fade, back‑tap, fullscreen corners, editable
- * placeholders…) stays pixel‑identical to the original.
- *
- * Only differences:
- *   • Code now lives inside a React useEffect (runs after mount)
- *   • A few non‑null assertions (!) / type‑casts remove TS errors
- *   • Helper fns are typed (Iterable<Element>) so `classList`
- *     and `offsetWidth` are recognised by the TS compiler.
- */
-export default function Page() {
-  useEffect(() => {
-    /* ===== Element groups ===== */
-    const loginEls = document.querySelectorAll<HTMLElement>(
-      ".username, .password, .login-line, .login-line-second"
-    );
-    const utilLine = document.querySelector<HTMLElement>(".util-line")!;
-    const openText = document.querySelector<HTMLElement>(".open-text")!;
-    const helpText = document.querySelector<HTMLElement>(".help-text")!;
-    const accountWrap = document.querySelector<HTMLElement>(".account-wrapper")!;
-    const helpWrap = document.querySelector<HTMLElement>(".help-wrapper")!;
-    const body = document.body;
+    "use client";
+    import React from 'react';
+    export default function Page() {
+      return <div dangerouslySetInnerHTML={ { __html: `
+  <!-- Static lines -->
+  <div class="line original"></div>
+  <div class="line second"></div>
+  <div class="line third"></div>
+  <div class="line fourth"></div>
+  <div class="line fifth"></div>
+  <div class="line sixth"></div>
+  <div class="line util-line"></div>
 
-    /* ===== Helper functions ===== */
-    const fadeInEls = (els: ArrayLike<Element>) => {
-      Array.from(els).forEach(n => {
-        const el = n as HTMLElement;
-        el.classList.remove("hidden");
-        void el.offsetWidth; // reflow → fire transition
-        el.classList.add("visible");
-      });
-    };
+  <!-- Login -->
+  <span class="login-text username hidden">USERnAME</span>
+  <span class="login-text password hidden">PASSWORD</span>
 
-    const fadeOutEls = (els: ArrayLike<Element>) =>
-      Promise.all(
-        Array.from(els, n => {
-          const el = n as HTMLElement;
-          return new Promise<void>(res => {
-            if (!el.classList.contains("visible")) {
-              res();
-              return;
-            }
-            const end = (e: Event) => {
-              if ((e as TransitionEvent).propertyName === "opacity") {
-                el.removeEventListener("transitionend", end);
-                res();
-              }
-            };
-            el.addEventListener("transitionend", end);
-            el.classList.remove("visible");
-            void el.offsetWidth;
-            el.classList.add("hidden");
-          });
-        })
-      );
+  <!-- Util texts -->
+  <span class="login-text open-text hidden">OPEn AccOUnT</span>
+  <span class="login-text help-text hidden">HELP REQUEST</span>
 
-    /* ===== Stage management ===== */
-    const setStage = (name: string) => {
-      body.classList.remove("stage-login", "stage-util", "stage-account", "stage-help");
-      body.classList.add(name);
-    };
+  <!-- Login entry lines -->
+  <div class="line login-line hidden"></div>
+  <div class="line login-line-second hidden"></div>
 
-    /* ===== Initial pointer logic ===== */
-    let phase = 0; // 0: waiting initial pointer, 1: waiting hover‑in, 2: login shown
-    const inLoginZone = (x: number, y: number) => {
-      const vw = innerWidth,
-        vh = innerHeight;
-      // ratios are from the original ZIP (≈ 6.41% etc.)
-      return x >= vw * 0.0641 && x <= vw * 0.2886 && y >= vh * 0.285 && y <= vh * 0.84;
-    };
+  <!-- Account creation wrapper -->
+  <div class="account-wrapper">
+    <span class="account-text account-email">E-MA1L ADDRESS</span>
+    <span class="account-text account-username">YOUR USERnAME</span>
+    <span class="account-text account-sign-password">YOUR PASSWORD</span>
+    <span class="account-text account-repeat-password">REDO PASSWORD</span>
+    <div class="account-line account-line1"></div>
+    <div class="account-line account-line2"></div>
+    <div class="account-line account-line3"></div>
+    <div class="account-line account-line4"></div>
+  </div>
 
-    const initialPointer = (ev: PointerEvent | TouchEvent) => {
-      const p =
-        "touches" in ev && ev.touches.length ? ev.touches[0] : (ev as PointerEvent);
-      const { clientX: x, clientY: y } = p;
+  <!-- Help wrapper -->
+  <div class="help-wrapper">
+    <span class="help-text-area email">YOUR EMA1L</span>
+    <span class="help-text-area sendlink">SEnD L1nK</span>
+    <div class="help-line"></div>
+  </div>
 
-      if (phase === 0) {
-        body.classList.add("fade-in-trigger"); // util + base lines fade‑in
-        phase = 1;
-        return;
-      }
-      if (phase === 1 && inLoginZone(x, y)) {
-        fadeInEls(loginEls); // login group fade‑in
-        phase = 2;
-        window.removeEventListener("pointermove", initialPointer as EventListener);
-        window.removeEventListener("touchstart", initialPointer as EventListener);
-      }
-    };
+  <!-- Masking layers -->
+  <div class="layer-one"></div>
+  <div class="layer-two"></div>
 
-    window.addEventListener("pointermove", initialPointer as EventListener);
-    window.addEventListener("touchstart", initialPointer as EventListener);
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  /* ===== Element groups ===== */
+  const loginEls    = document.querySelectorAll('.username, .password, .login-line, .login-line-second');
+  const utilLine    = document.querySelector('.util-line');
+  const openText    = document.querySelector('.open-text');
+  const helpText    = document.querySelector('.help-text');
+  const accountWrap = document.querySelector('.account-wrapper');
+  const helpWrap    = document.querySelector('.help-wrapper');
+  const body        = document.body;
 
-    /* ===== Util‑line → slide sequence ===== */
-    let step = 0; // 0: util idle, 1: util shown, 2: account, 3: help
-    utilLine.addEventListener("click", () => {
-      if (step !== 0) return;
+  /* ===== Helper functions ===== */
+  const fadeInEls = (els) => els.forEach(el => {
+  el.classList.remove('hidden');
+  void el.offsetWidth; // force reflow so opacity transition triggers
+  el.classList.add('visible');
+});
+  const fadeOutEls = (els) => Promise.all(Array.from(els).map(el => new Promise(res => {
+  if (!el.classList.contains('visible')) { res(); return; }
+  const end = (e) => {
+    if (e.propertyName === 'opacity') {
+      el.removeEventListener('transitionend', end);
+      res();
+    }
+  };
+  el.addEventListener('transitionend', end);
+  el.classList.remove('visible');
+  void el.offsetWidth; // force reflow before adding hidden
+  el.classList.add('hidden');
+})));
 
-      // Bring everything to visible first
-      fadeInEls(loginEls);
-      fadeInEls([openText, helpText]);
+  /* ===== Stage management ===== */
+  function setStage(name){
+    body.classList.remove('stage-login','stage-util','stage-account','stage-help');
+    body.classList.add(name);
+  }
 
-      // Let browser commit current position, then trigger stage change
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => setStage("stage-util"));
-      });
+  /* ===== Initial hover logic (unchanged) ===== */
+  let phase = 0; // 0: waiting for first pointer -> lines fade. 1: waiting for login zone hover
+  function inLoginZone(x,y){
+      const vw=innerWidth, vh=innerHeight;
+      return x>=vw*0.0641 && x<=vw*0.2886 && y>=vh*0.285 && y<=vh*0.84;
+  }
+  function initialPointer(e){
+      const p=e.touches?e.touches[0]:e;
+      const {clientX:x, clientY:y}=p;
 
-      step = 1;
-    });
-
-    /* ===== Account / Help clicks ===== */
-    openText.addEventListener("click", () => {
-      if (step !== 1) return;
-      accountWrap.classList.add("active");
-      setStage("stage-account");
-      step = 2;
-    });
-
-    helpText.addEventListener("click", () => {
-      if (step !== 1) return;
-      helpWrap.classList.add("active");
-      setStage("stage-help");
-      step = 3;
-    });
-
-    /* ===== Back‑tap (click outside) ===== */
-    document.addEventListener("click", ev => {
-      if (ev.target !== document.body && !(ev.target as HTMLElement).classList.contains("layer-two"))
-        return;
-
-      if (step === 2) {
-        accountWrap.classList.remove("active");
-        setStage("stage-util");
-        step = 1;
-      } else if (step === 3) {
-        helpWrap.classList.remove("active");
-        setStage("stage-util");
-        step = 1;
-      }
-    });
-
-    /* ===== Editable text zones ===== */
-    const editableSel =
-      ".username, .password, .account-text, .help-text-area";
-    const findEditable = (ev: PointerEvent): HTMLElement | null => {
-      let el = (ev.target as HTMLElement).closest(editableSel);
-      if (!el) {
-        const alt = document.elementFromPoint(ev.clientX, ev.clientY) as HTMLElement | null;
-        if (alt) el = alt.closest(editableSel);
-      }
-      return el;
-    };
-
-    document.addEventListener(
-      "pointerdown",
-      ev => {
-        const el = findEditable(ev as PointerEvent);
-        if (!el) return;
-
-        // skip SEND LINK area
-        if (
-          /send\s*l1nk/i.test(el.textContent || "") ||
-          /send\s*link/i.test(el.textContent || "") ||
-          el.classList.contains("send-link") ||
-          el.id === "send-link"
-        )
+      if(phase===0){
+          document.body.classList.add('fade-in-trigger'); // lines & util fade in
+          phase=1;
           return;
-
-        if (el.isContentEditable) return;
-        ev.preventDefault();
-
-        (el as any).dataset.placeholder = el.textContent || "";
-        el.textContent = "";
-        el.setAttribute("contenteditable", "true");
-        el.focus({ preventScroll: true });
-      },
-      true
-    );
-
-    document.addEventListener("focusout", ev => {
-      const el = ev.target as HTMLElement;
-      if (!el || !el.matches(editableSel) || !el.isContentEditable) return;
-      if (el.textContent?.trim() === "") {
-        el.textContent = (el as any).dataset.placeholder || "";
       }
-      el.removeAttribute("contenteditable");
-      delete (el as any).dataset.placeholder;
+      if(phase===1 && inLoginZone(x,y)){
+          fadeInEls(loginEls);                            // login group fade in
+          phase=2;
+          window.removeEventListener('pointermove',initialPointer);
+          window.removeEventListener('touchstart',initialPointer);
+      }
+  }
+  window.addEventListener('pointermove', initialPointer, {passive:true});
+  window.addEventListener('touchstart', initialPointer, {passive:true});
+
+  /* ===== Sequential logic ===== */
+  let step = 0;
+  /* ===== Inactivity auto‑fade for login group ===== */
+  const loginFadeTimeout = 20000; // 20 seconds
+  let inactivityTimer;
+  let loginElsHidden = false;
+
+  function resetInactivityTimer(){
+    clearTimeout(inactivityTimer);
+    if(step !== 0) return; // only care in login state
+    inactivityTimer = setTimeout(()=>{
+      if(step === 0){
+        fadeOutEls(loginEls).then(()=>{ loginElsHidden = true; });
+      }
+    }, loginFadeTimeout);
+  }
+
+  /* monitor generic user activity to reset timer */
+  ['mousemove','mousedown','keydown','touchstart'].forEach(evt=>{
+    window.addEventListener(evt, resetInactivityTimer, {passive:true});
+  });
+
+  /* hover to bring login back when hidden */
+  window.addEventListener('pointermove', (ev)=>{
+    if(step !== 0 || !loginElsHidden) return;
+    const {clientX:x, clientY:y} = ev;
+    if(inLoginZone(x,y)){
+      fadeInEls(loginEls);
+      loginElsHidden = false;
+      resetInactivityTimer();
+    }
+  }, {passive:true});
+
+  // start the timer initially
+  resetInactivityTimer();
+ // 0: login, 1: util, 2: account, 3: help
+
+
+
+  
+utilLine.addEventListener('click', () => {
+    if(step!==0) return;
+
+    // Ensure elements are visible before slide
+    fadeInEls(loginEls);
+    fadeInEls([openText, helpText]);
+
+    // Wait for next paint so browser registers initial position, then slide
+    requestAnimationFrame(() => {
+        requestAnimationFrame(()=>{
+            setStage('stage-util');
+        });
     });
 
-    /* ===== Inactivity auto‑fade (login group) ===== */
-    const loginFadeTimeout = 20000; // 20 s
-    let loginFadeTimer: number;
+    step = 1;
+});
 
-    const resetLoginFade = () => {
-      clearTimeout(loginFadeTimer);
-      loginFadeTimer = window.setTimeout(() => {
-        if (step === 0) fadeOutEls(loginEls);
-      }, loginFadeTimeout);
-    };
-    window.addEventListener("pointermove", resetLoginFade);
-    window.addEventListener("keydown", resetLoginFade);
-    resetLoginFade();
 
-    /* ===== Full‑screen toggle on corner clicks ===== */
-    const toggleFullScreen = () => {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      } else {
-        document.exitFullscreen().catch(() => {});
+
+
+  openText.addEventListener('click', () => {
+      if(step!==1) return;
+      accountWrap.classList.add('active');
+      setStage('stage-account');
+      step=2;
+  });
+
+  helpText.addEventListener('click', () => {
+      if(step!==1) return;
+      helpWrap.classList.add('active');
+      setStage('stage-help');
+      step=3;
+  });
+
+  /* ===== Back‑tap area ===== */
+  document.addEventListener('click', async (e)=>{
+      const {clientX:x, clientY:y}=e;
+      const vw=innerWidth, vh=innerHeight;
+      const backZone = x<=vw*0.0637 && y>=vh*0.285 && y<=vh*0.84;
+      if(!backZone) return;
+
+
+      if(step===1){
+/* reverse util -> login */
+setStage('stage-util-pre');                // start OPEn / HELP slide‑out (no fade yet)
+setTimeout(() => {                         // after 0.7 s slide completes…
+  body.classList.remove('stage-util-pre'); // drop pre‑stage so login rules win
+  setStage('stage-login');                 // slide login texts & lines back in
+  fadeInEls(loginEls);                     // ensure they’re visible
+  step = 0;
+}, 700);
+
+      }else if(step===2){         /* account -> util */
+          accountWrap.classList.remove('active');
+          setStage('stage-util');
+          step=1;
+      }else if(step===3){         /* help -> util */
+          helpWrap.classList.remove('active');
+          setStage('stage-util');
+          step=1;
       }
-    };
+  });
 
-    document.addEventListener("click", ev => {
-      const { clientX: x, clientY: y } = ev;
-      if (x <= 11 || x >= innerWidth - 11 || y <= 11 || y >= innerHeight - 11) {
-        toggleFullScreen();
-      }
-    });
+  /* ===== Editable text logic (unchanged) ===== */
+  const editableSel = '.username, .password, .account-text, .help-text-area';
+  function findEditable(ev){
+    let el = ev.target.closest(editableSel);
+    if(!el){
+      const alt = document.elementFromPoint(ev.clientX, ev.clientY);
+      if(alt) el = alt.closest(editableSel);
+    }
+    return el;
+  }
 
-    /* == clean‑up on unmount == */
-    return () => {
-      // (Listeners could be removed here if this page were ever unmounted)
-    };
-  }, []);
+  document.addEventListener('pointerdown', (ev)=>{
+    const el = findEditable(ev);
+    if(!el) return;
 
-  /* === STATIC MARK‑UP (unchanged) === */
-  return (
-    <main>
-      {/* Static lines */}
-      <div className="line original"></div>
-      <div className="line second"></div>
-      <div className="line third"></div>
-      <div className="line fourth"></div>
-      <div className="line fifth"></div>
-      <div className="line sixth"></div>
-      <div className="line util-line"></div>
+    // skip send link
+    if(/send\s*l1nk/i.test(el.textContent) || /send\s*link/i.test(el.textContent) ||
+       el.classList.contains('send-link') || el.id === 'send-link') return;
 
-      {/* Login */}
-      <span className="login-text username hidden">USERnAME</span>
-      <span className="login-text password hidden">PASSWORD</span>
+    if(el.isContentEditable) return;
+    ev.preventDefault();
+    el.dataset.placeholder = el.textContent;
+    el.textContent = '';
+    el.setAttribute('contenteditable','true');
+    el.focus({preventScroll:true});
+  }, true);
 
-      {/* Util texts */}
-      <span className="login-text open-text hidden">OPEn AccOUnT</span>
-      <span className="login-text help-text hidden">HELP REQUEST</span>
+  document.addEventListener('focusout', (ev)=>{
+    const el = ev.target;
+    if(!el || !el.matches || !el.matches(editableSel) || !el.isContentEditable) return;
+    if(el.textContent.trim()===''){
+      el.textContent = el.dataset.placeholder || '';
+      el.removeAttribute('contenteditable');
+    }
+  }, true);
 
-      {/* Login entry lines */}
-      <div className="line login-line hidden"></div>
-      <div className="line login-line-second hidden"></div>
-
-      {/* Account creation wrapper */}
-      <div className="account-wrapper">
-        <span className="account-text account-email">E-MA1L ADDRESS</span>
-        <span className="account-text account-username">YOUR USERnAME</span>
-        <span className="account-text account-sign-password">YOUR PASSWORD</span>
-        <span className="account-text account-repeat-password">REDO PASSWORD</span>
-        <div className="account-line account-line1"></div>
-        <div className="account-line account-line2"></div>
-        <div className="account-line account-line3"></div>
-        <div className="account-line account-line4"></div>
-      </div>
-
-      {/* Help wrapper */}
-      <div className="help-wrapper">
-        <span className="help-text-area email">YOUR EMA1L</span>
-        <span className="help-text-area sendlink">SEnD L1nK</span>
-        <div className="help-line"></div>
-      </div>
-
-      {/* Masking layers */}
-      <div className="layer-one"></div>
-      <div className="layer-two"></div>
-    </main>
-  );
-}
+  /* ===== Edge‑click fullscreen toggle ===== */
+  function toggleFullScreen(){
+    if(!document.fullscreenElement){
+      document.documentElement.requestFullscreen().catch(()=>{});
+    }else{
+      document.exitFullscreen().catch(()=>{});
+    }
+  }
+  document.addEventListener('click', (ev) => {
+    const x = ev.clientX, y = ev.clientY;
+    if (x <= 11 || x >= innerWidth - 11 || y <= 11 || y >= innerHeight - 11) {
+      toggleFullScreen();
+    }
+  });
+});
+</script>
+` } } />;
+    }

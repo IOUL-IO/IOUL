@@ -133,12 +133,14 @@ const PageScripts: React.FC = () => {
             document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach(el => {
               if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
               el.style.transition = 'left 0.7s ease';
-              el.style.left = `${parseFloat(el.style.left) + 29}vw`;
+              el.style.left = `parseFloat(el.style.left) + 29vw`;
             });
-            document.querySelectorAll<HTMLElement>('.community-items-container *:not(.custom-line)').forEach(el => {
+            document.querySelectorAll<HTMLElement>(
+              '.community-items-container *:not(.custom-line)'
+            ).forEach(el => {
               if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
               el.style.transition = 'left 0.7s ease';
-              el.style.left = `${parseFloat(el.style.left) + 29}vw`;
+              el.style.left = `parseFloat(el.style.left) + 29vw`;
             });
             document.querySelectorAll<HTMLElement>('.community-items-container .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
@@ -149,7 +151,7 @@ const PageScripts: React.FC = () => {
             document.querySelectorAll<HTMLElement>('.zero-items-container *').forEach(el => {
               if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
               el.style.transition = 'left 0.7s ease';
-              el.style.left = `${parseFloat(el.style.left) + 29}vw`;
+              el.style.left = `parseFloat(el.style.left) + 29vw`;
             });
             slideState = 'menu';
             return;
@@ -169,52 +171,52 @@ const PageScripts: React.FC = () => {
             }
             slideState = 'none';
           } else if (['heading','account'].includes(slideState)) {
-            document.querySelectorAll<HTMLElement>('[data-slide-group=\"heading\"]').forEach(el => {
-              el.style.transform = `translateX(${el.dataset.offset}vw)`;
-            });
-            document.querySelectorAll<HTMLElement>('[data-slide-group=\"account\"]').forEach(el => {
-              el.style.transform = `translateX(${el.dataset.offset}vw)`;
-            });
-            document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              if (el.dataset.originalLeft) el.style.left = el.dataset.originalLeft;
-            });
-            document.querySelectorAll<HTMLElement>('.other-content > .custom-line').forEach(el => {
-              if (el.dataset.originalLeft) {
-                el.style.transition = 'left 0.7s ease';
-                el.style.left = el.dataset.originalLeft!;
-              }
-            });
-            const ct2 = document.getElementById('chatText');
-            if (ct2) {
+            document
+              .querySelectorAll<HTMLElement>('[data-slide-group="heading"]')
+              .forEach(el => { el.style.transform = translateX(${el.dataset.offset}vw); });
+            document
+              .querySelectorAll<HTMLElement>('[data-slide-group="account"]')
+              .forEach(el => { el.style.transform = translateX(${el.dataset.offset}vw); });
+            document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)')
+              .forEach(el => { if (el.dataset.originalLeft) el.style.left = el.dataset.originalLeft; });
+            document.querySelectorAll<HTMLElement>('.other-content > .custom-line')
+              .forEach(el => {
+                if (el.dataset.originalLeft) {
+                  el.style.transition = 'left 0.7s ease';
+                  el.style.left = el.dataset.originalLeft!;
+                }
+              });
+            const ct = document.getElementById('chatText');
+            if (ct) {
               setTimeout(() => {
                 if (slideState !== 'none') return;
-                ct2.style.transition = 'opacity 0.7s ease';
-                ct2.style.opacity = '1';
+                ct.style.transition = 'opacity 0.7s ease';
+                ct.style.opacity = '1';
               }, 700);
             }
             slideState = 'none';
           } else if (slideState === 'none') {
-            const ct3 = document.getElementById('chatText');
-            if (ct3) {
-              ct3.style.transition = 'opacity 0.1s ease';
-              ct3.style.opacity = '0';
+            const ct = document.getElementById('chatText');
+            if (ct) {
+              ct.style.transition = 'opacity 0.1s ease';
+              ct.style.opacity = '0';
               setTimeout(() => {
-                document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-                  if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
-                  el.style.transition = 'left 0.7s ease';
-                  el.style.left = `${parseFloat(el.dataset.originalLeft!) + 49}vw`;
-                });
-                document.querySelectorAll<HTMLElement>('.other-content > .custom-line').forEach(el => {
-                  if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
-                  el.style.transition = 'left 0.7s ease';
-                  el.style.left = `${parseFloat(el.dataset.originalLeft!) + 49}vw`;
-                });
-                document.querySelectorAll<HTMLElement>('[data-slide-group=\"heading\"]').forEach(el => {
-                  el.style.transform = 'translateX(0)';
-                });
-                document.querySelectorAll<HTMLElement>('[data-slide-group=\"account\"]').forEach(el => {
-                  el.style.transform = 'translateX(0)';
-                });
+                document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)')
+                  .forEach(el => {
+                    if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
+                    el.style.transition = 'left 0.7s ease';
+                    el.style.left = `parseFloat(el.dataset.originalLeft!)+49vw`;
+                  });
+                document.querySelectorAll<HTMLElement>('.other-content > .custom-line')
+                  .forEach(el => {
+                    if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
+                    el.style.transition = 'left 0.7s ease';
+                    el.style.left = `parseFloat(el.dataset.originalLeft!)+49vw`;
+                  });
+                document.querySelectorAll<HTMLElement>('[data-slide-group="heading"]')
+                  .forEach(el => el.style.transform = 'translateX(0)');
+                document.querySelectorAll<HTMLElement>('[data-slide-group="account"]')
+                  .forEach(el => el.style.transform = 'translateX(0)');
               }, 110);
             }
             slideState = 'heading';
@@ -231,15 +233,15 @@ const PageScripts: React.FC = () => {
          event.target.closest('.chat-text') ||
          event.target.closest('.chat-input'))
       ) return;
-      const vw2 = window.innerWidth / 100;
-      const vh2 = window.innerHeight / 100;
-      const leftMin2 = 28.86 * vw2, leftMax2 = 32.43 * vw2;
-      const yMin2 = 28.5 * vh2, yMax2 = 84 * vh2;
+      const vw = window.innerWidth / 100;
+      const vh = window.innerHeight / 100;
+      const leftMin = 28.86 * vw, leftMax = 32.43 * vw;
+      const yMin = 28.5 * vh, yMax = 84 * vh;
       if (
-        event.clientX >= leftMin2 &&
-        event.clientX <= leftMax2 &&
-        event.clientY >= yMin2 &&
-        event.clientY <= yMax2
+        event.clientX >= leftMin &&
+        event.clientX <= leftMax &&
+        event.clientY >= yMin &&
+        event.clientY <= yMax
       ) {
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
@@ -247,49 +249,49 @@ const PageScripts: React.FC = () => {
             document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach(el => {
               if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
               el.style.transition = 'left 0.7s ease';
-              el.style.left = `${parseFloat(el.style.left) - 29}vw`;
+              el.style.left = `parseFloat(el.style.left) - 29vw`;
             });
             document.querySelectorAll<HTMLElement>('.community-items-container *').forEach(el => {
               if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
               el.style.transition = 'left 0.7s ease';
-              el.style.left = `${parseFloat(el.style.left) - 29}vw`;
+              el.style.left = `parseFloat(el.style.left) - 29vw`;
             });
             document.querySelectorAll<HTMLElement>('.zero-items-container *').forEach(el => {
               if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
               el.style.transition = 'left 0.7s ease';
-              el.style.left = `${parseFloat(el.style.left) - 29}vw`;
+              el.style.left = `parseFloat(el.style.left) - 29vw`;
             });
             slideState = 'community';
           } else if (['heading','account'].includes(slideState)) {
-            document.querySelectorAll<HTMLElement>('[data-slide-group=\"heading\"]').forEach(el => {
-              el.style.transform = `translateX(${el.dataset.offset}vw)`;
-            });
-            document.querySelectorAll<HTMLElement>('[data-slide-group=\"account\"]').forEach(el => {
-              el.style.transform = `translateX(${el.dataset.offset}vw)`;
-            });
-            document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              if (el.dataset.originalLeft) el.style.left = el.dataset.originalLeft;
-            });
-            document.querySelectorAll<HTMLElement>('.other-content > .custom-line').forEach(el => {
-              if (el.dataset.originalLeft) {
-                el.style.transition = 'left 0.7s ease';
-                el.style.left = el.dataset.originalLeft!;
-              }
-            });
-            const ct4 = document.getElementById('chatText');
-            if (ct4) {
+            document
+              .querySelectorAll<HTMLElement>('[data-slide-group="heading"]')
+              .forEach(el => { el.style.transform = translateX(${el.dataset.offset}vw); });
+            document
+              .querySelectorAll<HTMLElement>('[data-slide-group="account"]')
+              .forEach(el => { el.style.transform = translateX(${el.dataset.offset}vw); });
+            document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)')
+              .forEach(el => { if (el.dataset.originalLeft) el.style.left = el.dataset.originalLeft; });
+            document.querySelectorAll<HTMLElement>('.other-content > .custom-line')
+              .forEach(el => {
+                if (el.dataset.originalLeft) {
+                  el.style.transition = 'left 0.7s ease';
+                  el.style.left = el.dataset.originalLeft!;
+                }
+              });
+            const ct = document.getElementById('chatText');
+            if (ct) {
               setTimeout(() => {
                 if (slideState !== 'none') return;
-                ct4.style.transition = 'opacity 0.7s ease';
-                ct4.style.opacity = '1';
+                ct.style.transition = 'opacity 0.7s ease';
+                ct.style.opacity = '1';
               }, 700);
             }
             slideState = 'none';
           } else if (slideState === 'none') {
-            const ct5 = document.getElementById('chatText');
-            if (ct5) {
-              ct5.style.transition = 'opacity 0.1s ease';
-              ct5.style.opacity = '0';
+            const ct = document.getElementById('chatText');
+            if (ct) {
+              ct.style.transition = 'opacity 0.1s ease';
+              ct.style.opacity = '0';
               setTimeout(() => {
                 document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach(el => {
                   if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
@@ -331,7 +333,7 @@ const PageScripts: React.FC = () => {
       top: '28.5vh',
       left: '36vw',
       width: '58vw',
-      height: '55.5vh',  
+      height: '55.5vh',
       zIndex: '5',
       pointerEvents: 'auto',
       cursor: 'default'
@@ -363,12 +365,12 @@ const PageScripts: React.FC = () => {
               allEls.forEach(el => el.style.transform = 'translateY(-55.5vh)');
               isSecondScroll = true;
             } else {
-              allEls.forEach(el => el.style.transform = 'translateY(-111vh)');  
+              allEls.forEach(el => el.style.transform = 'translateY(-111vh)');
               isSecondScroll = false;
             }
           } else {
             const current = allEls[0]?.style.transform || '';
-            const match = current.match(/translateY\\((-?[\\d.]+)vh\\)/);
+            const match = current.match(/translateY\((-?[\d.]+)vh\)/);
             const y = match ? parseFloat(match[1]) : 0;
             if (y === -111) {
               allEls.forEach(el => el.style.transform = 'translateY(-55.5vh)');
@@ -386,23 +388,23 @@ const PageScripts: React.FC = () => {
     const slideDownSiblings = (clickedId: string) => {
       const items = Array.from(document.querySelectorAll<HTMLElement>('.menu-items .menu-item'));
       const idx = items.findIndex(el => el.id === clickedId);
-      items.slice(idx + 1).forEach(el => {
-        el.classList.remove('menu-slide', 'slide-down');
+      items.slice(idx+1).forEach(el => {
+        el.classList.remove('menu-slide','slide-down');
         el.style.transform = '';
         el.style.transition = '';
         void el.offsetHeight;
         el.classList.add('menu-slide');
       });
       requestAnimationFrame(() => {
-        items.slice(idx + 1).forEach(el => el.classList.add('slide-down'));
+        items.slice(idx+1).forEach(el => el.classList.add('slide-down'));
       });
     };
     const addNewText = (text: string, topVH: number, leftVW: number) => {
       if (slideState !== 'menu') return;
       const span = document.createElement('span');
       span.className = 'custom-text new-text';
-      span.style.top = `${topVH}vh`;
-      span.style.left = `${leftVW}vw`;
+      span.style.top = ${topVH}vh;
+      span.style.left = `leftVWvw`;
       span.textContent = text;
       document.querySelector('.other-content')?.appendChild(span);
       setTimeout(() => span.classList.add('visible'), 10);
@@ -442,17 +444,10 @@ const PageScripts: React.FC = () => {
       currentMenu = 'internal-unit';
     };
 
-    ['online-assets','linkup-center','delivery-line','internal-unit'].forEach(id => {
-      document.getElementById(id)?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        currentMenu === id ? closeSubmenu() : (
-          id === 'online-assets' ? openOnlineAssets() :
-          id === 'linkup-center' ? openLinkupCenter() :
-          id === 'delivery-line' ? openDeliveryLine() :
-          openInternalUnit()
-        );
-      });
-    });
+    document.getElementById('online-assets')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='online-assets' ? closeSubmenu() : openOnlineAssets(); });
+    document.getElementById('linkup-center')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='linkup-center' ? closeSubmenu() : openLinkupCenter(); });
+    document.getElementById('delivery-line')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='delivery-line' ? closeSubmenu() : openDeliveryLine(); });
+    document.getElementById('internal-unit')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='internal-unit' ? closeSubmenu() : openInternalUnit(); });
 
     // ===== util-line toggle (mail/calendar/lines) =====
     const utilLines = Array.from(document.querySelectorAll<HTMLElement>('.util-line'));
@@ -465,21 +460,19 @@ const PageScripts: React.FC = () => {
 
     let stateView = 0;
     const updateView = () => {
-      mailEls.forEach(el => {
-        if (stateView === 1) {
-          el.classList.remove('hidden');
-          el.style.opacity = '1';
-        } else {
-          el.classList.add('hidden');
-          el.style.opacity = '0';
-        }
-      });
-      calendarEls.forEach(el => {
-        stateView === 2 ? el.classList.remove('hidden') : el.classList.add('hidden');
-      });
-      specialLines.forEach(el => {
-        stateView === 0 ? el.classList.remove('hidden') : el.classList.add('hidden');
-      });
+      if (stateView === 0) {
+        mailEls.forEach(el => { el.classList.add('hidden'); el.style.opacity = '0'; });
+        calendarEls.forEach(el => el.classList.add('hidden'));
+        specialLines.forEach(el => el.classList.remove('hidden'));
+      } else if (stateView === 1) {
+        mailEls.forEach(el => { el.classList.remove('hidden'); el.style.opacity = '1'; });
+        calendarEls.forEach(el => el.classList.add('hidden'));
+        specialLines.forEach(el => el.classList.remove('hidden'));
+      } else {
+        mailEls.forEach(el => { el.classList.add('hidden'); el.style.opacity = '0'; });
+        calendarEls.forEach(el => el.classList.remove('hidden'));
+        specialLines.forEach(el => el.classList.add('hidden'));
+      }
     };
     utilLines.forEach(line => line.addEventListener('click', () => {
       stateView = (stateView + 1) % 3;
@@ -493,13 +486,13 @@ const PageScripts: React.FC = () => {
     const REVERSE_MIN= 94,    REVERSE_MAX=100;
     const DISTANCE   = 60,    DURATION   = 700;
 
-    const pxToVw = (px: number) => px / (window.innerWidth / 100);
-    const pxToVh = (px: number) => px / (window.innerHeight / 100);
+    const pxToVw = (px: number) => px / (window.innerWidth/100);
+    const pxToVh = (px: number) => px / (window.innerHeight/100);
 
     const targets = Array.from(document.querySelectorAll<HTMLElement>('.account-text'))
       .concat(Array.from(document.querySelectorAll<HTMLElement>('.account-line')));
     targets.forEach(el => {
-      if (!el.dataset.baseLeftVw) {  
+      if (!el.dataset.baseLeftVw) {
         const leftPx = parseFloat(getComputedStyle(el).left) || 0;
         el.dataset.baseLeftVw = pxToVw(leftPx).toString();
       }
@@ -520,15 +513,15 @@ const PageScripts: React.FC = () => {
     let sliding = false;
     const slideOnce = () => {
       if (sliding || targets[0].dataset.slid === 'true') return;
-      sliding = true;  
+      sliding = true;
       targets.forEach(el => {
         el.style.opacity = '';
         el.style.pointerEvents = '';
       });
       targets.forEach(el => {
         const base = parseFloat(el.dataset.baseLeftVw!);
-        el.style.transition = `left ${DURATION}ms ease`;
-        el.style.left = `${base + DISTANCE}vw`;
+        el.style.transition = left ${DURATION}ms ease;
+        el.style.left = `base + DISTANCEvw`;
         el.dataset.slid = 'true';
       });
       setTimeout(() => { updateVisibility(); sliding = false; }, DURATION);
@@ -538,8 +531,8 @@ const PageScripts: React.FC = () => {
       sliding = true;
       targets.forEach(el => {
         const base = parseFloat(el.dataset.baseLeftVw!);
-        el.style.transition = `left ${DURATION}ms ease`;
-        el.style.left = `${base}vw`;
+        el.style.transition = left ${DURATION}ms ease;
+        el.style.left = `basevw`;
         delete el.dataset.slid;
       });
       setTimeout(() => { updateVisibility(); sliding = false; }, DURATION);
@@ -568,6 +561,7 @@ const PageScripts: React.FC = () => {
       document.removeEventListener('click', onGlobalClick2, true);
       document.removeEventListener('resize', updateVisibility);
       utilLines.forEach(line => line.replaceWith(line.cloneNode(true) as HTMLElement));
+      // (and any others if you track them separately)
     };
   }, []);
 

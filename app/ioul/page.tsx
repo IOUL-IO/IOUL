@@ -1,51 +1,652 @@
+"use client";
 
-    "use client";
-    import React, { useEffect } from 'react';
+import React, { useEffect } from 'react';
+import './styles.css';
 
-    export default function Page() {
-      useEffect(() => {
-        // TODO: any JS init from legacy project can be ported here
-      }, []);
-      return (
-        <div dangerouslySetInnerHTML={ { __html: `<p style="display:none" lang="en">This page is already in English. No translation is needed.</p>
+const PageScripts: React.FC = () => {
+  useEffect(() => {
+    // ===== Fade-in on first mouse move =====
+    const pageContent = document.querySelector<HTMLElement>('.page-content');
+    let pageFadedIn = false;
+    const fadeInPage = () => {
+      if (pageContent) {
+        pageContent.style.opacity = '1';
+        pageFadedIn = true;
+      }
+    };
+    const onFirstMouseMove = () => {
+      if (!pageFadedIn) fadeInPage();
+      document.removeEventListener('mousemove', onFirstMouseMove);
+    };
+    document.addEventListener('mousemove', onFirstMouseMove);
 
-  <div class="layer-one"></div>
-  <div class="layer-two"></div>
-  <div class="layer-three"></div>
+    // ===== Fullscreen toggle on edge click =====
+    const EDGE_MARGIN = 11;
+    const onEdgeClick = (event: MouseEvent) => {
+      const { clientX: x, clientY: y } = event;
+      const { innerWidth: width, innerHeight: height } = window;
+      if (
+        !document.fullscreenElement &&
+        (x <= EDGE_MARGIN ||
+         x >= width - EDGE_MARGIN ||
+         y <= EDGE_MARGIN ||
+         y >= height - EDGE_MARGIN)
+      ) {
+        document.documentElement.requestFullscreen?.();
+      }
+    };
+    document.addEventListener('click', onEdgeClick);
 
-  <div class="page-content">
-    <div class="menu-items">
-      <span class="custom-text menu-item" style="top:36.1vh; left:29vw;" id="online-assets">
-        OnL1nE ASSETS:
-      </span>
-      <span class="custom-text menu-item" style="top:43.2vh; left:29vw;" id="linkup-center">
-        L1nKUP cEnTER:
-      </span>
-      <span class="custom-text menu-item" style="top:50.3vh; left:29vw;" id="delivery-line">
-        DEL1VERY L1nE:
-      </span>
-      <span class="custom-text menu-item" style="top:57.4vh; left:29vw;" id="internal-unit">
-        1nTERnAL Un1T:
-      </span>
+    // ===== Chat reveal & activation =====
+    let slideState: 'none' | 'community' | 'menu' | 'heading' | 'account' = 'none';
+    const chatText = document.getElementById('chatText') as HTMLElement | null;
+    if (chatText) {
+      chatText.style.pointerEvents = 'none';
+      chatText.style.zIndex = '-1';
+    }
+    let chatShownOnce = false;
+    const hoverArea = document.querySelector<HTMLElement>('.hover-area');
+    const onChatHover = (event: MouseEvent) => {
+      if (!chatShownOnce && pageFadedIn && hoverArea && chatText) {
+        const rect = hoverArea.getBoundingClientRect();
+        if (
+          event.clientX >= rect.left &&
+          event.clientX <= rect.right &&
+          event.clientY >= rect.top &&
+          event.clientY <= rect.bottom
+        ) {
+          chatText.style.opacity = '1';
+          chatText.style.pointerEvents = 'auto';
+          chatText.style.zIndex = '10';
+          chatShownOnce = true;
+        }
+      }
+    };
+    document.addEventListener('mousemove', onChatHover);
+    const onChatClick = (event: MouseEvent) => {
+      event.stopPropagation();
+      if (!chatText) return;
+      const chatInput = document.createElement('input');
+      chatInput.type = 'text';
+      chatInput.classList.add('chat-input');
+      chatInput.id = 'chatText';
+      chatText.replaceWith(chatInput);
+      chatInput.focus();
+    };
+    chatText?.addEventListener('click', onChatClick);
+
+    // ===== Submenu helpers =====
+    let currentMenu: string | null = null;
+    const quickRemoveSubmenu = () => {
+      document.querySelectorAll<HTMLElement>('.new-text').forEach(span => {
+        span.style.transition = 'opacity 0.1s ease';
+        span.classList.remove('visible');
+      });
+      setTimeout(() => {
+        document.querySelectorAll<HTMLElement>('.new-text').forEach(span => span.remove());
+        currentMenu = null;
+      }, 100);
+      ['linkup-center','delivery-line','internal-unit'].forEach(id => {
+        document.getElementById(id)?.classList.remove('slide-down');
+      });
+    };
+    const closeSubmenu = () => {
+      document.querySelectorAll<HTMLElement>('.new-text').forEach(span => {
+        span.style.transition = 'opacity 0.3s ease';
+        span.classList.remove('visible');
+      });
+      setTimeout(() => {
+        document.querySelectorAll<HTMLElement>('.new-text').forEach(span => span.remove());
+        currentMenu = null;
+      }, 300);
+      ['linkup-center','delivery-line','internal-unit'].forEach(id => {
+        document.getElementById(id)?.classList.remove('slide-down');
+      });
+    };
+    const forceCloseSubmenuThen = (fn: () => void) => {
+      if (currentMenu !== null) {
+        quickRemoveSubmenu();
+        setTimeout(fn, 100);
+      } else {
+        fn();
+      }
+    };
+
+    // ===== Click outside handlers for sliding logic =====
+    const onGlobalClick1 = (event: MouseEvent) => {
+      if (event.target instanceof Element &&
+          (event.target.closest('.menu-item') ||
+           event.target.closest('.chat-text'))
+      ) return;
+      const vw = window.innerWidth / 100;
+      const vh = window.innerHeight / 100;
+      const leftMin = 0, leftMax = 6.37 * vw, yMin = 28.5 * vh, yMax = 84 * vh;
+      if (
+        event.clientX >= leftMin &&
+        event.clientX <= leftMax &&
+        event.clientY >= yMin &&
+        event.clientY <= yMax
+      ) {
+        event.stopPropagation();
+        forceCloseSubmenuThen(() => {
+          if (slideState === 'community') {
+            document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach(el => {
+              if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
+              el.style.transition = 'left 0.7s ease';
+              el.style.left = `${parseFloat(el.style.left) + 29}vw`;
+            });
+            document.querySelectorAll<HTMLElement>(
+              '.community-items-container *:not(.custom-line)'
+            ).forEach(el => {
+              if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
+              el.style.transition = 'left 0.7s ease';
+              el.style.left = `${parseFloat(el.style.left) + 29}vw`;
+            });
+            document.querySelectorAll<HTMLElement>('.community-items-container .custom-line').forEach(el => {
+              if (el.dataset.originalLeft) {
+                el.style.transition = 'left 0.7s ease';
+                el.style.left = el.dataset.originalLeft!;
+              }
+            });
+            document.querySelectorAll<HTMLElement>('.zero-items-container *').forEach(el => {
+              if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
+              el.style.transition = 'left 0.7s ease';
+              el.style.left = `${parseFloat(el.style.left) + 29}vw`;
+            });
+            slideState = 'menu';
+            return;
+          } else if (slideState === 'menu') {
+            document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach(el => {
+              el.style.transition = 'transform 0.7s ease';
+              el.style.transform = 'translateX(0)';
+            });
+            document.querySelector('.menu-items')?.classList.remove('raised');
+            const ct = document.getElementById('chatText');
+            if (ct) {
+              setTimeout(() => {
+                if (slideState !== 'none') return;
+                ct.style.transition = 'opacity 0.7s ease';
+                ct.style.opacity = '1';
+              }, 700);
+            }
+            slideState = 'none';
+          } else if (['heading','account'].includes(slideState)) {
+            document
+              .querySelectorAll<HTMLElement>('[data-slide-group="heading"]')
+              .forEach(el => { el.style.transform = `translateX(${el.dataset.offset}vw)`; });
+            document
+              .querySelectorAll<HTMLElement>('[data-slide-group="account"]')
+              .forEach(el => { el.style.transform = `translateX(${el.dataset.offset}vw)`; });
+            document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)')
+              .forEach(el => { if (el.dataset.originalLeft) el.style.left = el.dataset.originalLeft; });
+            document.querySelectorAll<HTMLElement>('.other-content > .custom-line')
+              .forEach(el => {
+                if (el.dataset.originalLeft) {
+                  el.style.transition = 'left 0.7s ease';
+                  el.style.left = el.dataset.originalLeft!;
+                }
+              });
+            const ct = document.getElementById('chatText');
+            if (ct) {
+              setTimeout(() => {
+                if (slideState !== 'none') return;
+                ct.style.transition = 'opacity 0.7s ease';
+                ct.style.opacity = '1';
+              }, 700);
+            }
+            slideState = 'none';
+          } else if (slideState === 'none') {
+            const ct = document.getElementById('chatText');
+            if (ct) {
+              ct.style.transition = 'opacity 0.1s ease';
+              ct.style.opacity = '0';
+              setTimeout(() => {
+                document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)')
+                  .forEach(el => {
+                    if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
+                    el.style.transition = 'left 0.7s ease';
+                    el.style.left = `${parseFloat(el.dataset.originalLeft!)+49}vw`;
+                  });
+                document.querySelectorAll<HTMLElement>('.other-content > .custom-line')
+                  .forEach(el => {
+                    if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
+                    el.style.transition = 'left 0.7s ease';
+                    el.style.left = `${parseFloat(el.dataset.originalLeft!)+49}vw`;
+                  });
+                document.querySelectorAll<HTMLElement>('[data-slide-group="heading"]')
+                  .forEach(el => el.style.transform = 'translateX(0)');
+                document.querySelectorAll<HTMLElement>('[data-slide-group="account"]')
+                  .forEach(el => el.style.transform = 'translateX(0)');
+              }, 110);
+            }
+            slideState = 'heading';
+          }
+        });
+      }
+    };
+    document.addEventListener('click', onGlobalClick1, true);
+
+    const onGlobalClick2 = (event: MouseEvent) => {
+      if (
+        event.target instanceof Element &&
+        (event.target.closest('.menu-item') ||
+         event.target.closest('.chat-text') ||
+         event.target.closest('.chat-input'))
+      ) return;
+      const vw = window.innerWidth / 100;
+      const vh = window.innerHeight / 100;
+      const leftMin = 28.86 * vw, leftMax = 32.43 * vw;
+      const yMin = 28.5 * vh, yMax = 84 * vh;
+      if (
+        event.clientX >= leftMin &&
+        event.clientX <= leftMax &&
+        event.clientY >= yMin &&
+        event.clientY <= yMax
+      ) {
+        event.stopPropagation();
+        forceCloseSubmenuThen(() => {
+          if (slideState === 'menu') {
+            document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach(el => {
+              if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
+              el.style.transition = 'left 0.7s ease';
+              el.style.left = `${parseFloat(el.style.left) - 29}vw`;
+            });
+            document.querySelectorAll<HTMLElement>('.community-items-container *').forEach(el => {
+              if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
+              el.style.transition = 'left 0.7s ease';
+              el.style.left = `${parseFloat(el.style.left) - 29}vw`;
+            });
+            document.querySelectorAll<HTMLElement>('.zero-items-container *').forEach(el => {
+              if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
+              el.style.transition = 'left 0.7s ease';
+              el.style.left = `${parseFloat(el.style.left) - 29}vw`;
+            });
+            slideState = 'community';
+          } else if (['heading','account'].includes(slideState)) {
+            document
+              .querySelectorAll<HTMLElement>('[data-slide-group="heading"]')
+              .forEach(el => { el.style.transform = `translateX(${el.dataset.offset}vw)`; });
+            document
+              .querySelectorAll<HTMLElement>('[data-slide-group="account"]')
+              .forEach(el => { el.style.transform = `translateX(${el.dataset.offset}vw)`; });
+            document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)')
+              .forEach(el => { if (el.dataset.originalLeft) el.style.left = el.dataset.originalLeft; });
+            document.querySelectorAll<HTMLElement>('.other-content > .custom-line')
+              .forEach(el => {
+                if (el.dataset.originalLeft) {
+                  el.style.transition = 'left 0.7s ease';
+                  el.style.left = el.dataset.originalLeft!;
+                }
+              });
+            const ct = document.getElementById('chatText');
+            if (ct) {
+              setTimeout(() => {
+                if (slideState !== 'none') return;
+                ct.style.transition = 'opacity 0.7s ease';
+                ct.style.opacity = '1';
+              }, 700);
+            }
+            slideState = 'none';
+          } else if (slideState === 'none') {
+            const ct = document.getElementById('chatText');
+            if (ct) {
+              ct.style.transition = 'opacity 0.1s ease';
+              ct.style.opacity = '0';
+              setTimeout(() => {
+                document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach(el => {
+                  if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
+                  el.style.transition = 'transform 0.7s ease';
+                  el.style.transform = 'translateX(-22.59vw)';
+                });
+                setTimeout(() => document.querySelector('.menu-items')?.classList.add('raised'), 700);
+              }, 110);
+            }
+            slideState = 'menu';
+          }
+        });
+      }
+    };
+    document.addEventListener('click', onGlobalClick2, true);
+
+    // ===== Calendar scroll behavior =====
+    let isScrolling = false;
+    let scrollTimeout: number;
+    let isSecondScroll = false;
+
+    const nums1to16 = Array.from(document.querySelectorAll<HTMLElement>(
+      '.grid-number.num1, .grid-number.num2, .grid-number.num3, .grid-number.num4, .grid-number.num5, .grid-number.num6, .grid-number.num7, .grid-number.num8, .grid-number.num9, .grid-number.num10, .grid-number.num11, .grid-number.num12, .grid-number.num13, .grid-number.num14, .grid-number.num15, .grid-number.num16'
+    ));
+    const nums17to31 = Array.from(document.querySelectorAll<HTMLElement>(
+      '.grid-number.num17, .grid-number.num18, .grid-number.num19, .grid-number.num20, .grid-number.num21, .grid-number.num22, .grid-number.num23, .grid-number.num24, .grid-number.num25, .grid-number.num26, .grid-number.num27, .grid-number.num28, .grid-number.num29, .grid-number.num30, .grid-number.num31'
+    ));
+    const dash1to16 = Array.from(document.querySelectorAll<HTMLElement>(
+      '.grid-dashed.dashed01, .grid-dashed.dashed02, .grid-dashed.dashed03, .grid-dashed.dashed04, .grid-dashed.dashed05, .grid-dashed.dashed06, .grid-dashed.dashed07, .grid-dashed.dashed08, .grid-dashed.dashed09, .grid-dashed.dashed10, .grid-dashed.dashed11, .grid-dashed.dashed12, .grid-dashed.dashed13, .grid-dashed.dashed14, .grid-dashed.dashed15, .grid-dashed.dashed16'
+    ));
+    const dash17to31 = Array.from(document.querySelectorAll<HTMLElement>(
+      '.grid-dashed.dashed17, .grid-dashed.dashed18, .grid-dashed.dashed19, .grid-dashed.dashed20, .grid-dashed.dashed21, .grid-dashed.dashed22, .grid-dashed.dashed23, .grid-dashed.dashed24, .grid-dashed.dashed25, .grid-dashed.dashed26, .grid-dashed.dashed27, .grid-dashed.dashed28, .grid-dashed.dashed29, .grid-dashed.dashed30, .grid-dashed.dashed31'
+    ));
+
+    // create scroll area
+    const scrollArea = document.createElement('div');
+    Object.assign(scrollArea.style, {
+      position: 'absolute',
+      top: '28.5vh',
+      left: '36vw',
+      width: '58vw',
+      height: '55.5vh',
+      zIndex: '5',
+      pointerEvents: 'auto',
+      cursor: 'default'
+    });
+    document.querySelector('.other-content')?.appendChild(scrollArea);
+
+    let mailShownOnce = false;
+    scrollArea.addEventListener('mousemove', () => {
+      if (!mailShownOnce) {
+        document.querySelectorAll<HTMLElement>('.mail-text, .mail-line')
+          .forEach(el => el.style.opacity = '1');
+        mailShownOnce = true;
+      }
+    });
+
+    scrollArea.addEventListener('wheel', (e: WheelEvent) => {
+      e.preventDefault();
+      if (isScrolling) return;
+      isScrolling = true;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = window.setTimeout(() => { isScrolling = false; }, 700);
+
+      const allEls = [...nums1to16, ...nums17to31, ...dash1to16, ...dash17to31];
+      requestAnimationFrame(() => {
+        allEls.forEach(el => el.style.transition = 'transform 0.7s ease');
+        requestAnimationFrame(() => {
+          if (e.deltaY > 0) {
+            if (!isSecondScroll) {
+              allEls.forEach(el => el.style.transform = 'translateY(-55.5vh)');
+              isSecondScroll = true;
+            } else {
+              allEls.forEach(el => el.style.transform = 'translateY(-111vh)');
+              isSecondScroll = false;
+            }
+          } else {
+            const current = allEls[0]?.style.transform || '';
+            const match = current.match(/translateY\((-?[\d.]+)vh\)/);
+            const y = match ? parseFloat(match[1]) : 0;
+            if (y === -111) {
+              allEls.forEach(el => el.style.transform = 'translateY(-55.5vh)');
+              isSecondScroll = true;
+            } else if (y === -55.5) {
+              allEls.forEach(el => el.style.transform = 'translateY(0)');
+              isSecondScroll = false;
+            }
+          }
+        });
+      });
+    }, { passive: false });
+
+    // ===== Slide-down submenu & new-text helpers =====
+    const slideDownSiblings = (clickedId: string) => {
+      const items = Array.from(document.querySelectorAll<HTMLElement>('.menu-items .menu-item'));
+      const idx = items.findIndex(el => el.id === clickedId);
+      items.slice(idx+1).forEach(el => {
+        el.classList.remove('menu-slide','slide-down');
+        el.style.transform = '';
+        el.style.transition = '';
+        void el.offsetHeight;
+        el.classList.add('menu-slide');
+      });
+      requestAnimationFrame(() => {
+        items.slice(idx+1).forEach(el => el.classList.add('slide-down'));
+      });
+    };
+    const addNewText = (text: string, topVH: number, leftVW: number) => {
+      if (slideState !== 'menu') return;
+      const span = document.createElement('span');
+      span.className = 'custom-text new-text';
+      span.style.top = `${topVH}vh`;
+      span.style.left = `${leftVW}vw`;
+      span.textContent = text;
+      document.querySelector('.other-content')?.appendChild(span);
+      setTimeout(() => span.classList.add('visible'), 10);
+    };
+    const openOnlineAssets = () => {
+      slideDownSiblings('online-assets');
+      setTimeout(() => {
+        addNewText('- cMS', 40.1, 6.4);
+        addNewText('- LMS', 44.1, 6.4);
+      }, 700);
+      currentMenu = 'online-assets';
+    };
+    const openLinkupCenter = () => {
+      slideDownSiblings('linkup-center');
+      setTimeout(() => {
+        addNewText('- cOM', 47.2, 6.4);
+        addNewText('- JOB', 51.2, 6.4);
+        addNewText('- HR', 55.2, 6.4);
+      }, 700);
+      currentMenu = 'linkup-center';
+    };
+    const openDeliveryLine = () => {
+      slideDownSiblings('delivery-line');
+      setTimeout(() => {
+        addNewText('- cRM', 54.3, 6.4);
+        addNewText('- OPS', 58.3, 6.4);
+      }, 700);
+      currentMenu = 'delivery-line';
+    };
+    const openInternalUnit = () => {
+      slideDownSiblings('internal-unit');
+      setTimeout(() => {
+        addNewText('- 1nV', 61.4, 6.4);
+        addNewText('- FMS', 65.4, 6.4);
+        addNewText('- 1T', 69.4, 6.4);
+      }, 700);
+      currentMenu = 'internal-unit';
+    };
+
+    document.getElementById('online-assets')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='online-assets' ? closeSubmenu() : openOnlineAssets(); });
+    document.getElementById('linkup-center')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='linkup-center' ? closeSubmenu() : openLinkupCenter(); });
+    document.getElementById('delivery-line')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='delivery-line' ? closeSubmenu() : openDeliveryLine(); });
+    document.getElementById('internal-unit')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='internal-unit' ? closeSubmenu() : openInternalUnit(); });
+
+    // ===== util-line toggle (mail/calendar/lines) =====
+    const utilLines = Array.from(document.querySelectorAll<HTMLElement>('.util-line'));
+    const mailEls = Array.from(document.querySelectorAll<HTMLElement>('.mail-text, .mail-line'));
+    const calendarEls = Array.from(document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed'));
+    const specialLines = Array.from(document.querySelectorAll<HTMLElement>('.line.fifth, .line.sixth'));
+    mailEls.forEach(el => el.classList.add('hidden'));
+    calendarEls.forEach(el => el.classList.add('hidden'));
+    specialLines.forEach(el => el.classList.remove('hidden'));
+
+    let stateView = 0;
+    const updateView = () => {
+      if (stateView === 0) {
+        mailEls.forEach(el => { el.classList.add('hidden'); el.style.opacity = '0'; });
+        calendarEls.forEach(el => el.classList.add('hidden'));
+        specialLines.forEach(el => el.classList.remove('hidden'));
+      } else if (stateView === 1) {
+        mailEls.forEach(el => { el.classList.remove('hidden'); el.style.opacity = '1'; });
+        calendarEls.forEach(el => el.classList.add('hidden'));
+        specialLines.forEach(el => el.classList.remove('hidden'));
+      } else {
+        mailEls.forEach(el => { el.classList.add('hidden'); el.style.opacity = '0'; });
+        calendarEls.forEach(el => el.classList.remove('hidden'));
+        specialLines.forEach(el => el.classList.add('hidden'));
+      }
+    };
+    utilLines.forEach(line => line.addEventListener('click', () => {
+      stateView = (stateView + 1) % 3;
+      updateView();
+    }));
+
+    // ===== Account-slide logic =====
+    const HIDE_MIN   =  6.37, HIDE_MAX   = 28.86;
+    const TOP_MIN    = 28.5,  TOP_MAX    = 84;
+    const CLICK_MIN  = 32.43, CLICK_MAX  = 36;
+    const REVERSE_MIN= 94,    REVERSE_MAX=100;
+    const DISTANCE   = 60,    DURATION   = 700;
+
+    const pxToVw = (px: number) => px / (window.innerWidth/100);
+    const pxToVh = (px: number) => px / (window.innerHeight/100);
+
+    const targets = Array.from(document.querySelectorAll<HTMLElement>('.account-text'))
+      .concat(Array.from(document.querySelectorAll<HTMLElement>('.account-line')));
+    targets.forEach(el => {
+      if (!el.dataset.baseLeftVw) {
+        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+        el.dataset.baseLeftVw = pxToVw(leftPx).toString();
+      }
+    });
+
+    const updateVisibility = () => {
+      targets.forEach(el => {
+        const r = el.getBoundingClientRect();
+        const l = pxToVw(r.left), t = pxToVh(r.top);
+        const hide = l >= HIDE_MIN && l < HIDE_MAX && t >= TOP_MIN && t <= TOP_MAX;
+        el.style.opacity = hide ? '0' : '';
+        el.style.pointerEvents = hide ? 'none' : '';
+      });
+    };
+    updateVisibility();
+    window.addEventListener('resize', updateVisibility);
+
+    let sliding = false;
+    const slideOnce = () => {
+      if (sliding || targets[0].dataset.slid === 'true') return;
+      sliding = true;
+      targets.forEach(el => {
+        el.style.opacity = '';
+        el.style.pointerEvents = '';
+      });
+      targets.forEach(el => {
+        const base = parseFloat(el.dataset.baseLeftVw!);
+        el.style.transition = `left ${DURATION}ms ease`;
+        el.style.left = `${base + DISTANCE}vw`;
+        el.dataset.slid = 'true';
+      });
+      setTimeout(() => { updateVisibility(); sliding = false; }, DURATION);
+    };
+    const slideBack = () => {
+      if (sliding || targets[0].dataset.slid !== 'true') return;
+      sliding = true;
+      targets.forEach(el => {
+        const base = parseFloat(el.dataset.baseLeftVw!);
+        el.style.transition = `left ${DURATION}ms ease`;
+        el.style.left = `${base}vw`;
+        delete el.dataset.slid;
+      });
+      setTimeout(() => { updateVisibility(); sliding = false; }, DURATION);
+    };
+
+    document.addEventListener('click', e => {
+      const xVw = pxToVw(e.clientX), yVh = pxToVh(e.clientY);
+      if (xVw >= CLICK_MIN && xVw <= CLICK_MAX) {
+        slideOnce();
+      } else if (xVw >= REVERSE_MIN && xVw <= REVERSE_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX) {
+        slideBack();
+      }
+    });
+    Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-triggers, .slide-container'))
+      .forEach(el => el.addEventListener('click', e => { e.stopPropagation(); slideOnce(); }));
+    Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger-reverse'))
+      .forEach(el => el.addEventListener('click', e => { e.stopPropagation(); slideBack(); }));
+
+    // ===== Cleanup all listeners on unmount =====
+    return () => {
+      document.removeEventListener('mousemove', onFirstMouseMove);
+      document.removeEventListener('click', onEdgeClick);
+      document.removeEventListener('mousemove', onChatHover);
+      chatText?.removeEventListener('click', onChatClick);
+      document.removeEventListener('click', onGlobalClick1, true);
+      document.removeEventListener('click', onGlobalClick2, true);
+      document.removeEventListener('resize', updateVisibility);
+      utilLines.forEach(line => line.replaceWith(line.cloneNode(true) as HTMLElement));
+      // (and any others if you track them separately)
+    };
+  }, []);
+
+ return (
+    <>
+      <div className="layer-one" />
+      <div className="layer-two" />
+      <div className="layer-three" />
+
+      <div className="page-content">
+        <div className="menu-items">
+          <span id="online-assets" className="custom-text menu-item" style={{ top: "36.1vh", left: "29vw" }}>
+            OnL1nE ASSETS:
+          </span>
+          <span id="linkup-center" className="custom-text menu-item" style={{ top: "43.2vh", left: "29vw" }}>
+            L1nKUP cEnTER:
+          </span>
+          <span id="delivery-line" className="custom-text menu-item" style={{ top: "50.3vh", left: "29vw" }}>
+            DEL1VERY L1nE:
+          </span>
+          <span id="internal-unit" className="custom-text menu-item" style={{ top: "57.4vh", left: "29vw" }}>
+            1nTERnAL Un1T:
+          </span>
+        </div>
+
+
+      <div className="layer-four" />
+
+      <div className="community-items-container" style={{ position: "absolute", zIndex: 1 }}>
+        <span className="custom-text" style={{ position: "absolute", top: "35.4vh", left: "35.41vw", zIndex: 1, fontFamily: "'Distill Expanded', sans-serif", color: "#111111", letterSpacing: "0.28vw", fontSize: "0.47rem", textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171", transition: "left 0.7s ease", lineHeight: 1.6, overflow: "visible" }}>cOMMUn1T1ES</span>
+        <span className="custom-text" style={{ position: "absolute", top: "41.6vh", left: "35.41vw", zIndex: 1, fontFamily: "'Distill Expanded', sans-serif", color: "#111111", letterSpacing: "0.28vw", fontSize: "0.47rem", textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171", transition: "left 0.7s ease", lineHeight: 1.6, overflow: "visible" }}>OUR L1BRARY</span>
+        <span className="custom-text" style={{ position: "absolute", top: "53vh", left: "35.41vw", zIndex: 1, fontFamily: "'Distill Expanded', sans-serif", color: "#111111", letterSpacing: "0.28vw", fontSize: "0.47rem", textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171", transition: "left 0.7s ease", lineHeight: 1.6, overflow: "visible" }}>ADD-On SHOP</span>
+        <span className="custom-text" style={{ position: "absolute", top: "59.2vh", left: "35.41vw", zIndex: 1, fontFamily: "'Distill Expanded', sans-serif", color: "#111111", letterSpacing: "0.28vw", fontSize: "0.47rem", textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171", transition: "left 0.7s ease", lineHeight: 1.6, overflow: "visible" }}>1OUL cEnTER</span>
+        <div className="custom-line" style={{ position: "absolute", top: "47.8vh", left: "35.41vw", width: "22.48vw", height: "1px", backgroundColor: "rgba(230,230,230,0.28)", transition: "left 0.7s ease, transform 0.7s ease", zIndex: 1 }} />
+      </div>
     </div>
+  </>
+);
 
-    <div class="layer-four"></div>
+export default Page;
 
-    <div class="community-items-container" style="position: absolute; z-index: 1;">
-      <span style="position: absolute; top:35.4vh; left:35.41vw; z-index:1; font-family:'Distill Expanded', sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; transition: left 0.7s ease; line-height:1.6; overflow: visible;">
-        cOMMUn1T1ES
-      </span>
-      <span style="position: absolute; top:41.6vh; left:35.41vw; z-index:1; font-family:'Distill Expanded', sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; transition: left 0.7s ease; line-height:1.6; overflow: visible;">
-        OUR L1BRARY
-      </span>
-      <span style="position: absolute; top:53vh; left:35.41vw; z-index:1; font-family:'Distill Expanded', sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; transition: left 0.7s ease; line-height:1.6; overflow: visible;">
-        ADD-On SHOP
-      </span>
-      <span style="position: absolute; top:59.2vh; left:35.41vw; z-index:1; font-family:'Distill Expanded', sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; transition: left 0.7s ease; line-height:1.6; overflow: visible;">
-        1OUL cEnTER
-      </span>
-      <div class="custom-line" style="position: absolute; top:47.8vh; left:35.41vw; width:22.48vw; height:1px; background-color:rgba(230,230,230,0.28); transition: left 0.7s ease, transform 0.7s ease; z-index:1;"></div>
-    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <div class="zero-items-container" style="position: absolute; z-index: 1;">
       <span class="right-flow" style="position: absolute; top:35.4vh; left:57.4vw; z-index:1; font-family:'Distill Expanded', sans-serif; color:#111111; letter-spacing:0.28vw; font-size:0.47rem; text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171; transition: left 0.7s ease; line-height:1.6; overflow: visible;">0</span>
@@ -281,695 +882,3 @@
   <script>
 
 
-    const pageContent = document.querySelector('.page-content');
-    let pageFadedIn = false;
-    function fadeInPage() {
-      pageContent.style.opacity = '1';
-      pageFadedIn = true;
-    }
-    document.addEventListener('mousemove', function onFirstMouseMove() {
-      if (!pageFadedIn) { fadeInPage(); }
-      document.removeEventListener('mousemove', onFirstMouseMove);
-    });
-    const EDGE_MARGIN = 11;
-    document.addEventListener('click', (event) => {
-      const { clientX: x, clientY: y } = event;
-      const { innerWidth: width, innerHeight: height } = window;
-      if (!document.fullscreenElement &&
-          (x <= EDGE_MARGIN || x >= width - EDGE_MARGIN ||
-           y <= EDGE_MARGIN || y >= height - EDGE_MARGIN)) {
-        document.documentElement.requestFullscreen();
-      }
-    });
-
-    let slideState = "none";
-    const chatText = document.getElementById('chatText');
-    chatText.style.pointerEvents = 'none';
-    chatText.style.zIndex = '-1';
-    let chatShownOnce = false;
-    const hoverArea = document.querySelector('.hover-area');
-    document.addEventListener('mousemove', (event) => {
-      if (!chatShownOnce && pageFadedIn) {
-        const rect = hoverArea.getBoundingClientRect();
-        if (event.clientX >= rect.left && event.clientX <= rect.right &&
-            event.clientY >= rect.top && event.clientY <= rect.bottom) {
-          chatText.style.opacity = '1';
-          chatText.style.pointerEvents = 'auto';
-          chatText.style.zIndex = '10';
-          chatShownOnce = true;
-        }
-      }
-    });
-    chatText.addEventListener('click', (event) => {
-      event.stopPropagation();
-      const chatInput = document.createElement('input');
-      chatInput.type = 'text';
-      chatInput.classList.add('chat-input');
-      chatInput.id = 'chatText';
-      chatText.replaceWith(chatInput);
-      chatInput.focus();
-    });
-
-    let currentMenu = null;
-    function quickRemoveSubmenu() {
-      const newTexts = document.querySelectorAll('.new-text');
-      newTexts.forEach(span => {
-        span.style.transition = 'opacity 0.1s ease';
-        span.classList.remove('visible');
-      });
-      setTimeout(() => {
-        newTexts.forEach(span => span.remove());
-        currentMenu = null;
-      }, 100);
-      document.getElementById("linkup-center").classList.remove("slide-down");
-      document.getElementById("delivery-line").classList.remove("slide-down");
-      document.getElementById("internal-unit").classList.remove("slide-down");
-    }
-    function closeSubmenu() {
-      const newTexts = document.querySelectorAll('.new-text');
-      newTexts.forEach(span => {
-        span.style.transition = 'opacity 0.3s ease';
-        span.classList.remove('visible');
-      });
-      setTimeout(() => {
-        newTexts.forEach(span => span.remove());
-        currentMenu = null;
-      }, 300);
-      document.getElementById("linkup-center").classList.remove("slide-down");
-      document.getElementById("delivery-line").classList.remove("slide-down");
-      document.getElementById("internal-unit").classList.remove("slide-down");
-    }
-    function forceCloseSubmenuThen(fn) {
-      if (currentMenu !== null) {
-        quickRemoveSubmenu();
-        setTimeout(fn, 100);
-      } else {
-        fn();
-      }
-    }
-
-    document.addEventListener('click', (event) => {
-      if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const leftMin = 0;
-      const leftMax = 6.37 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
-      if (event.clientX >= leftMin && event.clientX <= leftMax &&
-          event.clientY >= yMin && event.clientY <= yMax) {
-        event.stopPropagation();
-        forceCloseSubmenuThen(() => {
-          if (slideState === "community") {
-            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft + 29) + "vw";
-            });
-            document.querySelectorAll('.community-items-container *:not(.custom-line)').forEach(el => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft + 29) + "vw";
-            });
-            document.querySelectorAll('.community-items-container .custom-line').forEach(el => {
-              if (el.dataset.originalLeft) {
-                el.style.transition = "left 0.7s ease";
-                el.style.left = el.dataset.originalLeft;
-              }
-            });
-            document.querySelectorAll('.zero-items-container *').forEach(el => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft + 29) + "vw";
-            });
-            slideState = "menu";
-            return;
-          } else if (slideState === "menu") {
-            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-              el.style.transition = "transform 0.7s ease";
-              el.style.transform = "translateX(0)";
-            });
-            document.querySelector('.menu-items').classList.remove('raised');
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              setTimeout(() => {
-    if (slideState !== "none") return;
-    chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            slideState = "none";
-          } else if (slideState === "heading" || slideState === "account") {
-            document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
-              box.style.transform = \`translateX(\${box.dataset.offset}vw)\`;
-            });
-            document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
-              box.style.transform = \`translateX(\${box.dataset.offset}vw)\`;
-            });
-            document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
-            });
-            document.querySelectorAll('.other-content > .custom-line').forEach(el => {
-              if (el.dataset.originalLeft) {
-                el.style.transition = "left 0.7s ease";
-                el.style.left = el.dataset.originalLeft;
-              }
-            });
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              setTimeout(() => {
-    if (slideState !== "none") return;
-    chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            slideState = "none";
-          } else if (slideState === "none") {
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              chatTextEl.style.transition = "opacity 0.1s ease";
-              chatTextEl.style.opacity = "0";
-              setTimeout(() => {
-                document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-                  if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-                  let original = parseFloat(el.dataset.originalLeft);
-                  el.style.transition = "left 0.7s ease";
-                  el.style.left = (original + 49) + "vw";
-                });
-                document.querySelectorAll('.other-content > .custom-line').forEach(el => {
-                  if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-                  let originalLine = parseFloat(el.dataset.originalLeft);
-                  el.style.transition = "left 0.7s ease";
-                  el.style.left = (originalLine + 49) + "vw";
-                });
-                document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
-                  box.style.transform = "translateX(0)";
-                });
-                document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
-                  box.style.transform = "translateX(0)";
-                });
-              }, 110);
-            }
-            slideState = "heading";
-          }
-        });
-      }
-    }, true);
-
-    document.addEventListener('click', (event) => {
-      if (event.target.closest('.menu-item') || event.target.closest('.chat-text') || event.target.closest('.chat-input')) return;
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const leftMin = 28.86 * vwUnit;
-      const leftMax = 32.43 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
-      if (event.clientX >= leftMin && event.clientX <= leftMax &&
-          event.clientY >= yMin && event.clientY <= yMax) {
-        event.stopPropagation();
-        forceCloseSubmenuThen(() => {
-          if (slideState === "menu") {
-            document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft - 29) + "vw";
-            });
-            document.querySelectorAll('.community-items-container *').forEach(el => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft - 29) + "vw";
-            });
-            document.querySelectorAll('.zero-items-container *').forEach(el => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft - 29) + "vw";
-            });
-            slideState = "community";
-          } else if (slideState === "heading" || slideState === "account") {
-            document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach(box => {
-              box.style.transform = \`translateX(\${box.dataset.offset}vw)\`;
-            });
-            document.querySelectorAll('.account-container[data-slide-group="account"]').forEach(box => {
-              box.style.transform = \`translateX(\${box.dataset.offset}vw)\`;
-            });
-            document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach(el => {
-              if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
-            });
-            document.querySelectorAll('.other-content > .custom-line').forEach(el => {
-              if (el.dataset.originalLeft) {
-                el.style.transition = "left 0.7s ease";
-                el.style.left = el.dataset.originalLeft;
-              }
-            });
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              setTimeout(() => {
-    if (slideState !== "none") return;
-    chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            slideState = "none";
-          } else if (slideState === "none") {
-            const chatTextEl = document.getElementById('chatText');
-            if (chatTextEl) {
-              chatTextEl.style.transition = "opacity 0.1s ease";
-              chatTextEl.style.opacity = "0";
-              setTimeout(() => {
-                document.querySelectorAll('.menu-items .menu-item').forEach(el => {
-                  if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-                  el.style.transition = "transform 0.7s ease";
-                  el.style.transform = "translateX(-22.59vw)";
-                });
-                setTimeout(() => {
-                  document.querySelector('.menu-items').classList.add('raised');
-                }, 700);
-              }, 110);
-            }
-            slideState = "menu";
-          }
-        });
-      }
-    }, true);
-
-    // Calendar scroll behavior
-    let isScrolling = false;
-    let scrollTimeout;
-    let isFirstScroll = true;
-    let isSecondScroll = false;
-
-    const numbers1to16 = document.querySelectorAll('.grid-number.num1, .grid-number.num2, .grid-number.num3, .grid-number.num4, .grid-number.num5, .grid-number.num6, .grid-number.num7, .grid-number.num8, .grid-number.num9, .grid-number.num10, .grid-number.num11, .grid-number.num12, .grid-number.num13, .grid-number.num14, .grid-number.num15, .grid-number.num16');
-    const numbers17to31 = document.querySelectorAll('.grid-number.num17, .grid-number.num18, .grid-number.num19, .grid-number.num20, .grid-number.num21, .grid-number.num22, .grid-number.num23, .grid-number.num24, .grid-number.num25, .grid-number.num26, .grid-number.num27, .grid-number.num28, .grid-number.num29, .grid-number.num30, .grid-number.num31');
-    const dashed1to16 = document.querySelectorAll('.grid-dashed.dashed01, .grid-dashed.dashed02, .grid-dashed.dashed03, .grid-dashed.dashed04, .grid-dashed.dashed05, .grid-dashed.dashed06, .grid-dashed.dashed07, .grid-dashed.dashed08, .grid-dashed.dashed09, .grid-dashed.dashed10, .grid-dashed.dashed11, .grid-dashed.dashed12, .grid-dashed.dashed13, .grid-dashed.dashed14, .grid-dashed.dashed15, .grid-dashed.dashed16');
-    const dashed17to31 = document.querySelectorAll('.grid-dashed.dashed17, .grid-dashed.dashed18, .grid-dashed.dashed19, .grid-dashed.dashed20, .grid-dashed.dashed21, .grid-dashed.dashed22, .grid-dashed.dashed23, .grid-dashed.dashed24, .grid-dashed.dashed25, .grid-dashed.dashed26, .grid-dashed.dashed27, .grid-dashed.dashed28, .grid-dashed.dashed29, .grid-dashed.dashed30, .grid-dashed.dashed31');
-
-    // Create a scroll area div
-    const scrollArea = document.createElement('div');
-    scrollArea.style.position = 'absolute';
-    scrollArea.style.top = '28.5vh';
-    scrollArea.style.left = '36vw';
-    scrollArea.style.width = '58vw';
-    scrollArea.style.height = '55.5vh';
-    scrollArea.style.zIndex = '5';
-    scrollArea.style.pointerEvents = 'auto';
-    scrollArea.style.cursor = 'default';
-    document.querySelector('.other-content').appendChild(scrollArea);
-    // Mail-text fade-in on hover
-    let mailShownOnce = false;
-    scrollArea.addEventListener('mousemove', () => {
-      if (!mailShownOnce) {
-        document.querySelectorAll('.mail-text, .mail-line').forEach(el => el.style.opacity = '1');
-        mailShownOnce = true;
-      }
-    });
-
-    scrollArea.addEventListener('wheel', (e) => {
-      e.preventDefault();
-
-      if (isScrolling) return;
-      isScrolling = true;
-
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        isScrolling = false;
-      }, 700);
-
-      // Create a wrapper for all elements to move as one unit
-      const allElements = [...numbers1to16, ...numbers17to31, ...dashed1to16, ...dashed17to31];
-
-      // Set transition timing for all elements at once
-      requestAnimationFrame(() => {
-        allElements.forEach(el => {
-          el.style.transition = 'transform 0.7s ease';
-        });
-
-        // Apply transform in the next frame to ensure all transitions start together
-        requestAnimationFrame(() => {
-          if (e.deltaY > 0) { // Scrolling down
-            if (!isSecondScroll) {
-              // First scroll down - move everything up
-              allElements.forEach(el => {
-                el.style.transform = 'translateY(-55.5vh)';
-              });
-              isSecondScroll = true;
-            } else {
-              // Second scroll down - move everything up again
-              allElements.forEach(el => {
-                el.style.transform = 'translateY(-111vh)';
-              });
-              isSecondScroll = false;
-            }
-          } else { // Scrolling up
-            const currentTransform = allElements[0]?.style.transform || '';
-            const currentY = currentTransform.includes('translate') ? 
-              currentTransform.match(/translateY\(([^)]+)\)/)?.[1] || '0' : '0';
-
-            if (currentY === '-111vh') {
-              // If we're at the bottom (29-31), scroll up to middle (17-28)
-              allElements.forEach(el => {
-                el.style.transform = 'translateY(-55.5vh)';
-              });
-              isSecondScroll = true;
-            } else if (currentY === '-55.5vh') {
-              // If we're in the middle (17-28), scroll up to top (1-16)
-              allElements.forEach(el => {
-                el.style.transform = 'translateY(0)';
-              });
-              isSecondScroll = false;
-            }
-          }
-        });
-      });
-
-      isFirstScroll = false;
-    }, { passive: false });
-
-    function slideDownSiblings(clickedId) {
-      let menuItems = Array.from(document.querySelectorAll('.menu-items .menu-item'));
-      let clickedIndex = menuItems.findIndex(el => el.id === clickedId);
-      for (let i = clickedIndex + 1; i < menuItems.length; i++) {
-        menuItems[i].classList.remove("menu-slide", "slide-down");
-        menuItems[i].style.transform = "";
-        menuItems[i].style.transition = "";
-        void menuItems[i].offsetHeight;
-        menuItems[i].classList.add("menu-slide");
-      }
-      requestAnimationFrame(() => {
-        for (let i = clickedIndex + 1; i < menuItems.length; i++) {
-          menuItems[i].classList.add("slide-down");
-        }
-      });
-    }
-    function addNewText(text, topVH, leftVW) {
-      // Prevent submenu fade-in if menu is not visible
-      if (slideState !== "menu") { return; }
-      const span = document.createElement("span");
-      span.className = "custom-text new-text";
-      span.style.top = topVH + "vh";
-      span.style.left = leftVW + "vw";
-      span.textContent = text;
-      document.querySelector(".other-content").appendChild(span);
-      setTimeout(() => {
-        span.classList.add("visible");
-      }, 10);
-    }
-    function openOnlineAssets()   { slideDownSiblings("online-assets"); setTimeout(()=>{ addNewText("- cMS",40.1,6.4); addNewText("- LMS",44.1,6.4); },700); }
-    function openLinkupCenter()   { slideDownSiblings("linkup-center"); setTimeout(()=>{ addNewText("- cOM",47.2,6.4); addNewText("- JOB",51.2,6.4); addNewText("- HR",55.2,6.4); },700); }
-    function openDeliveryLine()   { slideDownSiblings("delivery-line"); setTimeout(()=>{ addNewText("- cRM",54.3,6.4); addNewText("- OPS",58.3,6.4); },700); }
-    function openInternalUnit()   { slideDownSiblings("internal-unit"); setTimeout(()=>{ addNewText("- 1nV",61.4,6.4); addNewText("- FMS",65.4,6.4); addNewText("- 1T",69.4,6.4); },700); }
-
-    document.getElementById("online-assets").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="online-assets")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openOnlineAssets(); currentMenu="online-assets";},300);} else{ openOnlineAssets(); currentMenu="online-assets"; } } });
-    document.getElementById("linkup-center").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="linkup-center")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openLinkupCenter(); currentMenu="linkup-center";},300);} else{ openLinkupCenter(); currentMenu="linkup-center"; } } });
-    document.getElementById("delivery-line").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="delivery-line")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openDeliveryLine(); currentMenu="delivery-line";},300);} else{ openDeliveryLine(); currentMenu="delivery-line"; } } });
-    document.getElementById("internal-unit").addEventListener("click", e => { e.stopPropagation(); if(currentMenu==="internal-unit")closeSubmenu(); else{ if(currentMenu){ closeSubmenu(); setTimeout(()=>{openInternalUnit(); currentMenu="internal-unit";},300);} else{ openInternalUnit(); currentMenu="internal-unit"; } } });
-  </script>
-
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const utilLines = document.querySelectorAll('.util-line');
-  const mailEls = document.querySelectorAll('.mail-text, .mail-line');
-  const calendarEls = document.querySelectorAll('.grid-number, .grid-dashed');
-  const specialLines = document.querySelectorAll('.line.fifth, .line.sixth');
-
-  // Initial visibility: hide mail & calendar, show lines 5 & 6
-  mailEls.forEach(el => el.classList.add('hidden'));
-  calendarEls.forEach(el => el.classList.add('hidden'));
-  specialLines.forEach(el => el.classList.remove('hidden'));
-
-  let state = 0; // 0 = baseline (lines visible, others hidden)
-
-  const updateView = () => {
-  if (state === 0) { // baseline
-    mailEls.forEach(el => { el.classList.add('hidden'); el.style.opacity = '0'; });
-    calendarEls.forEach(el => el.classList.add('hidden'));
-    specialLines.forEach(el => el.classList.remove('hidden'));
-  } else if (state === 1) { // show mail on first toggle
-    mailEls.forEach(el => { el.classList.remove('hidden'); el.style.opacity = '1'; });
-    calendarEls.forEach(el => { el.classList.add('hidden'); });
-    specialLines.forEach(el => el.classList.remove('hidden'));
-  } else if (state === 2) { // show calendar, hide lines 5&6
-    mailEls.forEach(el => { el.classList.add('hidden'); el.style.opacity = '0'; });
-    calendarEls.forEach(el => el.classList.remove('hidden'));
-    specialLines.forEach(el => el.classList.add('hidden'));
-  }
-};
-
-  utilLines.forEach(line => {
-    line.addEventListener('click', () => {
-      state = (state + 1) % 3; // cycle 0 → 1 → 2 → 0 ...
-      updateView();
-    });
-  });
-});
-</script>
-
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const HIDE_MIN   =  6.37, HIDE_MAX   = 28.86;
-  const TOP_MIN    = 28.5,  TOP_MAX    = 84;
-  const CLICK_MIN  = 32.43, CLICK_MAX  = 36;
-  const REVERSE_MIN= 94,    REVERSE_MAX=100;
-  const DISTANCE   = 60,    DURATION   = 700;
-
-  const pxToVw = px => px/(window.innerWidth  /100);
-  const pxToVh = px => px/(window.innerHeight /100);
-
-  const targets = [
-    ...document.querySelectorAll('.account-text'),
-    document.querySelector('.account-line')
-  ].filter(Boolean);
-
-  targets.forEach(el => {
-    if (!el.dataset.baseLeftVw) {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-      el.dataset.baseLeftVw = pxToVw(leftPx);
-    }
-  });
-
-  function updateVisibility() {
-    targets.forEach(el => {
-      const r = el.getBoundingClientRect();
-      const l = pxToVw(r.left), t = pxToVh(r.top);
-      const hide = l >= HIDE_MIN && l < HIDE_MAX && t >= TOP_MIN && t <= TOP_MAX;
-      el.style.opacity       = hide ? '0' : '';
-      el.style.pointerEvents = hide ? 'none' : '';
-    });
-  }
-  updateVisibility();
-  window.addEventListener('resize', updateVisibility);
-
-  let sliding = false;
-
-  function slideOnce() {
-    if (sliding || targets[0].dataset.slid==='true') return;
-    sliding = true;
-
-    targets.forEach(el => {
-      el.style.opacity       = '';
-      el.style.pointerEvents = '';
-    });
-
-    targets.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = \`left \${DURATION}ms ease\`;
-      el.style.left       = (base + DISTANCE) + 'vw';
-      el.dataset.slid     = 'true';
-    });
-
-    setTimeout(() => {
-      updateVisibility();
-      sliding = false;
-    }, DURATION);
-  }
-
-  function slideBack() {
-    if (sliding || targets[0].dataset.slid!=='true') return;
-    sliding = true;
-    targets.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = \`left \${DURATION}ms ease\`;
-      el.style.left       = base + 'vw';
-      delete el.dataset.slid;
-    });
-    setTimeout(() => {
-      updateVisibility();
-      sliding = false;
-    }, DURATION);
-  }
-
-  document.addEventListener('click', e => {
-    const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
-    if (vw>=CLICK_MIN && vw<=CLICK_MAX) {
-      slideOnce();
-    } else if (vw>=REVERSE_MIN && vw<=REVERSE_MAX
-            && vh>=TOP_MIN     && vh<=TOP_MAX) {
-      slideBack();
-    }
-  });
-
-  document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container')
-    .forEach(el => el.addEventListener('click', e => {
-      e.stopPropagation();
-      slideOnce();
-    }));
-  document.querySelectorAll('.slide-trigger-reverse')
-    .forEach(el => el.addEventListener('click', e => {
-      e.stopPropagation();
-      slideBack();
-    }));
-});
-</script>
-
-
-<script>
-/* --- Updated staggered gap logic injected by ChatGPT on 2025‑06‑02 --- */
-document.addEventListener('DOMContentLoaded', () => {
-  const FWD_MIN = 94,  FWD_MAX = 100;   // forward trigger (right edge)
-  const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
-  const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
-  const DIST    = 60;
-const GAP = 10;                   // horizontal shift in vw
-  const DUR     = 600;                  // transition duration in ms
-  const STAGGER = 0;                  // delay between outgoing and incoming groups in ms
-
-  // Helper unit conversions
-  const vw = () => window.innerWidth / 100;
-  const vh = () => window.innerHeight / 100;
-  const toVw = px => px / vw();
-  const toVh = px => px / vh();
-
-  // Groups
-  const itemEls   = [...document.querySelectorAll('.item-text'),  ...document.querySelectorAll('.item-line')];
-  const centerEls = [...document.querySelectorAll('.center-text'),...document.querySelectorAll('.center-line')];
-
-  // Cache base positions
-  [...itemEls, ...centerEls].forEach(el => {
-    if (!el.dataset.baseLeftVw) {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-      el.dataset.baseLeftVw = toVw(leftPx);
-    }
-  });
-
-  // Stage flags
-  let itemStage   = 0;  // 0 = hidden, 1 = visible (left column), 2 = shifted left / clipped
-  let centerStage = 0;  // 0 = hidden, 1 = visible (center column)
-  let animating   = false;
-
-  // External dependency: account slide logic (unchanged)
-  const getAccountSlid = () => {
-    const acc = document.querySelector('.account-text');
-    return acc && acc.dataset.slid === 'true';
-  };
-
-  // Reusable animator
-  function move(els, offset) {
-    els.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw);
-      el.style.transition = \`left \${DUR}ms ease\`;
-      el.style.left       = (base + offset) + 'vw';
-    });
-  }
-
-  /* ---------------- Forward (→) transitions ---------------- */
-  function toStage1() { // show items
-    animating = true;
-    move(itemEls, -DIST);
-    setTimeout(() => { animating = false; itemStage = 1; }, DUR);
-  }
-
-  function toStage2() { // shift items further + reveal center with stagger
-    animating = true;
-    move(itemEls, -2 * DIST - GAP);                       // items out first
-    move(centerEls, -DIST - GAP); // center follows
-    setTimeout(() => { animating=false; itemStage=2; centerStage=1; }, DUR + STAGGER);
-  }
-
-  /* ---------------- Reverse (←) transitions ---------------- */
-  function backToStage1() { // hide center, restore items with stagger
-    animating = true;
-    move(centerEls, 0);                              // center leaves first
-    move(itemEls, -DIST); // items return after delay
-    setTimeout(() => { animating=false; itemStage=1; centerStage=0; }, DUR + STAGGER);
-  }
-
-  function backToStage0() { // hide items
-    animating = true;
-    move(itemEls, 0);
-    setTimeout(() => { animating=false; itemStage=0; }, DUR);
-  }
-
-  /* ---------------- Click handling ---------------- */
-  document.addEventListener('click', e => {
-    if (animating) return;
-
-    const xVw = toVw(e.clientX);
-    const yVh = toVh(e.clientY);
-    const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
-    const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
-
-    if (inFwd) {
-      if (getAccountSlid()) return;             // hand off to account logic
-      if (itemStage === 0) {
-        toStage1(); e.stopPropagation();
-      } else if (itemStage === 1 && centerStage === 0) {
-        toStage2(); e.stopPropagation();
-      }
-    } else if (inRev) {
-      if (centerStage === 1) {
-        backToStage1(); e.stopPropagation();
-      } else if (itemStage === 1 && centerStage === 0) {
-        backToStage0(); e.stopPropagation();
-      }
-    }
-  }, true);
-});
-</script>
-
-
-<script>
-/* ---- Item clipping script injected by ChatGPT on 2025‑05‑29 (v3) ---- */
-document.addEventListener('DOMContentLoaded', () => {
-  const HIDE_LEFT_VW = 28.86; // Updated threshold
-  const TOP_MIN_VH   = 28.5;  // Vertical bounds
-  const TOP_MAX_VH   = 84;
-
-  const items = [
-    ...document.querySelectorAll('.item-text'),
-    ...document.querySelectorAll('.item-line')
-  ];
-
-  const toVw = px => px / (window.innerWidth  / 100);
-  const toVh = px => px / (window.innerHeight / 100);
-
-  function update() {
-    items.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const l = toVw(rect.left);
-      const t = toVh(rect.top);
-      const hide = l < HIDE_LEFT_VW && t >= TOP_MIN_VH && t <= TOP_MAX_VH;
-      el.style.opacity       = hide ? '0' : '';
-      el.style.pointerEvents = hide ? 'none' : '';
-    });
-  }
-
-  function loop() {
-    update();
-    requestAnimationFrame(loop);
-  }
-  loop();
-
-  window.addEventListener('resize', update);
-});
-</script>
-
-` } } />
-      );
-    }

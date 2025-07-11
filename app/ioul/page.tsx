@@ -802,17 +802,17 @@ const PageScripts: React.FC = () => {
     <div className="account-container" style={{ top: "53vh",   left: "29.11vw", transform: "translateX(-49vw)" }} data-offset="-49" data-slide-group="account"><span className="custom-text right-flow" style={{ position: "absolute", right: 0 }}>0</span></div>
     <div className="account-container" style={{ top: "59.2vh", left: "29.11vw", transform: "translateX(-49vw)" }} data-offset="-49" data-slide-group="account"><span className="custom-text right-flow" style={{ position: "absolute", right: 0 }}>0</span></div>
 
-    <div className="custom-line" style={{ left: "-42.59vw" }} />
-    <div className="layer-five" />
-    <div className="layer-six" />
+     <div className="custom-line" style={{ left: "-42.59vw" }} />
+     <div className="layer-five" />
+     <div className="layer-six" />
 
-  </div>  
+    </div> {/* closes <div className="page-content"> */}
 
-  <div className="slide-triggers">
-    <div className="slide-trigger" />
-    <div className="slide-trigger-reverse" />
-  </div>
-</>
-);
+    <div className="slide-triggers">
+      <div className="slide-trigger" />
+      <div className="slide-trigger-reverse" />
+    </div>
+  </>
+  );
 
 export default PageScripts;

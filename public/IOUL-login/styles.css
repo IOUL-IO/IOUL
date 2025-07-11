@@ -550,3 +550,14 @@ body.stage-help .open-text,
 body.stage-help .help-text{
   transition: transform 0.7s ease, opacity .3s ease !important;
 }
+
+/* === (2025-07-11) allow clicks through top mask === */
+.layer-three{ pointer-events:none !important; }
+
+/* === (2025-07-11B) restore invisible hit-area around util strip === */
+body .line.util-line::before{
+  content:"";
+  position:absolute;
+  inset:-16px;         /* +16px padding on each side */
+  pointer-events:auto; /* receive click */
+}

@@ -550,3 +550,39 @@ body.stage-help .open-text,
 body.stage-help .help-text{
   transition: transform 0.7s ease, opacity .3s ease !important;
 }
+
+/* Added for util-line slide behavior */
+.login-text,
+.login-line {
+  transform: translateX(0);
+  opacity: 1;
+  transition: transform 0.7s ease, opacity 0.3s ease;
+}
+.hidden {
+  opacity: 0;
+}
+body.stage-util .login-text,
+body.stage-util .login-line {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+.open-text,
+.help-text {
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: transform 0.7s ease, opacity 0.3s ease;
+}
+body.stage-util .open-text,
+body.stage-util .help-text {
+  transform: translateX(6.41vw);
+  opacity: 1;
+}
+.layer-one {
+  position: relative;
+  z-index: 2;
+}
+.login-text,
+.login-line {
+  position: relative;
+  z-index: 1;
+}

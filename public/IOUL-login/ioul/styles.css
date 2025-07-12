@@ -111,8 +111,8 @@ body.non-fullscreen {
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
-    left: 28.86vw;
-    width: calc(32.43vw - 28.86vw);
+    left: 32.43vw;
+    width: calc(36vw - 32.43vw);
     height: calc(84vh - 28.5vh);
     background: transparent;
     cursor: pointer;

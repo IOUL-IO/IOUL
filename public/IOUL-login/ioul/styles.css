@@ -424,6 +424,11 @@ body.non-fullscreen {
 }
 
 /* Removed slide container animation styles */
+/* Slide container animation styles restored */
+.item-text, .item-line, .center-text, .center-line {
+    transition: left 0.6s ease, transform 0.6s ease !important;
+}
+
 
 /* Hide calendar grid items */
 /* removed display none */
@@ -438,7 +443,7 @@ body.non-fullscreen {
     z-index: 1;
 }
 
-.hidden { }
+.hidden { display: none !important; }
 
 .account-text {
   position: absolute;

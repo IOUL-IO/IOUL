@@ -597,7 +597,7 @@ const PageScripts: React.FC = () => {
         <div className="custom-line" style={{ position: "absolute", top: "47.8vh", left: "35.41vw", width: "22.48vw", height: "1px", backgroundColor: "rgba(230,230,230,0.28)", transition: "left 0.7s ease, transform 0.7s ease", zIndex: 1 }} />
       </div>
 
-      <div
+<div>
         className="zero-items-container"
         style={{ position: "absolute", zIndex: 1 }}
       >
@@ -614,7 +614,7 @@ const PageScripts: React.FC = () => {
         <div className="line third" />
         <div className="line fourth" />
         <div className="line fifth" />
-        <div
+<div>
           className="line mail-line"
           style={{ position: "absolute", top: "47.8vh", left: "36vw", width: "57.8vw", height: "1px", backgroundColor: "rgba(230,230,230,0.28)", opacity: 0, transition: "opacity 0.3s ease", zIndex: 1 }}
         />

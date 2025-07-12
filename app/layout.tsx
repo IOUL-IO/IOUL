@@ -33,7 +33,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <link rel="stylesheet" href="/ioul/styles.css" />
         {legacyCssFiles.map((href) => (
           <link key={href} rel="stylesheet" href={href} />
         ))}

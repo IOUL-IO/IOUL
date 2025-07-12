@@ -723,7 +723,7 @@ const PageScripts: React.FC = () => {
       <span className="mail-text" style={{ position: "absolute", top: "35.4vh", left: "89vw",   zIndex: 1, fontFamily: "'Distill Expanded',sans-serif", color: "#111111", letterSpacing: "0.28vw", fontSize: "0.47rem", textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171", opacity: 0, transition: "opacity 0.3s ease" }}>cc</span>
       <span className="mail-text" style={{ position: "absolute", top: "35.4vh", left: "91.9vw", zIndex: 1, fontFamily: "'Distill Expanded',sans-serif", color: "#111111", letterSpacing: "0.28vw", fontSize: "0.47rem", textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171", opacity: 0, transition: "opacity 0.3s ease" }}>Bcc</span>
       <span className="mail-text" style={{ position: "absolute", top: "41.6vh", left: "91.1vw", zIndex: 1, fontFamily: "'Distill Expanded',sans-serif", color: "#111111", letterSpacing: "0.28vw", fontSize: "0.47rem", textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171", opacity: 0, transition: "opacity 0.3s ease" }}>SEnD</span>
-  </div> 
+    </div> 
       
     <span className="grid-number num1">1</span>
     <span className="grid-number num2">2</span>
@@ -757,7 +757,6 @@ const PageScripts: React.FC = () => {
     <span className="grid-number num30">30</span>
     <span className="grid-number num31">31</span>
 
-    {/* ——— Calendar grid dashes ——— */}
     <span className="grid-dashed dashed01" />
     <span className="grid-dashed dashed02" />
     <span className="grid-dashed dashed03" />
@@ -803,8 +802,6 @@ const PageScripts: React.FC = () => {
      <div className="custom-line" style={{ left: "-42.59vw" }} />
      <div className="layer-five" />
      <div className="layer-six" />
-
-    </div> {/* closes <div className="page-content"> */}
 
     <div className="slide-triggers">
       <div className="slide-trigger" />

@@ -546,13 +546,14 @@ const PageScripts: React.FC = () => {
       else if (xVw >= REVERSE_MIN && xVw <= REVERSE_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX) slideBack();
     };
     document.addEventListener('click', clickHandler);
-        // ===== Slide trigger handlers =====
+
+    // ===== Slide trigger handlers =====
     const forwardTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger'));
     forwardTriggers.forEach(el => el.addEventListener('click', ev => { ev.stopPropagation(); slideOnce(); }));
     const reverseTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger-reverse'));
     reverseTriggers.forEach(el => el.addEventListener('click', ev => { ev.stopPropagation(); slideBack(); }));
 
-// ===== Updated staggered-gap logic =====
+    // ===== Updated staggered-gap logic =====
     const FWD_MIN = 80;
     const REV_MIN = 160;
     const GAP = 8;

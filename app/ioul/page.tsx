@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect } from 'react';
-
 const PageScripts: React.FC = () => {
   useEffect(() => {
     // ===== Fade-in on first mouse move =====
@@ -132,14 +131,14 @@ const PageScripts: React.FC = () => {
             document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach(el => {
               if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
               el.style.transition = 'left 0.7s ease';
-              el.style.left = `parseFloat(el.style.left) + 29vw`;
+              el.style.left =`${parseFloat(el.style.left) + 29}vw`;
             });
             document.querySelectorAll<HTMLElement>(
               '.community-items-container *:not(.custom-line)'
             ).forEach(el => {
               if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
               el.style.transition = 'left 0.7s ease';
-              el.style.left = `parseFloat(el.style.left) + 29vw`;
+              el.style.left =`${parseFloat(el.style.left) + 29}vw`;
             });
             document.querySelectorAll<HTMLElement>('.community-items-container .custom-line').forEach(el => {
               if (el.dataset.originalLeft) {
@@ -150,7 +149,7 @@ const PageScripts: React.FC = () => {
             document.querySelectorAll<HTMLElement>('.zero-items-container *').forEach(el => {
               if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
               el.style.transition = 'left 0.7s ease';
-              el.style.left = `parseFloat(el.style.left) + 29vw`;
+              el.style.left =`${parseFloat(el.style.left) + 29}vw`;
             });
             slideState = 'menu';
             return;
@@ -172,10 +171,10 @@ const PageScripts: React.FC = () => {
           } else if (['heading','account'].includes(slideState)) {
             document
               .querySelectorAll<HTMLElement>('[data-slide-group="heading"]')
-              .forEach(el => { el.style.transform = `translateX(el.dataset.offsetvw)`; });
+              .forEach(el => { el.style.transform = `translateX(${el.dataset.offset}vw)`; });
             document
               .querySelectorAll<HTMLElement>('[data-slide-group="account"]')
-              .forEach(el => { el.style.transform = `translateX(el.dataset.offsetvw)`; });
+              .forEach(el => { el.style.transform = `translateX(${el.dataset.offset}vw)`; });
             document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)')
               .forEach(el => { if (el.dataset.originalLeft) el.style.left = el.dataset.originalLeft; });
             document.querySelectorAll<HTMLElement>('.other-content > .custom-line')
@@ -204,13 +203,13 @@ const PageScripts: React.FC = () => {
                   .forEach(el => {
                     if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
                     el.style.transition = 'left 0.7s ease';
-                    el.style.left = `parseFloat(el.dataset.originalLeft!)+49vw`;
+                    el.style.left =`${parseFloat(el.dataset.originalLeft!)+49}vw`;
                   });
                 document.querySelectorAll<HTMLElement>('.other-content > .custom-line')
                   .forEach(el => {
                     if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
                     el.style.transition = 'left 0.7s ease';
-                    el.style.left = `parseFloat(el.dataset.originalLeft!)+49vw`;
+                    el.style.left =`${parseFloat(el.dataset.originalLeft!)+49}vw`;
                   });
                 document.querySelectorAll<HTMLElement>('[data-slide-group="heading"]')
                   .forEach(el => el.style.transform = 'translateX(0)');
@@ -248,26 +247,26 @@ const PageScripts: React.FC = () => {
             document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach(el => {
               if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
               el.style.transition = 'left 0.7s ease';
-              el.style.left = `parseFloat(el.style.left) - 29vw`;
+              el.style.left =`${parseFloat(el.style.left) - 29}vw`;
             });
             document.querySelectorAll<HTMLElement>('.community-items-container *').forEach(el => {
               if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
               el.style.transition = 'left 0.7s ease';
-              el.style.left = `parseFloat(el.style.left) - 29vw`;
+              el.style.left =`${parseFloat(el.style.left) - 29}vw`;
             });
             document.querySelectorAll<HTMLElement>('.zero-items-container *').forEach(el => {
               if (!el.dataset.originalLeft) el.dataset.originalLeft = el.style.left;
               el.style.transition = 'left 0.7s ease';
-              el.style.left = `parseFloat(el.style.left) - 29vw`;
+              el.style.left =`${parseFloat(el.style.left) - 29}vw`;
             });
             slideState = 'community';
           } else if (['heading','account'].includes(slideState)) {
             document
               .querySelectorAll<HTMLElement>('[data-slide-group="heading"]')
-              .forEach(el => { el.style.transform = `translateX(el.dataset.offsetvw)`; });
+              .forEach(el => { el.style.transform = `translateX(${el.dataset.offset}vw)`; });
             document
               .querySelectorAll<HTMLElement>('[data-slide-group="account"]')
-              .forEach(el => { el.style.transform = `translateX(el.dataset.offsetvw)`; });
+              .forEach(el => { el.style.transform = `translateX(${el.dataset.offset}vw)`; });
             document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)')
               .forEach(el => { if (el.dataset.originalLeft) el.style.left = el.dataset.originalLeft; });
             document.querySelectorAll<HTMLElement>('.other-content > .custom-line')
@@ -402,8 +401,8 @@ const PageScripts: React.FC = () => {
       if (slideState !== 'menu') return;
       const span = document.createElement('span');
       span.className = 'custom-text new-text';
-      span.style.top = `topVHvh`;
-      span.style.left = `leftVWvw`;
+      span.style.top =`${topVH}vh`;
+      span.style.left =`${leftVW}vw`;
       span.textContent = text;
       document.querySelector('.other-content')?.appendChild(span);
       setTimeout(() => span.classList.add('visible'), 10);
@@ -519,8 +518,8 @@ const PageScripts: React.FC = () => {
       });
       targets.forEach(el => {
         const base = parseFloat(el.dataset.baseLeftVw!);
-        el.style.transition = `left DURATIONms ease`;
-        el.style.left = `base + DISTANCEvw`;
+        el.style.transition = `left ${DURATION}ms ease`;
+        el.style.left =`${base + DISTANCE}vw`;
         el.dataset.slid = 'true';
       });
       setTimeout(() => { updateVisibility(); sliding = false; }, DURATION);
@@ -530,8 +529,8 @@ const PageScripts: React.FC = () => {
       sliding = true;
       targets.forEach(el => {
         const base = parseFloat(el.dataset.baseLeftVw!);
-        el.style.transition = `left DURATIONms ease`;
-        el.style.left = `basevw`;
+        el.style.transition = `left ${DURATION}ms ease`;
+        el.style.left =`${base}vw`;
         delete el.dataset.slid;
       });
       setTimeout(() => { updateVisibility(); sliding = false; }, DURATION);
@@ -724,7 +723,7 @@ const PageScripts: React.FC = () => {
       <span className="mail-text" style={{ position: "absolute", top: "35.4vh", left: "89vw",   zIndex: 1, fontFamily: "'Distill Expanded',sans-serif", color: "#111111", letterSpacing: "0.28vw", fontSize: "0.47rem", textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171", opacity: 0, transition: "opacity 0.3s ease" }}>cc</span>
       <span className="mail-text" style={{ position: "absolute", top: "35.4vh", left: "91.9vw", zIndex: 1, fontFamily: "'Distill Expanded',sans-serif", color: "#111111", letterSpacing: "0.28vw", fontSize: "0.47rem", textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171", opacity: 0, transition: "opacity 0.3s ease" }}>Bcc</span>
       <span className="mail-text" style={{ position: "absolute", top: "41.6vh", left: "91.1vw", zIndex: 1, fontFamily: "'Distill Expanded',sans-serif", color: "#111111", letterSpacing: "0.28vw", fontSize: "0.47rem", textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171", opacity: 0, transition: "opacity 0.3s ease" }}>SEnD</span>
-  </div> 
+    </div> 
       
     <span className="grid-number num1">1</span>
     <span className="grid-number num2">2</span>

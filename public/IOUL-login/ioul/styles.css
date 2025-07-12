@@ -520,7 +520,7 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
-/* ===== Patch: Proper slide & line animations ===== */
+/* ===== Final Patch: correct animations ===== */
 .hidden {
   display: none !important;
 }
@@ -532,7 +532,7 @@ body.non-fullscreen {
 .custom-line {
   transition: left 0.7s ease, top 0.7s ease !important;
 }
-.util-line {
+.line.util-line {
   cursor: pointer;
   transition: opacity 0.3s ease !important;
 }

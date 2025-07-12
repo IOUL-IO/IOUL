@@ -541,15 +541,23 @@ const PageScripts: React.FC = () => {
       setTimeout(() => { updateVisibility(); sliding = false; }, DURATION);
     };
     const clickHandler = (e: MouseEvent) => {
-    if (e.target instanceof HTMLElement && e.target.matches('.util-line')) {
-      toggleUtilLine();
-      return;
-    }
+    // ignore util-line clicks so util toggle works
+    const tgt = e.target as HTMLElement;
+    if (tgt.matches('.util-line')) return;
+
       const xVw = pxToVw(e.clientX), yVh = pxToVh(e.clientY);
       if (xVw >= CLICK_MIN && xVw <= CLICK_MAX) slideOnce();
       else if (xVw >= REVERSE_MIN && xVw <= REVERSE_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX) slideBack();
     };
     document.addEventListener('click', clickHandler);
+    const slideTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-triggers, .slide-container'));
+    const triggerHandlers: ((this: HTMLElement, ev: Event) => any)[] = [];
+    slideTriggers.forEach(el => {
+      const handler = (ev: Event) => { ev.stopPropagation(); slideOnce(); };
+      triggerHandlers.push(handler);
+      el.addEventListener('click', handler);
+    });
+
     // ===== Updated staggered-gap logic =====
     const FWD_MIN = 80;
     const REV_MIN = 160;

@@ -516,45 +516,35 @@ const PageScripts: React.FC = () => {
     updateVisibility();
     window.addEventListener('resize', updateVisibility);
     let sliding = false;
-    
-const slideOnce = () => {
-  if (sliding) return;
-  sliding = true;
-  // 1) stagger in item and lines
-  applyStagger(Array.from(document.querySelectorAll<HTMLElement>('.item-text, .item-line')), FWD_MIN);
-  // 2) stagger in center text and lines
-  applyStagger(Array.from(document.querySelectorAll<HTMLElement>('.center-text, .center-line')), REVERSE_MIN);
-  // 3) slide account group
-  const accountEls = Array.from(document.querySelectorAll<HTMLElement>('.account-container > *'));
-  accountEls.forEach(el => {
-    el.style.transition = `left ${DURATION}ms ease`;
-    const base = parseFloat(el.dataset.baseLeftVw!);
-    el.style.left = `${base + DISTANCE}vw`;
-    el.dataset.slid = 'true';
-  });
-  setTimeout(() => { updateVisibility(); sliding = false; }, DURATION);
-};
-
-    
-const slideBack = () => {
-  if (sliding) return;
-  sliding = true;
-  // 1) reverse stagger on item and lines
-  applyStagger(Array.from(document.querySelectorAll<HTMLElement>('.item-text, .item-line')), REVERSE_MIN);
-  // 2) reverse stagger on center text and lines
-  applyStagger(Array.from(document.querySelectorAll<HTMLElement>('.center-text, .center-line')), FWD_MIN);
-  // 3) slide account group back
-  const accountEls = Array.from(document.querySelectorAll<HTMLElement>('.account-container > *'));
-  accountEls.forEach(el => {
-    el.style.transition = `left ${DURATION}ms ease`;
-    const base = parseFloat(el.dataset.baseLeftVw!);
-    el.style.left = `${base}vw`;
-    el.dataset.slid = 'false';
-  });
-  setTimeout(() => { updateVisibility(); sliding = false; }, DURATION);
-};
-
+    const slideOnce = () => {
+      if (sliding || accountEls[0].dataset.slid === 'true') return;
+      sliding = true;
+      accountEls.forEach(el => {
+        el.style.opacity = '';
+        el.style.pointerEvents = '';
+        el.style.transition = `left ${DURATION}ms ease`;
+        const base = parseFloat(el.dataset.baseLeftVw!);
+        el.style.left = `${base + DISTANCE}vw`;
+        el.dataset.slid = 'true';
+      });
+      setTimeout(() => { updateVisibility(); sliding = false; }, DURATION);
+    };
+    const slideBack = () => {
+      if (sliding || accountEls[0].dataset.slid !== 'true') return;
+      sliding = true;
+      accountEls.forEach(el => {
+        const base = parseFloat(el.dataset.baseLeftVw!);
+        el.style.transition = `left ${DURATION}ms ease`;
+        el.style.left = `${base}vw`;
+        el.dataset.slid = 'false';
+      });
+      setTimeout(() => { updateVisibility(); sliding = false; }, DURATION);
+    };
     const clickHandler = (e: MouseEvent) => {
+    if (e.target instanceof HTMLElement && e.target.matches('.util-line')) {
+      toggleUtilLine();
+      return;
+    }
       const xVw = pxToVw(e.clientX), yVh = pxToVh(e.clientY);
       if (xVw >= CLICK_MIN && xVw <= CLICK_MAX) slideOnce();
       else if (xVw >= REVERSE_MIN && xVw <= REVERSE_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX) slideBack();

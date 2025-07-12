@@ -613,7 +613,7 @@ const PageScripts: React.FC = () => {
         <div className="line third" />
         <div className="line fourth" />
         <div className="line fifth" />
-<div className="line mail-line" style={{ position: "absolute", top: "47.8vh", left: "36vw", width: "57.8vw", height: "1px", backgroundColor: "rgba(230,230,230,0.28)", opacity: 0, transition: "opacity 0.3s ease", zIndex: 1 }} />
+        <div className="line mail-line" style={{ position: "absolute", top: "47.8vh", left: "36vw", width: "57.8vw", height: "1px", backgroundColor: "rgba(230,230,230,0.28)", opacity: 0, transition: "opacity 0.3s ease", zIndex: 1 }} />
         <div className="line sixth" />
       </div>
 
@@ -795,8 +795,8 @@ const PageScripts: React.FC = () => {
     <div className="account-container" style={{ top: "41.6vh", left: "29.11vw", transform: "translateX(-49vw)" }} data-offset="-49" data-slide-group="account"><span className="custom-text right-flow" style={{ position: "absolute", right: 0 }}>0</span></div>
     <div className="account-container" style={{ top: "53vh",   left: "29.11vw", transform: "translateX(-49vw)" }} data-offset="-49" data-slide-group="account"><span className="custom-text right-flow" style={{ position: "absolute", right: 0 }}>0</span></div>
     <div className="account-container" style={{ top: "59.2vh", left: "29.11vw", transform: "translateX(-49vw)" }} data-offset="-49" data-slide-group="account"><span className="custom-text right-flow" style={{ position: "absolute", right: 0 }}>0</span></div>
-
-     <div className="custom-line" style={{ left: "-42.59vw" }} />
+    <div className="account-container custom-line" style={{ position: "absolute", top: "47.8vh", left: "-42.59vw", width: "22.48vw", height: "1px", backgroundColor: "rgba(230,230,230,0.28)", transition: "left 0.7s ease, transform 0.7s ease", zIndex: 1 }} />
+      
      <div className="layer-five" />
      <div className="layer-six" />
 

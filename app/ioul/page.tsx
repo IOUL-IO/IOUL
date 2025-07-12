@@ -832,7 +832,53 @@ const PageScripts: React.FC = () => {
       <div className="slide-trigger-reverse" />
     </div>
   </>
-  );
+  
+     <style jsx global>{`
+       /* 1. Item-text & item-line slide */
+       .item-text,
+       .item-line {
+         transform: translateX(calc(-100% - 1rem));
+         transition: transform 0.6s ease;
+       }
+       .item-text[data-slid="true"],
+       .item-line[data-slid="true"] {
+         transform: translateX(var(--stagger-offset));
+       }
+
+       /* 2. Account slide */
+       .account-text,
+       .account-line {
+         position: absolute;
+         left: 0;
+         transition: left 0.7s ease, opacity 0.7s ease;
+       }
+
+       /* 3. Custom-line grow */
+       .heading-container .custom-line,
+       .account-container .custom-line {
+         position: absolute;
+         width: 0;
+         transition: left 0.6s ease,
+                     transform 0.6s ease,
+                     width 0.6s ease;
+         display: block;
+         height: 2px;
+         background: currentColor;
+       }
+
+       /* 4. Util-line toggles */
+       .hidden {
+         display: none !important;
+       }
+       .mail-text,
+       .mail-line,
+       .grid-number,
+       .grid-dashed {
+         opacity: 1;
+         transition: opacity 0.3s ease;
+       }
+     `}</style>
+);
 };
 
 export default PageScripts;

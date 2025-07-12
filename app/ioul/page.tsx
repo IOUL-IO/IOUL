@@ -588,27 +588,6 @@ const PageScripts: React.FC = () => {
       })
     );
 
-
-    // Custom-line animation under heading & account
-    const customLines = Array.from(
-      document.querySelectorAll<HTMLElement>(
-        '.heading-container .custom-line, .account-container .custom-line'
-      )
-    );
-    const initialWidths = customLines.map(l => parseFloat(getComputedStyle(l).width));
-    forwardTriggers.forEach(() =>
-      customLines.forEach((line,i) => {
-        line.style.transition = 'width 0.5s ease';
-        line.style.width = `${initialWidths[i] + DISTANCE}px`;
-      })
-    );
-    reverseTriggers.forEach(() =>
-      customLines.forEach((line,i) => {
-        line.style.transition = 'width 0.5s ease';
-        line.style.width = `${initialWidths[i]}px`;
-      })
-    );
-
 // ===== Cleanup all listeners on unmount =====
 
     return () => {

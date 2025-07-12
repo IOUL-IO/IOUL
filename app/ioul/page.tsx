@@ -482,22 +482,23 @@ const PageScripts: React.FC = () => {
       };
       utilHandlers.push(handler);
       line.addEventListener('click', handler);
-    }
+    });
 
-// Added combined submenu listeners
-['online-assets','linkup-center','delivery-line','internal-unit'].forEach(id => {
-  document.getElementById(id)?.addEventListener('click', e => {
-    e.stopPropagation();
-    if (currentMenu === id) closeSubmenu();
-    else {
-      if (id === 'online-assets') openOnlineAssets();
-      else if (id === 'linkup-center') openLinkupCenter();
-      else if (id === 'delivery-line') openDeliveryLine();
-      else if (id === 'internal-unit') openInternalUnit();
-    }
+  // Added combined submenu listeners
+  ['online-assets','linkup-center','delivery-line','internal-unit'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      if (currentMenu === id) closeSubmenu();
+      else {
+        if (id === 'online-assets') openOnlineAssets();
+        else if (id === 'linkup-center') openLinkupCenter();
+        else if (id === 'delivery-line') openDeliveryLine();
+        else if (id === 'internal-unit') openInternalUnit();
+      }
+    });
   });
-});
-);
 
     // ===== Account-slide logic =====
     const HIDE_MIN   =  6.37, HIDE_MAX   = 28.86;
@@ -561,14 +562,10 @@ const PageScripts: React.FC = () => {
       else if (xVw >= REVERSE_MIN && xVw <= REVERSE_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX) slideBack();
     };
     document.addEventListener('click', clickHandler);
-    const slideTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-trigger-reverse, .slide-trigger, .slide-triggers, .slide-container'));
+    const slideTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-triggers, .slide-container'));
     const triggerHandlers: ((this: HTMLElement, ev: Event) => any)[] = [];
     slideTriggers.forEach(el => {
-      const handler = (ev: Event) => {
-    ev.stopPropagation();
-    if (el.classList.contains('slide-trigger')) slideOnce();
-    else if (el.classList.contains('slide-trigger-reverse')) slideBack();
-  };
+      const handler = (ev: Event) => { ev.stopPropagation(); slideOnce(); };
       triggerHandlers.push(handler);
       el.addEventListener('click', handler);
     });

@@ -563,3 +563,13 @@ const PageScripts: React.FC = () => {
     };
   }, []);
 
+
+  return (
+    <>
+      <div className="layer-one" />
+    </div>
+  </>
+  );
+};
+
+export default PageScripts;

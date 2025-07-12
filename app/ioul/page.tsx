@@ -561,7 +561,8 @@ const PageScripts: React.FC = () => {
       utilLines.forEach(line => line.replaceWith(line.cloneNode(true) as HTMLElement));
       // (and any others if you track them separately)
     };
-    }, []);
+  }, []);
+
 
   return (
     <>

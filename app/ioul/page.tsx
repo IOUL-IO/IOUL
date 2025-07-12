@@ -3,6 +3,22 @@ import React, { useEffect } from 'react';
 
 const PageScripts: React.FC = () => {
   useEffect(() => {
+  // ===== Unified slide & util-line handlers =====
+  const unifiedSlides = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-trigger-reverse'));
+  unifiedSlides.forEach(el => {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', () => {
+      if (el.classList.contains('slide-trigger-reverse')) slideBack();
+      else slideOnce();
+    });
+  });
+  document.querySelectorAll<HTMLElement>('.util-line').forEach(el => {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', () => {
+      toggleUtilLine();
+    });
+  });
+
     // ===== Fade-in on first mouse move =====
     const pageContent = document.querySelector<HTMLElement>('.page-content');
     let pageFadedIn = false;
@@ -442,10 +458,10 @@ const PageScripts: React.FC = () => {
       currentMenu = 'internal-unit';
     };
 
-         currentMenu==='online-assets' ? closeSubmenu() : openOnlineAssets(); });
-         currentMenu==='linkup-center' ? closeSubmenu() : openLinkupCenter(); });
-         currentMenu==='delivery-line' ? closeSubmenu() : openDeliveryLine(); });
-         currentMenu==='internal-unit' ? closeSubmenu() : openInternalUnit(); });
+    document.getElementById('online-assets')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='online-assets' ? closeSubmenu() : openOnlineAssets(); });
+    document.getElementById('linkup-center')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='linkup-center' ? closeSubmenu() : openLinkupCenter(); });
+    document.getElementById('delivery-line')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='delivery-line' ? closeSubmenu() : openDeliveryLine(); });
+    document.getElementById('internal-unit')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='internal-unit' ? closeSubmenu() : openInternalUnit(); });
 
     
     // ===== util-line toggle (mail/calendar/lines) =====
@@ -474,32 +490,6 @@ const PageScripts: React.FC = () => {
         specialLines.forEach(el => el.classList.add('hidden'));
       }
     };
-    // Attach util-line click handlers
-    utilLines.forEach(el => {
-      el.addEventListener('click', (e: Event) => {
-        e.stopPropagation();
-        updateView();
-      });
-// ===== Unified submenu toggles =====
-const menuItems = ['online-assets','linkup-center','delivery-line','internal-unit'] as const;
-menuItems.forEach(id => {
-  document.getElementById(id)?.addEventListener('click', e => {
-    e.stopPropagation();
-    if (currentMenu === id) {
-      closeSubmenu();
-    } else {
-      switch(id) {
-        case 'online-assets': openOnlineAssets(); break;
-        case 'linkup-center': openLinkupCenter(); break;
-        case 'delivery-line': openDeliveryLine(); break;
-        case 'internal-unit': openInternalUnit(); break;
-      }
-    }
-  });
-});
-
-    });
-
     const utilHandlers: ((this: HTMLElement, ev: Event) => any)[] = [];
     utilLines.forEach(line => {
       const handler = () => {
@@ -571,11 +561,11 @@ menuItems.forEach(id => {
       if (xVw >= CLICK_MIN && xVw <= CLICK_MAX) slideOnce();
       else if (xVw >= REVERSE_MIN && xVw <= REVERSE_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX) slideBack();
     };
-    document.addEventListener('click', clickHandler);
+    // document.addEventListener('click', clickHandler);
     const slideTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-triggers, .slide-container'));
     const triggerHandlers: ((this: HTMLElement, ev: Event) => any)[] = [];
     slideTriggers.forEach(el => {
-      const handler = (ev: Event) => { ev.stopPropagation(); slideOnce(); };
+      const handler = (ev: Event) => { // ev.stopPropagation(); slideOnce(); };
       triggerHandlers.push(handler);
       el.addEventListener('click', handler);
     });

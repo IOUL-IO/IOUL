@@ -562,15 +562,17 @@ const PageScripts: React.FC = () => {
       else if (xVw >= REVERSE_MIN && xVw <= REVERSE_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX) slideBack();
     };
     // document.addEventListener('click', clickHandler);
-    const slideTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-triggers, .slide-container'));
-    const triggerHandlers: ((this: HTMLElement, ev: Event) => any)[] = [];
-    slideTriggers.forEach(el => {
-      const handler = (ev: Event) => { // ev.stopPropagation(); slideOnce(); };
-      triggerHandlers.push(handler);
-      el.addEventListener('click', handler);
-    });
 
-    // ===== Updated staggered-gap logic =====
+  // ===== Unified slide trigger handlers =====
+  const unifiedSlides = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-trigger-reverse'));
+  unifiedSlides.forEach(el => {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', (ev: Event) => {
+      if (el.classList.contains('slide-trigger-reverse')) slideBack();
+      else slideOnce();
+    });
+  });
+// ===== Updated staggered-gap logic =====
     const FWD_MIN = 80;
     const REV_MIN = 160;
     const GAP = 8;

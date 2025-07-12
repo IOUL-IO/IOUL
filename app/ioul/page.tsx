@@ -479,6 +479,7 @@ const PageScripts: React.FC = () => {
       const handler = () => {
         stateView = (stateView + 1) % 3;
         updateView();
+    updateView();  // Sync initial util-line state
       };
       utilHandlers.push(handler);
       line.addEventListener('click', handler);
@@ -540,6 +541,12 @@ const PageScripts: React.FC = () => {
       });
       setTimeout(() => { updateVisibility(); sliding = false; }, DURATION);
     };
+
+    // Hook forward/inverse triggers directly
+    const forwardTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-triggers, .slide-container'));
+    const reverseTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger-reverse'));
+    forwardTriggers.forEach(el => el.addEventListener('click', e => { e.stopPropagation(); slideOnce(); }));
+    reverseTriggers.forEach(el => el.addEventListener('click', e => { e.stopPropagation(); slideBack(); }));
     const clickHandler = (e: MouseEvent) => {
       const xVw = pxToVw(e.clientX), yVh = pxToVh(e.clientY);
       if (xVw >= CLICK_MIN && xVw <= CLICK_MAX) slideOnce();
@@ -573,7 +580,36 @@ const PageScripts: React.FC = () => {
     applyStagger(toArrayNodes(document.querySelectorAll('.center-text')), REV_MIN);
     applyStagger(toArrayNodes(document.querySelectorAll('.center-line')), REV_MIN);
 
-    // ===== Cleanup all listeners on unmount =====
+        // Updated staggered-gap logic
+    const FWD_MIN = 80, REV_MIN = 160, GAP = 8, STAGGER = 24;
+    const toArrayNodes = (nl: NodeListOf<Element>) => Array.from(nl) as HTMLElement[];
+    function applyStagger(els: HTMLElement[], start: number) {
+      els.forEach((el,i) =>
+        el.style.setProperty('--stagger-offset', `${start + i*(GAP+STAGGER)}px`)
+      );
+    }
+    applyStagger(toArrayNodes(document.querySelectorAll('.item-text')), FWD_MIN);
+    applyStagger(toArrayNodes(document.querySelectorAll('.item-line')), FWD_MIN);
+    applyStagger(toArrayNodes(document.querySelectorAll('.center-text')), REV_MIN);
+    applyStagger(toArrayNodes(document.querySelectorAll('.center-line')), REV_MIN);
+
+    // Custom-line animation under heading & account
+    const customLines = Array.from(document.querySelectorAll<HTMLElement>('.heading-container .custom-line, .account-container .custom-line'));
+    const initialWidths = customLines.map(l => parseFloat(getComputedStyle(l).width));
+    forwardTriggers.forEach(() =>
+      customLines.forEach((line,i) => {
+        line.style.transition = 'width 0.5s ease';
+        line.style.width = `${initialWidths[i] + DISTANCE}px`;
+      })
+    );
+    reverseTriggers.forEach(() =>
+      customLines.forEach((line,i) => {
+        line.style.transition = 'width 0.5s ease';
+        line.style.width = `${initialWidths[i]}px`;
+      })
+    );
+
+// ===== Cleanup all listeners on unmount =====
     return () => {
       document.removeEventListener('mousemove', onFirstMouseMove);
       document.removeEventListener('click', onEdgeClick);

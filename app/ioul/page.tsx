@@ -597,10 +597,7 @@ const PageScripts: React.FC = () => {
         <div className="custom-line" style={{ position: "absolute", top: "47.8vh", left: "35.41vw", width: "22.48vw", height: "1px", backgroundColor: "rgba(230,230,230,0.28)", transition: "left 0.7s ease, transform 0.7s ease", zIndex: 1 }} />
       </div>
 
-<div>
-        className="zero-items-container"
-        style={{ position: "absolute", zIndex: 1 }}
-      >
+<div className="zero-items-container" style={{ position: "absolute", zIndex: 1 }}>
         <span className="right-flow" style={{ position: "absolute", top: "35.4vh", left: "57.4vw", zIndex: 1, fontFamily: "'Distill Expanded', sans-serif", color: "#111111", letterSpacing: "0.28vw", fontSize: "0.47rem", textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171", transition: "left 0.7s ease", lineHeight: 1.6, overflow: "visible" }}>0</span>
         <span className="right-flow" style={{ position: "absolute", top: "41.6vh", left: "57.4vw", zIndex: 1, fontFamily: "'Distill Expanded', sans-serif", color: "#111111", letterSpacing: "0.28vw", fontSize: "0.47rem", textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171", transition: "left 0.7s ease", lineHeight: 1.6, overflow: "visible" }}>0</span>
         <span className="right-flow" style={{ position: "absolute", top: "53vh", left: "57.4vw", zIndex: 1, fontFamily: "'Distill Expanded', sans-serif", color: "#111111", letterSpacing: "0.28vw", fontSize: "0.47rem", textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171", transition: "left 0.7s ease", lineHeight: 1.6, overflow: "visible" }}>0</span>

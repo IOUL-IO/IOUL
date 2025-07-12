@@ -289,7 +289,6 @@ const Page: React.FC = () => {
 
   return (
     <>
-      {/* Static lines */}
       <div className="line original" />
       <div className="line second" />
       <div className="line third" />
@@ -298,11 +297,9 @@ const Page: React.FC = () => {
       <div className="line sixth" />
       <div className="line util-line" />
 
-      {/* Login */}
       <span className="login-text username hidden">USERnAME</span>
       <span className="login-text password hidden">PASSWORD</span>
 
-      {/* Util texts */}
       <span className="login-text open-text hidden">
         OPEn AccOUnT
       </span>
@@ -310,11 +307,9 @@ const Page: React.FC = () => {
         HELP REQUEST
       </span>
 
-      {/* Login entry lines */}
       <div className="line login-line hidden" />
       <div className="line login-line-second hidden" />
 
-      {/* Account creation wrapper */}
       <div className="account-wrapper">
         <span className="account-text account-email">
           E-MA1L ADDRESS
@@ -334,7 +329,6 @@ const Page: React.FC = () => {
         <div className="account-line account-line4" />
       </div>
 
-      {/* Help wrapper */}
       <div className="help-wrapper">
         <span className="help-text-area email">YOUR EMA1L</span>
         <span className="help-text-area sendlink">
@@ -343,7 +337,6 @@ const Page: React.FC = () => {
         <div className="help-line" />
       </div>
 
-      {/* Masking layers */}
       <div className="layer-one" />
       <div className="layer-two" />
     </>

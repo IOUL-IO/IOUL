@@ -3,22 +3,6 @@ import React, { useEffect } from 'react';
 
 const PageScripts: React.FC = () => {
   useEffect(() => {
-  // ===== Unified slide & util-line handlers =====
-  const unifiedSlides = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-trigger-reverse'));
-  unifiedSlides.forEach(el => {
-    el.style.cursor = 'pointer';
-    el.addEventListener('click', () => {
-      if (el.classList.contains('slide-trigger-reverse')) slideBack();
-      else slideOnce();
-    });
-  });
-  document.querySelectorAll<HTMLElement>('.util-line').forEach(el => {
-    el.style.cursor = 'pointer';
-    el.addEventListener('click', () => {
-      toggleUtilLine();
-    });
-  });
-
     // ===== Fade-in on first mouse move =====
     const pageContent = document.querySelector<HTMLElement>('.page-content');
     let pageFadedIn = false;

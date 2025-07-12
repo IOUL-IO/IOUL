@@ -549,6 +549,26 @@ const PageScripts: React.FC = () => {
     Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger-reverse'))
       .forEach(el => el.addEventListener('click', e => { e.stopPropagation(); slideBack(); }));
 
+    
+    // ===== Updated staggered-gap logic =====
+    const FWD_MIN = 80;
+    const REV_MIN = 160;
+    const GAP = 8;
+    const STAGGER = 24;
+    const toArray = (nodes: NodeListOf<Element>) => Array.from(nodes) as HTMLElement[];
+
+    const applyStagger = (els: HTMLElement[], start: number) => {
+      els.forEach((el, i) => {
+        const offset = start + i * (GAP + STAGGER);
+        el.style.setProperty('--stagger-offset', `${offset}px`);
+      });
+    };
+
+    applyStagger(toArray(document.querySelectorAll('.item-text')), FWD_MIN);
+    applyStagger(toArray(document.querySelectorAll('.item-line')), FWD_MIN);
+    applyStagger(toArray(document.querySelectorAll('.center-text')), REV_MIN);
+    applyStagger(toArray(document.querySelectorAll('.center-line')), REV_MIN);
+
     // ===== Cleanup all listeners on unmount =====
     return () => {
       document.removeEventListener('mousemove', onFirstMouseMove);

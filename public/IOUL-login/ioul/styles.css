@@ -532,3 +532,19 @@ body.non-fullscreen {
     cursor: pointer;
     transition: opacity 0.3s ease !important;
 }
+
+/* ===== Patch: visibility and transitions ===== */
+.hidden {
+    display: none !important;
+}
+.item-text, .item-line, .center-text, .center-line {
+    transition: transform 0.6s ease !important;
+    transform: translateX(var(--stagger-offset)) !important;
+}
+.custom-line {
+    transition: left 0.7s ease, top 0.7s ease !important;
+}
+.line.util-line {
+    cursor: pointer;
+    transition: opacity 0.3s ease !important;
+}

@@ -35,7 +35,3 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
-
-
-/* Utility class to hide elements */
-.hidden { display: none !important; }

@@ -110,6 +110,12 @@ const PageScripts: React.FC = () => {
       }
     };
 
+    // ===== Slide trigger handlers =====
+    const slideTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger'));
+    slideTriggers.forEach(el => el.addEventListener('click', ev => { ev.stopPropagation(); slideOnce(); }));
+    const reverseTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger-reverse'));
+    reverseTriggers.forEach(el => el.addEventListener('click', ev => { ev.stopPropagation(); slideBack(); }));
+
     // ===== Click outside handlers for sliding logic =====
     const onGlobalClick1 = (event: MouseEvent) => {
       if (event.target instanceof Element &&
@@ -391,7 +397,7 @@ const PageScripts: React.FC = () => {
         el.style.transform = '';
         el.style.transition = '';
         void el.offsetHeight;
-        el.classList.add('slide-down');
+        el.classList.add('menu-slide');
       });
       requestAnimationFrame(() => {
         items.slice(idx+1).forEach(el => el.classList.add('slide-down'));
@@ -546,12 +552,12 @@ const PageScripts: React.FC = () => {
       else if (xVw >= REVERSE_MIN && xVw <= REVERSE_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX) slideBack();
     };
     document.addEventListener('click', clickHandler);
-    // ===== Slide trigger handlers =====
-const forwardTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger'));
-const reverseTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger-reverse'));
-forwardTriggers.forEach(el => el.addEventListener('click', ev => { ev.stopPropagation(); slideOnce(); }));
-reverseTriggers.forEach(el => el.addEventListener('click', ev => { ev.stopPropagation(); slideBack(); }));
-el.addEventListener('click', handler);
+    const slideTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-triggers, .slide-container'));
+    const triggerHandlers: ((this: HTMLElement, ev: Event) => any)[] = [];
+    slideTriggers.forEach(el => {
+      const handler = (ev: Event) => { ev.stopPropagation(); slideOnce(); };
+      triggerHandlers.push(handler);
+      el.addEventListener('click', handler);
     });
 
     // ===== Updated staggered-gap logic =====

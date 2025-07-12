@@ -758,7 +758,6 @@ const PageScripts: React.FC = () => {
     <span className="grid-number num30">30</span>
     <span className="grid-number num31">31</span>
 
-    {/* ——— Calendar grid dashes ——— */}
     <span className="grid-dashed dashed01" />
     <span className="grid-dashed dashed02" />
     <span className="grid-dashed dashed03" />
@@ -805,14 +804,12 @@ const PageScripts: React.FC = () => {
      <div className="layer-five" />
      <div className="layer-six" />
 
-    </div> {/* closes <div className="page-content"> */}
-
     <div className="slide-triggers">
       <div className="slide-trigger" />
       <div className="slide-trigger-reverse" />
     </div>
   </>
   );
-  };
+};
 
 export default PageScripts;

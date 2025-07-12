@@ -520,3 +520,7 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
+/* Custom line sliding */
+.custom-line {
+    transition: left 0.6s ease, top 0.6s ease !important;
+}

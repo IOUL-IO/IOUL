@@ -110,7 +110,23 @@ const PageScripts: React.FC = () => {
       }
     };
 
-    // ===== Click outside handlers for sliding logic =====
+    
+// ===== Menu-item click handlers =====
+const menuCleanup: Array<() => void> = [];
+document.querySelectorAll<HTMLElement>('.menu-item').forEach(el => {
+  const handler = (ev: MouseEvent) => {
+    ev.stopPropagation();
+    forceCloseSubmenuThen(() => {
+      currentMenu = el.id;
+      el.classList.add('slide-down');
+      // TODO: populate submenu items (.new-text) based on el.id
+    });
+  };
+  el.addEventListener('click', handler);
+  menuCleanup.push(() => el.removeEventListener('click', handler));
+});
+
+// ===== Click outside handlers for sliding logic =====
     const onGlobalClick1 = (event: MouseEvent) => {
       if (event.target instanceof Element &&
           (event.target.closest('.menu-item') ||
@@ -442,22 +458,10 @@ const PageScripts: React.FC = () => {
       currentMenu = 'internal-unit';
     };
 
-        document.getElementById('online-assets')?.addEventListener('click', e => {
-      e.stopPropagation();
-      currentMenu === 'online-assets' ? closeSubmenu() : openOnlineAssets();
-    }); currentMenu==='online-assets' ? closeSubmenu() : openOnlineAssets(); });
-        document.getElementById('linkup-center')?.addEventListener('click', e => {
-      e.stopPropagation();
-      currentMenu === 'linkup-center' ? closeSubmenu() : openLinkupCenter();
-    }); currentMenu==='linkup-center' ? closeSubmenu() : openLinkupCenter(); });
-        document.getElementById('delivery-line')?.addEventListener('click', e => {
-      e.stopPropagation();
-      currentMenu === 'delivery-line' ? closeSubmenu() : openDeliveryLine();
-    }); currentMenu==='delivery-line' ? closeSubmenu() : openDeliveryLine(); });
-        document.getElementById('internal-unit')?.addEventListener('click', e => {
-      e.stopPropagation();
-      currentMenu === 'internal-unit' ? closeSubmenu() : openInternalUnit();
-    }); currentMenu==='internal-unit' ? closeSubmenu() : openInternalUnit(); });
+    document.getElementById('online-assets')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='online-assets' ? closeSubmenu() : openOnlineAssets(); });
+    document.getElementById('linkup-center')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='linkup-center' ? closeSubmenu() : openLinkupCenter(); });
+    document.getElementById('delivery-line')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='delivery-line' ? closeSubmenu() : openDeliveryLine(); });
+    document.getElementById('internal-unit')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='internal-unit' ? closeSubmenu() : openInternalUnit(); });
 
     
     // ===== util-line toggle (mail/calendar/lines) =====
@@ -486,14 +490,6 @@ const PageScripts: React.FC = () => {
         specialLines.forEach(el => el.classList.add('hidden'));
       }
     };
-    // Attach util-line click handlers
-    utilLines.forEach(el => {
-      el.addEventListener('click', (e: Event) => {
-        e.stopPropagation();
-        updateView();
-      });
-    });
-
     const utilHandlers: ((this: HTMLElement, ev: Event) => any)[] = [];
     utilLines.forEach(line => {
       const handler = () => {
@@ -566,15 +562,19 @@ const PageScripts: React.FC = () => {
       else if (xVw >= REVERSE_MIN && xVw <= REVERSE_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX) slideBack();
     };
     document.addEventListener('click', clickHandler);
-    const slideTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-triggers, .slide-container'));
-    const triggerHandlers: ((this: HTMLElement, ev: Event) => any)[] = [];
-    slideTriggers.forEach(el => {
-      const handler = (ev: Event) => { ev.stopPropagation(); slideOnce(); };
-      triggerHandlers.push(handler);
-      el.addEventListener('click', handler);
-    });
-
-    // ===== Updated staggered-gap logic =====
+    // ===== Slide trigger handlers =====
+const triggerCleanup: Array<() => void> = [];
+const slideEls = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-trigger-reverse'));
+slideEls.forEach(el => {
+  const handler = (ev: Event) => {
+    ev.stopPropagation();
+    if (el.classList.contains('slide-trigger-reverse')) slideBack();
+    else slideOnce();
+  };
+  el.addEventListener('click', handler);
+  triggerCleanup.push(() => el.removeEventListener('click', handler));
+});
+// ===== Updated staggered-gap logic =====
     const FWD_MIN = 80;
     const REV_MIN = 160;
     const GAP = 8;
@@ -595,6 +595,9 @@ const PageScripts: React.FC = () => {
 
     // ===== Cleanup all listeners on unmount =====
     return () => {
+      // Cleanup slide and menu handlers
+      triggerCleanup.forEach(fn => fn());
+      menuCleanup.forEach(fn => fn());
       document.removeEventListener('mousemove', onFirstMouseMove);
       document.removeEventListener('click', onEdgeClick);
       document.removeEventListener('mousemove', onChatHover);

@@ -447,12 +447,14 @@ const PageScripts: React.FC = () => {
     document.getElementById('delivery-line')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='delivery-line' ? closeSubmenu() : openDeliveryLine(); });
     document.getElementById('internal-unit')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='internal-unit' ? closeSubmenu() : openInternalUnit(); });
 
+    
     // ===== util-line toggle (mail/calendar/lines) =====
     const utilLines = Array.from(document.querySelectorAll<HTMLElement>('.util-line'));
     const mailEls = Array.from(document.querySelectorAll<HTMLElement>('.mail-text, .mail-line'));
     const calendarEls = Array.from(document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed'));
     const specialLines = Array.from(document.querySelectorAll<HTMLElement>('.line.fifth, .line.sixth'));
-    mailEls.forEach(el => el.classList.add('hidden'));
+    // initial hide (avoid flash)
+    mailEls.forEach(el => { el.classList.add('hidden'); el.style.opacity = '0'; });
     calendarEls.forEach(el => el.classList.add('hidden'));
     specialLines.forEach(el => el.classList.remove('hidden'));
 
@@ -472,10 +474,16 @@ const PageScripts: React.FC = () => {
         specialLines.forEach(el => el.classList.add('hidden'));
       }
     };
-    utilLines.forEach(line => line.addEventListener('click', () => {
-      stateView = (stateView + 1) % 3;
-      updateView();
-    }));
+    const utilHandlers: ((this: HTMLElement, ev: Event) => any)[] = [];
+    utilLines.forEach(line => {
+      const handler = () => {
+        stateView = (stateView + 1) % 3;
+        updateView();
+    updateView();  // Sync initial util-line state
+      };
+      utilHandlers.push(handler);
+      line.addEventListener('click', handler);
+    });
 
     // ===== Account-slide logic =====
     const HIDE_MIN   =  6.37, HIDE_MAX   = 28.86;
@@ -483,23 +491,24 @@ const PageScripts: React.FC = () => {
     const CLICK_MIN  = 32.43, CLICK_MAX  = 36;
     const REVERSE_MIN= 94,    REVERSE_MAX=100;
     const DISTANCE   = 60,    DURATION   = 700;
+    const pxToVw = (px: number) => px / (window.innerWidth / 100);
+    const pxToVh = (px: number) => px / (window.innerHeight / 100);
 
-    const pxToVw = (px: number) => px / (window.innerWidth/100);
-    const pxToVh = (px: number) => px / (window.innerHeight/100);
-
-    const targets = Array.from(document.querySelectorAll<HTMLElement>('.account-text'))
-      .concat(Array.from(document.querySelectorAll<HTMLElement>('.account-line')));
-    targets.forEach(el => {
+    const accountEls: HTMLElement[] = [
+      ...Array.from(document.querySelectorAll<HTMLElement>('.account-text')),
+      ...Array.from(document.querySelectorAll<HTMLElement>('.account-line'))
+    ];
+    accountEls.forEach(el => {
       if (!el.dataset.baseLeftVw) {
         const leftPx = parseFloat(getComputedStyle(el).left) || 0;
         el.dataset.baseLeftVw = pxToVw(leftPx).toString();
       }
+      el.dataset.slid = 'false';
     });
-
     const updateVisibility = () => {
-      targets.forEach(el => {
-        const r = el.getBoundingClientRect();
-        const l = pxToVw(r.left), t = pxToVh(r.top);
+      accountEls.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const l = pxToVw(rect.left), t = pxToVh(rect.top);
         const hide = l >= HIDE_MIN && l < HIDE_MAX && t >= TOP_MIN && t <= TOP_MAX;
         el.style.opacity = hide ? '0' : '';
         el.style.pointerEvents = hide ? 'none' : '';
@@ -507,49 +516,79 @@ const PageScripts: React.FC = () => {
     };
     updateVisibility();
     window.addEventListener('resize', updateVisibility);
-
     let sliding = false;
     const slideOnce = () => {
-      if (sliding || targets[0].dataset.slid === 'true') return;
+      if (sliding || accountEls[0].dataset.slid === 'true') return;
       sliding = true;
-      targets.forEach(el => {
+      accountEls.forEach(el => {
         el.style.opacity = '';
         el.style.pointerEvents = '';
-      });
-      targets.forEach(el => {
-        const base = parseFloat(el.dataset.baseLeftVw!);
         el.style.transition = `left ${DURATION}ms ease`;
-        el.style.left =`${base + DISTANCE}vw`;
+        const base = parseFloat(el.dataset.baseLeftVw!);
+        el.style.left = `${base + DISTANCE}vw`;
         el.dataset.slid = 'true';
       });
       setTimeout(() => { updateVisibility(); sliding = false; }, DURATION);
     };
     const slideBack = () => {
-      if (sliding || targets[0].dataset.slid !== 'true') return;
+      if (sliding || accountEls[0].dataset.slid !== 'true') return;
       sliding = true;
-      targets.forEach(el => {
+      accountEls.forEach(el => {
         const base = parseFloat(el.dataset.baseLeftVw!);
         el.style.transition = `left ${DURATION}ms ease`;
-        el.style.left =`${base}vw`;
-        delete el.dataset.slid;
+        el.style.left = `${base}vw`;
+        el.dataset.slid = 'false';
       });
       setTimeout(() => { updateVisibility(); sliding = false; }, DURATION);
     };
 
-    document.addEventListener('click', e => {
+    // Hook forward/inverse triggers directly
+    const forwardTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-triggers, .slide-container'));
+    const reverseTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger-reverse'));
+    forwardTriggers.forEach(el => el.addEventListener('click', e => { e.stopPropagation(); slideOnce(); }));
+    reverseTriggers.forEach(el => el.addEventListener('click', e => { e.stopPropagation(); slideBack(); }));
+    const clickHandler = (e: MouseEvent) => {
       const xVw = pxToVw(e.clientX), yVh = pxToVh(e.clientY);
-      if (xVw >= CLICK_MIN && xVw <= CLICK_MAX) {
-        slideOnce();
-      } else if (xVw >= REVERSE_MIN && xVw <= REVERSE_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX) {
-        slideBack();
-      }
-    });
-    Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-triggers, .slide-container'))
-      .forEach(el => el.addEventListener('click', e => { e.stopPropagation(); slideOnce(); }));
-    Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger-reverse'))
-      .forEach(el => el.addEventListener('click', e => { e.stopPropagation(); slideBack(); }));
+      if (xVw >= CLICK_MIN && xVw <= CLICK_MAX) slideOnce();
+      else if (xVw >= REVERSE_MIN && xVw <= REVERSE_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX) slideBack();
+    };
+    document.addEventListener('click', clickHandler);
+    const slideTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-triggers, .slide-container'));
+    const triggerHandlers: ((this: HTMLElement, ev: Event) => any)[] = [];
+    slideTriggers.forEach(el => {
+      const handler = (ev: Event) => { ev.stopPropagation(); slideOnce(); };
+      triggerHandlers.push(handler);
+      el.addEventListener('click', handler);
+    });// Updated staggered-gap logic
+    const FWD_MIN = 80, REV_MIN = 160, GAP = 8, STAGGER = 24;
+    const toArrayNodes = (nl: NodeListOf<Element>) => Array.from(nl) as HTMLElement[];
+    function applyStagger(els: HTMLElement[], start: number) {
+      els.forEach((el,i) =>
+        el.style.setProperty('--stagger-offset', `${start + i*(GAP+STAGGER)}px`)
+      );
+    }
+    applyStagger(toArrayNodes(document.querySelectorAll('.item-text')), FWD_MIN);
+    applyStagger(toArrayNodes(document.querySelectorAll('.item-line')), FWD_MIN);
+    applyStagger(toArrayNodes(document.querySelectorAll('.center-text')), REV_MIN);
+    applyStagger(toArrayNodes(document.querySelectorAll('.center-line')), REV_MIN);
 
-    
+    // Custom-line animation under heading & account
+    const customLines = Array.from(document.querySelectorAll<HTMLElement>('.heading-container .custom-line, .account-container .custom-line'));
+    const initialWidths = customLines.map(l => parseFloat(getComputedStyle(l).width));
+    forwardTriggers.forEach(() =>
+      customLines.forEach((line,i) => {
+        line.style.transition = 'width 0.5s ease';
+        line.style.width = `${initialWidths[i] + DISTANCE}px`;
+      })
+    );
+    reverseTriggers.forEach(() =>
+      customLines.forEach((line,i) => {
+        line.style.transition = 'width 0.5s ease';
+        line.style.width = `${initialWidths[i]}px`;
+      })
+    );
+
+
     // Custom-line animation under heading & account
     const customLines = Array.from(
       document.querySelectorAll<HTMLElement>(
@@ -569,7 +608,9 @@ const PageScripts: React.FC = () => {
         line.style.width = `${initialWidths[i]}px`;
       })
     );
+
 // ===== Cleanup all listeners on unmount =====
+
     return () => {
       document.removeEventListener('mousemove', onFirstMouseMove);
       document.removeEventListener('click', onEdgeClick);

@@ -1,4 +1,4 @@
-\"use client\";
+"use client";
 import React, { useEffect } from 'react';
 
 const PageScripts: React.FC = () => {
@@ -73,24 +73,11 @@ const PageScripts: React.FC = () => {
     };
     chatText?.addEventListener('click', onChatClick);
 
-    // ===== Submenu helpers =====
-    // (existing code unchanged)
-
-    // ===== Global slide-down handlers =====
-    // (existing code unchanged)
-
-    // ===== Calendar scroll behavior =====
-    // (existing code unchanged)
-
-    // ===== Slide-down submenu & new-text helpers =====
-    // (existing code unchanged)
-
     // ===== util-line toggle (mail/calendar/lines) =====
     const utilLines = Array.from(document.querySelectorAll<HTMLElement>('.util-line'));
     const mailEls = Array.from(document.querySelectorAll<HTMLElement>('.mail-text, .mail-line'));
     const calendarEls = Array.from(document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed'));
     const specialLines = Array.from(document.querySelectorAll<HTMLElement>('.line.fifth, .line.sixth'));
-    // initial hide (avoid flash)
     mailEls.forEach(el => { el.classList.add('hidden'); el.style.opacity = '0'; });
     calendarEls.forEach(el => el.classList.add('hidden'));
     specialLines.forEach(el => el.classList.remove('hidden'));
@@ -111,15 +98,10 @@ const PageScripts: React.FC = () => {
         specialLines.forEach(el => el.classList.add('hidden'));
       }
     };
-    const utilHandlers: ((this: HTMLElement, ev: Event) => any)[] = [];
-    utilLines.forEach(line => {
-      const handler = () => {
-        stateView = (stateView + 1) % 3;
-        updateView();
-      };
-      utilHandlers.push(handler);
-      line.addEventListener('click', handler);
-    });
+    utilLines.forEach(line => line.addEventListener('click', () => {
+      stateView = (stateView + 1) % 3;
+      updateView();
+    }));
 
     // ===== Account-slide logic =====
     const HIDE_MIN   =  6.37, HIDE_MAX   = 28.86;
@@ -177,18 +159,10 @@ const PageScripts: React.FC = () => {
       });
       setTimeout(() => { updateVisibility(); sliding = false; }, DURATION);
     };
-    const clickHandler = (e: MouseEvent) => {
+    document.addEventListener('click', (e) => {
       const xVw = pxToVw(e.clientX), yVh = pxToVh(e.clientY);
       if (xVw >= CLICK_MIN && xVw <= CLICK_MAX) slideOnce();
       else if (xVw >= REVERSE_MIN && xVw <= REVERSE_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX) slideBack();
-    };
-    document.addEventListener('click', clickHandler);
-    const slideTriggers = Array.from(document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-triggers, .slide-container'));
-    const triggerHandlers: ((this: HTMLElement, ev: Event) => any)[] = [];
-    slideTriggers.forEach(el => {
-      const handler = (ev: Event) => { ev.stopPropagation(); slideOnce(); };
-      triggerHandlers.push(handler);
-      el.addEventListener('click', handler);
     });
 
     // ===== Updated staggered-gap logic =====
@@ -211,16 +185,13 @@ const PageScripts: React.FC = () => {
     applyStagger(toArrayNodes(document.querySelectorAll('.center-line')), REV_MIN);
 
     // ===== Cleanup all listeners on unmount =====
-    return () => {  
+    return () => {
       document.removeEventListener('mousemove', onFirstMouseMove);
       document.removeEventListener('click', onEdgeClick);
       document.removeEventListener('mousemove', onChatHover);
       chatText?.removeEventListener('click', onChatClick);
-      // submenu cleanup as needed
       window.removeEventListener('resize', updateVisibility);
-      utilLines.forEach((line, idx) => line.removeEventListener('click', utilHandlers[idx]));
-      document.removeEventListener('click', clickHandler);
-      slideTriggers.forEach((el, idx) => el.removeEventListener('click', triggerHandlers[idx]));
+      utilLines.forEach(line => line.replaceWith(line.cloneNode(true) as HTMLElement));
     };
   }, []);
 

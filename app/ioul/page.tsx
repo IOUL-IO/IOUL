@@ -442,10 +442,22 @@ const PageScripts: React.FC = () => {
       currentMenu = 'internal-unit';
     };
 
-    document.getElementById('online-assets')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='online-assets' ? closeSubmenu() : openOnlineAssets(); });
-    document.getElementById('linkup-center')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='linkup-center' ? closeSubmenu() : openLinkupCenter(); });
-    document.getElementById('delivery-line')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='delivery-line' ? closeSubmenu() : openDeliveryLine(); });
-    document.getElementById('internal-unit')?.addEventListener('click', e => { e.stopPropagation(); currentMenu==='internal-unit' ? closeSubmenu() : openInternalUnit(); });
+        document.getElementById('online-assets')?.addEventListener('click', e => {
+      e.stopPropagation();
+      currentMenu === 'online-assets' ? closeSubmenu() : openOnlineAssets();
+    }); currentMenu==='online-assets' ? closeSubmenu() : openOnlineAssets(); });
+        document.getElementById('linkup-center')?.addEventListener('click', e => {
+      e.stopPropagation();
+      currentMenu === 'linkup-center' ? closeSubmenu() : openLinkupCenter();
+    }); currentMenu==='linkup-center' ? closeSubmenu() : openLinkupCenter(); });
+        document.getElementById('delivery-line')?.addEventListener('click', e => {
+      e.stopPropagation();
+      currentMenu === 'delivery-line' ? closeSubmenu() : openDeliveryLine();
+    }); currentMenu==='delivery-line' ? closeSubmenu() : openDeliveryLine(); });
+        document.getElementById('internal-unit')?.addEventListener('click', e => {
+      e.stopPropagation();
+      currentMenu === 'internal-unit' ? closeSubmenu() : openInternalUnit();
+    }); currentMenu==='internal-unit' ? closeSubmenu() : openInternalUnit(); });
 
     
     // ===== util-line toggle (mail/calendar/lines) =====
@@ -474,6 +486,14 @@ const PageScripts: React.FC = () => {
         specialLines.forEach(el => el.classList.add('hidden'));
       }
     };
+    // Attach util-line click handlers
+    utilLines.forEach(el => {
+      el.addEventListener('click', (e: Event) => {
+        e.stopPropagation();
+        updateView();
+      });
+    });
+
     const utilHandlers: ((this: HTMLElement, ev: Event) => any)[] = [];
     utilLines.forEach(line => {
       const handler = () => {

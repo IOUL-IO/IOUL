@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect } from "react";
 
 const Page: React.FC = () => {

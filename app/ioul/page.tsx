@@ -1,6 +1,6 @@
 "use client";
-
 import React, { useEffect } from 'react';
+
 const PageScripts: React.FC = () => {
   useEffect(() => {
     // ===== Fade-in on first mouse move =====

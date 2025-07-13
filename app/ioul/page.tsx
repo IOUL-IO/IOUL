@@ -559,12 +559,17 @@ const PageScripts: React.FC = () => {
       const handler = (ev: Event) => { ev.stopPropagation(); slideOnce(); };
       triggerHandlers.push(handler);
       el.addEventListener('click', handler);
-    });// Updated staggered-gap logic
-    const FWD_MIN = 94;
-    const toArrayNodes = (nl: NodeListOf<Element>) => Array.from(nl) as HTMLElement[];
-    function applyStagger(els: HTMLElement[], start: number) {
-      els.forEach((el,i) =>
-        el.style.setProperty('--stagger-offset', `${start + i*(GAP+STAGGER)}px`)
+    }); // Updated staggered-gap logic
+const FWD_MIN = 94;
+const REV_MIN = 32.43;
+const GAP = 10;
+const STAGGER = 0;
+const toArrayNodes = (nl: NodeListOf<Element>) => Array.from(nl) as HTMLElement[];
+function applyStagger(els: HTMLElement[], start: number) {
+  els.forEach((el, i) =>
+    el.style.setProperty('--stagger-offset', `${start + i*(GAP+STAGGER)}vw`)
+  );
+}px`)
       );
     }
     applyStagger(toArrayNodes(document.querySelectorAll('.item-text')), FWD_MIN);

@@ -596,6 +596,8 @@ const PageScripts: React.FC = () => {
       .forEach(el => el.addEventListener('click', e => {
         e.stopPropagation(); reverseSlide();
       }));
+  }, []);
+
 
  return (
     <>

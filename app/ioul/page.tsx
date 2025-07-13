@@ -560,7 +560,7 @@ const PageScripts: React.FC = () => {
       triggerHandlers.push(handler);
       el.addEventListener('click', handler);
     });// Updated staggered-gap logic
-    const FWD_MIN = 80, REV_MIN = 160, GAP = 8, STAGGER = 24;
+    const FWD_MIN = 94;
     const toArrayNodes = (nl: NodeListOf<Element>) => Array.from(nl) as HTMLElement[];
     function applyStagger(els: HTMLElement[], start: number) {
       els.forEach((el,i) =>

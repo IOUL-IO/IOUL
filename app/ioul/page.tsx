@@ -3,6 +3,11 @@ import React, { useEffect } from 'react';
 
 const PageScripts: React.FC = () => {
   useEffect(() => {
+    const FWD_MIN = 94;
+    const REV_MIN = 32.43;
+    const GAP = 10;
+    const STAGGER = 0;
+
     // ===== Fade-in on first mouse move =====
     const pageContent = document.querySelector<HTMLElement>('.page-content');
     let pageFadedIn = false;
@@ -564,7 +569,7 @@ const PageScripts: React.FC = () => {
     const toArrayNodes = (nl: NodeListOf<Element>) => Array.from(nl) as HTMLElement[];
     function applyStagger(els: HTMLElement[], start: number) {
       els.forEach((el,i) =>
-        el.style.setProperty('--stagger-offset', `${start + i*(GAP+STAGGER)}px`)
+        el.style.setProperty('--stagger-offset', `${start + i*(GAP+STAGGER)}vw`)
       );
     }
     applyStagger(toArrayNodes(document.querySelectorAll('.item-text')), FWD_MIN);

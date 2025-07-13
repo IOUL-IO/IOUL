@@ -520,26 +520,3 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
-/* === Updated: Drive stagger via CSS transforms === */
-.item-text,
-.item-line,
-.center-text,
-.center-line {
-  transform: translateX(calc(-1 * var(--stagger-offset)));
-  transition: transform 0.6s ease;
-}
-
-.other-content.slide-items .item-text,
-.other-content.slide-items .item-line,
-.other-content.slide-items .center-text,
-.other-content.slide-items .center-line {
-  transform: translateX(0);
-}
-
-/* === Updated: menu-items z-index fix === */
-.menu-items {
-  z-index: 5;
-}
-.menu-items.raised {
-  z-index: 6;
-}

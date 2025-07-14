@@ -750,9 +750,9 @@ const IOULPage: React.FC = () => {
     }
   };
           
-
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => { /* … */ };
     document.addEventListener('click', handleClick, true);
-
     return () => {
       document.removeEventListener('click', handleClick, true);
     };

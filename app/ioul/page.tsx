@@ -674,7 +674,7 @@ const IOULPage: React.FC = () => {
     document.removeEventListener('click', handleClick);
     // (and any other listeners you attached in this effect)
   };
-}, [/* slideState, or whatever deps this effect really needs */])
+}, [/* slideState, or whatever deps this effect really needs */]);
 
            useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {

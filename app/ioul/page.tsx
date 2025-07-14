@@ -663,6 +663,12 @@ const IOULPage: React.FC = () => {
       });
     });
 
+            return () => {
+    document.removeEventListener('click', handleClick);
+    // (and any other listeners you attached in this effect)
+  };
+}, [/* slideState, or whatever deps this effect really needs */])
+
            useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
       [...itemElsRef.current, ...centerElsRef.current].forEach(el => {
@@ -729,9 +735,12 @@ const IOULPage: React.FC = () => {
   };
 
   // Handle the click event for forward and reverse triggers
-  const handleClick = (e: React.MouseEvent) => {
-    const xVw = toVw(e.clientX);
-    const yVh = toVh(e.clientY);
+useEffect(() => {
+  function handleClick(e: MouseEvent) {
+    const vw = (px: number) => px / (window.innerWidth / 100);
+    const vh = (px: number) => px / (window.innerHeight / 100);
+    const xVw = vw(e.clientX);
+    const yVh = vh(e.clientY);
     const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
     const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
 
@@ -748,8 +757,14 @@ const IOULPage: React.FC = () => {
         backToStage0();
       }
     }
+  }
+
+  document.addEventListener('click', handleClick, true);
+  return () => {
+    document.removeEventListener('click', handleClick, true);
   };
-        
+}, [slideState, itemStage, centerStage]);
+
 
   return (
     <div className="non-fullscreen" translate="no">

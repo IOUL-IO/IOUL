@@ -1014,30 +1014,25 @@ const IOULPage: React.FC = () => {
           <div className="slide-trigger-reverse" />
         </div>
 
- {/* Utility Lines - These lines trigger the change of views */}
       <div className="util-line" onClick={handleUtilLineClick}>Util Line 1</div>
       <div className="util-line" onClick={handleUtilLineClick}>Util Line 2</div>
 
-      {/* Mail elements - conditionally rendered */}
       <div
         className={`mail-text ${showMail ? '' : 'hidden'}`}
         style={{ opacity: showMail ? '1' : '0' }}
       >
-        Mail Text Content
+        
       </div>
       <div
         className={`mail-line ${showMail ? '' : 'hidden'}`}
         style={{ opacity: showMail ? '1' : '0' }}
       >
-        Mail Line Content
       </div>
 
-      {/* Calendar elements - conditionally rendered */}
       <div className={`grid-number ${showCalendar ? '' : 'hidden'}`}>1</div>
       <div className={`grid-number ${showCalendar ? '' : 'hidden'}`}>2</div>
       <div className={`grid-dashed ${showCalendar ? '' : 'hidden'}`}>Dashed Line 1</div>
 
-      {/* Special Lines (Lines 5 & 6) - conditionally rendered */}
       <div className={`line fifth ${showLines ? '' : 'hidden'}`}>Line 5</div>
       <div className={`line sixth ${showLines ? '' : 'hidden'}`}>Line 6</div>
     </div>

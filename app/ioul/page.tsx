@@ -40,24 +40,6 @@ const IOULPage: React.FC = () => {
   const toVw = (px: number) => px / vw();
   const toVh = (px: number) => px / vh();
 
-  "use client";
-
-import React, { useEffect, useState, useRef } from 'react';
-
-const IOULPage: React.FC = () => {
-  const [state, setState] = useState(0); // 0 = baseline (lines visible, others hidden)
-  const [showMail, setShowMail] = useState(false);
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [showLines, setShowLines] = useState(true);
-
-  const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-  const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-
-  const vw = () => window.innerWidth / 100;
-  const vh = () => window.innerHeight / 100;
-
-  const toVw = (px: number) => px / vw();
-  const toVh = (px: number) => px / vh();
 
   const updateVisibility = () => {
     const targets = [...document.querySelectorAll('.item-text'), ...document.querySelectorAll('.item-line')];

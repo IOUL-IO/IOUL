@@ -759,9 +759,6 @@ const IOULPage: React.FC = () => {
   }, [slideState]);
 
 
-
-  
-
   return (
     <div className="non-fullscreen" translate="no">
       <p style={{ display: 'none' }} lang="en">This page is already in English. No translation is needed.</p>

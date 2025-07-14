@@ -315,6 +315,13 @@ const IOULPage: React.FC = () => {
       isFirstScroll = false;
     }, { passive: false });
 
+    return () => {
+    scrollArea.removeEventListener('mousemove', onMove);
+    scrollArea.removeEventListener('wheel', onWheel);
+    scrollArea.remove();
+  };
+}, [isScrolling, isSecondScroll]); // depends on those refs/flags
+
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;

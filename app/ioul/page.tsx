@@ -762,6 +762,7 @@ useEffect(() => {
     document.removeEventListener('click', handleClick, true);
   };
 }, [slideState, itemStage, centerStage]);
+
   return (
     <div className="non-fullscreen" translate="no">
       <p style={{ display: 'none' }} lang="en">This page is already in English. No translation is needed.</p>

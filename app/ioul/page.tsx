@@ -108,7 +108,7 @@ const updateVisibility = () => {
 
   // Function that ensures submenu is closed before executing a callback function
   const forceCloseSubmenuThen = (fn: Function) => {
-    if (slideState !== "none") {
+    if ((slideState as string) !== "none") {
       quickRemoveSubmenu();
       setTimeout(() => fn(), 100);  // Ensures submenu is closed before executing callback
     } else {
@@ -360,7 +360,7 @@ useEffect(() => {
             const chatTextEl = chatTextRef.current;
             if (chatTextEl) {
               setTimeout(() => {
-                if (slideState !== "none") return;
+                if ((slideState as string) !== "none") return;
                 chatTextEl.style.transition = "opacity 0.7s ease";
                 chatTextEl.style.opacity = "1";
               }, 700);
@@ -389,7 +389,7 @@ useEffect(() => {
             const chatTextEl = chatTextRef.current;
             if (chatTextEl) {
               setTimeout(() => {
-                if (slideState !== "none") return;
+                if ((slideState as string) !== "none") return;
                 chatTextEl.style.transition = "opacity 0.7s ease";
                 chatTextEl.style.opacity = "1";
               }, 700);
@@ -486,7 +486,7 @@ useEffect(() => {
             const chatTextEl = chatTextRef.current;
             if (chatTextEl) {
               setTimeout(() => {
-                if (slideState !== "none") return;
+                if ((slideState as string) !== "none") return;
                 chatTextEl.style.transition = "opacity 0.7s ease";
                 chatTextEl.style.opacity = "1";
               }, 700);
@@ -516,7 +516,7 @@ useEffect(() => {
             const chatTextEl = chatTextRef.current;
             if (chatTextEl) {
               setTimeout(() => {
-                if (slideState !== "none") return;
+                if ((slideState as string) !== "none") return;
                 chatTextEl.style.transition = "opacity 0.7s ease";
                 chatTextEl.style.opacity = "1";
               }, 700);

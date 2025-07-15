@@ -42,9 +42,7 @@ const IOULPage: React.FC = () => {
 
 
   const updateVisibility = () => {
-    const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
-    const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
-    const targets = textEls.concat(lineEls);
+    const targets = [...document.querySelectorAll('.item-text'), ...document.querySelectorAll('.item-line')];
     targets.forEach(el => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
@@ -93,7 +91,7 @@ const IOULPage: React.FC = () => {
   };
 
   const quickRemoveSubmenu = () => {
-    const newTexts = document.querySelectorAll<HTMLElement>('.new-text');
+    const newTexts = document.querySelectorAll('.new-text');
     newTexts.forEach((span) => {
       span.style.transition = 'opacity 0.1s ease';
       span.classList.remove('visible');
@@ -208,7 +206,7 @@ const IOULPage: React.FC = () => {
 
   // Close the submenu
   const closeSubmenu = () => {
-    const newTexts = document.querySelectorAll<HTMLElement>('.new-text');
+    const newTexts = document.querySelectorAll('.new-text');
     newTexts.forEach((span) => {
       span.style.transition = 'opacity 0.3s ease';
       span.classList.remove('visible');
@@ -266,7 +264,9 @@ useEffect(() => {
     const nums2 = numbers17to31Ref.current || [];
     const das1 = dashed1to16Ref.current || [];
     const das2 = dashed17to31Ref.current || [];
-    const all = [...nums1, ...nums2, ...das1, ...das2];
+    const all = ([] as HTMLElement[])
+  .concat(nums1, nums2)
+  .concat(Array.from(das1), Array.from(das2));
     all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
 
     if (e.deltaY > 0) {

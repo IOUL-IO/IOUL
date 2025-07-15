@@ -912,7 +912,6 @@ useEffect(() => {
         <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'91.9vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>Bcc</span>
         <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'91.1vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>SEnD</span>
 
-
         <span className="grid-number num1">1</span>
         <span className="grid-number num2">2</span>
         <span className="grid-number num3">3</span>
@@ -978,6 +977,7 @@ useEffect(() => {
         <span className="grid-dashed dashed29" />
         <span className="grid-dashed dashed30" />
         <span className="grid-dashed dashed31" />
+
 
         <div className="heading-container" style={{top:'35.4vh',left:'6.41vw',transform:'translateX(-49vw)'}} data-offset="-49" data-slide-group="heading">
           <span className="custom-text heading-flow">AccOUnT</span>

@@ -45,8 +45,8 @@ const IOULPage: React.FC = () => {
     const targets = [...document.querySelectorAll('.item-text'), ...document.querySelectorAll('.item-line')];
     targets.forEach(el => {
       const rect = el.getBoundingClientRect();
-      const l = toVw(rect.left);
-      const t = toVh(rect.top);
+      const l = pxToVw(rect.left);
+      const t = pxToVh(rect.top);
       const hide = l < 28.86 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
@@ -680,7 +680,7 @@ useEffect(() => {
       [...itemElsRef.current, ...centerElsRef.current].forEach(el => {
         if (!el.dataset.baseLeftVw) {
           const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-          el.dataset.baseLeftVw = toVw(leftPx).toString();
+          el.dataset.baseLeftVw = pxToVw(leftPx).toString();
         }
       });
     }

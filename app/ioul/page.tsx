@@ -6,9 +6,9 @@ const IOULPage: React.FC = () => {
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
-  const chatTextRef = useRef(null as HTMLSpanElement | null);
-  const hoverAreaRef = useRef(null as HTMLDivElement | null);
-  const pageContentRef = useRef(null as HTMLDivElement | null);
+  const chatTextRef = useRef<HTMLSpanElement | null>(null);
+  const hoverAreaRef = useRef<HTMLDivElement | null>(null);
+  const pageContentRef = useRef<HTMLDivElement | null>(null);
   
   const [state, setState] = useState(0); // 0 = baseline (lines visible, others hidden)
   const [showMail, setShowMail] = useState(false);
@@ -17,14 +17,14 @@ const IOULPage: React.FC = () => {
 
   const EDGE_MARGIN = 11;
 
-  const targetsRef = useRef([] as (HTMLElement | null)[]); // Reference to target elements
+  const targetsRef = useRef<(HTMLElement | null)[]>([]); // Reference to target elements
 
   const [itemStage, setItemStage] = useState(0);  // 0 = hidden, 1 = visible (left column), 2 = shifted left / clipped
   const [centerStage, setCenterStage] = useState(0);  // 0 = hidden, 1 = visible (center column)
   const [animating, setAnimating] = useState(false);
 
-  const itemElsRef = useRef(null as NodeListOf<HTMLElement> | null);
-  const centerElsRef = useRef(null as NodeListOf<HTMLElement> | null);
+  const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
+  const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
@@ -45,8 +45,8 @@ const IOULPage: React.FC = () => {
     const targets = [...document.querySelectorAll('.item-text'), ...document.querySelectorAll('.item-line')];
     targets.forEach(el => {
       const rect = el.getBoundingClientRect();
-      const l = pxToVw(rect.left);
-      const t = pxToVh(rect.top);
+      const l = toVw(rect.left);
+      const t = toVh(rect.top);
       const hide = l < 28.86 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
@@ -221,10 +221,10 @@ const IOULPage: React.FC = () => {
    const [isFirstScroll, setIsFirstScroll] = useState(true);
    const [isSecondScroll, setIsSecondScroll] = useState(false);
 
-   const numbers1to16Ref = useRef(null as NodeListOf<HTMLElement> | null);
-   const numbers17to31Ref = useRef(null as NodeListOf<HTMLElement> | null);
-   const dashed1to16Ref = useRef(null as NodeListOf<HTMLElement> | null);
-   const dashed17to31Ref = useRef(null as NodeListOf<HTMLElement> | null);
+   const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
+   const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
+   const dashed1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
+   const dashed17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
 
   // Effect to handle component mount and query DOM elements
 // runs once on mount
@@ -426,11 +426,9 @@ useEffect(() => {
         });
       }
     };
-    document.addEventListener('click', handleClick, true);
-    return () => {
-      document.removeEventListener('click', handleClick, true);
-    };
-  }, [slideState]);
+    );
+   }
+
      useEffect(() => {
     const handleClick = (event: MouseEvent) => {
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;
@@ -539,13 +537,8 @@ useEffect(() => {
         });
       }
     };
-
-         document.addEventListener('click', handleClick, true);
-      return () => {
-        document.removeEventListener('click', handleClick, true);
-      };
-    }, [slideState]);
-  
+    );
+  }
 
         useEffect(() => {
     const HIDE_MIN = 6.37, HIDE_MAX = 28.86;
@@ -638,44 +631,35 @@ useEffect(() => {
       }
     };
 
-    // 1) page‐level click listener
     document.addEventListener('click', handleClick);
-    
-    // 2) forward‐slide triggers
-    const forwardEls = Array.from(
-    document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container')
-) as HTMLElement[];
-    const onForward = (e: MouseEvent) => {
-      e.stopPropagation();
-      slideOnce();
-    };
-    forwardEls.forEach(el => el.addEventListener('click', onForward));
-    
-    // 3) backward‐slide triggers
-    const backEls = Array.from(
-    document.querySelectorAll('.slide-trigger-reverse')
-) as HTMLElement[];
-    const onBack = (e: MouseEvent) => {
-      e.stopPropagation();
-      slideBack();
-    };
-    backEls.forEach(el => el.addEventListener('click', onBack));
-    
-    // 4) cleanup everything
-    return () => {
-      document.removeEventListener('click', handleClick);
-      forwardEls.forEach(el => el.removeEventListener('click', onForward));
-      backEls.forEach(el => el.removeEventListener('click', onBack));
-    };
-    }, [slideState]);
 
+    // Stop propagation for slide actions
+    document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        slideOnce();
+      });
+    });
+
+    document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        slideBack();
+      });
+    });
+
+            return () => {
+    document.removeEventListener('click', handleClick);
+    // (and any other listeners you attached in this effect)
+  };
+}, [/* slideState, or whatever deps this effect really needs */]);
 
            useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
       [...itemElsRef.current, ...centerElsRef.current].forEach(el => {
         if (!el.dataset.baseLeftVw) {
           const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-          el.dataset.baseLeftVw = pxToVw(leftPx).toString();
+          el.dataset.baseLeftVw = toVw(leftPx).toString();
         }
       });
     }

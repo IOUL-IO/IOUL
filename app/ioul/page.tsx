@@ -265,18 +265,15 @@ useEffect(() => {
     setIsScrolling(true);
     setTimeout(() => setIsScrolling(false), 700);
 
-    const nums1List = nums1Ref.current || [];
-    const nums2List = nums2Ref.current || [];
+    const nums1List = Array.from(numbers1to16Ref.current || []);
+    const nums2List = Array.from(numbers17to31Ref.current || []);
     const das1 = dashed1to16Ref.current || [];
     const das2 = dashed17to31Ref.current || [];
     
     // Ensure everything is a true array before concatenating
-    const all = ([] as HTMLElement[])
-      .concat(
-        Array.isArray(nums1List) ? nums1List : Array.from(nums1List),
-        Array.isArray(nums2List) ? nums2List : Array.from(nums2List)
-      )
-      .concat(Array.from(das1), Array.from(das2));
+    const all = nums1List
+    .concat(nums2List)
+    .concat(Array.from(dashed1to16Ref.current || []), Array.from(dashed17to31Ref.current || []));
     
     all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
 
@@ -677,7 +674,8 @@ useEffect(() => {
 
            useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
-      [...itemElsRef.current, ...centerElsRef.current].forEach(el => {
+const combinedEls = Array.from(itemElsRef.current || []).concat(Array.from(centerElsRef.current || []));
+    combinedEls.forEach(el => {
         if (!el.dataset.baseLeftVw) {
           const leftPx = parseFloat(getComputedStyle(el).left) || 0;
           el.dataset.baseLeftVw = toVw(leftPx).toString();

@@ -1033,6 +1033,7 @@ useEffect(() => {
       <div className={`line fifth ${showLines ? '' : 'hidden'}`}>Line 5</div>
       <div className={`line sixth ${showLines ? '' : 'hidden'}`}>Line 6</div>
     </div>
+    </div>
   );
 };
 

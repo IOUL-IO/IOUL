@@ -95,7 +95,7 @@ const IOULPage: React.FC = () => {
   };
 
   const quickRemoveSubmenu = () => {
-    const newTexts = document.querySelectorAll('.new-text');
+    const newTexts = document.querySelectorAll<HTMLElement>('.new-text');
     newTexts.forEach((span) => {
       span.style.transition = 'opacity 0.1s ease';
       span.classList.remove('visible');
@@ -210,7 +210,7 @@ const IOULPage: React.FC = () => {
 
   // Close the submenu
   const closeSubmenu = () => {
-    const newTexts = document.querySelectorAll('.new-text');
+    const newTexts = document.querySelectorAll<HTMLElement>('.new-text');
     newTexts.forEach((span) => {
       span.style.transition = 'opacity 0.3s ease';
       span.classList.remove('visible');

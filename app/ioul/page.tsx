@@ -540,10 +540,13 @@ useEffect(() => {
             setSlideState("menu");
           }
         });
-      }
-    };
-    );
-  }
+      document.addEventListener('click', handleClick, true);
+    
+      // cleanup on unmount or when slideState changes
+      return () => {
+        document.removeEventListener('click', handleClick, true);
+      };
+    }, [slideState]);
 
         useEffect(() => {
     const HIDE_MIN = 6.37, HIDE_MAX = 28.86;

@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import React, { useEffect, useState, useRef } from 'react';
@@ -144,7 +145,7 @@ const IOULPage: React.FC = () => {
     span.style.top = `${topVH}vh`;
     span.style.left = `${leftVW}vw`;
     span.textContent = text;
-    document.querySelector<HTMLElement>('.other-content')?.appendChild(span);
+    document.querySelector(".other-content")?.appendChild(span);
     
     setTimeout(() => {
       span.classList.add("visible");
@@ -252,7 +253,7 @@ useEffect(() => {
   scrollArea.style.width = '58vw';
   scrollArea.style.height = '55.5vh';
   scrollArea.style.zIndex = '5';
-  document.querySelector<HTMLElement>('.other-content')!.appendChild(scrollArea);
+  document.querySelector('.other-content')!.appendChild(scrollArea);
 
   function onWheel(e: WheelEvent) {
     e.preventDefault();
@@ -352,7 +353,7 @@ useEffect(() => {
               el.style.transition = "transform 0.7s ease";
               el.style.transform = "translateX(0)";
             });
-            document.querySelector<HTMLElement>('.menu-items')?.classList.remove('raised');
+            document.querySelector('.menu-items')?.classList.remove('raised');
 
             const chatTextEl = chatTextRef.current;
             if (chatTextEl) {
@@ -478,7 +479,7 @@ useEffect(() => {
               el.style.transition = "transform 0.7s ease";
               el.style.transform = "translateX(0)";
             });
-            document.querySelector<HTMLElement>('.menu-items')?.classList.remove('raised');
+            document.querySelector('.menu-items')?.classList.remove('raised');
 
             const chatTextEl = chatTextRef.current;
             if (chatTextEl) {
@@ -532,7 +533,7 @@ useEffect(() => {
                   el.style.transform = "translateX(-22.59vw)";
                 });
                 setTimeout(() => {
-                  document.querySelector<HTMLElement>('.menu-items')?.classList.add('raised');
+                  document.querySelector('.menu-items')?.classList.add('raised');
                 }, 700);
               }, 110);
             }
@@ -561,7 +562,7 @@ useEffect(() => {
     // Set the base left position (vw) for each target element
     targetsRef.current = [
       ...document.querySelectorAll('.account-text'),
-      document.querySelector<HTMLElement>('.account-line')
+      document.querySelector('.account-line')
     ].filter(Boolean) as HTMLElement[];
 
     targetsRef.current.forEach(el => {

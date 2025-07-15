@@ -1038,7 +1038,7 @@ useEffect(() => {
     </div>
     </div>
   );
-}
+};
 
 export default IOULPage;
     

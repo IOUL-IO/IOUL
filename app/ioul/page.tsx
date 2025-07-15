@@ -118,7 +118,7 @@ const updateVisibility = () => {
 
     // Handle the sliding of sibling menu items
   const slideDownSiblings = (clickedId: string) => {
-    const menuItems = Array.from(document.querySelectorAll('.menu-items .menu-item')) as HTMLElement[];
+    const menuItems = Array.from(document.querySelectorAll<HTMLElement>('.menu-items .menu-item')) as HTMLElement[];
     const clickedIndex = menuItems.findIndex(el => el.id === clickedId);
     
     menuItems.forEach((el, i) => {
@@ -234,18 +234,10 @@ const updateVisibility = () => {
   // Effect to handle component mount and query DOM elements
 // runs once on mount
 useEffect(() => {
-  numbers1to16Ref.current = document.querySelectorAll(
-    '.grid-number.num1, .grid-number.num2, … , .grid-number.num16'
-  );
-  numbers17to31Ref.current = document.querySelectorAll(
-    '.grid-number.num17, … , .grid-number.num31'
-  );
-  dashed1to16Ref.current = document.querySelectorAll(
-    '.grid-dashed.dashed1, … , .grid-dashed.dashed16'
-  );
-  dashed17to31Ref.current = document.querySelectorAll(
-    '.grid-dashed.dashed17, … , .grid-dashed.dashed31'
-  );
+  numbers1to16Ref.current = document.querySelectorAll<HTMLElement>('.grid-number.num1, .grid-number.num2, … , .grid-number.num16');
+  numbers17to31Ref.current = document.querySelectorAll<HTMLElement>('.grid-number.num17, … , .grid-number.num31');
+  dashed1to16Ref.current = document.querySelectorAll<HTMLElement>('.grid-dashed.dashed1, … , .grid-dashed.dashed16');
+  dashed17to31Ref.current = document.querySelectorAll<HTMLElement>('.grid-dashed.dashed17, … , .grid-dashed.dashed31');
 }, []);
 
 // re-runs when scrolling flags change
@@ -329,28 +321,28 @@ useEffect(() => {
         event.stopPropagation();
         forceCloseSubmenuThen(() => {
           if (slideState === "community") {
-            document.querySelectorAll('.menu-items .menu-item').forEach((el) => {
+            document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach((el) => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
 
-            document.querySelectorAll('.community-items-container *:not(.custom-line)').forEach((el) => {
+            document.querySelectorAll<HTMLElement>('.community-items-container *:not(.custom-line)').forEach((el) => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
 
-            document.querySelectorAll('.community-items-container .custom-line').forEach((el) => {
+            document.querySelectorAll<HTMLElement>('.community-items-container .custom-line').forEach((el) => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
                 el.style.left = el.dataset.originalLeft;
               }
             });
 
-            document.querySelectorAll('.zero-items-container *').forEach((el) => {
+            document.querySelectorAll<HTMLElement>('.zero-items-container *').forEach((el) => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
@@ -359,7 +351,7 @@ useEffect(() => {
             setSlideState("menu");
             return;
           } else if (slideState === "menu") {
-            document.querySelectorAll('.menu-items .menu-item').forEach((el) => {
+            document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach((el) => {
               el.style.transition = "transform 0.7s ease";
               el.style.transform = "translateX(0)";
             });
@@ -375,19 +367,19 @@ useEffect(() => {
             }
             setSlideState("none");
           } else if (slideState === "heading" || slideState === "account") {
-            document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach((box) => {
+            document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]').forEach((box) => {
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
             });
 
-            document.querySelectorAll('.account-container[data-slide-group="account"]').forEach((box) => {
+            document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]').forEach((box) => {
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
             });
 
-            document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach((el) => {
+            document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)').forEach((el) => {
               if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
             });
 
-            document.querySelectorAll('.other-content > .custom-line').forEach((el) => {
+            document.querySelectorAll<HTMLElement>('.other-content > .custom-line').forEach((el) => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
                 el.style.left = el.dataset.originalLeft;
@@ -409,25 +401,25 @@ useEffect(() => {
               chatTextEl.style.transition = "opacity 0.1s ease";
               chatTextEl.style.opacity = "0";
               setTimeout(() => {
-                document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach((el) => {
+                document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)').forEach((el) => {
                   if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
                   let original = parseFloat(el.dataset.originalLeft);
                   el.style.transition = "left 0.7s ease";
                   el.style.left = (original + 49) + "vw";
                 });
 
-                document.querySelectorAll('.other-content > .custom-line').forEach((el) => {
+                document.querySelectorAll<HTMLElement>('.other-content > .custom-line').forEach((el) => {
                   if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
                   let originalLine = parseFloat(el.dataset.originalLeft);
                   el.style.transition = "left 0.7s ease";
                   el.style.left = (originalLine + 49) + "vw";
                 });
 
-                document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach((box) => {
+                document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]').forEach((box) => {
                   box.style.transform = "translateX(0)";
                 });
 
-                document.querySelectorAll('.account-container[data-slide-group="account"]').forEach((box) => {
+                document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]').forEach((box) => {
                   box.style.transform = "translateX(0)";
                 });
               }, 110);
@@ -462,21 +454,21 @@ useEffect(() => {
         forceCloseSubmenuThen(() => {
           if (slideState === "menu") {
             // Slide items to the left for "menu" state
-            document.querySelectorAll('.menu-items .menu-item').forEach((el) => {
+            document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach((el) => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft - 29) + "vw";
             });
 
-            document.querySelectorAll('.community-items-container *').forEach((el) => {
+            document.querySelectorAll<HTMLElement>('.community-items-container *').forEach((el) => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft - 29) + "vw";
             });
 
-            document.querySelectorAll('.zero-items-container *').forEach((el) => {
+            document.querySelectorAll<HTMLElement>('.zero-items-container *').forEach((el) => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
@@ -485,7 +477,7 @@ useEffect(() => {
             setSlideState("community");
           } else if (slideState === "menu") {
             // Reset position and show elements in "menu" state
-            document.querySelectorAll('.menu-items .menu-item').forEach((el) => {
+            document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach((el) => {
               el.style.transition = "transform 0.7s ease";
               el.style.transform = "translateX(0)";
             });
@@ -502,19 +494,19 @@ useEffect(() => {
             setSlideState("none");
           } else if (slideState === "heading" || slideState === "account") {
             // Reset positions for "heading" or "account" state
-            document.querySelectorAll('.heading-container[data-slide-group="heading"]').forEach((box) => {
+            document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]').forEach((box) => {
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
             });
 
-            document.querySelectorAll('.account-container[data-slide-group="account"]').forEach((box) => {
+            document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]').forEach((box) => {
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
             });
 
-            document.querySelectorAll('.other-content > .custom-text:not(.menu-item)').forEach((el) => {
+            document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)').forEach((el) => {
               if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
             });
 
-            document.querySelectorAll('.other-content > .custom-line').forEach((el) => {
+            document.querySelectorAll<HTMLElement>('.other-content > .custom-line').forEach((el) => {
               if (el.dataset.originalLeft) {
                 el.style.transition = "left 0.7s ease";
                 el.style.left = el.dataset.originalLeft;
@@ -537,7 +529,7 @@ useEffect(() => {
               chatTextEl.style.transition = "opacity 0.1s ease";
               chatTextEl.style.opacity = "0";
               setTimeout(() => {
-                document.querySelectorAll('.menu-items .menu-item').forEach((el) => {
+                document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach((el) => {
                   if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
                   el.style.transition = "transform 0.7s ease";
                   el.style.transform = "translateX(-22.59vw)";
@@ -571,7 +563,7 @@ useEffect(() => {
 
     // Set the base left position (vw) for each target element
     targetsRef.current = [
-      ...document.querySelectorAll('.account-text'),
+      ...document.querySelectorAll<HTMLElement>('.account-text'),
       document.querySelector('.account-line')
     ].filter(Boolean) as HTMLElement[];
 
@@ -652,14 +644,14 @@ useEffect(() => {
     document.addEventListener('click', handleClick);
 
     // Stop propagation for slide actions
-    document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
+    document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
       el.addEventListener('click', e => {
         e.stopPropagation();
         slideOnce();
       });
     });
 
-    document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
+    document.querySelectorAll<HTMLElement>('.slide-trigger-reverse').forEach(el => {
       el.addEventListener('click', e => {
         e.stopPropagation();
         slideBack();

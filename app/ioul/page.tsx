@@ -42,7 +42,9 @@ const IOULPage: React.FC = () => {
 
 
   const updateVisibility = () => {
-    const targets = [...document.querySelectorAll('.item-text'), ...document.querySelectorAll('.item-line')];
+    const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
+      const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
+      const targets = textEls.concat(lineEls);
     targets.forEach(el => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
@@ -297,7 +299,7 @@ useEffect(() => {
 
 
   useEffect(() => {
-    const handleAccountClick = (event: MouseEvent) => {
+    const handleClick = (event: MouseEvent) => {
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;
 
       const { clientX: x, clientY: y } = event;
@@ -422,19 +424,20 @@ useEffect(() => {
               }, 110);
             }
             setSlideState("heading");
-            }
-          });
-        }
-      };
-      document.addEventListener('click', handleAccountClick, true);
+          }
+        });
+      }
+      // attach the click handler
+      document.addEventListener('click', handleClick, true);
+    
+      // cleanup on unmount or when slideState changes
       return () => {
-        document.removeEventListener('click', handleAccountClick, true);
+        document.removeEventListener('click', handleClick, true);
       };
     }, [slideState]);
-        
     
-    useEffect(() => {
-    const handleCommunityClick = (event: MouseEvent) => {
+     useEffect(() => {
+    const handleClick = (event: MouseEvent) => {
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;
 
       const { clientX: x, clientY: y } = event;
@@ -538,12 +541,12 @@ useEffect(() => {
             }
             setSlideState("menu");
           }
-          });  // ← close forceCloseSubmenuThen
-        }   // ← close the `if (x…){…}`
-      };    // ← close handleClick function
-      document.addEventListener('click', handleCommunityClick, true);
+        });
+      document.addEventListener('click', handleClick, true);
+    
+      // cleanup on unmount or when slideState changes
       return () => {
-        document.removeEventListener('click', handleCommunityClick, true);
+        document.removeEventListener('click', handleClick, true);
       };
     }, [slideState]);
 

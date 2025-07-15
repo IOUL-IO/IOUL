@@ -427,14 +427,14 @@ useEffect(() => {
       }
       // attach the click handler
       document.addEventListener('click', handleClick, true);
-    
       // cleanup on unmount or when slideState changes
       return () => {
         document.removeEventListener('click', handleClick, true);
       };
     }, [slideState]);
     
-     useEffect(() => {
+    
+    useEffect(() => {
     const handleClick = (event: MouseEvent) => {
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;
 

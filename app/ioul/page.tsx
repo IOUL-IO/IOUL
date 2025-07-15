@@ -53,7 +53,23 @@ const IOULPage: React.FC = () => {
     });
   };
 
-  useEffect(() => {
+  
+function updateVisibility() {
+  const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
+  const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
+  const allEls = textEls.concat(lineEls);
+  allEls.forEach((el: HTMLElement) => {
+    const rect = el.getBoundingClientRect();
+    const l = toVw(rect.left);
+    const t = toVh(rect.top);
+    const hide = l < 28.86 && t >= 28.5 && t <= 84;
+    el.style.opacity = hide ? '0' : '';
+    el.style.pointerEvents = hide ? 'none' : '';
+  });
+}
+
+
+useEffect(() => {
     // Set base positions and update visibility on resize
     window.addEventListener('resize', updateVisibility);
     updateVisibility(); // Initial visibility update
@@ -264,8 +280,7 @@ useEffect(() => {
     const nums2 = numbers17to31Ref.current || [];
     const das1 = dashed1to16Ref.current || [];
     const das2 = dashed17to31Ref.current || [];
-    const all = Array.from(nums1)
-  .concat(Array.from(nums2), Array.from(das1), Array.from(das2));
+    const all = [...nums1, ...nums2, ...das1, ...das2];
     all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
 
     if (e.deltaY > 0) {

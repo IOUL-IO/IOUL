@@ -3,83 +3,88 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 const IOULPage: React.FC = () => {
-  // States for zones
-  const [slideState, setSlideState] = useState<'none'|'menu'|'community'>('none');
+  // State machines for zones
+  const [slideState, setSlideState] = useState<'none'|'heading'|'menu'|'community'>('none');
   const [accountStage, setAccountStage] = useState<'none'|'account'>('none');
   const [itemStage, setItemStage] = useState<'none'|'items'|'center'>('none');
 
+  // Refs to elements
   const chatTextRef = useRef<HTMLSpanElement|null>(null);
   const headingRef = useRef<HTMLDivElement|null>(null);
-  const menuItemsRef = useRef<HTMLDivElement|null>(null);
+  const menuRef = useRef<HTMLDivElement|null>(null);
   const communityRef = useRef<HTMLDivElement|null>(null);
   const zeroRef = useRef<HTMLDivElement|null>(null);
-  const accountTextsRef = useRef<NodeListOf<HTMLElement>|null>(null);
-  const itemTextsRef = useRef<NodeListOf<HTMLElement>|null>(null);
-  const centerTextsRef = useRef<NodeListOf<HTMLElement>|null>(null);
+  const accountRef = useRef<HTMLDivElement|null>(null);
+  const itemRef = useRef<HTMLDivElement|null>(null);
+  const centerRef = useRef<HTMLDivElement|null>(null);
 
-  // Unified click handler
+  // Unified click-zone handler
   useEffect(() => {
     function handleClick(e: MouseEvent) {
-      const x = e.clientX / (window.innerWidth/100);
-      const y = e.clientY / (window.innerHeight/100);
-      // Left zone: 0–6.37vw
-      if (x>=0 && x<=6.37 && y>=28.5 && y<=84) {
-        // Left-edge logic
-        if (slideState==='none') {
-          // fade out chatText, slide heading/account right
-          chatTextRef.current?.style.transition='opacity 0.3s';
-          chatTextRef.current!.style.opacity='0';
-          headingRef.current?.style.transform='translateX(0)';
-          setSlideState('menu');
-        } else if (slideState==='menu') {
-          // inverse
-          menuItemsRef.current?.style.transform='translateX(0)';
+      const vx = e.clientX / (window.innerWidth / 100);
+      const vy = e.clientY / (window.innerHeight / 100);
+
+      // Zone 1: left edge 0–6.37vw
+      if (vx >= 0 && vx <= 6.37 && vy >= 28.5 && vy <= 84) {
+        if (slideState === 'none') {
+          chatTextRef.current?.style.transition = 'opacity 0.3s';
+          chatTextRef.current!.style.opacity = '0';
+          headingRef.current?.style.transform = 'translateX(0)';
+          setSlideState('heading');
+        } else if (slideState === 'heading') {
+          headingRef.current?.style.transform = '';
+          chatTextRef.current!.style.opacity = '1';
           setSlideState('none');
-        } else if (slideState==='community') {
-          communityRef.current?.style.transform='translateX(0)';
-          zeroRef.current?.style.transform='translateX(0)';
+        } else if (slideState === 'menu') {
+          menuRef.current?.style.transform = '';
+          setSlideState('none');
+        } else if (slideState === 'community') {
+          communityRef.current?.style.transform = '';
+          zeroRef.current?.style.transform = '';
           setSlideState('menu');
         }
       }
-      // Right zone for menu/community: 28.86–32.43vw
-      else if (x>=28.86 && x<=32.43 && y>=28.5 && y<=84) {
-        if (slideState==='none') {
-          menuItemsRef.current?.style.transform='translateX(0)';
+      // Zone 2: right-of-menu 28.86–32.43vw
+      else if (vx >= 28.86 && vx <= 32.43 && vy >= 28.5 && vy <= 84) {
+        if (slideState === 'none') {
+          menuRef.current?.style.transform = 'translateX(-29vw)';
           setSlideState('menu');
-        } else if (slideState==='menu') {
-          communityRef.current?.style.transform='translateX(0)';
-          zeroRef.current?.style.transform='translateX(0)';
+        } else if (slideState === 'menu') {
+          communityRef.current?.style.transform = 'translateX(-29vw)';
+          zeroRef.current?.style.transform = 'translateX(-29vw)';
           setSlideState('community');
-        } else if (slideState==='community') {
-          chatTextRef.current?.style.opacity='1';
+        } else if (slideState === 'community') {
+          communityRef.current?.style.transform = '';
+          zeroRef.current?.style.transform = '';
+          menuRef.current?.style.transform = '';
+          setSlideState('none');
+        } else if (slideState === 'heading') {
+          headingRef.current?.style.transform = '';
+          chatTextRef.current!.style.opacity = '1';
           setSlideState('none');
         }
       }
-      // Account zone: 32.43–36vw
-      else if (x>=32.43 && x<=36 && y>=28.5 && y<=84) {
-        if (accountStage==='none') {
-          document.querySelectorAll('.account-text, .account-line')
-            .forEach(el => el.classList.add('visible'));
+      // Zone 3: account zone 32.43–36vw
+      else if (vx >= 32.43 && vx <= 36 && vy >= 28.5 && vy <= 84) {
+        if (accountStage === 'none') {
+          accountRef.current?.classList.add('visible');
           setAccountStage('account');
         } else {
-          document.querySelectorAll('.account-text, .account-line')
-            .forEach(el => el.classList.remove('visible'));
+          accountRef.current?.classList.remove('visible');
           setAccountStage('none');
         }
       }
-      // Item/Center zone: 94–100vw
-      else if (x>=94 && x<=100 && y>=28.5 && y<=84) {
-        if (itemStage==='none') {
-          document.querySelectorAll('.item-text, .item-line')
-            .forEach(el => el.classList.add('visible'));
+      // Zone 4: item/center zone 94–100vw
+      else if (vx >= 94 && vx <= 100 && vy >= 28.5 && vy <= 84) {
+        if (itemStage === 'none') {
+          itemRef.current?.classList.add('visible');
           setItemStage('items');
-        } else if (itemStage==='items') {
-          document.querySelectorAll('.center-text, .center-line')
-            .forEach(el => el.classList.add('visible'));
+        } else if (itemStage === 'items') {
+          centerRef.current?.classList.add('visible');
           setItemStage('center');
         } else {
-          document.querySelectorAll('.item-text, .item-line, .center-text, .center-line')
-            .forEach(el => el.classList.remove('visible'));
+          itemRef.current?.classList.remove('visible');
+          centerRef.current?.classList.remove('visible');
           setItemStage('none');
         }
       }
@@ -91,19 +96,8 @@ const IOULPage: React.FC = () => {
 
   return (
     <div className="non-fullscreen" translate="no">
-      {/* Existing JSX: layers, menu-items, community-items, zero-items, account-texts, item-texts, center-texts, etc. */}
-      <span ref={chatTextRef} className="chat-text">CHAT...</span>
-      <div ref={headingRef} className="heading-container" />
-      <div ref={menuItemsRef} className="menu-items" />
-      <div ref={communityRef} className="community-items-container" />
-      <div ref={zeroRef} className="zero-items-container" />
-      {/* ... other elements ... */}
-      <div className="account-texts">...</div>
-      <div className="account-line">...</div>
-      <div className="item-texts">...</div>
-      <div className="item-lines">...</div>
-      <div className="center-texts">...</div>
-      <div className="center-lines">...</div>
+      {/* Paste your existing JSX markup below */}
+      {/* ... */}
     </div>
   );
 };

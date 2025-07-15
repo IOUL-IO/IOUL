@@ -227,74 +227,74 @@ const IOULPage: React.FC = () => {
    const dashed17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
 
   // Effect to handle component mount and query DOM elements
-  useEffect(() => {
-    numbers1to16Ref.current = document.querySelectorAll('.grid-number.num1, .grid-number.num2, .grid-number.num3, .grid-number.num4, .grid-number.num5, .grid-number.num6, .grid-number.num7, .grid-number.num8, .grid-number.num9, .grid-number.num10, .grid-number.num11, .grid-number.num12, .grid-number.num13, .grid-number.num14, .grid-number.num15, .grid-number.num16');
-    numbers17to31Ref.current = document.querySelectorAll('.grid-number.num17, .grid-number.num18, .grid-number.num19, .grid-number.num20, .grid-number.num21, .grid-number.num22, .grid-number.num23, .grid-number.num24, .grid-number.num25, .grid-number.num26, .grid-number.num27, .grid-number.num28, .grid-number.num29, .grid-number.num30, .grid-number.num31');
-    dashed1to16Ref.current = document.querySelectorAll('.grid-dashed.dashed1, .grid-dashed.dashed2, .grid-dashed.dashed3, .grid-dashed.dashed4, .grid-dashed.dashed5, .grid-dashed.dashed6, .grid-dashed.dashed7, .grid-dashed.dashed8, .grid-dashed.dashed9, .grid-dashed.dashed10, .grid-dashed.dashed11, .grid-dashed.dashed12, .grid-dashed.dashed13, .grid-dashed.dashed14, .grid-dashed.dashed15, .grid-dashed.dashed16');
-    dashed17to31Ref.current = document.querySelectorAll('.grid-dashed.dashed17, .grid-dashed.dashed18, .grid-dashed.dashed19, .grid-dashed.dashed20, .grid-dashed.dashed21, .grid-dashed.dashed22, .grid-dashed.dashed23, .grid-dashed.dashed24, .grid-dashed.dashed25, .grid-dashed.dashed26, .grid-dashed.dashed27, .grid-dashed.dashed28, .grid-dashed.dashed29, .grid-dashed.dashed30, .grid-dashed.dashed31');
-  }, []);
+// runs once on mount
+useEffect(() => {
+  numbers1to16Ref.current = document.querySelectorAll(
+    '.grid-number.num1, .grid-number.num2, … , .grid-number.num16'
+  );
+  numbers17to31Ref.current = document.querySelectorAll(
+    '.grid-number.num17, … , .grid-number.num31'
+  );
+  dashed1to16Ref.current = document.querySelectorAll(
+    '.grid-dashed.dashed1, … , .grid-dashed.dashed16'
+  );
+  dashed17to31Ref.current = document.querySelectorAll(
+    '.grid-dashed.dashed17, … , .grid-dashed.dashed31'
+  );
+}, []);
 
-  useEffect(() => {
-    // Create a scroll area div
-    const scrollArea = document.createElement('div');
-    scrollArea.style.position = 'absolute';
-    scrollArea.style.top = '28.5vh';
-    scrollArea.style.left = '36vw';
-    scrollArea.style.width = '58vw';
-    scrollArea.style.height = '55.5vh';
-    scrollArea.style.zIndex = '5';
-    document.querySelector('.other-content')!.appendChild(scrollArea);
+// re-runs when scrolling flags change
+useEffect(() => {
+  const scrollArea = document.createElement('div');
+  scrollArea.style.position = 'absolute';
+  scrollArea.style.top = '28.5vh';
+  scrollArea.style.left = '36vw';
+  scrollArea.style.width = '58vw';
+  scrollArea.style.height = '55.5vh';
+  scrollArea.style.zIndex = '5';
+  document.querySelector('.other-content')!.appendChild(scrollArea);
 
-    function onMove(e: MouseEvent) {
-      // placeholder if needed for mousemove
-    }
-    function onWheel(e: WheelEvent) {
-      e.preventDefault();
-      if (isScrolling) return;
-      setIsScrolling(true);
-      window.setTimeout(() => {
-        setIsScrolling(false);
-      }, 700);
+  function onWheel(e: WheelEvent) {
+    e.preventDefault();
+    if (isScrolling) return;
+    setIsScrolling(true);
+    setTimeout(() => setIsScrolling(false), 700);
 
-      const nums1 = numbers1to16Ref.current || [];
-      const nums2 = numbers17to31Ref.current || [];
-      const das1 = dashed1to16Ref.current || [];
-      const das2 = dashed17to31Ref.current || [];
-      const allElements = [...nums1, ...nums2, ...das1, ...das2];
+    const nums1 = numbers1to16Ref.current || [];
+    const nums2 = numbers17to31Ref.current || [];
+    const das1 = dashed1to16Ref.current || [];
+    const das2 = dashed17to31Ref.current || [];
+    const all = [...nums1, ...nums2, ...das1, ...das2];
+    all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
 
-      allElements.forEach(el => {
-        el.style.transition = 'transform 0.7s ease';
-      });
-
-      if (e.deltaY > 0) {
-        if (!isSecondScroll) {
-          allElements.forEach(el => el.style.transform = 'translateY(-55.5vh)');
-          setIsSecondScroll(true);
-        } else {
-          allElements.forEach(el => el.style.transform = 'translateY(-111vh)');
-          setIsSecondScroll(false);
-        }
+    if (e.deltaY > 0) {
+      if (!isSecondScroll) {
+        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
+        setIsSecondScroll(true);
       } else {
-        const currentTransform = allElements[0]?.style.transform || '';
-        const match = currentTransform.match(/translateY\(([-\d.]+)vh\)/);
-        const currentY = match ? parseFloat(match[1]) : 0;
-        if (currentY === -111) {
-          allElements.forEach(el => el.style.transform = 'translateY(-55.5vh)');
-          setIsSecondScroll(true);
-        } else if (currentY === -55.5) {
-          allElements.forEach(el => el.style.transform = 'translateY(0)');
-          setIsSecondScroll(false);
-        }
+        all.forEach(el => (el.style.transform = 'translateY(-111vh)'));
+        setIsSecondScroll(false);
+      }
+    } else {
+      const match = all[0]?.style.transform.match(/translateY\(([-\d.]+)vh\)/);
+      const y = match ? parseFloat(match[1]) : 0;
+      if (y === -111) {
+        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
+        setIsSecondScroll(true);
+      } else if (y === -55.5) {
+        all.forEach(el => (el.style.transform = 'translateY(0)'));
+        setIsSecondScroll(false);
       }
     }
+  }
 
-    scrollArea.addEventListener('wheel', onWheel, { passive: false });
+  scrollArea.addEventListener('wheel', onWheel, { passive: false });
+  return () => {
+    scrollArea.removeEventListener('wheel', onWheel);
+    scrollArea.remove();
+  };
+}, [isScrolling, isSecondScroll]);
 
-    return () => {
-      scrollArea.removeEventListener('wheel', onWheel);
-      scrollArea.remove();
-    };
-  }, [isScrolling, isSecondScroll]);
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {

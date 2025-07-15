@@ -309,7 +309,7 @@ useEffect(() => {
 
   useEffect(() => {
     const handleAccountClick = (event: MouseEvent) => {
-      if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;
+      if ((event.target as HTMLElement).closest('.menu-item') || (event.target as HTMLElement).closest('.chat-text')) return;
 
       const { clientX: x, clientY: y } = event;
       const { innerWidth: width, innerHeight: height } = window;
@@ -446,7 +446,7 @@ useEffect(() => {
     
     useEffect(() => {
     const handleCommunityClick = (event: MouseEvent) => {
-      if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;
+      if ((event.target as HTMLElement).closest('.menu-item') || (event.target as HTMLElement).closest('.chat-text')) return;
 
       const { clientX: x, clientY: y } = event;
       const { innerWidth: width, innerHeight: height } = window;

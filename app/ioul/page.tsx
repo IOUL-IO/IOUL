@@ -43,12 +43,8 @@ const IOULPage: React.FC = () => {
 
 const updateVisibility = () => {
   // Gather elements explicitly as HTMLElements so .style is known
-  const textEls = Array.from(
-    document.querySelectorAll<HTMLElement>('.item-text')
-  );
-  const lineEls = Array.from(
-    document.querySelectorAll<HTMLElement>('.item-line')
-  );
+  const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
+  const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
   const targets = textEls.concat(lineEls);
 
   targets.forEach(el => {
@@ -60,7 +56,6 @@ const updateVisibility = () => {
     el.style.pointerEvents = hide ? 'none' : '';
   });
 };
-
 
 
   useEffect(() => {
@@ -274,7 +269,9 @@ useEffect(() => {
     const nums2 = numbers17to31Ref.current || [];
     const das1 = dashed1to16Ref.current || [];
     const das2 = dashed17to31Ref.current || [];
-    const all = [...nums1, ...nums2, ...das1, ...das2];
+    const all = ([] as HTMLElement[])
+      .concat(nums1, nums2)
+      .concat(Array.from(das1), Array.from(das2));
     all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
 
     if (e.deltaY > 0) {

@@ -660,7 +660,7 @@ useEffect(() => {
     document.removeEventListener('click', handleClick);
     // (and any other listeners you attached in this effect)
   };
-}, [/* slideState, or whatever deps this effect really needs */]);
+}, [slideState]);
 
            useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {

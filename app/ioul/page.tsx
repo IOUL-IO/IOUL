@@ -426,6 +426,7 @@ useEffect(() => {
         });
       }
     };
+    );
 
      useEffect(() => {
     const handleClick = (event: MouseEvent) => {
@@ -535,7 +536,8 @@ useEffect(() => {
         });
       }
     };
-
+  );
+  
         useEffect(() => {
     const HIDE_MIN = 6.37, HIDE_MAX = 28.86;
     const TOP_MIN = 28.5, TOP_MAX = 84;

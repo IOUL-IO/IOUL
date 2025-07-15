@@ -41,22 +41,17 @@ const IOULPage: React.FC = () => {
   const toVh = (px: number) => px / vh();
 
 
-const updateVisibility = () => {
-  // Gather elements explicitly as HTMLElements so .style is known
-  const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
-  const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
-  const targets = textEls.concat(lineEls);
-
-  targets.forEach(el => {
-    const rect = el.getBoundingClientRect();
-    const l = toVw(rect.left);
-    const t = toVh(rect.top);
-    const hide = l < 28.86 && t >= 28.5 && t <= 84;
-    el.style.opacity = hide ? '0' : '';
-    el.style.pointerEvents = hide ? 'none' : '';
-  });
-};
-
+  const updateVisibility = () => {
+    const targets = [...document.querySelectorAll('.item-text'), ...document.querySelectorAll('.item-line')];
+    targets.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const l = toVw(rect.left);
+      const t = toVh(rect.top);
+      const hide = l < 28.86 && t >= 28.5 && t <= 84;
+      el.style.opacity = hide ? '0' : '';
+      el.style.pointerEvents = hide ? 'none' : '';
+    });
+  };
 
   useEffect(() => {
     // Set base positions and update visibility on resize
@@ -96,7 +91,7 @@ const updateVisibility = () => {
   };
 
   const quickRemoveSubmenu = () => {
-    const newTexts = document.querySelectorAll<HTMLElement>('.new-text');
+    const newTexts = document.querySelectorAll('.new-text');
     newTexts.forEach((span) => {
       span.style.transition = 'opacity 0.1s ease';
       span.classList.remove('visible');
@@ -108,7 +103,7 @@ const updateVisibility = () => {
 
   // Function that ensures submenu is closed before executing a callback function
   const forceCloseSubmenuThen = (fn: Function) => {
-    if ((slideState as string) !== "none") {
+    if (slideState !== "none") {
       quickRemoveSubmenu();
       setTimeout(() => fn(), 100);  // Ensures submenu is closed before executing callback
     } else {
@@ -118,7 +113,7 @@ const updateVisibility = () => {
 
     // Handle the sliding of sibling menu items
   const slideDownSiblings = (clickedId: string) => {
-    const menuItems = Array.from(document.querySelectorAll<HTMLElement>('.menu-items .menu-item')) as HTMLElement[];
+    const menuItems = Array.from(document.querySelectorAll('.menu-items .menu-item')) as HTMLElement[];
     const clickedIndex = menuItems.findIndex(el => el.id === clickedId);
     
     menuItems.forEach((el, i) => {
@@ -211,7 +206,7 @@ const updateVisibility = () => {
 
   // Close the submenu
   const closeSubmenu = () => {
-    const newTexts = document.querySelectorAll<HTMLElement>('.new-text');
+    const newTexts = document.querySelectorAll('.new-text');
     newTexts.forEach((span) => {
       span.style.transition = 'opacity 0.3s ease';
       span.classList.remove('visible');
@@ -234,10 +229,18 @@ const updateVisibility = () => {
   // Effect to handle component mount and query DOM elements
 // runs once on mount
 useEffect(() => {
-  numbers1to16Ref.current = document.querySelectorAll<HTMLElement>('.grid-number.num1, .grid-number.num2, … , .grid-number.num16');
-  numbers17to31Ref.current = document.querySelectorAll<HTMLElement>('.grid-number.num17, … , .grid-number.num31');
-  dashed1to16Ref.current = document.querySelectorAll<HTMLElement>('.grid-dashed.dashed1, … , .grid-dashed.dashed16');
-  dashed17to31Ref.current = document.querySelectorAll<HTMLElement>('.grid-dashed.dashed17, … , .grid-dashed.dashed31');
+  numbers1to16Ref.current = document.querySelectorAll(
+    '.grid-number.num1, .grid-number.num2, … , .grid-number.num16'
+  );
+  numbers17to31Ref.current = document.querySelectorAll(
+    '.grid-number.num17, … , .grid-number.num31'
+  );
+  dashed1to16Ref.current = document.querySelectorAll(
+    '.grid-dashed.dashed1, … , .grid-dashed.dashed16'
+  );
+  dashed17to31Ref.current = document.querySelectorAll(
+    '.grid-dashed.dashed17, … , .grid-dashed.dashed31'
+  );
 }, []);
 
 // re-runs when scrolling flags change
@@ -257,18 +260,12 @@ useEffect(() => {
     setIsScrolling(true);
     setTimeout(() => setIsScrolling(false), 700);
 
-    const nums1List = Array.from(numbers1to16Ref.current || []);
-    const nums2List = Array.from(numbers17to31Ref.current || []);
+    const nums1 = numbers1to16Ref.current || [];
+    const nums2 = numbers17to31Ref.current || [];
     const das1 = dashed1to16Ref.current || [];
     const das2 = dashed17to31Ref.current || [];
-    
-    // Ensure everything is a true array before concatenating
-    const all = nums1List
-    .concat(nums2List)
-    .concat(Array.from(dashed1to16Ref.current || []), Array.from(dashed17to31Ref.current || []));
-    
+    const all = [...nums1, ...nums2, ...das1, ...das2];
     all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
-
 
     if (e.deltaY > 0) {
       if (!isSecondScroll) {
@@ -299,256 +296,141 @@ useEffect(() => {
 }, [isScrolling, isSecondScroll]);
 
 
-  useEffect(() => {
-    const handleAccountClick = (event: MouseEvent) => {
-      if ((event.target as HTMLElement).closest('.menu-item') || (event.target as HTMLElement).closest('.chat-text')) return;
+// ─── Unified click effect ───────────────────────────────────────────────────
+useEffect(() => {
+  const handleEdgeClick = (event: MouseEvent) => {
+    // ignore clicks on actual menu items or chat-text itself
+    if (
+      event.target.closest('.menu-item') ||
+      event.target.closest('.chat-text')
+    ) return;
 
-      const { clientX: x, clientY: y } = event;
-      const { innerWidth: width, innerHeight: height } = window;
-      const vwUnit = width / 100;
-      const vhUnit = height / 100;
-      const leftMin = 0;
-      const leftMax = 6.37 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
+    const { clientX: x, clientY: y } = event;
+    const { innerWidth: width, innerHeight: height } = window;
+    const vw = width / 100;
+    const vh = height / 100;
 
-      if (
-        x >= leftMin &&
-        x <= leftMax &&
-        y >= yMin &&
-        y <= yMax
-      ) {
-        event.stopPropagation();
-        forceCloseSubmenuThen(() => {
-          if (slideState === "community") {
-            document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach((el) => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft + 29) + "vw";
-            });
+    const inLeftZone  = x >= 0          && x <= 6.37  * vw && y >= 28.5 * vh && y <= 84 * vh;
+    const inRightZone = x >= 28.86 * vw && x <= 32.43 * vw && y >= 28.5 * vh && y <= 84 * vh;
 
-            document.querySelectorAll<HTMLElement>('.community-items-container *:not(.custom-line)').forEach((el) => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft + 29) + "vw";
-            });
+    if (inLeftZone) {
+      // ── Left edge clicks ─────────────────────────
+      switch (slideState) {
+        case "none":
+          // fade out chat, slide in account+heading
+          chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
+          chatTextRef.current!.style.opacity = "0";
+          setTimeout(() => {
+            document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
+              .forEach(box => box.style.transform = "translateX(0)");
+            document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]')
+              .forEach(box => box.style.transform = "translateX(0)");
+          }, 110);
+          setSlideState("heading");
+          break;
 
-            document.querySelectorAll<HTMLElement>('.community-items-container .custom-line').forEach((el) => {
-              if (el.dataset.originalLeft) {
-                el.style.transition = "left 0.7s ease";
-                el.style.left = el.dataset.originalLeft;
-              }
-            });
+        case "community":
+          // slide community+zero back to menu-position
+          document.querySelectorAll<HTMLElement>('.community-items-container *')
+            .forEach(el => el.style.left = el.dataset.originalLeft!);
+          document.querySelectorAll<HTMLElement>('.zero-items-container *')
+            .forEach(el => el.style.left = el.dataset.originalLeft!);
+          setSlideState("menu");
+          break;
 
-            document.querySelectorAll<HTMLElement>('.zero-items-container *').forEach((el) => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft + 29) + "vw";
-            });
-            setSlideState("menu");
-            return;
-          } else if (slideState === "menu") {
-            document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach((el) => {
-              el.style.transition = "transform 0.7s ease";
-              el.style.transform = "translateX(0)";
-            });
-            document.querySelector('.menu-items')?.classList.remove('raised');
+        case "menu":
+          // slide menu back to heading-position
+          document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
+            .forEach(el => el.style.left = el.dataset.originalLeft!);
+          setSlideState("heading");
+          break;
 
-            const chatTextEl = chatTextRef.current;
-            if (chatTextEl) {
-              setTimeout(() => {
-                if ((slideState as string) !== "none") return;
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            setSlideState("none");
-          } else if (slideState === "heading" || slideState === "account") {
-            document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]').forEach((box) => {
+        case "heading":
+          // slide account+heading back out, fade chat in
+          document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
+            .forEach(box => {
+              box.style.transition = "transform 0.7s ease";
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
             });
-
-            document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]').forEach((box) => {
+          document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]')
+            .forEach(box => {
+              box.style.transition = "transform 0.7s ease";
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
             });
-
-            document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)').forEach((el) => {
-              if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
-            });
-
-            document.querySelectorAll<HTMLElement>('.other-content > .custom-line').forEach((el) => {
-              if (el.dataset.originalLeft) {
-                el.style.transition = "left 0.7s ease";
-                el.style.left = el.dataset.originalLeft;
-              }
-            });
-
-            const chatTextEl = chatTextRef.current;
-            if (chatTextEl) {
-              setTimeout(() => {
-                if ((slideState as string) !== "none") return;
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            setSlideState("none");
-          } else if (slideState === "none") {
-            const chatTextEl = chatTextRef.current;
-            if (chatTextEl) {
-              chatTextEl.style.transition = "opacity 0.1s ease";
-              chatTextEl.style.opacity = "0";
-              setTimeout(() => {
-                document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)').forEach((el) => {
-                  if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-                  let original = parseFloat(el.dataset.originalLeft);
-                  el.style.transition = "left 0.7s ease";
-                  el.style.left = (original + 49) + "vw";
-                });
-
-                document.querySelectorAll<HTMLElement>('.other-content > .custom-line').forEach((el) => {
-                  if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-                  let originalLine = parseFloat(el.dataset.originalLeft);
-                  el.style.transition = "left 0.7s ease";
-                  el.style.left = (originalLine + 49) + "vw";
-                });
-
-                document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]').forEach((box) => {
-                  box.style.transform = "translateX(0)";
-                });
-
-                document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]').forEach((box) => {
-                  box.style.transform = "translateX(0)";
-                });
-              }, 110);
-            }
-            setSlideState("heading");
-            }
-          });
-        }
-      };
-      document.addEventListener('click', handleAccountClick, true);
-      return () => {
-        document.removeEventListener('click', handleAccountClick, true);
-      };
-    }, [slideState]);
-        
-    
-    useEffect(() => {
-    const handleCommunityClick = (event: MouseEvent) => {
-      if ((event.target as HTMLElement).closest('.menu-item') || (event.target as HTMLElement).closest('.chat-text')) return;
-
-      const { clientX: x, clientY: y } = event;
-      const { innerWidth: width, innerHeight: height } = window;
-      const vwUnit = width / 100;
-      const vhUnit = height / 100;
-      const leftMin = 28.86 * vwUnit;
-      const leftMax = 32.43 * vwUnit;
-      const yMin = 28.5 * vhUnit;
-      const yMax = 84 * vhUnit;
-
-      if (x >= leftMin && x <= leftMax && y >= yMin && y <= yMax) {
-        event.stopPropagation();
-        forceCloseSubmenuThen(() => {
-          if (slideState === "menu") {
-            // Slide items to the left for "menu" state
-            document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach((el) => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft - 29) + "vw";
-            });
-
-            document.querySelectorAll<HTMLElement>('.community-items-container *').forEach((el) => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft - 29) + "vw";
-            });
-
-            document.querySelectorAll<HTMLElement>('.zero-items-container *').forEach((el) => {
-              if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-              el.style.transition = "left 0.7s ease";
-              let currentLeft = parseFloat(el.style.left);
-              el.style.left = (currentLeft - 29) + "vw";
-            });
-            setSlideState("community");
-          } else if (slideState === "menu") {
-            // Reset position and show elements in "menu" state
-            document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach((el) => {
-              el.style.transition = "transform 0.7s ease";
-              el.style.transform = "translateX(0)";
-            });
-            document.querySelector('.menu-items')?.classList.remove('raised');
-
-            const chatTextEl = chatTextRef.current;
-            if (chatTextEl) {
-              setTimeout(() => {
-                if ((slideState as string) !== "none") return;
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            setSlideState("none");
-          } else if (slideState === "heading" || slideState === "account") {
-            // Reset positions for "heading" or "account" state
-            document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]').forEach((box) => {
+          chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
+          chatTextRef.current!.style.opacity = "1";
+          setSlideState("none");
+          break;
+      }
+    }
+    else if (inRightZone) {
+      // ── Right edge clicks ────────────────────────
+      switch (slideState) {
+        case "heading":
+          // inverse of first left-click: slide out and fade chat in
+          document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
+            .forEach(box => {
+              box.style.transition = "transform 0.7s ease";
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
             });
-
-            document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]').forEach((box) => {
+          document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]')
+            .forEach(box => {
+              box.style.transition = "transform 0.7s ease";
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
             });
+          chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
+          chatTextRef.current!.style.opacity = "1";
+          setSlideState("none");
+          break;
 
-            document.querySelectorAll<HTMLElement>('.other-content > .custom-text:not(.menu-item)').forEach((el) => {
-              if (el.dataset.originalLeft) { el.style.left = el.dataset.originalLeft; }
+        case "none":
+          // first menu click
+          document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
+            .forEach(el => {
+              el.dataset.originalLeft = el.style.left;
+              el.style.transition = "left 0.7s ease";
+              el.style.left = "6.41vw";
             });
+          setSlideState("menu");
+          break;
 
-            document.querySelectorAll<HTMLElement>('.other-content > .custom-line').forEach((el) => {
-              if (el.dataset.originalLeft) {
-                el.style.transition = "left 0.7s ease";
-                el.style.left = el.dataset.originalLeft;
-              }
+        case "menu":
+          // second menu/community click
+          document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
+            .forEach(el => {
+              el.style.left = (parseFloat(el.dataset.originalLeft!) - 29) + "vw";
             });
+          document.querySelectorAll<HTMLElement>('.community-items-container *')
+            .forEach(el => {
+              el.dataset.originalLeft ||= el.style.left;
+              el.style.transition = "left 0.7s ease";
+              el.style.left = (parseFloat(el.style.left) - 29) + "vw";
+            });
+          document.querySelectorAll<HTMLElement>('.zero-items-container *')
+            .forEach(el => {
+              el.dataset.originalLeft ||= el.style.left;
+              el.style.transition = "left 0.7s ease";
+              el.style.left = (parseFloat(el.style.left) - 29) + "vw";
+            });
+          setSlideState("community");
+          break;
 
-            const chatTextEl = chatTextRef.current;
-            if (chatTextEl) {
-              setTimeout(() => {
-                if ((slideState as string) !== "none") return;
-                chatTextEl.style.transition = "opacity 0.7s ease";
-                chatTextEl.style.opacity = "1";
-              }, 700);
-            }
-            setSlideState("none");
-          } else if (slideState === "none") {
-            // Hide elements for "none" state and prepare for "heading"
-            const chatTextEl = chatTextRef.current;
-            if (chatTextEl) {
-              chatTextEl.style.transition = "opacity 0.1s ease";
-              chatTextEl.style.opacity = "0";
-              setTimeout(() => {
-                document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach((el) => {
-                  if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
-                  el.style.transition = "transform 0.7s ease";
-                  el.style.transform = "translateX(-22.59vw)";
-                });
-                setTimeout(() => {
-                  document.querySelector('.menu-items')?.classList.add('raised');
-                }, 700);
-              }, 110);
-            }
-            setSlideState("menu");
-          }
-          });  // ← close forceCloseSubmenuThen
-        }   // ← close the `if (x…){…}`
-      };    // ← close handleClick function
-      document.addEventListener('click', handleCommunityClick, true);
-      return () => {
-        document.removeEventListener('click', handleCommunityClick, true);
-      };
-    }, [slideState]);
+        case "community":
+          // optional: return from community to none
+          document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
+            .forEach(el => el.style.left = el.dataset.originalLeft!);
+          setSlideState("none");
+          break;
+      }
+    }
+  };
+
+  document.addEventListener("click", handleEdgeClick, true);
+  return () => {
+    document.removeEventListener("click", handleEdgeClick, true);
+  };
+}, [slideState]);
+
 
         useEffect(() => {
     const HIDE_MIN = 6.37, HIDE_MAX = 28.86;
@@ -563,7 +445,7 @@ useEffect(() => {
 
     // Set the base left position (vw) for each target element
     targetsRef.current = [
-      ...document.querySelectorAll<HTMLElement>('.account-text'),
+      ...document.querySelectorAll('.account-text'),
       document.querySelector('.account-line')
     ].filter(Boolean) as HTMLElement[];
 
@@ -644,14 +526,14 @@ useEffect(() => {
     document.addEventListener('click', handleClick);
 
     // Stop propagation for slide actions
-    document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
+    document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
       el.addEventListener('click', e => {
         e.stopPropagation();
         slideOnce();
       });
     });
 
-    document.querySelectorAll<HTMLElement>('.slide-trigger-reverse').forEach(el => {
+    document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
       el.addEventListener('click', e => {
         e.stopPropagation();
         slideBack();
@@ -666,8 +548,7 @@ useEffect(() => {
 
            useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
-const combinedEls = Array.from(itemElsRef.current || []).concat(Array.from(centerElsRef.current || []));
-    combinedEls.forEach(el => {
+      [...itemElsRef.current, ...centerElsRef.current].forEach(el => {
         if (!el.dataset.baseLeftVw) {
           const leftPx = parseFloat(getComputedStyle(el).left) || 0;
           el.dataset.baseLeftVw = toVw(leftPx).toString();

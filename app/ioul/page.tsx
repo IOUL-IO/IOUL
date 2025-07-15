@@ -125,6 +125,7 @@ const IOULPage: React.FC = () => {
         el.classList.add("menu-slide");
       }
     });
+  };
 
     requestAnimationFrame(() => {
       menuItems.forEach((el, i) => {
@@ -324,6 +325,7 @@ useEffect(() => {
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
+    };
 
             document.querySelectorAll('.community-items-container *:not(.custom-line)').forEach((el) => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
@@ -458,6 +460,7 @@ useEffect(() => {
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft - 29) + "vw";
             });
+    };
 
             document.querySelectorAll('.community-items-container *').forEach((el) => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }

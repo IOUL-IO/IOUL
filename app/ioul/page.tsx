@@ -648,7 +648,7 @@ useEffect(() => {
     
     // 2) forward‐slide triggers
     const forwardEls = Array.from(
-      document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-triggers, .slide-container')
+      document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container') as HTMLElement[]
     );
     const onForward = (e: MouseEvent) => {
       e.stopPropagation();
@@ -658,7 +658,7 @@ useEffect(() => {
     
     // 3) backward‐slide triggers
     const backEls = Array.from(
-      document.querySelectorAll<HTMLElement>('.slide-trigger-reverse')
+      document.querySelectorAll('.slide-trigger-reverse') as HTMLElement[]
     );
     const onBack = (e: MouseEvent) => {
       e.stopPropagation();

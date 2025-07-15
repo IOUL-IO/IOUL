@@ -426,16 +426,11 @@ useEffect(() => {
         });
       }
     };
-
-      document.addEventListener('click', handleClick, true);
-
-      // cleanup on unmount or deps change
-      return () => {
-        document.removeEventListener('click', handleClick, true);
-      };
-    }, [slideState]);
-   
-
+    document.addEventListener('click', handleClick, true);
+    return () => {
+      document.removeEventListener('click', handleClick, true);
+    };
+  }, [slideState]);
      useEffect(() => {
     const handleClick = (event: MouseEvent) => {
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;

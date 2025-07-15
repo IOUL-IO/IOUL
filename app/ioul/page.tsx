@@ -43,8 +43,12 @@ const IOULPage: React.FC = () => {
 
 const updateVisibility = () => {
   // Gather elements explicitly as HTMLElements so .style is known
-  const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
-  const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
+  const textEls = Array.from(
+    document.querySelectorAll<HTMLElement>('.item-text')
+  );
+  const lineEls = Array.from(
+    document.querySelectorAll<HTMLElement>('.item-line')
+  );
   const targets = textEls.concat(lineEls);
 
   targets.forEach(el => {
@@ -56,6 +60,7 @@ const updateVisibility = () => {
     el.style.pointerEvents = hide ? 'none' : '';
   });
 };
+
 
 
   useEffect(() => {

@@ -339,6 +339,8 @@ const IOULPage: React.FC = () => {
         });
       }
     };
+   );
+  }
 
      useEffect(() => {
     const handleClick = (event: MouseEvent) => {
@@ -448,6 +450,8 @@ const IOULPage: React.FC = () => {
         });
       }
     };
+  );
+     }
 
         useEffect(() => {
     const HIDE_MIN = 6.37, HIDE_MAX = 28.86;

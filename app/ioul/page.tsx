@@ -23,8 +23,8 @@ const IOULPage: React.FC = () => {
   const [centerStage, setCenterStage] = useState(0);  // 0 = hidden, 1 = visible (center column)
   const [animating, setAnimating] = useState(false);
 
-  const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-  const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
+  const itemElsRef = useRef(null as NodeListOf<HTMLElement> | null);
+  const centerElsRef = useRef(null as NodeListOf<HTMLElement> | null);
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
@@ -221,10 +221,10 @@ const IOULPage: React.FC = () => {
    const [isFirstScroll, setIsFirstScroll] = useState(true);
    const [isSecondScroll, setIsSecondScroll] = useState(false);
 
-   const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
+   const numbers1to16Ref = useRef(null as NodeListOf<HTMLElement> | null);
+   const numbers17to31Ref = useRef(null as NodeListOf<HTMLElement> | null);
+   const dashed1to16Ref = useRef(null as NodeListOf<HTMLElement> | null);
+   const dashed17to31Ref = useRef(null as NodeListOf<HTMLElement> | null);
 
   // Effect to handle component mount and query DOM elements
 // runs once on mount

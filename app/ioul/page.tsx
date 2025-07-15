@@ -648,8 +648,8 @@ useEffect(() => {
     
     // 2) forward‐slide triggers
     const forwardEls = Array.from(
-      document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container') as HTMLElement[]
-    );
+    document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container')
+) as HTMLElement[];
     const onForward = (e: MouseEvent) => {
       e.stopPropagation();
       slideOnce();
@@ -658,8 +658,8 @@ useEffect(() => {
     
     // 3) backward‐slide triggers
     const backEls = Array.from(
-      document.querySelectorAll('.slide-trigger-reverse') as HTMLElement[]
-    );
+    document.querySelectorAll('.slide-trigger-reverse')
+) as HTMLElement[];
     const onBack = (e: MouseEvent) => {
       e.stopPropagation();
       slideBack();

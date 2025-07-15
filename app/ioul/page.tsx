@@ -751,9 +751,9 @@ useEffect(() => {
     }
   }
 
-  document.addEventListener('click', handleClick, true);
+  document.addEventListener('click', handleAccountClick, true);
   return () => {
-    document.removeEventListener('click', handleClick, true);
+    document.removeEventListener('click', handleAccountClick, true);
   };
 }, [slideState, itemStage, centerStage]);
 

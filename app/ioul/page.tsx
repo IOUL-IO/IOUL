@@ -667,7 +667,7 @@ useEffect(() => {
       forwardEls.forEach(el => el.removeEventListener('click', onForward));
       backEls.forEach(el => el.removeEventListener('click', onBack));
     };
-    }, [slideState /* plus any other deps slideOnce/slideBack need */]);
+    }, [slideState]);
 
 
            useEffect(() => {

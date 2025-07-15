@@ -6,9 +6,9 @@ const IOULPage: React.FC = () => {
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
-  const chatTextRef = useRef<HTMLSpanElement | null>(null);
-  const hoverAreaRef = useRef<HTMLDivElement | null>(null);
-  const pageContentRef = useRef<HTMLDivElement | null>(null);
+  const chatTextRef = useRef(null as HTMLSpanElement | null);
+  const hoverAreaRef = useRef(null as HTMLDivElement | null);
+  const pageContentRef = useRef(null as HTMLDivElement | null);
   
   const [state, setState] = useState(0); // 0 = baseline (lines visible, others hidden)
   const [showMail, setShowMail] = useState(false);
@@ -17,7 +17,7 @@ const IOULPage: React.FC = () => {
 
   const EDGE_MARGIN = 11;
 
-  const targetsRef = useRef<(HTMLElement | null)[]>([]); // Reference to target elements
+  const targetsRef = useRef([] as (HTMLElement | null)[]); // Reference to target elements
 
   const [itemStage, setItemStage] = useState(0);  // 0 = hidden, 1 = visible (left column), 2 = shifted left / clipped
   const [centerStage, setCenterStage] = useState(0);  // 0 = hidden, 1 = visible (center column)
@@ -125,7 +125,6 @@ const IOULPage: React.FC = () => {
         el.classList.add("menu-slide");
       }
     });
-  };
 
     requestAnimationFrame(() => {
       menuItems.forEach((el, i) => {
@@ -325,7 +324,6 @@ useEffect(() => {
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft + 29) + "vw";
             });
-    };
 
             document.querySelectorAll('.community-items-container *:not(.custom-line)').forEach((el) => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
@@ -460,7 +458,6 @@ useEffect(() => {
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft - 29) + "vw";
             });
-    };
 
             document.querySelectorAll('.community-items-container *').forEach((el) => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }

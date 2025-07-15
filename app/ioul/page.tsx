@@ -424,7 +424,7 @@ useEffect(() => {
             setSlideState("heading");
           }
         });
-      };
+      }
       // attach the click handler
       document.addEventListener('click', handleClick, true);
     
@@ -457,8 +457,7 @@ useEffect(() => {
               el.style.transition = "left 0.7s ease";
               let currentLeft = parseFloat(el.style.left);
               el.style.left = (currentLeft - 29) + "vw";
-               });
- 
+            });
 
             document.querySelectorAll('.community-items-container *').forEach((el) => {
               if (!el.dataset.originalLeft) { el.dataset.originalLeft = el.style.left; }
@@ -481,10 +480,6 @@ useEffect(() => {
               el.style.transform = "translateX(0)";
             });
             document.querySelector('.menu-items')?.classList.remove('raised');
-            }
-          });  
-        } 
-      };  
 
             const chatTextEl = chatTextRef.current;
             if (chatTextEl) {
@@ -664,8 +659,8 @@ useEffect(() => {
             return () => {
     document.removeEventListener('click', handleClick);
     // (and any other listeners you attached in this effect)
-  }
-}, [slideState]);
+  };
+}, [/* slideState, or whatever deps this effect really needs */]);
 
            useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
@@ -762,6 +757,7 @@ useEffect(() => {
     document.removeEventListener('click', handleClick, true);
   };
 }, [slideState, itemStage, centerStage]);
+
 
   return (
     <div className="non-fullscreen" translate="no">
@@ -912,6 +908,7 @@ useEffect(() => {
         <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'91.9vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>Bcc</span>
         <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'91.1vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>SEnD</span>
 
+
         <span className="grid-number num1">1</span>
         <span className="grid-number num2">2</span>
         <span className="grid-number num3">3</span>
@@ -978,7 +975,6 @@ useEffect(() => {
         <span className="grid-dashed dashed30" />
         <span className="grid-dashed dashed31" />
 
-
         <div className="heading-container" style={{top:'35.4vh',left:'6.41vw',transform:'translateX(-49vw)'}} data-offset="-49" data-slide-group="heading">
           <span className="custom-text heading-flow">AccOUnT</span>
         </div>
@@ -1036,7 +1032,6 @@ useEffect(() => {
 
       <div className={`line fifth ${showLines ? '' : 'hidden'}`}>Line 5</div>
       <div className={`line sixth ${showLines ? '' : 'hidden'}`}>Line 6</div>
-    </div>
     </div>
   );
 };

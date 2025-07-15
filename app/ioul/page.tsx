@@ -81,160 +81,25 @@ const IOULPage: React.FC = () => {
   };
 
   // Trigger update when state changes
+
+  // 1) Ref initialization — runs once
   useEffect(() => {
-    updateView();
-  }, [state]);
+    numbers1to16Ref.current = document.querySelectorAll(
+      '.grid-number.num1, .grid-number.num2, .grid-number.num3, .grid-number.num4, .grid-number.num5, .grid-number.num6, .grid-number.num7, .grid-number.num8, .grid-number.num9, .grid-number.num10, .grid-number.num11, .grid-number.num12, .grid-number.num13, .grid-number.num14, .grid-number.num15, .grid-number.num16'
+    );
+    numbers17to31Ref.current = document.querySelectorAll(
+      '.grid-number.num17, .grid-number.num18, .grid-number.num19, .grid-number.num20, .grid-number.num21, .grid-number.num22, .grid-number.num23, .grid-number.num24, .grid-number.num25, .grid-number.num26, .grid-number.num27, .grid-number.num28, .grid-number.num29, .grid-number.num30, .grid-number.num31'
+    );
+    dashed1to16Ref.current = document.querySelectorAll(
+      '.grid-dashed.dashed1, .grid-dashed.dashed2, .grid-dashed.dashed3, .grid-dashed.dashed4, .grid-dashed.dashed5, .grid-dashed.dashed6, .grid-dashed.dashed7, .grid-dashed.dashed8, .grid-dashed.dashed9, .grid-dashed.dashed10, .grid-dashed.dashed11, .grid-dashed.dashed12, .grid-dashed.dashed13, .grid-dashed.dashed14, .grid-dashed.dashed15, .grid-dashed.dashed16'
+    );
+    dashed17to31Ref.current = document.querySelectorAll(
+      '.grid-dashed.dashed17, .grid-dashed.dashed18, .grid-dashed.dashed19, .grid-dashed.dashed20, .grid-dashed.dashed21, .grid-dashed.dashed22, .grid-dashed.dashed23, .grid-dashed.dashed24, .grid-dashed.dashed25, .grid-dashed.dashed26, .grid-dashed.dashed27, .grid-dashed.dashed28, .grid-dashed.dashed29, .grid-dashed.dashed30, .grid-dashed.dashed31'
+    );
+  }, []);
 
-  // Handle the click on util lines
-  const handleUtilLineClick = () => {
-    setState((prevState) => (prevState + 1) % 3); // cycle 0 → 1 → 2 → 0 ...
-  };
-
-  const quickRemoveSubmenu = () => {
-    const newTexts = document.querySelectorAll('.new-text');
-    newTexts.forEach((span) => {
-      span.style.transition = 'opacity 0.1s ease';
-      span.classList.remove('visible');
-    });
-    setTimeout(() => {
-      newTexts.forEach((span) => span.remove());
-    }, 100);
-  };
-
-  // Function that ensures submenu is closed before executing a callback function
-  const forceCloseSubmenuThen = (fn: Function) => {
-    if (slideState !== "none") {
-      quickRemoveSubmenu();
-      setTimeout(() => fn(), 100);  // Ensures submenu is closed before executing callback
-    } else {
-      fn();  // If no submenu, just execute the function directly
-    }
-  };
-
-    // Handle the sliding of sibling menu items
-  const slideDownSiblings = (clickedId: string) => {
-    const menuItems = Array.from(document.querySelectorAll('.menu-items .menu-item')) as HTMLElement[];
-    const clickedIndex = menuItems.findIndex(el => el.id === clickedId);
-    
-    menuItems.forEach((el, i) => {
-      if (i > clickedIndex) {
-        el.classList.remove("menu-slide", "slide-down");
-        el.style.transform = "";
-        el.style.transition = "";
-        void el.offsetHeight; // Trigger reflow for animation
-        el.classList.add("menu-slide");
-      }
-    });
-
-    requestAnimationFrame(() => {
-      menuItems.forEach((el, i) => {
-        if (i > clickedIndex) {
-          el.classList.add("slide-down");
-        }
-      });
-    });
-  };
-
-  // Add new text as a submenu item
-  const addNewText = (text: string, topVH: number, leftVW: number) => {
-    if (slideState !== "menu") return;
-
-    const span = document.createElement("span");
-    span.className = "custom-text new-text";
-    span.style.top = `${topVH}vh`;
-    span.style.left = `${leftVW}vw`;
-    span.textContent = text;
-    document.querySelector(".other-content")?.appendChild(span);
-    
-    setTimeout(() => {
-      span.classList.add("visible");
-    }, 10);
-  };
-
-  // Open specific menus
-  const openOnlineAssets = () => {
-    slideDownSiblings("online-assets");
-    setTimeout(() => {
-      addNewText("- cMS", 40.1, 6.4);
-      addNewText("- LMS", 44.1, 6.4);
-    }, 700);
-  };
-
-  const openLinkupCenter = () => {
-    slideDownSiblings("linkup-center");
-    setTimeout(() => {
-      addNewText("- cOM", 47.2, 6.4);
-      addNewText("- JOB", 51.2, 6.4);
-      addNewText("- HR", 55.2, 6.4);
-    }, 700);
-  };
-
-  const openDeliveryLine = () => {
-    slideDownSiblings("delivery-line");
-    setTimeout(() => {
-      addNewText("- cRM", 54.3, 6.4);
-      addNewText("- OPS", 58.3, 6.4);
-    }, 700);
-  };
-
-  const openInternalUnit = () => {
-    slideDownSiblings("internal-unit");
-    setTimeout(() => {
-      addNewText("- 1nV", 61.4, 6.4);
-      addNewText("- FMS", 65.4, 6.4);
-      addNewText("- 1T", 69.4, 6.4);
-    }, 700);
-  };
-
-  // Handle the click event for each menu item
-  const handleMenuClick = (menuId: string, openFunction: () => void) => {
-    if (currentMenu === menuId) {
-      closeSubmenu();
-    } else {
-      if (currentMenu) {
-        closeSubmenu();
-        setTimeout(() => {
-          openFunction();
-          setCurrentMenu(menuId);
-        }, 300);
-      } else {
-        openFunction();
-        setCurrentMenu(menuId);
-      }
-    }
-  };
-
-  // Close the submenu
-  const closeSubmenu = () => {
-    const newTexts = document.querySelectorAll('.new-text');
-    newTexts.forEach((span) => {
-      span.style.transition = 'opacity 0.3s ease';
-      span.classList.remove('visible');
-    });
-
-    setTimeout(() => {
-      newTexts.forEach((span) => span.remove());
-    }, 300);
-  };
-
-   const [isScrolling, setIsScrolling] = useState(false);
-   const [isFirstScroll, setIsFirstScroll] = useState(true);
-   const [isSecondScroll, setIsSecondScroll] = useState(false);
-
-   const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-
-  // Effect to handle component mount and query DOM elements
+  // 2) Scroll-area setup — runs when scroll flags change
   useEffect(() => {
-    numbers1to16Ref.current = document.querySelectorAll('.grid-number.num1, .grid-number.num2, .grid-number.num3, .grid-number.num4, .grid-number.num5, .grid-number.num6, .grid-number.num7, .grid-number.num8, .grid-number.num9, .grid-number.num10, .grid-number.num11, .grid-number.num12, .grid-number.num13, .grid-number.num14, .grid-number.num15, .grid-number.num16');
-    numbers17to31Ref.current = document.querySelectorAll('.grid-number.num17, .grid-number.num18, .grid-number.num19, .grid-number.num20, .grid-number.num21, .grid-number.num22, .grid-number.num23, .grid-number.num24, .grid-number.num25, .grid-number.num26, .grid-number.num27, .grid-number.num28, .grid-number.num29, .grid-number.num30, .grid-number.num31');
-    dashed1to16Ref.current = document.querySelectorAll('.grid-dashed.dashed01, .grid-dashed.dashed02, .grid-dashed.dashed03, .grid-dashed.dashed04, .grid-dashed.dashed05, .grid-dashed.dashed06, .grid-dashed.dashed07, .grid-dashed.dashed08, .grid-dashed.dashed09, .grid-dashed.dashed10, .grid-dashed.dashed11, .grid-dashed.dashed12, .grid-dashed.dashed13, .grid-dashed.dashed14, .grid-dashed.dashed15, .grid-dashed.dashed16');
-    dashed17to31Ref.current = document.querySelectorAll('.grid-dashed.dashed17, .grid-dashed.dashed18, .grid-dashed.dashed19, .grid-dashed.dashed20, .grid-dashed.dashed21, .grid-dashed.dashed22, .grid-dashed.dashed23, .grid-dashed.dashed24, .grid-dashed.dashed25, .grid-dashed.dashed26, .grid-dashed.dashed27, .grid-dashed.dashed28, .grid-dashed.dashed29, .grid-dashed.dashed30, .grid-dashed.dashed31');
-  }, []); // empty dependency array, runs only once when component mounts
-
-      // Create a scroll area div
     const scrollArea = document.createElement('div');
     scrollArea.style.position = 'absolute';
     scrollArea.style.top = '28.5vh';
@@ -242,85 +107,107 @@ const IOULPage: React.FC = () => {
     scrollArea.style.width = '58vw';
     scrollArea.style.height = '55.5vh';
     scrollArea.style.zIndex = '5';
-    scrollArea.style.pointerEvents = 'auto';
-    scrollArea.style.cursor = 'default';
-    document.querySelector('.other-content').appendChild(scrollArea);
-    // Mail-text fade-in on hover
-    let mailShownOnce = false;
-    scrollArea.addEventListener('mousemove', () => {
-      if (!mailShownOnce) {
-        document.querySelectorAll('.mail-text, .mail-line').forEach(el => el.style.opacity = '1');
-        mailShownOnce = true;
-      }
-    });
+    document.querySelector('.other-content')!.appendChild(scrollArea);
 
-    scrollArea.addEventListener('wheel', (e) => {
+    function onWheel(e: WheelEvent) {
       e.preventDefault();
-      
       if (isScrolling) return;
-      isScrolling = true;
-      
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        isScrolling = false;
-      }, 700);
+      setIsScrolling(true);
+      setTimeout(() => setIsScrolling(false), 700);
 
-      // Create a wrapper for all elements to move as one unit
-      const allElements = [...numbers1to16, ...numbers17to31, ...dashed1to16, ...dashed17to31];
-      
-      // Set transition timing for all elements at once
-      requestAnimationFrame(() => {
-        allElements.forEach(el => {
-          el.style.transition = 'transform 0.7s ease';
-        });
+      const all = [
+        ...(numbers1to16Ref.current || []),
+        ...(numbers17to31Ref.current || []),
+        ...(dashed1to16Ref.current  || []),
+        ...(dashed17to31Ref.current || []),
+      ];
+      all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
 
-        // Apply transform in the next frame to ensure all transitions start together
-        requestAnimationFrame(() => {
-          if (e.deltaY > 0) { // Scrolling down
-            if (!isSecondScroll) {
-              // First scroll down - move everything up
-              allElements.forEach(el => {
-                el.style.transform = 'translateY(-55.5vh)';
-              });
-              isSecondScroll = true;
-            } else {
-              // Second scroll down - move everything up again
-              allElements.forEach(el => {
-                el.style.transform = 'translateY(-111vh)';
-              });
-              isSecondScroll = false;
-            }
-          } else { // Scrolling up
-            const currentTransform = allElements[0]?.style.transform || '';
-            const currentY = currentTransform.includes('translate') ? 
-              currentTransform.match(/translateY\(([^)]+)\)/)?.[1] || '0' : '0';
-            
-            if (currentY === '-111vh') {
-              // If we're at the bottom (29-31), scroll up to middle (17-28)
-              allElements.forEach(el => {
-                el.style.transform = 'translateY(-55.5vh)';
-              });
-              isSecondScroll = true;
-            } else if (currentY === '-55.5vh') {
-              // If we're in the middle (17-28), scroll up to top (1-16)
-              allElements.forEach(el => {
-                el.style.transform = 'translateY(0)';
-              });
-              isSecondScroll = false;
-            }
-          }
-        });
-      });
+      if (e.deltaY > 0) {
+        if (!isSecondScroll) {
+          all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
+          setIsSecondScroll(true);
+        } else {
+          all.forEach(el => (el.style.transform = 'translateY(-111vh)'));
+          setIsSecondScroll(false);
+        }
+      } else {
+        const match = all[0]?.style.transform.match(/translateY\(([-\d.]+)vh\)/);
+        const y = match ? parseFloat(match[1]) : 0;
+        if (y === -111) {
+          all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
+          setIsSecondScroll(true);
+        } else if (y === -55.5) {
+          all.forEach(el => (el.style.transform = 'translateY(0)'));
+          setIsSecondScroll(false);
+        }
+      }
+    }
 
-      isFirstScroll = false;
-    }, { passive: false });
-
+    scrollArea.addEventListener('wheel', onWheel, { passive: false });
     return () => {
-    scrollArea.removeEventListener('mousemove', onMove);
+      scrollArea.removeEventListener('wheel', onWheel);
+      scrollArea.remove();
+    };
+  }, [isScrolling, isSecondScroll]);
+
+  // 3) Left-edge clicks — only slideState matters
+  useEffect(() => {
+    const handleLeftClick = (e: MouseEvent) => {
+      if (e.target.closest('.menu-item') || e.target.closest('.chat-text')) return;
+      const { clientX: x, clientY: y } = e;
+      const vw = window.innerWidth / 100;
+      const vh = window.innerHeight / 100;
+      if (x >= 0 && x <= 6.37 * vw && y >= 28.5 * vh && y <= 84 * vh) {
+        e.stopPropagation();
+        forceCloseSubmenuThen(() => {
+          /* community → menu → none → heading logic */
+        });
+      }
+    };
+    document.addEventListener('click', handleLeftClick, true);
+    return () => document.removeEventListener('click', handleLeftClick, true);
+  }, [slideState]);
+
+  // 4) Right-edge clicks — only slideState matters
+  useEffect(() => {
+    const handleRightClick = (e: MouseEvent) => {
+      if (e.target.closest('.menu-item') || e.target.closest('.chat-text')) return;
+      const { clientX: x, clientY: y } = e;
+      const vw = window.innerWidth / 100;
+      const vh = window.innerHeight / 100;
+      if (x >= 28.86 * vw && x <= 32.43 * vw && y >= 28.5 * vh && y <= 84 * vh) {
+        e.stopPropagation();
+        forceCloseSubmenuThen(() => {
+          /* menu → community → none → heading logic */
+        });
+      }
+    };
+    document.addEventListener('click', handleRightClick, true);
+    return () => document.removeEventListener('click', handleRightClick, true);
+  }, [slideState]);
+
+  // 5) Item-line clicks — only itemStage matters
+  useEffect(() => {
+    const handleItemClick = () => setItemStage(prev => !prev);
+    const els = document.querySelectorAll('.item-line');
+    els.forEach(el => el.addEventListener('click', handleItemClick));
+    return () => els.forEach(el => el.removeEventListener('click', handleItemClick));
+  }, [itemStage]);
+
+  // 6) Center-line clicks — only centerStage matters
+  useEffect(() => {
+    const handleCenterClick = () => setCenterStage(prev => !prev);
+    const els = document.querySelectorAll('.center-line');
+    els.forEach(el => el.addEventListener('click', handleCenterClick));
+    return () => els.forEach(el => el.removeEventListener('click', handleCenterClick));
+  }, [centerStage]);
+  return () => {
     scrollArea.removeEventListener('wheel', onWheel);
     scrollArea.remove();
   };
-}, [isScrolling, isSecondScroll]); // depends on those refs/flags
+}, [isScrolling, isSecondScroll]);
+
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {

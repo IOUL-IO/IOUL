@@ -426,7 +426,6 @@ useEffect(() => {
         });
       }
     };
-    );
 
      useEffect(() => {
     const handleClick = (event: MouseEvent) => {
@@ -536,8 +535,12 @@ useEffect(() => {
         });
       }
     };
-  );
-  
+    document.addEventListener('click', handleClick, true);
+    return () => {
+      document.removeEventListener('click', handleClick, true);
+    };
+    }, [slideState, itemStage, centerStage]);
+
         useEffect(() => {
     const HIDE_MIN = 6.37, HIDE_MAX = 28.86;
     const TOP_MIN = 28.5, TOP_MAX = 84;

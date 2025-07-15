@@ -426,8 +426,15 @@ useEffect(() => {
         });
       }
     };
-    );
-   }
+
+      document.addEventListener('click', handleClick, true);
+
+      // cleanup on unmount or deps change
+      return () => {
+        document.removeEventListener('click', handleClick, true);
+      };
+    }, [slideState]);
+   
 
      useEffect(() => {
     const handleClick = (event: MouseEvent) => {
@@ -537,8 +544,13 @@ useEffect(() => {
         });
       }
     };
-    );
-  }
+
+         document.addEventListener('click', handleClick, true);
+      return () => {
+        document.removeEventListener('click', handleClick, true);
+      };
+    }, [slideState]);
+  
 
         useEffect(() => {
     const HIDE_MIN = 6.37, HIDE_MAX = 28.86;
@@ -631,28 +643,37 @@ useEffect(() => {
       }
     };
 
+    // 1) page‐level click listener
     document.addEventListener('click', handleClick);
+    
+    // 2) forward‐slide triggers
+    const forwardEls = Array.from(
+      document.querySelectorAll<HTMLElement>('.slide-trigger, .slide-triggers, .slide-container')
+    );
+    const onForward = (e: MouseEvent) => {
+      e.stopPropagation();
+      slideOnce();
+    };
+    forwardEls.forEach(el => el.addEventListener('click', onForward));
+    
+    // 3) backward‐slide triggers
+    const backEls = Array.from(
+      document.querySelectorAll<HTMLElement>('.slide-trigger-reverse')
+    );
+    const onBack = (e: MouseEvent) => {
+      e.stopPropagation();
+      slideBack();
+    };
+    backEls.forEach(el => el.addEventListener('click', onBack));
+    
+    // 4) cleanup everything
+    return () => {
+      document.removeEventListener('click', handleClick);
+      forwardEls.forEach(el => el.removeEventListener('click', onForward));
+      backEls.forEach(el => el.removeEventListener('click', onBack));
+    };
+    }, [slideState /* plus any other deps slideOnce/slideBack need */]);
 
-    // Stop propagation for slide actions
-    document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
-      el.addEventListener('click', e => {
-        e.stopPropagation();
-        slideOnce();
-      });
-    });
-
-    document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
-      el.addEventListener('click', e => {
-        e.stopPropagation();
-        slideBack();
-      });
-    });
-
-            return () => {
-    document.removeEventListener('click', handleClick);
-    // (and any other listeners you attached in this effect)
-  };
-}, [/* slideState, or whatever deps this effect really needs */]);
 
            useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {

@@ -539,7 +539,9 @@ useEffect(() => {
             }
             setSlideState("menu");
           }
-        });
+      });  // ← close forceCloseSubmenuThen
+    }   // ← close the `if (x…){…}`
+  };    // ← close handleClick function
       document.addEventListener('click', handleClick, true);
     
       // cleanup on unmount or when slideState changes

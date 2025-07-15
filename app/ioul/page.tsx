@@ -41,7 +41,17 @@ const IOULPage: React.FC = () => {
   const toVh = (px: number) => px / vh();
 
 
-  
+  const updateVisibility = () => {
+    const targets = Array.from(document.querySelectorAll<HTMLElement>('.item-text')).concat(Array.from(document.querySelectorAll<HTMLElement>('.item-line')));
+    targets.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const l = toVw(rect.left);
+      const t = toVh(rect.top);
+      const hide = l < 28.86 && t >= 28.5 && t <= 84;
+      el.style.opacity = hide ? '0' : '';
+      el.style.pointerEvents = hide ? 'none' : '';
+    });
+  };
 
   useEffect(() => {
     // Set base positions and update visibility on resize

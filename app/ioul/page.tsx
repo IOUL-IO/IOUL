@@ -297,7 +297,7 @@ useEffect(() => {
 
 
   useEffect(() => {
-    const handleClick = (event: MouseEvent) => {
+    const handleAccountClick = (event: MouseEvent) => {
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;
 
       const { clientX: x, clientY: y } = event;
@@ -422,20 +422,19 @@ useEffect(() => {
               }, 110);
             }
             setSlideState("heading");
-          }
-        });
-      }
-      // attach the click handler
-      document.addEventListener('click', handleClick, true);
-      // cleanup on unmount or when slideState changes
+            }
+          });
+        }
+      };
+      document.addEventListener('click', handleAccountClick, true);
       return () => {
-        document.removeEventListener('click', handleClick, true);
+        document.removeEventListener('click', handleAccountClick, true);
       };
     }, [slideState]);
-    
+        
     
     useEffect(() => {
-    const handleClick = (event: MouseEvent) => {
+    const handleCommunityClick = (event: MouseEvent) => {
       if (event.target.closest('.menu-item') || event.target.closest('.chat-text')) return;
 
       const { clientX: x, clientY: y } = event;
@@ -539,14 +538,12 @@ useEffect(() => {
             }
             setSlideState("menu");
           }
-      });  // ← close forceCloseSubmenuThen
-    }   // ← close the `if (x…){…}`
-  };    // ← close handleClick function
-      document.addEventListener('click', handleClick, true);
-    
-      // cleanup on unmount or when slideState changes
+          });  // ← close forceCloseSubmenuThen
+        }   // ← close the `if (x…){…}`
+      };    // ← close handleClick function
+      document.addEventListener('click', handleCommunityClick, true);
       return () => {
-        document.removeEventListener('click', handleClick, true);
+        document.removeEventListener('click', handleCommunityClick, true);
       };
     }, [slideState]);
 

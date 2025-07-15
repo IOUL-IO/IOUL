@@ -6,9 +6,9 @@ const IOULPage: React.FC = () => {
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
-  const chatTextRef = useRef(null as HTMLSpanElement | null);
-  const hoverAreaRef = useRef(null as HTMLDivElement | null);
-  const pageContentRef = useRef(null as HTMLDivElement | null);
+  const chatTextRef = useRef<HTMLSpanElement | null>(null);
+  const hoverAreaRef = useRef<HTMLDivElement | null>(null);
+  const pageContentRef = useRef<HTMLDivElement | null>(null);
   
   const [state, setState] = useState(0); // 0 = baseline (lines visible, others hidden)
   const [showMail, setShowMail] = useState(false);
@@ -17,7 +17,7 @@ const IOULPage: React.FC = () => {
 
   const EDGE_MARGIN = 11;
 
-  const targetsRef = useRef([] as (HTMLElement | null)[]); // Reference to target elements
+  const targetsRef = useRef<(HTMLElement | null)[]>([]); // Reference to target elements
 
   const [itemStage, setItemStage] = useState(0);  // 0 = hidden, 1 = visible (left column), 2 = shifted left / clipped
   const [centerStage, setCenterStage] = useState(0);  // 0 = hidden, 1 = visible (center column)
@@ -757,8 +757,6 @@ useEffect(() => {
     document.removeEventListener('click', handleClick, true);
   };
 }, [slideState, itemStage, centerStage]);
-
-
   return (
     <div className="non-fullscreen" translate="no">
       <p style={{ display: 'none' }} lang="en">This page is already in English. No translation is needed.</p>

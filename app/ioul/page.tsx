@@ -535,11 +535,6 @@ useEffect(() => {
         });
       }
     };
-    document.addEventListener('click', handleClick, true);
-    return () => {
-      document.removeEventListener('click', handleClick, true);
-    };
-    }, [slideState, itemStage, centerStage]);
 
         useEffect(() => {
     const HIDE_MIN = 6.37, HIDE_MAX = 28.86;

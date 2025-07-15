@@ -42,7 +42,7 @@ const IOULPage: React.FC = () => {
 
 
   const updateVisibility = () => {
-    const targets = Array.from(document.querySelectorAll('.item-text')).concat(Array.from(document.querySelectorAll('.item-line')));
+    const targets = [...document.querySelectorAll('.item-text'), ...document.querySelectorAll('.item-line')];
     targets.forEach(el => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);

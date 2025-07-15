@@ -265,14 +265,21 @@ useEffect(() => {
     setIsScrolling(true);
     setTimeout(() => setIsScrolling(false), 700);
 
-    const nums1 = numbers1to16Ref.current || [];
-    const nums2 = numbers17to31Ref.current || [];
+    const nums1List = nums1Ref.current || [];
+    const nums2List = nums2Ref.current || [];
     const das1 = dashed1to16Ref.current || [];
     const das2 = dashed17to31Ref.current || [];
+    
+    // Ensure everything is a true array before concatenating
     const all = ([] as HTMLElement[])
-      .concat(nums1, nums2)
+      .concat(
+        Array.isArray(nums1List) ? nums1List : Array.from(nums1List),
+        Array.isArray(nums2List) ? nums2List : Array.from(nums2List)
+      )
       .concat(Array.from(das1), Array.from(das2));
+    
     all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
+
 
     if (e.deltaY > 0) {
       if (!isSecondScroll) {

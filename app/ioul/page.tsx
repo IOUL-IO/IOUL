@@ -664,7 +664,7 @@ useEffect(() => {
             return () => {
     document.removeEventListener('click', handleClick);
     // (and any other listeners you attached in this effect)
-  };
+  }
 }, [slideState]);
 
            useEffect(() => {

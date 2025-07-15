@@ -42,7 +42,7 @@ const IOULPage: React.FC = () => {
 
 
   const updateVisibility = () => {
-    const targets = [...document.querySelectorAll('.item-text'), ...document.querySelectorAll('.item-line')];
+    const targets = Array.from(document.querySelectorAll('.item-text')).concat(Array.from(document.querySelectorAll('.item-line')));
     targets.forEach(el => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
@@ -751,9 +751,9 @@ useEffect(() => {
     }
   }
 
-  document.addEventListener('click', handleAccountClick, true);
+  document.addEventListener('click', handleClick, true);
   return () => {
-    document.removeEventListener('click', handleAccountClick, true);
+    document.removeEventListener('click', handleClick, true);
   };
 }, [slideState, itemStage, centerStage]);
 

@@ -548,7 +548,18 @@ body.non-fullscreen {
   transition: transform 0.6s ease, opacity 0.4s ease !important;
 }
 
-/* Chat hover to fade in */
+
+/* Toggle defaults */
+.mail-line, .mail-text, .other-content .grid-number, .other-content .grid-dashed {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: none !important;
+}
+.layer-five, .layer-six {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transition: none !important;
+}
 .hover-area:hover + .chat-text {
   opacity: 1 !important;
   pointer-events: auto !important;

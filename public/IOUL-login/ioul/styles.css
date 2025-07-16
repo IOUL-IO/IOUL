@@ -547,3 +547,41 @@ body.non-fullscreen {
 .grid-dashed {
   transition: transform 0.6s ease, opacity 0.4s ease !important;
 }
+
+
+/* Hide calendar on state 1 */
+[data-util="1"] .grid-number,
+[data-util="1"] .grid-dashed {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Instant pop-in/out for mail on state changes */
+[data-util="0"] .mail-line,
+[data-util="0"] .mail-text,
+[data-util="1"] .mail-line,
+[data-util="1"] .mail-text {
+  transition: none !important;
+}
+
+/* Toggle line-five and line-six visibility */
+[data-util="2"] .layer-five,
+[data-util="2"] .layer-six {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+[data-util="0"] .layer-five,
+[data-util="0"] .layer-six,
+[data-util="1"] .layer-five,
+[data-util="1"] .layer-six {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+[data-util="0"] .layer-five,
+[data-util="0"] .layer-six,
+[data-util="1"] .layer-five,
+[data-util="1"] .layer-six,
+[data-util="2"] .layer-five,
+[data-util="2"] .layer-six {
+  transition: none !important;
+}

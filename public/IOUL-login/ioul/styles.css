@@ -520,24 +520,30 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
-/* Toggle defaults */
-.other-content .grid-number,
-.other-content .grid-dashed {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
+
+/* Util-line toggle states */
+[data-util="0"] .mail-line,
+[data-util="0"] .mail-text,
+[data-util="0"] .grid-number,
+[data-util="0"] .grid-dashed {
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
-/* Hide mail by default */
-.mail-text,
-.mail-line {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
+[data-util="1"] .mail-line,
+[data-util="1"] .mail-text {
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
-/* Chat fade-in on hover */
-.hover-area:hover + .chat-text {
-  opacity: 1;
-  pointer-events: auto;
+[data-util="2"] .grid-number,
+[data-util="2"] .grid-dashed {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Ensure grid items transition opacity */
+.grid-number,
+.grid-dashed {
+  transition: transform 0.6s ease, opacity 0.4s ease !important;
 }

@@ -580,7 +580,7 @@ useEffect(() => {
 
            useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
-      [...itemElsRef.current, ...centerElsRef.current].forEach(el => {
+      Array.from(itemElsRef.current).concat(Array.from(centerElsRef.current)).forEach(el => {
         if (!el.dataset.baseLeftVw) {
           const leftPx = parseFloat(getComputedStyle(el).left) || 0;
           el.dataset.baseLeftVw = toVw(leftPx).toString();

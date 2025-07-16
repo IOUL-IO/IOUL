@@ -15,27 +15,7 @@ const IOULPage: React.FC = () => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [showLines, setShowLines] = useState(true);
 
-  
-  // ───────────────────────────────────────────────────────────────────────────
-  // Ensure browser tab title is always "IOUL"
-  useEffect(() => {
-    document.title = "IOUL";
-  }, []);
-
-  // Hover‑triggered fade‑in for chat‑text
-  useEffect(() => {
-    const hoverEl = hoverAreaRef.current;
-    const chatEl  = chatTextRef.current;
-    if (!hoverEl || !chatEl) return;
-    const handleEnter = () => {
-      chatEl.style.setProperty("transition", "opacity 0.6s ease");
-      chatEl.style.opacity = "1";
-    };
-    hoverEl.addEventListener("mouseenter", handleEnter);
-    return () => hoverEl.removeEventListener("mouseenter", handleEnter);
-  }, []);
-  // ───────────────────────────────────────────────────────────────────────────
-const EDGE_MARGIN = 11;
+  const EDGE_MARGIN = 11;
 
   const targetsRef = useRef<(HTMLElement | null)[]>([]); // Reference to target elements
 
@@ -65,18 +45,9 @@ const EDGE_MARGIN = 11;
     const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
     const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
     const targets = textEls.concat(lineEls);
-    
-    const extraEls = Array.from(document.querySelectorAll<HTMLElement>('.grid-dashed, .grid-number, .mail-line'));
-    const allTargets = targets.concat(extraEls);
-    allTargets.forEach(el => {
+    targets.forEach(el => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
-      const t = toVh(rect.top);
-      const hide = l < 28.86 && t >= 28.5 && t <= 84;
-      el.style.opacity = hide ? '0' : '';
-      el.style.pointerEvents = hide ? 'none' : '';
-    });
-const l = toVw(rect.left);
       const t = toVh(rect.top);
       const hide = l < 28.86 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';

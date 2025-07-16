@@ -964,8 +964,8 @@ useEffect(() => {
 
         <div className="custom-line" style={{ left: '-42.59vw' }} />
 
-        <div className="layer-five" / style={{ opacity: showLines?1:0, pointerEvents: showLines?\'auto\':\'none\', transition:\'none\' }}>
-        <div className="layer-six" / style={{ opacity: showLines?1:0, pointerEvents: showLines?\'auto\':\'none\', transition:\'none\' }}>
+        <div className="layer-five" />
+        <div className="layer-six" />
         
         <div className="slide-triggers">
           <div className="slide-trigger" />

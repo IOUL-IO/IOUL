@@ -520,24 +520,3 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 }
-/* Toggle visibility for mail and calendar grid */
-.other-content .mail-line,
-.other-content .mail-text,
-.other-content .grid-number,
-.other-content .grid-dashed {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.other-content.show-mail .mail-line,
-.other-content.show-mail .mail-text {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-.other-content.show-calendar .grid-number,
-.other-content.show-calendar .grid-dashed {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}

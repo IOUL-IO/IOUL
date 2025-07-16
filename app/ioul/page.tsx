@@ -87,34 +87,6 @@ const IOULPage: React.FC = () => {
   }, []);
 
   
-    // Update view based on the current state
-  const updateView = () => {
-    if (state === 0) {
-      setShowMail(false);
-      setShowCalendar(false);
-      setShowLines(true);
-    } else if (state === 1) {
-      setShowMail(true);
-      setShowCalendar(false);
-      setShowLines(true);
-    } else if (state === 2) {
-      setShowMail(false);
-      setShowCalendar(true);
-      setShowLines(false);
-    }
-  };
-
-  // Trigger update when state changes
-  useEffect(() => {
-    updateView();
-  }, [state]);
-
-  // Sync showMail, showCalendar, showLines with util state
-  useEffect(() => {
-    setShowMail(state === 1);
-    setShowCalendar(state === 2);
-    setShowLines(state !== 2);
-  }, [state]);
 
 
   // Sync showMail, showCalendar, showLines with util state

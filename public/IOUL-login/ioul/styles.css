@@ -106,12 +106,6 @@
   pointer-events: auto !important;
 }
 
-/* Hover to show chat */
-.hover-area:hover + .chat-text {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
 /* STATE 1: mail visible */
 [data-util="1"] .mail-line,
 [data-util="1"] .mail-text {
@@ -119,39 +113,9 @@
   pointer-events: auto !important;
 }
 
-/* STATE 2: calendar numbers 1-16 visible */
-[data-util="2"] .grid-number.num1,
-[data-util="2"] .grid-number.num2,
-[data-util="2"] .grid-number.num3,
-[data-util="2"] .grid-number.num4,
-[data-util="2"] .grid-number.num5,
-[data-util="2"] .grid-number.num6,
-[data-util="2"] .grid-number.num7,
-[data-util="2"] .grid-number.num8,
-[data-util="2"] .grid-number.num9,
-[data-util="2"] .grid-number.num10,
-[data-util="2"] .grid-number.num11,
-[data-util="2"] .grid-number.num12,
-[data-util="2"] .grid-number.num13,
-[data-util="2"] .grid-number.num14,
-[data-util="2"] .grid-number.num15,
-[data-util="2"] .grid-number.num16,
-[data-util="2"] .grid-dashed.dashed01,
-[data-util="2"] .grid-dashed.dashed02,
-[data-util="2"] .grid-dashed.dashed03,
-[data-util="2"] .grid-dashed.dashed04,
-[data-util="2"] .grid-dashed.dashed05,
-[data-util="2"] .grid-dashed.dashed06,
-[data-util="2"] .grid-dashed.dashed07,
-[data-util="2"] .grid-dashed.dashed08,
-[data-util="2"] .grid-dashed.dashed09,
-[data-util="2"] .grid-dashed.dashed10,
-[data-util="2"] .grid-dashed.dashed11,
-[data-util="2"] .grid-dashed.dashed12,
-[data-util="2"] .grid-dashed.dashed13,
-[data-util="2"] .grid-dashed.dashed14,
-[data-util="2"] .grid-dashed.dashed15,
-[data-util="2"] .grid-dashed.dashed16 {
+/* STATE 2: calendar 1-16 visible */
+[data-util="2"] .grid-number,
+[data-util="2"] .grid-dashed {
   opacity: 1 !important;
   pointer-events: auto !important;
 }
@@ -161,4 +125,10 @@
 [data-util="2"] .layer-six {
   opacity: 0 !important;
   pointer-events: none !important;
+}
+
+/* Chat hover logic */
+.hover-area:hover + .chat-text {
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }

@@ -307,9 +307,11 @@ useEffect(() => {
 useEffect(() => {
   const handleEdgeClick = (event: MouseEvent) => {
     // ignore clicks on actual menu items or chat-text itself
+    if (!(event.target instanceof HTMLElement)) return;
     if (
       event.target.closest('.menu-item') ||
       event.target.closest('.chat-text')
+    ) return;
     ) return;
 
     const { clientX: x, clientY: y } = event;

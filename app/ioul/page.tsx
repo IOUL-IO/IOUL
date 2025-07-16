@@ -451,17 +451,35 @@ useEffect(() => {
     // Set the base left position (vw) for each target element
 
 
-    targetsRef.current = ([
+    // Gather account text and line elements
 
 
-      ...Array.from(document.querySelectorAll<HTMLElement>('
-    ')),
+
+    const accountEls = Array.from(document.querySelectorAll<HTMLElement>('.account-text'));
 
 
-      document.querySelector<HTMLElement>('.account-text')
+
+    const accountLine = document.querySelector<HTMLElement>('.account-line');
 
 
-    ] as (HTMLElement | null)[]).filter(Boolean) as HTMLElement[];
+
+    if (accountLine) {
+
+
+
+      targetsRef.current = [...accountEls, accountLine];
+
+
+
+    } else {
+
+
+
+      targetsRef.current = accountEls;
+
+
+
+    }
 
     targetsRef.current.forEach(el => {
       if (!el.dataset.baseLeftVw) {

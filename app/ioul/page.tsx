@@ -60,24 +60,7 @@ const IOULPage: React.FC = () => {
     window.addEventListener('resize', updateVisibility);
     updateVisibility(); // Initial visibility update
 
-    
-  // Toggle mail/calendar with util-line
-  useEffect(() => {
-    let state = 0;
-    const util = document.querySelector<HTMLElement>('.line.util-line');
-    const onClick = () => {
-      state = (state + 1) % 3;
-      document.documentElement.setAttribute('data-util', state.toString());
-    };
-    util?.addEventListener('click', onClick);
-    // init
-    document.documentElement.setAttribute('data-util', '0');
     return () => {
-      util?.removeEventListener('click', onClick);
-    };
-  }, []);
-
-  return () => {
       window.removeEventListener('resize', updateVisibility); // Clean up resize event listener
     };
   }, []);
@@ -92,24 +75,7 @@ const IOULPage: React.FC = () => {
     utilLineEl?.addEventListener('click', onClick);
     // Initialize state
     document.documentElement.setAttribute('data-util', '0');
-    
-  // Toggle mail/calendar with util-line
-  useEffect(() => {
-    let state = 0;
-    const util = document.querySelector<HTMLElement>('.line.util-line');
-    const onClick = () => {
-      state = (state + 1) % 3;
-      document.documentElement.setAttribute('data-util', state.toString());
-    };
-    util?.addEventListener('click', onClick);
-    // init
-    document.documentElement.setAttribute('data-util', '0');
     return () => {
-      util?.removeEventListener('click', onClick);
-    };
-  }, []);
-
-  return () => {
       utilLineEl?.removeEventListener('click', onClick);
     };
   }, []);
@@ -137,13 +103,27 @@ const IOULPage: React.FC = () => {
     updateView();
   }, [state]);
 
+  // Sync showMail, showCalendar, showLines with util state
+  useEffect(() => {
+    setShowMail(state === 1);
+    setShowCalendar(state === 2);
+    setShowLines(state !== 2);
+  }, [state]);
+
   // Handle the click on util lines
   const handleUtilLineClick = useCallback(() => {
-    setState((prevState) => (prevState + 1) % 3); // cycle 0 → 1 → 2 → 0 ...
-  };
+    setState(prev => (prev + 1) % 3);
+  }, []);
   // Sync data-util attribute for CSS toggles
   useEffect(() => {
     document.documentElement.setAttribute('data-util', state.toString());
+  }, [state]);
+
+  // Sync showMail, showCalendar, showLines with util state
+  useEffect(() => {
+    setShowMail(state === 1);
+    setShowCalendar(state === 2);
+    setShowLines(state !== 2);
   }, [state]);
 
 
@@ -351,23 +331,6 @@ useEffect(() => {
   }
 
   scrollArea.addEventListener('wheel', onWheel, { passive: false });
-  
-  // Toggle mail/calendar with util-line
-  useEffect(() => {
-    let state = 0;
-    const util = document.querySelector<HTMLElement>('.line.util-line');
-    const onClick = () => {
-      state = (state + 1) % 3;
-      document.documentElement.setAttribute('data-util', state.toString());
-    };
-    util?.addEventListener('click', onClick);
-    // init
-    document.documentElement.setAttribute('data-util', '0');
-    return () => {
-      util?.removeEventListener('click', onClick);
-    };
-  }, []);
-
   return () => {
     scrollArea.removeEventListener('wheel', onWheel);
     scrollArea.remove();
@@ -503,23 +466,6 @@ useEffect(() => {
   };
 
   document.addEventListener("click", handleEdgeClick, true);
-  
-  // Toggle mail/calendar with util-line
-  useEffect(() => {
-    let state = 0;
-    const util = document.querySelector<HTMLElement>('.line.util-line');
-    const onClick = () => {
-      state = (state + 1) % 3;
-      document.documentElement.setAttribute('data-util', state.toString());
-    };
-    util?.addEventListener('click', onClick);
-    // init
-    document.documentElement.setAttribute('data-util', '0');
-    return () => {
-      util?.removeEventListener('click', onClick);
-    };
-  }, []);
-
   return () => {
     document.removeEventListener("click", handleEdgeClick, true);
   };
@@ -661,24 +607,7 @@ useEffect(() => {
       });
     });
 
-            
-  // Toggle mail/calendar with util-line
-  useEffect(() => {
-    let state = 0;
-    const util = document.querySelector<HTMLElement>('.line.util-line');
-    const onClick = () => {
-      state = (state + 1) % 3;
-      document.documentElement.setAttribute('data-util', state.toString());
-    };
-    util?.addEventListener('click', onClick);
-    // init
-    document.documentElement.setAttribute('data-util', '0');
-    return () => {
-      util?.removeEventListener('click', onClick);
-    };
-  }, []);
-
-  return () => {
+            return () => {
     document.removeEventListener('click', handleClick);
     // (and any other listeners you attached in this effect)
   };
@@ -775,45 +704,11 @@ useEffect(() => {
   }
 
   document.addEventListener('click', handleClick, true);
-  
-  // Toggle mail/calendar with util-line
-  useEffect(() => {
-    let state = 0;
-    const util = document.querySelector<HTMLElement>('.line.util-line');
-    const onClick = () => {
-      state = (state + 1) % 3;
-      document.documentElement.setAttribute('data-util', state.toString());
-    };
-    util?.addEventListener('click', onClick);
-    // init
-    document.documentElement.setAttribute('data-util', '0');
-    return () => {
-      util?.removeEventListener('click', onClick);
-    };
-  }, []);
-
   return () => {
     document.removeEventListener('click', handleClick, true);
   };
 }, [slideState, itemStage, centerStage]);
 
-
-  
-  // Toggle mail/calendar with util-line
-  useEffect(() => {
-    let state = 0;
-    const util = document.querySelector<HTMLElement>('.line.util-line');
-    const onClick = () => {
-      state = (state + 1) % 3;
-      document.documentElement.setAttribute('data-util', state.toString());
-    };
-    util?.addEventListener('click', onClick);
-    // init
-    document.documentElement.setAttribute('data-util', '0');
-    return () => {
-      util?.removeEventListener('click', onClick);
-    };
-  }, []);
 
   return (
     <div className="non-fullscreen" translate="no">
@@ -851,7 +746,7 @@ useEffect(() => {
         <div className="other-content">
           <div className="line original" />
           <div className="line second" />
-          <div className="line util-line" />
+          <div className="line util-line" onClick={handleUtilLineClick} />
           <div className="line third" />
           <div className="line fourth" />
           <div className="line fifth" />

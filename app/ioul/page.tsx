@@ -93,7 +93,7 @@ const IOULPage: React.FC = () => {
   };
 
   const quickRemoveSubmenu = () => {
-    const newTexts = document.querySelectorAll<HTMLSpanElement>('.new-text');
+    const newTexts = document.querySelectorAll('.new-text');
     newTexts.forEach((span) => {
       span.style.transition = 'opacity 0.1s ease';
       span.classList.remove('visible');
@@ -208,7 +208,7 @@ const IOULPage: React.FC = () => {
 
   // Close the submenu
   const closeSubmenu = () => {
-    const newTexts = document.querySelectorAll<HTMLSpanElement>('.new-text');
+    const newTexts = document.querySelectorAll('.new-text');
     newTexts.forEach((span) => {
       span.style.transition = 'opacity 0.3s ease';
       span.classList.remove('visible');
@@ -266,12 +266,7 @@ useEffect(() => {
     const nums2 = numbers17to31Ref.current || [];
     const das1 = dashed1to16Ref.current || [];
     const das2 = dashed17to31Ref.current || [];
-    const all = [
-      ...Array.from(nums1),
-      ...Array.from(nums2),
-      ...Array.from(das1),
-      ...Array.from(das2),
-    ];
+    const all = [...nums1, ...nums2, ...das1, ...das2];
     all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
 
     if (e.deltaY > 0) {
@@ -307,13 +302,9 @@ useEffect(() => {
 useEffect(() => {
   const handleEdgeClick = (event: MouseEvent) => {
     // ignore clicks on actual menu items or chat-text itself
-    if (!(event.target instanceof HTMLElement)) return;
-    if (
-      event.target.closest('.menu-item') ||
-      event.target.closest('.chat-text')
-    ) return;
-    ) return;
-
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    if (target.closest('.menu-item') || target.closest('.chat-text')) return;
     const { clientX: x, clientY: y } = event;
     const { innerWidth: width, innerHeight: height } = window;
     const vw = width / 100;

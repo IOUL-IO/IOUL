@@ -448,10 +448,19 @@ useEffect(() => {
     const pxToVw = (px: number) => px / (window.innerWidth / 100);
     const pxToVh = (px: number) => px / (window.innerHeight / 100);
 
-    // Set the base left position (vw) for each target element    targetsRef.current = ([
+    // Set the base left position (vw) for each target element
+
+
+    targetsRef.current = ([
+
+
       ...Array.from(document.querySelectorAll<HTMLElement>('
     ')),
+
+
       document.querySelector<HTMLElement>('.account-text')
+
+
     ] as (HTMLElement | null)[]).filter(Boolean) as HTMLElement[];
 
     targetsRef.current.forEach(el => {

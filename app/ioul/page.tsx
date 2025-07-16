@@ -80,28 +80,7 @@ const IOULPage: React.FC = () => {
     };
   }, []);
 
-  
-    // Update view based on the current state
-  const updateView = () => {
-    if (state === 0) {
-      setShowMail(false);
-      setShowCalendar(false);
-      setShowLines(true);
-    } else if (state === 1) {
-      setShowMail(true);
-      setShowCalendar(false);
-      setShowLines(true);
-    } else if (state === 2) {
-      setShowMail(false);
-      setShowCalendar(true);
-      setShowLines(false);
-    }
-  };
 
-  // Trigger update when state changes
-  useEffect(() => {
-    updateView();
-  }, [state]);
 
   // Sync showMail, showCalendar, showLines with util state
   useEffect(() => {
@@ -110,21 +89,16 @@ const IOULPage: React.FC = () => {
     setShowLines(state !== 2);
   }, [state]);
 
-  // Handle the click on util lines
+    // Cycle util-state 0 → 1 → 2 → 0 on click
   const handleUtilLineClick = useCallback(() => {
     setState(prev => (prev + 1) % 3);
   }, []);
-  // Sync data-util attribute for CSS toggles
+  
+  // Sync the data-util CSS attribute
   useEffect(() => {
     document.documentElement.setAttribute('data-util', state.toString());
   }, [state]);
 
-  // Sync showMail, showCalendar, showLines with util state
-  useEffect(() => {
-    setShowMail(state === 1);
-    setShowCalendar(state === 2);
-    setShowLines(state !== 2);
-  }, [state]);
 
 
   const quickRemoveSubmenu = () => {

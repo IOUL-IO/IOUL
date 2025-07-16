@@ -87,16 +87,6 @@ const IOULPage: React.FC = () => {
   }, []);
 
   
-
-
-  // Sync showMail, showCalendar, showLines with util state
-  useEffect(() => {
-    setShowMail(state === 1);
-    setShowCalendar(state === 2);
-    setShowLines(state !== 2);
-  }, [state]);
-
-
   const quickRemoveSubmenu = () => {
     const newTexts = document.querySelectorAll<HTMLSpanElement>('.new-text');
     newTexts.forEach((span) => {

@@ -1,7 +1,8 @@
 "use client";
-import React, { useState, useEffect, useCallback, useRef } from \'react\';
-  
-import Head from \'next/head\';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+
+import Head from 'next/head';
+
 
 const IOULPage: React.FC = () => {
   // util-line toggle state

@@ -926,28 +926,6 @@ useEffect(() => {
           <div className="slide-trigger" />
           <div className="slide-trigger-reverse" />
         </div>
-
-      <div className="util-line" onClick={handleUtilLineClick}>Util Line 1</div>
-      <div className="util-line" onClick={handleUtilLineClick}>Util Line 2</div>
-
-      <div
-        className={`mail-text ${showMail ? '' : 'hidden'}`}
-        style={{ opacity: showMail ? '1' : '0' }}
-      >
-        
-      </div>
-      <div
-        className={`mail-line ${showMail ? '' : 'hidden'}`}
-        style={{ opacity: showMail ? '1' : '0' }}
-      >
-      </div>
-
-      <div className={`grid-number ${showCalendar ? '' : 'hidden'}`}>1</div>
-      <div className={`grid-number ${showCalendar ? '' : 'hidden'}`}>2</div>
-      <div className={`grid-dashed ${showCalendar ? '' : 'hidden'}`}>Dashed Line 1</div>
-
-      <div className={`line fifth ${showLines ? '' : 'hidden'}`}>Line 5</div>
-      <div className={`line sixth ${showLines ? '' : 'hidden'}`}>Line 6</div>
     </div>
     </div>
   );

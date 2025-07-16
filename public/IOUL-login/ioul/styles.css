@@ -88,8 +88,8 @@
 }
 
 
-/* --- Util-line toggle defaults --- */
-/* Hide mail and calendar by default */
+/* --- Util-line Toggle CSS --- */
+/* Default hide mail, calendar and maintain layers 5&6 visible */
 .mail-line,
 .mail-text,
 .other-content .grid-number,
@@ -98,37 +98,31 @@
   pointer-events: none !important;
   transition: none !important;
 }
-
-/* Default layers 5 & 6 visible */
 .layer-five,
 .layer-six {
   opacity: 1 !important;
   pointer-events: auto !important;
+  transition: none !important;
 }
-
+/* Chat hover display */
+.hover-area:hover + .chat-text {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
 /* STATE 1: mail visible */
 [data-util="1"] .mail-line,
 [data-util="1"] .mail-text {
   opacity: 1 !important;
   pointer-events: auto !important;
 }
-
-/* STATE 2: calendar 1-16 visible */
+/* STATE 2: calendar 1-16 visible & hide layers 5&6 */
 [data-util="2"] .grid-number,
 [data-util="2"] .grid-dashed {
   opacity: 1 !important;
   pointer-events: auto !important;
 }
-
-/* Hide layers 5 & 6 in calendar state */
 [data-util="2"] .layer-five,
 [data-util="2"] .layer-six {
   opacity: 0 !important;
   pointer-events: none !important;
-}
-
-/* Chat hover logic */
-.hover-area:hover + .chat-text {
-  opacity: 1 !important;
-  pointer-events: auto !important;
 }

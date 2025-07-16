@@ -706,7 +706,7 @@ useEffect(() => {
         <div className="other-content">
           <div className="line original" />
           <div className="line second" />
-          <div className="line util-line" onClick={handleUtilLineClick}  onClick={handleUtilLineClick}/>
+          <div className="line util-line" onClick={handleUtilLineClick}  
           <div className="line third" />
           <div className="line fourth" />
           <div className="line fifth" />

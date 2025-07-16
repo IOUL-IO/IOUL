@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 const IOULPage: React.FC = () => {
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
@@ -104,9 +104,14 @@ const IOULPage: React.FC = () => {
   }, [state]);
 
   // Handle the click on util lines
-  const handleUtilLineClick = () => {
+  const handleUtilLineClick = useCallback(() => {
     setState((prevState) => (prevState + 1) % 3); // cycle 0 → 1 → 2 → 0 ...
   };
+  // Sync data-util attribute for CSS toggles
+  useEffect(() => {
+    document.documentElement.setAttribute('data-util', state.toString());
+  }, [state]);
+
 
   const quickRemoveSubmenu = () => {
     const newTexts = document.querySelectorAll<HTMLSpanElement>('.new-text');

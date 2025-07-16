@@ -585,3 +585,41 @@ body.non-fullscreen {
 [data-util="2"] .layer-six {
   transition: none !important;
 }
+
+
+/* Refined data-util toggle states */
+[data-util="0"] .mail-line,
+[data-util="0"] .mail-text,
+[data-util="0"] .grid-number,
+[data-util="0"] .grid-dashed,
+[data-util="0"] .layer-five,
+[data-util="0"] .layer-six {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+[data-util="1"] .mail-line,
+[data-util="1"] .mail-text {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+[data-util="1"] .grid-number,
+[data-util="1"] .grid-dashed,
+[data-util="1"] .layer-five,
+[data-util="1"] .layer-six {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+[data-util="2"] .mail-line,
+[data-util="2"] .mail-text,
+[data-util="2"] .layer-five,
+[data-util="2"] .layer-six {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+[data-util="2"] .grid-number,
+[data-util="2"] .grid-dashed {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}

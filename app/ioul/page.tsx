@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import Head from 'next/head';
 
 const IOULPage: React.FC = () => {
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
@@ -60,24 +61,9 @@ const IOULPage: React.FC = () => {
     window.addEventListener('resize', updateVisibility);
     updateVisibility(); // Initial visibility update
 
-    
-
-  // Fade-in chat-text on hover
-  useEffect(() => {
-    const hoverEl = hoverAreaRef.current;
-    const chatEl = chatTextRef.current;
-    if (hoverEl && chatEl) {
-      const handleMouseEnter = () => {
-        chatEl.style.opacity = '1';
-      };
-      hoverEl.addEventListener('mouseenter', handleMouseEnter);
-      return () => {
-        hoverEl.removeEventListener('mouseenter', handleMouseEnter);
-      };
-    }
-  }, []);
-
-  return () => {
+    return (
+    <>
+      <Head><title>IOUL</title></Head>) => {
       window.removeEventListener('resize', updateVisibility); // Clean up resize event listener
     };
   }, []);
@@ -108,6 +94,39 @@ const IOULPage: React.FC = () => {
   const handleUtilLineClick = () => {
     setState((prevState) => (prevState + 1) % 3); // cycle 0 → 1 → 2 → 0 ...
   };
+  // Ensure tab title stays constant
+  useEffect(() => {
+    document.title = 'IOUL';
+  }, []);
+
+  // Attach click listener to util-line for toggles
+  useEffect(() => {
+    const utilLineEl = document.querySelector<HTMLElement>('.line.util-line');
+    utilLineEl?.addEventListener('click', handleUtilLineClick);
+    return () => {
+      utilLineEl?.removeEventListener('click', handleUtilLineClick);
+    };
+  }, [handleUtilLineClick]);
+
+  // Sync visibility of mail and calendar based on state booleans
+  useEffect(() => {
+    const mailEls = document.querySelectorAll<HTMLElement>('.mail-text');
+    const mailLineEl = document.querySelector<HTMLElement>('.mail-line');
+    mailEls.forEach(el => {
+      el.style.opacity = showMail ? '1' : '0';
+      el.style.pointerEvents = showMail ? 'auto' : 'none';
+    });
+    if (mailLineEl) {
+      mailLineEl.style.opacity = showMail ? '1' : '0';
+      mailLineEl.style.pointerEvents = showMail ? 'auto' : 'none';
+    }
+    const gridEls = document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed');
+    gridEls.forEach(el => {
+      el.style.opacity = showCalendar ? '1' : '0';
+      el.style.pointerEvents = showCalendar ? 'auto' : 'none';
+    });
+  }, [showMail, showCalendar]);
+
 
   const quickRemoveSubmenu = () => {
     const newTexts = document.querySelectorAll<HTMLSpanElement>('.new-text');
@@ -313,24 +332,9 @@ useEffect(() => {
   }
 
   scrollArea.addEventListener('wheel', onWheel, { passive: false });
-  
-
-  // Fade-in chat-text on hover
-  useEffect(() => {
-    const hoverEl = hoverAreaRef.current;
-    const chatEl = chatTextRef.current;
-    if (hoverEl && chatEl) {
-      const handleMouseEnter = () => {
-        chatEl.style.opacity = '1';
-      };
-      hoverEl.addEventListener('mouseenter', handleMouseEnter);
-      return () => {
-        hoverEl.removeEventListener('mouseenter', handleMouseEnter);
-      };
-    }
-  }, []);
-
-  return () => {
+  return (
+    <>
+      <Head><title>IOUL</title></Head>) => {
     scrollArea.removeEventListener('wheel', onWheel);
     scrollArea.remove();
   };
@@ -465,24 +469,9 @@ useEffect(() => {
   };
 
   document.addEventListener("click", handleEdgeClick, true);
-  
-
-  // Fade-in chat-text on hover
-  useEffect(() => {
-    const hoverEl = hoverAreaRef.current;
-    const chatEl = chatTextRef.current;
-    if (hoverEl && chatEl) {
-      const handleMouseEnter = () => {
-        chatEl.style.opacity = '1';
-      };
-      hoverEl.addEventListener('mouseenter', handleMouseEnter);
-      return () => {
-        hoverEl.removeEventListener('mouseenter', handleMouseEnter);
-      };
-    }
-  }, []);
-
-  return () => {
+  return (
+    <>
+      <Head><title>IOUL</title></Head>) => {
     document.removeEventListener("click", handleEdgeClick, true);
   };
 }, [slideState]);
@@ -623,24 +612,9 @@ useEffect(() => {
       });
     });
 
-            
-
-  // Fade-in chat-text on hover
-  useEffect(() => {
-    const hoverEl = hoverAreaRef.current;
-    const chatEl = chatTextRef.current;
-    if (hoverEl && chatEl) {
-      const handleMouseEnter = () => {
-        chatEl.style.opacity = '1';
-      };
-      hoverEl.addEventListener('mouseenter', handleMouseEnter);
-      return () => {
-        hoverEl.removeEventListener('mouseenter', handleMouseEnter);
-      };
-    }
-  }, []);
-
-  return () => {
+            return (
+    <>
+      <Head><title>IOUL</title></Head>) => {
     document.removeEventListener('click', handleClick);
     // (and any other listeners you attached in this effect)
   };
@@ -737,47 +711,17 @@ useEffect(() => {
   }
 
   document.addEventListener('click', handleClick, true);
-  
-
-  // Fade-in chat-text on hover
-  useEffect(() => {
-    const hoverEl = hoverAreaRef.current;
-    const chatEl = chatTextRef.current;
-    if (hoverEl && chatEl) {
-      const handleMouseEnter = () => {
-        chatEl.style.opacity = '1';
-      };
-      hoverEl.addEventListener('mouseenter', handleMouseEnter);
-      return () => {
-        hoverEl.removeEventListener('mouseenter', handleMouseEnter);
-      };
-    }
-  }, []);
-
-  return () => {
+  return (
+    <>
+      <Head><title>IOUL</title></Head>) => {
     document.removeEventListener('click', handleClick, true);
   };
 }, [slideState, itemStage, centerStage]);
 
 
-  
-
-  // Fade-in chat-text on hover
-  useEffect(() => {
-    const hoverEl = hoverAreaRef.current;
-    const chatEl = chatTextRef.current;
-    if (hoverEl && chatEl) {
-      const handleMouseEnter = () => {
-        chatEl.style.opacity = '1';
-      };
-      hoverEl.addEventListener('mouseenter', handleMouseEnter);
-      return () => {
-        hoverEl.removeEventListener('mouseenter', handleMouseEnter);
-      };
-    }
-  }, []);
-
   return (
+    <>
+      <Head><title>IOUL</title></Head>
     <div className="non-fullscreen" translate="no">
       <p style={{ display: 'none' }} lang="en">This page is already in English. No translation is needed.</p>
 
@@ -918,8 +862,8 @@ useEffect(() => {
         <span className="item-text right-flow" style={{position:'absolute',top:'59.2vh',left:'131vw'}}>0</span>
 
 
-        <div className="hover-area" ref={hoverAreaRef} />
-        <span className="chat-text" id="chatText" ref={chatTextRef}>cHAT . . .</span>
+        <div className="hover-area" />
+        <span className="chat-text" id="chatText">cHAT . . .</span>
         <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>TO:</span>
         <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>SUBJEcT:</span>
         <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'89vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>cc</span>
@@ -1030,6 +974,7 @@ useEffect(() => {
         </div>
     </div>
     </div>
+    </>
   );
 };
 

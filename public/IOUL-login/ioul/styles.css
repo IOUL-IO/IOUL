@@ -549,18 +549,5 @@ body.non-fullscreen {
 }
 
 
-/* Toggle defaults */
-.mail-line, .mail-text, .other-content .grid-number, .other-content .grid-dashed {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  transition: none !important;
-}
-.layer-five, .layer-six {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  transition: none !important;
-}
-.hover-area:hover + .chat-text {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
+/* Appended toggle and hover CSS */
+.hover-area:hover + .chat-text { opacity: 1 !important; pointer-events: auto !important; }

@@ -266,7 +266,12 @@ useEffect(() => {
     const nums2 = numbers17to31Ref.current || [];
     const das1 = dashed1to16Ref.current || [];
     const das2 = dashed17to31Ref.current || [];
-    const all = [...nums1, ...nums2, ...das1, ...das2];
+    const all = [
+      ...Array.from(nums1),
+      ...Array.from(nums2),
+      ...Array.from(das1),
+      ...Array.from(das2),
+    ];
     all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
 
     if (e.deltaY > 0) {

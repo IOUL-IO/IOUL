@@ -10,8 +10,11 @@ import { useEffect } from 'react';
  * After execution we dispatch a synthetic DOMContentLoaded to satisfy old code.
  */
 function runLegacyScripts() {
-  const scripts = Array.from(document.querySelectorAll('script'))
-    .filter((s) => !(s as HTMLScriptElement).dataset.legacyDone);
+// only grab scripts you’ve explicitly marked as legacy
+const scripts = Array.from(
+  document.querySelectorAll<HTMLScriptElement>('script[data-legacy]')
+).filter((s) => !s.dataset.legacyDone);
+
 
   scripts.forEach((oldEl) => {
     const el = oldEl as HTMLScriptElement;

@@ -305,123 +305,135 @@ useEffect(() => {
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {
-  const handleEdgeClick = (e: MouseEvent) => {
-    const el = e.target as HTMLElement;
-    if (!el || el.closest('.menu-item') || el.closest('.chat-text')) return;
-    const x = (e.clientX / window.innerWidth) * 100;
-    const y = (e.clientY / window.innerHeight) * 100;
-    if (y < 28.5 || y > 84) return;
+  const handleEdgeClick = (event: MouseEvent) => {
+    // ignore clicks on actual menu items or chat-text itself
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    if (target.closest('.menu-item') || target.closest('.chat-text')) return;
+    const { clientX: x, clientY: y } = event;
+    const { innerWidth: width, innerHeight: height } = window;
+    const vw = width / 100;
+    const vh = height / 100;
 
-    // 1) Chat → Account+Heading
-    if (slideState === 'none' && x <= 6.37) {
-      chatTextRef.current!.style.transition = 'opacity 0.2s';
-      chatTextRef.current!.style.opacity = '0';
-      document.querySelectorAll<HTMLElement>('.account-container').forEach(c => {
-        c.style.transition = 'transform 0.5s';
-        c.style.transform = 'translateX(6.41vw)';
-      });
-      document.querySelectorAll<HTMLElement>('.heading-container').forEach(h => {
-        h.style.transition = 'transform 0.5s';
-        h.style.transform = 'translateX(6.41vw)';
-      });
-      setSlideState('heading');
-      return;
-    }
-    // 2) Account+Heading → Chat
-    if (slideState === 'heading' && x >= 28.86 && x <= 32.43) {
-      document.querySelectorAll<HTMLElement>('.account-container').forEach(c => c.style.transform = 'translateX(0)');
-      document.querySelectorAll<HTMLElement>('.heading-container').forEach(h => h.style.transform = 'translateX(0)');
-      setTimeout(() => chatTextRef.current!.style.opacity = '1', 500);
-      setSlideState('none');
-      return;
-    }
+    const inLeftZone  = x >= 0          && x <= 6.37  * vw && y >= 28.5 * vh && y <= 84 * vh;
+    const inRightZone = x >= 28.86 * vw && x <= 32.43 * vw && y >= 28.5 * vh && y <= 84 * vh;
 
-    // 3) Chat → Menu
-    if (slideState === 'none' && x >= 28.86 && x <= 32.43) {
-      chatTextRef.current!.style.opacity = '0';
-      document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach(m => {
-        m.style.transition = 'transform 0.5s';
-        m.style.transform = 'translateX(-22.59vw)';
-      });
-      setSlideState('menu');
-      return;
-    }
-    // 4) Menu → Chat
-    if (slideState === 'menu' && x <= 6.37) {
-      document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach(m => m.style.transform = 'translateX(0)');
-      setTimeout(() => chatTextRef.current!.style.opacity = '1', 500);
-      setSlideState('none');
-      return;
-    }
-    // 5) Menu → Community
-    if (slideState === 'menu' && x >= 28.86 && x <= 32.43) {
-      document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach(m => m.style.transform = 'translateX(-45.18vw)');
-      document.querySelectorAll<HTMLElement>('.community-items-container *').forEach(c => {
-        c.style.transition = 'transform 0.5s';
-        c.style.transform = 'translateX(6.41vw)';
-      });
-      setSlideState('community');
-      return;
-    }
-    // 6) Community → Menu
-    if (slideState === 'community' && x <= 6.37) {
-      document.querySelectorAll<HTMLElement>('.community-items-container *').forEach(c => c.style.transform = 'translateX(0)');
-      document.querySelectorAll<HTMLElement>('.menu-items .menu-item').forEach(m => m.style.transform = 'translateX(-22.59vw)');
-      setSlideState('menu');
-      return;
-    }
+    if (inLeftZone) {
+      // ── Left edge clicks ─────────────────────────
+      switch (slideState) {
+        case "none":
+          // fade out chat, slide in account+heading
+          chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
+          chatTextRef.current!.style.opacity = "0";
+          setTimeout(() => {
+            document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
+              .forEach(box => box.style.transform = "translateX(0)");
+            document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]')
+              .forEach(box => box.style.transform = "translateX(0)");
+          }, 110);
+          setSlideState("heading");
+          break;
 
-    // 7) Chat → Account Texts
-    if (slideState === 'none' && x >= 32.43 && x <= 36) {
-      document.querySelectorAll<HTMLElement>('.account-texts, .account-line').forEach(a => {
-        a.style.transition = 'transform 0.5s';
-        a.style.transform = 'translateX(60vw)';
-      });
-      setSlideState('acctText');
-      return;
-    }
-    // 8) Account Texts → Chat
-    if (slideState === 'acctText' && x >= 94) {
-      document.querySelectorAll<HTMLElement>('.account-texts, .account-line').forEach(a => a.style.transform = 'translateX(0)');
-      setSlideState('none');
-      return;
-    }
+        case "community":
+          // slide community+zero back to menu-position
+          document.querySelectorAll<HTMLElement>('.community-items-container *')
+            .forEach(el => el.style.left = el.dataset.originalLeft!);
+          document.querySelectorAll<HTMLElement>('.zero-items-container *')
+            .forEach(el => el.style.left = el.dataset.originalLeft!);
+          setSlideState("menu");
+          break;
 
-    // 9) Chat → First Items
-    if (slideState === 'none' && x >= 94) {
-      document.querySelectorAll<HTMLElement>('.item-texts, .item-lines').forEach(i => {
-        i.style.transition = 'transform 0.5s';
-        i.style.transform = 'translateX(-60vw)';
-      });
-      setSlideState('items1');
-      return;
+        case "menu":
+          // slide menu back to heading-position
+          document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
+            .forEach(el => el.style.left = el.dataset.originalLeft!);
+          setSlideState("heading");
+          break;
+
+        case "heading":
+          // slide account+heading back out, fade chat in
+          document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
+            .forEach(box => {
+              box.style.transition = "transform 0.7s ease";
+              box.style.transform = `translateX(${box.dataset.offset}vw)`;
+            });
+          document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]')
+            .forEach(box => {
+              box.style.transition = "transform 0.7s ease";
+              box.style.transform = `translateX(${box.dataset.offset}vw)`;
+            });
+          chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
+          chatTextRef.current!.style.opacity = "1";
+          setSlideState("none");
+          break;
+      }
     }
-    // 10) Items Stage 1 → Chat
-    if (slideState === 'items1' && x <= 6.37) {
-      document.querySelectorAll<HTMLElement>('.item-texts, .item-lines').forEach(i => i.style.transform = 'translateX(0)');
-      setSlideState('none');
-      return;
-    }
-    // 11) Items Stage 1 → Center
-    if (slideState === 'items1' && x >= 94) {
-      document.querySelectorAll<HTMLElement>('.item-texts, .item-lines').forEach(i => i.style.transform = 'translateX(-130vw)');
-      document.querySelectorAll<HTMLElement>('.center-texts, .center-lines').forEach(c => {
-        c.style.transition = 'transform 0.5s';
-        c.style.transform = 'translateX(-60vw)';
-      });
-      setSlideState('center');
-      return;
-    }
-    // 12) Center → Items Stage 1
-    if (slideState === 'center' && x <= 6.37) {
-      document.querySelectorAll<HTMLElement>('.center-texts, .center-lines').forEach(c => c.style.transform = 'translateX(0)');
-      document.querySelectorAll<HTMLElement>('.item-texts, .item-lines').forEach(i => i.style.transform = 'translateX(-60vw)');
-      setSlideState('items1');
-      return;
+    else if (inRightZone) {
+      // ── Right edge clicks ────────────────────────
+      switch (slideState) {
+        case "heading":
+          // inverse of first left-click: slide out and fade chat in
+          document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
+            .forEach(box => {
+              box.style.transition = "transform 0.7s ease";
+              box.style.transform = `translateX(${box.dataset.offset}vw)`;
+            });
+          document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]')
+            .forEach(box => {
+              box.style.transition = "transform 0.7s ease";
+              box.style.transform = `translateX(${box.dataset.offset}vw)`;
+            });
+          chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
+          chatTextRef.current!.style.opacity = "1";
+          setSlideState("none");
+          break;
+
+        case "none":
+          // first menu click
+          document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
+            .forEach(el => {
+              el.dataset.originalLeft = el.style.left;
+              el.style.transition = "left 0.7s ease";
+              el.style.left = "6.41vw";
+            });
+          setSlideState("menu");
+          break;
+
+        case "menu":
+          // second menu/community click
+          document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
+            .forEach(el => {
+              el.style.left = (parseFloat(el.dataset.originalLeft!) - 29) + "vw";
+            });
+          document.querySelectorAll<HTMLElement>('.community-items-container *')
+            .forEach(el => {
+              el.dataset.originalLeft ||= el.style.left;
+              el.style.transition = "left 0.7s ease";
+              el.style.left = (parseFloat(el.style.left) - 29) + "vw";
+            });
+          document.querySelectorAll<HTMLElement>('.zero-items-container *')
+            .forEach(el => {
+              el.dataset.originalLeft ||= el.style.left;
+              el.style.transition = "left 0.7s ease";
+              el.style.left = (parseFloat(el.style.left) - 29) + "vw";
+            });
+          setSlideState("community");
+          break;
+
+        case "community":
+          // optional: return from community to none
+          document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
+            .forEach(el => el.style.left = el.dataset.originalLeft!);
+          setSlideState("none");
+          break;
+      }
     }
   };
-  document.addEventListener('click', handleEdgeClick, true);
-  return () => document.removeEventListener('click', handleEdgeClick, true);
+
+  document.addEventListener("click", handleEdgeClick, true);
+  return () => {
+    document.removeEventListener("click", handleEdgeClick, true);
+  };
 }, [slideState]);
 
 

@@ -1,25 +1,16 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from 'react';
-import Head from 'next/head';
-
-export default function IOULPage() {
-  const [state, setState] = useState(0);
-  const showMail = state === 1;
-  const showCalendar = state === 2;
-  const showLines = state !== 2;
-
-  const handleUtilLineClick = useCallback(() => {
-    setState(s => (s + 1) % 3);
-  }, []);
-
-  useEffect(() => { document.title = 'IOUL'; }, []);
-
-"use client";
-
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';, { useState, useEffect, useCallback } from \'react\';
+import Head from \'next/head\';
 
 const IOULPage: React.FC = () => {
+  const [utilState, setUtilState] = useState(0);
+  const showMail = utilState === 1;
+  const showCalendar = utilState === 2;
+  const showLines = utilState !== 2;
+  const handleUtilLineClick = useCallback(() => setUtilState(s => (s + 1) % 3), []);
+  useEffect(() => { document.title = 'IOUL'; }, []);
+
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
@@ -763,7 +754,7 @@ useEffect(() => {
         <div className="other-content">
           <div className="line original" />
           <div className="line second" />
-          <div className="line util-line" onClick={handleUtilLineClick} />
+          <div className="line util-line" onClick={handleUtilLineClick} onClick={handleUtilLineClick} />
           <div className="line third" />
           <div className="line fourth" />
           <div className="line fifth" />
@@ -971,8 +962,8 @@ useEffect(() => {
 
         <div className="custom-line" style={{ left: '-42.59vw' }} />
 
-        <div className="layer-five" />
-        <div className="layer-six" />
+        <div className="layer-five" / style={{ opacity: showLines ? 1 : 0, pointerEvents: showLines ? \'auto\' : \'none\', transition: \'none\' }}>
+        <div className="layer-six" / style={{ opacity: showLines ? 1 : 0, pointerEvents: showLines ? \'auto\' : \'none\', transition: \'none\' }}>
         
         <div className="slide-triggers">
           <div className="slide-trigger" />

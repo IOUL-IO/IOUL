@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useCallback }, { useEffect, useState, useRef, useCallback } from 'react';
+import Head from 'next/head';
 
 const IOULPage: React.FC = () => {
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
@@ -103,27 +104,12 @@ const IOULPage: React.FC = () => {
     updateView();
   }, [state]);
 
-  // Sync showMail, showCalendar, showLines with util state
-  useEffect(() => {
-    setShowMail(state === 1);
-    setShowCalendar(state === 2);
-    setShowLines(state !== 2);
-  }, [state]);
-
   // Handle the click on util lines
-  const handleUtilLineClick = useCallback(() => {
-    setState(prev => (prev + 1) % 3);
+  const handleUtilLineClick = useCallback(() => {setState((prevState) => (prevState + 1) % 3); // cycle 0 → 1 → 2 → 0 ...
   }, []);
   // Sync data-util attribute for CSS toggles
   useEffect(() => {
     document.documentElement.setAttribute('data-util', state.toString());
-  }, [state]);
-
-  // Sync showMail, showCalendar, showLines with util state
-  useEffect(() => {
-    setShowMail(state === 1);
-    setShowCalendar(state === 2);
-    setShowLines(state !== 2);
   }, [state]);
 
 

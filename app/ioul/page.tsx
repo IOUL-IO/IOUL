@@ -1,185 +1,156 @@
-"use client";
+import React, { useState } from 'react';
+import '../../../public/IOUL-login/ioul/styles.css';
 
-import React, { useEffect, useState } from 'react';
-import './styles.css';
+export const metadata = { title: 'IOUL' };
 
-// Stages for sliding
-type Stage =
-  | 'initial'
-  | 'accountHeading'
-  | 'menu'
-  | 'communityZero'
-  | 'accountTexts'
-  | 'itemTexts'
-  | 'centerTexts';
+export default function IOULPage() {
+  const [accountHeadingOpen, setAccountHeadingOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [communityOpen, setCommunityOpen] = useState(false);
+  const [accountTextsOpen, setAccountTextsOpen] = useState(false);
+  const [itemStage1Open, setItemStage1Open] = useState(false);
+  const [itemStage2Open, setItemStage2Open] = useState(false);
+  const [centerOpen, setCenterOpen] = useState(false);
 
-const IOULPage: React.FC = () => {
-  const [stage, setStage] = useState<Stage>('initial');
-  const [hovered, setHovered] = useState(false);
+  const fadeOutChat = () => {
+    const chat = document.querySelector('.chat-text');
+    chat?.classList.remove('fade-in');
+    chat?.classList.add('fade-out');
+  };
+  const fadeInChat = () => {
+    const chat = document.querySelector('.chat-text');
+    chat?.classList.remove('fade-out');
+    chat?.classList.add('fade-in');
+  };
 
-  // Lock title
-  useEffect(() => {
-    document.title = 'IOUL';
-  }, []);
-
-  // Style getters
-  const getChatStyle = () => ({
-    opacity: hovered && stage === 'initial' ? 1 : 0,
-    transition: 'opacity 0.6s ease',
-  });
-
-  const getTransform = (current: Stage, translate: string) => ({
-    transform: stage === current ? translate : 'translateX(0)',
-    transition: 'transform 0.7s ease',
-  });
+  const handleZoneClick = (zone: string) => {
+    switch (zone) {
+      case 'chat-out':
+        if (!accountHeadingOpen && !menuOpen) {
+          fadeOutChat();
+          const acc = document.querySelector('.account-heading');
+          acc?.setAttribute('style', '--tx: 6.41vw');
+          acc?.classList.add('slide-in');
+          setAccountHeadingOpen(true);
+        }
+        break;
+      case 'chat-in':
+        if (accountHeadingOpen) {
+          const acc = document.querySelector('.account-heading');
+          acc?.classList.remove('slide-in');
+          fadeInChat();
+          setAccountHeadingOpen(false);
+        }
+        break;
+      case 'menu-open':
+        if (!menuOpen && !accountHeadingOpen) {
+          fadeOutChat();
+          const menu = document.querySelector('.menu-items');
+          menu?.setAttribute('style', '--tx: -22.45vw');
+          menu?.classList.add('slide-in');
+          setMenuOpen(true);
+        }
+        break;
+      case 'menu-back':
+        if (menuOpen && !communityOpen) {
+          const menu = document.querySelector('.menu-items');
+          menu?.classList.remove('slide-in');
+          fadeInChat();
+          setMenuOpen(false);
+        }
+        break;
+      case 'community-open':
+        if (menuOpen && !communityOpen) {
+          const menu = document.querySelector('.menu-items');
+          menu?.setAttribute('style', '--tx: -44.59vw');
+          menu?.classList.add('slide-in');
+          const com = document.querySelector('.community-zero-container');
+          com?.setAttribute('style', '--tx: 6.41vw');
+          com?.classList.add('slide-in');
+          setCommunityOpen(true);
+        }
+        break;
+      case 'community-back':
+        if (communityOpen) {
+          const com = document.querySelector('.community-zero-container');
+          com?.classList.remove('slide-in');
+          const menu = document.querySelector('.menu-items');
+          menu?.setAttribute('style', '--tx: -22.45vw');
+          menu?.classList.add('slide-in');
+          setCommunityOpen(false);
+        }
+        break;
+      case 'account-texts-open':
+        if (!accountTextsOpen) {
+          const at = document.querySelector('.account-texts, .account-line');
+          at?.setAttribute('style', '--tx: 60vw');
+          at?.classList.add('slide-in');
+          setAccountTextsOpen(true);
+        }
+        break;
+      case 'account-texts-back':
+        if (accountTextsOpen) {
+          const at = document.querySelector('.account-texts, .account-line');
+          at?.classList.remove('slide-in');
+          setAccountTextsOpen(false);
+        }
+        break;
+      case 'item-stage1-open':
+        if (!itemStage1Open && !itemStage2Open) {
+          const it = document.querySelector('.item-texts, .item-lines');
+          it?.setAttribute('style', '--tx: -60vw');
+          it?.classList.add('slide-in');
+          setItemStage1Open(true);
+        }
+        break;
+      case 'item-stage1-back':
+        if (itemStage1Open && !itemStage2Open) {
+          const it = document.querySelector('.item-texts, .item-lines');
+          it?.classList.remove('slide-in');
+          setItemStage1Open(false);
+        }
+        break;
+      case 'item-stage2-open':
+        if (itemStage1Open && !itemStage2Open) {
+          const it = document.querySelector('.item-texts, .item-lines');
+          it?.setAttribute('style', '--tx: -130vw');
+          it?.classList.add('slide-in');
+          const ct = document.querySelector('.center-texts, .center-lines');
+          ct?.setAttribute('style', '--tx: -60vw');
+          ct?.classList.add('slide-in');
+          setItemStage2Open(true);
+          setCenterOpen(true);
+        }
+        break;
+      case 'center-back':
+        if (centerOpen) {
+          const ct = document.querySelector('.center-texts, .center-lines');
+          ct?.classList.remove('slide-in');
+          const it = document.querySelector('.item-texts, .item-lines');
+          it?.setAttribute('style', '--tx: -60vw');
+          it?.classList.add('slide-in');
+          setCenterOpen(false);
+          setItemStage2Open(false);
+        }
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
-    <div className="ioul-page">
-      {/* Layers */}
-      <div className="layer-one" />
-      <div className="layer-two" />
-      <div className="layer-three" />
+    <div className="ioul-page-container" style={{ position: 'relative' }}>
+      <div className="click-area-chat-out" onClick={() => handleZoneClick('chat-out')} />
+      <div className="click-area-chat-in" onClick={() => handleZoneClick('chat-in')} />
+      <div className="click-area-menu" onClick={() => handleZoneClick('menu-open')} />
+      <div className="click-area-menu-back" onClick={() => handleZoneClick('menu-back')} />
+      <div className="click-area-community" onClick={() => handleZoneClick('community-open')} />
+      <div className="click-area-community-back" onClick={() => handleZoneClick('community-back')} />
+      <div className="click-area-account-texts" onClick={() => handleZoneClick('account-texts-open')} />
+      <div className="click-area-item-texts" onClick={() => handleZoneClick(itemStage1Open ? (itemStage2Open ? 'item-stage2-open' : 'item-stage1-open') : 'item-stage1-open')} />
+      <div className="click-area-center" onClick={() => handleZoneClick('center-back')} />
 
-      <div className="page-content">
-        {/* Hover area */}
-        <div
-          className="hover-area"
-          onMouseEnter={() => stage === 'initial' && setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-        />
-        <span className="chat-text" style={getChatStyle()}>
-          cHAT . . .
-        </span>
-
-        {/* Heading & Account */}
-        <div
-          className="heading-container"
-          style={getTransform('accountHeading', 'translateX(6.41vw)')}
-        >
-          {/* ... heading spans here ... */}
-        </div>
-        <div
-          className="account-container" 
-          style={getTransform('accountHeading', 'translateX(6.41vw)')}
-        >
-          {/* ... account spans here ... */}
-        </div>
-
-        {/* Menu */}
-        <div
-          className="menu-items"
-          style={getTransform('menu', 'translateX(6.41vw)')}
-        >
-          {/* ... menu items here ... */}
-        </div>
-
-        {/* Community & Zero */}
-        <div
-          className="community-items-container"
-          style={getTransform('communityZero', 'translateX(6.41vw)')}
-        >
-          {/* ... community spans here ... */}
-        </div>
-        <div
-          className="zero-items-container"
-          style={getTransform('communityZero', 'translateX(6.41vw)')}
-        >
-          {/* ... zero spans here ... */}
-        </div>
-
-        {/* Account Texts & Lines */}
-        <div
-          className="account-texts"
-          style={getTransform('accountTexts', 'translateX(60vw)')}
-        >
-          {/* ... account-text & line spans ... */}
-        </div>
-
-        {/* Item Texts & Lines */}
-        <div
-          className="item-texts"
-          style={getTransform('itemTexts', 'translateX(-60vw)')}
-        >
-          {/* ... item-texts & item-line spans ... */}
-        </div>
-
-        {/* Center Texts & Lines */}
-        <div
-          className="center-texts"
-          style={getTransform('centerTexts', 'translateX(60vw)')}
-        >
-          {/* ... center-texts & center-line spans ... */}
-        </div>
-
-        {/* Slide triggers */}
-        <div className="slide-triggers">
-          <div
-            className="slide-trigger"
-            onClick={() => {
-              // Left zone logic
-              switch (stage) {
-                case 'initial':
-                  setStage('accountHeading');
-                  setHovered(false);
-                  break;
-                case 'menu':
-                  setStage('initial');
-                  break;
-                case 'communityZero':
-                  setStage('menu');
-                  break;
-                case 'accountTexts':
-                  setStage('initial');
-                  break;
-                case 'itemTexts':
-                  setStage('accountTexts');
-                  break;
-                case 'centerTexts':
-                  setStage('itemTexts');
-                  break;
-              }
-            }}
-          />
-          <div
-            className="slide-trigger-reverse"
-            onClick={() => {
-              // Right zone logic
-              switch (stage) {
-                case 'initial':
-                  setStage('menu');
-                  setHovered(false);
-                  break;
-                case 'accountHeading':
-                  setStage('initial');
-                  break;
-                case 'menu':
-                  setStage('communityZero');
-                  break;
-                case 'communityZero':
-                  setStage('initial');
-                  break;
-                case 'initial':
-                  setStage('accountTexts');
-                  break;
-                case 'accountTexts':
-                  setStage('itemTexts');
-                  break;
-                case 'itemTexts':
-                  setStage('centerTexts');
-                  break;
-                case 'centerTexts':
-                  setStage('initial');
-                  break;
-              }
-            }}
-          />
-        </div>
-      </div>
-      <div className="layer-four" />
-      <div className="layer-five" />
-      <div className="layer-six" />
+      {/* Existing page content */}
     </div>
   );
-};
-
-export default IOULPage;
+}

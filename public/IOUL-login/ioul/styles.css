@@ -1,12 +1,110 @@
+/* Hide mail line and calendar grid by default */
+.mail-line,
+.grid-dashed,
+.grid-numbers {
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.3s ease;
+}
 
-.ioul-page { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
-.layer-one, .layer-two, .layer-three, .layer-four, .layer-five, .layer-six { position: absolute; width: 100vw; height: 100vh; }
-.page-content { position: relative; width: 100%; height: 100%; }
-.hover-area { position: absolute; left: 6.4vw; top: 28.5vh; width: 22.46vw; height: 55.5vh; z-index: 10; }
-.chat-text { position: absolute; left: 6.4vw; top: 28.5vh; font-family: 'Distill Expanded', sans-serif; letter-spacing: 0.28vw; }
-.slide-triggers { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
-.slide-trigger, .slide-trigger-reverse { position: absolute; top: 28.5vh; height: 55.5vh; width: 6.37vw; background: transparent; z-index: 20; }
-.slide-trigger { left: 0; }
-.slide-trigger-reverse { left: 28.86vw; width: 3.57vw; }
-.chat-text { transition: opacity 0.6s ease; }
-.heading-container, .account-container, .menu-items, .community-items-container, .zero-items-container, .account-texts, .item-texts, .center-texts { position: absolute; top: 0; left: 0; }
+/* Chat-text fade states */
+.chat-text {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.chat-text.fade-in {
+  opacity: 1;
+}
+.chat-text.fade-out {
+  opacity: 0;
+}
+
+/* Slide utility */
+.slide-in {
+  transform: translateX(var(--tx, 0));
+  transition: transform 0.3s ease;
+}
+
+/* Invisible click zones */
+.click-area-chat-out {
+  position: absolute;
+  left: 0vw;
+  top: 28.5vh;
+  width: 6.37vw;
+  height: 55.5vh;
+  background: transparent;
+  z-index: 10;
+}
+.click-area-chat-in {
+  position: absolute;
+  left: 28.86vw;
+  top: 28.5vh;
+  width: 3.57vw;
+  height: 55.5vh;
+  background: transparent;
+  z-index: 10;
+}
+.click-area-menu {
+  position: absolute;
+  left: 28.86vw;
+  top: 28.5vh;
+  width: 3.57vw;
+  height: 55.5vh;
+  background: transparent;
+  z-index: 10;
+}
+.click-area-menu-back {
+  position: absolute;
+  left: 0vw;
+  top: 28.5vh;
+  width: 6.37vw;
+  height: 55.5vh;
+  background: transparent;
+  z-index: 10;
+}
+.click-area-community {
+  position: absolute;
+  left: 28.86vw;
+  top: 28.5vh;
+  width: 3.57vw;
+  height: 55.5vh;
+  background: transparent;
+  z-index: 10;
+}
+.click-area-community-back {
+  position: absolute;
+  left: 0vw;
+  top: 28.5vh;
+  width: 6.37vw;
+  height: 55.5vh;
+  background: transparent;
+  z-index: 10;
+}
+.click-area-account-texts {
+  position: absolute;
+  left: 32.43vw;
+  top: 28.5vh;
+  width: 3.57vw;
+  height: 55.5vh;
+  background: transparent;
+  z-index: 10;
+}
+.click-area-item-texts {
+  position: absolute;
+  left: 94vw;
+  top: 28.5vh;
+  width: 6vw;
+  height: 55.5vh;
+  background: transparent;
+  z-index: 10;
+}
+.click-area-center {
+  position: absolute;
+  left: 0vw;
+  top: 28.5vh;
+  width: 6.37vw;
+  height: 55.5vh;
+  background: transparent;
+  z-index: 10;
+}

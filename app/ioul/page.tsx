@@ -119,13 +119,6 @@ const IOULPage: React.FC = () => {
     document.documentElement.setAttribute('data-util', state.toString());
   }, [state]);
 
-  // Sync showMail, showCalendar, showLines with util state
-  useEffect(() => {
-    setShowMail(state === 1);
-    setShowCalendar(state === 2);
-    setShowLines(state !== 2);
-  }, [state]);
-
 
   const quickRemoveSubmenu = () => {
     const newTexts = document.querySelectorAll<HTMLSpanElement>('.new-text');

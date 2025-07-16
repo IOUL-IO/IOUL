@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import Head from 'next/head';
+import React, { useEffect, useState, useRef } from 'react';
 
 const IOULPage: React.FC = () => {
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
@@ -61,9 +60,7 @@ const IOULPage: React.FC = () => {
     window.addEventListener('resize', updateVisibility);
     updateVisibility(); // Initial visibility update
 
-    return (
-    <>
-      <Head><title>IOUL</title></Head>) => {
+    return () => {
       window.removeEventListener('resize', updateVisibility); // Clean up resize event listener
     };
   }, []);
@@ -94,6 +91,7 @@ const IOULPage: React.FC = () => {
   const handleUtilLineClick = () => {
     setState((prevState) => (prevState + 1) % 3); // cycle 0 → 1 → 2 → 0 ...
   };
+
   // Ensure tab title stays constant
   useEffect(() => {
     document.title = 'IOUL';
@@ -101,32 +99,12 @@ const IOULPage: React.FC = () => {
 
   // Attach click listener to util-line for toggles
   useEffect(() => {
-    const utilLineEl = document.querySelector<HTMLElement>('.line.util-line');
-    utilLineEl?.addEventListener('click', handleUtilLineClick);
+    const utilLine = document.querySelector<HTMLElement>('.line.util-line');
+    utilLine?.addEventListener('click', handleUtilLineClick);
     return () => {
-      utilLineEl?.removeEventListener('click', handleUtilLineClick);
+      utilLine?.removeEventListener('click', handleUtilLineClick);
     };
   }, [handleUtilLineClick]);
-
-  // Sync visibility of mail and calendar based on state booleans
-  useEffect(() => {
-    const mailEls = document.querySelectorAll<HTMLElement>('.mail-text');
-    const mailLineEl = document.querySelector<HTMLElement>('.mail-line');
-    mailEls.forEach(el => {
-      el.style.opacity = showMail ? '1' : '0';
-      el.style.pointerEvents = showMail ? 'auto' : 'none';
-    });
-    if (mailLineEl) {
-      mailLineEl.style.opacity = showMail ? '1' : '0';
-      mailLineEl.style.pointerEvents = showMail ? 'auto' : 'none';
-    }
-    const gridEls = document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed');
-    gridEls.forEach(el => {
-      el.style.opacity = showCalendar ? '1' : '0';
-      el.style.pointerEvents = showCalendar ? 'auto' : 'none';
-    });
-  }, [showMail, showCalendar]);
-
 
   const quickRemoveSubmenu = () => {
     const newTexts = document.querySelectorAll<HTMLSpanElement>('.new-text');
@@ -332,9 +310,7 @@ useEffect(() => {
   }
 
   scrollArea.addEventListener('wheel', onWheel, { passive: false });
-  return (
-    <>
-      <Head><title>IOUL</title></Head>) => {
+  return () => {
     scrollArea.removeEventListener('wheel', onWheel);
     scrollArea.remove();
   };
@@ -469,9 +445,7 @@ useEffect(() => {
   };
 
   document.addEventListener("click", handleEdgeClick, true);
-  return (
-    <>
-      <Head><title>IOUL</title></Head>) => {
+  return () => {
     document.removeEventListener("click", handleEdgeClick, true);
   };
 }, [slideState]);
@@ -612,9 +586,7 @@ useEffect(() => {
       });
     });
 
-            return (
-    <>
-      <Head><title>IOUL</title></Head>) => {
+            return () => {
     document.removeEventListener('click', handleClick);
     // (and any other listeners you attached in this effect)
   };
@@ -711,17 +683,13 @@ useEffect(() => {
   }
 
   document.addEventListener('click', handleClick, true);
-  return (
-    <>
-      <Head><title>IOUL</title></Head>) => {
+  return () => {
     document.removeEventListener('click', handleClick, true);
   };
 }, [slideState, itemStage, centerStage]);
 
 
   return (
-    <>
-      <Head><title>IOUL</title></Head>
     <div className="non-fullscreen" translate="no">
       <p style={{ display: 'none' }} lang="en">This page is already in English. No translation is needed.</p>
 
@@ -974,7 +942,6 @@ useEffect(() => {
         </div>
     </div>
     </div>
-    </>
   );
 };
 

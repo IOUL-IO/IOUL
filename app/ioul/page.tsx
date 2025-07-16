@@ -120,14 +120,6 @@ const IOULPage: React.FC = () => {
     setShowLines(state !== 2);
   }, [state]);
 
-  // Handle the click on util lines
-  const handleUtilLineClick = useCallback(() => {
-    setState(prev => (prev + 1) % 3);
-  }, []);
-  // Sync data-util attribute for CSS toggles
-  useEffect(() => {
-    document.documentElement.setAttribute('data-util', state.toString());
-  }, [state]);
 
   // Sync showMail, showCalendar, showLines with util state
   useEffect(() => {

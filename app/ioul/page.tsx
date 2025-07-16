@@ -19,11 +19,7 @@ const IOULPage: React.FC = () => {
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
   const pageContentRef = useRef<HTMLDivElement | null>(null);
-  
-  const [state, setState] = useState(0); // 0 = baseline (lines visible, others hidden)
-  const [showMail, setShowMail] = useState(false);
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [showLines, setShowLines] = useState(true);
+
 
   const EDGE_MARGIN = 11;
 

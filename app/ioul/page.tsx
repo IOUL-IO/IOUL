@@ -1,9 +1,11 @@
 "use client";
-
-import React, { useEffect, useState, useRef, useCallback } from 'react';, { useState, useEffect, useCallback } from \'react\';
+import React, { useState, useEffect, useCallback } from \'react\';
 import Head from \'next/head\';
 
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+
 const IOULPage: React.FC = () => {
+  // util-line toggle state
   const [utilState, setUtilState] = useState(0);
   const showMail = utilState === 1;
   const showCalendar = utilState === 2;
@@ -754,7 +756,7 @@ useEffect(() => {
         <div className="other-content">
           <div className="line original" />
           <div className="line second" />
-          <div className="line util-line" onClick={handleUtilLineClick} onClick={handleUtilLineClick} />
+          <div className="line util-line" onClick={handleUtilLineClick}  onClick={handleUtilLineClick}/>
           <div className="line third" />
           <div className="line fourth" />
           <div className="line fifth" />
@@ -962,8 +964,8 @@ useEffect(() => {
 
         <div className="custom-line" style={{ left: '-42.59vw' }} />
 
-        <div className="layer-five" / style={{ opacity: showLines ? 1 : 0, pointerEvents: showLines ? \'auto\' : \'none\', transition: \'none\' }}>
-        <div className="layer-six" / style={{ opacity: showLines ? 1 : 0, pointerEvents: showLines ? \'auto\' : \'none\', transition: \'none\' }}>
+        <div className="layer-five" / style={{ opacity: showLines?1:0, pointerEvents: showLines?\'auto\':\'none\', transition:\'none\' }}>
+        <div className="layer-six" / style={{ opacity: showLines?1:0, pointerEvents: showLines?\'auto\':\'none\', transition:\'none\' }}>
         
         <div className="slide-triggers">
           <div className="slide-trigger" />

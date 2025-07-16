@@ -64,28 +64,22 @@ const IOULPage: React.FC = () => {
       window.removeEventListener('resize', updateVisibility); // Clean up resize event listener
     };
   }, []);
-
-
-  // Lock the document title
+  // Util-line click toggle: cycle mail → calendar → none
   useEffect(() => {
-    document.title = "IOUL";
-  }, []);
-
-  // Fade-in chat-text on hover
-  useEffect(() => {
-    const hoverEl = hoverAreaRef.current;
-    const chatEl = chatTextRef.current;
-    if (!hoverEl || !chatEl) return;
-
-    const onEnter = () => {
-      chatEl.style.transition = 'opacity 0.3s ease';
-      chatEl.style.opacity = '1';
+    const utilLineEl = document.querySelector<HTMLElement>('.line.util-line');
+    let count = 0;
+    const onClick = () => {
+      count = (count + 1) % 3;
+      document.documentElement.setAttribute('data-util', count.toString());
     };
-    hoverEl.addEventListener('mouseenter', onEnter);
+    utilLineEl?.addEventListener('click', onClick);
+    // Initialize state
+    document.documentElement.setAttribute('data-util', '0');
     return () => {
-      hoverEl.removeEventListener('mouseenter', onEnter);
+      utilLineEl?.removeEventListener('click', onClick);
     };
   }, []);
+
   
     // Update view based on the current state
   const updateView = () => {

@@ -783,3 +783,12 @@ html[data-util="1"] .mail-text {
   opacity: 1 !important;
   pointer-events: auto !important;
 }
+
+
+/* Ensure mail-line & mail-text appear on first click */
+[data-util="1"] .mail-line,
+[data-util="1"] .mail-text {
+  display: block !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}

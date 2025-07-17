@@ -735,11 +735,3 @@ body.non-fullscreen {
 .grid-dashed {
   z-index: 100 !important;
 }
-
-
-/* MAIL-TEXT & MAIL-LINE INLINE STYLE OVERRIDE */
-[data-util="1"] .mail-text,
-[data-util="1"] .mail-line {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}

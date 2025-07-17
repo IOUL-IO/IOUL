@@ -776,10 +776,10 @@ body.non-fullscreen {
 }
 
 
-/* FIX: Ensure mail-line & mail-text appear on 1st click */
+/* FINAL OVERRIDE: FORCE MAIL VISIBILITY ON FIRST CLICK */
 html[data-util="1"] .mail-line,
 html[data-util="1"] .mail-text {
-  display: block !important;
+  display: inline-block !important;
   opacity: 1 !important;
   pointer-events: auto !important;
 }

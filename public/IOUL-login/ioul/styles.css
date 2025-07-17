@@ -534,9 +534,7 @@ body.non-fullscreen {
 [data-util="1"] .mail-text {
   opacity: 1 !important;
   pointer-events: auto !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
+  display: inline-block !important;}
 
 [data-util="2"] .grid-number,
 [data-util="2"] .grid-dashed {
@@ -575,16 +573,14 @@ body.non-fullscreen {
 [data-util="1"] .mail-text {
   opacity: 1 !important;
   pointer-events: auto !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
+  display: inline-block !important;}
 [data-util="1"] .other-content .grid-number,
 [data-util="1"] .other-content .grid-dashed,
 [data-util="1"] .layer-five,
 [data-util="1"] .layer-six {
   opacity: 0 !important;
   pointer-events: none !important;
-}
+  display: inline-block !important;}
 
 /* STATE 2: calendar grid items 1-16 visible, mail & layers hidden */
 [data-util="2"] .num1, [data-util="2"] .num2, [data-util="2"] .num3, [data-util="2"] .num4,
@@ -625,7 +621,7 @@ body.non-fullscreen {
 :root[data-util="1"] .mail-text {
   opacity: 1 !important;
   pointer-events: auto !important;
-}
+  display: inline-block !important;}
 
 :root[data-util="2"] .line.fifth,
 :root[data-util="2"] .line.sixth,
@@ -720,8 +716,6 @@ body.non-fullscreen {
 }
 [data-util="1"] .mail-text {
   display: inline-block !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
 }
 [data-util="2"] .grid-number,
 [data-util="2"] .grid-dashed {

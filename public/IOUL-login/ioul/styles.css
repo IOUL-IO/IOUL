@@ -1,12 +1,4 @@
-/* styles.css */
-
-/* Global layers & grid layouts */
-
-.layer-five,
-[data-util="2"] .layer-six {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
+/* Base layers and slide/hover logic */
 
 /* Chat hover logic */
 .hover-area:hover + .chat-text {
@@ -27,35 +19,7 @@
 .fifth    { top: 28.5vh; left: 36vw;   width: 57.8vw;  z-index: 1; }
 .sixth    { top: 84vh;   left: 36vw;   width: 57.8vw;  z-index: 1; }
 
-/* UTIL-LINE TOGGLE OVERRIDES */
-:root[data-util="0"] .mail-line,
-:root[data-util="0"] .mail-text,
-:root[data-util="0"] .grid-number,
-:root[data-util="0"] .grid-dashed {
-  display: none !important;
-  opacity: 0 !important;
-}
-:root[data-util="1"] .mail-line,
-:root[data-util="1"] .mail-text {
-  display: block !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-:root[data-util="2"] .mail-line,
-:root[data-util="2"] .mail-text,
-:root[data-util="2"] .line.fifth,
-:root[data-util="2"] .line.sixth {
-  display: none !important;
-  opacity: 0 !important;
-}
-:root[data-util="2"] .grid-number,
-:root[data-util="2"] .grid-dashed {
-  display: block !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-/* Mail-text base styling */
+/* Mail-text styling */
 .mail-text {
   position: absolute;
   font-family: 'Distill Expanded', sans-serif;
@@ -63,9 +27,9 @@
   letter-spacing: 0.28vw;
   font-size: 0.47rem;
   text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
+  display: none;
+  pointer-events: none;
 }
-
-/* Mail-text positions */
 .mail-text.to      { top: 35.4vh; left: 36vw; }
 .mail-text.subject { top: 41.6vh; left: 36vw; }
 .mail-text.cc      { top: 35.4vh; left: 89vw; }
@@ -80,9 +44,9 @@
   font-size: 0.411rem;
   letter-spacing: 0.28vw;
   text-shadow: 0.011rem 0.011rem 0 #717171, -0.011rem -0.011rem 0 #717171;
-  transition: none !important;
+  display: none;
+  pointer-events: none;
 }
-
 /* Grid-number positions 1–16 */
 .num1  { top: 28.5vh; left: 48.8vw; }
 .num2  { top: 28.5vh; left: 63.7vw; }
@@ -108,9 +72,9 @@
   width: 11.8vw;
   background: linear-gradient(to right, #171717 0, #171717 5px, #ffffff 5px, #ffffff 10px);
   background-size: 10px 1px;
-  transition: none !important;
+  display: none;
+  pointer-events: none;
 }
-
 /* Grid-dashed positions 1–16 */
 .dashed01 { top: 28.5vh; left: 36vw; }
 .dashed02 { top: 28.5vh; left: 51vw; }
@@ -128,3 +92,29 @@
 .dashed14 { top: 84vh;   left: 51vw; }
 .dashed15 { top: 84vh;   left: 65.9vw; }
 .dashed16 { top: 84vh;   left: 80.8vw; }
+
+/* UTIL-LINE TOGGLE DISPLAY RULES */
+.mail-line,
+.mail-text,
+.grid-number,
+.grid-dashed {
+  display: none !important;
+  pointer-events: none !important;
+}
+[data-util="1"] .mail-line,
+[data-util="1"] .mail-text {
+  display: block !important;
+  pointer-events: auto !important;
+}
+[data-util="2"] .grid-number,
+[data-util="2"] .grid-dashed {
+  display: block !important;
+  pointer-events: auto !important;
+}
+[data-util="2"] .mail-line,
+[data-util="2"] .mail-text,
+[data-util="2"] .line.fifth,
+[data-util="2"] .line.sixth {
+  display: none !important;
+  pointer-events: none !important;
+}

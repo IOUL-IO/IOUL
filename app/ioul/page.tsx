@@ -1,4 +1,3 @@
-// page.tsx
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";
@@ -8,19 +7,17 @@ const IOULPage: React.FC = () => {
   // UTIL LINE TOGGLE STATE: 0=baseline, 1=mail, 2=calendar
   const [utilState, setUtilState] = useState(0);
 
-  // Advance utilState on click
   const handleUtilLineClick = useCallback(() => {
     setUtilState((prev) => (prev + 1) % 3);
   }, []);
 
-  // Sync CSS attribute with utilState
   useEffect(() => {
     document.documentElement.setAttribute("data-util", utilState.toString());
   }, [utilState]);
 
   return (
     <div className="non-fullscreen" translate="no">
-      {/* Your existing layers and content... */}
+      {/* ... your other layers and content ... */}
 
       <div className="other-content">
         <div className="line original" />
@@ -48,7 +45,7 @@ const IOULPage: React.FC = () => {
         </React.Fragment>
       ))}
 
-      {/* Remaining content... */}
+      {/* ... remaining grid items 17–31 and other content ... */}
     </div>
   );
 };

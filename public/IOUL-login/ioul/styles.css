@@ -608,65 +608,87 @@ body.non-fullscreen {
   pointer-events: auto !important;
 }
 
+
 /* UTIL-LINE TOGGLE OVERRIDES */
 :root[data-util="0"] .mail-line,
 :root[data-util="0"] .mail-text,
-:root[data-util="0"] .grid-number,
-:root[data-util="0"] .grid-dashed {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-:root[data-util="1"] .mail-line,
-:root[data-util="1"] .mail-text {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-:root[data-util="2"] .line.fifth,
-:root[data-util="2"] .line.sixth,
-:root[data-util="2"] .mail-line,
-:root[data-util="2"] .mail-text {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-:root[data-util="2"] .grid-number,
-:root[data-util="2"] .grid-dashed {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-/* UTIL-LINE TOGGLE OVERRIDES */
-.mail-text,
-.mail-line,
-.grid-number,
-.grid-dashed {
-  transition: none !important;
-}
-
-/* Default: hide mail and calendar grid */
-:root[data-util="0"] .mail-line,
-:root[data-util="0"] .mail-text,
-:root[data-util="0"] .grid-number,
-:root[data-util="0"] .grid-dashed {
+:root[data-util="0"] .num1,
+:root[data-util="0"] .num2,
+:root[data-util="0"] .num3,
+:root[data-util="0"] .num4,
+:root[data-util="0"] .num5,
+:root[data-util="0"] .num6,
+:root[data-util="0"] .num7,
+:root[data-util="0"] .num8,
+:root[data-util="0"] .num9,
+:root[data-util="0"] .num10,
+:root[data-util="0"] .num11,
+:root[data-util="0"] .num12,
+:root[data-util="0"] .num13,
+:root[data-util="0"] .num14,
+:root[data-util="0"] .num15,
+:root[data-util="0"] .num16,
+:root[data-util="0"] .dashed01,
+:root[data-util="0"] .dashed02,
+:root[data-util="0"] .dashed03,
+:root[data-util="0"] .dashed04,
+:root[data-util="0"] .dashed05,
+:root[data-util="0"] .dashed06,
+:root[data-util="0"] .dashed07,
+:root[data-util="0"] .dashed08,
+:root[data-util="0"] .dashed09,
+:root[data-util="0"] .dashed10,
+:root[data-util="0"] .dashed11,
+:root[data-util="0"] .dashed12,
+:root[data-util="0"] .dashed13,
+:root[data-util="0"] .dashed14,
+:root[data-util="0"] .dashed15,
+:root[data-util="0"] .dashed16 {
   display: none !important;
 }
 
-/* State 1: show mail only */
-:root[data-util="1"] .mail-line,
-:root[data-util="1"] .mail-text {
+/* State 1: show mail-line + mail-text only */
+:root[data-util="1"] .mail-line {
   display: block !important;
 }
-:root[data-util="1"] .grid-number,
-:root[data-util="1"] .grid-dashed {
-  display: none !important;
+:root[data-util="1"] .mail-text {
+  display: inline-block !important;
 }
 
-/* State 2: show calendar grid (1–16) only, hide mail and lines 5/6 */
-:root[data-util="2"] .grid-number,
-:root[data-util="2"] .grid-dashed {
-  display: block !important;
+/* State 2: show calendar grid 1–16 only, hide mail and lines 5/6 */
+:root[data-util="2"] .num1,
+:root[data-util="2"] .num2,
+:root[data-util="2"] .num3,
+:root[data-util="2"] .num4,
+:root[data-util="2"] .num5,
+:root[data-util="2"] .num6,
+:root[data-util="2"] .num7,
+:root[data-util="2"] .num8,
+:root[data-util="2"] .num9,
+:root[data-util="2"] .num10,
+:root[data-util="2"] .num11,
+:root[data-util="2"] .num12,
+:root[data-util="2"] .num13,
+:root[data-util="2"] .num14,
+:root[data-util="2"] .num15,
+:root[data-util="2"] .num16,
+:root[data-util="2"] .dashed01,
+:root[data-util="2"] .dashed02,
+:root[data-util="2"] .dashed03,
+:root[data-util="2"] .dashed04,
+:root[data-util="2"] .dashed05,
+:root[data-util="2"] .dashed06,
+:root[data-util="2"] .dashed07,
+:root[data-util="2"] .dashed08,
+:root[data-util="2"] .dashed09,
+:root[data-util="2"] .dashed10,
+:root[data-util="2"] .dashed11,
+:root[data-util="2"] .dashed12,
+:root[data-util="2"] .dashed13,
+:root[data-util="2"] .dashed14,
+:root[data-util="2"] .dashed15,
+:root[data-util="2"] .dashed16 {
+  display: inline-block !important;
 }
 :root[data-util="2"] .mail-line,
 :root[data-util="2"] .mail-text,

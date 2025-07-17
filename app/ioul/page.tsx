@@ -61,21 +61,6 @@ const IOULPage: React.FC = () => {
       window.removeEventListener('resize', updateVisibility); // Clean up resize event listener
     };
   }, []);
-  // Util-line click toggle: cycle mail → calendar → none
-  useEffect(() => {
-    const utilLineEl = document.querySelector<HTMLElement>('.line.util-line');
-    let count = 0;
-    const onClick = () => {
-      count = (count + 1) % 3;
-      document.documentElement.setAttribute('data-util', count.toString());
-    };
-    utilLineEl?.addEventListener('click', onClick);
-    // Initialize state
-    document.documentElement.setAttribute('data-util', '0');
-    return () => {
-      utilLineEl?.removeEventListener('click', onClick);
-    };
-  }, []);
 
 
 

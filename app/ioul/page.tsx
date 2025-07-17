@@ -7,18 +7,24 @@ const IOULPage: React.FC = () => {
   // UTIL LINE TOGGLE STATE: 0=baseline, 1=mail, 2=calendar
   const [utilState, setUtilState] = useState(0);
 
+  // Advance state on click
   const handleUtilLineClick = useCallback(() => {
     setUtilState((prev) => (prev + 1) % 3);
   }, []);
 
+  // Sync data-util attribute
   useEffect(() => {
     document.documentElement.setAttribute("data-util", utilState.toString());
   }, [utilState]);
 
   return (
     <div className="non-fullscreen" translate="no">
-      {/* ... existing layers and other content above ... */}
+      {/* Layers 1-3 */}
+      <div className="layer-one" />
+      <div className="layer-two" />
+      <div className="layer-three" />
 
+      {/* UTIL toggle lines */}
       <div className="other-content">
         <div className="line original" />
         <div className="line second" />
@@ -30,104 +36,84 @@ const IOULPage: React.FC = () => {
         <div className="line sixth" />
       </div>
 
-      {/* Mail labels with absolute positioning and initial opacity 0 */}
+      {/* Mail labels */}
       <span
-        className="mail-text"
+        className="mail-text to"
         style={{
           position: "absolute",
           top: "35.4vh",
           left: "36vw",
-          zIndex: 1,
           fontFamily: "'Distill Expanded', sans-serif",
           color: "#111111",
           letterSpacing: "0.28vw",
           fontSize: "0.47rem",
-          textShadow:
-            "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171",
-          opacity: 0,
-          transition: "opacity 0.3s ease",
+          textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171",
         }}
       >
         TO:
       </span>
       <span
-        className="mail-text"
+        className="mail-text subject"
         style={{
           position: "absolute",
           top: "41.6vh",
           left: "36vw",
-          zIndex: 1,
           fontFamily: "'Distill Expanded', sans-serif",
           color: "#111111",
           letterSpacing: "0.28vw",
           fontSize: "0.47rem",
-          textShadow:
-            "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171",
-          opacity: 0,
-          transition: "opacity 0.3s ease",
+          textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171",
         }}
       >
         SUBJECT:
       </span>
       <span
-        className="mail-text"
+        className="mail-text cc"
         style={{
           position: "absolute",
           top: "35.4vh",
           left: "89vw",
-          zIndex: 1,
           fontFamily: "'Distill Expanded', sans-serif",
           color: "#111111",
           letterSpacing: "0.28vw",
           fontSize: "0.47rem",
-          textShadow:
-            "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171",
-          opacity: 0,
-          transition: "opacity 0.3s ease",
+          textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171",
         }}
       >
         cc
       </span>
       <span
-        className="mail-text"
+        className="mail-text bcc"
         style={{
           position: "absolute",
           top: "35.4vh",
           left: "91.9vw",
-          zIndex: 1,
           fontFamily: "'Distill Expanded', sans-serif",
           color: "#111111",
           letterSpacing: "0.28vw",
           fontSize: "0.47rem",
-          textShadow:
-            "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171",
-          opacity: 0,
-          transition: "opacity 0.3s ease",
+          textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171",
         }}
       >
         Bcc
       </span>
       <span
-        className="mail-text"
+        className="mail-text send"
         style={{
           position: "absolute",
           top: "41.6vh",
           left: "91.1vw",
-          zIndex: 1,
           fontFamily: "'Distill Expanded', sans-serif",
           color: "#111111",
           letterSpacing: "0.28vw",
           fontSize: "0.47rem",
-          textShadow:
-            "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171",
-          opacity: 0,
-          transition: "opacity 0.3s ease",
+          textShadow: "0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171",
         }}
       >
         SEND
       </span>
 
-      {/* Calendar grid numbers 1-16 */}
+      {/* Calendar grid 1-16 */}
       {[...Array(16)].map((_, idx) => (
         <React.Fragment key={idx}>
           <span className={`grid-number num${idx + 1}`}>{idx + 1}</span>
@@ -137,7 +123,7 @@ const IOULPage: React.FC = () => {
         </React.Fragment>
       ))}
 
-      {/* ... rest of calendar and other content ... */}
+      {/* Remaining content (grid items 17-31, etc.) */}
     </div>
   );
 };

@@ -123,3 +123,10 @@
   display: none !important;
   pointer-events: none !important;
 }
+
+
+/* Force show mail-text for state1 */
+[data-util="1"] .mail-text {
+  display: inline-block !important;
+  pointer-events: auto !important;
+}

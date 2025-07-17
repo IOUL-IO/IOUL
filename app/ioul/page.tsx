@@ -10,7 +10,6 @@ const IOULPage: React.FC = () => {
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
   const pageContentRef = useRef<HTMLDivElement | null>(null);
   
-  const [state, setState] = useState(0); // 0 = baseline (lines visible, others hidden)
 
   const EDGE_MARGIN = 11;
 
@@ -65,14 +64,6 @@ const IOULPage: React.FC = () => {
 
 
 
-    // UTIL LINE TOGGLE STATE: 0=baseline,1=mail,2=calendar
-  const [state, setState] = useState(0);
-  const handleUtilLineClick = () => {
-    setState(prev => (prev + 1) % 3);
-  };
-  useEffect(() => {
-    document.documentElement.setAttribute('data-util', state.toString());
-  }, [state]);
 
 
 
@@ -206,6 +197,16 @@ const IOULPage: React.FC = () => {
    const [isScrolling, setIsScrolling] = useState(false);
    const [isFirstScroll, setIsFirstScroll] = useState(true);
    const [isSecondScroll, setIsSecondScroll] = useState(false);
+
+  // UTIL LINE TOGGLE STATE: 0=baseline, 1=mail, 2=calendar
+  const [utilState, setUtilState] = useState<number>(0);
+  const handleUtilLineClick = useCallback(() => {
+    setUtilState(prev => (prev + 1) % 3);
+  }, []);
+  useEffect(() => {
+    document.documentElement.setAttribute('data-util', utilState.toString());
+  }, [utilState]);
+
 
    const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
    const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);

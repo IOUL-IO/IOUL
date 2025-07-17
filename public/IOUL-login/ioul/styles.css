@@ -608,38 +608,31 @@ body.non-fullscreen {
   pointer-events: auto !important;
 }
 
-/* UTIL-LINE TOGGLE OVERRIDES */
-:root[data-util="0"] .mail-line,
-:root[data-util="0"] .mail-text,
-:root[data-util="0"] .grid-number,
-:root[data-util="0"] .grid-dashed {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
 
-:root[data-util="1"] .mail-line,
-:root[data-util="1"] .mail-text {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-:root[data-util="2"] .line.fifth,
-:root[data-util="2"] .line.sixth,
-:root[data-util="2"] .mail-line,
-:root[data-util="2"] .mail-text {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-:root[data-util="2"] .grid-number,
-:root[data-util="2"] .grid-dashed {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-:root[data-util="2"] .mail-line,
-:root[data-util="2"] .mail-text,
-:root[data-util="2"] .line.fifth,
-:root[data-util="2"] .line.sixth {
+/* UTIL-LINE TOGGLE FINAL OVERRIDES */
+.mail-line,
+.mail-text,
+.grid-number,
+.grid-dashed {
   display: none !important;
+}
+
+[data-util="1"] .mail-line {
+  display: block !important;
+}
+[data-util="1"] .mail-text {
+  display: inline-block !important;
+}
+
+[data-util="2"] .mail-line,
+[data-util="2"] .mail-text,
+[data-util="2"] .line.fifth,
+[data-util="2"] .line.sixth {
+  display: none !important;
+}
+[data-util="2"] .grid-number {
+  display: inline-block !important;
+}
+[data-util="2"] .grid-dashed {
+  display: inline-block !important;
 }

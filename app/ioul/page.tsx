@@ -67,16 +67,7 @@ const IOULPage: React.FC = () => {
 
     // Cycle util-state 0 → 1 → 2 → 0 on click
   const handleUtilLineClick = useCallback(() => {
-    setState(prev => {
-      const next = (prev + 1) % 3;
-      // Manually toggle mail-text visibility
-      const mailTexts = document.querySelectorAll<HTMLSpanElement>('.mail-text');
-      mailTexts.forEach(span => {
-        span.style.opacity = next === 1 ? '1' : '0';
-        span.style.pointerEvents = next === 1 ? 'auto' : 'none';
-    });
-      return next;
-    });
+    setState(prev => (prev + 1) % 3);
   }, []);
   
   // Sync the data-util CSS attribute
@@ -709,7 +700,7 @@ useEffect(() => {
           <div className="line third" />
           <div className="line fourth" />
           <div className="line fifth" />
-          <div className="line mail-line" style={{ position: 'absolute', top: '47.8vh', left: '36vw', width: '57.8vw', height: '1px', backgroundColor: 'rgba(230,230,230,0.28)', opacity: 0, transition: 'opacity 0.3s ease', zIndex: 1 }} />
+          <div className="line mail-line" />
           <div className="line sixth" />
         </div>
 
@@ -812,11 +803,11 @@ useEffect(() => {
 
         <div className="hover-area" />
         <span className="chat-text" id="chatText">cHAT . . .</span>
-        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>TO:</span>
-        <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>SUBJEcT:</span>
-        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'89vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>cc</span>
-        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'91.9vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>Bcc</span>
-        <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'91.1vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>SEnD</span>
+        <span className="mail-text">TO:</span>
+        <span className="mail-text">SUBJEcT:</span>
+        <span className="mail-text">cc</span>
+        <span className="mail-text">Bcc</span>
+        <span className="mail-text">SEnD</span>
 
 
         <span className="grid-number num1">1</span>

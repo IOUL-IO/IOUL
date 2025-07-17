@@ -67,23 +67,7 @@ const IOULPage: React.FC = () => {
 
     // Cycle util-state 0 → 1 → 2 → 0 on click
   const handleUtilLineClick = useCallback(() => {
-    setState(prev => {
-      const next = (prev + 1) % 3;
-      // Toggle mail-text visibility with !important overrides
-      const mailTexts = document.querySelectorAll<HTMLSpanElement>('.mail-text');
-      mailTexts.forEach(span => {
-        if (next === 1) {
-          span.style.setProperty('display', 'inline-block', 'important');
-          span.style.setProperty('opacity', '1', 'important');
-          span.style.setProperty('pointer-events', 'auto', 'important');
-        } else {
-          span.style.setProperty('display', 'none', 'important');
-          span.style.setProperty('opacity', '0', 'important');
-          span.style.setProperty('pointer-events', 'none', 'important');
-        }
-      });
-      return next;
-    });
+    setState(prev => (prev + 1) % 3);
   }, []);
   
   // Sync the data-util CSS attribute

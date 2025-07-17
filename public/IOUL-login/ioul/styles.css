@@ -736,10 +736,14 @@ body.non-fullscreen {
   z-index: 100 !important;
 }
 
-/* ── SHOW MAIL ON FIRST CLICK ── */
-[data-util="1"] .mail-line,
-[data-util="1"] .mail-text {
-  display: block !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
+/* Base mail-line styling */
+.mail-line {
+  position: absolute !important;
+  top: 47.8vh !important;
+  left: 36vw !important;
+  width: 57.8vw !important;
+  height: 1px !important;
+  background-color: rgba(230,230,230,0.28) !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
 }

@@ -522,101 +522,14 @@ body.non-fullscreen {
 }
 
 /* Util-line toggle states */
-[data-util="0"] .mail-line,
-[data-util="0"] .mail-text,
-[data-util="0"] .grid-number,
-[data-util="0"] .grid-dashed {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
 
-[data-util="1"] .mail-line,
-[data-util="1"] .mail-text {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-[data-util="2"] .grid-number,
-[data-util="2"] .grid-dashed {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-/* Ensure grid items transition opacity */
-.grid-number,
-.grid-dashed {
-  transition: transform 0.6s ease, opacity 0.4s ease !important;
-}
-
-
-/* ── Util-line toggle defaults ── */
-/* Hide mail and calendar by default */
-.mail-line,
-.mail-text,
-.other-content .grid-number,
-.other-content .grid-dashed {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  transition: none !important;
-}
-
-/* Layers 5 & 6 visible by default */
-.layer-five,
-.layer-six {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  transition: none !important;
-}
-
-/* STATE 1: mail visible, others hidden */
-[data-util="1"] .mail-line,
-[data-util="1"] .mail-text {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-[data-util="1"] .other-content .grid-number,
-[data-util="1"] .other-content .grid-dashed,
-[data-util="1"] .layer-five,
-[data-util="1"] .layer-six {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-/* STATE 2: calendar grid items 1-16 visible, mail & layers hidden */
-[data-util="2"] .num1, [data-util="2"] .num2, [data-util="2"] .num3, [data-util="2"] .num4,
-[data-util="2"] .num5, [data-util="2"] .num6, [data-util="2"] .num7, [data-util="2"] .num8,
-[data-util="2"] .num9, [data-util="2"] .num10, [data-util="2"] .num11, [data-util="2"] .num12,
-[data-util="2"] .num13, [data-util="2"] .num14, [data-util="2"] .num15, [data-util="2"] .num16,
-[data-util="2"] .dashed01, [data-util="2"] .dashed02, [data-util="2"] .dashed03, [data-util="2"] .dashed04,
-[data-util="2"] .dashed05, [data-util="2"] .dashed06, [data-util="2"] .dashed07, [data-util="2"] .dashed08,
-[data-util="2"] .dashed09, [data-util="2"] .dashed10, [data-util="2"] .dashed11, [data-util="2"] .dashed12,
-[data-util="2"] .dashed13, [data-util="2"] .dashed14, [data-util="2"] .dashed15, [data-util="2"] .dashed16 {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-[data-util="2"] .mail-line,
-[data-util="2"] .mail-text,
-[data-util="2"] .layer-five,
-[data-util="2"] .layer-six {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-/* Chat hover logic */
-.hover-area:hover + .chat-text {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-
-/* UTIL-LINE TOGGLE FINAL OVERRIDES */
-.mail-line,
-.mail-text,
-.grid-number,
-.grid-dashed {
+/* UTIL-LINE TOGGLE STATES */
+/* Hide all mail & calendar by default */
+.mail-line, .mail-text, .grid-number, .grid-dashed {
   display: none !important;
 }
 
+/* State 1: show mail elements */
 [data-util="1"] .mail-line {
   display: block !important;
 }
@@ -624,15 +537,11 @@ body.non-fullscreen {
   display: inline-block !important;
 }
 
-[data-util="2"] .mail-line,
-[data-util="2"] .mail-text,
-[data-util="2"] .line.fifth,
-[data-util="2"] .line.sixth {
-  display: none !important;
-}
-[data-util="2"] .grid-number {
-  display: inline-block !important;
-}
+/* State 2: show calendar grid 1-16, hide mail & lines 5&6 */
+[data-util="2"] .grid-number,
 [data-util="2"] .grid-dashed {
   display: inline-block !important;
+}
+[data-util="2"] .mail-line, [data-util="2"] .mail-text, [data-util="2"] .line.fifth, [data-util="2"] .line.sixth {
+  display: none !important;
 }

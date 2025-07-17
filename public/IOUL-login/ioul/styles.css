@@ -678,7 +678,7 @@ body.non-fullscreen {
 }
 
 
-
+/* ===== OVERRIDE: mail-text positions and util toggle ===== */
 
 /* Ensure mail-text uses absolute positions from original inline styles */
 .mail-text {
@@ -734,4 +734,13 @@ body.non-fullscreen {
 .grid-number,
 .grid-dashed {
   z-index: 100 !important;
+}
+
+
+/* Override: show mail-line and mail-text on first click */
+[data-util="1"] .mail-line,
+[data-util="1"] .mail-text {
+  display: inline-block !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }

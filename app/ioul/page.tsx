@@ -700,7 +700,7 @@ useEffect(() => {
           <div className="line third" />
           <div className="line fourth" />
           <div className="line fifth" />
-          <div className="line mail-line" style={{ position: 'absolute', top: '47.8vh', left: '36vw', width: '57.8vw', height: '1px', backgroundColor: 'rgba(230,230,230,0.28)', opacity: 0, transition: 'opacity 0.3s ease', zIndex: 1 }} />
+          <div className="line mail-line" />
           <div className="line sixth" />
         </div>
 

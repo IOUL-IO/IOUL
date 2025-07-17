@@ -521,147 +521,31 @@ body.non-fullscreen {
   }
 }
 
-/* Util-line toggle states */
 
-
-
-
-
-
-/* Ensure grid items transition opacity */
-.grid-number,
-.grid-dashed {
-  transition: transform 0.6s ease, opacity 0.4s ease !important;
-}
-
-
-/* ── Util-line toggle defaults ── */
-/* Hide mail and calendar by default */
-.mail-line,
+/* ── UTIL-LINE TOGGLE FINAL ── */
+/* Hide mail-line, mail-text, and calendar grid by default */
+.line.mail-line,
 .mail-text,
 .other-content .grid-number,
 .other-content .grid-dashed {
   opacity: 0 !important;
   pointer-events: none !important;
-  transition: none !important;
 }
-
-/* Layers 5 & 6 visible by default */
-.layer-five,
-.layer-six {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  transition: none !important;
-}
-
-/* STATE 1: mail visible, others hidden */
-
-
-
-/* STATE 2: calendar grid items 1-16 visible, mail & layers hidden */
-
-
-
-/* Chat hover logic */
-.hover-area:hover + .chat-text {
+/* STATE 1: mail-line + mail-text */
+:root[data-util="1"] .line.mail-line,
+:root[data-util="1"] .mail-text {
   opacity: 1 !important;
   pointer-events: auto !important;
 }
-
-/* UTIL-LINE TOGGLE OVERRIDES */
-:root
-
-:root
-
-:root
-
-:root
-
-/* UTIL-LINE TOGGLE POP OVERRIDES */
-.mail-text,
-.mail-line,
-.grid-number,
-.grid-dashed {
-  transition: none !important;
-  position: relative !important;
-  z-index: 1000 !important;
-}
-
-/* Default: hide mail and calendar grid */
-:root
-
-/* State 1: show mail only */
-:root
-:root
-
-/* State 2: show calendar grid (1–16) only, hide mail and lines 5/6 */
-:root
-:root
-
-
-
-.mail-text.to      { top: 35.4vh; left: 36vw; }
-.mail-text.subject { top: 41.6vh; left: 36vw; }
-.mail-text.cc      { top: 35.4vh; left: 89vw; }
-.mail-text.bcc     { top: 35.4vh; left: 91.9vw; }
-.mail-text.send    { top: 41.6vh; left: 91.1vw; }
-
-/* calendar grid overrides */
-.grid-number,
-.grid-dashed {
-  position: absolute !important;
-  display: none !important;
-  pointer-events: none !important;
-}
-
-/* override util-line toggles */
-.mail-line {
-  display: none !important;
-}
-
-
-
-
-
-/* ensure correct layering */
-.mail-line,
-.mail-text,
-.grid-number,
-.grid-dashed {
-  z-index: 100 !important;
-}
-
-
-/* ── MAIL-TEXT VISIBILITY OVERRIDE ── */
-.mail-text { display: none !important; pointer-events: none !important; }
-
-
-
-/* UTIL LINE TOGGLE */
-.mail-line,
-.mail-text,
-.grid-number,
-.grid-dashed {
-  display: none !important;
-  pointer-events: none !important;
-}
-
-[data-util="1"] .mail-line,
-[data-util="1"] .mail-text {
-  display: block !important;
+/* STATE 2: calendar grid 1–16 */
+:root[data-util="2"] .other-content .grid-number,
+:root[data-util="2"] .other-content .grid-dashed {
+  opacity: 1 !important;
   pointer-events: auto !important;
 }
-
-[data-util="2"] .grid-number,
-[data-util="2"] .grid-dashed {
-  display: block !important;
-  pointer-events: auto !important;
-}
-
-[data-util="2"] .mail-line,
-[data-util="2"] .mail-text,
-[data-util="2"] .line.fifth,
-[data-util="2"] .line.sixth {
-  display: none !important;
+/* Hide mail-line + mail-text in state 2 */
+:root[data-util="2"] .line.mail-line,
+:root[data-util="2"] .mail-text {
+  opacity: 0 !important;
   pointer-events: none !important;
 }

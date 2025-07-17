@@ -65,12 +65,11 @@ const IOULPage: React.FC = () => {
 
 
 
-    // Cycle util-state 0 → 1 → 2 → 0 on click
-  const handleUtilLineClick = useCallback(() => {
+    // UTIL LINE TOGGLE STATE: 0=baseline,1=mail,2=calendar
+  const [state, setState] = useState(0);
+  const handleUtilLineClick = () => {
     setState(prev => (prev + 1) % 3);
-  }, []);
-  
-  // Sync the data-util CSS attribute
+  };
   useEffect(() => {
     document.documentElement.setAttribute('data-util', state.toString());
   }, [state]);

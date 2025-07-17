@@ -736,14 +736,41 @@ body.non-fullscreen {
   z-index: 100 !important;
 }
 
-/* Base mail-line styling */
-.mail-line {
-  position: absolute !important;
-  top: 47.8vh !important;
-  left: 36vw !important;
-  width: 57.8vw !important;
-  height: 1px !important;
-  background-color: rgba(230,230,230,0.28) !important;
+
+/* ── FINAL UTIL-LINE OVERRIDES ── */
+:root[data-util="0"] .mail-line,
+:root[data-util="0"] .mail-text,
+:root[data-util="0"] .grid-number,
+:root[data-util="0"] .grid-dashed {
+  display: none !important;
   opacity: 0 !important;
-  transition: opacity 0.3s ease !important;
+}
+
+:root[data-util="1"] .mail-line {
+  display: block !important;
+  opacity: 1 !important;
+}
+
+:root[data-util="1"] .mail-text {
+  display: inline-block !important;
+  opacity: 1 !important;
+}
+
+:root[data-util="1"] .grid-number,
+:root[data-util="1"] .grid-dashed {
+  display: none !important;
+}
+
+:root[data-util="2"] .mail-line,
+:root[data-util="2"] .mail-text,
+:root[data-util="2"] .line.fifth,
+:root[data-util="2"] .line.sixth {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed {
+  display: inline-block !important;
+  opacity: 1 !important;
 }

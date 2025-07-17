@@ -71,9 +71,7 @@ const IOULPage: React.FC = () => {
   }, []);
   
   // Sync the data-util CSS attribute
-  useEffect(() => {
-    document.documentElement.setAttribute('data-util', utilState.toString());
-  }, [state]);
+  useEffect(() => { document.documentElement.setAttribute('data-util', utilState.toString()); }, [utilState]);
 
 
 

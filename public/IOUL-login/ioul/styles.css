@@ -637,14 +637,12 @@ body.non-fullscreen {
   pointer-events: auto !important;
 }
 
-/* UTIL-LINE TOGGLE POP OVERRIDES */
+/* UTIL-LINE TOGGLE OVERRIDES */
 .mail-text,
 .mail-line,
 .grid-number,
 .grid-dashed {
   transition: none !important;
-  position: relative !important;
-  z-index: 1000 !important;
 }
 
 /* Default: hide mail and calendar grid */
@@ -658,7 +656,7 @@ body.non-fullscreen {
 /* State 1: show mail only */
 :root[data-util="1"] .mail-line,
 :root[data-util="1"] .mail-text {
-  display: inline-block !important;
+  display: block !important;
 }
 :root[data-util="1"] .grid-number,
 :root[data-util="1"] .grid-dashed {
@@ -668,7 +666,7 @@ body.non-fullscreen {
 /* State 2: show calendar grid (1–16) only, hide mail and lines 5/6 */
 :root[data-util="2"] .grid-number,
 :root[data-util="2"] .grid-dashed {
-  display: inline-block !important;
+  display: block !important;
 }
 :root[data-util="2"] .mail-line,
 :root[data-util="2"] .mail-text,

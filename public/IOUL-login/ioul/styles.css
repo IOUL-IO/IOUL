@@ -735,3 +735,10 @@ body.non-fullscreen {
 .grid-dashed {
   z-index: 100 !important;
 }
+
+/* ===== Hotfix July 17 2025: ensure mail-text appears when util state is 1 ===== */
+:root[data-util="1"] .mail-text {
+  display: inline-block !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}

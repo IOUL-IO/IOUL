@@ -735,3 +735,35 @@ body.non-fullscreen {
 .grid-dashed {
   z-index: 100 !important;
 }
+
+
+/* ── UTIL-LINE TOGGLE FINAL BLOCK ── */
+/* Hide mail-line, mail-text, grid items by default */
+.mail-line,
+.mail-text,
+.grid-number,
+.grid-dashed {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+/* State 1: show mail-line + mail-text */
+[data-util="1"] .mail-line,
+[data-util="1"] .mail-text {
+  display: block !important;
+  pointer-events: auto !important;
+}
+
+/* State 2: show calendar grid 1–16, hide mail & lines 5/6 */
+[data-util="2"] .grid-number,
+[data-util="2"] .grid-dashed {
+  display: block !important;
+  pointer-events: auto !important;
+}
+[data-util="2"] .mail-line,
+[data-util="2"] .mail-text,
+[data-util="2"] .line.fifth,
+[data-util="2"] .line.sixth {
+  display: none !important;
+  pointer-events: none !important;
+}

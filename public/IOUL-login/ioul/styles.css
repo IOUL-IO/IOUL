@@ -735,3 +735,11 @@ body.non-fullscreen {
 .grid-dashed {
   z-index: 100 !important;
 }
+
+/* ── SHOW MAIL ON FIRST CLICK ── */
+[data-util="1"] .mail-line,
+[data-util="1"] .mail-text {
+  display: block !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}

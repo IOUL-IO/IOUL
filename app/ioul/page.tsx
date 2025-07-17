@@ -918,3 +918,28 @@ useEffect(() => {
 
 export default IOULPage;
     
+
+
+  // Sync the data-util CSS attribute and ensure mail-text visibility
+  useEffect(() => {
+    // 1️⃣ Update the attribute used by your utility‑state CSS rules
+    document.documentElement.setAttribute('data-util', state.toString());
+
+    // 2️⃣ Hard‑toggle the inline styles of the mail‑text spans so they always
+    //    appear when util‑state === 1 (and hide otherwise). This co‑operates
+    //    with your existing CSS – it simply guarantees the spans aren’t left
+    //    with “display:none” or “opacity:0” from older overrides.
+    const mailTextEls = document.querySelectorAll<HTMLElement>('.mail-text');
+
+    mailTextEls.forEach(el => {
+      if (state === 1) {
+        el.style.display = 'inline-block';
+        el.style.opacity = '1';
+        el.style.pointerEvents = 'auto';
+      } else {
+        el.style.display = 'none';
+        el.style.opacity = '0';
+        el.style.pointerEvents = 'none';
+      }
+    });
+  }, [state]);

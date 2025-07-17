@@ -10,7 +10,7 @@ const IOULPage: React.FC = () => {
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
   const pageContentRef = useRef<HTMLDivElement | null>(null);
   
-  const [state, setState] = useState(0); // 0 = baseline (lines visible, others hidden)
+  const [utilState, setUtilState] = useState(0);
 
   const EDGE_MARGIN = 11;
 
@@ -67,12 +67,12 @@ const IOULPage: React.FC = () => {
 
     // Cycle util-state 0 → 1 → 2 → 0 on click
   const handleUtilLineClick = useCallback(() => {
-    setState(prev => (prev + 1) % 3);
+    setUtilState(prev => (prev + 1) % 3);
   }, []);
   
   // Sync the data-util CSS attribute
   useEffect(() => {
-    document.documentElement.setAttribute('data-util', state.toString());
+    document.documentElement.setAttribute('data-util', utilState.toString());
   }, [state]);
 
 

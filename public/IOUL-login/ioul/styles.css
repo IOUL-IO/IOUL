@@ -774,3 +774,12 @@ body.non-fullscreen {
   display: inline-block !important;
   opacity: 1 !important;
 }
+
+
+/* FIX: Ensure mail-line & mail-text appear on 1st click */
+html[data-util="1"] .mail-line,
+html[data-util="1"] .mail-text {
+  display: block !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}

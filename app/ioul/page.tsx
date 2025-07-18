@@ -388,7 +388,9 @@ useEffect(() => {
           // second menu/community click
           document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
             .forEach(el => {
-              el.style.left = (parseFloat(el.dataset.originalLeft!) - 29) + "vw";
+              el.dataset.originalLeft ||= el.style.left;
+              el.style.transition = "left 0.7s ease";
+              el.style.left = (parseFloat(el.style.left) - 29) + "vw";
             });
           document.querySelectorAll<HTMLElement>('.community-items-container *')
             .forEach(el => {

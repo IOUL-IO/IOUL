@@ -412,8 +412,7 @@ body.non-fullscreen {
   .zero-items-container span,
   .index-input,
   .custom-text,
-  .mail-text,
-  .account-text,
+    .account-text,
   .item-text {
     font-size: 9px !important;
   }
@@ -533,6 +532,7 @@ body.non-fullscreen {
 [data-util="1"] .mail-line,
 [data-util="1"] .mail-text {
   opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 [data-util="2"] .grid-number,
@@ -571,6 +571,7 @@ body.non-fullscreen {
 [data-util="1"] .mail-line,
 [data-util="1"] .mail-text {
   opacity: 1 !important;
+  pointer-events: auto !important;
 }
 [data-util="1"] .other-content .grid-number,
 [data-util="1"] .other-content .grid-dashed,
@@ -618,6 +619,7 @@ body.non-fullscreen {
 :root[data-util="1"] .mail-line,
 :root[data-util="1"] .mail-text {
   opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 :root[data-util="2"] .line.fifth,
@@ -625,6 +627,7 @@ body.non-fullscreen {
 :root[data-util="2"] .mail-line,
 :root[data-util="2"] .mail-text {
   opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 :root[data-util="2"] .grid-number,
@@ -654,6 +657,7 @@ body.non-fullscreen {
 /* State 1: show mail only */
 :root[data-util="1"] .mail-line,
 :root[data-util="1"] .mail-text {
+  display: inline-block !important;
 }
 :root[data-util="1"] .grid-number,
 :root[data-util="1"] .grid-dashed {
@@ -683,6 +687,8 @@ body.non-fullscreen {
   letter-spacing: 0.28vw !important;
   font-size: 0.47rem !important;
   text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171 !important;
+  display: none !important;
+  pointer-events: none !important;
 }
 
 /* mail-text specific positions */
@@ -708,6 +714,7 @@ body.non-fullscreen {
   display: block !important;
 }
 [data-util="1"] .mail-text {
+  display: inline-block !important;
 }
 [data-util="2"] .grid-number,
 [data-util="2"] .grid-dashed {

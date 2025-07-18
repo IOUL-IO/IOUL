@@ -175,7 +175,7 @@ body.non-fullscreen {
     height: 100vh;
     pointer-events: none;
     clip-path: inset(0 0 0 36vw);
-    z-index: 2;
+    z-index: 150;
 }
 
 .hover-area {
@@ -735,3 +735,11 @@ body.non-fullscreen {
 .grid-dashed {
   z-index: 100 !important;
 }
+
+/* Final override: keep mail labels visible when util state is 1 */
+:root[data-util="1"] .mail-text {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  display: inline-block !important;
+}
+

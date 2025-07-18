@@ -688,6 +688,8 @@ body.non-fullscreen {
   letter-spacing: 0.28vw !important;
   font-size: 0.47rem !important;
   text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171 !important;
+  display: none !important;
+  pointer-events: none !important;
 }
 
 /* mail-text specific positions */
@@ -732,4 +734,12 @@ body.non-fullscreen {
 .grid-number,
 .grid-dashed {
   z-index: 100 !important;
+}
+
+
+/* Fix: ensure mail-text visible in util state 1 */
+:root[data-util="1"] .mail-text {
+  display: inline-block !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }

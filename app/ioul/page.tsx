@@ -319,23 +319,14 @@ useEffect(() => {
           setSlideState("heading");
           break;
 
-        
         case "community":
           // slide community+zero back to menu-position
           document.querySelectorAll<HTMLElement>('.community-items-container *')
             .forEach(el => el.style.left = el.dataset.originalLeft!);
           document.querySelectorAll<HTMLElement>('.zero-items-container *')
             .forEach(el => el.style.left = el.dataset.originalLeft!);
-
-          // slide menu-items back toward original by +29vw
-          document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
-            .forEach(el => {
-              el.style.transition = "left 0.7s ease";
-              el.style.left = (parseFloat(el.style.left) + 29) + "vw";
-            });
           setSlideState("menu");
           break;
-
 
         case "menu":
           // slide menu back to heading-position

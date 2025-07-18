@@ -203,8 +203,6 @@ body.non-fullscreen {
     transition: opacity 0.6s ease, transform 0.6s ease;
     line-height: 1.3;
     padding-top: 0.1rem;
-
-  z-index: 201;
 }
 
 .chat-input {
@@ -605,7 +603,10 @@ body.non-fullscreen {
 }
 
 /* Chat hover logic */
-
+.hover-area:hover + .chat-text {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
 
 /* UTIL-LINE TOGGLE OVERRIDES */
 :root[data-util="0"] .mail-line,
@@ -755,10 +756,12 @@ body.non-fullscreen {
   }
 }
 
-
-
-/* Chat-text visible state controlled by React */
-.chat-text.visible {
-  opacity: 1 !important;
-  pointer-events: auto !important;
+/* === CHAT-TEXT HOVER LAYERING FIX === */
+.hover-area {
+  z-index: 200 !important;
 }
+
+.chat-text {
+  z-index: 201 !important;
+}
+

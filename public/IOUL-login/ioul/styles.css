@@ -203,7 +203,6 @@ body.non-fullscreen {
     transition: opacity 0.6s ease, transform 0.6s ease;
     line-height: 1.3;
     padding-top: 0.1rem;
-  z-index: 5;
 }
 
 .chat-input {
@@ -755,5 +754,19 @@ body.non-fullscreen {
   .mail-text {
     font-size: 9px !important;
   }
+}
+
+
+/* === CHAT-TEXT: reset hidden by default and ensure it's above all lines === */
+.chat-text {
+  opacity: 0 !important;           /* default hidden */
+  z-index: 201 !important;         /* above lines & slide-container */
+  transition: opacity 0.6s ease !important;
+}
+
+/* Ensure hover still shows it */
+.hover-area:hover + .chat-text {
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 

@@ -175,7 +175,7 @@ body.non-fullscreen {
     height: 100vh;
     pointer-events: none;
     clip-path: inset(0 0 0 36vw);
-    z-index: 200 !important;
+    z-index: 2;
 }
 
 .hover-area {
@@ -688,8 +688,6 @@ body.non-fullscreen {
   letter-spacing: 0.28vw !important;
   font-size: 0.47rem !important;
   text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171 !important;
-  display: none !important;
-  pointer-events: none !important;
 }
 
 /* mail-text specific positions */

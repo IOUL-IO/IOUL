@@ -637,6 +637,15 @@ body.non-fullscreen {
   pointer-events: auto !important;
 }
 
+/* UTIL-LINE TOGGLE POP OVERRIDES */
+.mail-text,
+.mail-line,
+.grid-number,
+.grid-dashed {
+  transition: none !important;
+  position: relative !important;
+  z-index: 1000 !important;
+}
 
 /* Default: hide mail and calendar grid */
 :root[data-util="0"] .mail-line,
@@ -726,3 +735,21 @@ body.non-fullscreen {
 .grid-dashed {
   z-index: 100 !important;
 }
+
+/* === FINAL OVERRIDES: ensure mail labels show and sit above the line === */
+:root[data-util="1"] .mail-text {
+  display: inline-block !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Lift the entire slide-container above util lines */
+.slide-container {
+  z-index: 150 !important;
+}
+
+/* Make sure each mail-text sits on top of the mail-line */
+.mail-text {
+  z-index: 200 !important;
+}
+

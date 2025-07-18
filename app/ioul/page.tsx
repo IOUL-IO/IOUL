@@ -704,7 +704,7 @@ useEffect(() => {
           <div className="line sixth" />
         </div>
 
-        <div className="slide-container">
+        <div className="slide-container" style={{ zIndex: 200 }}>
           <span className="account-text" style={{position:'absolute',top:'35.4vh',left:'-24.00vw'}}>AccOUnT nAME</span>
           <span className="account-text" style={{position:'absolute',top:'35.4vh',left:'26.00vw'}}>L1nK UP</span>
           <span className="account-text right-flow" style={{position:'absolute',top:'35.4vh',left:'33.19vw'}}>0</span>
@@ -803,15 +803,11 @@ useEffect(() => {
 
         <div className="hover-area" />
         <span className="chat-text" id="chatText">cHAT . . .</span>
-        {state === 1 && (
-          <>
-            <span className="mail-text to">TO:</span>
-            <span className="mail-text subject">SUBJEcT:</span>
-            <span className="mail-text cc">cc</span>
-            <span className="mail-text bcc">Bcc</span>
-            <span className="mail-text send">SEnD</span>
-          </>
-        }
+        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>TO:</span>
+        <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>SUBJEcT:</span>
+        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'89vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>cc</span>
+        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'91.9vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>Bcc</span>
+        <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'91.1vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>SEnD</span>
 
 
         <span className="grid-number num1">1</span>

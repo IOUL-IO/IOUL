@@ -175,7 +175,7 @@ body.non-fullscreen {
     height: 100vh;
     pointer-events: none;
     clip-path: inset(0 0 0 36vw);
-    z-index: 2;
+    z-index: 150;
 }
 
 .hover-area {
@@ -736,20 +736,10 @@ body.non-fullscreen {
   z-index: 100 !important;
 }
 
-/* === FINAL OVERRIDES: ensure mail labels show and sit above the line === */
-:root[data-util="1"] .mail-text {
-  display: inline-block !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-/* Lift the entire slide-container above util lines */
-.slide-container {
-  z-index: 150 !important;
-}
-
-/* Make sure each mail-text sits on top of the mail-line */
-.mail-text {
-  z-index: 200 !important;
+/* ==== LARGE SCREEN OVERRIDE: enlarge mail-text ==== */
+@media (min-width: 1900px) {
+  .mail-text {
+    font-size: 9px !important;
+  }
 }
 

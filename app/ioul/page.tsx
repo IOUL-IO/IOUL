@@ -704,7 +704,7 @@ useEffect(() => {
           <div className="line sixth" />
         </div>
 
-        <div className="slide-container" style={{ zIndex: 200 }}>
+        <div className="slide-container">
           <span className="account-text" style={{position:'absolute',top:'35.4vh',left:'-24.00vw'}}>AccOUnT nAME</span>
           <span className="account-text" style={{position:'absolute',top:'35.4vh',left:'26.00vw'}}>L1nK UP</span>
           <span className="account-text right-flow" style={{position:'absolute',top:'35.4vh',left:'33.19vw'}}>0</span>

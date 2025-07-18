@@ -175,7 +175,7 @@ body.non-fullscreen {
     height: 100vh;
     pointer-events: none;
     clip-path: inset(0 0 0 36vw);
-    z-index: 150;
+    z-index: 2;
 }
 
 .hover-area {
@@ -533,6 +533,7 @@ body.non-fullscreen {
 [data-util="1"] .mail-line,
 [data-util="1"] .mail-text {
   opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 [data-util="2"] .grid-number,

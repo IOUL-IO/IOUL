@@ -190,6 +190,9 @@ body.non-fullscreen {
 
 .chat-text {
     position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.1s ease;
     top: 77vh;
     left: 6.41vw;
     display: inline-block;
@@ -766,4 +769,5 @@ body.non-fullscreen {
 .chat-text.visible {
   opacity: 1 !important;
   pointer-events: auto !important;
+  transition: opacity 0.6s ease;
 }

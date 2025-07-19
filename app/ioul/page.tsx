@@ -53,19 +53,22 @@ const IOULPage: React.FC = () => {
     });
   };
 
+  /* --- Chat-text persistence --- */
+  const handleChatHover = useCallback(() => {
+    if (slideState === "none") setChatVisible(true);
+  }, [slideState]);
+
+  useEffect(() => {
+    if (slideState !== "none") setChatVisible(false);
+  }, [slideState]);
+  /* -------------------------------- */
+
   useEffect(() => {
     // Set base positions and update visibility on resize
     window.addEventListener('resize', updateVisibility);
     updateVisibility(); // Initial visibility update
 
     
-
-/* Chat-text one-time hover handler */
-const handleChatHover = useCallback(() => {
-  if (slideState === "none") {
-    setChatVisible(true);
-  }
-}, [slideState]);
 
 useEffect(() => {
   if (slideState !== "none") {

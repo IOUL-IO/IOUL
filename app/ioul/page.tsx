@@ -32,6 +32,12 @@ useEffect(() => {
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
+  // Gather item and center elements once after mount
+  useEffect(() => {
+    itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+    centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+  }, []);
+
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
@@ -597,7 +603,8 @@ setSlideState("menu");
   }, []);
 
   // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
+  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
+    if (!els) return;
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;

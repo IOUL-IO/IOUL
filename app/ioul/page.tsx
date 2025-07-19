@@ -35,6 +35,20 @@ centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .ce
   const [animating, setAnimating] = useState(false);
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
+
+// Collect slide target node lists on mount
+useEffect(() => {
+  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+  // set base-left data attribute once
+  const all = Array.from(itemElsRef.current ?? []).concat(Array.from(centerElsRef.current ?? []));
+  all.forEach(el => {
+    if (!el.dataset.baseLeftVw) {
+      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      el.dataset.baseLeftVw = (leftPx / (window.innerWidth / 100)).toString();
+    }
+  });
+}, []);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
   const FWD_MIN = 28.86, FWD_MAX = 32.43;   // forward trigger (right edge)

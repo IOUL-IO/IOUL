@@ -33,12 +33,15 @@ useEffect(() => {
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
-
-  // --- collect item and center elements on mount ---
-  useEffect(() => {
-    itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-    centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-  }, []);
+  // Ensure refs are populated even if the first click happens before the mount effect
+  const ensureRefs = () => {
+    if (!itemElsRef.current || itemElsRef.current.length === 0) {
+      itemElsRef.current = document.querySelectorAll('.item-text, .item-line');
+    }
+    if (!centerElsRef.current || centerElsRef.current.length === 0) {
+      centerElsRef.current = document.querySelectorAll('.center-text, .center-line');
+    }
+  };
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
@@ -520,6 +523,7 @@ setSlideState("menu");
 
     // Slide elements once
     const slideOnce = () => {
+      if (itemStage !== 0 || centerStage !== 0) return;
       if (sliding || targetsRef.current[0]?.dataset.slid === 'true') return;
       sliding = true;
 
@@ -543,6 +547,7 @@ setSlideState("menu");
 
     // Slide elements back
     const slideBack = () => {
+      if (itemStage !== 0 || centerStage !== 0) return;
       if (sliding || targetsRef.current[0]?.dataset.slid !== 'true') return;
       sliding = true;
 
@@ -590,7 +595,7 @@ setSlideState("menu");
     document.removeEventListener('click', handleClick);
     // (and any other listeners you attached in this effect)
   };
-}, [/* slideState, or whatever deps this effect really needs */]);
+}, [itemStage, centerStage]);
 
            useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
@@ -604,7 +609,8 @@ setSlideState("menu");
   }, []);
 
   // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
+  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
+    if (!els || els.length === 0) return;
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
@@ -614,9 +620,11 @@ setSlideState("menu");
 
   // Stage transitions
   const toStage1 = () => {
+    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -DIST);
+    updateVisibility();
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
@@ -624,10 +632,13 @@ setSlideState("menu");
   };
 
   const toStage2 = () => {
+    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -2 * DIST - GAP); // items out first
-    move(centerElsRef.current, -DIST - GAP); // center follows
+    updateVisibility();
+    move(centerElsRef.current, -DIST - GAP);
+    updateVisibility(); // center follows
     setTimeout(() => {
       setAnimating(false);
       setItemStage(2);
@@ -636,10 +647,13 @@ setSlideState("menu");
   };
 
   const backToStage1 = () => {
+    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(centerElsRef.current, 0); // center leaves first
+    updateVisibility();
     move(itemElsRef.current, -DIST); // items return after delay
+    updateVisibility();
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
@@ -648,9 +662,12 @@ setSlideState("menu");
   };
 
   const backToStage0 = () => {
+    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, 0);
+    updateVisibility();
+    updateVisibility();
     setTimeout(() => {
       setAnimating(false);
       setItemStage(0);

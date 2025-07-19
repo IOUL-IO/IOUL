@@ -32,8 +32,7 @@ useEffect(() => {
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-
-  // Lazily fetch the item & center NodeLists (ensures first-click works)
+  // Ensure NodeLists are populated and base left positions stored
   const ensureRefs = () => {
     if (!itemElsRef.current) {
       itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
@@ -41,7 +40,17 @@ useEffect(() => {
     if (!centerElsRef.current) {
       centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
     }
+    const pxToVw = (px: number) => px / (window.innerWidth / 100);
+    [itemElsRef.current, centerElsRef.current].forEach(list => {
+      list?.forEach(el => {
+        if (!el.dataset.baseLeftVw) {
+          const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+          el.dataset.baseLeftVw = pxToVw(leftPx).toString();
+        }
+      });
+    });
   };
+
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
@@ -607,10 +616,7 @@ setSlideState("menu");
   }, []);
 
   // Reusable move function for transitions
-  
-  // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
-    if (!els) return;
+  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
@@ -618,10 +624,9 @@ setSlideState("menu");
     });
   };
 
-
   // Stage transitions
   const toStage1 = () => {
-  ensureRefs();
+    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -DIST);
@@ -632,7 +637,7 @@ setSlideState("menu");
   };
 
   const toStage2 = () => {
-  ensureRefs();
+    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -2 * DIST - GAP); // items out first
@@ -645,7 +650,7 @@ setSlideState("menu");
   };
 
   const backToStage1 = () => {
-  ensureRefs();
+    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(centerElsRef.current, 0); // center leaves first
@@ -658,7 +663,7 @@ setSlideState("menu");
   };
 
   const backToStage0 = () => {
-  ensureRefs();
+    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, 0);

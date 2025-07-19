@@ -32,14 +32,33 @@ useEffect(() => {
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
+// ── Gather slide target elements on mount ────────────────────────────────
+useEffect(() => {
+  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+}, []);
 
-  const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
-  const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
+
+  const FWD_MIN = 32.43, FWD_MAX = 36;   // forward trigger (left edge)
+  const REV_MIN = 94, REV_MAX = 100;  // reverse trigger (right edge)  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
   const DIST = 60;
   const GAP = 10;                   // horizontal shift in vw
   const DUR = 600;                  // transition duration in ms
   const STAGGER = 0;                // delay between outgoing and incoming groups in ms
+
+// ── Visibility helper for item group clipping ────────────────────────────
+const updateItemVisibility = useCallback(() => {
+  if (!itemElsRef.current) return;
+  itemElsRef.current.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const l = toVw(rect.left);
+    const t = toVh(rect.top);
+    const hide = l < 28.86 && t >= TOP_MIN && t <= TOP_MAX;
+    el.style.opacity = hide ? '0' : '';
+    el.style.pointerEvents = hide ? 'none' : '';
+  });
+}, []);
 
   // Helper unit conversions
   const vw = () => window.innerWidth / 100;

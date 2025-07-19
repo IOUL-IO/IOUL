@@ -344,15 +344,7 @@ useEffect(() => {
           // slide menu back to heading-position
           document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
             .forEach(el => el.style.left = el.dataset.originalLeft!);
-          
-const headingBoxes = Array.from(document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]'));
-const headingOut = headingBoxes.some(box => box.style.transform === "translateX(0)");
-if (headingOut) {
-  setSlideState("heading");
-} else {
-  setSlideState("none");
-}
-
+          setSlideState("heading");
           break;
 
         case "heading":
@@ -401,11 +393,7 @@ if (headingOut) {
               el.style.transition = "left 0.7s ease";
               el.style.left = "6.41vw";
             });
-          
-chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
-chatTextRef.current!.style.opacity = "0";
-setSlideState("menu");
-
+          setSlideState("menu");
           break;
 
         case "menu":

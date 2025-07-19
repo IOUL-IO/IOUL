@@ -31,14 +31,7 @@ useEffect(() => {
   const [animating, setAnimating] = useState(false);
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-  \1
-
-// --- collect item and center groups on mount ---
-useEffect(() => {
-  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-}, []);
-
+  const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
@@ -321,7 +314,6 @@ useEffect(() => {
     const inRightZone = x >= 28.86 * vw && x <= 32.43 * vw && y >= 28.5 * vh && y <= 84 * vh;
 
     if (inLeftZone) {
-      if (itemStage !== 0 || centerStage !== 0) return;
       // ── Left edge clicks ─────────────────────────
       switch (slideState) {
         case "none":
@@ -449,7 +441,7 @@ setSlideState("menu");
   return () => {
     document.removeEventListener("click", handleEdgeClick, true);
   };
-}, [slideState, itemStage, centerStage]);
+}, [slideState]);
 
 
         useEffect(() => {
@@ -605,8 +597,7 @@ setSlideState("menu");
   }, []);
 
   // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
-    if (!els) return;
+  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;

@@ -37,8 +37,8 @@ centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .ce
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
-  const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
-  const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
+  const FWD_MIN = 28.86, FWD_MAX = 32.43;   // forward trigger (right edge)
+  const REV_MIN = 0, REV_MAX = 6.37;  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
   const DIST = 60;
   const GAP = 10;                   // horizontal shift in vw
@@ -53,14 +53,14 @@ centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .ce
 
 
   const updateVisibility = () => {
-    const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
-    const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
+    const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text, .center-text'));
+    const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line, .center-line'));
     const targets = textEls.concat(lineEls);
     targets.forEach(el => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 28.86 && t >= 28.5 && t <= 84;
+      const hide = l < 28.86;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });

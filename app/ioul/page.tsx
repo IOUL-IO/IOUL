@@ -33,6 +33,17 @@ useEffect(() => {
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
+// --- Ensure refs are populated before any move ---
+const ensureRefs = () => {
+  if (!itemElsRef.current) {
+    itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+  }
+  if (!centerElsRef.current) {
+    centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+  }
+};
+
+
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
@@ -607,6 +618,7 @@ setSlideState("menu");
 
   // Stage transitions
   const toStage1 = () => {
+    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -DIST);
@@ -617,6 +629,7 @@ setSlideState("menu");
   };
 
   const toStage2 = () => {
+    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -2 * DIST - GAP); // items out first
@@ -629,6 +642,7 @@ setSlideState("menu");
   };
 
   const backToStage1 = () => {
+    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(centerElsRef.current, 0); // center leaves first
@@ -641,6 +655,7 @@ setSlideState("menu");
   };
 
   const backToStage0 = () => {
+    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, 0);

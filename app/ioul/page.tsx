@@ -11,6 +11,13 @@ const IOULPage: React.FC = () => {
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
   const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
+
+// Disable hover-area clicks once chat has appeared so it no longer blocks util-line
+useEffect(() => {
+  if (chatInitialized && hoverAreaRef.current) {
+    hoverAreaRef.current.style.pointerEvents = "none";
+  }
+}, [chatInitialized]);
   const pageContentRef = useRef<HTMLDivElement | null>(null);
   
   const [state, setState] = useState(0); // 0 = baseline (lines visible, others hidden)
@@ -311,14 +318,13 @@ useEffect(() => {
       switch (slideState) {
         case "none":
           // fade out chat, slide in account+heading
+          chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
+          chatTextRef.current!.style.opacity = "0";
           setTimeout(() => {
             document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
               .forEach(box => box.style.transform = "translateX(0)");
-            document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]')
+            document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')
               .forEach(box => box.style.transform = "translateX(0)");
-
-document.querySelectorAll<HTMLElement>('.custom-line[data-slide-group="heading"]')
-  .forEach(line => line.style.transform = "translateX(0)");
           }, 110);
           setSlideState("heading");
           break;
@@ -342,15 +348,18 @@ document.querySelectorAll<HTMLElement>('.custom-line[data-slide-group="heading"]
 
 
         case "menu":
-
           // slide menu back to heading-position
           document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
             .forEach(el => el.style.left = el.dataset.originalLeft!);
+          
+const headingBoxes = Array.from(document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]'));
+const headingOut = headingBoxes.some(box => box.style.transform === "translateX(0)");
+if (headingOut) {
+  setSlideState("heading");
+} else {
+  setSlideState("none");
+}
 
-          // wait for the menu slide animation to finish before clearing slideState
-          setTimeout(() => {
-            setSlideState("none");
-          }, SLIDE_DURATION);
           break;
 
         case "heading":
@@ -360,11 +369,13 @@ document.querySelectorAll<HTMLElement>('.custom-line[data-slide-group="heading"]
               box.style.transition = "transform 0.7s ease";
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
             });
-          document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]')
+          document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')
             .forEach(box => {
               box.style.transition = "transform 0.7s ease";
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
             });
+          chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
+          chatTextRef.current!.style.opacity = "1";
           setSlideState("none");
           break;
       }
@@ -379,11 +390,13 @@ document.querySelectorAll<HTMLElement>('.custom-line[data-slide-group="heading"]
               box.style.transition = "transform 0.7s ease";
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
             });
-          document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]')
+          document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')
             .forEach(box => {
               box.style.transition = "transform 0.7s ease";
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
             });
+          chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
+          chatTextRef.current!.style.opacity = "1";
           setSlideState("none");
           break;
 
@@ -396,7 +409,8 @@ document.querySelectorAll<HTMLElement>('.custom-line[data-slide-group="heading"]
               el.style.left = "6.41vw";
             });
           
-setChatVisible(false);
+chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
+chatTextRef.current!.style.opacity = "0";
 setSlideState("menu");
 
           break;
@@ -729,7 +743,7 @@ return (
           <span style={{ position: 'absolute', top: '41.6vh', left: '35.41vw', zIndex: 1, fontFamily: "'Distill Expanded', sans-serif", color: '#111111', letterSpacing: '0.28vw', fontSize: '0.47rem', textShadow: '0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171', transition: 'left 0.7s ease', lineHeight: 1.6, overflow: 'visible' }}>OUR L1BRARY</span>
           <span style={{ position: 'absolute', top: '53vh', left: '35.41vw', zIndex: 1, fontFamily: "'Distill Expanded', sans-serif", color: '#111111', letterSpacing: '0.28vw', fontSize: '0.47rem', textShadow: '0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171', transition: 'left 0.7s ease', lineHeight: 1.6, overflow: 'visible' }}>ADD-On SHOP</span>
           <span style={{ position: 'absolute', top: '59.2vh', left: '35.41vw', zIndex: 1, fontFamily: "'Distill Expanded', sans-serif", color: '#111111', letterSpacing: '0.28vw', fontSize: '0.47rem', textShadow: '0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171', transition: 'left 0.7s ease', lineHeight: 1.6, overflow: 'visible' }}>1OUL cEnTER</span>
-          <div className="custom-line" style={{ position: 'absolute', top: '47.8vh', left: '35.41vw', width: '22.48vw', height: '1px', backgroundColor: 'rgba(230,230,230,0.28)', transition: 'left 0.7s ease, transform 0.7s ease', zIndex: 1 }} />
+          <div className="custom-line" style={{ position:'absolute', top:'47.8vh', left:'6.41vw', transform:'translateX(-49vw)', width:'22.48vw', height:'1px', backgroundColor:'rgba(230,230,230,0.28)', transition:'left 0.7s ease, transform 0.7s ease', zIndex:1 }} data-offset="-49" data-slide-group="heading" />
         </div>
 
         <div className="zero-items-container" style={{ position: 'absolute', zIndex: 1 }}>
@@ -746,7 +760,7 @@ return (
           <div className="line third" />
           <div className="line fourth" />
           <div className="line fifth" />
-          <div className="line mail-line" style={{ position: 'absolute', top: '47.8vh', left: '36vw', width: '57.8vw', height: '1px', backgroundColor: 'rgba(230,230,230,0.28)', opacity: 0, transition: 'opacity 0.3s ease', zIndex: 1 }} />
+          <div className="line mail-line" style={{ position: 'absolute', top: '47.8vh', left: '36vw', width: '57.8vw', height: '1px', backgroundColor: 'rgba(230,230,230,0.28)', zIndex: 1 }} />
           <div className="line sixth" />
         </div>
 
@@ -848,12 +862,13 @@ return (
 
 
         <div className="hover-area" ref={hoverAreaRef}  onMouseEnter={handleChatHover} />
+
         <span ref={chatTextRef} id="chatText" className={`chat-text${chatVisible ? " visible" : ""}`}>cHAT . . .</span>
-        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>TO:</span>
-        <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>SUBJEcT:</span>
-        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'89vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>cc</span>
-        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'91.9vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>Bcc</span>
-        <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'91.1vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>SEnD</span>
+        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>TO:</span>
+        <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>SUBJEcT:</span>
+        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'89vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>cc</span>
+        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'91.9vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>Bcc</span>
+        <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'91.1vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>SEnD</span>
 
 
         <span className="grid-number num1">1</span>
@@ -950,24 +965,7 @@ return (
 
         <div className="custom-line" style={{ left: '-42.59vw' }} />
 
-        
-<div
-  className="custom-line"
-  style={{
-    position: 'absolute',
-    top: '47.8vh',
-    left: '6.41vw',
-    width: '22.48vw',
-    height: '1px',
-    backgroundColor: 'rgba(230,230,230,0.28)',
-    transform: 'translateX(-49vw)',
-    transition: 'transform 0.7s ease',
-    zIndex: 1
-  }}
-  data-offset="-49"
-  data-slide-group="heading"
-/>
-<div className="layer-five" />
+        <div className="layer-five" />
         <div className="layer-six" />
         
         <div className="slide-triggers">

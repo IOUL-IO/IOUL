@@ -327,7 +327,6 @@ useEffect(() => {
 document.querySelectorAll<HTMLElement>('.custom-line[data-slide-group="heading"]')
   .forEach(line => line.style.transform = "translateX(0)");
 
-  .forEach(line => line.style.transform = "translateX(0)");
           }, 110);
           setSlideState("heading");
           break;

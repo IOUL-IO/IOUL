@@ -374,7 +374,6 @@ document.querySelectorAll<HTMLElement>('.custom-line[data-slide-group="heading"]
     line.style.transform = `translateX(${(line as HTMLElement).dataset.offset}vw)`;
   });
 
-  .forEach(line => {
     line.style.transition = "transform 0.7s ease";
     line.style.transform = `translateX(${(line as HTMLElement).dataset.offset}vw)`;
   });

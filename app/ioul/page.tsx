@@ -59,20 +59,18 @@ const IOULPage: React.FC = () => {
 
     
 
-/* --- Chat-text persistence --------------------------------------- */
+/* Chat-text one-time hover handler */
 const handleChatHover = useCallback(() => {
   if (slideState === "none") {
-    setChatVisible(true);       // show once
+    setChatVisible(true);
   }
 }, [slideState]);
 
-// hide label whenever we leave baseline state
 useEffect(() => {
   if (slideState !== "none") {
     setChatVisible(false);
   }
 }, [slideState]);
-/* ----------------------------------------------------------------- */
 
 return () => {
       window.removeEventListener('resize', updateVisibility); // Clean up resize event listener

@@ -11,6 +11,13 @@ const IOULPage: React.FC = () => {
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
   const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
+
+// Disable hover-area clicks once chat has appeared so it no longer blocks util-line
+useEffect(() => {
+  if (chatInitialized && hoverAreaRef.current) {
+    hoverAreaRef.current.style.pointerEvents = "none";
+  }
+}, [chatInitialized]);
   const pageContentRef = useRef<HTMLDivElement | null>(null);
   
   const [state, setState] = useState(0); // 0 = baseline (lines visible, others hidden)
@@ -319,6 +326,8 @@ useEffect(() => {
 
 document.querySelectorAll<HTMLElement>('.custom-line[data-slide-group="heading"]')
   .forEach(line => line.style.transform = "translateX(0)");
+
+  .forEach(line => line.style.transform = "translateX(0)");
           }, 110);
           setSlideState("heading");
           break;
@@ -361,6 +370,11 @@ document.querySelectorAll<HTMLElement>('.custom-line[data-slide-group="heading"]
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
 
 document.querySelectorAll<HTMLElement>('.custom-line[data-slide-group="heading"]')
+  .forEach(line => {
+    line.style.transition = "transform 0.7s ease";
+    line.style.transform = `translateX(${(line as HTMLElement).dataset.offset}vw)`;
+  });
+
   .forEach(line => {
     line.style.transition = "transform 0.7s ease";
     line.style.transform = `translateX(${(line as HTMLElement).dataset.offset}vw)`;
@@ -958,6 +972,23 @@ return (
 
         <div className="layer-five" />
         <div className="layer-six" />
+
+<div
+  className="custom-line"
+  style={{
+    position: 'absolute',
+    top: '47.8vh',
+    left: '6.41vw',
+    width: '22.48vw',
+    height: '0.15rem',
+    background: '#111111',
+    transform: 'translateX(-49vw)',
+    transition: 'transform 0.7s ease',
+    zIndex: 1
+  }}
+  data-offset="-49"
+  data-slide-group="heading"
+/>
         
         <div className="slide-triggers">
           <div className="slide-trigger" />

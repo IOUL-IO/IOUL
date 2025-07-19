@@ -339,15 +339,18 @@ useEffect(() => {
 
 
         case "menu":
-
           // slide menu back to heading-position
           document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
             .forEach(el => el.style.left = el.dataset.originalLeft!);
+          
+const headingBoxes = Array.from(document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]'));
+const headingOut = headingBoxes.some(box => box.style.transform === "translateX(0)");
+if (headingOut) {
+  setSlideState("heading");
+} else {
+  setSlideState("none");
+}
 
-          // wait for the menu slide animation to finish before clearing slideState
-          setTimeout(() => {
-            setSlideState("none");
-          }, SLIDE_DURATION);
           break;
 
         case "heading":
@@ -393,34 +396,24 @@ useEffect(() => {
               el.style.left = "6.41vw";
             });
           
-setChatVisible(false);
 setSlideState("menu");
 
           break;
 
-        case "menu":
-          // second menu/community click
-          document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
-            .forEach(el => {
-              el.dataset.originalLeft ||= el.style.left;
-              el.style.transition = "left 0.7s ease";
-              el.style.left = (parseFloat(el.style.left) - 29) + "vw";
-            });
-          document.querySelectorAll<HTMLElement>('.community-items-container *')
-            .forEach(el => {
-              el.dataset.originalLeft ||= el.style.left;
-              el.style.transition = "left 0.7s ease";
-              el.style.left = (parseFloat(el.style.left) - 29) + "vw";
-            });
-          document.querySelectorAll<HTMLElement>('.zero-items-container *')
-            .forEach(el => {
-              el.dataset.originalLeft ||= el.style.left;
-              el.style.transition = "left 0.7s ease";
-              el.style.left = (parseFloat(el.style.left) - 29) + "vw";
-            });
-          setSlideState("community");
-          break;
-
+          case "menu":
+            // slide menu-items back to original position
+            document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
+              .forEach(el => {
+                el.style.transition = "left 0.7s ease";
+                if (el.dataset.originalLeft) {
+                  el.style.left = el.dataset.originalLeft;
+                }
+              });
+            // wait for the menu slide animation to finish before clearing slideState
+            setTimeout(() => {
+              setSlideState("none");
+            }, SLIDE_DURATION);
+            break;
         case "community":
           // optional: return from community to none
           document.querySelectorAll<HTMLElement>('.menu-items .menu-item')

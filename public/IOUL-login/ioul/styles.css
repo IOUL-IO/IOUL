@@ -810,4 +810,4 @@ body.non-fullscreen {
   pointer-events: none !important;
 }
 
-.line.util-line{ z-index: 10 !important; pointer-events: auto !important;}
+.line.util-line{ z-index: 300 !important; pointer-events: auto !important;}

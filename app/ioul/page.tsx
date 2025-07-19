@@ -7,6 +7,8 @@ const IOULPage: React.FC = () => {
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
   const [chatVisible, setChatVisible] = useState(false);
+  const [chatInitialized, setChatInitialized] = useState(false);
+  const SLIDE_DURATION = 700; // slide animation duration (ms)
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
   const pageContentRef = useRef<HTMLDivElement | null>(null);
@@ -673,32 +675,60 @@ useEffect(() => {
 
 
   
-// ─── Chat-text hover visibility ────────────────────────────────────────
+// keep <html> element updated with current slide state for CSS hooks
 useEffect(() => {
-  const hoverEl = hoverAreaRef.current;
-  const chatEl = chatTextRef.current;
-  if (!hoverEl || !chatEl) return;
-  const show = () => { chatEl.style.opacity = '1'; };
-  const hide = () => { chatEl.style.opacity = '0'; };
-  hoverEl.addEventListener('mouseenter', show);
-  hoverEl.addEventListener('mouseleave', hide);
-  return () => {
-    hoverEl.removeEventListener('mouseenter', show);
-    hoverEl.removeEventListener('mouseleave', hide);
-  };
-}, []);
-// ===== Chat-text persistent visibility =====
-const handleChatHover = useCallback(() => {
-  if (slideState === "none") {
-    setChatVisible(true);
-  }
+  document.documentElement.setAttribute("data-slide", slideState);
 }, [slideState]);
 
-useEffect(() => {
-  if (slideState !== "none") {
-    setChatVisible(false);
+// ===== Chat-text persistent visibility =====
+const handleChatHover = useCallback(() => {
+  if (!chatInitialized && slideState === "none") {
+    setChatVisible(true);
+    setChatInitialized(true);
+    if (chatTextRef.current) {
+      chatTextRef.current.style.opacity = "1";
+    }
   }
+}, [chatInitialized, slideState]);
+}
 }, [slideState]);
+
+// Hide chat-text during slides; reveal once everything is back
+useEffect(() => {
+  const chatEl = chatTextRef.current;
+  let timer: ReturnType<typeof setTimeout> | null = null;
+
+  if (!chatEl) return;
+
+  if (slideState !== "none") {
+    // any panel is out – hide immediately
+    setChatVisible(false);
+    chatEl.style.opacity = "0";
+  } else if (chatInitialized) {
+    // all panels back – show after slide duration
+    timer = setTimeout(() => {
+      setChatVisible(true);
+      chatEl.style.opacity = "1";
+    }, SLIDE_DURATION);
+  }
+
+  return () => {
+    if (timer) clearTimeout(timer);
+  };
+}, [slideState, chatInitialized]);
+chatEl.style.opacity = "0";
+  } else if (chatInitialized) {
+    // all panels back – show after slide duration
+    timer = setTimeout(() => {
+      setChatVisible(true);
+      chatEl.style.opacity = "1";
+    }, SLIDE_DURATION);
+  }
+
+  return () => {
+    if (timer) clearTimeout(timer);
+  };
+}, [slideState, chatInitialized]);
 
 
 return (

@@ -589,7 +589,7 @@ setSlideState("menu");
     // Click listener for the page
     const handleClick = (e: MouseEvent) => {
       const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
-      if (vw >= CLICK_MIN && vw <= CLICK_MAX) && itemStage===0 && centerStage===0 {
+      if (vw >= CLICK_MIN && vw <= CLICK_MAX && itemStage===0 && centerStage===0) {
         slideOnce();
       } else if (vw >= REVERSE_MIN && vw <= REVERSE_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
         slideBack();

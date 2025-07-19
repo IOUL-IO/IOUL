@@ -48,12 +48,6 @@ useEffect(() => {
   const toVh = (px: number) => px / vh();
 
 
-// Capture item and center elements once after mount
-useEffect(() => {
-  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-}, []);
-
   const updateVisibility = () => {
     const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
     const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
@@ -570,6 +564,19 @@ setSlideState("menu");
 
     document.addEventListener('click', handleClick);
 
+    // Stop propagation for slide actions
+    document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        slideOnce();
+      });
+    });
+
+    document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        slideBack();
+      });
     });
 
             return () => {

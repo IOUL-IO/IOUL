@@ -53,30 +53,12 @@ const IOULPage: React.FC = () => {
     });
   };
 
-  /* --- Chat-text persistence --- */
-  const handleChatHover = useCallback(() => {
-    if (slideState === "none") setChatVisible(true);
-  }, [slideState]);
-
-  useEffect(() => {
-    if (slideState !== "none") setChatVisible(false);
-  }, [slideState]);
-  /* -------------------------------- */
-
   useEffect(() => {
     // Set base positions and update visibility on resize
     window.addEventListener('resize', updateVisibility);
     updateVisibility(); // Initial visibility update
 
-    
-
-useEffect(() => {
-  if (slideState !== "none") {
-    setChatVisible(false);
-  }
-}, [slideState]);
-
-return () => {
+    return () => {
       window.removeEventListener('resize', updateVisibility); // Clean up resize event listener
     };
   }, []);
@@ -690,7 +672,36 @@ useEffect(() => {
 }, [slideState, itemStage, centerStage]);
 
 
-  return (
+  
+// ─── Chat-text hover visibility ────────────────────────────────────────
+useEffect(() => {
+  const hoverEl = hoverAreaRef.current;
+  const chatEl = chatTextRef.current;
+  if (!hoverEl || !chatEl) return;
+  const show = () => { chatEl.style.opacity = '1'; };
+  const hide = () => { chatEl.style.opacity = '0'; };
+  hoverEl.addEventListener('mouseenter', show);
+  hoverEl.addEventListener('mouseleave', hide);
+  return () => {
+    hoverEl.removeEventListener('mouseenter', show);
+    hoverEl.removeEventListener('mouseleave', hide);
+  };
+}, []);
+// ===== Chat-text persistent visibility =====
+const handleChatHover = useCallback(() => {
+  if (slideState === "none") {
+    setChatVisible(true);
+  }
+}, [slideState]);
+
+useEffect(() => {
+  if (slideState !== "none") {
+    setChatVisible(false);
+  }
+}, [slideState]);
+
+
+return (
     <div className="non-fullscreen" translate="no">
       <p style={{ display: 'none' }} lang="en">This page is already in English. No translation is needed.</p>
 
@@ -831,8 +842,8 @@ useEffect(() => {
         <span className="item-text right-flow" style={{position:'absolute',top:'59.2vh',left:'131vw'}}>0</span>
 
 
-        <div className="hover-area" onMouseEnter={handleChatHover} />
-        <span id="chatText" className={`chat-text${chatVisible ? " visible" : ""}`}>cHAT . . .</span>
+        <div className="hover-area" ref={hoverAreaRef}  onMouseEnter={handleChatHover} />
+        <span ref={chatTextRef} id="chatText" className={`chat-text${chatVisible ? " visible" : ""}`}>cHAT . . .</span>
         <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>TO:</span>
         <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>SUBJEcT:</span>
         <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'89vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>cc</span>

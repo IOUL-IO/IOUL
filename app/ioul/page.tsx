@@ -604,14 +604,21 @@ setSlideState("menu");
   }, []);
 
   // Reusable move function for transitions
+  
   const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
     if (!els) return;
     els.forEach((el) => {
-      const base = parseFloat(el.dataset.baseLeftVw || '0');
+      // Ensure we capture the element's baseline left position (in vw) exactly once
+      if (!el.dataset.baseLeftVw) {
+        const leftCss = window.getComputedStyle(el).left || '0';
+        el.dataset.baseLeftVw = parseFloat(leftCss) || 0 + '';
+      }
+      const base = parseFloat(el.dataset.baseLeftVw);
       el.style.transition = `left ${DUR}ms ease`;
       el.style.left = `${base + offset}vw`;
     });
   };
+
 
   // Stage transitions
   const toStage1 = () => {

@@ -374,7 +374,7 @@ if (headingOut) {
                 document.querySelectorAll<HTMLElement>('.custom-line[data-slide-group="heading"]')
                   .forEach(line => {
                     line.style.transition = "transform 0.7s ease";
-                    line.style.transform = `translateX(${(line as HTMLElement).dataset.offset}vw)`;
+                    line.style.transform = `translateX(${line.dataset.offset}vw)`;
                   });            });
           document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]')
             .forEach(box => {
@@ -970,7 +970,7 @@ return (
           <span className="custom-text right-flow" style={{position:'absolute',right:0}}>0</span>
         </div>
 
-        <div className="custom-line" style={{ position:'absolute', left:'-42.59vw', transform:'translateX(-49vw)', transition:'transform 0.7s ease', zIndex:1 }} data-offset="-49" data-slide-group="heading" />
+        <div className="custom-line" style={{ position: 'absolute', top: '30vh', left: '6.41vw', width:'49vw', height:'0.15rem', background:'#111111', transform: 'translateX(-49vw)', transition: 'transform 0.7s ease', zIndex: 1 }} data-offset="-49" data-slide-group="heading" />
 
         <div className="layer-five" />
         <div className="layer-six" />

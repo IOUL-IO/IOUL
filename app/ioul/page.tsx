@@ -317,9 +317,7 @@ useEffect(() => {
       // ── Left edge clicks ─────────────────────────
       switch (slideState) {
         case "none":
-          // fade out chat, slide in account+heading
-          chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
-          chatTextRef.current!.style.opacity = "0";
+          // fade out chat, slide in account+heading          chatTextRef.current!.style.opacity = "0";
           setTimeout(() => {
             document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
               .forEach(box => box.style.transform = "translateX(0)");
@@ -373,10 +371,7 @@ if (headingOut) {
             .forEach(box => {
               box.style.transition = "transform 0.7s ease";
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
-            });
-          chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
-          chatTextRef.current!.style.opacity = "1";
-          setSlideState("none");
+            });          setSlideState("none");
           break;
       }
     }
@@ -394,10 +389,7 @@ if (headingOut) {
             .forEach(box => {
               box.style.transition = "transform 0.7s ease";
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
-            });
-          chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
-          chatTextRef.current!.style.opacity = "1";
-          setSlideState("none");
+            });          setSlideState("none");
           break;
 
         case "none":
@@ -407,10 +399,7 @@ if (headingOut) {
               el.dataset.originalLeft = el.style.left;
               el.style.transition = "left 0.7s ease";
               el.style.left = "6.41vw";
-            });
-          
-chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
-chatTextRef.current!.style.opacity = "0";
+            });chatTextRef.current!.style.opacity = "0";
 setSlideState("menu");
 
           break;

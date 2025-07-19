@@ -311,8 +311,6 @@ useEffect(() => {
       switch (slideState) {
         case "none":
           // fade out chat, slide in account+heading
-          chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
-          chatTextRef.current!.style.opacity = "0";
           setTimeout(() => {
             document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
               .forEach(box => box.style.transform = "translateX(0)");
@@ -341,10 +339,15 @@ useEffect(() => {
 
 
         case "menu":
+
           // slide menu back to heading-position
           document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
             .forEach(el => el.style.left = el.dataset.originalLeft!);
-          setSlideState("heading");
+
+          // wait for the menu slide animation to finish before clearing slideState
+          setTimeout(() => {
+            setSlideState("none");
+          }, SLIDE_DURATION);
           break;
 
         case "heading":
@@ -359,8 +362,6 @@ useEffect(() => {
               box.style.transition = "transform 0.7s ease";
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
             });
-          chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
-          chatTextRef.current!.style.opacity = "1";
           setSlideState("none");
           break;
       }
@@ -380,8 +381,6 @@ useEffect(() => {
               box.style.transition = "transform 0.7s ease";
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
             });
-          chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
-          chatTextRef.current!.style.opacity = "1";
           setSlideState("none");
           break;
 
@@ -393,7 +392,10 @@ useEffect(() => {
               el.style.transition = "left 0.7s ease";
               el.style.left = "6.41vw";
             });
-          setSlideState("menu");
+          
+setChatVisible(false);
+setSlideState("menu");
+
           break;
 
         case "menu":

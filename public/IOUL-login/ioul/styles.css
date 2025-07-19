@@ -23,10 +23,10 @@ body.non-fullscreen {
     position: fixed;
     top: 0;
     left: 0;
-    width: 28.86vw;
+    width: 6.37vw;
     height: 100vh;
     background-color: #ffffff;
-    z-index: 10000;
+    z-index: 100;
     pointer-events: none;
 }
 .layer-two {

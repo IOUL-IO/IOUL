@@ -7,7 +7,9 @@ const IOULPage: React.FC = () => {
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
   const [chatVisible, setChatVisible] = useState(false);
+  const [chatInitialized, setChatInitialized] = useState(false);
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
+  const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
   const pageContentRef = useRef<HTMLDivElement | null>(null);
   
@@ -342,7 +344,15 @@ useEffect(() => {
           // slide menu back to heading-position
           document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
             .forEach(el => el.style.left = el.dataset.originalLeft!);
-          setSlideState("heading");
+          
+const headingBoxes = Array.from(document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]'));
+const headingOut = headingBoxes.some(box => box.style.transform === "translateX(0)");
+if (headingOut) {
+  setSlideState("heading");
+} else {
+  setSlideState("none");
+}
+
           break;
 
         case "heading":
@@ -391,7 +401,11 @@ useEffect(() => {
               el.style.transition = "left 0.7s ease";
               el.style.left = "6.41vw";
             });
-          setSlideState("menu");
+          
+chatTextRef.current?.style.setProperty("transition", "opacity 0.1s ease");
+chatTextRef.current!.style.opacity = "0";
+setSlideState("menu");
+
           break;
 
         case "menu":
@@ -673,32 +687,30 @@ useEffect(() => {
 
 
   
-// ─── Chat-text hover visibility ────────────────────────────────────────
-useEffect(() => {
-  const hoverEl = hoverAreaRef.current;
-  const chatEl = chatTextRef.current;
-  if (!hoverEl || !chatEl) return;
-  const show = () => { chatEl.style.opacity = '1'; };
-  const hide = () => { chatEl.style.opacity = '0'; };
-  hoverEl.addEventListener('mouseenter', show);
-  hoverEl.addEventListener('mouseleave', hide);
-  return () => {
-    hoverEl.removeEventListener('mouseenter', show);
-    hoverEl.removeEventListener('mouseleave', hide);
-  };
-}, []);
 // ===== Chat-text persistent visibility =====
 const handleChatHover = useCallback(() => {
-  if (slideState === "none") {
+  if (!chatInitialized && slideState === "none") {
+    setChatInitialized(true);
     setChatVisible(true);
   }
-}, [slideState]);
-
+}, [chatInitialized, slideState]);
+// Hide chat-text during slides, reveal once panels are back
 useEffect(() => {
-  if (slideState !== "none") {
+  let timer: ReturnType<typeof setTimeout> | null = null;
+
+  if (slideState === "none") {
+    if (chatInitialized) {
+      timer = setTimeout(() => setChatVisible(true), SLIDE_DURATION);
+    }
+  } else {
     setChatVisible(false);
   }
-}, [slideState]);
+
+  return () => {
+    if (timer) clearTimeout(timer);
+  };
+}, [slideState, chatInitialized]);
+
 
 
 return (
@@ -842,13 +854,13 @@ return (
         <span className="item-text right-flow" style={{position:'absolute',top:'59.2vh',left:'131vw'}}>0</span>
 
 
-        <div className="hover-area" ref={hoverAreaRef}  onMouseEnter={handleChatHover}  onClick={handleUtilLineClick} />
+        <div className="hover-area" ref={hoverAreaRef}  onMouseEnter={handleChatHover} />
         <span ref={chatTextRef} id="chatText" className={`chat-text${chatVisible ? " visible" : ""}`}>cHAT . . .</span>
-        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>TO:</span>
-        <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>SUBJEcT:</span>
-        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'89vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>cc</span>
-        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'91.9vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>Bcc</span>
-        <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'91.1vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>SEnD</span>
+        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',transition:'opacity 0.3s ease'}}>TO:</span>
+        <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',transition:'opacity 0.3s ease'}}>SUBJEcT:</span>
+        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'89vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',transition:'opacity 0.3s ease'}}>cc</span>
+        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'91.9vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',transition:'opacity 0.3s ease'}}>Bcc</span>
+        <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'91.1vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',transition:'opacity 0.3s ease'}}>SEnD</span>
 
 
         <span className="grid-number num1">1</span>

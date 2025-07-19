@@ -6,7 +6,6 @@ const IOULPage: React.FC = () => {
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
-  const [chatVisible, setChatVisible] = useState(false);
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
   const pageContentRef = useRef<HTMLDivElement | null>(null);
@@ -57,13 +56,25 @@ const IOULPage: React.FC = () => {
     // Set base positions and update visibility on resize
     window.addEventListener('resize', updateVisibility);
     updateVisibility(); // Initial visibility update
-// Hide chat label whenever a slide is active
-useEffect(() => {
-  if (slideState !== "none") setChatVisible(false);
+
+    
+
+/* --- Chat-text persistence --------------------------------------- */
+const handleChatHover = useCallback(() => {
+  if (slideState === "none") {
+    setChatVisible(true);       // show once
+  }
 }, [slideState]);
 
+// hide label whenever we leave baseline state
+useEffect(() => {
+  if (slideState !== "none") {
+    setChatVisible(false);
+  }
+}, [slideState]);
+/* ----------------------------------------------------------------- */
 
-    return () => {
+return () => {
       window.removeEventListener('resize', updateVisibility); // Clean up resize event listener
     };
   }, []);
@@ -818,8 +829,8 @@ useEffect(() => {
         <span className="item-text right-flow" style={{position:'absolute',top:'59.2vh',left:'131vw'}}>0</span>
 
 
-        <div className="hover-area" / onMouseEnter={() => { if (slideState === "none") setChatVisible(true); }}>
-        <span id="chatText" className={`chat-text${chatVisible ? " visible" : ""}`}>cHAT . . .</span>
+        <div className="hover-area" onMouseEnter={handleChatHover} />
+        <span id="chatText" className={`chat-text${chatVisible && slideState==="none" ? " visible" : ""}`}>cHAT . . .</span>
         <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>TO:</span>
         <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>SUBJEcT:</span>
         <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'89vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>cc</span>

@@ -34,7 +34,7 @@ useEffect(() => {
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
-  const REV_MIN = 26, REV_MAX = 32.43;  // reverse trigger (left edge)
+  const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
   const DIST = 60;
   const GAP = 10;                   // horizontal shift in vw
@@ -44,20 +44,7 @@ useEffect(() => {
   // Helper unit conversions
   const vw = () => window.innerWidth / 100;
   const vh = () => window.innerHeight / 100;
-  
-  // === Collect item/center DOM nodes and cache their base positions ===
-  useEffect(() => {
-    itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-    centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-    const allEls = [...Array.from(itemElsRef.current), ...Array.from(centerElsRef.current)];
-    allEls.forEach(el => {
-      if (!el.dataset.baseLeftVw) {
-        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-        el.dataset.baseLeftVw = toVw(leftPx).toString();
-      }
-    });
-  }, []);
-const toVw = (px: number) => px / vw();
+  const toVw = (px: number) => px / vw();
   const toVh = (px: number) => px / vh();
 
 
@@ -72,22 +59,7 @@ const toVw = (px: number) => px / vw();
       const hide = l < 28.86 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
-     });
-   };
-  // Kick off a temporary animation-loop that refreshes
-  // clipping / opacity on every frame for the duration
-  // of the slide transition. This guarantees that the
-  // item group is hidden *while* it’s moving – not
-  // just after it reaches its end‑state.
-  const animateVisibility = () => {
-    const start = performance.now();
-    const run = () => {
-      updateVisibility();
-      if (performance.now() - start < DUR) {
-        requestAnimationFrame(run);
-      }
-    };
-    requestAnimationFrame(run);
+    });
   };
 
   useEffect(() => {
@@ -342,8 +314,6 @@ useEffect(() => {
     const inRightZone = x >= 28.86 * vw && x <= 32.43 * vw && y >= 28.5 * vh && y <= 84 * vh;
 
     if (inLeftZone) {
-      if (itemStage !== 0 || centerStage !== 0) return;
-
       // ── Left edge clicks ─────────────────────────
       switch (slideState) {
         case "none":
@@ -406,8 +376,6 @@ if (headingOut) {
       }
     }
     else if (inRightZone) {
-      if (itemStage !== 0 || centerStage !== 0) return;
-
       // ── Right edge clicks ────────────────────────
       switch (slideState) {
         case "heading":
@@ -479,8 +447,8 @@ setSlideState("menu");
         useEffect(() => {
     const HIDE_MIN = 6.37, HIDE_MAX = 28.86;
     const TOP_MIN = 28.5, TOP_MAX = 84;
-    const CLICK_MIN = 26, CLICK_MAX = 32.43;
-    const REVERSE_MIN = 26, REVERSE_MAX = 32.43;
+    const CLICK_MIN = 32.43, CLICK_MAX = 36;
+    const REVERSE_MIN = 94, REVERSE_MAX = 100;
     const DISTANCE = 60, DURATION = 700;
 
     // Helper functions for px to vw and vh conversions
@@ -545,7 +513,6 @@ setSlideState("menu");
 
     // Slide elements once
     const slideOnce = () => {
-      if (itemStage !== 0 || centerStage !== 0) return;
       if (sliding || targetsRef.current[0]?.dataset.slid === 'true') return;
       sliding = true;
 
@@ -569,7 +536,6 @@ setSlideState("menu");
 
     // Slide elements back
     const slideBack = () => {
-      if (itemStage !== 0 || centerStage !== 0) return;
       if (sliding || targetsRef.current[0]?.dataset.slid !== 'true') return;
       sliding = true;
 
@@ -589,7 +555,7 @@ setSlideState("menu");
     // Click listener for the page
     const handleClick = (e: MouseEvent) => {
       const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
-      if (vw >= CLICK_MIN && vw <= CLICK_MAX && itemStage===0 && centerStage===0) {
+      if (vw >= CLICK_MIN && vw <= CLICK_MAX) {
         slideOnce();
       } else if (vw >= REVERSE_MIN && vw <= REVERSE_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
         slideBack();
@@ -617,7 +583,7 @@ setSlideState("menu");
     document.removeEventListener('click', handleClick);
     // (and any other listeners you attached in this effect)
   };
-}, [itemStage, centerStage]);
+}, [/* slideState, or whatever deps this effect really needs */]);
 
            useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
@@ -631,8 +597,7 @@ setSlideState("menu");
   }, []);
 
   // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
-    if (!els) return;
+  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
@@ -640,73 +605,48 @@ setSlideState("menu");
     });
   };
 
-  
-const startClipping = () => {
-  const start = performance.now();
-  const tick = () => {
-    updateVisibility();
-    if (performance.now() - start < DUR) {
-      requestAnimationFrame(tick);
-    }
-  };
-  tick();
-};
-
-// Stage transitions
-
+  // Stage transitions
   const toStage1 = () => {
-    animateVisibility();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -DIST);
-    startClipping();
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
-      updateVisibility();
     }, DUR);
   };
 
   const toStage2 = () => {
-    animateVisibility();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -2 * DIST - GAP); // items out first
-    move(centerElsRef.current, -DIST - GAP);
-    startClipping(); // center follows
+    move(centerElsRef.current, -DIST - GAP); // center follows
     setTimeout(() => {
       setAnimating(false);
       setItemStage(2);
       setCenterStage(1);
-      updateVisibility();
     }, DUR + STAGGER);
   };
 
   const backToStage1 = () => {
-    animateVisibility();
     if (animating) return;
     setAnimating(true);
     move(centerElsRef.current, 0); // center leaves first
     move(itemElsRef.current, -DIST); // items return after delay
-    startClipping();
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
       setCenterStage(0);
-      updateVisibility();
     }, DUR + STAGGER);
   };
 
   const backToStage0 = () => {
-    animateVisibility();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, 0);
-    startClipping();
     setTimeout(() => {
       setAnimating(false);
       setItemStage(0);
-      updateVisibility();
     }, DUR);
   };
 

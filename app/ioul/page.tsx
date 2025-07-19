@@ -952,7 +952,7 @@ return (
           <span className="custom-text right-flow" style={{position:'absolute',right:0}}>0</span>
         </div>
 
-        <div className="custom-line" style={{ position:'absolute', top:'47.8vh', left:'6.41vw', transform:'translateX(-49vw)', width:'22.48vw', height:'1px', backgroundColor:'rgba(230,230,230,0.28)', transition:'left 0.7s ease, transform 0.7s ease', zIndex:1 }} data-offset="-49" data-slide-group="heading" />
+        <div className="custom-line" style={{ position:'absolute', top:'47.8vh', left:'6.41vw', transform:'translateX(-49vw)', width:'22.48vw', height:'1px', backgroundColor:'rgba(230,230,230,0.28)', zIndex:1  transition:'transform 0.6s ease',}} data-offset="-49" data-slide-group="heading" />
 
         <div className="layer-five" />
         <div className="layer-six" />

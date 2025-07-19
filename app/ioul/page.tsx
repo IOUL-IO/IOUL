@@ -6,6 +6,7 @@ const IOULPage: React.FC = () => {
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
+  const [chatVisible, setChatVisible] = useState(false);
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
   const pageContentRef = useRef<HTMLDivElement | null>(null);

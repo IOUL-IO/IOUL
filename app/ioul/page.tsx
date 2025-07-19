@@ -33,10 +33,40 @@ useEffect(() => {
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
+  // Ensure NodeLists are populated and base-left (vw) cached
+  const vwFromPx = (px: number) => px / (window.innerWidth / 100);
+  const grabBaseLeft = (el: HTMLElement): number => {
+    // Prefer inline left in vw
+    if (el.style.left && el.style.left.includes('vw')) {
+      return parseFloat(el.style.left);
+    }
+    // fall back to computed px -> vw
+    const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+    return vwFromPx(leftPx);
+  };
+
+  const ensureRefs = () => {
+    if (!itemElsRef.current) {
+      itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+    }
+    if (!centerElsRef.current) {
+      centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+    }
+
+    [itemElsRef.current, centerElsRef.current].forEach(list => {
+      list?.forEach(el => {
+        if (!el.dataset.baseLeftVw) {
+          el.dataset.baseLeftVw = grabBaseLeft(el).toString();
+        }
+      });
+    });
+  };
+
+
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
-  const DIST = 90;
+  const DIST = 60;
   const GAP = 10;                   // horizontal shift in vw
   const DUR = 600;                  // transition duration in ms
   const STAGGER = 0;                // delay between outgoing and incoming groups in ms
@@ -607,6 +637,7 @@ setSlideState("menu");
 
   // Stage transitions
   const toStage1 = () => {
+    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -DIST);
@@ -617,6 +648,7 @@ setSlideState("menu");
   };
 
   const toStage2 = () => {
+    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -2 * DIST - GAP); // items out first
@@ -629,6 +661,7 @@ setSlideState("menu");
   };
 
   const backToStage1 = () => {
+    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(centerElsRef.current, 0); // center leaves first
@@ -641,6 +674,7 @@ setSlideState("menu");
   };
 
   const backToStage0 = () => {
+    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, 0);

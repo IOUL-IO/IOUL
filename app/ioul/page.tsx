@@ -316,6 +316,9 @@ useEffect(() => {
               .forEach(box => box.style.transform = "translateX(0)");
             document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]')
               .forEach(box => box.style.transform = "translateX(0)");
+
+document.querySelectorAll<HTMLElement>('.custom-line[data-slide-group="heading"]')
+  .forEach(line => line.style.transform = "translateX(0)");
           }, 110);
           setSlideState("heading");
           break;
@@ -356,6 +359,12 @@ useEffect(() => {
             .forEach(box => {
               box.style.transition = "transform 0.7s ease";
               box.style.transform = `translateX(${box.dataset.offset}vw)`;
+
+document.querySelectorAll<HTMLElement>('.custom-line[data-slide-group="heading"]')
+  .forEach(line => {
+    line.style.transition = "transform 0.7s ease";
+    line.style.transform = `translateX(${(line as HTMLElement).dataset.offset}vw)`;
+  });
             });
           document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]')
             .forEach(box => {

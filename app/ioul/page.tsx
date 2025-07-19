@@ -14,10 +14,6 @@ const IOULPage: React.FC = () => {
 
 // Disable hover-area clicks once chat has appeared so it no longer blocks util-line
 useEffect(() => {
-// collect item and center nodes
-itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-
   if (chatInitialized && hoverAreaRef.current) {
     hoverAreaRef.current.style.pointerEvents = "none";
   }
@@ -34,31 +30,11 @@ centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .ce
   const [centerStage, setCenterStage] = useState(0);  // 0 = hidden, 1 = visible (center column)
   const [animating, setAnimating] = useState(false);
 
-  
-  // Collect slide element NodeLists once at mount
-  useEffect(() => {
-    itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-    centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-  }, []);
-const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-
-// Collect slide target node lists on mount
-useEffect(() => {
-  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-  // set base-left data attribute once
-  const all = Array.from(itemElsRef.current ?? []).concat(Array.from(centerElsRef.current ?? []));
-  all.forEach(el => {
-    if (!el.dataset.baseLeftVw) {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-      el.dataset.baseLeftVw = (leftPx / (window.innerWidth / 100)).toString();
-    }
-  });
-}, []);
+  const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
-  const FWD_MIN = 28.86, FWD_MAX = 32.43;   // forward trigger (right edge)
-  const REV_MIN = 0, REV_MAX = 6.37;  // reverse trigger (left edge)
+  const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
+  const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
   const DIST = 60;
   const GAP = 10;                   // horizontal shift in vw
@@ -68,19 +44,32 @@ useEffect(() => {
   // Helper unit conversions
   const vw = () => window.innerWidth / 100;
   const vh = () => window.innerHeight / 100;
-  const toVw = (px: number) => px / vw();
+  
+  // === Collect item/center DOM nodes and cache their base positions ===
+  useEffect(() => {
+    itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+    centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+    const allEls = [...Array.from(itemElsRef.current), ...Array.from(centerElsRef.current)];
+    allEls.forEach(el => {
+      if (!el.dataset.baseLeftVw) {
+        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+        el.dataset.baseLeftVw = toVw(leftPx).toString();
+      }
+    });
+  }, []);
+const toVw = (px: number) => px / vw();
   const toVh = (px: number) => px / vh();
 
 
   const updateVisibility = () => {
-    const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text, .center-text'));
-    const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line, .center-line'));
+    const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
+    const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
     const targets = textEls.concat(lineEls);
     targets.forEach(el => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 28.86;
+      const hide = l < 28.86 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -537,6 +526,7 @@ setSlideState("menu");
 
     // Slide elements once
     const slideOnce = () => {
+      if (itemStage !== 0 || centerStage !== 0) return;
       if (sliding || targetsRef.current[0]?.dataset.slid === 'true') return;
       sliding = true;
 
@@ -560,6 +550,7 @@ setSlideState("menu");
 
     // Slide elements back
     const slideBack = () => {
+      if (itemStage !== 0 || centerStage !== 0) return;
       if (sliding || targetsRef.current[0]?.dataset.slid !== 'true') return;
       sliding = true;
 
@@ -607,7 +598,7 @@ setSlideState("menu");
     document.removeEventListener('click', handleClick);
     // (and any other listeners you attached in this effect)
   };
-}, [/* slideState, or whatever deps this effect really needs */]);
+}, [itemStage, centerStage]);
 
            useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
@@ -622,29 +613,23 @@ setSlideState("menu");
 
   // Reusable move function for transitions
   const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
-    (els || []).forEach((el) => {
+    if (!els) return;
+    els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
       el.style.left = `${base + offset}vw`;
     });
   };
 
-  
-// Real‑time clipping while elements animate
-const watchVisibility = () => {
-  updateVisibility();
-  if (animating) requestAnimationFrame(watchVisibility);
-};
-// Stage transitions
+  // Stage transitions
   const toStage1 = () => {
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -DIST);
-    
-    watchVisibility();
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
+      updateVisibility();
     }, DUR);
   };
 
@@ -653,12 +638,11 @@ const watchVisibility = () => {
     setAnimating(true);
     move(itemElsRef.current, -2 * DIST - GAP); // items out first
     move(centerElsRef.current, -DIST - GAP); // center follows
-    
-    watchVisibility();
     setTimeout(() => {
       setAnimating(false);
       setItemStage(2);
       setCenterStage(1);
+      updateVisibility();
     }, DUR + STAGGER);
   };
 
@@ -667,12 +651,11 @@ const watchVisibility = () => {
     setAnimating(true);
     move(centerElsRef.current, 0); // center leaves first
     move(itemElsRef.current, -DIST); // items return after delay
-    
-    watchVisibility();
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
       setCenterStage(0);
+      updateVisibility();
     }, DUR + STAGGER);
   };
 
@@ -680,11 +663,10 @@ const watchVisibility = () => {
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, 0);
-    
-    watchVisibility();
     setTimeout(() => {
       setAnimating(false);
       setItemStage(0);
+      updateVisibility();
     }, DUR);
   };
 

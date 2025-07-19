@@ -771,3 +771,45 @@ body.non-fullscreen {
   pointer-events: auto !important;
   transition: opacity 0.6s ease;
 }
+
+/* --- Final util-line overrides (one authoritative block) --- */
+:root[data-util="0"] .mail-line,
+:root[data-util="0"] .mail-text,
+:root[data-util="0"] .grid-number,
+:root[data-util="0"] .grid-dashed {
+  opacity: 0 !important;
+  display: none !important;
+  pointer-events: none !important;
+}
+
+:root[data-util="1"] .mail-line,
+:root[data-util="1"] .mail-text {
+  opacity: 1 !important;
+  display: inline-block !important;
+  pointer-events: auto !important;
+}
+
+:root[data-util="1"] .grid-number,
+:root[data-util="1"] .grid-dashed,
+:root[data-util="1"] .line.fifth,
+:root[data-util="1"] .line.sixth {
+  opacity: 0 !important;
+  display: none !important;
+  pointer-events: none !important;
+}
+
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed {
+  opacity: 1 !important;
+  display: inline-block !important;
+  pointer-events: auto !important;
+}
+
+:root[data-util="2"] .mail-line,
+:root[data-util="2"] .mail-text,
+:root[data-util="2"] .line.fifth,
+:root[data-util="2"] .line.sixth {
+  opacity: 0 !important;
+  display: none !important;
+  pointer-events: none !important;
+}

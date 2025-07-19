@@ -14,6 +14,10 @@ const IOULPage: React.FC = () => {
 
 // Disable hover-area clicks once chat has appeared so it no longer blocks util-line
 useEffect(() => {
+// collect item and center nodes
+itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+
   if (chatInitialized && hoverAreaRef.current) {
     hoverAreaRef.current.style.pointerEvents = "none";
   }

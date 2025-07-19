@@ -589,7 +589,7 @@ setSlideState("menu");
     // Click listener for the page
     const handleClick = (e: MouseEvent) => {
       const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
-      if (vw >= CLICK_MIN && vw <= CLICK_MAX) {
+      if (vw >= CLICK_MIN && vw <= CLICK_MAX) && itemStage===0 && centerStage===0 {
         slideOnce();
       } else if (vw >= REVERSE_MIN && vw <= REVERSE_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
         slideBack();
@@ -640,12 +640,26 @@ setSlideState("menu");
     });
   };
 
-  // Stage transitions
+  
+const startClipping = () => {
+  const start = performance.now();
+  const tick = () => {
+    updateVisibility();
+    if (performance.now() - start < DUR) {
+      requestAnimationFrame(tick);
+    }
+  };
+  tick();
+};
+
+// Stage transitions
+
   const toStage1 = () => {
     animateVisibility();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -DIST);
+    startClipping();
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
@@ -658,7 +672,8 @@ setSlideState("menu");
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -2 * DIST - GAP); // items out first
-    move(centerElsRef.current, -DIST - GAP); // center follows
+    move(centerElsRef.current, -DIST - GAP);
+    startClipping(); // center follows
     setTimeout(() => {
       setAnimating(false);
       setItemStage(2);
@@ -673,6 +688,7 @@ setSlideState("menu");
     setAnimating(true);
     move(centerElsRef.current, 0); // center leaves first
     move(itemElsRef.current, -DIST); // items return after delay
+    startClipping();
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
@@ -686,6 +702,7 @@ setSlideState("menu");
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, 0);
+    startClipping();
     setTimeout(() => {
       setAnimating(false);
       setItemStage(0);

@@ -190,9 +190,6 @@ body.non-fullscreen {
 
 .chat-text {
     position: absolute;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.1s ease;
     top: 77vh;
     left: 6.41vw;
     display: inline-block;
@@ -769,7 +766,57 @@ body.non-fullscreen {
 .chat-text.visible {
   opacity: 1 !important;
   pointer-events: auto !important;
-  transition: opacity 0.6s ease;
 }
-/* util-line z-index override */
-.line.util-line{ z-index: 300 !important; pointer-events:auto !important;}
+
+/* --- Util-line state overrides (authoritative) --- */
+:root[data-util="0"] .mail-line,
+:root[data-util="0"] .mail-text,
+:root[data-util="0"] .grid-number,
+:root[data-util="0"] .grid-dashed {
+  opacity: 0 !important;
+  display: none !important;
+  pointer-events: none !important;
+}
+
+:root[data-util="1"] .mail-line,
+:root[data-util="1"] .mail-text {
+  opacity: 1 !important;
+  display: inline-block !important;
+  pointer-events: auto !important;
+}
+
+:root[data-util="1"] .grid-number,
+:root[data-util="1"] .grid-dashed,
+:root[data-util="1"] .line.fifth,
+:root[data-util="1"] .line.sixth {
+  opacity: 0 !important;
+  display: none !important;
+  pointer-events: none !important;
+}
+
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed {
+  opacity: 1 !important;
+  display: inline-block !important;
+  pointer-events: auto !important;
+}
+
+:root[data-util="2"] .mail-line,
+:root[data-util="2"] .mail-text,
+:root[data-util="2"] .line.fifth,
+:root[data-util="2"] .line.sixth {
+  opacity: 0 !important;
+  display: none !important;
+  pointer-events: none !important;
+}
+
+.line.util-line{ z-index: 300 !important; pointer-events: auto !important;}
+
+
+/* --- Keep lines 5 & 6 visible in util state 1 --- */
+:root[data-util="1"] .line.fifth,
+:root[data-util="1"] .line.sixth {
+  opacity: 1 !important;
+  display: inline-block !important;
+  pointer-events: auto !important;
+}

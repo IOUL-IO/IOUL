@@ -8,8 +8,8 @@ const IOULPage: React.FC = () => {
   const [pageFadedIn, setPageFadedIn] = useState(false);
   const [chatVisible, setChatVisible] = useState(false);
   const [chatInitialized, setChatInitialized] = useState(false);
-  const SLIDE_DURATION = 700; // slide animation duration (ms)
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
+  const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
   const pageContentRef = useRef<HTMLDivElement | null>(null);
   
@@ -675,60 +675,30 @@ useEffect(() => {
 
 
   
-// keep <html> element updated with current slide state for CSS hooks
-useEffect(() => {
-  document.documentElement.setAttribute("data-slide", slideState);
-}, [slideState]);
-
 // ===== Chat-text persistent visibility =====
 const handleChatHover = useCallback(() => {
   if (!chatInitialized && slideState === "none") {
-    setChatVisible(true);
     setChatInitialized(true);
-    if (chatTextRef.current) {
-      chatTextRef.current.style.opacity = "1";
-    }
+    setChatVisible(true);
   }
 }, [chatInitialized, slideState]);
-}
-}, [slideState]);
-
-// Hide chat-text during slides; reveal once everything is back
+// Hide chat-text during slides, reveal once panels are back
 useEffect(() => {
-  const chatEl = chatTextRef.current;
   let timer: ReturnType<typeof setTimeout> | null = null;
 
-  if (!chatEl) return;
-
-  if (slideState !== "none") {
-    // any panel is out – hide immediately
+  if (slideState === "none") {
+    if (chatInitialized) {
+      timer = setTimeout(() => setChatVisible(true), SLIDE_DURATION);
+    }
+  } else {
     setChatVisible(false);
-    chatEl.style.opacity = "0";
-  } else if (chatInitialized) {
-    // all panels back – show after slide duration
-    timer = setTimeout(() => {
-      setChatVisible(true);
-      chatEl.style.opacity = "1";
-    }, SLIDE_DURATION);
   }
 
   return () => {
     if (timer) clearTimeout(timer);
   };
 }, [slideState, chatInitialized]);
-chatEl.style.opacity = "0";
-  } else if (chatInitialized) {
-    // all panels back – show after slide duration
-    timer = setTimeout(() => {
-      setChatVisible(true);
-      chatEl.style.opacity = "1";
-    }, SLIDE_DURATION);
-  }
 
-  return () => {
-    if (timer) clearTimeout(timer);
-  };
-}, [slideState, chatInitialized]);
 
 
 return (

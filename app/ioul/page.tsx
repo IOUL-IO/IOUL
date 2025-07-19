@@ -72,8 +72,8 @@ const toVw = (px: number) => px / vw();
       const hide = l < 28.86 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
-    }
-
+     });
+   };
   // Kick off a temporary animation-loop that refreshes
   // clipping / opacity on every frame for the duration
   // of the slide transition. This guarantees that the
@@ -88,8 +88,6 @@ const toVw = (px: number) => px / vw();
       }
     };
     requestAnimationFrame(run);
-  };
-);
   };
 
   useEffect(() => {

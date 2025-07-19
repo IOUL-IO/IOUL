@@ -31,36 +31,13 @@ useEffect(() => {
   const [animating, setAnimating] = useState(false);
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-  const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-const ensureRefs = () => {
-  // populate refs if not already
-  if (!itemElsRef.current) {
-    itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-  }
-  if (!centerElsRef.current) {
-    centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-  }
+  \1
 
-  // helper converts px to vw
-  const pxToVw = (px: number) => px / (window.innerWidth / 100);
-
-  // cache baseLeft as vw
-  [itemElsRef.current, centerElsRef.current].forEach(list => {
-    list?.forEach(el => {
-      if (!el.dataset.baseLeftVw) {
-        const inlineLeft = el.style.left;
-        let baseVw: number;
-        if (inlineLeft && inlineLeft.includes('vw')) {
-          baseVw = parseFloat(inlineLeft);
-        } else {
-          const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-          baseVw = pxToVw(leftPx);
-        }
-        el.dataset.baseLeftVw = baseVw.toString();
-      }
-    });
-  });
-};
+// --- collect item and center groups on mount ---
+useEffect(() => {
+  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+}, []);
 
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
@@ -344,6 +321,7 @@ useEffect(() => {
     const inRightZone = x >= 28.86 * vw && x <= 32.43 * vw && y >= 28.5 * vh && y <= 84 * vh;
 
     if (inLeftZone) {
+      if (itemStage !== 0 || centerStage !== 0) return;
       // ── Left edge clicks ─────────────────────────
       switch (slideState) {
         case "none":
@@ -471,7 +449,7 @@ setSlideState("menu");
   return () => {
     document.removeEventListener("click", handleEdgeClick, true);
   };
-}, [slideState]);
+}, [slideState, itemStage, centerStage]);
 
 
         useEffect(() => {
@@ -627,7 +605,8 @@ setSlideState("menu");
   }, []);
 
   // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
+  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
+    if (!els) return;
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
@@ -637,7 +616,6 @@ setSlideState("menu");
 
   // Stage transitions
   const toStage1 = () => {
-    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -DIST);
@@ -648,7 +626,6 @@ setSlideState("menu");
   };
 
   const toStage2 = () => {
-    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -2 * DIST - GAP); // items out first
@@ -661,7 +638,6 @@ setSlideState("menu");
   };
 
   const backToStage1 = () => {
-    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(centerElsRef.current, 0); // center leaves first
@@ -674,7 +650,6 @@ setSlideState("menu");
   };
 
   const backToStage0 = () => {
-    ensureRefs();
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, 0);

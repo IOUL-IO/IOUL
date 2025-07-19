@@ -39,7 +39,14 @@ useEffect(() => {
   const DIST = 60;
   const GAP = 10;                   // horizontal shift in vw
   const DUR = 600;                  // transition duration in ms
-  const STAGGER = 0;                // delay between outgoing and incoming groups in ms
+  const STAGGER = 0;
+
+// --- collect item and center groups on mount ---
+useEffect(() => {
+  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+}, []);
+                // delay between outgoing and incoming groups in ms
 
   // Helper unit conversions
   const vw = () => window.innerWidth / 100;
@@ -49,8 +56,8 @@ useEffect(() => {
 
 
   const updateVisibility = () => {
-    const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
-    const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
+    const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text, .center-text'));
+    const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line, .center-line'));
     const targets = textEls.concat(lineEls);
     targets.forEach(el => {
       const rect = el.getBoundingClientRect();

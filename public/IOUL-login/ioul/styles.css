@@ -603,8 +603,6 @@ body.non-fullscreen {
 }
 
 /* Chat hover logic */
-
-
 /* UTIL-LINE TOGGLE OVERRIDES */
 :root[data-util="0"] .mail-line,
 :root[data-util="0"] .mail-text,
@@ -763,7 +761,8 @@ body.non-fullscreen {
 }
 
 
-/* Chat-text persistent visible */
+
+/* === Chat-text persistent visibility === */
 .chat-text.visible {
   opacity: 1 !important;
   pointer-events: auto !important;

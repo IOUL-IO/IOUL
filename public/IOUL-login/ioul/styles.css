@@ -763,8 +763,7 @@ body.non-fullscreen {
 }
 
 
-
-/* Chat-text visible state */
+/* Chat-text persistent visible */
 .chat-text.visible {
   opacity: 1 !important;
   pointer-events: auto !important;

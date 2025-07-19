@@ -339,18 +339,15 @@ useEffect(() => {
 
 
         case "menu":
+
           // slide menu back to heading-position
           document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
             .forEach(el => el.style.left = el.dataset.originalLeft!);
-          
-const headingBoxes = Array.from(document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"]'));
-const headingOut = headingBoxes.some(box => box.style.transform === "translateX(0)");
-if (headingOut) {
-  setSlideState("heading");
-} else {
-  setSlideState("none");
-}
 
+          // wait for the menu slide animation to finish before clearing slideState
+          setTimeout(() => {
+            setSlideState("none");
+          }, SLIDE_DURATION);
           break;
 
         case "heading":
@@ -396,24 +393,34 @@ if (headingOut) {
               el.style.left = "6.41vw";
             });
           
+setChatVisible(false);
 setSlideState("menu");
 
           break;
 
-          case "menu":
-            // slide menu-items back to original position
-            document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
-              .forEach(el => {
-                el.style.transition = "left 0.7s ease";
-                if (el.dataset.originalLeft) {
-                  el.style.left = el.dataset.originalLeft;
-                }
-              });
-            // wait for the menu slide animation to finish before clearing slideState
-            setTimeout(() => {
-              setSlideState("none");
-            }, SLIDE_DURATION);
-            break;
+        case "menu":
+          // second menu/community click
+          document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
+            .forEach(el => {
+              el.dataset.originalLeft ||= el.style.left;
+              el.style.transition = "left 0.7s ease";
+              el.style.left = (parseFloat(el.style.left) - 29) + "vw";
+            });
+          document.querySelectorAll<HTMLElement>('.community-items-container *')
+            .forEach(el => {
+              el.dataset.originalLeft ||= el.style.left;
+              el.style.transition = "left 0.7s ease";
+              el.style.left = (parseFloat(el.style.left) - 29) + "vw";
+            });
+          document.querySelectorAll<HTMLElement>('.zero-items-container *')
+            .forEach(el => {
+              el.dataset.originalLeft ||= el.style.left;
+              el.style.transition = "left 0.7s ease";
+              el.style.left = (parseFloat(el.style.left) - 29) + "vw";
+            });
+          setSlideState("community");
+          break;
+
         case "community":
           // optional: return from community to none
           document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
@@ -736,7 +743,7 @@ return (
           <div className="line third" />
           <div className="line fourth" />
           <div className="line fifth" />
-          <div className="line mail-line" style={{ position: 'absolute', top: '47.8vh', left: '36vw', width: '57.8vw', height: '1px', backgroundColor: 'rgba(230,230,230,0.28)', opacity: 0, transition: 'opacity 0.3s ease', zIndex: 1 }} />
+          <div className="line mail-line" style={{ position: 'absolute', top: '47.8vh', left: '36vw', width: '57.8vw', height: '1px', backgroundColor: 'rgba(230,230,230,0.28)', zIndex: 1 }} />
           <div className="line sixth" />
         </div>
 
@@ -839,11 +846,11 @@ return (
 
         <div className="hover-area" ref={hoverAreaRef}  onMouseEnter={handleChatHover} />
         <span ref={chatTextRef} id="chatText" className={`chat-text${chatVisible ? " visible" : ""}`}>cHAT . . .</span>
-        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>TO:</span>
-        <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>SUBJEcT:</span>
-        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'89vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>cc</span>
-        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'91.9vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>Bcc</span>
-        <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'91.1vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',opacity:0,transition:'opacity 0.3s ease'}}>SEnD</span>
+        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',transition:'opacity 0.3s ease'}}>TO:</span>
+        <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'36vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',transition:'opacity 0.3s ease'}}>SUBJEcT:</span>
+        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'89vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',transition:'opacity 0.3s ease'}}>cc</span>
+        <span className="mail-text" style={{position:'absolute',top:'35.4vh',left:'91.9vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',transition:'opacity 0.3s ease'}}>Bcc</span>
+        <span className="mail-text" style={{position:'absolute',top:'41.6vh',left:'91.1vw',zIndex:1,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',transition:'opacity 0.3s ease'}}>SEnD</span>
 
 
         <span className="grid-number num1">1</span>

@@ -31,13 +31,22 @@ useEffect(() => {
   const [animating, setAnimating] = useState(false);
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-  const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
+  
+  // --- collect item and center elements once on mount ---
+  useEffect(() => {
+    itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+    centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
 
-// Collect slide groups once the DOM is ready
-useEffect(() => {
-  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-}, []);
+    const allEls = [...Array.from(itemElsRef.current), ...Array.from(centerElsRef.current)];
+    allEls.forEach((el) => {
+      if (!el.dataset.baseLeftVw) {
+        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+        el.dataset.baseLeftVw = toVw(leftPx).toString();
+      }
+    });
+  }, []);
+
+const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
@@ -62,7 +71,7 @@ useEffect(() => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l >= 6.41 && l < 28.86 && t >= 28.5 && t <= 84;
+      const hide = l < 28.86 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -592,15 +601,14 @@ setSlideState("menu");
 }, [/* slideState, or whatever deps this effect really needs */]);
 
            useEffect(() => {
-    const allEls: HTMLElement[] = [];
-if (itemElsRef.current) allEls.push(...Array.from(itemElsRef.current));
-if (centerElsRef.current) allEls.push(...Array.from(centerElsRef.current));
-allEls.forEach(el => {
-  if (!el.dataset.baseLeftVw) {
-    const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-    el.dataset.baseLeftVw = toVw(leftPx).toString();
-  }
-});
+    if (itemElsRef.current && centerElsRef.current) {
+      Array.from(itemElsRef.current).concat(Array.from(centerElsRef.current)).forEach(el => {
+        if (!el.dataset.baseLeftVw) {
+          const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+          el.dataset.baseLeftVw = toVw(leftPx).toString();
+        }
+      });
+    }
   }, []);
 
   // Reusable move function for transitions

@@ -31,24 +31,22 @@ useEffect(() => {
   const [animating, setAnimating] = useState(false);
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-  const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-// Collect slide groups and cache their baseline positions
-useEffect(() => {
-  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+  
+  // --- collect item and center elements once on mount ---
+  useEffect(() => {
+    itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+    centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
 
-  const setBase = (list: NodeListOf<HTMLElement> | null) => {
-    if (!list) return;
-    list.forEach(el => {
+    const allEls = [...Array.from(itemElsRef.current), ...Array.from(centerElsRef.current)];
+    allEls.forEach((el) => {
       if (!el.dataset.baseLeftVw) {
         const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-        el.dataset.baseLeftVw = pxToVw(leftPx).toString();
+        el.dataset.baseLeftVw = toVw(leftPx).toString();
       }
     });
-  };
-  setBase(itemElsRef.current);
-  setBase(centerElsRef.current);
-}, []);
+  }, []);
+
+const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
@@ -57,6 +55,14 @@ useEffect(() => {
   const GAP = 10;                   // horizontal shift in vw
   const DUR = 600;                  // transition duration in ms
   const STAGGER = 0;                // delay between outgoing and incoming groups in ms
+
+  const setAccountMaskVisible = (visible: boolean) => {
+    const mask = document.querySelector<HTMLElement>('.account-mask');
+    if (mask) {
+      mask.style.display = visible ? '' : 'none';
+    }
+  };
+
 
   // Helper unit conversions
   const vw = () => window.innerWidth / 100;
@@ -73,7 +79,7 @@ useEffect(() => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l >= 6.41 && l < 28.86 && t >= 28.5 && t <= 84;
+      const hide = l < 28.86 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -571,7 +577,6 @@ setSlideState("menu");
 
     // Click listener for the page
     const handleClick = (e: MouseEvent) => {
-      if (itemStage !== 0 || centerStage !== 0) return;
       const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
       if (vw >= CLICK_MIN && vw <= CLICK_MAX) {
         slideOnce();
@@ -628,10 +633,12 @@ setSlideState("menu");
   const toStage1 = () => {
     if (animating) return;
     setAnimating(true);
+    setAccountMaskVisible(false);
     move(itemElsRef.current, -DIST);
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
+      setAccountMaskVisible(false);
     }, DUR);
   };
 
@@ -666,6 +673,7 @@ setSlideState("menu");
     setTimeout(() => {
       setAnimating(false);
       setItemStage(0);
+      setAccountMaskVisible(true);
     }, DUR);
   };
 

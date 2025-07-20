@@ -9,6 +9,7 @@ const IOULPage: React.FC = () => {
   const [chatVisible, setChatVisible] = useState(false);
   const [chatInitialized, setChatInitialized] = useState(false);
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
+  const frameRef = useRef<number>();
   const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
 
@@ -76,9 +77,17 @@ useEffect(() => { centerStageRef.current = centerStage; }, [centerStage]);
     // Set base positions and update visibility on resize
     window.addEventListener('resize', updateVisibility);
     updateVisibility(); // Initial visibility update
+    
+    // Start rAF loop to clip items continuously during slides
+    const tick = () => {
+      updateVisibility();
+      frameRef.current = requestAnimationFrame(tick);
+    };
+    tick();
 
     return () => {
       window.removeEventListener('resize', updateVisibility); // Clean up resize event listener
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
     };
   }, []);
 
@@ -303,6 +312,7 @@ useEffect(() => {
   scrollArea.addEventListener('wheel', onWheel, { passive: false });
   return () => {
     scrollArea.removeEventListener('wheel', onWheel);
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
     scrollArea.remove();
   };
 }, [isScrolling, isSecondScroll]);
@@ -450,6 +460,7 @@ setSlideState("menu");
   document.addEventListener("click", handleEdgeClick, true);
   return () => {
     document.removeEventListener("click", handleEdgeClick, true);
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
   };
 }, [slideState]);
 
@@ -519,6 +530,13 @@ setSlideState("menu");
     updateVisibility();
     window.addEventListener('resize', updateVisibility);
 
+    
+    // Start rAF loop to clip items continuously during slides
+    const tick = () => {
+      updateVisibility();
+      frameRef.current = requestAnimationFrame(tick);
+    };
+    tick();
     let sliding = false;
 
     // Slide elements once
@@ -606,6 +624,7 @@ document.addEventListener('click', handleClick);
 
             return () => {
     document.removeEventListener('click', handleClick);
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
     // (and any other listeners you attached in this effect)
   };
 }, [itemStage, centerStage]);
@@ -645,7 +664,6 @@ useEffect(() => {
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
-      updateVisibility();
     }, DUR);
   };
 
@@ -658,7 +676,6 @@ useEffect(() => {
       setAnimating(false);
       setItemStage(2);
       setCenterStage(1);
-      updateVisibility();
     }, DUR + STAGGER);
   };
 
@@ -671,7 +688,6 @@ useEffect(() => {
       setAnimating(false);
       setItemStage(1);
       setCenterStage(0);
-      updateVisibility();
     }, DUR + STAGGER);
   };
 
@@ -682,7 +698,6 @@ useEffect(() => {
     setTimeout(() => {
       setAnimating(false);
       setItemStage(0);
-      updateVisibility();
     }, DUR);
   };
 
@@ -714,6 +729,7 @@ useEffect(() => {
   document.addEventListener('click', handleClick, true);
   return () => {
     document.removeEventListener('click', handleClick, true);
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
   };
 }, [slideState, itemStage, centerStage]);
 
@@ -740,6 +756,7 @@ useEffect(() => {
 
   return () => {
     if (timer) clearTimeout(timer);
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
   };
 }, [slideState, chatInitialized]);
 

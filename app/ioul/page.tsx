@@ -32,23 +32,11 @@ useEffect(() => {
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-
-
-// ─── Collect slide elements once on mount ────────────────────────────────
-useEffect(() => {
-  // cache element NodeLists
-  itemElsRef.current   = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-
-  // record base left (vw) for each for subsequent math
-  const all = [...Array.from(itemElsRef.current), ...Array.from(centerElsRef.current)];
-  all.forEach(el => {
-    if (!el.dataset.baseLeftVw) {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-      el.dataset.baseLeftVw = toVw(leftPx).toString();
-    }
-  });
-}, []);
+  // Populate refs for item and center elements after mount
+  useEffect(() => {
+    itemElsRef.current = document.querySelectorAll('.item-text, .item-line');
+    centerElsRef.current = document.querySelectorAll('.center-text, .center-line');
+  }, []);
 
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)

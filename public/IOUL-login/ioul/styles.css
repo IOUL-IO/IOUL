@@ -111,8 +111,8 @@ body.non-fullscreen {
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
-    left: 32.43vw;
-    width: calc(36vw - 32.43vw);
+    left: 94vw;
+    width: calc(100vw - 94vw);
     height: calc(84vh - 28.5vh);
     background: transparent;
     cursor: pointer;
@@ -120,8 +120,8 @@ body.non-fullscreen {
 .slide-trigger-reverse {
     position: absolute;
     top: 28.5vh;
-    left: 94vw;
-    width: calc(100vw - 94vw);
+    left: 32.43vw;
+    width: calc(36vw - 32.43vw);
     height: calc(84vh - 28.5vh);
     background: transparent;
     cursor: pointer;
@@ -415,6 +415,7 @@ body.non-fullscreen {
   .mail-text,
   .account-text,
   .item-text {
+    z-index: 3;
     font-size: 9px !important;
   }
 
@@ -470,6 +471,7 @@ body.non-fullscreen {
 
 
 .item-text {
+    z-index: 3;
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
@@ -487,11 +489,11 @@ body.non-fullscreen {
     position: absolute;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
-    z-index: 1;
+    z-index: 3;
 }
 
 .center-text {
-    z-index: 3;
+    z-index: 4;
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
@@ -504,11 +506,11 @@ body.non-fullscreen {
 }
 
 .center-line {
-    z-index: 3;
+    z-index: 4;
     position: absolute;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
-    z-index: 1;
+    z-index: 4;
     transition: left 0.6s ease, transform 0.6s ease;
 }
 
@@ -516,7 +518,7 @@ body.non-fullscreen {
 
 @media (min-width: 1900px) {
   .center-text {
-    z-index: 3;
+    z-index: 4;
     font-size: 9px !important;
   }
 }
@@ -820,7 +822,3 @@ body.non-fullscreen {
   display: inline-block !important;
   pointer-events: auto !important;
 }
-
-/* Added to ensure visibility over layer-four */
-
-

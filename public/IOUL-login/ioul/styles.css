@@ -32,8 +32,8 @@ body.non-fullscreen {
 .layer-two {
     position: fixed;
     top: 0;
-    left: 28.87vw;
-    width: calc(36vw - 28.87vw);
+    left: 6.37vw;
+    width: calc(36vw - 6.37vw);
     height: 100vh;
     background-color: #ffffff;
     z-index: 100;

@@ -111,8 +111,8 @@ body.non-fullscreen {
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
-    left: 94vw;
-    width: calc(100vw - 94vw);
+    left: 32.43vw;
+    width: calc(36vw - 32.43vw);
     height: calc(84vh - 28.5vh);
     background: transparent;
     cursor: pointer;
@@ -120,8 +120,8 @@ body.non-fullscreen {
 .slide-trigger-reverse {
     position: absolute;
     top: 28.5vh;
-    left: 32.43vw;
-    width: calc(36vw - 32.43vw);
+    left: 94vw;
+    width: calc(100vw - 94vw);
     height: calc(84vh - 28.5vh);
     background: transparent;
     cursor: pointer;
@@ -416,9 +416,7 @@ body.non-fullscreen {
   .account-text,
   .item-text {
     font-size: 9px !important;
-  
-    z-index: 3;
-}
+  }
 
   .grid-number {
     font-size: 6.1px !important;
@@ -481,8 +479,6 @@ body.non-fullscreen {
     line-height: 1.6;
     overflow: visible;
     transition: left 0.6s ease, transform 0.6s ease;
-
-    z-index: 3;
 }
 
 
@@ -491,11 +487,11 @@ body.non-fullscreen {
     position: absolute;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
-    z-index: 3;
+    z-index: 1;
 }
 
 .center-text {
-    z-index: 4;
+    z-index: 3;
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
@@ -508,11 +504,11 @@ body.non-fullscreen {
 }
 
 .center-line {
-    z-index: 4;
+    z-index: 3;
     position: absolute;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
-    z-index: 4;
+    z-index: 1;
     transition: left 0.6s ease, transform 0.6s ease;
 }
 
@@ -520,7 +516,7 @@ body.non-fullscreen {
 
 @media (min-width: 1900px) {
   .center-text {
-    z-index: 4;
+    z-index: 3;
     font-size: 9px !important;
   }
 }
@@ -823,4 +819,11 @@ body.non-fullscreen {
   opacity: 1 !important;
   display: inline-block !important;
   pointer-events: auto !important;
+}
+
+/* Added to ensure visibility over layer-four */
+
+.item-text,
+.item-line {
+  z-index: 3;
 }

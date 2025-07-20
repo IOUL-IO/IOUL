@@ -27,7 +27,17 @@ useEffect(() => {
   const targetsRef = useRef<(HTMLElement | null)[]>([]); // Reference to target elements
 
   const [itemStage, setItemStage] = useState(0);  // 0 = hidden, 1 = visible (left column), 2 = shifted left / clipped
+
+  const [accountStage, setAccountStage] = useState(0);  // 0 = baseline, 1 = slid in
+  const accountStageRef = useRef(0);
+  useEffect(() => { accountStageRef.current = accountStage; }, [accountStage]);
   const [centerStage, setCenterStage] = useState(0);  // 0 = hidden, 1 = visible (center column)
+
+// Keep refs for latest stage values to access inside callbacks
+const itemStageRef = useRef(itemStage);
+const centerStageRef = useRef(centerStage);
+useEffect(() => { itemStageRef.current = itemStage; }, [itemStage]);
+useEffect(() => { centerStageRef.current = centerStage; }, [centerStage]);
   const [animating, setAnimating] = useState(false);
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
@@ -46,8 +56,6 @@ useEffect(() => {
   const vh = () => window.innerHeight / 100;
   const toVw = (px: number) => px / vw();
   const toVh = (px: number) => px / vh();
-  const CLIP_LEFT = 36;          // vw – clip boundary for item texts/lines
-
 
 
   const updateVisibility = () => {
@@ -58,7 +66,7 @@ useEffect(() => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < CLIP_LEFT && t >= 28.5 && t <= 84;
+      const hide = l < 36 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -68,14 +76,6 @@ useEffect(() => {
     // Set base positions and update visibility on resize
     window.addEventListener('resize', updateVisibility);
     updateVisibility(); // Initial visibility update
-
-    
-// Keep visibility updated during animations
-useEffect(() => {
-  const id = setInterval(updateVisibility, 100); // ~10 FPS
-  return () => clearInterval(id);
-}, []);
-
 
     return () => {
       window.removeEventListener('resize', updateVisibility); // Clean up resize event listener
@@ -324,11 +324,6 @@ useEffect(() => {
     const inRightZone = x >= 28.86 * vw && x <= 32.43 * vw && y >= 28.5 * vh && y <= 84 * vh;
 
     if (inLeftZone) {
-      // Block inverse trigger when item or center columns are displaced
-      if (slideState === "none" && (itemStage !== 0 || centerStage !== 0)) {
-        return; // ignore click
-      }
-
       // ── Left edge clicks ─────────────────────────
       switch (slideState) {
         case "none":
@@ -456,7 +451,7 @@ setSlideState("menu");
   return () => {
     document.removeEventListener("click", handleEdgeClick, true);
   };
-}, [slideState, itemStage, centerStage]);
+}, [slideState]);
 
 
         useEffect(() => {
@@ -515,7 +510,7 @@ setSlideState("menu");
       targetsRef.current.forEach(el => {
         const r = el.getBoundingClientRect();
         const l = pxToVw(r.left), t = pxToVh(r.top);
-        const hide = l >= HIDE_MIN && l < HIDE_MAX && t >= TOP_MIN && t <= TOP_MAX;
+        const hide = l < 36;
         el.style.opacity = hide ? '0' : '';
         el.style.pointerEvents = hide ? 'none' : '';
       });
@@ -528,6 +523,8 @@ setSlideState("menu");
 
     // Slide elements once
     const slideOnce = () => {
+      // Guard to ensure account group only slides in when item & center at origin
+      if (itemStageRef.current !== 0 || centerStageRef.current !== 0) return;
       if (sliding || targetsRef.current[0]?.dataset.slid === 'true') return;
       sliding = true;
 
@@ -541,6 +538,7 @@ setSlideState("menu");
         el.style.transition = `left ${DURATION}ms ease`;
         el.style.left = `${base + DISTANCE}vw`;
         el.dataset.slid = 'true';
+      setAccountStage(1);
       });
 
       setTimeout(() => {
@@ -559,6 +557,7 @@ setSlideState("menu");
         el.style.transition = `left ${DURATION}ms ease`;
         el.style.left = `${base}vw`;
         delete el.dataset.slid;
+      setAccountStage(0);
       });
 
       setTimeout(() => {
@@ -571,6 +570,8 @@ setSlideState("menu");
     
 // Click listener for the page
 const handleClick = (e: MouseEvent) => {
+  if (accountStageRef.current !== 0) return;
+
   const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
 
   // Forward trigger zone
@@ -589,9 +590,11 @@ document.addEventListener('click', handleClick);
 // Stop propagation for slide actions
     document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
       el.addEventListener('click', e => {
-        e.stopPropagation();
+      e.stopPropagation();
+      if (itemStageRef.current === 0 && centerStageRef.current === 0) {
         slideOnce();
-      });
+      }
+    });
     });
 
     document.querySelectorAll('.slide-trigger-reverse').forEach(el => {

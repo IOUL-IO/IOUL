@@ -72,7 +72,7 @@ const clipElements = () => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 36 && t >= 28.5 && t <= 84;
+      const hide = l < 35.9 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -105,7 +105,7 @@ useEffect(() => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 36 && t >= 28.5 && t <= 84;
+      const hide = l < 35.9 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -549,7 +549,7 @@ setSlideState("menu");
       targetsRef.current.forEach(el => {
         const r = el.getBoundingClientRect();
         const l = pxToVw(r.left), t = pxToVh(r.top);
-        const hide = l < 36;
+        const hide = l < 35.9;
         el.style.opacity = hide ? '0' : '';
         el.style.pointerEvents = hide ? 'none' : '';
       });
@@ -730,13 +730,13 @@ useEffect(() => {
     const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
     const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
 
-    if (inFwd) {
+    if (inFwd && accountStageRef.current === 0) {
       if (itemStage === 0) {
         toStage1();
       } else if (itemStage === 1 && centerStage === 0) {
         toStage2();
       }
-    } else if (inRev) {
+    } else if (inRev && accountStageRef.current === 0) {
       if (centerStage === 1) {
         backToStage1();
       } else if (itemStage === 1 && centerStage === 0) {

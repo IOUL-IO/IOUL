@@ -823,7 +823,4 @@ body.non-fullscreen {
 
 /* Added to ensure visibility over layer-four */
 
-.item-text,
-.item-line {
-  z-index: 3;
-}
+

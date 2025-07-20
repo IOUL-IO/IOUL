@@ -32,14 +32,9 @@ useEffect(() => {
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-  useEffect(() => {
-    itemElsRef.current = document.querySelectorAll('.item-text, .item-line');
-    centerElsRef.current = document.querySelectorAll('.center-text, .center-line');
-  }, []);
 
-
-  const FWD_MIN = 32.43, FWD_MAX = 36;     // forward trigger (centre‑left)
-  const REV_MIN = 94,    REV_MAX = 100;    // reverse trigger (right edge)
+  const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
+  const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
   const DIST = 60;
   const GAP = 10;                   // horizontal shift in vw
@@ -558,18 +553,25 @@ setSlideState("menu");
     };
 
     // Click listener for the page
-    const handleClick = (e: MouseEvent) => {
-      const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
-      if (vw >= CLICK_MIN && vw <= CLICK_MAX) {
-        slideOnce();
-      } else if (vw >= REVERSE_MIN && vw <= REVERSE_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
-        slideBack();
-      }
-    };
+    
+// Click listener for the page
+const handleClick = (e: MouseEvent) => {
+  const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
 
-    document.addEventListener('click', handleClick);
+  // Forward trigger zone
+  if (vw >= CLICK_MIN && vw <= CLICK_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
+    // Only slide forward when both groups are at their origin
+    if (itemStage === 0 && centerStage === 0) {
+      slideOnce();
+    }
+  // Inverse trigger zone
+  } else if (vw >= REVERSE_MIN && vw <= REVERSE_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
+    slideBack();
+  }
+};
 
-    // Stop propagation for slide actions
+document.addEventListener('click', handleClick);
+// Stop propagation for slide actions
     document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
       el.addEventListener('click', e => {
         e.stopPropagation();
@@ -588,9 +590,16 @@ setSlideState("menu");
     document.removeEventListener('click', handleClick);
     // (and any other listeners you attached in this effect)
   };
-}, [/* slideState, or whatever deps this effect really needs */]);
+}, [itemStage, centerStage]);
 
-           useEffect(() => {
+           
+// ----- Gather item and center elements once DOM is ready -----
+useEffect(() => {
+  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+}, []);
+
+useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
       Array.from(itemElsRef.current).concat(Array.from(centerElsRef.current)).forEach(el => {
         if (!el.dataset.baseLeftVw) {
@@ -602,8 +611,7 @@ setSlideState("menu");
   }, []);
 
   // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
-    if (!els || !els.length) return;
+  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;

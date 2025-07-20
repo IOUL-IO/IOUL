@@ -9,7 +9,6 @@ const IOULPage: React.FC = () => {
   const [chatVisible, setChatVisible] = useState(false);
   const [chatInitialized, setChatInitialized] = useState(false);
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
-  const frameRef = useRef<number>();
   const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
 
@@ -57,44 +56,6 @@ useEffect(() => { centerStageRef.current = centerStage; }, [centerStage]);
   const vh = () => window.innerHeight / 100;
   const toVw = (px: number) => px / vw();
   const toVh = (px: number) => px / vh();
-// ─── Global real‑time clipping ────────────────────────────────────────────
-// Hide anything that slides left of 36vw while inside the main content band (28.5‑84vh)
-const clipElements = () => {
-  const selectors = [
-    '.item-text', '.item-line',
-    '.center-text', '.center-line',
-    '.account-text', '.account-line',
-    '.grid-number', '.grid-dashed',
-    '.mail-text', '.mail-line'
-  ];
-  selectors.forEach(sel => {
-    document.querySelectorAll<HTMLElement>(sel).forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const l = toVw(rect.left);
-      const t = toVh(rect.top);
-      const hide = l < 36 && t >= 28.5 && t <= 84;
-      el.style.opacity = hide ? '0' : '';
-      el.style.pointerEvents = hide ? 'none' : '';
-    });
-  });
-};
-
-// Keep clipping in real‑time (every animation frame)
-useEffect(() => {
-  const onResize = () => clipElements();
-  window.addEventListener('resize', onResize);
-  let rafId: number;
-  const tick = () => {
-    clipElements();
-    rafId = requestAnimationFrame(tick);
-  };
-  tick();
-  return () => {
-    window.removeEventListener('resize', onResize);
-    cancelAnimationFrame(rafId);
-  };
-}, []);
-
 
 
   const updateVisibility = () => {
@@ -109,6 +70,30 @@ useEffect(() => {
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
+  // Run updateVisibility every animation frame for a given period
+  const runVisibilityAnimation = (duration: number) => {
+    const start = performance.now();
+    const tick = () => {
+      updateVisibility();
+      if (performance.now() - start < duration) {
+        requestAnimationFrame(tick);
+      }
+    };
+
+  // Run visibility updates during animations
+  const runVisibilityAnimation = (duration: number) => {
+    const start = performance.now();
+    const step = () => {
+      updateVisibility();
+      if (performance.now() - start < duration) {
+        requestAnimationFrame(step);
+      }
+    };
+    requestAnimationFrame(step);
+  };
+    requestAnimationFrame(tick);
+  };
+
   };
 
   useEffect(() => {
@@ -557,6 +542,7 @@ setSlideState("menu");
 
     updateVisibility();
     window.addEventListener('resize', updateVisibility);
+
     let sliding = false;
 
     // Slide elements once
@@ -680,9 +666,12 @@ useEffect(() => {
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -DIST);
+    runVisibilityAnimation(DUR);
+    runVisibilityAnimation(DUR + STAGGER);
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
+      updateVisibility();
     }, DUR);
   };
 
@@ -690,11 +679,13 @@ useEffect(() => {
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -2 * DIST - GAP); // items out first
+    runVisibilityAnimation(DUR + STAGGER);
     move(centerElsRef.current, -DIST - GAP); // center follows
     setTimeout(() => {
       setAnimating(false);
       setItemStage(2);
       setCenterStage(1);
+      updateVisibility();
     }, DUR + STAGGER);
   };
 
@@ -702,11 +693,14 @@ useEffect(() => {
     if (animating) return;
     setAnimating(true);
     move(centerElsRef.current, 0); // center leaves first
-    move(itemElsRef.current, -DIST); // items return after delay
+    move(itemElsRef.current, -DIST);
+    runVisibilityAnimation(DUR); // items return after delay
+    runVisibilityAnimation(DUR + STAGGER);
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
       setCenterStage(0);
+      updateVisibility();
     }, DUR + STAGGER);
   };
 
@@ -714,9 +708,12 @@ useEffect(() => {
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, 0);
+    runVisibilityAnimation(DUR);
+    runVisibilityAnimation(DUR + STAGGER);
     setTimeout(() => {
       setAnimating(false);
       setItemStage(0);
+      updateVisibility();
     }, DUR);
   };
 

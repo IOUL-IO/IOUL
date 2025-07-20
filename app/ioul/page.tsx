@@ -701,57 +701,49 @@ setSlideState("menu");
   };
 
   // Handle the click event for forward and reverse triggers
-useEffect(() => {
-  function handleClick(e: MouseEvent) {
-        let handled = false;
-        const vw = (px: number) => px / (window.innerWidth / 100);
-        const vh = (px: number) => px / (window.innerHeight / 100);
-        const xVw = vw(e.clientX);
-        const yVh = vh(e.clientY);
-        const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
-        const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
+  // Handle the click event for forward and reverse triggers
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      let handled = false;
+      const vw = (px: number) => px / (window.innerWidth / 100);
+      const vh = (px: number) => px / (window.innerHeight / 100);
+      const xVw = vw(e.clientX);
+      const yVh = vh(e.clientY);
+      const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
+      const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
 
-        if (inFwd) {
-          if (itemStage === 0) {
-            toStage1();
-            handled = true;
-          } else if (itemStage === 1 && centerStage === 0) {
-            toStage2();
-            handled = true;
-          }
-        } else if (inRev) {
-          if (centerStage === 1) {
-            backToStage1();
-            handled = true;
-          } else if (itemStage === 1 && centerStage === 0) {
-            backToStage0();
-            handled = true;
-          }
-          // Note: account group handled by legacy listener when both groups at origin
+      if (inFwd) {
+        if (itemStage === 0) {
+          toStage1();
+          handled = true;
+        } else if (itemStage === 1 && centerStage === 0) {
+          toStage2();
+          handled = true;
         }
-
-        if (handled) {
-          e.stopImmediatePropagation?.();
-          e.stopPropagation();
-          e.preventDefault();
+      } else if (inRev) {
+        if (centerStage === 1) {
+          backToStage1();
+          handled = true;
+        } else if (itemStage === 1 && centerStage === 0) {
+          backToStage0();
+          handled = true;
         }
-    } else if (itemStage === 1 && centerStage === 0) {
-        toStage2();
+        /* account group slides handled by legacy code when both groups at origin */
       }
-    } else if (inRev) {
-      if (centerStage === 1) {
-        backToStage1();
-      } else if (itemStage === 1 && centerStage === 0) {
-        backToStage0();
-      }
-    }
-  }
 
-  document.addEventListener('click', handleClick, true);
-  return () => {
-    document.removeEventListener('click', handleClick, true);
-  };
-}, [slideState, itemStage, centerStage]);
+      if (handled) {
+        e.stopImmediatePropagation?.();
+        e.stopPropagation();
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener('click', handleClick, true);
+    return () => {
+      document.removeEventListener('click', handleClick, true);
+    };
+  }, [itemStage, centerStage]);
+
 
 
   

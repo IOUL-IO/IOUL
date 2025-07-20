@@ -111,8 +111,8 @@ body.non-fullscreen {
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
-    left: 32.43vw;
-    width: calc(36vw - 32.43vw);
+    left: 94vw;
+    width: calc(100vw - 94vw);
     height: calc(84vh - 28.5vh);
     background: transparent;
     cursor: pointer;
@@ -120,8 +120,8 @@ body.non-fullscreen {
 .slide-trigger-reverse {
     position: absolute;
     top: 28.5vh;
-    left: 94vw;
-    width: calc(100vw - 94vw);
+    left: 32.43vw;
+    width: calc(36vw - 32.43vw);
     height: calc(84vh - 28.5vh);
     background: transparent;
     cursor: pointer;
@@ -168,7 +168,6 @@ body.non-fullscreen {
 
 
 .slide-container {
-    overflow: hidden;
     position: fixed;
     top: 0;
     left: 0;
@@ -742,7 +741,6 @@ body.non-fullscreen {
 
 /* Ensure slide-container sits above util lines */
 .slide-container {
-    overflow: hidden;
   z-index: 150 !important;
 }
 

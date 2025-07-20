@@ -31,22 +31,24 @@ useEffect(() => {
   const [animating, setAnimating] = useState(false);
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-  
-  // --- collect item and center elements once on mount ---
-  useEffect(() => {
-    itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-    centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+  const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
+// Collect slide groups and cache their baseline positions
+useEffect(() => {
+  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
 
-    const allEls = [...Array.from(itemElsRef.current), ...Array.from(centerElsRef.current)];
-    allEls.forEach((el) => {
+  const setBase = (list: NodeListOf<HTMLElement> | null) => {
+    if (!list) return;
+    list.forEach(el => {
       if (!el.dataset.baseLeftVw) {
         const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-        el.dataset.baseLeftVw = toVw(leftPx).toString();
+        el.dataset.baseLeftVw = pxToVw(leftPx).toString();
       }
     });
-  }, []);
-
-const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
+  };
+  setBase(itemElsRef.current);
+  setBase(centerElsRef.current);
+}, []);
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
@@ -71,7 +73,7 @@ const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 28.86 && t >= 28.5 && t <= 84;
+      const hide = l >= 6.41 && l < 28.86 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -569,6 +571,7 @@ setSlideState("menu");
 
     // Click listener for the page
     const handleClick = (e: MouseEvent) => {
+      if (itemStage !== 0 || centerStage !== 0) return;
       const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
       if (vw >= CLICK_MIN && vw <= CLICK_MAX) {
         slideOnce();

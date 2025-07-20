@@ -34,7 +34,7 @@ useEffect(() => {
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
-  const REV_MIN = 32.44, REV_MAX = 36;  // reverse trigger (left edge)
+  const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
   const DIST = 60;
   const GAP = 10;                   // horizontal shift in vw
@@ -552,54 +552,14 @@ setSlideState("menu");
       }, DURATION);
     };
 
-    // Click listener for the page
-    
-// Click listener for the page
-const handleClick = (e: MouseEvent) => {
-  const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
-
-  // Forward trigger zone
-  if (vw >= CLICK_MIN && vw <= CLICK_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
-    // Only slide forward when both groups are at their origin
-    if (itemStage === 0 && centerStage === 0) {
-      slideOnce();
-    }
-  // Inverse trigger zone
-  } else if (vw >= REVERSE_MIN && vw <= REVERSE_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
-    slideBack();
-  }
-};
-
-document.addEventListener('click', handleClick);
-// Stop propagation for slide actions
-    document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
-      el.addEventListener('click', e => {
-        e.stopPropagation();
-        slideOnce();
-      });
-    });
-
-    document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
-      el.addEventListener('click', e => {
-        e.stopPropagation();
-        slideBack();
-      });
-    });
-
-            return () => {
+    /* Legacy click-handler effect removed to avoid conflicts */
+return () => {
     document.removeEventListener('click', handleClick);
     // (and any other listeners you attached in this effect)
   };
-}, [itemStage, centerStage]);
+}, [/* slideState, or whatever deps this effect really needs */]);
 
-           
-// ----- Gather item and center elements once DOM is ready -----
-useEffect(() => {
-  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-}, []);
-
-useEffect(() => {
+           useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
       Array.from(itemElsRef.current).concat(Array.from(centerElsRef.current)).forEach(el => {
         if (!el.dataset.baseLeftVw) {

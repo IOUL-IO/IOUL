@@ -9,6 +9,7 @@ const IOULPage: React.FC = () => {
   const [chatVisible, setChatVisible] = useState(false);
   const [chatInitialized, setChatInitialized] = useState(false);
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
+  const frameRef = useRef<number>();
   const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
 
@@ -56,27 +57,59 @@ useEffect(() => { centerStageRef.current = centerStage; }, [centerStage]);
   const vh = () => window.innerHeight / 100;
   const toVw = (px: number) => px / vw();
   const toVh = (px: number) => px / vh();
-
-
-  
-const updateVisibility = () => {
+// ─── Global real‑time clipping ────────────────────────────────────────────
+// Hide anything that slides left of 36vw while inside the main content band (28.5‑84vh)
+const clipElements = () => {
   const selectors = [
     '.item-text', '.item-line',
     '.center-text', '.center-line',
-    '.account-text', '.account-line'
+    '.account-text', '.account-line',
+    '.grid-number', '.grid-dashed',
+    '.mail-text', '.mail-line'
   ];
-  const targets = selectors.flatMap(sel => Array.from(document.querySelectorAll<HTMLElement>(sel)));
-  targets.forEach(el => {
-    const rect = el.getBoundingClientRect();
-    const l = toVw(rect.left);
-    const t = toVh(rect.top);
-    // Clip everything whose left edge is left of 36vw *and* that sits in the vertical window
-    const hide = l < 36 && t >= 28.5 && t <= 84;
-    el.style.opacity = hide ? '0' : '';
-    el.style.pointerEvents = hide ? 'none' : '';
+  selectors.forEach(sel => {
+    document.querySelectorAll<HTMLElement>(sel).forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const l = toVw(rect.left);
+      const t = toVh(rect.top);
+      const hide = l < 36 && t >= 28.5 && t <= 84;
+      el.style.opacity = hide ? '0' : '';
+      el.style.pointerEvents = hide ? 'none' : '';
+    });
   });
 };
 
+// Keep clipping in real‑time (every animation frame)
+useEffect(() => {
+  const onResize = () => clipElements();
+  window.addEventListener('resize', onResize);
+  let rafId: number;
+  const tick = () => {
+    clipElements();
+    rafId = requestAnimationFrame(tick);
+  };
+  tick();
+  return () => {
+    window.removeEventListener('resize', onResize);
+    cancelAnimationFrame(rafId);
+  };
+}, []);
+
+
+
+  const updateVisibility = () => {
+    const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
+    const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
+    const targets = textEls.concat(lineEls);
+    targets.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const l = toVw(rect.left);
+      const t = toVh(rect.top);
+      const hide = l < 36 && t >= 28.5 && t <= 84;
+      el.style.opacity = hide ? '0' : '';
+      el.style.pointerEvents = hide ? 'none' : '';
+    });
+  };
 
   useEffect(() => {
     // Set base positions and update visibility on resize
@@ -524,7 +557,6 @@ setSlideState("menu");
 
     updateVisibility();
     window.addEventListener('resize', updateVisibility);
-
     let sliding = false;
 
     // Slide elements once
@@ -799,7 +831,6 @@ return (
         <div className="line account-line" style={{position:'absolute',top:'41.6vh',left:'-24.00vw',width:'57.8vw',height:'1px',backgroundColor:'rgba(230,230,230,0.28)',zIndex:1}} />
         </div>
         
-        <div className="clip-left">
         <div className="item-line item-line-one" style={{position:'absolute',top:'47.8vh',left:'96vw',width:'36vw'}} />
         <div className="item-line item-line-two" style={{position:'absolute',top:'47.8vh',left:'139vw',width:'14.8vw'}} />
         
@@ -889,7 +920,6 @@ return (
         <span className="item-text right-flow" style={{position:'absolute',top:'59.2vh',left:'131vw'}}>0</span>
 
 
-        </div> {/* end clip-left */}
         <div className="hover-area" ref={hoverAreaRef}  onMouseEnter={handleChatHover} />
 
         <span ref={chatTextRef} id="chatText" className={`chat-text${chatVisible ? " visible" : ""}`}>cHAT . . .</span>

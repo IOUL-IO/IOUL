@@ -32,7 +32,8 @@ useEffect(() => {
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-  // Populate refs for item and center elements after mount
+
+  // Populate item and center element refs on mount
   useEffect(() => {
     itemElsRef.current = document.querySelectorAll('.item-text, .item-line');
     centerElsRef.current = document.querySelectorAll('.center-text, .center-line');
@@ -307,6 +308,7 @@ useEffect(() => {
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {
   const handleEdgeClick = (event: MouseEvent) => {
+    if (itemStage !== 0 || centerStage !== 0) return;
     // ignore clicks on actual menu items or chat-text itself
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
@@ -447,7 +449,7 @@ setSlideState("menu");
   return () => {
     document.removeEventListener("click", handleEdgeClick, true);
   };
-}, [slideState]);
+}, [slideState, itemStage, centerStage]);
 
 
         useEffect(() => {
@@ -560,8 +562,6 @@ setSlideState("menu");
 
     // Click listener for the page
     const handleClick = (e: MouseEvent) => {
-      // guard: disable account clicks while item/center active
-      if (itemStage>0 || centerStage>0) return;
       const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
       if (vw >= CLICK_MIN && vw <= CLICK_MAX) {
         slideOnce();
@@ -591,7 +591,7 @@ setSlideState("menu");
     document.removeEventListener('click', handleClick);
     // (and any other listeners you attached in this effect)
   };
-}, [slideState,itemStage,centerStage]);
+}, [/* slideState, or whatever deps this effect really needs */]);
 
            useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {

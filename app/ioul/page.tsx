@@ -32,15 +32,66 @@ useEffect(() => {
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-  // Initialize item and center element references once on mount
-  useEffect(() => {
-    itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-    centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-  }, []);
+// ─────────────────────────────────────────────────────────────
+// Populate item & center groups once and override old edge clicks
+// ─────────────────────────────────────────────────────────────
+useEffect(() => {
+  // Collect elements
+  itemElsRef.current   = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+  const pxToVw = (px:number) => px / (window.innerWidth / 100);
+  const cacheBase = (els: NodeListOf<HTMLElement> | null) => {
+    els?.forEach(el => {
+      if (!el.dataset.baseLeftVw) {
+        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+        el.dataset.baseLeftVw = pxToVw(leftPx).toString();
+      }
+    });
+  };
+  cacheBase(itemElsRef.current);
+  cacheBase(centerElsRef.current);
+
+  // Remove legacy listener if still present
+  try { document.removeEventListener('click', handleEdgeClick as any, true); } catch {}
+
+  // Finite‑state click handler
+  const edgeFSM = (e: MouseEvent) => {
+    const xVw = (e.clientX / (window.innerWidth / 100));
+    const yVh = (e.clientY / (window.innerHeight / 100));
+    const inFwd = xVw >= 94 && xVw <= 100 && yVh >= 28.5 && yVh <= 84;
+    const inRev = xVw >= 28.86 && xVw <= 36 && yVh >= 28.5 && yVh <= 84;
+
+    if (inFwd) {
+      if (itemStage === 0) {
+        toStage1();
+      } else if (itemStage === 1 && centerStage === 0) {
+        toStage2();
+      }
+      e.stopImmediatePropagation();
+      e.stopPropagation();
+      e.preventDefault();
+    } else if (inRev) {
+      if (centerStage === 1) {
+        backToStage1();
+      } else if (itemStage === 1 && centerStage === 0) {
+        backToStage0();
+      } else if (itemStage === 0 && centerStage === 0) {
+        // Allow legacy account slide (slideOnce / slideBack) to fire
+        return;
+      }
+      e.stopImmediatePropagation();
+      e.stopPropagation();
+      e.preventDefault();
+    }
+  };
+
+  document.addEventListener('click', edgeFSM, true);
+  return () => document.removeEventListener('click', edgeFSM, true);
+}, [itemStage, centerStage]);
 
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
-  const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
+  const REV_MIN = 28.86, REV_MAX = 36;  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
   const DIST = 60;
   const GAP = 10;                   // horizontal shift in vw
@@ -317,13 +368,12 @@ useEffect(() => {
     const vh = height / 100;
 
     const inLeftZone  = x >= 0          && x <= 6.37  * vw && y >= 28.5 * vh && y <= 84 * vh;
-    const inRightZone = x >= 28.86 * vw && x < 32.43 * vw && y >= 28.5 * vh && y <= 84 * vh;
+    const inRightZone = x >= 28.86 * vw && x <= 32.43 * vw && y >= 28.5 * vh && y <= 84 * vh;
 
     if (inLeftZone) {
       // ── Left edge clicks ─────────────────────────
       switch (slideState) {
         case "none":
-          if (itemStage !== 0 || centerStage !== 0) break; // prevent account slide if other groups active
           // fade out chat, slide in account+heading          chatTextRef.current!.style.opacity = "0";
           setTimeout(() => {
             document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
@@ -520,7 +570,6 @@ setSlideState("menu");
 
     // Slide elements once
     const slideOnce = () => {
-      if (itemStage !== 0 || centerStage !== 0) return;
       if (sliding || targetsRef.current[0]?.dataset.slid === 'true') return;
       sliding = true;
 
@@ -591,18 +640,10 @@ setSlideState("menu");
     document.removeEventListener('click', handleClick);
     // (and any other listeners you attached in this effect)
   };
-}, [itemStage, centerStage]);
+}, [/* slideState, or whatever deps this effect really needs */]);
 
            useEffect(() => {
-    // Cache DOM nodes for item and center groups on mount
-    if (!itemElsRef.current) {
-      itemElsRef.current = document.querySelectorAll('.item-text, .item-line');
-    }
-    if (!centerElsRef.current) {
-      centerElsRef.current = document.querySelectorAll('.center-text, .center-line');
-    }
-    // Store base positions for every newly discovered element
-    if (itemElsRef.current && centerElsRef.current) { {
+    if (itemElsRef.current && centerElsRef.current) {
       Array.from(itemElsRef.current).concat(Array.from(centerElsRef.current)).forEach(el => {
         if (!el.dataset.baseLeftVw) {
           const leftPx = parseFloat(getComputedStyle(el).left) || 0;
@@ -628,7 +669,6 @@ setSlideState("menu");
     setAnimating(true);
     move(itemElsRef.current, -DIST);
     setTimeout(() => {
-      updateVisibility();
       setAnimating(false);
       setItemStage(1);
     }, DUR);
@@ -640,7 +680,6 @@ setSlideState("menu");
     move(itemElsRef.current, -2 * DIST - GAP); // items out first
     move(centerElsRef.current, -DIST - GAP); // center follows
     setTimeout(() => {
-      updateVisibility();
       setAnimating(false);
       setItemStage(2);
       setCenterStage(1);
@@ -653,7 +692,6 @@ setSlideState("menu");
     move(centerElsRef.current, 0); // center leaves first
     move(itemElsRef.current, -DIST); // items return after delay
     setTimeout(() => {
-      updateVisibility();
       setAnimating(false);
       setItemStage(1);
       setCenterStage(0);
@@ -665,7 +703,6 @@ setSlideState("menu");
     setAnimating(true);
     move(itemElsRef.current, 0);
     setTimeout(() => {
-      updateVisibility();
       setAnimating(false);
       setItemStage(0);
     }, DUR);
@@ -679,7 +716,7 @@ useEffect(() => {
     const xVw = vw(e.clientX);
     const yVh = vh(e.clientY);
     const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
-    const inRev = xVw > REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
+    const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
 
     if (inFwd) {
       if (itemStage === 0) {

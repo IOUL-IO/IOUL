@@ -444,120 +444,7 @@ setSlideState("menu");
 }, [slideState]);
 
 
-        useEffect(() => {
-    const HIDE_MIN = 6.37, HIDE_MAX = 28.86;
-    const TOP_MIN = 28.5, TOP_MAX = 84;
-    const CLICK_MIN = 32.43, CLICK_MAX = 36;
-    const REVERSE_MIN = 94, REVERSE_MAX = 100;
-    const DISTANCE = 60, DURATION = 700;
-
-    // Helper functions for px to vw and vh conversions
-    const pxToVw = (px: number) => px / (window.innerWidth / 100);
-    const pxToVh = (px: number) => px / (window.innerHeight / 100);
-
-    // Set the base left position (vw) for each target element
-
-
-    // Gather account text and line elements
-
-
-
-    const accountEls = Array.from(document.querySelectorAll<HTMLElement>('.account-text'));
-
-
-
-    const accountLine = document.querySelector<HTMLElement>('.account-line');
-
-
-
-    if (accountLine) {
-
-
-
-      targetsRef.current = [...accountEls, accountLine];
-
-
-
-    } else {
-
-
-
-      targetsRef.current = accountEls;
-
-
-
-    }
-
-    targetsRef.current.forEach(el => {
-      if (!el.dataset.baseLeftVw) {
-        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-        el.dataset.baseLeftVw = pxToVw(leftPx).toString();
-      }
-    });
-
-    // Update visibility of targets based on their positions
-    const updateVisibility = () => {
-      targetsRef.current.forEach(el => {
-        const r = el.getBoundingClientRect();
-        const l = pxToVw(r.left), t = pxToVh(r.top);
-        const hide = l >= HIDE_MIN && l < HIDE_MAX && t >= TOP_MIN && t <= TOP_MAX;
-        el.style.opacity = hide ? '0' : '';
-        el.style.pointerEvents = hide ? 'none' : '';
-      });
-    };
-
-    updateVisibility();
-    window.addEventListener('resize', updateVisibility);
-
-    let sliding = false;
-
-    // Slide elements once
-    const slideOnce = () => {
-      if (sliding || targetsRef.current[0]?.dataset.slid === 'true') return;
-      sliding = true;
-
-      targetsRef.current.forEach(el => {
-        el.style.opacity = '';
-        el.style.pointerEvents = '';
-      });
-
-      targetsRef.current.forEach(el => {
-        const base = parseFloat(el.dataset.baseLeftVw || '0');
-        el.style.transition = `left ${DURATION}ms ease`;
-        el.style.left = `${base + DISTANCE}vw`;
-        el.dataset.slid = 'true';
-      });
-
-      setTimeout(() => {
-        updateVisibility();
-        sliding = false;
-      }, DURATION);
-    };
-
-    // Slide elements back
-    const slideBack = () => {
-      if (sliding || targetsRef.current[0]?.dataset.slid !== 'true') return;
-      sliding = true;
-
-      targetsRef.current.forEach(el => {
-        const base = parseFloat(el.dataset.baseLeftVw || '0');
-        el.style.transition = `left ${DURATION}ms ease`;
-        el.style.left = `${base}vw`;
-        delete el.dataset.slid;
-      });
-
-      setTimeout(() => {
-        updateVisibility();
-        sliding = false;
-      }, DURATION);
-    };
-
-    /* Legacy click-handler effect removed to avoid conflicts */
-return () => {
-    document.removeEventListener('click', handleClick);
-    // (and any other listeners you attached in this effect)
-  };
-}, [/* slideState, or whatever deps this effect really needs */]);
+        
 
            useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
@@ -570,14 +457,18 @@ return () => {
     }
   }, []);
 
+  
   // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
+  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
+    if (!els?.length) return;
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
       el.style.left = `${base + offset}vw`;
     });
   };
+
+// Reusable move function for transitions
 
   // Stage transitions
   const toStage1 = () => {

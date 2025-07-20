@@ -9,7 +9,6 @@ const IOULPage: React.FC = () => {
   const [chatVisible, setChatVisible] = useState(false);
   const [chatInitialized, setChatInitialized] = useState(false);
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
-  const frameRef = useRef<number>();
   const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
 
@@ -71,23 +70,27 @@ useEffect(() => { centerStageRef.current = centerStage; }, [centerStage]);
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
+  // Run updateVisibility every animation frame for a given period
+  const runVisibilityAnimation = (duration: number) => {
+    const start = performance.now();
+    const tick = () => {
+      updateVisibility();
+      if (performance.now() - start < duration) {
+        requestAnimationFrame(tick);
+      }
+    };
+    requestAnimationFrame(tick);
+  };
+
   };
 
   useEffect(() => {
     // Set base positions and update visibility on resize
     window.addEventListener('resize', updateVisibility);
     updateVisibility(); // Initial visibility update
-    
-    // Start rAF loop to clip items continuously during slides
-    const tick = () => {
-      updateVisibility();
-      frameRef.current = requestAnimationFrame(tick);
-    };
-    tick();
 
     return () => {
       window.removeEventListener('resize', updateVisibility); // Clean up resize event listener
-      if (frameRef.current) cancelAnimationFrame(frameRef.current);
     };
   }, []);
 
@@ -312,7 +315,6 @@ useEffect(() => {
   scrollArea.addEventListener('wheel', onWheel, { passive: false });
   return () => {
     scrollArea.removeEventListener('wheel', onWheel);
-      if (frameRef.current) cancelAnimationFrame(frameRef.current);
     scrollArea.remove();
   };
 }, [isScrolling, isSecondScroll]);
@@ -460,7 +462,6 @@ setSlideState("menu");
   document.addEventListener("click", handleEdgeClick, true);
   return () => {
     document.removeEventListener("click", handleEdgeClick, true);
-      if (frameRef.current) cancelAnimationFrame(frameRef.current);
   };
 }, [slideState]);
 
@@ -530,13 +531,6 @@ setSlideState("menu");
     updateVisibility();
     window.addEventListener('resize', updateVisibility);
 
-    
-    // Start rAF loop to clip items continuously during slides
-    const tick = () => {
-      updateVisibility();
-      frameRef.current = requestAnimationFrame(tick);
-    };
-    tick();
     let sliding = false;
 
     // Slide elements once
@@ -624,7 +618,6 @@ document.addEventListener('click', handleClick);
 
             return () => {
     document.removeEventListener('click', handleClick);
-      if (frameRef.current) cancelAnimationFrame(frameRef.current);
     // (and any other listeners you attached in this effect)
   };
 }, [itemStage, centerStage]);
@@ -661,9 +654,11 @@ useEffect(() => {
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -DIST);
+    runVisibilityAnimation(DUR + STAGGER);
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
+      updateVisibility();
     }, DUR);
   };
 
@@ -671,11 +666,13 @@ useEffect(() => {
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -2 * DIST - GAP); // items out first
+    runVisibilityAnimation(DUR + STAGGER);
     move(centerElsRef.current, -DIST - GAP); // center follows
     setTimeout(() => {
       setAnimating(false);
       setItemStage(2);
       setCenterStage(1);
+      updateVisibility();
     }, DUR + STAGGER);
   };
 
@@ -684,10 +681,12 @@ useEffect(() => {
     setAnimating(true);
     move(centerElsRef.current, 0); // center leaves first
     move(itemElsRef.current, -DIST); // items return after delay
+    runVisibilityAnimation(DUR + STAGGER);
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
       setCenterStage(0);
+      updateVisibility();
     }, DUR + STAGGER);
   };
 
@@ -695,9 +694,11 @@ useEffect(() => {
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, 0);
+    runVisibilityAnimation(DUR + STAGGER);
     setTimeout(() => {
       setAnimating(false);
       setItemStage(0);
+      updateVisibility();
     }, DUR);
   };
 
@@ -729,7 +730,6 @@ useEffect(() => {
   document.addEventListener('click', handleClick, true);
   return () => {
     document.removeEventListener('click', handleClick, true);
-      if (frameRef.current) cancelAnimationFrame(frameRef.current);
   };
 }, [slideState, itemStage, centerStage]);
 
@@ -756,7 +756,6 @@ useEffect(() => {
 
   return () => {
     if (timer) clearTimeout(timer);
-      if (frameRef.current) cancelAnimationFrame(frameRef.current);
   };
 }, [slideState, chatInitialized]);
 

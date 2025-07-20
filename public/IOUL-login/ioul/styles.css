@@ -168,6 +168,7 @@ body.non-fullscreen {
 
 
 .slide-container {
+    overflow: hidden;
     position: fixed;
     top: 0;
     left: 0;
@@ -741,6 +742,7 @@ body.non-fullscreen {
 
 /* Ensure slide-container sits above util lines */
 .slide-container {
+    overflow: hidden;
   z-index: 150 !important;
 }
 
@@ -819,11 +821,4 @@ body.non-fullscreen {
   opacity: 1 !important;
   display: inline-block !important;
   pointer-events: auto !important;
-}
-
-/* Added to ensure visibility over layer-four */
-
-.item-text,
-.item-line {
-  z-index: 3;
 }

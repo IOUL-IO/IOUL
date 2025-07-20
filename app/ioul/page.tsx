@@ -33,25 +33,6 @@ useEffect(() => {
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
-  // --- initialize item and center element refs and store base positions ---
-  useEffect(() => {
-    itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-    centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-    const allEls = [...Array.from(itemElsRef.current), ...Array.from(centerElsRef.current)];
-    allEls.forEach(el => {
-      if (!el.dataset.baseLeftVw) {
-        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-        el.dataset.baseLeftVw = toVw(leftPx).toString();
-      }
-    });
-  }, []);
-  // Populate refs for item and center elements after mount
-  useEffect(() => {
-    itemElsRef.current = document.querySelectorAll('.item-text, .item-line');
-    centerElsRef.current = document.querySelectorAll('.center-text, .center-line');
-  }, []);
-
-
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
@@ -573,7 +554,6 @@ setSlideState("menu");
 
     // Click listener for the page
     const handleClick = (e: MouseEvent) => {
-      if (itemStage !== 0 || centerStage !== 0) return;
       const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
       if (vw >= CLICK_MIN && vw <= CLICK_MAX) {
         slideOnce();
@@ -617,8 +597,7 @@ setSlideState("menu");
   }, []);
 
   // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
-    if (!els) return;
+  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;

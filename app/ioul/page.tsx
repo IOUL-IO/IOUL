@@ -3,61 +3,42 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 /**
- * Low‑level slide controller for three independent ribbons:
- *  • account  – unchanged from your original logic
- *  • items    – two‑step slide in/out
- *  • center   – piggy‑backs on the second step
+ * Slide controller for three ribbons:
+ * 1. Account banner – unchanged behaviour, but only allowed when items+center reset.
+ * 2. Items ribbon    – two‑step slide in/out.
+ * 3. Center ribbon   – appears on second forward click, leaves first on reverse.
  *
- * The state machine is:
- *    0  (items off, center off)
- *         ⇣   right‑edge click
- *    1  (items @ 36 vw, center off)
- *         ⇣   right‑edge click
- *    2  (items hidden < 6.41 vw, center @ 36 vw)
- *
- *    2  ⇣   left‑edge click
- *    1
- *    1  ⇣   left‑edge click
- *    0
- *
- * Only when stage === 0 can the account banner respond to the same
- * left‑edge click. That prevents the cross‑talk you’d been seeing.
+ * Stage diagram:
+ *   stage 0  items off‑screen ≥ 96vw, center off‑screen ≥ 106vw
+ *   stage 1  items at 36vw
+ *   stage 2  items hidden (<6.41vw), center at 36vw
  */
 
-// ---------------------------------------------------------------------------
-// constants
-// ---------------------------------------------------------------------------
-const DIST = 60;      // vw – first hop (items 96 → 36)
-const GAP  = 10;      // vw – extra hop (stage 1 → stage 2)
-const DUR  = 600;     // ms – animation duration
+const DIST = 60;          // vw – 1st hop
+const GAP  = 10;          // vw – extra hop 1→2
+const DUR  = 600;         // ms – animation duration
 const HIDE_MIN = 6.41;
 const HIDE_MAX = 28.86;
 
-// small util
 const toVw = (px: number) => (px / window.innerWidth) * 100;
 
-// ---------------------------------------------------------------------------
-// component
-// ---------------------------------------------------------------------------
 export default function IoulPage() {
-  // Refs that hold the NodeLists
   const accountElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const itemElsRef    = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef  = useRef<NodeListOf<HTMLElement> | null>(null);
 
-  // stage: 0 | 1 | 2  (see diagram above)
   const [stage, setStage] = useState<0 | 1 | 2>(0);
   const [accountSlid, setAccountSlid] = useState(false);
 
   // -------------------------------------------------------------------------
-  //  gather elements & cache baseline positions once on mount
+  // Collect element lists and stamp base positions
   // -------------------------------------------------------------------------
   useEffect(() => {
     accountElsRef.current = document.querySelectorAll<HTMLElement>('.account-text, .account-line');
     itemElsRef.current    = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
     centerElsRef.current  = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
 
-    const stampBase = (els: NodeListOf<HTMLElement> | null) => {
+    const stamp = (els: NodeListOf<HTMLElement> | null) => {
       if (!els) return;
       els.forEach(el => {
         if (!el.dataset.baseLeftVw) {
@@ -66,106 +47,97 @@ export default function IoulPage() {
         }
       });
     };
-
-    stampBase(accountElsRef.current);
-    stampBase(itemElsRef.current);
-    stampBase(centerElsRef.current);
+    stamp(accountElsRef.current);
+    stamp(itemElsRef.current);
+    stamp(centerElsRef.current);
   }, []);
 
   // -------------------------------------------------------------------------
-  //  helper to move a group by a relative offset (in vw)
+  // Move helper
   // -------------------------------------------------------------------------
   const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
     if (!els) return;
     els.forEach(el => {
-      const base = parseFloat(el.style.left || el.dataset.baseLeftVw || '0');
+      const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
       el.style.left = `${base + offset}vw`;
     });
   };
 
   // -------------------------------------------------------------------------
-  //  visibility mask for the items ribbon (runs each animation‑frame)
+  // Visibility mask for items ribbon
   // -------------------------------------------------------------------------
   useEffect(() => {
-    let rafId: number;
-    const loop = () => {
+    let raf: number;
+    const tick = () => {
       const els = itemElsRef.current;
       if (els) {
         els.forEach(el => {
           const rect = el.getBoundingClientRect();
-          const leftVw = toVw(rect.left);
-          const hide = leftVw >= HIDE_MIN && leftVw < HIDE_MAX;
+          const l = toVw(rect.left);
+          const hide = l >= HIDE_MIN && l < HIDE_MAX;
           el.style.opacity = hide ? '0' : '1';
           el.style.pointerEvents = hide ? 'none' : 'auto';
         });
       }
-      rafId = requestAnimationFrame(loop);
+      raf = requestAnimationFrame(tick);
     };
-    rafId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(rafId);
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   // -------------------------------------------------------------------------
-  //  click handlers
+  // Global click listener
   // -------------------------------------------------------------------------
   useEffect(() => {
-    const onClick = (e: MouseEvent) => {
+    const handleClick = (e: MouseEvent) => {
       const vw = toVw(e.clientX);
 
-      // ---------------------------------------------------------------------
-      //  Right‑edge 94–100 vw  → forward
-      // ---------------------------------------------------------------------
+      // Right edge 94‑100vw  → forward
       if (vw >= 94) {
         if (stage === 0) {
-          // 0 → 1  (items come in)
-          move(itemElsRef.current, -DIST);
+          move(itemElsRef.current, -DIST);          // 0 → 1
           setStage(1);
         } else if (stage === 1) {
-          // 1 → 2  (items slide left & hide, centre comes in)
-          move(itemElsRef.current, -(DIST + GAP));  // -70 vw
-          move(centerElsRef.current, -(DIST + GAP)); // -70 vw
+          move(itemElsRef.current, -(DIST + GAP));  // 1 → 2
+          move(centerElsRef.current, -(DIST + GAP));
           setStage(2);
         }
         return;
       }
 
-      // ---------------------------------------------------------------------
-      //  Left‑edge 32.43–36 vw  → reverse
-      // ---------------------------------------------------------------------
+      // Left edge 32.43‑36vw  → reverse / account
       if (vw >= 32.43 && vw <= 36) {
         if (stage === 2) {
-          // 2 → 1  (centre leaves, items back to 36 vw)
-          move(centerElsRef.current, DIST + GAP);  // +70
-          move(itemElsRef.current, DIST + GAP);    // +70
+          move(centerElsRef.current, DIST + GAP);   // 2 → 1
+          move(itemElsRef.current,  DIST + GAP);
           setStage(1);
           return;
-        } else if (stage === 1) {
-          // 1 → 0  (items off‑screen)
-          move(itemElsRef.current, DIST);          // +60
+        }
+        if (stage === 1) {
+          move(itemElsRef.current, DIST);           // 1 → 0
           setStage(0);
           return;
-        } else if (stage === 0) {
-          // items + centre are reset → allow account banner
+        }
+        // stage === 0 → allow account toggle
+        if (stage === 0) {
           if (!accountSlid) {
-            move(accountElsRef.current, DIST);     // account slides in
+            move(accountElsRef.current, DIST);
             setAccountSlid(true);
           } else {
-            move(accountElsRef.current, -DIST);    // account slides back
+            move(accountElsRef.current, -DIST);
             setAccountSlid(false);
           }
         }
       }
     };
 
-    document.addEventListener('click', onClick);
-    return () => document.removeEventListener('click', onClick);
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
   }, [stage, accountSlid]);
 
   // -------------------------------------------------------------------------
-  // The JSX of your page goes below.  This file only provides behaviour; it
-  // does not alter your existing markup or styling.  Keep whatever you had in
-  // place of the empty fragment.
+  // Render – keep your existing markup inside the fragment
   // -------------------------------------------------------------------------
-  return <>{/* existing markup remains here */}</>;
+  return <>{/* existing page markup here */}</>;
 }

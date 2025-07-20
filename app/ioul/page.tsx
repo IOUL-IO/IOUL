@@ -58,43 +58,25 @@ useEffect(() => { centerStageRef.current = centerStage; }, [centerStage]);
   const toVh = (px: number) => px / vh();
 
 
-  const updateVisibility = () => {
-    const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
-    const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
-    const targets = textEls.concat(lineEls);
-    targets.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const l = toVw(rect.left);
-      const t = toVh(rect.top);
-      const hide = l < 36 && t >= 28.5 && t <= 84;
-      el.style.opacity = hide ? '0' : '';
-      el.style.pointerEvents = hide ? 'none' : '';
-    });
-  // Run updateVisibility every animation frame for a given period
-  const runVisibilityAnimation = (duration: number) => {
-    const start = performance.now();
-    const tick = () => {
-      updateVisibility();
-      if (performance.now() - start < duration) {
-        requestAnimationFrame(tick);
-      }
-    };
+  
+const updateVisibility = () => {
+  const selectors = [
+    '.item-text', '.item-line',
+    '.center-text', '.center-line',
+    '.account-text', '.account-line'
+  ];
+  const targets = selectors.flatMap(sel => Array.from(document.querySelectorAll<HTMLElement>(sel)));
+  targets.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const l = toVw(rect.left);
+    const t = toVh(rect.top);
+    // Clip everything whose left edge is left of 36vw *and* that sits in the vertical window
+    const hide = l < 36 && t >= 28.5 && t <= 84;
+    el.style.opacity = hide ? '0' : '';
+    el.style.pointerEvents = hide ? 'none' : '';
+  });
+};
 
-  // Run visibility updates during animations
-  const runVisibilityAnimation = (duration: number) => {
-    const start = performance.now();
-    const step = () => {
-      updateVisibility();
-      if (performance.now() - start < duration) {
-        requestAnimationFrame(step);
-      }
-    };
-    requestAnimationFrame(step);
-  };
-    requestAnimationFrame(tick);
-  };
-
-  };
 
   useEffect(() => {
     // Set base positions and update visibility on resize
@@ -666,12 +648,9 @@ useEffect(() => {
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -DIST);
-    runVisibilityAnimation(DUR);
-    runVisibilityAnimation(DUR + STAGGER);
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
-      updateVisibility();
     }, DUR);
   };
 
@@ -679,13 +658,11 @@ useEffect(() => {
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -2 * DIST - GAP); // items out first
-    runVisibilityAnimation(DUR + STAGGER);
     move(centerElsRef.current, -DIST - GAP); // center follows
     setTimeout(() => {
       setAnimating(false);
       setItemStage(2);
       setCenterStage(1);
-      updateVisibility();
     }, DUR + STAGGER);
   };
 
@@ -693,14 +670,11 @@ useEffect(() => {
     if (animating) return;
     setAnimating(true);
     move(centerElsRef.current, 0); // center leaves first
-    move(itemElsRef.current, -DIST);
-    runVisibilityAnimation(DUR); // items return after delay
-    runVisibilityAnimation(DUR + STAGGER);
+    move(itemElsRef.current, -DIST); // items return after delay
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
       setCenterStage(0);
-      updateVisibility();
     }, DUR + STAGGER);
   };
 
@@ -708,12 +682,9 @@ useEffect(() => {
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, 0);
-    runVisibilityAnimation(DUR);
-    runVisibilityAnimation(DUR + STAGGER);
     setTimeout(() => {
       setAnimating(false);
       setItemStage(0);
-      updateVisibility();
     }, DUR);
   };
 
@@ -828,6 +799,7 @@ return (
         <div className="line account-line" style={{position:'absolute',top:'41.6vh',left:'-24.00vw',width:'57.8vw',height:'1px',backgroundColor:'rgba(230,230,230,0.28)',zIndex:1}} />
         </div>
         
+        <div className="clip-left">
         <div className="item-line item-line-one" style={{position:'absolute',top:'47.8vh',left:'96vw',width:'36vw'}} />
         <div className="item-line item-line-two" style={{position:'absolute',top:'47.8vh',left:'139vw',width:'14.8vw'}} />
         
@@ -917,6 +889,7 @@ return (
         <span className="item-text right-flow" style={{position:'absolute',top:'59.2vh',left:'131vw'}}>0</span>
 
 
+        </div> {/* end clip-left */}
         <div className="hover-area" ref={hoverAreaRef}  onMouseEnter={handleChatHover} />
 
         <span ref={chatTextRef} id="chatText" className={`chat-text${chatVisible ? " visible" : ""}`}>cHAT . . .</span>

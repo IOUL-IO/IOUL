@@ -49,8 +49,8 @@ const IOULPage: React.FC = () => {
     if (!els) return;
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || "0");
-      el.style.transition = \`left \${DUR}ms ease\`;
-      el.style.left = \`\${base + offsetVw}vw\`;
+      el.style.transition = `left ${DUR}ms ease`;
+      el.style.left = `${base + offsetVw}vw`;
     });
   };
 

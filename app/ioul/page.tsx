@@ -32,65 +32,28 @@ useEffect(() => {
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-// ─────────────────────────────────────────────────────────────
-// Populate item & center groups once and override old edge clicks
-// ─────────────────────────────────────────────────────────────
+// ─── Cache item & center elements and their baseline positions ────────────────
 useEffect(() => {
-  // Collect elements
-  itemElsRef.current   = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-  const pxToVw = (px:number) => px / (window.innerWidth / 100);
-  const cacheBase = (els: NodeListOf<HTMLElement> | null) => {
-    els?.forEach(el => {
-      if (!el.dataset.baseLeftVw) {
-        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-        el.dataset.baseLeftVw = pxToVw(leftPx).toString();
-      }
-    });
-  };
-  cacheBase(itemElsRef.current);
-  cacheBase(centerElsRef.current);
+  itemElsRef.current = document.querySelectorAll('.item-text, .item-line');
+  centerElsRef.current = document.querySelectorAll('.center-text, .center-line');
 
-  // Remove legacy listener if still present
+  const toVwLocal = (px: number) => px / (window.innerWidth / 100);
 
-  // Finite‑state click handler
-  const edgeFSM = (e: MouseEvent) => {
-    const xVw = (e.clientX / (window.innerWidth / 100));
-    const yVh = (e.clientY / (window.innerHeight / 100));
-    const inFwd = xVw >= 94 && xVw <= 100 && yVh >= 28.5 && yVh <= 84;
-    const inRev = xVw >= 28.86 && xVw <= 36 && yVh >= 28.5 && yVh <= 84;
-
-    if (inFwd) {
-      if (itemStage === 0) {
-        toStage1();
-      } else if (itemStage === 1 && centerStage === 0) {
-        toStage2();
-      }
-      e.stopImmediatePropagation();
-      e.stopPropagation();
-      e.preventDefault();
-    } else if (inRev) {
-      if (centerStage === 1) {
-        backToStage1();
-      } else if (itemStage === 1 && centerStage === 0) {
-        backToStage0();
-      } else if (itemStage === 0 && centerStage === 0) {
-        // Allow legacy account slide (slideOnce / slideBack) to fire
-        return;
-      }
-      e.stopImmediatePropagation();
-      e.stopPropagation();
-      e.preventDefault();
+  const allEls: HTMLElement[] = [
+    ...Array.from(itemElsRef.current || []),
+    ...Array.from(centerElsRef.current || [])
+  ];
+  allEls.forEach(el => {
+    if (!el.dataset.baseLeftVw) {
+      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      el.dataset.baseLeftVw = toVwLocal(leftPx).toString();
     }
-  };
-
-  document.addEventListener('click', edgeFSM, true);
-  return () => document.removeEventListener('click', edgeFSM, true);
+  });
 }, [itemStage, centerStage]);
 
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
-  const REV_MIN = 28.86, REV_MAX = 36;  // reverse trigger (left edge)
+  const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
   const DIST = 60;
   const GAP = 10;                   // horizontal shift in vw
@@ -126,7 +89,7 @@ useEffect(() => {
     return () => {
       window.removeEventListener('resize', updateVisibility); // Clean up resize event listener
     };
-  }, []);
+  }, [itemStage, centerStage]);
 
 
 
@@ -134,7 +97,7 @@ useEffect(() => {
     // Cycle util-state 0 → 1 → 2 → 0 on click
   const handleUtilLineClick = useCallback(() => {
     setState(prev => (prev + 1) % 3);
-  }, []);
+  }, [itemStage, centerStage]);
   
   // Sync the data-util CSS attribute
   useEffect(() => {
@@ -294,7 +257,7 @@ useEffect(() => {
   dashed17to31Ref.current = document.querySelectorAll(
     '.grid-dashed.dashed17, … , .grid-dashed.dashed31'
   );
-}, []);
+}, [itemStage, centerStage]);
 
 // re-runs when scrolling flags change
 useEffect(() => {
@@ -356,6 +319,7 @@ useEffect(() => {
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {
+  const handleEdgeClick = (event: MouseEvent) => {
     // ignore clicks on actual menu items or chat-text itself
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
@@ -492,7 +456,9 @@ setSlideState("menu");
     }
   };
 
+  document.addEventListener("click", handleEdgeClick, true);
   return () => {
+    document.removeEventListener("click", handleEdgeClick, true);
   };
 }, [slideState]);
 
@@ -607,6 +573,7 @@ setSlideState("menu");
 
     // Click listener for the page
     const handleClick = (e: MouseEvent) => {
+    if (!(itemStage === 0 && centerStage === 0)) return;
       const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
       if (vw >= CLICK_MIN && vw <= CLICK_MAX) {
         slideOnce();
@@ -647,7 +614,7 @@ setSlideState("menu");
         }
       });
     }
-  }, []);
+  }, [itemStage, centerStage]);
 
   // Reusable move function for transitions
   const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
@@ -655,6 +622,9 @@ setSlideState("menu");
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
+      el.style.left = `${base + offset}vw`;
+    });
+  }ms ease`;
       el.style.left = `${base + offset}vw`;
     });
   };

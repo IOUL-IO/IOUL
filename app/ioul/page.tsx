@@ -317,12 +317,13 @@ useEffect(() => {
     const vh = height / 100;
 
     const inLeftZone  = x >= 0          && x <= 6.37  * vw && y >= 28.5 * vh && y <= 84 * vh;
-    const inRightZone = x >= 28.86 * vw && x <= 32.43 * vw && y >= 28.5 * vh && y <= 84 * vh;
+    const inRightZone = x >= 28.86 * vw && x < 32.43 * vw && y >= 28.5 * vh && y <= 84 * vh;
 
     if (inLeftZone) {
       // ── Left edge clicks ─────────────────────────
       switch (slideState) {
         case "none":
+          if (itemStage !== 0 || centerStage !== 0) break; // prevent account slide if other groups active
           // fade out chat, slide in account+heading          chatTextRef.current!.style.opacity = "0";
           setTimeout(() => {
             document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
@@ -593,7 +594,15 @@ setSlideState("menu");
 }, [itemStage, centerStage]);
 
            useEffect(() => {
-    if (itemElsRef.current && centerElsRef.current) {
+    // Cache DOM nodes for item and center groups on mount
+    if (!itemElsRef.current) {
+      itemElsRef.current = document.querySelectorAll('.item-text, .item-line');
+    }
+    if (!centerElsRef.current) {
+      centerElsRef.current = document.querySelectorAll('.center-text, .center-line');
+    }
+    // Store base positions for every newly discovered element
+    if (itemElsRef.current && centerElsRef.current) { {
       Array.from(itemElsRef.current).concat(Array.from(centerElsRef.current)).forEach(el => {
         if (!el.dataset.baseLeftVw) {
           const leftPx = parseFloat(getComputedStyle(el).left) || 0;
@@ -619,6 +628,7 @@ setSlideState("menu");
     setAnimating(true);
     move(itemElsRef.current, -DIST);
     setTimeout(() => {
+      updateVisibility();
       setAnimating(false);
       setItemStage(1);
     }, DUR);
@@ -630,6 +640,7 @@ setSlideState("menu");
     move(itemElsRef.current, -2 * DIST - GAP); // items out first
     move(centerElsRef.current, -DIST - GAP); // center follows
     setTimeout(() => {
+      updateVisibility();
       setAnimating(false);
       setItemStage(2);
       setCenterStage(1);
@@ -642,6 +653,7 @@ setSlideState("menu");
     move(centerElsRef.current, 0); // center leaves first
     move(itemElsRef.current, -DIST); // items return after delay
     setTimeout(() => {
+      updateVisibility();
       setAnimating(false);
       setItemStage(1);
       setCenterStage(0);
@@ -653,6 +665,7 @@ setSlideState("menu");
     setAnimating(true);
     move(itemElsRef.current, 0);
     setTimeout(() => {
+      updateVisibility();
       setAnimating(false);
       setItemStage(0);
     }, DUR);
@@ -666,7 +679,7 @@ useEffect(() => {
     const xVw = vw(e.clientX);
     const yVh = vh(e.clientY);
     const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
-    const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
+    const inRev = xVw > REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
 
     if (inFwd) {
       if (itemStage === 0) {

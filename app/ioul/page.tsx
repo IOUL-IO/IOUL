@@ -2,11 +2,6 @@
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
-
-// --- Screen unit helpers (global) ---
-const pxToVw = (px: number) => px / (window.innerWidth / 100);
-const pxToVh = (px: number) => px / (window.innerHeight / 100);
-
 const IOULPage: React.FC = () => {
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
@@ -29,26 +24,16 @@ useEffect(() => {
 
   const EDGE_MARGIN = 11;
 
-  const targetsRef = useRef<(HTMLElement | null)[]>([]); // Reference to target elements
-
+  
   const [itemStage, setItemStage] = useState(0);  // 0 = hidden, 1 = visible (left column), 2 = shifted left / clipped
   const [centerStage, setCenterStage] = useState(0);  // 0 = hidden, 1 = visible (center column)
   const [animating, setAnimating] = useState(false);
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-
-// ---- Manage z-index of item elements to ensure proper masking ----
-useEffect(() => {
-  if (!itemElsRef.current) return;
-  itemElsRef.current.forEach(el => {
-    el.style.zIndex = itemStage === 1 ? '3' : '1';
-  });
-}, [itemStage]);
-
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
-  const REV_MIN = 32.44, REV_MAX = 36;  // reverse trigger (left edge)
+  const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
   const DIST = 60;
   const GAP = 10;                   // horizontal shift in vw
@@ -527,13 +512,6 @@ setSlideState("menu");
 
     // Slide elements once
     const slideOnce = () => {
-
-// Prevent account group sliding unless item and center are at origin
-const firstEl = targetsRef.current[0];
-if (firstEl && (firstEl.classList.contains('account-text') || firstEl.classList.contains('account-line')) ) {
-  if (!(itemStage === 0 && centerStage === 0)) return;
-}
-
       if (sliding || targetsRef.current[0]?.dataset.slid === 'true') return;
       sliding = true;
 
@@ -557,13 +535,6 @@ if (firstEl && (firstEl.classList.contains('account-text') || firstEl.classList.
 
     // Slide elements back
     const slideBack = () => {
-
-// Prevent account group sliding unless item and center are at origin
-const firstEl = targetsRef.current[0];
-if (firstEl && (firstEl.classList.contains('account-text') || firstEl.classList.contains('account-line')) ) {
-  if (!(itemStage === 0 && centerStage === 0)) return;
-}
-
       if (sliding || targetsRef.current[0]?.dataset.slid !== 'true') return;
       sliding = true;
 
@@ -580,19 +551,19 @@ if (firstEl && (firstEl.classList.contains('account-text') || firstEl.classList.
       }, DURATION);
     };
 
-    
-    // Stop propagation for slide actions
-    document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
-      el.addEventListener('click', e => {
-        e.stopPropagation();
+    // Click listener for the page
+    const handleClick = (e: MouseEvent) => {
+      const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
+      if (vw >= CLICK_MIN && vw <= CLICK_MAX) {
         slideOnce();
-      });
-    });
-
-    document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
-      el.addEventListener('click', e => {
-        e.stopPropagation();
+      } else if (vw >= REVERSE_MIN && vw <= REVERSE_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
         slideBack();
+      }
+    };
+
+    document.addEventListener('click', handleClick);
+
+    slideBack();
       });
     });
 
@@ -614,7 +585,8 @@ if (firstEl && (firstEl.classList.contains('account-text') || firstEl.classList.
   }, []);
 
   // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
+  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
+    if (!els?.length) return;
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
@@ -636,10 +608,7 @@ if (firstEl && (firstEl.classList.contains('account-text') || firstEl.classList.
   const toStage2 = () => {
     if (animating) return;
     setAnimating(true);
-    const itemWidthVw = itemElsRef.current && itemElsRef.current.length
-      ? Math.max(...Array.from(itemElsRef.current).map(el => pxToVw(el.getBoundingClientRect().width)))
-      : 0;
-    move(itemElsRef.current, -(2 * DIST + GAP + itemWidthVw)); // items out first
+    move(itemElsRef.current, -2 * DIST - GAP); // items out first
     move(centerElsRef.current, -DIST - GAP); // center follows
     setTimeout(() => {
       setAnimating(false);
@@ -671,79 +640,35 @@ if (firstEl && (firstEl.classList.contains('account-text') || firstEl.classList.
   };
 
   // Handle the click event for forward and reverse triggers
+useEffect(() => {
+  function handleClick(e: MouseEvent) {
+    const vw = (px: number) => px / (window.innerWidth / 100);
+    const vh = (px: number) => px / (window.innerHeight / 100);
+    const xVw = vw(e.clientX);
+    const yVh = vh(e.clientY);
+    const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
+    const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
 
-function handleClick(e: MouseEvent) {
-  const vw = (px: number) => px / (window.innerWidth / 100);
-  const vh = (px: number) => px / (window.innerHeight / 100);
-  const xVw = vw(e.clientX);
-  const yVh = vh(e.clientY);
-
-  const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
-  const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
-
-  // Helper: detect if account group is currently slid in
-  const isAccountVisible = (): boolean => {
-    const firstEl = targetsRef.current[0];
-    return !!firstEl &&
-      (firstEl.classList.contains('account-text') || firstEl.classList.contains('account-line')) &&
-      firstEl.dataset.slid === 'true';
-  };
-
-  if (inFwd) {
-    // If the account panel is in, push it out first and ignore other forward logic
-    if (isAccountVisible()) {
-      slideBack(); // hide account group
-      return;
-    }
-
-    // Stage transitions for the main carousel
-    if (itemStage === 0 && centerStage === 0) {
-      toStage1();
-    } else if (itemStage === 1 && centerStage === 0) {
-      toStage2();
-    }
-  } else if (inRev) {
-    // Reverse path & account toggle
-    if (centerStage === 1) {
-      backToStage1();
-    } else if (itemStage === 1 && centerStage === 0) {
-      backToStage0();
-    } else if (itemStage === 0 && centerStage === 0) {
-      // Only now is the account group allowed to toggle
-      const firstEl = targetsRef.current[0];
-      const isAccount = (el: HTMLElement | undefined | null) =>
-        !!el &&
-        (el.classList.contains('account-text') || el.classList.contains('account-line'));
-
-      // Prepare account elements as targets if they aren't already
-      if (!isAccount(firstEl)) {
-        const accountEls = Array.from(
-          document.querySelectorAll<HTMLElement>('.account-text')
-        );
-        const accountLine = document.querySelector<HTMLElement>('.account-line');
-        targetsRef.current = accountLine ? [...accountEls, accountLine] : accountEls;
+    if (inFwd) {
+      if (itemStage === 0) {
+        toStage1();
+      } else if (itemStage === 1 && centerStage === 0) {
+        toStage2();
       }
-
-      // Toggle account visibility
-      if (isAccountVisible()) {
-        slideBack();
-      } else {
-        slideOnce();
+    } else if (inRev) {
+      if (centerStage === 1) {
+        backToStage1();
+      } else if (itemStage === 1 && centerStage === 0) {
+        backToStage0();
       }
     }
   }
-}
 
-
-
-useEffect(() => {
   document.addEventListener('click', handleClick, true);
   return () => {
     document.removeEventListener('click', handleClick, true);
   };
-}, [itemStage, centerStage]);
-
-
+}, [slideState, itemStage, centerStage]);
 
 
   

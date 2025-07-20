@@ -33,31 +33,23 @@ useEffect(() => {
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
-// Populate refs and capture baseline positions on mount
-useEffect(() => {
-  // Query both groups
-  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-
-  // Helper px → vw
-  const pxToVw = (px: number) => px / (window.innerWidth / 100);
-
-  // Store each element's initial left (vw) if not already recorded
-  const setBaseLeft = (els: NodeListOf<HTMLElement>) => {
-    els.forEach(el => {
+  // --- initialize item and center element refs and store base positions ---
+  useEffect(() => {
+    itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+    centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+    const allEls = [...Array.from(itemElsRef.current), ...Array.from(centerElsRef.current)];
+    allEls.forEach(el => {
       if (!el.dataset.baseLeftVw) {
-        const px = parseFloat(getComputedStyle(el).left) || 0;
-        el.dataset.baseLeftVw = pxToVw(px).toString();
+        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+        el.dataset.baseLeftVw = toVw(leftPx).toString();
       }
     });
-  };
-
-  itemElsRef.current && setBaseLeft(itemElsRef.current);
-  centerElsRef.current && setBaseLeft(centerElsRef.current);
-
-  // Ensure visibility state reflects initial positions
-  updateVisibility?.();
-}, []);
+  }, []);
+  // Populate refs for item and center elements after mount
+  useEffect(() => {
+    itemElsRef.current = document.querySelectorAll('.item-text, .item-line');
+    centerElsRef.current = document.querySelectorAll('.center-text, .center-line');
+  }, []);
 
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
@@ -581,6 +573,7 @@ setSlideState("menu");
 
     // Click listener for the page
     const handleClick = (e: MouseEvent) => {
+      if (itemStage !== 0 || centerStage !== 0) return;
       const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
       if (vw >= CLICK_MIN && vw <= CLICK_MAX) {
         slideOnce();
@@ -624,7 +617,8 @@ setSlideState("menu");
   }, []);
 
   // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
+  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
+    if (!els) return;
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;

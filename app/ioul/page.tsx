@@ -32,21 +32,48 @@ useEffect(() => {
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
+// ── Gather slide target elements on mount ────────────────────────────────
 
-  // Capture item- and center- elements once the component mounts
-  useEffect(() => {
-    itemElsRef.current = document.querySelectorAll('.item-text, .item-line');
-    centerElsRef.current = document.querySelectorAll('.center-text, .center-line');
-  }, []);
+useEffect(() => {
+  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+  const pxToVw = (px:number)=> px / (window.innerWidth/100);
+  itemElsRef.current.forEach(el=>{
+    if(!el.dataset.baseLeftVw){
+      const leftPx = parseFloat(getComputedStyle(el).left)||0;
+      el.dataset.baseLeftVw = pxToVw(leftPx).toString();
+    }
+  });
+  centerElsRef.current.forEach(el=>{
+    if(!el.dataset.baseLeftVw){
+      const leftPx = parseFloat(getComputedStyle(el).left)||0;
+      el.dataset.baseLeftVw = pxToVw(leftPx).toString();
+    }
+  });
+}, []);
+
 
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
-  const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
+  const REV_MIN = 32.43, REV_MAX = 36;    // reverse trigger (left edge)    // reverse trigger (right edge)  // reverse trigger (left edge)  // reverse trigger (right edge)  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
   const DIST = 60;
   const GAP = 10;                   // horizontal shift in vw
   const DUR = 600;                  // transition duration in ms
   const STAGGER = 0;                // delay between outgoing and incoming groups in ms
+
+// ── Visibility helper for item group clipping ────────────────────────────
+const updateItemVisibility = useCallback(() => {
+  if (!itemElsRef.current) return;
+  itemElsRef.current.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const l = toVw(rect.left);
+    const t = toVh(rect.top);
+    const hide = l < 28.86 && t >= TOP_MIN && t <= TOP_MAX;
+    el.style.opacity = hide ? '0' : '';
+    el.style.pointerEvents = hide ? 'none' : '';
+  });
+}, []);
 
   // Helper unit conversions
   const vw = () => window.innerWidth / 100;
@@ -498,18 +525,9 @@ setSlideState("menu");
     targetsRef.current.forEach(el => {
       if (!el.dataset.baseLeftVw) {
         const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-      targetsRef.current.forEach(el => {
-        if (!el.dataset.baseLeftVw) {
-          const leftStr = getComputedStyle(el).left || '0';
-          let baseVw: number;
-          if (leftStr.endsWith('px')) {
-            baseVw = pxToVw(parseFloat(leftStr));
-          } else {
-            baseVw = parseFloat(leftStr); // assumes vw units
-          }
-          el.dataset.baseLeftVw = baseVw.toString();
-        }
-      });
+        el.dataset.baseLeftVw = pxToVw(leftPx).toString();
+      }
+    });
 
     // Update visibility of targets based on their positions
     const updateVisibility = () => {
@@ -581,10 +599,20 @@ setSlideState("menu");
     document.addEventListener('click', handleClick);
 
     // Stop propagation for slide actions
-// BEGIN Removed outdated slide-trigger listeners
-// END Removed outdated slide-trigger listeners
-// BEGIN Removed outdated slide-trigger-reverse listeners
-// END Removed outdated slide-trigger-reverse listeners
+    document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        slideOnce();
+      });
+    });
+
+    document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        slideBack();
+      });
+    });
+
             return () => {
     document.removeEventListener('click', handleClick);
     // (and any other listeners you attached in this effect)
@@ -603,8 +631,7 @@ setSlideState("menu");
   }, []);
 
   // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
-    if (!els) return;
+  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
@@ -620,7 +647,8 @@ setSlideState("menu");
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
-    }, DUR);
+    
+      updateVisibility();}, DUR);
   };
 
   const toStage2 = () => {
@@ -632,7 +660,8 @@ setSlideState("menu");
       setAnimating(false);
       setItemStage(2);
       setCenterStage(1);
-    }, DUR + STAGGER);
+    
+      updateVisibility();}, DUR + STAGGER);
   };
 
   const backToStage1 = () => {
@@ -644,7 +673,8 @@ setSlideState("menu");
       setAnimating(false);
       setItemStage(1);
       setCenterStage(0);
-    }, DUR + STAGGER);
+    
+      updateVisibility();}, DUR + STAGGER);
   };
 
   const backToStage0 = () => {
@@ -654,7 +684,8 @@ setSlideState("menu");
     setTimeout(() => {
       setAnimating(false);
       setItemStage(0);
-    }, DUR);
+    
+      updateVisibility();}, DUR);
   };
 
   // Handle the click event for forward and reverse triggers

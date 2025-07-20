@@ -29,63 +29,23 @@ useEffect(() => {
   const [itemStage, setItemStage] = useState(0);  // 0 = hidden, 1 = visible (left column), 2 = shifted left / clipped
   const [centerStage, setCenterStage] = useState(0);  // 0 = hidden, 1 = visible (center column)
   const [animating, setAnimating] = useState(false);
-  // Run visibility check every frame during animations so items disappear exactly when crossing 29vw
-  useEffect(() => {
-    if (!animating) return;
-    let raf: number;
-    const loop = () => {
-      updateVisibility();
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
-  }, [animating]);
-
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-// ── Gather slide target elements on mount ────────────────────────────────
-
-useEffect(() => {
-  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-  const pxToVw = (px:number)=> px / (window.innerWidth/100);
-  itemElsRef.current.forEach(el=>{
-    if(!el.dataset.baseLeftVw){
-      const leftPx = parseFloat(getComputedStyle(el).left)||0;
-      el.dataset.baseLeftVw = pxToVw(leftPx).toString();
-    }
-  });
-  centerElsRef.current.forEach(el=>{
-    if(!el.dataset.baseLeftVw){
-      const leftPx = parseFloat(getComputedStyle(el).left)||0;
-      el.dataset.baseLeftVw = pxToVw(leftPx).toString();
-    }
-  });
-}, []);
-
+  // Initialize item and center element references once on mount
+  useEffect(() => {
+    itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+    centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+  }, []);
 
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
-  const REV_MIN = 28.86, REV_MAX = 36;   // inverse trigger (left edge)    // reverse trigger (right edge)    // reverse trigger (left edge)    // reverse trigger (right edge)  // reverse trigger (left edge)  // reverse trigger (right edge)  // reverse trigger (left edge)
+  const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
   const DIST = 60;
   const GAP = 10;                   // horizontal shift in vw
   const DUR = 600;                  // transition duration in ms
   const STAGGER = 0;                // delay between outgoing and incoming groups in ms
-
-// ── Visibility helper for item group clipping ────────────────────────────
-const updateItemVisibility = useCallback(() => {
-  if (!itemElsRef.current) return;
-  itemElsRef.current.forEach(el => {
-    const rect = el.getBoundingClientRect();
-    const l = toVw(rect.left);
-    const t = toVh(rect.top);
-    const hide = l < 28.86 && t >= TOP_MIN && t <= TOP_MAX;
-    el.style.opacity = hide ? '0' : '';
-    el.style.pointerEvents = hide ? 'none' : '';
-  });
-}, []);
 
   // Helper unit conversions
   const vw = () => window.innerWidth / 100;
@@ -559,6 +519,7 @@ setSlideState("menu");
 
     // Slide elements once
     const slideOnce = () => {
+      if (itemStage !== 0 || centerStage !== 0) return;
       if (sliding || targetsRef.current[0]?.dataset.slid === 'true') return;
       sliding = true;
 
@@ -629,7 +590,7 @@ setSlideState("menu");
     document.removeEventListener('click', handleClick);
     // (and any other listeners you attached in this effect)
   };
-}, [/* slideState, or whatever deps this effect really needs */]);
+}, [itemStage, centerStage]);
 
            useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
@@ -643,7 +604,8 @@ setSlideState("menu");
   }, []);
 
   // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
+  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
+    if (!els) return;
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
@@ -659,21 +621,19 @@ setSlideState("menu");
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
-    
-      updateVisibility();}, DUR);
+    }, DUR);
   };
 
   const toStage2 = () => {
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -2 * DIST - GAP); // items out first
-    move(centerElsRef.current, -DIST); // center follows
+    move(centerElsRef.current, -DIST - GAP); // center follows
     setTimeout(() => {
       setAnimating(false);
       setItemStage(2);
       setCenterStage(1);
-    
-      updateVisibility();}, DUR + STAGGER);
+    }, DUR + STAGGER);
   };
 
   const backToStage1 = () => {
@@ -685,8 +645,7 @@ setSlideState("menu");
       setAnimating(false);
       setItemStage(1);
       setCenterStage(0);
-    
-      updateVisibility();}, DUR + STAGGER);
+    }, DUR + STAGGER);
   };
 
   const backToStage0 = () => {
@@ -696,54 +655,39 @@ setSlideState("menu");
     setTimeout(() => {
       setAnimating(false);
       setItemStage(0);
-    
-      updateVisibility();}, DUR);
+    }, DUR);
   };
 
   // Handle the click event for forward and reverse triggers
-  // Handle the click event for forward and reverse triggers
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      let handled = false;
-      const vw = (px: number) => px / (window.innerWidth / 100);
-      const vh = (px: number) => px / (window.innerHeight / 100);
-      const xVw = vw(e.clientX);
-      const yVh = vh(e.clientY);
-      const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
-      const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
+useEffect(() => {
+  function handleClick(e: MouseEvent) {
+    const vw = (px: number) => px / (window.innerWidth / 100);
+    const vh = (px: number) => px / (window.innerHeight / 100);
+    const xVw = vw(e.clientX);
+    const yVh = vh(e.clientY);
+    const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
+    const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
 
-      if (inFwd) {
-        if (itemStage === 0) {
-          toStage1();
-          handled = true;
-        } else if (itemStage === 1 && centerStage === 0) {
-          toStage2();
-          handled = true;
-        }
-      } else if (inRev) {
-        if (centerStage === 1) {
-          backToStage1();
-          handled = true;
-        } else if (itemStage === 1 && centerStage === 0) {
-          backToStage0();
-          handled = true;
-        }
-        /* account group slides handled by legacy code when both groups at origin */
+    if (inFwd) {
+      if (itemStage === 0) {
+        toStage1();
+      } else if (itemStage === 1 && centerStage === 0) {
+        toStage2();
       }
-
-      if (handled) {
-        e.stopImmediatePropagation?.();
-        e.stopPropagation();
-        e.preventDefault();
+    } else if (inRev) {
+      if (centerStage === 1) {
+        backToStage1();
+      } else if (itemStage === 1 && centerStage === 0) {
+        backToStage0();
       }
-    };
+    }
+  }
 
-    document.addEventListener('click', handleClick, true);
-    return () => {
-      document.removeEventListener('click', handleClick, true);
-    };
-  }, [itemStage, centerStage]);
-
+  document.addEventListener('click', handleClick, true);
+  return () => {
+    document.removeEventListener('click', handleClick, true);
+  };
+}, [slideState, itemStage, centerStage]);
 
 
   

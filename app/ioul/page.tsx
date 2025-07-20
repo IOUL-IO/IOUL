@@ -34,7 +34,7 @@ useEffect(() => {
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
-  const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
+  const REV_MIN = 32.44, REV_MAX = 36;  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
   const DIST = 60;
   const GAP = 10;                   // horizontal shift in vw
@@ -46,6 +46,8 @@ useEffect(() => {
   const vh = () => window.innerHeight / 100;
   const toVw = (px: number) => px / vw();
   const toVh = (px: number) => px / vh();
+  // ────────────────────────────────────────────────
+  const CLIP_LEFT = 36;          // vw
 
 
   const updateVisibility = () => {
@@ -56,7 +58,7 @@ useEffect(() => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 28.86 && t >= 28.5 && t <= 84;
+      const hide = l < CLIP_LEFT && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -314,6 +316,11 @@ useEffect(() => {
     const inRightZone = x >= 28.86 * vw && x <= 32.43 * vw && y >= 28.5 * vh && y <= 84 * vh;
 
     if (inLeftZone) {
+      // Only allow the FIRST left-edge click (which pulls in account‑text + heading) when the item column is at its
+// original position. Otherwise ignore the click.
+      if (slideState === "none" && (itemStage !== 0 || centerStage !== 0)) {
+        return;            // do nothing
+      }
       // ── Left edge clicks ─────────────────────────
       switch (slideState) {
         case "none":
@@ -444,9 +451,162 @@ setSlideState("menu");
 }, [slideState]);
 
 
-        
+        useEffect(() => {
+    const HIDE_MIN = 6.37, HIDE_MAX = 28.86;
+    const TOP_MIN = 28.5, TOP_MAX = 84;
+    const CLICK_MIN = 32.43, CLICK_MAX = 36;
+    const REVERSE_MIN = 94, REVERSE_MAX = 100;
+    const DISTANCE = 60, DURATION = 700;
 
-           useEffect(() => {
+    // Helper functions for px to vw and vh conversions
+    const pxToVw = (px: number) => px / (window.innerWidth / 100);
+    const pxToVh = (px: number) => px / (window.innerHeight / 100);
+
+    // Set the base left position (vw) for each target element
+
+
+    // Gather account text and line elements
+
+
+
+    const accountEls = Array.from(document.querySelectorAll<HTMLElement>('.account-text'));
+
+
+
+    const accountLine = document.querySelector<HTMLElement>('.account-line');
+
+
+
+    if (accountLine) {
+
+
+
+      targetsRef.current = [...accountEls, accountLine];
+
+
+
+    } else {
+
+
+
+      targetsRef.current = accountEls;
+
+
+
+    }
+
+    targetsRef.current.forEach(el => {
+      if (!el.dataset.baseLeftVw) {
+        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+        el.dataset.baseLeftVw = pxToVw(leftPx).toString();
+      }
+    });
+
+    // Update visibility of targets based on their positions
+    const updateVisibility = () => {
+      targetsRef.current.forEach(el => {
+        const r = el.getBoundingClientRect();
+        const l = pxToVw(r.left), t = pxToVh(r.top);
+        const hide = l >= HIDE_MIN && l < HIDE_MAX && t >= TOP_MIN && t <= TOP_MAX;
+        el.style.opacity = hide ? '0' : '';
+        el.style.pointerEvents = hide ? 'none' : '';
+      });
+    };
+
+    updateVisibility();
+    window.addEventListener('resize', updateVisibility);
+
+    let sliding = false;
+
+    // Slide elements once
+    const slideOnce = () => {
+      if (sliding || targetsRef.current[0]?.dataset.slid === 'true') return;
+      sliding = true;
+
+      targetsRef.current.forEach(el => {
+        el.style.opacity = '';
+        el.style.pointerEvents = '';
+      });
+
+      targetsRef.current.forEach(el => {
+        const base = parseFloat(el.dataset.baseLeftVw || '0');
+        el.style.transition = `left ${DURATION}ms ease`;
+        el.style.left = `${base + DISTANCE}vw`;
+        el.dataset.slid = 'true';
+      });
+
+      setTimeout(() => {
+        updateVisibility();
+        sliding = false;
+      }, DURATION);
+    };
+
+    // Slide elements back
+    const slideBack = () => {
+      if (sliding || targetsRef.current[0]?.dataset.slid !== 'true') return;
+      sliding = true;
+
+      targetsRef.current.forEach(el => {
+        const base = parseFloat(el.dataset.baseLeftVw || '0');
+        el.style.transition = `left ${DURATION}ms ease`;
+        el.style.left = `${base}vw`;
+        delete el.dataset.slid;
+      });
+
+      setTimeout(() => {
+        updateVisibility();
+        sliding = false;
+      }, DURATION);
+    };
+
+    // Click listener for the page
+    
+// Click listener for the page
+const handleClick = (e: MouseEvent) => {
+  const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
+
+  // Forward trigger zone
+  if (vw >= CLICK_MIN && vw <= CLICK_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
+    // Only slide forward when both groups are at their origin
+    if (itemStage === 0 && centerStage === 0) {
+      slideOnce();
+    }
+  // Inverse trigger zone
+  } else if (vw >= REVERSE_MIN && vw <= REVERSE_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
+    slideBack();
+  }
+};
+
+document.addEventListener('click', handleClick);
+// Stop propagation for slide actions
+    document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        slideOnce();
+      });
+    });
+
+    document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        slideBack();
+      });
+    });
+
+            return () => {
+    document.removeEventListener('click', handleClick);
+    // (and any other listeners you attached in this effect)
+  };
+}, [itemStage, centerStage]);
+
+           
+// ----- Gather item and center elements once DOM is ready -----
+useEffect(() => {
+  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+}, []);
+
+useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
       Array.from(itemElsRef.current).concat(Array.from(centerElsRef.current)).forEach(el => {
         if (!el.dataset.baseLeftVw) {
@@ -457,18 +617,14 @@ setSlideState("menu");
     }
   }, []);
 
-  
   // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
-    if (!els?.length) return;
+  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
       el.style.left = `${base + offset}vw`;
     });
   };
-
-// Reusable move function for transitions
 
   // Stage transitions
   const toStage1 = () => {

@@ -24,7 +24,8 @@ useEffect(() => {
 
   const EDGE_MARGIN = 11;
 
-  
+  const targetsRef = useRef<(HTMLElement | null)[]>([]); // Reference to target elements
+
   const [itemStage, setItemStage] = useState(0);  // 0 = hidden, 1 = visible (left column), 2 = shifted left / clipped
   const [centerStage, setCenterStage] = useState(0);  // 0 = hidden, 1 = visible (center column)
   const [animating, setAnimating] = useState(false);
@@ -512,6 +513,8 @@ setSlideState("menu");
 
     // Slide elements once
     const slideOnce = () => {
+      // Allow account group to slide only when item/center are at origin
+      if (itemStage !== 0 || centerStage !== 0) return;
       if (sliding || targetsRef.current[0]?.dataset.slid === 'true') return;
       sliding = true;
 
@@ -563,7 +566,18 @@ setSlideState("menu");
 
     document.addEventListener('click', handleClick);
 
-    slideBack();
+    // Stop propagation for slide actions
+    document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        slideOnce();
+      });
+    });
+
+    document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        slideBack();
       });
     });
 
@@ -585,8 +599,7 @@ setSlideState("menu");
   }, []);
 
   // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
-    if (!els?.length) return;
+  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
@@ -605,17 +618,35 @@ setSlideState("menu");
     }, DUR);
   };
 
-  const toStage2 = () => {
-    if (animating) return;
-    setAnimating(true);
-    move(itemElsRef.current, -2 * DIST - GAP); // items out first
-    move(centerElsRef.current, -DIST - GAP); // center follows
-    setTimeout(() => {
-      setAnimating(false);
-      setItemStage(2);
-      setCenterStage(1);
-    }, DUR + STAGGER);
-  };
+  
+const toStage2 = () => {
+  if (animating) return;
+  setAnimating(true);
+
+  // calculate how far left we must push the right‑most item so it is fully hidden
+  let maxBase = 0;
+  let maxWidth = 0;
+  if (itemElsRef.current && itemElsRef.current.length) {
+    itemElsRef.current.forEach((el) => {
+      const base = parseFloat(el.dataset.baseLeftVw || '0');
+      const widthVw = toVw(el.getBoundingClientRect().width);
+      if (base > maxBase) maxBase = base;
+      if (widthVw > maxWidth) maxWidth = widthVw;
+    });
+  }
+  const buffer = 2; // extra safety so nothing peeks through
+  const offsetItems = -(maxBase + maxWidth + buffer);
+
+  move(itemElsRef.current, offsetItems); // items out first
+  move(centerElsRef.current, -DIST - GAP); // center follows
+
+  setTimeout(() => {
+    setAnimating(false);
+    setItemStage(2);
+    setCenterStage(1);
+  }, DUR + STAGGER);
+};
+
 
   const backToStage1 = () => {
     if (animating) return;

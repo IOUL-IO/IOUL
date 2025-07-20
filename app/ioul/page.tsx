@@ -29,6 +29,18 @@ useEffect(() => {
   const [itemStage, setItemStage] = useState(0);  // 0 = hidden, 1 = visible (left column), 2 = shifted left / clipped
   const [centerStage, setCenterStage] = useState(0);  // 0 = hidden, 1 = visible (center column)
   const [animating, setAnimating] = useState(false);
+  // Run visibility check every frame during animations so items disappear exactly when crossing 29vw
+  useEffect(() => {
+    if (!animating) return;
+    let raf: number;
+    const loop = () => {
+      updateVisibility();
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, [animating]);
+
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
@@ -54,8 +66,8 @@ useEffect(() => {
 
 
 
-  const FWD_MIN = 32.43, FWD_MAX = 36;   // forward trigger (left edge)
-  const REV_MIN = 94, REV_MAX = 100;    // reverse trigger (right edge)    // reverse trigger (left edge)    // reverse trigger (right edge)  // reverse trigger (left edge)  // reverse trigger (right edge)  // reverse trigger (left edge)
+  const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
+  const REV_MIN = 28.86, REV_MAX = 36;   // inverse trigger (left edge)    // reverse trigger (right edge)    // reverse trigger (left edge)    // reverse trigger (right edge)  // reverse trigger (left edge)  // reverse trigger (right edge)  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
   const DIST = 60;
   const GAP = 10;                   // horizontal shift in vw
@@ -655,7 +667,7 @@ setSlideState("menu");
     if (animating) return;
     setAnimating(true);
     move(itemElsRef.current, -2 * DIST - GAP); // items out first
-    move(centerElsRef.current, -DIST - GAP); // center follows
+    move(centerElsRef.current, -DIST); // center follows
     setTimeout(() => {
       setAnimating(false);
       setItemStage(2);

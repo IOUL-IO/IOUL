@@ -31,19 +31,10 @@ useEffect(() => {
   const [animating, setAnimating] = useState(false);
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-
-// ---- Manage z-index of item elements to ensure proper masking ----
-useEffect(() => {
-  if (!itemElsRef.current) return;
-  itemElsRef.current.forEach(el => {
-    el.style.zIndex = itemStage === 1 ? '3' : '1';
-  });
-}, [itemStage]);
-
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
-  const REV_MIN = 32.44, REV_MAX = 36;  // reverse trigger (left edge)
+  const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
   const TOP_MIN = 28.5, TOP_MAX = 84;   // vertical bounds
   const DIST = 60;
   const GAP = 10;                   // horizontal shift in vw
@@ -522,13 +513,6 @@ setSlideState("menu");
 
     // Slide elements once
     const slideOnce = () => {
-
-// Prevent account group sliding unless item and center are at origin
-const firstEl = targetsRef.current[0];
-if (firstEl && (firstEl.classList.contains('account-text') || firstEl.classList.contains('account-line')) ) {
-  if (!(itemStage === 0 && centerStage === 0)) return;
-}
-
       if (sliding || targetsRef.current[0]?.dataset.slid === 'true') return;
       sliding = true;
 
@@ -552,13 +536,6 @@ if (firstEl && (firstEl.classList.contains('account-text') || firstEl.classList.
 
     // Slide elements back
     const slideBack = () => {
-
-// Prevent account group sliding unless item and center are at origin
-const firstEl = targetsRef.current[0];
-if (firstEl && (firstEl.classList.contains('account-text') || firstEl.classList.contains('account-line')) ) {
-  if (!(itemStage === 0 && centerStage === 0)) return;
-}
-
       if (sliding || targetsRef.current[0]?.dataset.slid !== 'true') return;
       sliding = true;
 
@@ -575,7 +552,18 @@ if (firstEl && (firstEl.classList.contains('account-text') || firstEl.classList.
       }, DURATION);
     };
 
-    
+    // Click listener for the page
+    const handleClick = (e: MouseEvent) => {
+      const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
+      if (vw >= CLICK_MIN && vw <= CLICK_MAX) {
+        slideOnce();
+      } else if (vw >= REVERSE_MIN && vw <= REVERSE_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
+        slideBack();
+      }
+    };
+
+    document.addEventListener('click', handleClick);
+
     // Stop propagation for slide actions
     document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
       el.addEventListener('click', e => {
@@ -609,7 +597,8 @@ if (firstEl && (firstEl.classList.contains('account-text') || firstEl.classList.
   }, []);
 
   // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
+  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
+    if (!els?.length) return;
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
@@ -631,10 +620,7 @@ if (firstEl && (firstEl.classList.contains('account-text') || firstEl.classList.
   const toStage2 = () => {
     if (animating) return;
     setAnimating(true);
-    const itemWidthVw = itemElsRef.current && itemElsRef.current.length
-      ? Math.max(...Array.from(itemElsRef.current).map(el => pxToVw(el.getBoundingClientRect().width)))
-      : 0;
-    move(itemElsRef.current, -(2 * DIST + GAP + itemWidthVw)); // items out first
+    move(itemElsRef.current, -2 * DIST - GAP); // items out first
     move(centerElsRef.current, -DIST - GAP); // center follows
     setTimeout(() => {
       setAnimating(false);
@@ -678,42 +664,12 @@ useEffect(() => {
     if (inFwd) {
       if (itemStage === 0) {
         toStage1();
-else if (itemStage === 0 && centerStage === 0) {
-  // If account group is visible, hide it
-  const firstEl = targetsRef.current[0];
-  if (firstEl && (firstEl.classList.contains('account-text') || firstEl.classList.contains('account-line'))) {
-    if (firstEl.dataset.slid === 'true') {
-      slideBack();
-    }
-  }
-}
-
       } else if (itemStage === 1 && centerStage === 0) {
         toStage2();
       }
     } else if (inRev) {
       if (centerStage === 1) {
         backToStage1();
-else if (itemStage === 0 && centerStage === 0) {
-  // Prepare account elements as targets if not already
-  let firstEl = targetsRef.current[0];
-  const isAccount = (el: HTMLElement | null | undefined) =>
-    !!el && (el.classList.contains('account-text') || el.classList.contains('account-line'));
-  if (!isAccount(firstEl)) {
-    const accountEls = Array.from(document.querySelectorAll<HTMLElement>('.account-text'));
-    const accountLine = document.querySelector<HTMLElement>('.account-line');
-    targetsRef.current = accountLine ? [...accountEls, accountLine] : accountEls;
-    firstEl = targetsRef.current[0];
-  }
-  if (isAccount(firstEl)) {
-    if (firstEl.dataset.slid === 'true') {
-      slideBack();
-    } else {
-      slideOnce();
-    }
-  }
-}
-
       } else if (itemStage === 1 && centerStage === 0) {
         backToStage0();
       }

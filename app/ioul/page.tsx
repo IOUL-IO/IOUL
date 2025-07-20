@@ -32,8 +32,24 @@ useEffect(() => {
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-  const accountElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-  const [accountStage, setAccountStage] = useState(0);
+
+
+// ─── Collect slide elements once on mount ────────────────────────────────
+useEffect(() => {
+  // cache element NodeLists
+  itemElsRef.current   = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+
+  // record base left (vw) for each for subsequent math
+  const all = [...Array.from(itemElsRef.current), ...Array.from(centerElsRef.current)];
+  all.forEach(el => {
+    if (!el.dataset.baseLeftVw) {
+      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      el.dataset.baseLeftVw = toVw(leftPx).toString();
+    }
+  });
+}, []);
+
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
@@ -41,8 +57,7 @@ useEffect(() => {
   const DIST = 60;
   const GAP = 10;                   // horizontal shift in vw
   const DUR = 600;                  // transition duration in ms
-  const STAGGER = 0;
-  const ACC_DIST = 60;  // account slide distance                // delay between outgoing and incoming groups in ms
+  const STAGGER = 0;                // delay between outgoing and incoming groups in ms
 
   // Helper unit conversions
   const vw = () => window.innerWidth / 100;
@@ -598,59 +613,10 @@ setSlideState("menu");
       });
     }
   }, []);
-  
-  // ---- Init item & center element NodeLists ----
-  useEffect(() => {
-    itemElsRef.current = document.querySelectorAll('.item-text, .item-line');
-    centerElsRef.current = document.querySelectorAll('.center-text, .center-line');
-  }, []);
-
-// ---- Account elements setup ----
-  useEffect(() => {
-    accountElsRef.current = document.querySelectorAll('.account-text, .account-line');
-    if (accountElsRef.current) {
-      accountElsRef.current.forEach(el => {
-        if (!el.dataset.baseLeftVw) {
-          const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-          el.dataset.baseLeftVw = toVw(leftPx).toString();
-        }
-      });
-    }
-  }, []);
-
-  // ---- Account movement helpers ----
-  const moveAccount = (offset: number) => {
-    if (!accountElsRef.current) return;
-    accountElsRef.current.forEach(el => {
-      const base = parseFloat(el.dataset.baseLeftVw || '0');
-      el.style.transition = `left ${DUR}ms ease`;
-      el.style.left = `${base + offset}vw`;
-    });
-  };
-
-  const showAccount = () => {
-    if (accountStage !== 0 || animating) return;
-    setAnimating(true);
-    moveAccount(ACC_DIST);
-    setTimeout(() => {
-      setAnimating(false);
-      setAccountStage(1);
-    }, DUR);
-  };
-
-  const hideAccount = () => {
-    if (accountStage !== 1 || animating) return;
-    setAnimating(true);
-    moveAccount(0);
-    setTimeout(() => {
-      setAnimating(false);
-      setAccountStage(0);
-    }, DUR);
-  };
-
 
   // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
+  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
+    if (!els) return;
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
@@ -713,11 +679,7 @@ useEffect(() => {
     const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
     const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
 
-    
     if (inFwd) {
-      if (accountStage === 1) {
-        hideAccount();
-      }
       if (itemStage === 0) {
         toStage1();
       } else if (itemStage === 1 && centerStage === 0) {
@@ -728,15 +690,6 @@ useEffect(() => {
         backToStage1();
       } else if (itemStage === 1 && centerStage === 0) {
         backToStage0();
-      } else if (itemStage === 0 && centerStage === 0) {
-        if (accountStage === 0) {
-          showAccount();
-        } else {
-          hideAccount();
-        }
-      }
-    } else if (itemStage === 1 && centerStage === 0) {
-        backToStage0();
       }
     }
   }
@@ -745,7 +698,7 @@ useEffect(() => {
   return () => {
     document.removeEventListener('click', handleClick, true);
   };
-}, [slideState, itemStage, centerStage, accountStage]);
+}, [slideState, itemStage, centerStage]);
 
 
   

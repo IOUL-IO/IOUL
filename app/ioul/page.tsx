@@ -31,25 +31,13 @@ useEffect(() => {
   const [animating, setAnimating] = useState(false);
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-  
-  // --- collect item and center elements once on mount ---
-  useEffect(() => {
-    itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-    centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+  const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
-    const allEls = [...Array.from(itemElsRef.current), ...Array.from(centerElsRef.current)];
-    allEls.forEach((el) => {
-      if (!el.dataset.baseLeftVw) {
-        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-        el.dataset.baseLeftVw = toVw(leftPx).toString();
-      }
-    });
-  
-    accountElsRef.current = document.querySelectorAll<HTMLElement>('.account-text, .account-line');
+// Collect slide groups once the DOM is ready
+useEffect(() => {
+  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
 }, []);
-
-const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-  const accountElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.43, REV_MAX = 36;  // reverse trigger (left edge)
@@ -58,22 +46,6 @@ const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const GAP = 10;                   // horizontal shift in vw
   const DUR = 600;                  // transition duration in ms
   const STAGGER = 0;                // delay between outgoing and incoming groups in ms
-
-  const setAccountMaskVisible = (visible: boolean) => {
-
-  const setAccountVisible = (visible: boolean) => {
-    if (!accountElsRef.current) return;
-    accountElsRef.current.forEach(el => {
-      (el as HTMLElement).style.opacity = visible ? '1' : '0';
-    });
-  };
-
-    const mask = document.querySelector<HTMLElement>('.account-mask');
-    if (mask) {
-      mask.style.display = visible ? '' : 'none';
-    }
-  };
-
 
   // Helper unit conversions
   const vw = () => window.innerWidth / 100;
@@ -90,7 +62,7 @@ const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 28.86 && t >= 28.5 && t <= 84;
+      const hide = l >= 6.41 && l < 28.86 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -486,7 +458,7 @@ setSlideState("menu");
     const DISTANCE = 60, DURATION = 700;
 
     // Helper functions for px to vw and vh conversions
-    const pxToVw = (px: number) => px / (window.innerWidth / 100);
+    const toVw = (px: number) => px / (window.innerWidth / 100);
     const pxToVh = (px: number) => px / (window.innerHeight / 100);
 
     // Set the base left position (vw) for each target element
@@ -525,7 +497,7 @@ setSlideState("menu");
     targetsRef.current.forEach(el => {
       if (!el.dataset.baseLeftVw) {
         const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-        el.dataset.baseLeftVw = pxToVw(leftPx).toString();
+        el.dataset.baseLeftVw = toVw(leftPx).toString();
       }
     });
 
@@ -533,7 +505,7 @@ setSlideState("menu");
     const updateVisibility = () => {
       targetsRef.current.forEach(el => {
         const r = el.getBoundingClientRect();
-        const l = pxToVw(r.left), t = pxToVh(r.top);
+        const l = toVw(r.left), t = pxToVh(r.top);
         const hide = l >= HIDE_MIN && l < HIDE_MAX && t >= TOP_MIN && t <= TOP_MAX;
         el.style.opacity = hide ? '0' : '';
         el.style.pointerEvents = hide ? 'none' : '';
@@ -588,7 +560,7 @@ setSlideState("menu");
 
     // Click listener for the page
     const handleClick = (e: MouseEvent) => {
-      const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
+      const vw = toVw(e.clientX), vh = pxToVh(e.clientY);
       if (vw >= CLICK_MIN && vw <= CLICK_MAX) {
         slideOnce();
       } else if (vw >= REVERSE_MIN && vw <= REVERSE_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
@@ -620,14 +592,15 @@ setSlideState("menu");
 }, [/* slideState, or whatever deps this effect really needs */]);
 
            useEffect(() => {
-    if (itemElsRef.current && centerElsRef.current) {
-      Array.from(itemElsRef.current).concat(Array.from(centerElsRef.current)).forEach(el => {
-        if (!el.dataset.baseLeftVw) {
-          const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-          el.dataset.baseLeftVw = toVw(leftPx).toString();
-        }
-      });
-    }
+    const allEls: HTMLElement[] = [];
+if (itemElsRef.current) allEls.push(...Array.from(itemElsRef.current));
+if (centerElsRef.current) allEls.push(...Array.from(centerElsRef.current));
+allEls.forEach(el => {
+  if (!el.dataset.baseLeftVw) {
+    const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+    el.dataset.baseLeftVw = toVw(leftPx).toString();
+  }
+});
   }, []);
 
   // Reusable move function for transitions
@@ -644,13 +617,10 @@ setSlideState("menu");
   const toStage1 = () => {
     if (animating) return;
     setAnimating(true);
-    setAccountMaskVisible(false);
-    setAccountVisible(false);
     move(itemElsRef.current, -DIST);
     setTimeout(() => {
       setAnimating(false);
       setItemStage(1);
-      setAccountMaskVisible(false);
     }, DUR);
   };
 
@@ -685,8 +655,6 @@ setSlideState("menu");
     setTimeout(() => {
       setAnimating(false);
       setItemStage(0);
-      setAccountMaskVisible(true);
-      setAccountVisible(true);
     }, DUR);
   };
 

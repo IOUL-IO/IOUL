@@ -111,8 +111,8 @@ body.non-fullscreen {
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
-    left: 32.43vw;
-    width: calc(36vw - 32.43vw);
+    left: 94vw;
+    width: calc(36vw - 94vw);
     height: calc(84vh - 28.5vh);
     background: transparent;
     cursor: pointer;
@@ -120,8 +120,8 @@ body.non-fullscreen {
 .slide-trigger-reverse {
     position: absolute;
     top: 28.5vh;
-    left: 94vw;
-    width: calc(100vw - 94vw);
+    left: 32.43vw;
+    width: calc(100vw - 32.43vw);
     height: calc(84vh - 28.5vh);
     background: transparent;
     cursor: pointer;

@@ -32,11 +32,32 @@ useEffect(() => {
 
   const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
   const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-  // Populate refs for item and center elements after mount
-  useEffect(() => {
-    itemElsRef.current = document.querySelectorAll('.item-text, .item-line');
-    centerElsRef.current = document.querySelectorAll('.center-text, .center-line');
-  }, []);
+
+// Populate refs and capture baseline positions on mount
+useEffect(() => {
+  // Query both groups
+  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
+  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
+
+  // Helper px → vw
+  const pxToVw = (px: number) => px / (window.innerWidth / 100);
+
+  // Store each element's initial left (vw) if not already recorded
+  const setBaseLeft = (els: NodeListOf<HTMLElement>) => {
+    els.forEach(el => {
+      if (!el.dataset.baseLeftVw) {
+        const px = parseFloat(getComputedStyle(el).left) || 0;
+        el.dataset.baseLeftVw = pxToVw(px).toString();
+      }
+    });
+  };
+
+  itemElsRef.current && setBaseLeft(itemElsRef.current);
+  centerElsRef.current && setBaseLeft(centerElsRef.current);
+
+  // Ensure visibility state reflects initial positions
+  updateVisibility?.();
+}, []);
 
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
@@ -603,8 +624,7 @@ setSlideState("menu");
   }, []);
 
   // Reusable move function for transitions
-  const move = (els: NodeListOf<HTMLElement> | null, offset: number) => {
-    if (!els) return;
+  const move = (els: NodeListOf<HTMLElement>, offset: number) => {
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;

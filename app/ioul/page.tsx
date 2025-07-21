@@ -775,6 +775,23 @@ useEffect(() => {
   return () => {
     if (timer) clearTimeout(timer);
   };
+  // ─── Detect hover via mousemove to avoid blocking pointer events ────────────
+  useEffect(() => {
+    if (chatInitialized) return;
+    const handleMove = (e: MouseEvent) => {
+      const vwUnit = window.innerWidth / 100;
+      const vhUnit = window.innerHeight / 100;
+      const xVw = e.clientX / vwUnit;
+      const yVh = e.clientY / vhUnit;
+      if (xVw >= 6.4 && xVw <= 32.43 && yVh >= 28.5 && yVh <= 84 && slideState === "none") {
+        setChatInitialized(true);
+        setChatVisible(true);
+      }
+    };
+    window.addEventListener('mousemove', handleMove);
+    return () => window.removeEventListener('mousemove', handleMove);
+  }, [chatInitialized, slideState]);
+
 }, [slideState, chatInitialized]);
 
 
@@ -789,10 +806,10 @@ return (
 
       <div className="page-content">
         <div className="menu-items">
-          <span className="custom-text menu-item" style={{ top: '36.1vh', left: '29vw' }} id="online-assets" onClick={() => handleMenuClick("online-assets", openOnlineAssets)}>OnL1nE ASSETS:</span>
-          <span className="custom-text menu-item" style={{ top: '43.2vh', left: '29vw' }} id="linkup-center" onClick={() => handleMenuClick("linkup-center", openLinkupCenter)}>L1nKUP cEnTER:</span>
-          <span className="custom-text menu-item" style={{ top: '50.3vh', left: '29vw' }} id="delivery-line" onClick={() => handleMenuClick("delivery-line", openDeliveryLine)}>DEL1VERY L1nE:</span>
-          <span className="custom-text menu-item" style={{ top: '57.4vh', left: '29vw' }} id="internal-unit" onClick={() => handleMenuClick("internal-unit", openInternalUnit)}>1nTERnAL Un1T:</span>
+          <span className="custom-text menu-item" style={{ top: '36.1vh', left: '29vw' }} id="online-assets">OnL1nE ASSETS:</span>
+          <span className="custom-text menu-item" style={{ top: '43.2vh', left: '29vw' }} id="linkup-center">L1nKUP cEnTER:</span>
+          <span className="custom-text menu-item" style={{ top: '50.3vh', left: '29vw' }} id="delivery-line">DEL1VERY L1nE:</span>
+          <span className="custom-text menu-item" style={{ top: '57.4vh', left: '29vw' }} id="internal-unit">1nTERnAL Un1T:</span>
         </div>
 
         <div className="layer-four" />

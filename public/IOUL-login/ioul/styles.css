@@ -344,7 +344,8 @@ body.non-fullscreen {
     transform: translateX(-22.59vw);
 }
 .menu-items .menu-item.menu-slide.slide-down {
-    transform: translate(-22.59vw, 11vh);
+    /* override to drop straight down */
+    transform: translateY(11vh);
 }
 .slide-down {
     transform: translateY(11vh);

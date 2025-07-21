@@ -328,8 +328,7 @@ body.non-fullscreen {
     transition: left 0.6s ease, transform 0.6s ease;
     line-height: 1.6;
     overflow: visible;
-
-    user-select: text;}
+}
 
 .custom-line {
     position: absolute;
@@ -827,4 +826,15 @@ body.non-fullscreen {
 .item-text,
 .item-line {
   z-index: 3;
+}
+
+/* === Enable clicks and text selection on interactive wrappers === */
+.menu-items,
+.slide-container,
+.heading-container,
+.account-container,
+.community-items-container span,
+.zero-items-container span,
+.menu-items .menu-item {
+  pointer-events: auto !important;   /* allow clicks / text-selection */
 }

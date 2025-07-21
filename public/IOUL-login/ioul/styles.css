@@ -59,7 +59,6 @@ body.non-fullscreen {
 }
 
 .menu-items {
-
     position: absolute;
     top: 0;
     left: 0;
@@ -67,7 +66,6 @@ body.non-fullscreen {
     height: 100%;
     z-index: 1;
     pointer-events: auto;
-
 }
 .menu-items.raised {
     z-index: 4;
@@ -398,7 +396,6 @@ body.non-fullscreen {
     direction: rtl;
     text-align: right;
     white-space: nowrap;
-    user-select: text;
 }
 
 .community-items-container span,

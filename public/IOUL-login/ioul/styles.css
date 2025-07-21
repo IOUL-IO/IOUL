@@ -841,3 +841,23 @@ body.non-fullscreen {
 .menu-items,
 .menu-items.raised { pointer-events: auto !important; }
 
+/* === Interaction Fixes (2025‑07‑20) ===
+   Enables text selection and click events in:
+   • Account/Heading containers (inside .slide-container)
+   • Left‑hand menu items and their sub‑menus
+---------------------------------------------------- */
+.slide-container{
+  /* Allow interactions with account/heading text */
+  pointer-events: auto !important;
+}
+
+.menu-items{
+  /* Make primary menu items clickable */
+  pointer-events: auto !important;
+}
+
+.heading-container,
+.account-container{
+  /* Ensure their content can be selected/clicked */
+  pointer-events: auto !important;
+}

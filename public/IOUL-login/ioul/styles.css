@@ -829,6 +829,15 @@ body.non-fullscreen {
 }
 
 
-/* === Interaction Fixes (2025-07-21) === */
-.hover-area { pointer-events: none !important; }           /* overlay no longer blocks clicks */
-.menu-items, .slide-container { pointer-events: auto !important; }  /* allow interaction on content */
+/* --- FIX 2025-07-21: enable clicks on content containers --- */
+.other-content { pointer-events: none !important; }
+
+.other-content .line,
+.other-content .grid-number,
+.other-content .grid-dashed,
+.other-content .mail-line,
+.other-content .mail-text { pointer-events: auto !important; }
+
+.menu-items,
+.menu-items.raised { pointer-events: auto !important; }
+

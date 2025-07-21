@@ -827,3 +827,8 @@ body.non-fullscreen {
 .item-line {
   z-index: 3;
 }
+
+/* Override to allow menu selection */
+.slide-container {
+  pointer-events: auto !important;
+}

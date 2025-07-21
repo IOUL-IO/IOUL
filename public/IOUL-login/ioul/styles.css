@@ -65,7 +65,7 @@ body.non-fullscreen {
     width: 100%;
     height: 100%;
     z-index: 1;
-    pointer-events: none;
+    pointer-events: auto;
 }
 .menu-items.raised {
     z-index: 4;
@@ -319,6 +319,7 @@ body.non-fullscreen {
 }
 
 .custom-text {
+    user-select: text;
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
@@ -826,9 +827,4 @@ body.non-fullscreen {
 .item-text,
 .item-line {
   z-index: 3;
-}
-
-/* Override to allow menu selection */
-.slide-container {
-  pointer-events: auto !important;
 }

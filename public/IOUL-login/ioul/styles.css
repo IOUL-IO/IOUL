@@ -829,16 +829,19 @@ body.non-fullscreen {
 }
 
 
-/* Interaction Hotfix Overrides */
-.hover-area{
-    pointer-events:none !important;
-}
-.other-content{
-    pointer-events:none !important;
-}
-.line{
-    pointer-events:none !important;
-}
-.line.util-line{
-    pointer-events:auto !important;
-}
+/* === Interaction Fix 2025-07-21 === */
+.other-content { pointer-events: none !important; }
+
+.other-content .line,
+.other-content .grid-number,
+.other-content .grid-dashed,
+.other-content .mail-line,
+.other-content .mail-text { pointer-events: auto !important; }
+
+.menu-items,
+.menu-items.raised { pointer-events: auto !important; }
+
+.slide-container { pointer-events: auto !important; }
+
+.account-container,
+.heading-container { pointer-events: auto !important; }

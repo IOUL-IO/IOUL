@@ -775,23 +775,6 @@ useEffect(() => {
   return () => {
     if (timer) clearTimeout(timer);
   };
-  // ─── Detect hover via mousemove to avoid blocking pointer events ────────────
-  useEffect(() => {
-    if (chatInitialized) return;
-    const handleMove = (e: MouseEvent) => {
-      const vwUnit = window.innerWidth / 100;
-      const vhUnit = window.innerHeight / 100;
-      const xVw = e.clientX / vwUnit;
-      const yVh = e.clientY / vhUnit;
-      if (xVw >= 6.4 && xVw <= 32.43 && yVh >= 28.5 && yVh <= 84 && slideState === "none") {
-        setChatInitialized(true);
-        setChatVisible(true);
-      }
-    };
-    window.addEventListener('mousemove', handleMove);
-    return () => window.removeEventListener('mousemove', handleMove);
-  }, [chatInitialized, slideState]);
-
 }, [slideState, chatInitialized]);
 
 

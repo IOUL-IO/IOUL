@@ -828,7 +828,7 @@ body.non-fullscreen {
   z-index: 3;
 }
 
-/* --- ROLLBACK 2025-07-21: slide-container should pass clicks through --- */
-.slide-container {
-  pointer-events: none !important; /* allow clicks to pass through */
-}
+
+/* === Interaction Fixes (2025-07-21) === */
+.hover-area { pointer-events: none !important; }           /* overlay no longer blocks clicks */
+.menu-items, .slide-container { pointer-events: auto !important; }  /* allow interaction on content */

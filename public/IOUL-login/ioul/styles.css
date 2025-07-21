@@ -319,7 +319,6 @@ body.non-fullscreen {
 }
 
 .custom-text {
-    user-select: text;
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
     color: #111111;
@@ -329,6 +328,7 @@ body.non-fullscreen {
     transition: left 0.6s ease, transform 0.6s ease;
     line-height: 1.6;
     overflow: visible;
+    user-select: text;
 }
 
 .custom-line {

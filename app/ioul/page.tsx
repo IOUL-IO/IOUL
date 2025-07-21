@@ -275,18 +275,27 @@ useEffect(() => {
   };
 
    const [isScrolling, setIsScrolling] = useState(false);
+   const [gridStage, setGridStage] = useState<number>(0);
+
+   const gridStageRef = useRef<number>(0);
+
+   // helper: returns true if the calendar grid (row 1 element) is visible on screen
+
+   const isCalendarVisible = () => {
+
+     const el = document.querySelector('.grid-number.num1') as HTMLElement | null;
+
+     if (!el) return false;
+
+     const style = window.getComputedStyle(el);
+
+     return style.display !== 'none' && style.opacity !== '0' && style.visibility !== 'hidden';
+
+   };
+
+   useEffect(() => { gridStageRef.current = gridStage; }, [gridStage]);
+
    const [isFirstScroll, setIsFirstScroll] = useState(true);
-   const [isSecondScroll, setIsSecondScroll] = useState(false);
-  // Calendar scroll stage: 0 (rows 1‑16), 1 (rows 13‑28), 2 (rows 25‑31)
-  const [gridStage, setGridStage] = useState<number>(0);
-  const gridStageRef = useRef<number>(0);
-
-
-  // keep ref synced
-  useEffect(() => {
-    gridStageRef.current = gridStage;
-  }, [gridStage]);
-
 
    const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
    const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
@@ -319,6 +328,8 @@ useEffect(() => {
   scrollArea.style.width = '58vw';
   scrollArea.style.height = '55.5vh';
   scrollArea.style.zIndex = '5';
+  scrollArea.style.pointerEvents = isCalendarVisible() ? 'auto' : 'none';
+
   document.querySelector('.other-content')!.appendChild(scrollArea);
 
   function onWheel(e: WheelEvent) {
@@ -331,32 +342,39 @@ useEffect(() => {
     const nums2 = numbers17to31Ref.current || [];
     const das1 = dashed1to16Ref.current || [];
     const das2 = dashed17to31Ref.current || [];
-    const all: HTMLElement[] = [
+    const all = [
       ...Array.from(nums1),
       ...Array.from(nums2),
       ...Array.from(das1),
       ...Array.from(das2),
     ];
-
-    if (all.length === 0) return;
-
     all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
+    // --- Calendar grid wheel handler with 3-stage positions ---
+
+    if (!isCalendarVisible()) return; // only respond when grid visible
 
     const offsets = [0, -55.5, -111];
+
     let nextStage = gridStageRef.current;
 
     if (e.deltaY > 0 && nextStage < 2) {
+
       nextStage += 1; // wheel down
+
     } else if (e.deltaY < 0 && nextStage > 0) {
+
       nextStage -= 1; // wheel up
+
     } else {
-      return; // at boundary
+
+      return; // at boundary – ignore
+
     }
 
-    const translate = offsets[nextStage];
-    all.forEach(el => (el.style.transform = `translateY(${translate}vh)`));
+    all.forEach(el => (el.style.transform = `translateY(${offsets[nextStage]}vh)`));
 
     setGridStage(nextStage);
+
   }
 
   scrollArea.addEventListener('wheel', onWheel, { passive: false });
@@ -364,7 +382,7 @@ useEffect(() => {
     scrollArea.removeEventListener('wheel', onWheel);
     scrollArea.remove();
   };
-}, [isScrolling, isSecondScroll]);
+}, [isScrolling, gridStage]);
 
 
 // ─── Unified click effect ───────────────────────────────────────────────────

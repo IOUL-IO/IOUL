@@ -184,7 +184,7 @@ body.non-fullscreen {
     left: 6.4vw;
     width: calc(32.43vw - 6.4vw);
     height: calc(84vh - 28.5vh);
-    pointer-events: none;
+    pointer-events: auto;
     background: transparent;
 }
 

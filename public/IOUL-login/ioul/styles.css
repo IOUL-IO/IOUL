@@ -829,7 +829,16 @@ body.non-fullscreen {
 }
 
 
-/* ==== POINTER-EVENTS QUICK FIX (2025‑07‑21) ==== */
-.hover-area { pointer-events: none !important; }   /* allow clicks to fall through */
-.menu-items { pointer-events: auto !important; }   /* menu labels are clickable */
-.slide-container { pointer-events: auto !important; } /* account + heading selectable */
+/* Interaction Hotfix Overrides */
+.hover-area{
+    pointer-events:none !important;
+}
+.other-content{
+    pointer-events:none !important;
+}
+.line{
+    pointer-events:none !important;
+}
+.line.util-line{
+    pointer-events:auto !important;
+}

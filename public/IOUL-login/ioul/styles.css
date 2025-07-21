@@ -344,7 +344,8 @@ body.non-fullscreen {
     transform: translateX(-22.59vw);
 }
 .menu-items .menu-item.menu-slide.slide-down {
-    transform: translate(-22.59vw, 11vh);
+    /* override to drop straight down */
+    transform: translateY(11vh);
 }
 .slide-down {
     transform: translateY(11vh);
@@ -829,26 +830,16 @@ body.non-fullscreen {
 }
 
 
-/* ============================================================
-   Interaction Fixes - appended 2025-07-21 19:31:28
-   ------------------------------------------------------------
-   Enables clicking/selecting text in:
-   - account + heading containers (inside .slide-container)
-   - menu container (.menu-items > .menu-item)
-   - community + zero containers
-   by restoring pointer events on their parent wrappers and
-   removing the restrictive clip‑path that blocked pointer hits.
-   These overrides are narrowly scoped and should not
-   affect any other layout or animation logic.
-   ============================================================ */
-.menu-items {
-    /* allow descendants to receive pointer events */
-    pointer-events: auto !important;
+/* Interaction Hotfix Overrides */
+.hover-area{
+    pointer-events:none !important;
 }
-
-.slide-container {
-    /* restore interactivity for account + heading blocks */
-    pointer-events: auto !important;
-    /* remove mask that prevented pointer hits on the left panel */
-    clip-path: none !important;
+.other-content{
+    pointer-events:none !important;
+}
+.line{
+    pointer-events:none !important;
+}
+.line.util-line{
+    pointer-events:auto !important;
 }

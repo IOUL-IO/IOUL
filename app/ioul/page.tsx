@@ -275,27 +275,6 @@ useEffect(() => {
   };
 
    const [isScrolling, setIsScrolling] = useState(false);
-   const [gridStage, setGridStage] = useState<number>(0);
-
-   const gridStageRef = useRef<number>(0);
-
-   // helper: returns true if the calendar grid (row 1 element) is visible on screen
-
-   const isCalendarVisible = () => {
-
-     const el = document.querySelector('.grid-number.num1') as HTMLElement | null;
-
-     if (!el) return false;
-
-     const style = window.getComputedStyle(el);
-
-     return style.display !== 'none' && style.opacity !== '0' && style.visibility !== 'hidden';
-
-   };
-
-   useEffect(() => { gridStageRef.current = gridStage; }, [gridStage]);
-
-   const [isFirstScroll, setIsFirstScroll] = useState(true);
 
    const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
    const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
@@ -328,8 +307,6 @@ useEffect(() => {
   scrollArea.style.width = '58vw';
   scrollArea.style.height = '55.5vh';
   scrollArea.style.zIndex = '5';
-  scrollArea.style.pointerEvents = isCalendarVisible() ? 'auto' : 'none';
-
   document.querySelector('.other-content')!.appendChild(scrollArea);
 
   function onWheel(e: WheelEvent) {
@@ -349,32 +326,25 @@ useEffect(() => {
       ...Array.from(das2),
     ];
     all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
-    // --- Calendar grid wheel handler with 3-stage positions ---
 
-    if (!isCalendarVisible()) return; // only respond when grid visible
-
-    const offsets = [0, -55.5, -111];
-
-    let nextStage = gridStageRef.current;
-
-    if (e.deltaY > 0 && nextStage < 2) {
-
-      nextStage += 1; // wheel down
-
-    } else if (e.deltaY < 0 && nextStage > 0) {
-
-      nextStage -= 1; // wheel up
-
+    if (e.deltaY > 0) {
+      if (!        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
+        setIsSecondScroll(true);
+      } else {
+        all.forEach(el => (el.style.transform = 'translateY(-111vh)'));
+        setIsSecondScroll(false);
+      }
     } else {
-
-      return; // at boundary – ignore
-
+      const match = all[0]?.style.transform.match(/translateY\(([-\d.]+)vh\)/);
+      const y = match ? parseFloat(match[1]) : 0;
+      if (y === -111) {
+        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
+        setIsSecondScroll(true);
+      } else if (y === -55.5) {
+        all.forEach(el => (el.style.transform = 'translateY(0)'));
+        setIsSecondScroll(false);
+      }
     }
-
-    all.forEach(el => (el.style.transform = `translateY(${offsets[nextStage]}vh)`));
-
-    setGridStage(nextStage);
-
   }
 
   scrollArea.addEventListener('wheel', onWheel, { passive: false });
@@ -382,8 +352,7 @@ useEffect(() => {
     scrollArea.removeEventListener('wheel', onWheel);
     scrollArea.remove();
   };
-}, [isScrolling, gridStage]);
-
+}, [isScrolling, 
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {

@@ -789,10 +789,10 @@ return (
 
       <div className="page-content">
         <div className="menu-items">
-          <span className="custom-text menu-item" style={{ top: '36.1vh', left: '29vw' }} id="online-assets" onClick={ openOnlineAssets }>OnL1nE ASSETS:</span>
-          <span className="custom-text menu-item" style={{ top: '43.2vh', left: '29vw' }} id="linkup-center" onClick={ openLinkupCenter }>L1nKUP cEnTER:</span>
-          <span className="custom-text menu-item" style={{ top: '50.3vh', left: '29vw' }} id="delivery-line" onClick={ openDeliveryLine }>DEL1VERY L1nE:</span>
-          <span className="custom-text menu-item" style={{ top: '57.4vh', left: '29vw' }} id="internal-unit" onClick={ openInternalUnit }>1nTERnAL Un1T:</span>
+          <span className="custom-text menu-item" style={{ top: '36.1vh', left: '29vw' }} id="online-assets" onClick={() => handleMenuClick("online-assets", openOnlineAssets)}>OnL1nE ASSETS:</span>
+          <span className="custom-text menu-item" style={{ top: '43.2vh', left: '29vw' }} id="linkup-center" onClick={() => handleMenuClick("linkup-center", openLinkupCenter)}>L1nKUP cEnTER:</span>
+          <span className="custom-text menu-item" style={{ top: '50.3vh', left: '29vw' }} id="delivery-line" onClick={() => handleMenuClick("delivery-line", openDeliveryLine)}>DEL1VERY L1nE:</span>
+          <span className="custom-text menu-item" style={{ top: '57.4vh', left: '29vw' }} id="internal-unit" onClick={() => handleMenuClick("internal-unit", openInternalUnit)}>1nTERnAL Un1T:</span>
         </div>
 
         <div className="layer-four" />
@@ -823,7 +823,7 @@ return (
           <div className="line sixth" />
         </div>
 
-        <div className="slide-container">
+        <div className="slide-container" style={{ pointerEvents: 'auto' }}>
           <span className="account-text" style={{position:'absolute',top:'35.4vh',left:'-24.00vw'}}>AccOUnT nAME</span>
           <span className="account-text" style={{position:'absolute',top:'35.4vh',left:'26.00vw'}}>L1nK UP</span>
           <span className="account-text right-flow" style={{position:'absolute',top:'35.4vh',left:'33.19vw'}}>0</span>

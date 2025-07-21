@@ -247,7 +247,7 @@ useEffect(() => {
         setTimeout(() => {
           openFunction();
           setCurrentMenu(menuId);
-        }, 300);
+        }, 350);
       } else {
         openFunction();
         setCurrentMenu(menuId);
@@ -269,7 +269,7 @@ useEffect(() => {
 
     setTimeout(() => {
       newTexts.forEach((span) => span.remove());
-    }, 300);
+    }, 350);
   };
 
    const [isScrolling, setIsScrolling] = useState(false);
@@ -374,131 +374,137 @@ useEffect(() => {
     if (inLeftZone) {
       // Close any open dropdowns before sliding
       quickRemoveSubmenu();
-      resetDropdown();
-      // ── Left edge clicks ─────────────────────────
-      switch (slideState) {
-        case "none":
-          // fade out chat, slide in account+heading          chatTextRef.current!.style.opacity = "0";
-          setTimeout(() => {
-            document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
-              .forEach(box => box.style.transform = "translateX(0)");
-            document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')
-              .forEach(box => box.style.transform = "translateX(0)");
-          }, 110);
-          setSlideState("heading");
-          break;
-
-        
-        case "community":
-          // slide community+zero back to menu-position
-          document.querySelectorAll<HTMLElement>('.community-items-container *')
-            .forEach(el => el.style.left = el.dataset.originalLeft!);
-          document.querySelectorAll<HTMLElement>('.zero-items-container *')
-            .forEach(el => el.style.left = el.dataset.originalLeft!);
-
-          // slide menu-items back toward original by +29vw
-          document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
-            .forEach(el => {
-              el.style.transition = "left 0.7s ease";
-              el.style.left = (parseFloat(el.style.left) + 29) + "vw";
-            });
-          setSlideState("menu");
-          break;
-
-
-        case "menu":
-          // slide menu back to heading-position
-          document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
-            .forEach(el => el.style.left = el.dataset.originalLeft!);
+      setTimeout(() => {
+        resetDropdown();
+        // ── Left edge clicks ─────────────────────────
+        switch (slideState) {
+          case "none":
+            // fade out chat, slide in account+heading          chatTextRef.current!.style.opacity = "0";
+            setTimeout(() => {
+              document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
+                .forEach(box => box.style.transform = "translateX(0)");
+              document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')
+                .forEach(box => box.style.transform = "translateX(0)");
+            }, 110);
+            setSlideState("heading");
+            break;
+  
           
-const headingBoxes = Array.from(document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]'));
-const headingOut = headingBoxes.some(box => box.style.transform === "translateX(0)");
-if (headingOut) {
-  setSlideState("heading");
-} else {
-  setSlideState("none");
+          case "community":
+            // slide community+zero back to menu-position
+            document.querySelectorAll<HTMLElement>('.community-items-container *')
+              .forEach(el => el.style.left = el.dataset.originalLeft!);
+            document.querySelectorAll<HTMLElement>('.zero-items-container *')
+              .forEach(el => el.style.left = el.dataset.originalLeft!);
+  
+            // slide menu-items back toward original by +29vw
+            document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
+              .forEach(el => {
+                el.style.transition = "left 0.7s ease";
+                el.style.left = (parseFloat(el.style.left) + 29) + "vw";
+              });
+            setSlideState("menu");
+            break;
+  
+  
+          case "menu":
+            // slide menu back to heading-position
+            document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
+              .forEach(el => el.style.left = el.dataset.originalLeft!);
+            
+  const headingBoxes = Array.from(document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]'));
+  const headingOut = headingBoxes.some(box => box.style.transform === "translateX(0)");
+  if (headingOut) {
+    setSlideState("heading");
+  } else {
+    setSlideState("none");
+  }
+  
+            break;
+  
+          case "heading":
+            // slide account+heading back out, fade chat in
+            document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
+              .forEach(box => {
+                box.style.transition = "transform 0.7s ease";
+                box.style.transform = `translateX(${box.dataset.offset}vw)`;
+              });
+            document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')
+              .forEach(box => {
+                box.style.transition = "transform 0.7s ease";
+                box.style.transform = `translateX(${box.dataset.offset}vw)`;
+              });          setSlideState("none");
+            break;
+        }
+      
+      }, 150);
 }
-
-          break;
-
-        case "heading":
-          // slide account+heading back out, fade chat in
-          document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
-            .forEach(box => {
-              box.style.transition = "transform 0.7s ease";
-              box.style.transform = `translateX(${box.dataset.offset}vw)`;
-            });
-          document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')
-            .forEach(box => {
-              box.style.transition = "transform 0.7s ease";
-              box.style.transform = `translateX(${box.dataset.offset}vw)`;
-            });          setSlideState("none");
-          break;
-      }
-    }
     else if (inRightZone) {
       // Close any open dropdowns before sliding
       quickRemoveSubmenu();
-      resetDropdown();
-      // ── Right edge clicks ────────────────────────
-      switch (slideState) {
-        case "heading":
-          // inverse of first left-click: slide out and fade chat in
-          document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
-            .forEach(box => {
-              box.style.transition = "transform 0.7s ease";
-              box.style.transform = `translateX(${box.dataset.offset}vw)`;
-            });
-          document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')
-            .forEach(box => {
-              box.style.transition = "transform 0.7s ease";
-              box.style.transform = `translateX(${box.dataset.offset}vw)`;
-            });          setSlideState("none");
-          break;
-
-        case "none":
-          // first menu click
-          document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
-            .forEach(el => {
-              el.dataset.originalLeft = el.style.left;
-              el.style.transition = "left 0.7s ease";
-              el.style.left = "6.41vw";
-            });chatTextRef.current!.style.opacity = "0";
-setSlideState("menu");
-
-          break;
-
-        case "menu":
-          // second menu/community click
-          document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
-            .forEach(el => {
-              el.dataset.originalLeft ||= el.style.left;
-              el.style.transition = "left 0.7s ease";
-              el.style.left = (parseFloat(el.style.left) - 29) + "vw";
-            });
-          document.querySelectorAll<HTMLElement>('.community-items-container *')
-            .forEach(el => {
-              el.dataset.originalLeft ||= el.style.left;
-              el.style.transition = "left 0.7s ease";
-              el.style.left = (parseFloat(el.style.left) - 29) + "vw";
-            });
-          document.querySelectorAll<HTMLElement>('.zero-items-container *')
-            .forEach(el => {
-              el.dataset.originalLeft ||= el.style.left;
-              el.style.transition = "left 0.7s ease";
-              el.style.left = (parseFloat(el.style.left) - 29) + "vw";
-            });
-          setSlideState("community");
-          break;
-
-        case "community":
-          // optional: return from community to none
-          document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
-            .forEach(el => el.style.left = el.dataset.originalLeft!);
-          setSlideState("none");
-          break;
-      }
-    }
+      setTimeout(() => {
+        resetDropdown();
+        // ── Right edge clicks ────────────────────────
+        switch (slideState) {
+          case "heading":
+            // inverse of first left-click: slide out and fade chat in
+            document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
+              .forEach(box => {
+                box.style.transition = "transform 0.7s ease";
+                box.style.transform = `translateX(${box.dataset.offset}vw)`;
+              });
+            document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')
+              .forEach(box => {
+                box.style.transition = "transform 0.7s ease";
+                box.style.transform = `translateX(${box.dataset.offset}vw)`;
+              });          setSlideState("none");
+            break;
+  
+          case "none":
+            // first menu click
+            document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
+              .forEach(el => {
+                el.dataset.originalLeft = el.style.left;
+                el.style.transition = "left 0.7s ease";
+                el.style.left = "6.41vw";
+              });chatTextRef.current!.style.opacity = "0";
+  setSlideState("menu");
+  
+            break;
+  
+          case "menu":
+            // second menu/community click
+            document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
+              .forEach(el => {
+                el.dataset.originalLeft ||= el.style.left;
+                el.style.transition = "left 0.7s ease";
+                el.style.left = (parseFloat(el.style.left) - 29) + "vw";
+              });
+            document.querySelectorAll<HTMLElement>('.community-items-container *')
+              .forEach(el => {
+                el.dataset.originalLeft ||= el.style.left;
+                el.style.transition = "left 0.7s ease";
+                el.style.left = (parseFloat(el.style.left) - 29) + "vw";
+              });
+            document.querySelectorAll<HTMLElement>('.zero-items-container *')
+              .forEach(el => {
+                el.dataset.originalLeft ||= el.style.left;
+                el.style.transition = "left 0.7s ease";
+                el.style.left = (parseFloat(el.style.left) - 29) + "vw";
+              });
+            setSlideState("community");
+            break;
+  
+          case "community":
+            // optional: return from community to none
+            document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
+              .forEach(el => el.style.left = el.dataset.originalLeft!);
+            setSlideState("none");
+            break;
+        }
+      
+      }, 150);
+}
   };
 
   document.addEventListener("click", handleEdgeClick, true);

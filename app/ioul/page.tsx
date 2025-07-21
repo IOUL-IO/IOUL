@@ -89,7 +89,35 @@ useEffect(() => {
     rafId = requestAnimationFrame(tick);
   };
   tick();
-  return () => {
+  
+  // === Menu click binding fix (2025-07-20) ===
+  useEffect(() => {
+    const mapping: Record<string, () => void> = {
+      'online-assets': openOnlineAssets,
+      'linkup-center': openLinkupCenter,
+      'delivery-line': openDeliveryLine,
+      'internal-unit': openInternalUnit,
+    };
+
+    function onMenuItemClick(e: Event) {
+      const target = e.currentTarget as HTMLElement;
+      const id = target.id;
+      const openFn = mapping[id];
+      if (openFn) {
+        handleMenuClick(id, openFn);
+      }
+    }
+
+    const items = Array.from(document.querySelectorAll<HTMLElement>('.menu-items .menu-item'));
+    items.forEach((el) => el.addEventListener('click', onMenuItemClick));
+
+    return () => {
+      items.forEach((el) => el.removeEventListener('click', onMenuItemClick));
+    };
+  }, [handleMenuClick]);
+
+
+return () => {
     window.removeEventListener('resize', onResize);
     cancelAnimationFrame(rafId);
   };

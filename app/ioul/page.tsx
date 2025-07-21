@@ -276,6 +276,17 @@ useEffect(() => {
 
    const [isScrolling, setIsScrolling] = useState(false);
    const [isFirstScroll, setIsFirstScroll] = useState(true);
+   const [isSecondScroll, setIsSecondScroll] = useState(false);
+  // Calendar scroll stage: 0 (rows 1‑16), 1 (rows 13‑28), 2 (rows 25‑31)
+  const [gridStage, setGridStage] = useState<number>(0);
+  const gridStageRef = useRef<number>(0);
+
+
+  // keep ref synced
+  useEffect(() => {
+    gridStageRef.current = gridStage;
+  }, [gridStage]);
+
 
    const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
    const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
@@ -310,45 +321,50 @@ useEffect(() => {
   scrollArea.style.zIndex = '5';
   document.querySelector('.other-content')!.appendChild(scrollArea);
 
+  function onWheel(e: WheelEvent) {
+    e.preventDefault();
+    if (isScrolling) return;
+    setIsScrolling(true);
+    setTimeout(() => setIsScrolling(false), 700);
 
-function onWheel(e: WheelEvent) {
-  e.preventDefault();
-  if (isScrolling) return;
+    const nums1 = numbers1to16Ref.current || [];
+    const nums2 = numbers17to31Ref.current || [];
+    const das1 = dashed1to16Ref.current || [];
+    const das2 = dashed17to31Ref.current || [];
+    const all: HTMLElement[] = [
+      ...Array.from(nums1),
+      ...Array.from(nums2),
+      ...Array.from(das1),
+      ...Array.from(das2),
+    ];
 
-  const nums1 = numbers1to16Ref.current || [];
-  const nums2 = numbers17to31Ref.current || [];
-  const das1 = dashed1to16Ref.current || [];
-  const das2 = dashed17to31Ref.current || [];
-  const all = [
-    ...Array.from(nums1),
-    ...Array.from(nums2),
-    ...Array.from(das1),
-    ...Array.from(das2),
-  ];
-  if (all.length === 0) return;
-  all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
+    if (all.length === 0) return;
 
-  let nextStage = gridStage;
-  if (e.deltaY > 0 && nextStage < 2) {
-    nextStage += 1;        // wheel down
-  } else if (e.deltaY < 0 && nextStage > 0) {
-    nextStage -= 1;        // wheel up
-  } else {
-    return;                // at boundary, do nothing
+    all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
+
+    const offsets = [0, -55.5, -111];
+    let nextStage = gridStageRef.current;
+
+    if (e.deltaY > 0 && nextStage < 2) {
+      nextStage += 1; // wheel down
+    } else if (e.deltaY < 0 && nextStage > 0) {
+      nextStage -= 1; // wheel up
+    } else {
+      return; // at boundary
+    }
+
+    const translate = offsets[nextStage];
+    all.forEach(el => (el.style.transform = `translateY(${translate}vh)`));
+
+    setGridStage(nextStage);
   }
-
-  const offsets = [0, -55.5, -111];
-  const translate = offsets[nextStage];
-  all.forEach(el => (el.style.transform = `translateY(${translate}vh)`));
-  setGridStage(nextStage);
-}
 
   scrollArea.addEventListener('wheel', onWheel, { passive: false });
   return () => {
     scrollArea.removeEventListener('wheel', onWheel);
     scrollArea.remove();
   };
-}, [isScrolling, gridStage]);
+}, [isScrolling, isSecondScroll]);
 
 
 // ─── Unified click effect ───────────────────────────────────────────────────

@@ -6,8 +6,8 @@ const IOULPage: React.FC = () => {
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
-  const [chatVisible, setChatVisible] = useState(true);
-  const [chatInitialized, setChatInitialized] = useState(true);
+  const [chatVisible, setChatVisible] = useState(false);
+  const [chatInitialized, setChatInitialized] = useState(false);
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
   const frameRef = useRef<number>();
   const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
@@ -624,6 +624,15 @@ const handleClick = (e: MouseEvent) => {
   }
 };
 
+  // Utility: only allow submenu clicks when the menu-item has slid to 6.41 vw
+  const isMenuReady = (el: HTMLElement | null) => {
+    if (!el) return false;
+    const targetLeft = window.innerWidth * 0.0641; // 6.41 vw in px
+    const { left } = el.getBoundingClientRect();
+    return Math.abs(left - targetLeft) < 2; // allow 2 px tolerance
+  };
+
+
 document.addEventListener('click', handleClick);
 // Stop propagation for slide actions
     document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
@@ -789,10 +798,10 @@ return (
 
       <div className="page-content">
         <div className="menu-items">
-          <span className="custom-text menu-item" style={{ top: '36.1vh', left: '29vw' }} id="online-assets" onClick={() => handleMenuClick("online-assets", openOnlineAssets)}>OnL1nE ASSETS:</span>
-          <span className="custom-text menu-item" style={{ top: '43.2vh', left: '29vw' }} id="linkup-center" onClick={() => handleMenuClick("linkup-center", openLinkupCenter)}>L1nKUP cEnTER:</span>
-          <span className="custom-text menu-item" style={{ top: '50.3vh', left: '29vw' }} id="delivery-line" onClick={() => handleMenuClick("delivery-line", openDeliveryLine)}>DEL1VERY L1nE:</span>
-          <span className="custom-text menu-item" style={{ top: '57.4vh', left: '29vw' }} id="internal-unit" onClick={() => handleMenuClick("internal-unit", openInternalUnit)}>1nTERnAL Un1T:</span>
+          <span className="custom-text menu-item" style={{ top: '36.1vh', left: '29vw' }} id="online-assets" onClick={() => handleMenuClick(\'online-assets\', openOnlineAssets)}>OnL1nE ASSETS:</span>
+          <span className="custom-text menu-item" style={{ top: '43.2vh', left: '29vw' }} id="linkup-center" onClick={() => handleMenuClick(\'linkup-center\', openLinkupCenter)}>L1nKUP cEnTER:</span>
+          <span className="custom-text menu-item" style={{ top: '50.3vh', left: '29vw' }} id="delivery-line" onClick={() => handleMenuClick(\'delivery-line\', openDeliveryLine)}>DEL1VERY L1nE:</span>
+          <span className="custom-text menu-item" style={{ top: '57.4vh', left: '29vw' }} id="internal-unit" onClick={() => handleMenuClick(\'internal-unit\', openInternalUnit)}>1nTERnAL Un1T:</span>
         </div>
 
         <div className="layer-four" />

@@ -142,20 +142,9 @@ useEffect(() => {
       span.style.transition = 'opacity 0.1s ease';
       span.classList.remove('visible');
     });
-
-    // Instantly reset any dropdown movement
-    document.querySelectorAll<HTMLElement>('.menu-items .menu-item.slide-down')
-      .forEach(el => el.classList.remove('slide-down'));
-
     setTimeout(() => {
       newTexts.forEach((span) => span.remove());
     }, 100);
-  };
-
-// Utility: ensure any dropdown transforms are cleared
-  const resetDropdown = () => {
-    document.querySelectorAll<HTMLElement>('.menu-items .menu-item.slide-down')
-      .forEach(el => el.classList.remove('slide-down'));
   };
 
   // Function that ensures submenu is closed before executing a callback function
@@ -172,17 +161,23 @@ useEffect(() => {
   const slideDownSiblings = (clickedId: string) => {
     const menuItems = Array.from(document.querySelectorAll('.menu-items .menu-item')) as HTMLElement[];
     const clickedIndex = menuItems.findIndex(el => el.id === clickedId);
-
+    
     menuItems.forEach((el, i) => {
-      // reset any previous dropdown transform
-      el.classList.remove("slide-down", "menu-slide");
-      el.style.transform = "";
-      el.style.transition = "";
-      // Only items *below* the clicked menu drop down
       if (i > clickedIndex) {
-        void el.offsetHeight; // trigger reflow so transition fires
-        el.classList.add("slide-down");
+        el.classList.remove("menu-slide", "slide-down");
+        el.style.transform = "";
+        el.style.transition = "";
+        void el.offsetHeight; // Trigger reflow for animation
+        el.classList.add("menu-slide");
       }
+    });
+
+    requestAnimationFrame(() => {
+      menuItems.forEach((el, i) => {
+        if (i > clickedIndex) {
+          el.classList.add("slide-down");
+        }
+      });
     });
   };
 
@@ -262,10 +257,6 @@ useEffect(() => {
       span.style.transition = 'opacity 0.3s ease';
       span.classList.remove('visible');
     });
-
-    // Instantly reset any dropdown movement
-    document.querySelectorAll<HTMLElement>('.menu-items .menu-item.slide-down')
-      .forEach(el => el.classList.remove('slide-down'));
 
     setTimeout(() => {
       newTexts.forEach((span) => span.remove());
@@ -372,9 +363,6 @@ useEffect(() => {
     const inRightZone = x >= 28.86 * vw && x <= 32.43 * vw && y >= 28.5 * vh && y <= 84 * vh;
 
     if (inLeftZone) {
-      // Close any open dropdowns before sliding
-      quickRemoveSubmenu();
-      resetDropdown();
       // ── Left edge clicks ─────────────────────────
       switch (slideState) {
         case "none":
@@ -437,9 +425,6 @@ if (headingOut) {
       }
     }
     else if (inRightZone) {
-      // Close any open dropdowns before sliding
-      quickRemoveSubmenu();
-      resetDropdown();
       // ── Right edge clicks ────────────────────────
       switch (slideState) {
         case "heading":

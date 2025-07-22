@@ -352,7 +352,7 @@ body.non-fullscreen {
 }
 
 .layer-five {
-    z-index: 4;
+    z-index: 20;
     position: absolute;
     top: 0;
     left: 36vw;
@@ -362,7 +362,7 @@ body.non-fullscreen {
     pointer-events: none;
 }
 .layer-six {
-    z-index: 4;
+    z-index: 20;
     position: absolute;
     top: 84.7vh;
     left: 36vw;

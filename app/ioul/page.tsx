@@ -308,7 +308,7 @@ useEffect(() => {
   scrollArea.style.left = '36vw';
   scrollArea.style.width = '58vw';
   scrollArea.style.height = '55.5vh';
-  scrollArea.style.zIndex = '7';
+  scrollArea.style.zIndex = '10';
   document.querySelector('.other-content')!.appendChild(scrollArea);
 
   function onWheel(e: WheelEvent) {

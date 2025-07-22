@@ -177,7 +177,7 @@ useEffect(() => {
       // reset any previous dropdown transform
       el.classList.remove("slide-down", "menu-slide");
       el.style.transform = "";
-      
+      el.style.transition = "";
       // Only items *below* the clicked menu drop down
       if (i > clickedIndex) {
         void el.offsetHeight; // trigger reflow so transition fires
@@ -298,72 +298,70 @@ useEffect(() => {
   );
 }, []);
 
-  // ─── Calendar grid scroll logic (3‑stage) ────────────────────────────────
-  const [gridStage, setGridStage] = useState(0); // 0 = rows 1‑16, 1 = 13‑28, 2 = 25‑31
-  const gridStageRef = useRef(0);
-  useEffect(() => { gridStageRef.current = gridStage; }, [gridStage]);
+// ─── Calendar grid scroll logic (3‑stage) ────────────────────────────────
+const [gridStage, setGridStage] = useState(0); // 0 = 0vh, 1 = -55.5vh, 2 = -111vh
+const gridStageRef = useRef(0);
+useEffect(() => { gridStageRef.current = gridStage; }, [gridStage]);
 
-  const calendarElsRef = useRef<HTMLElement[]>([]);
+const calendarElsRef = useRef<HTMLElement[]>([]);
 
-  
-  // Collect calendar elements once after mount
-  useEffect(() => {
-    const numbers = Array.from(document.querySelectorAll<HTMLElement>('.grid-number'));
-    const dashed  = Array.from(document.querySelectorAll<HTMLElement>('.grid-dashed'));
-    calendarElsRef.current = [...numbers, ...dashed];
-    // Give browser a hint for smoother transforms
+// gather calendar rows once after mount
+useEffect(() => {
+  const nums = Array.from(document.querySelectorAll<HTMLElement>('.grid-number'));
+  const dashes = Array.from(document.querySelectorAll<HTMLElement>('.grid-dashed'));
+  calendarElsRef.current = [...nums, ...dashes];
+  calendarElsRef.current.forEach(el => {
+    el.style.willChange = 'transform';
+    el.style.transition = 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+  });
+}, []);
+
+useEffect(() => {
+  // overlay that captures wheel only on the calendar viewport
+  const overlay = document.createElement('div');
+  overlay.style.position = 'absolute';
+  overlay.style.top = '28.5vh';
+  overlay.style.left = '36vw';
+  overlay.style.width = '58vw';
+  overlay.style.height = '55.5vh';
+  overlay.style.zIndex = '5';
+  overlay.style.pointerEvents = 'auto';
+  (document.querySelector('.other-content') || document.body).appendChild(overlay);
+
+  const animateToStage = (stage: number) => {
+    const offset = stage * -55.5; // vh
     calendarElsRef.current.forEach(el => {
-      el.style.willChange = 'transform';
-      
+      el.style.transform = `translateY(${offset}vh)`;
     });
-  }, []);
+  };
 
-  }, []);
+  const wheelHandler = (e: WheelEvent) => {
+    e.preventDefault();
+    if (isScrolling) return;
+    setIsScrolling(true);
+    setTimeout(() => setIsScrolling(false), 700);
 
-  // Build a transparent overlay in front of the calendar to capture the wheel
-  useEffect(() => {
-    const overlay = document.createElement('div');
-    overlay.style.position = 'absolute';
-    overlay.style.top = '28.5vh';
-    overlay.style.left = '36vw';
-    overlay.style.width = '58vw';
-    overlay.style.height = '55.5vh';
-    overlay.style.zIndex = '5';
-    overlay.style.pointerEvents = 'auto';
-    (document.querySelector('.other-content') || document.body).appendChild(overlay);
+    let next = gridStageRef.current;
+    if (e.deltaY > 0) {
+      next = (next + 1) % 3;
+    } else if (e.deltaY < 0) {
+      next = (next + 2) % 3;
+    }
+    setGridStage(next);
+    animateToStage(next);
+  };
 
-    const animateToStage = (stage: number) => {
-      const offset = stage * -55.5; // vh
-      calendarElsRef.current.forEach(el => {
-        
-        el.style.transform = `translateY(${offset}vh)`;
-      });
-    };
+  overlay.addEventListener('wheel', wheelHandler, { passive: false });
 
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      if (isScrolling) return;
-      setIsScrolling(true);
-      setTimeout(() => setIsScrolling(false), 700);
+  return () => {
+    overlay.removeEventListener('wheel', wheelHandler);
+    overlay.remove();
+  };
+}, [isScrolling]);
+// ─────────────────────────────────────────────────────────────────────────
 
-      let next = gridStageRef.current;
-      if (e.deltaY > 0) {
-        next = (next + 1) % 3; // scroll down cycles forward
-      } else if (e.deltaY < 0) {
-        next = (next + 2) % 3; // scroll up cycles back (‑1 mod 3)
-      }
-      setGridStage(next);
-      animateToStage(next);
-    };
 
-    overlay.addEventListener('wheel', onWheel, { passive: false });
 
-    return () => {
-      overlay.removeEventListener('wheel', onWheel);
-      overlay.remove();
-    };
-  }, [isScrolling]);
-  // ─────────────────────────────────────────────────────────────────────────
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {
@@ -409,7 +407,7 @@ useEffect(() => {
             // slide menu-items back toward original by +29vw
             document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
               .forEach(el => {
-                
+                el.style.transition = "left 0.7s ease";
                 el.style.left = (parseFloat(el.style.left) + 29) + "vw";
               });
             setSlideState("menu");
@@ -474,7 +472,7 @@ useEffect(() => {
             document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
               .forEach(el => {
                 el.dataset.originalLeft = el.style.left;
-                
+                el.style.transition = "left 0.7s ease";
                 el.style.left = "6.41vw";
               });chatTextRef.current!.style.opacity = "0";
   setSlideState("menu");
@@ -486,19 +484,19 @@ useEffect(() => {
             document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
               .forEach(el => {
                 el.dataset.originalLeft ||= el.style.left;
-                
+                el.style.transition = "left 0.7s ease";
                 el.style.left = (parseFloat(el.style.left) - 29) + "vw";
               });
             document.querySelectorAll<HTMLElement>('.community-items-container *')
               .forEach(el => {
                 el.dataset.originalLeft ||= el.style.left;
-                
+                el.style.transition = "left 0.7s ease";
                 el.style.left = (parseFloat(el.style.left) - 29) + "vw";
               });
             document.querySelectorAll<HTMLElement>('.zero-items-container *')
               .forEach(el => {
                 el.dataset.originalLeft ||= el.style.left;
-                
+                el.style.transition = "left 0.7s ease";
                 el.style.left = (parseFloat(el.style.left) - 29) + "vw";
               });
             setSlideState("community");
@@ -603,7 +601,7 @@ useEffect(() => {
 
       targetsRef.current.forEach(el => {
         const base = parseFloat(el.dataset.baseLeftVw || '0');
-        
+        el.style.transition = `left ${DURATION}ms ease`;
         el.style.left = `${base + DISTANCE}vw`;
         el.dataset.slid = 'true';
       setAccountStage(1);
@@ -622,7 +620,7 @@ useEffect(() => {
 
       targetsRef.current.forEach(el => {
         const base = parseFloat(el.dataset.baseLeftVw || '0');
-        
+        el.style.transition = `left ${DURATION}ms ease`;
         el.style.left = `${base}vw`;
         delete el.dataset.slid;
       setAccountStage(0);
@@ -700,7 +698,7 @@ useEffect(() => {
   const move = (els: NodeListOf<HTMLElement>, offset: number) => {
     els.forEach((el) => {
       const base = parseFloat(el.dataset.baseLeftVw || '0');
-      
+      el.style.transition = `left ${DUR}ms ease`;
       el.style.left = `${base + offset}vw`;
     });
   };

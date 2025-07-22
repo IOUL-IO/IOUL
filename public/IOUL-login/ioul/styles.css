@@ -857,3 +857,14 @@ body.non-fullscreen {
 .layer-six {
   z-index: 999 !important;
 }
+
+
+/* -- Calendar grid and layer 5+6 stacking final fix (July 22 2025) -- */
+.grid-number,
+.grid-dashed {
+  z-index: 100 !important;  /* sit beneath layers 5 & 6 and interactive overlays */
+}
+.layer-five,
+.layer-six {
+  z-index: 1000 !important; /* guarantee topmost */
+}

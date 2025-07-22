@@ -844,7 +844,11 @@ body.non-fullscreen {
     pointer-events:auto !important;
 }
 
-/* Ensure layers sit above calendar grid */
+
+/* === Calendar grid layering fix === */
+.grid-number, .grid-dashed {
+  z-index: 0 !important; /* grid below bars */
+}
 .layer-five, .layer-six {
-  z-index: 100 !important;
+  z-index: 120 !important; /* bars above grid */
 }

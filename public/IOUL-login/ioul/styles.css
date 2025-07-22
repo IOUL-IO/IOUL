@@ -843,3 +843,12 @@ body.non-fullscreen {
 .line.util-line{
     pointer-events:auto !important;
 }
+
+
+/* === Calendar grid layering fix === */
+.grid-number, .grid-dashed {
+  z-index: 0 !important; /* grid below bars */
+}
+.layer-five, .layer-six {
+  z-index: 120 !important; /* bars above grid */
+}

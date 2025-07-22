@@ -844,9 +844,21 @@ body.non-fullscreen {
     pointer-events:auto !important;
 }
 
+/* ==============================================
+   CALENDAR GRID LAYERING FIX
+   ----------------------------------------------
+   The calendar grid (grid-number & grid-dashed)
+   must render *below* the white cover strips
+   defined by .layer-five and .layer-six so that
+   the grid slides cleanly under these layers
+   when the user scrolls.
+   ============================================== */
+.layer-five,
+.layer-six {
+  z-index: 100 !important;   /* Above grid, below slide‑container */
+}
 
-/* -- Calendar grid stacking adjustment (July 22 2025) -- */
 .grid-number,
 .grid-dashed {
-  z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
+  z-index: 90 !important;    /* Below layers five & six */
 }

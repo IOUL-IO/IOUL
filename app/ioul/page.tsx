@@ -296,10 +296,12 @@ useEffect(() => {
   dashed17to31Ref.current = document.querySelectorAll(
     '.grid-dashed.dashed17, … , .grid-dashed.dashed31'
   );
+  animateToStage(0);
 }, []);
 
 // ─── Calendar grid scroll logic (3‑stage) ────────────────────────────────
 const [gridStage, setGridStage] = useState(0); // 0 = 0vh, 1 = -55.5vh, 2 = -111vh
+const BASE_SHIFT_VH = 28.5; // push grid so day 1 starts just below layer‑five
 const gridStageRef = useRef(0);
 useEffect(() => { gridStageRef.current = gridStage; }, [gridStage]);
 
@@ -324,12 +326,12 @@ useEffect(() => {
   overlay.style.left = '36vw';
   overlay.style.width = '58vw';
   overlay.style.height = '55.5vh';
-  overlay.style.zIndex = '5';
+  overlay.style.zIndex = '30';
   overlay.style.pointerEvents = 'auto';
   (document.querySelector('.other-content') || document.body).appendChild(overlay);
 
   const animateToStage = (stage: number) => {
-    const offset = stage * -55.5; // vh
+    const offset = BASE_SHIFT_VH + stage * -55.5;
     calendarElsRef.current.forEach(el => {
       el.style.transform = `translateY(${offset}vh)`;
     });

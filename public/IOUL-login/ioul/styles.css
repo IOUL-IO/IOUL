@@ -845,54 +845,24 @@ body.non-fullscreen {
 }
 
 
-/* -- Layer 5+6 stacking fix (July 22 2025) -- */
-.layer-five,
-.layer-six {
-  z-index: 5 !important; /* ensure layers cover calendar grid during scroll */
-}
-
-
-/* -- Layer 5 + 6 enhanced stacking fix (July 22 2025) -- */
-.layer-five,
-.layer-six {
-  z-index: 999 !important;
-}
-
-
-/* -- Calendar grid and layer 5+6 stacking final fix (July 22 2025) -- */
-.grid-number,
-.grid-dashed {
-  z-index: 100 !important;  /* sit beneath layers 5 & 6 and interactive overlays */
-}
-.layer-five,
-.layer-six {
-  z-index: 1000 !important; /* guarantee topmost */
-}
-
-
-/* -- Final forced stacking fix (July 22 2025) -- */
-:root[data-util] .grid-number,
-:root[data-util] .grid-dashed {
-  z-index: 2 !important;    /* must stay under layer 5+6 */
-}
-.layer-five,
-.layer-six {
-  z-index: 99999 !important;  /* absolutely top */
-}
-
-
-/* -- Ultimate stacking fix (July 22 2025) -- */
-/* Ensure layer-five and layer-six always cover the calendar grid, even during animated scrolls.
-   We move them to their own top-level stacking context (position:fixed) and give a very high z-index.
-   The grid numbers/dashed lines are forced to a low z-index.
+/* -- Stack Fix BEGIN (July 22 2025) --
+   Ensures calendar grid (.grid-number / .grid-dashed) always sits BELOW Line 5 & 6
+   and any util overlays, regardless of scroll or transforms.
 */
-.layer-five,
-.layer-six {
-  position: fixed !important;
-  z-index: 2147483647 !important; /* stay on top no matter what */
-}
-
 .grid-number,
 .grid-dashed {
-  z-index: 1 !important;          /* safely underneath */
+  z-index: 1 !important;            /* lowest interactive layer */
+  position: relative !important;    /* keep current layout */
 }
+
+/* Elevate the horizontal divider bars (Line 5 & Line 6) */
+.line.fifth,
+.line.sixth {
+  z-index: 10000 !important;        /* safely above grid */
+}
+
+/* Optionally lift util-line if you ever need it even higher */
+.line.util-line {
+  z-index: 11000 !important;
+}
+/* -- Stack Fix END */

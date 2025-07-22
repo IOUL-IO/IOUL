@@ -845,24 +845,33 @@ body.non-fullscreen {
 }
 
 
-/* -- Authoritative stack order fix (22 Jul 2025) -- */
-/* Always keep guide bars (.line.fifth/.line.sixth) on top,
-   blocker panels (.layer-five/.layer-six) below them,
-   and calendar cells (.grid-number/.grid-dashed) underneath both.
-   This selector wins over the earlier z‑index:1000 rule because it is later
-   in the cascade *and* carries the extra :root qualifier. */
-:root .grid-number,
-:root .grid-dashed {
-  position: absolute !important; /* restore correct layout */
-  z-index: 5 !important;
+/* -- Calendar grid stacking adjustment (July 22 2025) -- */
+.grid-number,
+.grid-dashed {
+  z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
 }
 
-:root .layer-five,
-:root .layer-six {
-  z-index: 7 !important;
+/* --- Stack order fixes (added July 22 2025) --- */
+.line.fifth,
+.line.sixth {
+  position: fixed;          /* detach from .other-content stacking context */
+  z-index: 205 !important;  /* ensure always above layer-five */
 }
 
-:root .line.fifth,
-:root .line.sixth {
-  z-index: 8 !important;
+.layer-five,
+.layer-six {
+  z-index: 120 !important;  /* above calendar grid but below util-line/chat overlays */
+}
+
+/* Place calendar grid beneath the mask layers */
+.grid-number,
+.grid-dashed {
+  z-index: 110 !important;
+}
+
+
+/* --- Mask/Grid layering hot‑fix (22‑Jul‑2025, rev 2) --- */
+/* Lower the whole .other-content stacking context so calendar grid stays under layer‑five/six */
+.other-content{
+  z-index: 2 !important;
 }

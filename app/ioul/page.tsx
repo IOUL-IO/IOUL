@@ -273,22 +273,7 @@ useEffect(() => {
       newTexts.forEach((span) => span.remove());
     }, 300); // 0.3 s = fade‑out duration
   };
-  // Effect to handle component mount and query DOM elements
-// runs once on mount
-useEffect(() => {
-  numbers1to16Ref.current = document.querySelectorAll(
-    '.grid-number.num1, .grid-number.num2, … , .grid-number.num16'
-  );
-  numbers17to31Ref.current = document.querySelectorAll(
-    '.grid-number.num17, … , .grid-number.num31'
-  );
-  dashed1to16Ref.current = document.querySelectorAll(
-    '.grid-dashed.dashed1, … , .grid-dashed.dashed16'
-  );
-  dashed17to31Ref.current = document.querySelectorAll(
-    '.grid-dashed.dashed17, … , .grid-dashed.dashed31'
-  );
-}, []);
+  , []);
 
 // re-runs when scrolling flags change
 useEffect(() => {
@@ -307,11 +292,7 @@ useEffect(() => {
     setIsScrolling(true);
     setTimeout(() => setIsScrolling(false), 700);
 
-    const nums1 = numbers1to16Ref.current || [];
-    const nums2 = numbers17to31Ref.current || [];
-    const das1 = dashed1to16Ref.current || [];
-    const das2 = dashed17to31Ref.current || [];
-    const all = [
+    const nums1 =     const nums2 =     const das1 =     const das2 =     const all = [
       ...Array.from(nums1),
       ...Array.from(nums2),
       ...Array.from(das1),
@@ -320,8 +301,7 @@ useEffect(() => {
     all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
 
     if (e.deltaY > 0) {
-      if (!isSecondScroll) {
-        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
+      if (!        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
         setIsSecondScroll(true);
       } else {
         all.forEach(el => (el.style.transform = 'translateY(-111vh)'));
@@ -345,8 +325,7 @@ useEffect(() => {
     scrollArea.removeEventListener('wheel', onWheel);
     scrollArea.remove();
   };
-}, [isScrolling, isSecondScroll]);
-
+}, [isScrolling, 
 
 
   // ─── Calendar grid scroll logic (3-stage) ────────────────────────────────

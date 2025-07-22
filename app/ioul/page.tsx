@@ -275,9 +275,8 @@ useEffect(() => {
   };
 
    const [isScrolling, setIsScrolling] = useState(false);
-   const [gridStep, setGridStep] = useState(0);  // 0=show 1-16, 1=13-28, 2=25-31
-   const gridStepRef = useRef(0);
-   useEffect(() => { gridStepRef.current = gridStep; }, [gridStep]);
+   const [isFirstScroll, setIsFirstScroll] = useState(true);
+   const [isSecondScroll, setIsSecondScroll] = useState(false);
 
    const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
    const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
@@ -330,15 +329,25 @@ useEffect(() => {
     ];
     all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
 
-    const direction = e.deltaY > 0 ? 1 : -1;
-    let nextStep = Math.min(2, Math.max(0, gridStepRef.current + direction));
-    if (nextStep === gridStepRef.current) return;
-
-    const translateY = -55.5 * nextStep; // vh
-    all.forEach(el => (el.style.transform = `translateY(${translateY}vh)`));
-
-    setGridStep(nextStep);
-    gridStepRef.current = nextStep;
+    if (e.deltaY > 0) {
+      if (!isSecondScroll) {
+        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
+        setIsSecondScroll(true);
+      } else {
+        all.forEach(el => (el.style.transform = 'translateY(-111vh)'));
+        setIsSecondScroll(false);
+      }
+    } else {
+      const match = all[0]?.style.transform.match(/translateY\(([-\d.]+)vh\)/);
+      const y = match ? parseFloat(match[1]) : 0;
+      if (y === -111) {
+        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
+        setIsSecondScroll(true);
+      } else if (y === -55.5) {
+        all.forEach(el => (el.style.transform = 'translateY(0)'));
+        setIsSecondScroll(false);
+      }
+    }
   }
 
   scrollArea.addEventListener('wheel', onWheel, { passive: false });
@@ -346,8 +355,70 @@ useEffect(() => {
     scrollArea.removeEventListener('wheel', onWheel);
     scrollArea.remove();
   };
-}, [isScrolling, gridStep]);
+}, [isScrolling, isSecondScroll]);
 
+
+
+// ─── Calendar grid scroll logic (3‑stage) ────────────────────────────────
+const GRID_SHIFT_VH = 55.5;            // vertical travel per stage (matches overlay height)
+const BASE_OFFSET_VH = 18.5;           // pushes grid down so row 5 sits above bar on load
+
+const [gridStage, setGridStage] = useState(0);   // 0 → 1‑16 | 1 → 13‑28 | 2 → 25‑31
+const gridStageRef = useRef(0);
+useEffect(() => { gridStageRef.current = gridStage; }, [gridStage]);
+
+const isTransitioningRef = useRef(false);
+
+useEffect(() => {
+  // 1️⃣ Collect grid elements once
+  const gridEls = Array.from(
+    document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed')
+  );
+  gridEls.forEach(el => {
+    el.style.transition = 'transform 0.7s cubic-bezier(0.22,0.61,0.36,1)';
+    el.style.willChange = 'transform';
+    el.style.zIndex = '0'; // ensure grid stays UNDER layers 5 & 6 (which are z‑index 20)
+  });
+
+  // 2️⃣ Helper to move grid to desired stage
+  const shiftForStage = (stage: number) => {
+    const offset = BASE_OFFSET_VH - GRID_SHIFT_VH * stage;
+    gridEls.forEach(el => (el.style.transform = `translateY(${offset}vh)`));
+  };
+  shiftForStage(0); // initial alignment
+
+  // 3️⃣ Transparent wheel overlay to capture scrolls
+  const overlay = document.createElement('div');
+  overlay.style.cssText = \`
+    position:absolute;top:28.5vh;left:36vw;
+    width:58vw;height:55.5vh;pointer-events:auto;
+    background:transparent;z-index:30;\`;
+  document.body.appendChild(overlay);
+
+  // 4️⃣ Wheel handler cycles between 3 stages
+  const onWheel = (e: WheelEvent) => {
+    e.preventDefault();
+    if (isTransitioningRef.current) return;
+
+    isTransitioningRef.current = true;
+    setTimeout(() => (isTransitioningRef.current = false), 700);
+
+    const next =
+      e.deltaY > 0
+        ? (gridStageRef.current + 1) % 3     // scroll down
+        : (gridStageRef.current + 2) % 3;    // scroll up (‑1 mod 3)
+    setGridStage(next);
+    shiftForStage(next);
+  };
+
+  overlay.addEventListener('wheel', onWheel, { passive: false });
+
+  return () => {
+    overlay.removeEventListener('wheel', onWheel);
+    overlay.remove();
+  };
+}, []);
+// ─────────────────────────────────────────────────────────────────────────
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {

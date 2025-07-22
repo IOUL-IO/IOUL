@@ -875,3 +875,26 @@ body.non-fullscreen {
 .other-content{
   z-index: 2 !important;
 }
+
+
+/* --- Definitive layering override (22‑Jul‑2025, rev 3) ---
+   Ensures:
+   • .line.fifth / .line.sixth always on top of mask
+   • .layer-five / .layer-six above calendar grid
+   • Calendar grid stays beneath masks
+*/
+.line.fifth,
+.line.sixth{
+  position: fixed !important;
+  z-index: 1200 !important;
+}
+
+.layer-five,
+.layer-six{
+  z-index: 1100 !important;
+}
+
+.grid-number,
+.grid-dashed{
+  z-index: 1000 !important;
+}

@@ -93,7 +93,7 @@ useEffect(() => {
     window.removeEventListener('resize', onResize);
     cancelAnimationFrame(rafId);
   };
-});
+}, []);
 
 
 
@@ -119,7 +119,7 @@ useEffect(() => {
     return () => {
       window.removeEventListener('resize', updateVisibility); // Clean up resize event listener
     };
-  });
+  }, []);
 
 
 
@@ -127,7 +127,7 @@ useEffect(() => {
     // Cycle util-state 0 → 1 → 2 → 0 on click
   const handleUtilLineClick = useCallback(() => {
     setState(prev => (prev + 1) % 3);
-  });
+  }, []);
   
   // Sync the data-util CSS attribute
   useEffect(() => {
@@ -272,15 +272,24 @@ useEffect(() => {
       // Finally remove the submenu nodes
       newTexts.forEach((span) => span.remove());
     }, 300); // 0.3 s = fade‑out duration
-  };   const [isFirstScroll, setIsFirstScroll] = useState(true);
+  };
+
+   const [isScrolling, setIsScrolling] = useState(false);
+   const [isFirstScroll, setIsFirstScroll] = useState(true);
+   const [isSecondScroll, setIsSecondScroll] = useState(false);
+
+   const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
+   const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
    const dashed1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
    const dashed17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
 
   // Effect to handle component mount and query DOM elements
 // runs once on mount
 useEffect(() => {
+  numbers1to16Ref.current = document.querySelectorAll(
     '.grid-number.num1, .grid-number.num2, … , .grid-number.num16'
   );
+  numbers17to31Ref.current = document.querySelectorAll(
     '.grid-number.num17, … , .grid-number.num31'
   );
   dashed1to16Ref.current = document.querySelectorAll(
@@ -289,7 +298,7 @@ useEffect(() => {
   dashed17to31Ref.current = document.querySelectorAll(
     '.grid-dashed.dashed17, … , .grid-dashed.dashed31'
   );
-});
+}, []);
 
 // re-runs when scrolling flags change
 useEffect(() => {
@@ -304,32 +313,49 @@ useEffect(() => {
 
   function onWheel(e: WheelEvent) {
     e.preventDefault();
-    if (false) return;
+    if (isScrolling) return;
+    setIsScrolling(true);
+    setTimeout(() => setIsScrolling(false), 700);
 
+    const nums1 = numbers1to16Ref.current || [];
+    const nums2 = numbers17to31Ref.current || [];
+    const das1 = dashed1to16Ref.current || [];
+    const das2 = dashed17to31Ref.current || [];
     const all = [
+      ...Array.from(nums1),
+      ...Array.from(nums2),
+      ...Array.from(das1),
+      ...Array.from(das2),
     ];
     all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
 
     if (e.deltaY > 0) {
-      if (!false) {
-        
+      if (!isSecondScroll) {
+        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
+        setIsSecondScroll(true);
       } else {
-        
+        all.forEach(el => (el.style.transform = 'translateY(-111vh)'));
+        setIsSecondScroll(false);
       }
     } else {
       const match = all[0]?.style.transform.match(/translateY\(([-\d.]+)vh\)/);
       const y = match ? parseFloat(match[1]) : 0;
       if (y === -111) {
-        
+        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
+        setIsSecondScroll(true);
       } else if (y === -55.5) {
-        
+        all.forEach(el => (el.style.transform = 'translateY(0)'));
+        setIsSecondScroll(false);
       }
     }
-  }return () => {
+  }
+
+  scrollArea.addEventListener('wheel', onWheel, { passive: false });
+  return () => {
     scrollArea.removeEventListener('wheel', onWheel);
     scrollArea.remove();
   };
-}, [false, false]);
+}, [isScrolling, isSecondScroll]);
 
 
 // ─── Unified click effect ───────────────────────────────────────────────────
@@ -650,7 +676,7 @@ document.addEventListener('click', handleClick);
 useEffect(() => {
   itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
   centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-});
+}, []);
 
 useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
@@ -661,7 +687,7 @@ useEffect(() => {
         }
       });
     }
-  });
+  }, []);
 
   // Reusable move function for transitions
   const move = (els: NodeListOf<HTMLElement>, offset: number) => {

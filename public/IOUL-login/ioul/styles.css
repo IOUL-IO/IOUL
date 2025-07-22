@@ -843,11 +843,3 @@ body.non-fullscreen {
 .line.util-line{
     pointer-events:auto !important;
 }
-
-
-.layer-five, .layer-six {
-  z-index: 20;
-}
-.grid-number, .grid-dashed {
-  z-index: 0;
-}

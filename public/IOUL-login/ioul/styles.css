@@ -845,13 +845,9 @@ body.non-fullscreen {
 }
 
 
-/* === Calendar grid stacking context fix — July 22 2025 === */
+/* === Calendar grid fixes — July 22 2025 === */
 .grid-number,
 .grid-dashed {
-  z-index: 50 !important; /* keep beneath layers 5 & 6 */
+  z-index: 50 !important; /* let them sit above overlays for correct visibility */
 }
-
-.layer-five,
-.layer-six {
-  z-index: 150 !important; /* sit above calendar grid, below util-line */
-}
+/* We intentionally leave .layer-five / .layer-six at default z‑index (auto) */

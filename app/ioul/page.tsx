@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
@@ -276,32 +275,40 @@ useEffect(() => {
   };
 
    const [isScrolling, setIsScrolling] = useState(false);
-   const [isFirstScroll, setIsFirstScroll] = useState(true);
-   const [isSecondScroll, setIsSecondScroll] = useState(false);
+      
+   
+  
 
-   const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
+// ─── Calendar grid scroll logic (3‑stage) ────────────────────────────────
+const [gridStage, setGridStage] = useState(0);   // 0→1‑16, 1→13‑28, 2→25‑31
+const gridStageRef = useRef(0);
+const isTransitioningRef = useRef(false);
+const GRID_SHIFT_VH = 55.5;
 
-  // Effect to handle component mount and query DOM elements
-// runs once on mount
-useEffect(() => {
-  numbers1to16Ref.current = document.querySelectorAll(
-    '.grid-number.num1, .grid-number.num2, .grid-number.num3, .grid-number.num4, .grid-number.num5, .grid-number.num6, .grid-number.num7, .grid-number.num8, .grid-number.num9, .grid-number.num10, .grid-number.num11, .grid-number.num12, .grid-number.num13, .grid-number.num14, .grid-number.num15, .grid-number.num16'
-  );
-  numbers17to31Ref.current = document.querySelectorAll(
-    '.grid-number.num17, .grid-number.num18, .grid-number.num19, .grid-number.num20, .grid-number.num21, .grid-number.num22, .grid-number.num23, .grid-number.num24, .grid-number.num25, .grid-number.num26, .grid-number.num27, .grid-number.num28, .grid-number.num29, .grid-number.num30, .grid-number.num31'
-  );
-  dashed1to16Ref.current = document.querySelectorAll(
-    '.grid-dashed.dashed1, .grid-dashed.dashed2, .grid-dashed.dashed3, .grid-dashed.dashed4, .grid-dashed.dashed5, .grid-dashed.dashed6, .grid-dashed.dashed7, .grid-dashed.dashed8, .grid-dashed.dashed9, .grid-dashed.dashed10, .grid-dashed.dashed11, .grid-dashed.dashed12, .grid-dashed.dashed13, .grid-dashed.dashed14, .grid-dashed.dashed15, .grid-dashed.dashed16'
-  );
-  dashed17to31Ref.current = document.querySelectorAll(
-    '.grid-dashed.dashed17, .grid-dashed.dashed18, .grid-dashed.dashed19, .grid-dashed.dashed20, .grid-dashed.dashed21, .grid-dashed.dashed22, .grid-dashed.dashed23, .grid-dashed.dashed24, .grid-dashed.dashed25, .grid-dashed.dashed26, .grid-dashed.dashed27, .grid-dashed.dashed28, .grid-dashed.dashed29, .grid-dashed.dashed30, .grid-dashed.dashed31'
-  );
+// Collect all calendar elements once
+const calendarElsRef = useRef<HTMLElement[]>([]);
+
+const applyTransform = useCallback((stage: number) => {
+  const offset = -GRID_SHIFT_VH * stage;
+  calendarElsRef.current.forEach(el => {
+    el.style.transform = `translateY(${offset}vh)`;
+  });
 }, []);
 
-// re-runs when scrolling flags change
+useEffect(() => { gridStageRef.current = gridStage; }, [gridStage]);
+
+useEffect(() => {
+  // gather elements
+  const els = Array.from(document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed'));
+  els.forEach(el => {
+    el.style.transition = 'transform 0.7s cubic-bezier(0.22,0.61,0.36,1)';
+    el.style.willChange = 'transform';
+  });
+  calendarElsRef.current = els;
+  // initial alignment
+  applyTransform(0);
+}, [applyTransform]);
+
 useEffect(() => {
   const scrollArea = document.createElement('div');
   scrollArea.style.position = 'absolute';
@@ -309,56 +316,37 @@ useEffect(() => {
   scrollArea.style.left = '36vw';
   scrollArea.style.width = '58vw';
   scrollArea.style.height = '55.5vh';
-  scrollArea.style.zIndex = '5';
-  document.querySelector('.other-content')!.appendChild(scrollArea);
+  scrollArea.style.zIndex = '30'; // above grid, below bars
+  scrollArea.style.pointerEvents = 'auto';
+  scrollArea.style.background = 'transparent';
+  document.body.appendChild(scrollArea);
 
   function onWheel(e: WheelEvent) {
     e.preventDefault();
-    if (document.documentElement.getAttribute('data-util') !== '2') return;
-    if (isScrolling) return;
-    setIsScrolling(true);
-    setTimeout(() => setIsScrolling(false), 700);
+    if (isTransitioningRef.current) return;
+    isTransitioningRef.current = true;
+    setTimeout(() => { isTransitioningRef.current = false; }, 700);
 
-    const nums1 = numbers1to16Ref.current || [];
-    const nums2 = numbers17to31Ref.current || [];
-    const das1 = dashed1to16Ref.current || [];
-    const das2 = dashed17to31Ref.current || [];
-    const all = [
-      ...Array.from(nums1),
-      ...Array.from(nums2),
-      ...Array.from(das1),
-      ...Array.from(das2),
-    ];
-    all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
-
+    let next = gridStageRef.current;
     if (e.deltaY > 0) {
-      if (!isSecondScroll) {
-        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
-        setIsSecondScroll(true);
-      } else {
-        all.forEach(el => (el.style.transform = 'translateY(-111vh)'));
-        setIsSecondScroll(false);
-      }
-    } else {
-      const match = all[0]?.style.transform.match(/translateY\(([-\d.]+)vh\)/);
-      const y = match ? parseFloat(match[1]) : 0;
-      if (y === -111) {
-        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
-        setIsSecondScroll(true);
-      } else if (y === -55.5) {
-        all.forEach(el => (el.style.transform = 'translateY(0)'));
-        setIsSecondScroll(false);
-      }
+      next = (gridStageRef.current + 1) % 3;
+    } else if (e.deltaY < 0) {
+      next = (gridStageRef.current + 2) % 3;
     }
+    setGridStage(next);
+    applyTransform(next);
   }
 
   scrollArea.addEventListener('wheel', onWheel, { passive: false });
+
   return () => {
     scrollArea.removeEventListener('wheel', onWheel);
     scrollArea.remove();
   };
-}, [isScrolling, isSecondScroll]);
-
+}, [applyTransform]);
+// ─────────────────────────────────────────────────────────────────────────
+ };
+}, [isScrolling, 
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {

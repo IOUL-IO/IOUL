@@ -1104,4 +1104,4 @@ useEffect(() => {
 
   window.addEventListener('wheel', onGlobalWheel, { passive: false });
   return () => window.removeEventListener('wheel', onGlobalWheel);
-}, [isScrolling]]);
+}, [isScrolling]);

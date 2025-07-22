@@ -860,3 +860,26 @@ body.non-fullscreen {
   position: absolute !important;   /* Restore correct layout */
   z-index: 99 !important;          /* Below overlay bars */
 }
+
+
+/* === Calendar fix 2025-07-22 START ===
+   Ensures stacking order:
+   1. Line 5 & 6 (thin grey lines) ‑ top.
+   2. Layer‑five & layer‑six (white blocker panels) – middle.
+   3. Calendar grid numbers & dashed lines – bottom.
+*/
+.grid-number,
+.grid-dashed {
+  z-index: 40 !important;
+}
+
+.layer-five,
+.layer-six {
+  z-index: 50 !important;
+}
+
+.line.fifth,
+.line.sixth {
+  z-index: 60 !important;
+}
+/* === Calendar fix 2025-07-22 END === */

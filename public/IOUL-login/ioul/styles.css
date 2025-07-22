@@ -851,3 +851,13 @@ body.non-fullscreen {
   z-index: 4 !important;
   pointer-events: none !important;
 }
+
+
+/* === Calendar grid stacking — July 22 2025 === */
+.grid-number,
+.grid-dashed {
+  z-index: 4;
+}
+
+.layer-five { z-index: 5; }
+.layer-six  { z-index: 6; }

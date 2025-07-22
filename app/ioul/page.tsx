@@ -298,61 +298,64 @@ useEffect(() => {
   );
 }, []);
 
-// re-runs when scrolling flags change
-useEffect(() => {
-  const scrollArea = document.createElement('div');
-  scrollArea.style.position = 'absolute';
-  scrollArea.style.top = '28.5vh';
-  scrollArea.style.left = '36vw';
-  scrollArea.style.width = '58vw';
-  scrollArea.style.height = '55.5vh';
-  scrollArea.style.zIndex = '5';
-  document.querySelector('.other-content')!.appendChild(scrollArea);
+  // ─── Calendar grid scroll logic (3‑stage) ────────────────────────────────
+  const [gridStage, setGridStage] = useState(0); // 0 = rows 1‑16, 1 = 13‑28, 2 = 25‑31
+  const gridStageRef = useRef(0);
+  useEffect(() => { gridStageRef.current = gridStage; }, [gridStage]);
 
-  function onWheel(e: WheelEvent) {
-    e.preventDefault();
-    if (isScrolling) return;
-    setIsScrolling(true);
-    setTimeout(() => setIsScrolling(false), 700);
+  const calendarElsRef = useRef<HTMLElement[]>([]);
 
-    const nums1 = numbers1to16Ref.current || [];
-    const nums2 = numbers17to31Ref.current || [];
-    const das1 = dashed1to16Ref.current || [];
-    const das2 = dashed17to31Ref.current || [];
-    const all = [
-      ...Array.from(nums1),
-      ...Array.from(nums2),
-      ...Array.from(das1),
-      ...Array.from(das2),
-    ];
-    all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
+  // Collect calendar elements once after mount
+  useEffect(() => {
+    const numbers = Array.from(document.querySelectorAll<HTMLElement>('.grid-number'));
+    const dashed = Array.from(document.querySelectorAll<HTMLElement>('.grid-dashed'));
+    calendarElsRef.current = [...numbers, ...dashed];
+  }, []);
 
-    if (e.deltaY > 0) {
-      if (!        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
-        setIsSecondScroll(true);
-      } else {
-        all.forEach(el => (el.style.transform = 'translateY(-111vh)'));
-        setIsSecondScroll(false);
+  // Build a transparent overlay in front of the calendar to capture the wheel
+  useEffect(() => {
+    const overlay = document.createElement('div');
+    overlay.style.position = 'absolute';
+    overlay.style.top = '28.5vh';
+    overlay.style.left = '36vw';
+    overlay.style.width = '58vw';
+    overlay.style.height = '55.5vh';
+    overlay.style.zIndex = '5';
+    overlay.style.pointerEvents = 'auto';
+    (document.querySelector('.other-content') || document.body).appendChild(overlay);
+
+    const animateToStage = (stage: number) => {
+      const offset = stage * -55.5; // vh
+      calendarElsRef.current.forEach(el => {
+        el.style.transition = 'transform 0.7s ease';
+        el.style.transform = `translateY(${offset}vh)`;
+      });
+    };
+
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      if (isScrolling) return;
+      setIsScrolling(true);
+      setTimeout(() => setIsScrolling(false), 700);
+
+      let next = gridStageRef.current;
+      if (e.deltaY > 0) {
+        next = (next + 1) % 3; // scroll down cycles forward
+      } else if (e.deltaY < 0) {
+        next = (next + 2) % 3; // scroll up cycles back (‑1 mod 3)
       }
-    } else {
-      const match = all[0]?.style.transform.match(/translateY\(([-\d.]+)vh\)/);
-      const y = match ? parseFloat(match[1]) : 0;
-      if (y === -111) {
-        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
-        setIsSecondScroll(true);
-      } else if (y === -55.5) {
-        all.forEach(el => (el.style.transform = 'translateY(0)'));
-        setIsSecondScroll(false);
-      }
-    }
-  }
+      setGridStage(next);
+      animateToStage(next);
+    };
 
-  scrollArea.addEventListener('wheel', onWheel, { passive: false });
-  return () => {
-    scrollArea.removeEventListener('wheel', onWheel);
-    scrollArea.remove();
-  };
-}, [isScrolling, 
+    overlay.addEventListener('wheel', onWheel, { passive: false });
+
+    return () => {
+      overlay.removeEventListener('wheel', onWheel);
+      overlay.remove();
+    };
+  }, [isScrolling]);
+  // ─────────────────────────────────────────────────────────────────────────
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {

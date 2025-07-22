@@ -868,3 +868,14 @@ body.non-fullscreen {
 .layer-six {
   z-index: 1000 !important; /* guarantee topmost */
 }
+
+
+/* -- Final forced stacking fix (July 22 2025) -- */
+:root[data-util] .grid-number,
+:root[data-util] .grid-dashed {
+  z-index: 2 !important;    /* must stay under layer 5+6 */
+}
+.layer-five,
+.layer-six {
+  z-index: 99999 !important;  /* absolutely top */
+}

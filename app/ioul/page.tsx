@@ -273,16 +273,6 @@ useEffect(() => {
       newTexts.forEach((span) => span.remove());
     }, 300); // 0.3 s = fade‑out duration
   };
-
-   const [isScrolling, setIsScrolling] = useState(false);
-   const [isFirstScroll, setIsFirstScroll] = useState(true);
-   const [isSecondScroll, setIsSecondScroll] = useState(false);
-
-   const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-
   // Effect to handle component mount and query DOM elements
 // runs once on mount
 useEffect(() => {
@@ -359,67 +349,54 @@ useEffect(() => {
 
 
 
-// ─── Calendar grid scroll logic (3‑stage) ────────────────────────────────
-const GRID_SHIFT_VH = 55.5;            // vertical travel per stage (matches overlay height)
-const BASE_OFFSET_VH = 0;           // pushes grid down so row 5 sits above bar on load
+  // ─── Calendar grid scroll logic (3-stage) ────────────────────────────────
+  const ROWS_PER_STAGE = 12;
+  const GRID_SHIFT_VH = 55.5;                  // vertical travel per stage
+  const BASE_OFFSET_VH = 0;                    // start with row 1 visible below top bar
 
-const [gridStage, setGridStage] = useState(0);   // 0 → 1‑16 | 1 → 13‑28 | 2 → 25‑31
-const gridStageRef = useRef(0);
-useEffect(() => { gridStageRef.current = gridStage; }, [gridStage]);
+  const [gridStage, setGridStage] = useState(0);
+  const stageRef = useRef(0);
+  useEffect(() => { stageRef.current = gridStage; }, [gridStage]);
 
-const isTransitioningRef = useRef(false);
-
-useEffect(() => {
-  // 1️⃣ Collect grid elements once
-  const gridEls = Array.from(
-    document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed')
-  );
-  gridEls.forEach(el => {
-    el.style.transition = 'transform 0.7s cubic-bezier(0.22,0.61,0.36,1)';
-    el.style.willChange = 'transform';
-    el.style.zIndex = '0'; // ensure grid stays UNDER layers 5 & 6 (which are z‑index 20)
-  });
-
-  // 2️⃣ Helper to move grid to desired stage
-  const shiftForStage = (stage: number) => {
+  const shiftGrid = useCallback((stage:number) => {
+    const els = document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed');
     const offset = BASE_OFFSET_VH - GRID_SHIFT_VH * stage;
-    gridEls.forEach(el => (el.style.transform = `translateY(${offset}vh)`));
-  };
-  shiftForStage(0); // initial alignment
+    els.forEach(el => {
+      el.style.transform = `translateY(${offset}vh)`;
+    });
+  }, []);
 
-  // 3️⃣ Transparent wheel overlay to capture scrolls
-  const overlay = document.createElement('div');
-  overlay.style.cssText = `
-    position:absolute;top:28.5vh;left:36vw;
-    width:58vw;height:55.5vh;pointer-events:auto;
-    background:transparent;z-index:30;`;
-  document.body.appendChild(overlay);
+  useEffect(() => {
+    const els = document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed');
+    els.forEach(el => {
+      el.style.transition = 'transform 0.7s cubic-bezier(0.22,0.61,0.36,1)';
+      el.style.willChange = 'transform';
+      el.style.zIndex = '0';
+    });
+    shiftGrid(0); // initial position
 
-  // 4️⃣ Wheel handler cycles between 3 stages
-  const onWheel = (e: WheelEvent) => {
-    e.preventDefault();
-    if (isTransitioningRef.current) return;
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+      position:absolute;top:28.5vh;left:36vw;
+      width:58vw;height:55.5vh;pointer-events:auto;
+      background:transparent;z-index:30;`;
+    document.body.appendChild(overlay);
 
-    isTransitioningRef.current = true;
-    setTimeout(() => (isTransitioningRef.current = false), 700);
+    let busy = false;
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      if (busy) return;
+      busy = true; setTimeout(() => (busy = false), 700);
 
-    const next =
-      e.deltaY > 0
-        ? (gridStageRef.current + 1) % 3     // scroll down
-        : (gridStageRef.current + 2) % 3;    // scroll up (‑1 mod 3)
-    setGridStage(next);
-    shiftForStage(next);
-  };
-
-  overlay.addEventListener('wheel', onWheel, { passive: false });
-
-  return () => {
-    overlay.removeEventListener('wheel', onWheel);
-    overlay.remove();
-  };
-}, []);
-// ─────────────────────────────────────────────────────────────────────────
-
+      const next = e.deltaY > 0 ? (stageRef.current + 1) % 3
+                                : (stageRef.current + 2) % 3;
+      setGridStage(next);
+      shiftGrid(next);
+    };
+    overlay.addEventListener('wheel', onWheel, { passive: false });
+    return () => { overlay.removeEventListener('wheel', onWheel); overlay.remove(); };
+  }, [shiftGrid]);
+  // ─────────────────────────────────────────────────────────────────────────
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {
   const handleEdgeClick = (event: MouseEvent) => {

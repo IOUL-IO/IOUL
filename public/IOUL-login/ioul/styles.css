@@ -352,7 +352,6 @@ body.non-fullscreen {
 }
 
 .layer-five {
-    z-index: 20;
     position: absolute;
     top: 0;
     left: 36vw;
@@ -362,7 +361,6 @@ body.non-fullscreen {
     pointer-events: none;
 }
 .layer-six {
-    z-index: 20;
     position: absolute;
     top: 84.7vh;
     left: 36vw;
@@ -844,12 +842,4 @@ body.non-fullscreen {
 }
 .line.util-line{
     pointer-events:auto !important;
-}
-
-
-/* Improve calendar grid smoothness */
-.other-content .grid-number,
-.other-content .grid-dashed {
-    will-change: transform;
-    transition: transform 0.7s cubic-bezier(0.33,1,0.68,1);
 }

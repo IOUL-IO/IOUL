@@ -286,28 +286,47 @@ useEffect(() => {
   // Effect to handle component mount and query DOM elements
 // runs once on mount
 useEffect(() => {
-  numbers1to16Ref.current = document.querySelectorAll('.grid-number');
-  numbers17to31Ref.current = document.querySelectorAll('.grid-number');
-  dashed1to16Ref.current = document.querySelectorAll('.grid-dashed');
-  dashed17to31Ref.current = document.querySelectorAll('.grid-dashed');
+  numbers1to16Ref.current = document.querySelectorAll(
+    '.grid-number.num1, .grid-number.num2, … , .grid-number.num16'
+  );
+  numbers17to31Ref.current = document.querySelectorAll(
+    '.grid-number.num17, … , .grid-number.num31'
+  );
+  dashed1to16Ref.current = document.querySelectorAll(
+    '.grid-dashed.dashed1, … , .grid-dashed.dashed16'
+  );
+  dashed17to31Ref.current = document.querySelectorAll(
+    '.grid-dashed.dashed17, … , .grid-dashed.dashed31'
+  );
 }, []);
 
-// ─── Calendar grid scroll logic ────────────────────────────────────────────
+// re-runs when scrolling flags change
 useEffect(() => {
-  const handleWheel = (e: WheelEvent) => {
-    // Prevent page scroll when interacting with calendar grid
+  const scrollArea = document.createElement('div');
+  scrollArea.style.position = 'absolute';
+  scrollArea.style.top = '28.5vh';
+  scrollArea.style.left = '36vw';
+  scrollArea.style.width = '58vw';
+  scrollArea.style.height = '55.5vh';
+  scrollArea.style.zIndex = '5';
+  document.querySelector('.other-content')!.appendChild(scrollArea);
+
+  function onWheel(e: WheelEvent) {
     e.preventDefault();
-
-    // Only continue if calendar grid exists in the DOM
-    if (!document.querySelector('.grid-number')) return;
-
     if (isScrolling) return;
     setIsScrolling(true);
     setTimeout(() => setIsScrolling(false), 700);
 
-    const all = Array.from(
-      document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed')
-    );
+    const nums1 = numbers1to16Ref.current || [];
+    const nums2 = numbers17to31Ref.current || [];
+    const das1 = dashed1to16Ref.current || [];
+    const das2 = dashed17to31Ref.current || [];
+    const all = [
+      ...Array.from(nums1),
+      ...Array.from(nums2),
+      ...Array.from(das1),
+      ...Array.from(das2),
+    ];
     all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
 
     if (e.deltaY > 0) {
@@ -329,11 +348,15 @@ useEffect(() => {
         setIsSecondScroll(false);
       }
     }
-  };
+  }
 
-  window.addEventListener('wheel', handleWheel, { passive: false });
-  return () => window.removeEventListener('wheel', handleWheel);
+  scrollArea.addEventListener('wheel', onWheel, { passive: false });
+  return () => {
+    scrollArea.removeEventListener('wheel', onWheel);
+    scrollArea.remove();
+  };
 }, [isScrolling, isSecondScroll]);
+
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {
@@ -818,9 +841,9 @@ return (
           <div className="line util-line" onClick={handleUtilLineClick} />
           <div className="line third" />
           <div className="line fourth" />
-          <div className="line fifth" />
+          <div className="line fifth" style={{ zIndex: 501, display: "inline-block" }} />
           <div className="line mail-line" style={{ position: 'absolute', top: '47.8vh', left: '36vw', width: '57.8vw', height: '1px', backgroundColor: 'rgba(230,230,230,0.28)', zIndex: 1 }} />
-          <div className="line sixth" />
+          <div className="line sixth" style={{ zIndex: 501, display: "inline-block" }} />
         </div>
 
         <div className="slide-container">
@@ -1024,8 +1047,8 @@ return (
 
         <div className="custom-line" style={{ position:'absolute', top:'47.8vh', left:'6.41vw', transform:'translateX(-49vw)', width:'22.48vw', height:'1px', backgroundColor:'rgba(230,230,230,0.28)', transition:'transform 0.6s ease', zIndex:1 }} data-offset="-49" data-slide-group="heading" />
 
-        <div className="layer-five" />
-        <div className="layer-six" />
+        <div className="layer-five" style={{ zIndex: 500 }} />
+        <div className="layer-six" style={{ zIndex: 500 }} />
         
         <div className="slide-triggers">
           <div className="slide-trigger" />

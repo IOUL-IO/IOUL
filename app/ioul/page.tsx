@@ -358,6 +358,68 @@ useEffect(() => {
 }, [isScrolling, isSecondScroll]);
 
 
+
+// ─── Calendar grid scroll logic (3‑stage) ────────────────────────────────
+const GRID_SHIFT_VH = 55.5;            // vertical travel per stage (matches overlay height)
+const BASE_OFFSET_VH = 0;           // pushes grid down so row 5 sits above bar on load
+
+const [gridStage, setGridStage] = useState(0);   // 0 → 1‑16 | 1 → 13‑28 | 2 → 25‑31
+const gridStageRef = useRef(0);
+useEffect(() => { gridStageRef.current = gridStage; }, [gridStage]);
+
+const isTransitioningRef = useRef(false);
+
+useEffect(() => {
+  // 1️⃣ Collect grid elements once
+  const gridEls = Array.from(
+    document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed')
+  );
+  gridEls.forEach(el => {
+    el.style.transition = 'transform 0.7s cubic-bezier(0.22,0.61,0.36,1)';
+    el.style.willChange = 'transform';
+    el.style.zIndex = '0'; // ensure grid stays UNDER layers 5 & 6 (which are z‑index 20)
+  });
+
+  // 2️⃣ Helper to move grid to desired stage
+  const shiftForStage = (stage: number) => {
+    const offset = BASE_OFFSET_VH - GRID_SHIFT_VH * stage;
+    gridEls.forEach(el => (el.style.transform = `translateY(${offset}vh)`));
+  };
+  shiftForStage(0); // initial alignment
+
+  // 3️⃣ Transparent wheel overlay to capture scrolls
+  const overlay = document.createElement('div');
+  overlay.style.cssText = `
+    position:absolute;top:28.5vh;left:36vw;
+    width:58vw;height:55.5vh;pointer-events:auto;
+    background:transparent;z-index:30;`;
+  document.body.appendChild(overlay);
+
+  // 4️⃣ Wheel handler cycles between 3 stages
+  const onWheel = (e: WheelEvent) => {
+    e.preventDefault();
+    if (isTransitioningRef.current) return;
+
+    isTransitioningRef.current = true;
+    setTimeout(() => (isTransitioningRef.current = false), 700);
+
+    const next =
+      e.deltaY > 0
+        ? (gridStageRef.current + 1) % 3     // scroll down
+        : (gridStageRef.current + 2) % 3;    // scroll up (‑1 mod 3)
+    setGridStage(next);
+    shiftForStage(next);
+  };
+
+  overlay.addEventListener('wheel', onWheel, { passive: false });
+
+  return () => {
+    overlay.removeEventListener('wheel', onWheel);
+    overlay.remove();
+  };
+}, []);
+// ─────────────────────────────────────────────────────────────────────────
+
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {
   const handleEdgeClick = (event: MouseEvent) => {

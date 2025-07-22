@@ -845,9 +845,11 @@ body.non-fullscreen {
 }
 
 
-/* === Calendar grid fixes — July 22 2025 === */
+/* === Calendar‑grid scroll & stacking fix — July 22 2025 === */
 .grid-number,
 .grid-dashed {
-  z-index: 50 !important; /* let them sit above overlays for correct visibility */
+  z-index: 4 !important;          /* below layer‑five (5) and layer‑six (6) */
+  pointer-events: none !important;/* allow wheel events to reach scrollArea */
 }
-/* We intentionally leave .layer-five / .layer-six at default z‑index (auto) */
+.layer-five  { z-index: 5 !important; }
+.layer-six   { z-index: 6 !important; }

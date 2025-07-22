@@ -843,26 +843,3 @@ body.non-fullscreen {
 .line.util-line{
     pointer-events:auto !important;
 }
-
-
-/* === Calendar‑grid scroll & stacking fix — July 22 2025 === */
-.grid-number,
-.grid-dashed {
-  z-index: 4 !important;          /* below layer‑five (5) and layer‑six (6) */
-  pointer-events: none !important;/* allow wheel events to reach scrollArea */
-}
-.layer-five  { z-index: 5 !important; }
-.layer-six   { z-index: 6 !important; }
-
-
-/* === Calendar grid fixes — Re‑tuned July 22 2025 === */
-.grid-number,
-.grid-dashed {
-  z-index: 0 !important;         /* restore original stacking */
-  pointer-events: auto !important;
-}
-/* Clear explicit z‑index from layers 5/6 so they take default stacking */
-.layer-five,
-.layer-six {
-  z-index: auto !important;
-}

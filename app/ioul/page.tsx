@@ -275,6 +275,11 @@ useEffect(() => {
   };
 
    const [isScrolling, setIsScrolling] = useState(false);
+  const isScrollingRef = useRef(false);
+  useEffect(() => { isScrollingRef.current = isScrolling; }, [isScrolling]);
+  const [gridStage, setGridStage] = useState<number>(0);
+   const [isFirstScroll, setIsFirstScroll] = useState(true);
+   const [isSecondScroll, setIsSecondScroll] = useState(false);
 
    const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
    const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
@@ -298,64 +303,84 @@ useEffect(() => {
   );
 }, []);
 
-  // ─── Calendar grid scroll logic (3‑stage) ────────────────────────────────
-  const [gridStage, setGridStage] = useState(0); // 0 = rows 1‑16, 1 = 13‑28, 2 = 25‑31
-  const gridStageRef = useRef(0);
-  useEffect(() => { gridStageRef.current = gridStage; }, [gridStage]);
 
-  const calendarElsRef = useRef<HTMLElement[]>([]);
+// ─── Calendar grid scroll handler (bounded & gated) ─────────────────────────
+useEffect(() => {
+  // Create a single invisible overlay that catches wheel events only
+  // when the calendar grid is visible (centerStage === 1). The overlay
+  // is limited to the rectangle: left 36‑94 vw, top 28.5‑84 vh.
+  const overlay = document.createElement('div');
+  overlay.style.position = 'absolute';
+  overlay.style.top = '28.5vh';
+  overlay.style.left = '36vw';
+  overlay.style.width = '58vw';     // 36 → 94 vw
+  overlay.style.height = '55.5vh';  // 28.5 → 84 vh
+  overlay.style.zIndex = '5';
+  overlay.style.background = 'transparent';
+  overlay.style.pointerEvents = centerStageRef.current === 1 ? 'auto' : 'none';
+  document.querySelector('.other-content')?.appendChild(overlay);
 
-  // Collect calendar elements once after mount
-  useEffect(() => {
-    const numbers = Array.from(document.querySelectorAll<HTMLElement>('.grid-number'));
-    const dashed = Array.from(document.querySelectorAll<HTMLElement>('.grid-dashed'));
-    calendarElsRef.current = [...numbers, ...dashed];
-  }, []);
+  // Stage index: 0 => rows 1‑16, 1 => rows 13‑28, 2 => rows 25‑31
+  const [OFFSET0, OFFSET1, OFFSET2] = [0, -55.5, -111];
+  const offsets = [OFFSET0, OFFSET1, OFFSET2];
+  let gridStageLocal = 0; // local fallback until refs populate
 
-  // Build a transparent overlay in front of the calendar to capture the wheel
-  useEffect(() => {
-    const overlay = document.createElement('div');
-    overlay.style.position = 'absolute';
-    overlay.style.top = '28.5vh';
-    overlay.style.left = '36vw';
-    overlay.style.width = '58vw';
-    overlay.style.height = '55.5vh';
-    overlay.style.zIndex = '5';
-    overlay.style.pointerEvents = 'auto';
-    (document.querySelector('.other-content') || document.body).appendChild(overlay);
+  function onWheel(e: WheelEvent) {
+    if (centerStageRef.current !== 1) return;     // grid not toggled on
+    e.preventDefault();
+    if (isScrollingRef.current) return;
 
-    const animateToStage = (stage: number) => {
-      const offset = stage * -55.5; // vh
-      calendarElsRef.current.forEach(el => {
-        el.style.transition = 'transform 0.7s ease';
-        el.style.transform = `translateY(${offset}vh)`;
-      });
-    };
+    // Collect grids dynamically in case they were rendered late
+    const nums1 = numbers1to16Ref.current ?? document.querySelectorAll<HTMLElement>('.grid-number.num1, .grid-number.num2, .grid-number.num3, .grid-number.num4, .grid-number.num5, .grid-number.num6, .grid-number.num7, .grid-number.num8, .grid-number.num9, .grid-number.num10, .grid-number.num11, .grid-number.num12, .grid-number.num13, .grid-number.num14, .grid-number.num15, .grid-number.num16');
+    const nums2 = numbers17to31Ref.current ?? document.querySelectorAll<HTMLElement>('.grid-number.num17, .grid-number.num18, .grid-number.num19, .grid-number.num20, .grid-number.num21, .grid-number.num22, .grid-number.num23, .grid-number.num24, .grid-number.num25, .grid-number.num26, .grid-number.num27, .grid-number.num28, .grid-number.num29, .grid-number.num30, .grid-number.num31');
+    const das1  = dashed1to16Ref.current ?? document.querySelectorAll<HTMLElement>('.grid-dashed.dashed1, .grid-dashed.dashed2, .grid-dashed.dashed3, .grid-dashed.dashed4, .grid-dashed.dashed5, .grid-dashed.dashed6, .grid-dashed.dashed7, .grid-dashed.dashed8, .grid-dashed.dashed9, .grid-dashed.dashed10, .grid-dashed.dashed11, .grid-dashed.dashed12, .grid-dashed.dashed13, .grid-dashed.dashed14, .grid-dashed.dashed15, .grid-dashed.dashed16');
+    const das2  = dashed17to31Ref.current ?? document.querySelectorAll<HTMLElement>('.grid-dashed.dashed17, .grid-dashed.dashed18, .grid-dashed.dashed19, .grid-dashed.dashed20, .grid-dashed.dashed21, .grid-dashed.dashed22, .grid-dashed.dashed23, .grid-dashed.dashed24, .grid-dashed.dashed25, .grid-dashed.dashed26, .grid-dashed.dashed27, .grid-dashed.dashed28, .grid-dashed.dashed29, .grid-dashed.dashed30, .grid-dashed.dashed31');
+    const all: HTMLElement[] = [...Array.from(nums1), ...Array.from(nums2), ...Array.from(das1), ...Array.from(das2)];
+    if (all.length === 0) return;
 
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      if (isScrolling) return;
-      setIsScrolling(true);
-      setTimeout(() => setIsScrolling(false), 700);
+    // Determine current stage based on first element's transform if ref lost
+    const match = all[0].style.transform.match(/translateY\(([-\d.]+)vh\)/);
+    if (match) {
+      const y = parseFloat(match[1]);
+      if (y === OFFSET0) gridStageLocal = 0;
+      else if (y === OFFSET1) gridStageLocal = 1;
+      else if (y === OFFSET2) gridStageLocal = 2;
+    }
 
-      let next = gridStageRef.current;
-      if (e.deltaY > 0) {
-        next = (next + 1) % 3; // scroll down cycles forward
-      } else if (e.deltaY < 0) {
-        next = (next + 2) % 3; // scroll up cycles back (‑1 mod 3)
-      }
-      setGridStage(next);
-      animateToStage(next);
-    };
+    let next = gridStageLocal;
+    if (e.deltaY > 0 && next < 2)      next += 1;  // wheel down
+    else if (e.deltaY < 0 && next > 0) next -= 1;  // wheel up
+    else return;                                  // already at boundary
 
-    overlay.addEventListener('wheel', onWheel, { passive: false });
+    all.forEach(el => {
+      el.style.transition = 'transform 0.7s ease';
+      el.style.transform  = `translateY(${offsets[next]}vh)`;
+    });
+    gridStageLocal = next;
+    setGridStage(next);
+    setIsScrolling(true);
+    setTimeout(() => setIsScrolling(false), 700);
+  }
 
-    return () => {
-      overlay.removeEventListener('wheel', onWheel);
-      overlay.remove();
-    };
-  }, [isScrolling]);
-  // ─────────────────────────────────────────────────────────────────────────
+  overlay.addEventListener('wheel', onWheel, { passive: false });
+
+  // Update pointer-events whenever centerStage changes
+  const updatePointerEvents = () => {
+    overlay.style.pointerEvents = centerStageRef.current === 1 ? 'auto' : 'none';
+  };
+  updatePointerEvents();
+
+  const observer = new MutationObserver(updatePointerEvents);
+  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+  return () => {
+    overlay.removeEventListener('wheel', onWheel);
+    observer.disconnect();
+    overlay.remove();
+  };
+}, [centerStage]);
+
+
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {

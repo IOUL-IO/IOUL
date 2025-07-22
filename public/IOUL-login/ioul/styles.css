@@ -850,3 +850,10 @@ body.non-fullscreen {
 .layer-six {
   z-index: 5 !important; /* ensure layers cover calendar grid during scroll */
 }
+
+
+/* -- Layer 5 + 6 enhanced stacking fix (July 22 2025) -- */
+.layer-five,
+.layer-six {
+  z-index: 999 !important;
+}

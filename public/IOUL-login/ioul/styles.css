@@ -845,19 +845,8 @@ body.non-fullscreen {
 }
 
 
-/* === Calendar grid & scroll overrides — July 22 2025 === */
+/* -- Calendar grid stacking adjustment (July 22 2025) -- */
 .grid-number,
 .grid-dashed {
-  z-index: 4 !important;
-  pointer-events: none !important;
+  z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
 }
-
-
-/* === Calendar grid stacking — July 22 2025 === */
-.grid-number,
-.grid-dashed {
-  z-index: 4;
-}
-
-.layer-five { z-index: 5; }
-.layer-six  { z-index: 6; }

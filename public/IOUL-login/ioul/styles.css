@@ -843,3 +843,11 @@ body.non-fullscreen {
 .line.util-line{
     pointer-events:auto !important;
 }
+
+
+/* === Calendar grid & scroll overrides — July 22 2025 === */
+.grid-number,
+.grid-dashed {
+  z-index: 4 !important;
+  pointer-events: none !important;
+}

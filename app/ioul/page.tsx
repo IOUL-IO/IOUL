@@ -275,75 +275,67 @@ useEffect(() => {
   };
 
    const [isScrolling, setIsScrolling] = useState(false);
-   const [isFirstScroll, setIsFirstScroll] = useState(true);
-   const [isSecondScroll, setIsSecondScroll] = useState(false);
-
-   const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-
+      
+   
   
-  // Effect to handle component mount and query DOM elements
-  // runs once on mount
-  useEffect(() => {
-    // Build selector strings dynamically so we don't have to hard‑code 31 items
-    const nums1Selector = Array.from({ length: 16 }, (_, i) => `.grid-number.num${i + 1}`).join(', ');
-    const nums2Selector = Array.from({ length: 15 }, (_, i) => `.grid-number.num${i + 17}`).join(', ');
-    const dashed1Selector = Array.from({ length: 16 }, (_, i) => `.grid-dashed.dashed${String(i + 1).padStart(2, '0')}`).join(', ');
-    const dashed2Selector = Array.from({ length: 15 }, (_, i) => `.grid-dashed.dashed${String(i + 17).padStart(2, '0')}`).join(', ');
 
-    numbers1to16Ref.current = document.querySelectorAll(nums1Selector);
-    numbers17to31Ref.current = document.querySelectorAll(nums2Selector);
-    dashed1to16Ref.current = document.querySelectorAll(dashed1Selector);
-    dashed17to31Ref.current = document.querySelectorAll(dashed2Selector);
-  }, []);
+// ─── Calendar grid scroll logic (3‑stage) ────────────────────────────────
+const [gridStage, setGridStage] = useState(0);   // 0→1‑16, 1→13‑28, 2→25‑31
+const gridStageRef = useRef(0);
+const isTransitioningRef = useRef(false);
+const GRID_SHIFT_VH = 55.5;
 
+// Collect all calendar elements once
+const calendarElsRef = useRef<HTMLElement[]>([]);
 
+const applyTransform = useCallback((stage: number) => {
+  const offset = -GRID_SHIFT_VH * stage;
+  calendarElsRef.current.forEach(el => {
+    el.style.transform = `translateY(${offset}vh)`;
+  });
+}, []);
 
-// ─── Scroll cycling effect (appears only in util state 2) ───────────────
+useEffect(() => { gridStageRef.current = gridStage; }, [gridStage]);
+
 useEffect(() => {
-  // Only attach the custom scroll handler while the calendar view is active
-  if (state !== 2) return;
+  // gather elements
+  const els = Array.from(document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed'));
+  els.forEach(el => {
+    el.style.transition = 'transform 0.7s cubic-bezier(0.22,0.61,0.36,1)';
+    el.style.willChange = 'transform';
+  });
+  calendarElsRef.current = els;
+  // initial alignment
+  applyTransform(0);
+}, [applyTransform]);
 
+useEffect(() => {
   const scrollArea = document.createElement('div');
   scrollArea.style.position = 'absolute';
   scrollArea.style.top = '28.5vh';
   scrollArea.style.left = '36vw';
   scrollArea.style.width = '58vw';
   scrollArea.style.height = '55.5vh';
-  scrollArea.style.zIndex = '5';
-  document.querySelector('.other-content')?.appendChild(scrollArea);
+  scrollArea.style.zIndex = '30'; // above grid, below bars
+  scrollArea.style.pointerEvents = 'auto';
+  scrollArea.style.background = 'transparent';
+  document.body.appendChild(scrollArea);
 
-  // 0 → stage A (1‑16) | 1 → stage B (13‑28) | 2 → stage C (25‑31)
-  let currentStage = 0;
-  let isThrottled = false;
-
-  const applyTransform = () => {
-    const all = document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed');
-    const translate = -55.5 * currentStage;
-    all.forEach(el => {
-      el.style.transition = 'transform 0.7s ease';
-      el.style.transform = `translateY(${translate}vh)`;
-    });
-  };
-
-  const onWheel = (e: WheelEvent) => {
+  function onWheel(e: WheelEvent) {
     e.preventDefault();
-    if (isThrottled) return;
+    if (isTransitioningRef.current) return;
+    isTransitioningRef.current = true;
+    setTimeout(() => { isTransitioningRef.current = false; }, 700);
 
-    const dir = Math.sign(e.deltaY);
-    if (dir > 0 && currentStage < 2) {
-      currentStage += 1;
-      applyTransform();
-    } else if (dir < 0 && currentStage > 0) {
-      currentStage -= 1;
-      applyTransform();
+    let next = gridStageRef.current;
+    if (e.deltaY > 0) {
+      next = (gridStageRef.current + 1) % 3;
+    } else if (e.deltaY < 0) {
+      next = (gridStageRef.current + 2) % 3;
     }
-
-    isThrottled = true;
-    setTimeout(() => { isThrottled = false; }, 700);
-  };
+    setGridStage(next);
+    applyTransform(next);
+  }
 
   scrollArea.addEventListener('wheel', onWheel, { passive: false });
 
@@ -351,39 +343,7 @@ useEffect(() => {
     scrollArea.removeEventListener('wheel', onWheel);
     scrollArea.remove();
   };
-}, [state]);
-
-
-
-// ─── Unified click effect ───────────────────────────────────────────────────
-useEffect(() => {
-  const handleEdgeClick = (event: MouseEvent) => {
-    // ignore clicks on actual menu items or chat-text itself
-    const target = event.target;
-    if (!(target instanceof HTMLElement)) return;
-    if (target.closest('.menu-item') || target.closest('.chat-text')) return;
-    const { clientX: x, clientY: y } = event;
-    const { innerWidth: width, innerHeight: height } = window;
-    const vw = width / 100;
-    const vh = height / 100;
-
-    const inLeftZone  = x >= 0          && x <= 6.37  * vw && y >= 28.5 * vh && y <= 84 * vh;
-    const inRightZone = x >= 28.86 * vw && x <= 32.43 * vw && y >= 28.5 * vh && y <= 84 * vh;
-
-    if (inLeftZone) {
-      // Close any open dropdowns before sliding
-      quickRemoveSubmenu();
-      setTimeout(() => {
-        resetDropdown();
-        // ── Left edge clicks ─────────────────────────
-        switch (slideState) {
-          case "none":
-            // fade out chat, slide in account+heading          chatTextRef.current!.style.opacity = "0";
-            setTimeout(() => {
-              document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
-                .forEach(box => box.style.transform = "translateX(0)");
-              document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')
-                .forEach(box => box.style.transform = "translateX(0)");
+}, [applyTransform]);
             }, 110);
             setSlideState("heading");
             break;

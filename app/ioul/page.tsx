@@ -273,63 +273,54 @@ useEffect(() => {
       newTexts.forEach((span) => span.remove());
     }, 300); // 0.3 s = fade‑out duration
   };
+  , []);
 
-   
-  // ─── Calendar grid scroll logic (3‑stage cycle) ─────────────────────────
-  // 0 → grid 1‑16, 1 → grid 13‑28, 2 → grid 25‑31
-  const gridItemsRef = useRef<NodeListOf<HTMLElement> | null>(null);
+// re-runs when scrolling flags change
+useEffect(() => {
+  const scrollArea = document.createElement('div');
   const [gridStage, setGridStage] = useState(0);
+  const stageRef = useRef(0);
+  useEffect(() => { stageRef.current = gridStage; }, [gridStage]);
 
-  // Cache grid items once DOM is ready
-  useEffect(() => {
-    gridItemsRef.current = document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed');
+  const shiftGrid = useCallback((stage:number) => {
+    const els = document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed');
+    const offset = BASE_OFFSET_VH - GRID_SHIFT_VH * stage;
+    els.forEach(el => {
+      el.style.transform = `translateY(${offset}vh)`;
+    });
   }, []);
 
-  // Apply transform whenever the stage changes
   useEffect(() => {
-    if (!gridItemsRef.current) return;
-    const offsets = [0, -55.5, -111]; // vh amounts that align with 1 panel height
-    gridItemsRef.current.forEach(el => {
-      el.style.transition = 'transform 0.7s ease';
-      el.style.transform = `translateY(${offsets[gridStage]}vh)`;
+    const els = document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed');
+    els.forEach(el => {
+      el.style.transition = 'transform 0.7s cubic-bezier(0.22,0.61,0.36,1)';
+      el.style.willChange = 'transform';
+      el.style.zIndex = '0';
     });
-  }, [gridStage]);
+    shiftGrid(0); // initial position
 
-  // Attach wheel handler inside the calendar viewport when util state 2 (calendar) is active
-  useEffect(() => {
-    if (state !== 2) return;
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+      position:absolute;top:28.5vh;left:36vw;
+      width:58vw;height:55.5vh;pointer-events:auto;
+      background:transparent;z-index:30;`;
+    document.body.appendChild(overlay);
 
-    const scrollArea = document.createElement('div');
-    scrollArea.style.position = 'absolute';
-    scrollArea.style.top = '28.5vh';
-    scrollArea.style.left = '36vw';
-    scrollArea.style.width = '58vw';
-    scrollArea.style.height = '55.5vh';
-    scrollArea.style.zIndex = '5';
-    document.querySelector('.other-content')?.appendChild(scrollArea);
-
-    let throttled = false;
+    let busy = false;
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
-      if (throttled) return;
-      throttled = true;
-      setTimeout(() => { throttled = false; }, 700);
+      if (busy) return;
+      busy = true; setTimeout(() => (busy = false), 700);
 
-      if (e.deltaY > 0) {
-        setGridStage(prev => Math.min(prev + 1, 2));
-      } else if (e.deltaY < 0) {
-        setGridStage(prev => Math.max(prev - 1, 0));
-      }
+      const next = e.deltaY > 0 ? (stageRef.current + 1) % 3
+                                : (stageRef.current + 2) % 3;
+      setGridStage(next);
+      shiftGrid(next);
     };
-
-    scrollArea.addEventListener('wheel', onWheel, { passive: false });
-
-    return () => {
-      scrollArea.removeEventListener('wheel', onWheel);
-      scrollArea.remove();
-    };
-  }, [state]);
-
+    overlay.addEventListener('wheel', onWheel, { passive: false });
+    return () => { overlay.removeEventListener('wheel', onWheel); overlay.remove(); };
+  }, [shiftGrid]);
+  // ─────────────────────────────────────────────────────────────────────────
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {
   const handleEdgeClick = (event: MouseEvent) => {

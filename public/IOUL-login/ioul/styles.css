@@ -843,36 +843,3 @@ body.non-fullscreen {
 .line.util-line{
     pointer-events:auto !important;
 }
-
-
-/* -- Calendar grid stacking adjustment (July 22 2025) -- */
-.grid-number,
-.grid-dashed {
-  z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
-}
-
-/* === STACKING CONTEXT LOCK – 22 Jul 2025 v3 === */
-/* Remove z‑index from .other-content so its children participate in the root stacking context */
-.other-content {
-  z-index: auto !important;
-}
-
-/* Stacking order (low→high): calendar grid < white strips (layers 5/6) < guide lines 5/6 < util‑line */
-.grid-number,
-.grid-dashed {
-  z-index: 90 !important;          /* bottom layer */
-}
-
-.layer-five,
-.layer-six {
-  z-index: 100 !important;         /* middle – cover grid */
-}
-
-.line.fifth,
-.line.sixth {
-  z-index: 110 !important;         /* always above the strips */
-}
-
-.line.util-line {
-  z-index: 120 !important;         /* click target – top */
-}

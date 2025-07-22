@@ -286,77 +286,139 @@ useEffect(() => {
   // Effect to handle component mount and query DOM elements
 // runs once on mount
 useEffect(() => {
-
-  useEffect(() => {
-    const nums1Selector = Array.from({ length: 16 }, (_, i) => `.grid-number.num${i + 1}`).join(', ');
-    const nums2Selector = Array.from({ length: 15 }, (_, i) => `.grid-number.num${i + 17}`).join(', ');
-    const dash1Selector = Array.from({ length: 16 }, (_, i) => `.grid-dashed.dashed${String(i + 1).padStart(2,'0')}`).join(', ');
-    const dash2Selector = Array.from({ length: 15 }, (_, i) => `.grid-dashed.dashed${String(i + 17).padStart(2,'0')}`).join(', ');
-    numbers1to16Ref.current  = document.querySelectorAll(nums1Selector);
-    numbers17to31Ref.current = document.querySelectorAll(nums2Selector);
-    dashed1to16Ref.current   = document.querySelectorAll(dash1Selector);
-    dashed17to31Ref.current  = document.querySelectorAll(dash2Selector);
-  }, []);
-
+  numbers1to16Ref.current = document.querySelectorAll(
+    '.grid-number.num1, .grid-number.num2, … , .grid-number.num16'
+  );
+  numbers17to31Ref.current = document.querySelectorAll(
+    '.grid-number.num17, … , .grid-number.num31'
+  );
+  dashed1to16Ref.current = document.querySelectorAll(
+    '.grid-dashed.dashed1, … , .grid-dashed.dashed16'
+  );
+  dashed17to31Ref.current = document.querySelectorAll(
+    '.grid-dashed.dashed17, … , .grid-dashed.dashed31'
+  );
+}, []);
 
 // re-runs when scrolling flags change
 useEffect(() => {
-  
-  // ─── Calendar grid scroll (revamped) ─────────────────────────────────────
-  // Handles mouse‑wheel inside the calendar grid overlay and cycles the
-  // three translateY positions: 0 → −55.5vh → −111vh and back.
-  useEffect(() => {
-    // Build overlay that captures the wheel
-    const overlay = document.createElement('div');
-    overlay.style.position = 'absolute';
-    overlay.style.top = '28.5vh';
-    overlay.style.left = '36vw';
-    overlay.style.width = '58vw';   // 36‑94 vw horizontally
-    overlay.style.height = '55.5vh';// 28.5‑84 vh vertically
-    overlay.style.zIndex = '200';   // sit above the numbers/dashed lines
-    overlay.style.pointerEvents = 'auto';
-    overlay.style.background = 'transparent';
-    document.body.appendChild(overlay);
+  const scrollArea = document.createElement('div');
+  scrollArea.style.position = 'absolute';
+  scrollArea.style.top = '28.5vh';
+  scrollArea.style.left = '36vw';
+  scrollArea.style.width = '58vw';
+  scrollArea.style.height = '55.5vh';
+  scrollArea.style.zIndex = '5';
+  document.querySelector('.other-content')!.appendChild(scrollArea);
 
-    // helper to fetch latest node lists every tick so we never miss late renders
-    const queryNodes = () => {
-      const nums = document.querySelectorAll<HTMLElement>('.grid-number');
-      const dashed = document.querySelectorAll<HTMLElement>('.grid-dashed');
-      return [Array.from(nums), Array.from(dashed)];
-    };
+  function onWheel(e: WheelEvent) {
+    e.preventDefault();
+    if (isScrolling) return;
+    setIsScrolling(true);
+    setTimeout(() => setIsScrolling(false), 700);
 
-    // stageRef keeps track of which of the 3 positions we are on (0, 1, 2)
-    const stageRef = { current: 0 };
-    let throttled = false;
+    const nums1 = numbers1to16Ref.current || [];
+    const nums2 = numbers17to31Ref.current || [];
+    const das1 = dashed1to16Ref.current || [];
+    const das2 = dashed17to31Ref.current || [];
+    const all = [
+      ...Array.from(nums1),
+      ...Array.from(nums2),
+      ...Array.from(das1),
+      ...Array.from(das2),
+    ];
+    all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
 
-    const applyTransform = () => {
-      const all = queryNodes();
-      const y = stageRef.current === 0 ? 0 : stageRef.current === 1 ? -55.5 : -111;
-      all.forEach(el => {
-        el.style.transition = 'transform 0.7s ease';
-        el.style.transform = `translateY(${y}vh)`;
-      });
-    };
+    if (e.deltaY > 0) {
+      if (!isSecondScroll) {
+        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
+        setIsSecondScroll(true);
+      } else {
+        all.forEach(el => (el.style.transform = 'translateY(-111vh)'));
+        setIsSecondScroll(false);
+      }
+    } else {
+      const match = all[0]?.style.transform.match(/translateY\(([-\d.]+)vh\)/);
+      const y = match ? parseFloat(match[1]) : 0;
+      if (y === -111) {
+        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
+        setIsSecondScroll(true);
+      } else if (y === -55.5) {
+        all.forEach(el => (el.style.transform = 'translateY(0)'));
+        setIsSecondScroll(false);
+      }
+    }
+  }
 
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      if (throttled) return;
-      throttled = true;
-      setTimeout(() => (throttled = false), 700); // match CSS transition
-
-      const direction = e.deltaY > 0 ? 1 : -1; // 1 = down, -1 = up
-      stageRef.current = Math.min(2, Math.max(0, stageRef.current + direction));
-      applyTransform();
-    };
-
-    overlay.addEventListener('wheel', onWheel, { passive: false });
-    return () => {
-      overlay.removeEventListener('wheel', onWheel);
-      overlay.remove();
-    };
-  }, []);
+  scrollArea.addEventListener('wheel', onWheel, { passive: false });
+  return () => {
+    scrollArea.removeEventListener('wheel', onWheel);
+    scrollArea.remove();
+  };
+}, [isScrolling, isSecondScroll]);
 
 
+
+// ─── Calendar grid scroll logic (3‑stage) ────────────────────────────────
+const GRID_SHIFT_VH = 55.5;            // vertical travel per stage (matches overlay height)
+const BASE_OFFSET_VH = 18.5;           // pushes grid down so row 5 sits above bar on load
+
+const [gridStage, setGridStage] = useState(0);   // 0 → 1‑16 | 1 → 13‑28 | 2 → 25‑31
+const gridStageRef = useRef(0);
+useEffect(() => { gridStageRef.current = gridStage; }, [gridStage]);
+
+const isTransitioningRef = useRef(false);
+
+useEffect(() => {
+  // 1️⃣ Collect grid elements once
+  const gridEls = Array.from(
+    document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed')
+  );
+  gridEls.forEach(el => {
+    el.style.transition = 'transform 0.7s cubic-bezier(0.22,0.61,0.36,1)';
+    el.style.willChange = 'transform';
+    el.style.zIndex = '0'; // ensure grid stays UNDER layers 5 & 6 (which are z‑index 20)
+  });
+
+  // 2️⃣ Helper to move grid to desired stage
+  const shiftForStage = (stage: number) => {
+    const offset = BASE_OFFSET_VH - GRID_SHIFT_VH * stage;
+    gridEls.forEach(el => (el.style.transform = `translateY(${offset}vh)`));
+  };
+  shiftForStage(0); // initial alignment
+
+  // 3️⃣ Transparent wheel overlay to capture scrolls
+  const overlay = document.createElement('div');
+  overlay.style.cssText = `
+    position:absolute;top:28.5vh;left:36vw;
+    width:58vw;height:55.5vh;pointer-events:auto;
+    background:transparent;z-index:30;`;
+  document.body.appendChild(overlay);
+
+  // 4️⃣ Wheel handler cycles between 3 stages
+  const onWheel = (e: WheelEvent) => {
+    e.preventDefault();
+    if (isTransitioningRef.current) return;
+
+    isTransitioningRef.current = true;
+    setTimeout(() => (isTransitioningRef.current = false), 700);
+
+    const next =
+      e.deltaY > 0
+        ? (gridStageRef.current + 1) % 3     // scroll down
+        : (gridStageRef.current + 2) % 3;    // scroll up (‑1 mod 3)
+    setGridStage(next);
+    shiftForStage(next);
+  };
+
+  overlay.addEventListener('wheel', onWheel, { passive: false });
+
+  return () => {
+    overlay.removeEventListener('wheel', onWheel);
+    overlay.remove();
+  };
+}, []);
+// ─────────────────────────────────────────────────────────────────────────
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {
@@ -546,7 +608,7 @@ useEffect(() => {
 
 
 
-      targetsRef.current = [accountEls, accountLine];
+      targetsRef.current = [...accountEls, accountLine];
 
 
 
@@ -1019,29 +1081,29 @@ return (
         <span className="grid-dashed dashed30" />
         <span className="grid-dashed dashed31" />
 
-        <div className="heading-container" style={ top: '35.4vh', left: '29.11vw', transform: 'translateX(-49vw)' } data-offset="-49" data-slide-group="heading">
+        <div className="heading-container" style={{top:'35.4vh',left:'6.41vw',transform:'translateX(-49vw)'}} data-offset="-49" data-slide-group="heading">
           <span className="custom-text heading-flow">AccOUnT</span>
         </div>
-        <div className="heading-container" style={ top: '41.6vh', left: '29.11vw', transform: 'translateX(-49vw)' } data-offset="-49" data-slide-group="heading">
+        <div className="heading-container" style={{top:'41.6vh',left:'6.41vw',transform:'translateX(-49vw)'}} data-offset="-49" data-slide-group="heading">
           <span className="custom-text heading-flow">AcT1V1TY</span>
         </div>
-        <div className="heading-container" style={ top: '53vh', left: '29.11vw', transform: 'translateX(-49vw)' } data-offset="-49" data-slide-group="heading">
+        <div className="heading-container" style={{top:'53vh',left:'6.41vw',transform:'translateX(-49vw)'}} data-offset="-49" data-slide-group="heading">
           <span className="custom-text heading-flow">cHATLOg</span>
         </div>
-        <div className="heading-container" style={ top: '59.2vh', left: '29.11vw', transform: 'translateX(-49vw)' } data-offset="-49" data-slide-group="heading">
+        <div className="heading-container" style={{top:'59.2vh',left:'6.41vw',transform:'translateX(-49vw)'}} data-offset="-49" data-slide-group="heading">
           <span className="custom-text heading-flow">cLAnLOg</span>
         </div>
 
-        <div className="account-container" style={ top: '35.4vh', left: '29.11vw', transform: 'translateX(-49vw)' } data-offset="-49" data-slide-group="account">
+        <div className="account-container" style={{top:'35.4vh',left:'29.11vw',transform:'translateX(-49vw)'}} data-offset="-49" data-slide-group="account">
           <span className="custom-text right-flow" style={{position:'absolute',right:0}}>0</span>
         </div>
-        <div className="account-container" style={ top: '41.6vh', left: '29.11vw', transform: 'translateX(-49vw)' } data-offset="-49" data-slide-group="account">
+        <div className="account-container" style={{top:'41.6vh',left:'29.11vw',transform:'translateX(-49vw)'}} data-offset="-49" data-slide-group="account">
           <span className="custom-text right-flow" style={{position:'absolute',right:0}}>0</span>
         </div>   
-        <div className="account-container" style={ top: '53vh', left: '29.11vw', transform: 'translateX(-49vw)' } data-offset="-49" data-slide-group="account">
+        <div className="account-container" style={{top:'53vh',left:'29.11vw',transform:'translateX(-49vw)'}} data-offset="-49" data-slide-group="account">
           <span className="custom-text right-flow" style={{position:'absolute',right:0}}>0</span>
         </div>
-        <div className="account-container" style={ top: '59.2vh', left: '29.11vw', transform: 'translateX(-49vw)' } data-offset="-49" data-slide-group="account">
+        <div className="account-container" style={{top:'59.2vh',left:'29.11vw',transform:'translateX(-49vw)'}} data-offset="-49" data-slide-group="account">
           <span className="custom-text right-flow" style={{position:'absolute',right:0}}>0</span>
         </div>
 

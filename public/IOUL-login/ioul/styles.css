@@ -851,19 +851,56 @@ body.non-fullscreen {
   z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
 }
 
-
-/* === Layering Fixes (July 22 2025) === */
+/* --- Stack order fixes (added July 22 2025) --- */
 .line.fifth,
 .line.sixth {
-  z-index: 250 !important; /* above layer-five */
+  position: fixed;          /* detach from .other-content stacking context */
+  z-index: 205 !important;  /* ensure always above layer-five */
 }
 
 .layer-five,
 .layer-six {
-  z-index: 200 !important; /* above calendar grid under lines 5/6 */
+  z-index: 120 !important;  /* above calendar grid but below util-line/chat overlays */
+}
+
+/* Place calendar grid beneath the mask layers */
+.grid-number,
+.grid-dashed {
+  z-index: 110 !important;
+}
+
+
+/* --- Mask/Grid layering hot‑fix (22‑Jul‑2025, rev 2) --- */
+/* Lower the whole .other-content stacking context so calendar grid stays under layer‑five/six */
+.other-content{
+  z-index: 2 !important;
+}
+
+
+/* --- Definitive layering override (22‑Jul‑2025, rev 3) ---
+   Ensures:
+   • .line.fifth / .line.sixth always on top of mask
+   • .layer-five / .layer-six above calendar grid
+   • Calendar grid stays beneath masks
+*/
+.line.fifth,
+.line.sixth{
+  position: fixed !important;
+  z-index: 1200 !important;
+}
+
+.layer-five,
+.layer-six{
+  z-index: 1100 !important;
 }
 
 .grid-number,
-.grid-dashed {
-  z-index: 150 !important; /* below layer-five */
+.grid-dashed{
+  z-index: 1000 !important;
+}
+
+
+/* --- Remove .other-content stacking context to allow inner util lines to escape (22‑Jul‑2025, rev 4) --- */
+.other-content{
+  z-index: auto !important; /* relinquish stacking context so .line fifth can overlay layer‑five */
 }

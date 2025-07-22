@@ -93,7 +93,7 @@ useEffect(() => {
     window.removeEventListener('resize', onResize);
     cancelAnimationFrame(rafId);
   };
-}, []);
+});
 
 
 
@@ -119,7 +119,7 @@ useEffect(() => {
     return () => {
       window.removeEventListener('resize', updateVisibility); // Clean up resize event listener
     };
-  }, []);
+  });
 
 
 
@@ -127,7 +127,7 @@ useEffect(() => {
     // Cycle util-state 0 → 1 → 2 → 0 on click
   const handleUtilLineClick = useCallback(() => {
     setState(prev => (prev + 1) % 3);
-  }, []);
+  });
   
   // Sync the data-util CSS attribute
   useEffect(() => {
@@ -272,63 +272,65 @@ useEffect(() => {
       // Finally remove the submenu nodes
       newTexts.forEach((span) => span.remove());
     }, 300); // 0.3 s = fade‑out duration
-  };
+  };   const [isFirstScroll, setIsFirstScroll] = useState(true);
+   const dashed1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
+   const dashed17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
 
-   
-  // ─── Calendar grid scroll logic (3‑stage cycle) ─────────────────────────
-  // 0 → grid 1‑16, 1 → grid 13‑28, 2 → grid 25‑31
-  const gridItemsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-  const [gridStage, setGridStage] = useState(0);
+  // Effect to handle component mount and query DOM elements
+// runs once on mount
+useEffect(() => {
+    '.grid-number.num1, .grid-number.num2, … , .grid-number.num16'
+  );
+    '.grid-number.num17, … , .grid-number.num31'
+  );
+  dashed1to16Ref.current = document.querySelectorAll(
+    '.grid-dashed.dashed1, … , .grid-dashed.dashed16'
+  );
+  dashed17to31Ref.current = document.querySelectorAll(
+    '.grid-dashed.dashed17, … , .grid-dashed.dashed31'
+  );
+});
 
-  // Cache grid items once DOM is ready
-  useEffect(() => {
-    gridItemsRef.current = document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed');
-  }, []);
+// re-runs when scrolling flags change
+useEffect(() => {
+  const scrollArea = document.createElement('div');
+  scrollArea.style.position = 'absolute';
+  scrollArea.style.top = '28.5vh';
+  scrollArea.style.left = '36vw';
+  scrollArea.style.width = '58vw';
+  scrollArea.style.height = '55.5vh';
+  scrollArea.style.zIndex = '5';
+  document.querySelector('.other-content')!.appendChild(scrollArea);
 
-  // Apply transform whenever the stage changes
-  useEffect(() => {
-    if (!gridItemsRef.current) return;
-    const offsets = [0, -55.2, -110.4]; // vh amounts that align with 1 panel height
-    gridItemsRef.current.forEach(el => {
-      el.style.transition = 'transform 0.7s ease';
-      el.style.transform = `translateY(${offsets[gridStage]}vh)`;
-    });
-  }, [gridStage]);
+  function onWheel(e: WheelEvent) {
+    e.preventDefault();
+    if (false) return;
 
-  // Attach wheel handler inside the calendar viewport when util state 2 (calendar) is active
-  useEffect(() => {
-    if (state !== 2) return;
+    const all = [
+    ];
+    all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
 
-    const scrollArea = document.createElement('div');
-    scrollArea.style.position = 'absolute';
-    scrollArea.style.top = '28.5vh';
-    scrollArea.style.left = '36vw';
-    scrollArea.style.width = '58vw';
-    scrollArea.style.height = '55.5vh';
-    scrollArea.style.zIndex = '5';
-    document.querySelector('.other-content')?.appendChild(scrollArea);
-
-    let throttled = false;
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      if (throttled) return;
-      throttled = true;
-      setTimeout(() => { throttled = false; }, 700);
-
-      if (e.deltaY > 0) {
-        setGridStage(prev => Math.min(prev + 1, 2));
-      } else if (e.deltaY < 0) {
-        setGridStage(prev => Math.max(prev - 1, 0));
+    if (e.deltaY > 0) {
+      if (!false) {
+        
+      } else {
+        
       }
-    };
+    } else {
+      const match = all[0]?.style.transform.match(/translateY\(([-\d.]+)vh\)/);
+      const y = match ? parseFloat(match[1]) : 0;
+      if (y === -111) {
+        
+      } else if (y === -55.5) {
+        
+      }
+    }
+  }return () => {
+    scrollArea.removeEventListener('wheel', onWheel);
+    scrollArea.remove();
+  };
+}, [false, false]);
 
-    scrollArea.addEventListener('wheel', onWheel, { passive: false });
-
-    return () => {
-      scrollArea.removeEventListener('wheel', onWheel);
-      scrollArea.remove();
-    };
-  }, [state]);
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {
@@ -648,7 +650,7 @@ document.addEventListener('click', handleClick);
 useEffect(() => {
   itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
   centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-}, []);
+});
 
 useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
@@ -659,7 +661,7 @@ useEffect(() => {
         }
       });
     }
-  }, []);
+  });
 
   // Reusable move function for transitions
   const move = (els: NodeListOf<HTMLElement>, offset: number) => {
@@ -1032,5 +1034,4 @@ return (
 };
 
 export default IOULPage;
-
-// Note: global fallback wheel handler removed; logic is inside component to avoid compile errors.
+    

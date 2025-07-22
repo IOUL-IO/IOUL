@@ -879,3 +879,20 @@ body.non-fullscreen {
 .layer-six {
   z-index: 99999 !important;  /* absolutely top */
 }
+
+
+/* -- Ultimate stacking fix (July 22 2025) -- */
+/* Ensure layer-five and layer-six always cover the calendar grid, even during animated scrolls.
+   We move them to their own top-level stacking context (position:fixed) and give a very high z-index.
+   The grid numbers/dashed lines are forced to a low z-index.
+*/
+.layer-five,
+.layer-six {
+  position: fixed !important;
+  z-index: 2147483647 !important; /* stay on top no matter what */
+}
+
+.grid-number,
+.grid-dashed {
+  z-index: 1 !important;          /* safely underneath */
+}

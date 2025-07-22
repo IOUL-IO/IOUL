@@ -845,24 +845,15 @@ body.non-fullscreen {
 }
 
 
-/* -- Stack Fix BEGIN (July 22 2025) --
-   Ensures calendar grid (.grid-number / .grid-dashed) always sits BELOW Line 5 & 6
-   and any util overlays, regardless of scroll or transforms.
-*/
+/* -- Calendar grid stacking & positioning fix FINAL (July 22 2025) -- */
 .grid-number,
 .grid-dashed {
-  z-index: 1 !important;            /* lowest interactive layer */
-  position: relative !important;    /* keep current layout */
+  position: absolute !important;   /* ensure correct placement */
+  z-index: 5 !important;           /* below Layer 5 & 6, above background */
 }
 
-/* Elevate the horizontal divider bars (Line 5 & Line 6) */
-.line.fifth,
-.line.sixth {
-  z-index: 10000 !important;        /* safely above grid */
+.layer-five,
+.layer-six {
+  position: absolute !important;   /* restore original flow positioning */
+  z-index: 100 !important;         /* always above the calendar grid */
 }
-
-/* Optionally lift util-line if you ever need it even higher */
-.line.util-line {
-  z-index: 11000 !important;
-}
-/* -- Stack Fix END */

@@ -851,37 +851,28 @@ body.non-fullscreen {
   z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
 }
 
+/* === STACKING CONTEXT LOCK – 22 Jul 2025 v3 === */
+/* Remove z‑index from .other-content so its children participate in the root stacking context */
+.other-content {
+  z-index: auto !important;
+}
 
-/* =========================================================
-   Stacking-context definitive fix (22‑Jul‑2025 rev 5)
-   Goal:
-   • .line.fifth / .line.sixth always render above white masks
-   • White masks (.layer-five / .layer-six) stay above calendar grid
-   • Calendar grid sits beneath masks
-   This block sits at the VERY END and uses !important on every prop
-   so nothing below can override it.
-   ========================================================= */
-.line.fifth,
-.line.sixth{
-  position: fixed !important;    /* escape parent stacking context */
-  z-index: 10000 !important;     /* very top */
+/* Stacking order (low→high): calendar grid < white strips (layers 5/6) < guide lines 5/6 < util‑line */
+.grid-number,
+.grid-dashed {
+  z-index: 90 !important;          /* bottom layer */
 }
 
 .layer-five,
-.layer-six{
-  z-index: 9000 !important;      /* just below util lines */
+.layer-six {
+  z-index: 100 !important;         /* middle – cover grid */
 }
 
-.slide-container{
-  z-index: 8000 !important;      /* overlay elements but under masks */
+.line.fifth,
+.line.sixth {
+  z-index: 110 !important;         /* always above the strips */
 }
 
-.other-content{
-  z-index: 1000 !important;      /* lower calendar grid container */
+.line.util-line {
+  z-index: 120 !important;         /* click target – top */
 }
-
-.grid-number,
-.grid-dashed{
-  z-index: 900 !important;       /* ensure individual grid items are low */
-}
-

@@ -89,7 +89,14 @@ useEffect(() => {
     rafId = requestAnimationFrame(tick);
   };
   tick();
+  React.useEffect(() => {
+  document.documentElement.setAttribute('data-page', 'ioul');
   return () => {
+    document.documentElement.removeAttribute('data-page');
+  };
+}, []);
+
+return () => {
     window.removeEventListener('resize', onResize);
     cancelAnimationFrame(rafId);
   };
@@ -131,12 +138,12 @@ useEffect(() => {
   
   // Sync the data-util CSS attribute
   useEffect(() => {
-  document.documentElement.setAttribute('data-util', state.toString());
-  return () => {
-    document.documentElement.removeAttribute('data-util');
-  };
-}, [state]);
-const quickRemoveSubmenu = () => {
+    document.documentElement.setAttribute('data-util', state.toString());
+  }, [state]);
+
+
+
+  const quickRemoveSubmenu = () => {
     const newTexts = document.querySelectorAll<HTMLSpanElement>('.new-text');
     newTexts.forEach((span) => {
       span.style.transition = 'opacity 0.1s ease';

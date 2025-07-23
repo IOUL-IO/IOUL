@@ -36,5 +36,10 @@
   visibility: visible !important;
 }
 
-/* Global z-index fix for util-line 5 */
-.line.fifth { z-index: 120 !important; }
+/* Keep guideline 5 visible site‑wide except where ioul page intentionally hides it */
+:root:not([data-page="ioul"]) .line.fifth {
+  opacity: 1 !important;
+  display: block !important;
+  pointer-events: auto !important;
+  z-index: 540 !important;
+}

@@ -75,12 +75,12 @@ const IOULPage: React.FC = () => {
   
   // Sync the data-util CSS attribute
   useEffect(() => {
-  document.documentElement.setAttribute('data-util', state.toString());
-  return () => {
-    document.documentElement.removeAttribute('data-util');
-  };
-}, [state]);
-const quickRemoveSubmenu = () => {
+    document.documentElement.setAttribute('data-util', state.toString());
+  }, [state]);
+
+
+
+  const quickRemoveSubmenu = () => {
     const newTexts = document.querySelectorAll<HTMLSpanElement>('.new-text');
     newTexts.forEach((span) => {
       span.style.transition = 'opacity 0.1s ease';

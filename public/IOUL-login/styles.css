@@ -787,3 +787,15 @@ html[data-slide="community"] .chat-text {
   z-index:420 !important;      /* above masks & layer strips */
   pointer-events:none !important;
 }
+
+
+/* === PATCH 2: calendar grid layering fix — 2025‑07‑23 ===
+   Ensure calendar grid sits below layer-five, while layer-five remains under line 5 */
+.grid-number,
+.grid-dashed{
+  z-index: 50 !important;   /* below layer-five */
+}
+
+.layer-five{
+  z-index: 200 !important;  /* below line 5 but above grid */
+}

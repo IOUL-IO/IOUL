@@ -80,15 +80,7 @@ const IOULPage: React.FC = () => {
 
 
 
-  
-
-// Cleanup data-util attribute on unmount to avoid leaking state to other pages
-useEffect(() => {
-  return () => {
-    document.documentElement.removeAttribute('data-util');
-  };
-}, []);
-const quickRemoveSubmenu = () => {
+  const quickRemoveSubmenu = () => {
     const newTexts = document.querySelectorAll<HTMLSpanElement>('.new-text');
     newTexts.forEach((span) => {
       span.style.transition = 'opacity 0.1s ease';

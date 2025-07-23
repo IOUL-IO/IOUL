@@ -136,15 +136,7 @@ useEffect(() => {
 
 
 
-  
-
-// Cleanup data-util attribute on unmount to avoid leaking state to other pages
-useEffect(() => {
-  return () => {
-    document.documentElement.removeAttribute('data-util');
-  };
-}, []);
-const quickRemoveSubmenu = () => {
+  const quickRemoveSubmenu = () => {
     const newTexts = document.querySelectorAll<HTMLSpanElement>('.new-text');
     newTexts.forEach((span) => {
       span.style.transition = 'opacity 0.1s ease';
@@ -342,6 +334,21 @@ useEffect(() => {
   window.addEventListener('wheel', handleWheel, { passive: false });
   return () => window.removeEventListener('wheel', handleWheel);
 }, [isScrolling, isSecondScroll]);
+
+
+// ─── Calendar grid stacking context fix (July 23 2025) ────────────────────
+useEffect(() => {
+  // Ensure grid numbers & dashed lines are always above content layers (z‑index > layer‑four)
+  const setGridZ = () => {
+    document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed')
+      .forEach(el => (el.style.zIndex = '10'));
+  };
+  setGridZ();
+  // also listen to dynamically created grid nodes (unlikely) via MutationObserver
+  const mo = new MutationObserver(setGridZ);
+  mo.observe(document.body, { childList: true, subtree: true });
+  return () => mo.disconnect();
+}, []);
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {

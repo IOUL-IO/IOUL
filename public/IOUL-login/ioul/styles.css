@@ -845,18 +845,47 @@ body.non-fullscreen {
 }
 
 
-/* -- Calendar grid stacking adjustment (July 22 2025) -- */
-.grid-number,
-.grid-dashed {
-  z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
+.other-content                                   { z-index: 510 !important; }
+
+/* 1 — lines 5 & 6: always shown, always above the strips */
+.line.fifth,
+.line.sixth,
+html[data-util="0"] .line.fifth,
+html[data-util="0"] .line.sixth,
+html[data-util="1"] .line.fifth,
+html[data-util="1"] .line.sixth,
+html[data-util="2"] .line.fifth,
+html[data-util="2"] .line.sixth                  {
+  display:inline-block !important;
+  opacity:1 !important;
+  pointer-events:none !important;
+  z-index: 520 !important;            /* > wrapper, < util‑line */
 }
 
-/* === PERMANENT VISIBILITY FOR LINES 5 & 6 — 2025-07-23 00:59:10 === */
-/* Undo older util‑state rules that hid the lines */
-.line.fifth,
-.line.sixth {
-  display: inline-block !important;
-  opacity: 1 !important;
-  z-index: 420 !important;      /* stay above strips */
-  pointer-events: none !important; /* same behaviour across pages */
+/* 2 — util‑line stays clickable on very top */
+.line.util-line                                 { z-index: 530 !important; }
+
+/* 3 — white strips: visible in every util state, above grid */
+.layer-five,
+.layer-six,
+html[data-util="0"] .layer-five,
+html[data-util="0"] .layer-six,
+html[data-util="1"] .layer-five,
+html[data-util="1"] .layer-six,
+html[data-util="2"] .layer-five,
+html[data-util="2"] .layer-six                 {
+  display:block !important;
+  opacity:1 !important;
+  pointer-events:none !important;
+  z-index: 500 !important;            /* between lines & grid */
 }
+
+/* 4 — calendar grid always underneath the strip */
+.grid-number,
+.grid-dashed                                   { z-index: 480 !important; }
+
+/* 5 — override the old 1000‑level rule by matching its selector list */
+.mail-line,
+.mail-text,
+.grid-number,
+.grid-dashed                                   { z-index: 480 !important; }

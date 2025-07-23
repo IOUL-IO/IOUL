@@ -74,12 +74,8 @@ const IOULPage: React.FC = () => {
   }, []);
   
   // Sync the data-util CSS attribute
-  // Sync the data-util CSS attribute and clean up on unmount
   useEffect(() => {
     document.documentElement.setAttribute('data-util', state.toString());
-    return () => {
-      document.documentElement.removeAttribute('data-util');
-    };
   }, [state]);
 
 

@@ -3,6 +3,15 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 const IOULPage: React.FC = () => {
+  // -- scope IOUL-only styles --
+React.useEffect(() => {
+  document.documentElement.setAttribute('data-page', 'ioul');
+  return () => {
+    document.documentElement.removeAttribute('data-page');
+  };
+}, []);
+
+  
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
@@ -130,12 +139,8 @@ useEffect(() => {
   }, []);
   
   // Sync the data-util CSS attribute
-  // Sync the data-util CSS attribute and clean up on unmount
   useEffect(() => {
     document.documentElement.setAttribute('data-util', state.toString());
-    return () => {
-      document.documentElement.removeAttribute('data-util');
-    };
   }, [state]);
 
 

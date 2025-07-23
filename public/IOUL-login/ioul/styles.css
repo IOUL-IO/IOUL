@@ -619,7 +619,7 @@ body.non-fullscreen {
   pointer-events: auto !important;
 }
 
-:root[data-util="2"] .line.fifth,
+:root[data-page="ioul"][data-util="2"] .line.fifth,
 :root[data-util="2"] .line.sixth,
 :root[data-util="2"] .mail-line,
 :root[data-util="2"] .mail-text {
@@ -668,7 +668,7 @@ body.non-fullscreen {
 }
 :root[data-util="2"] .mail-line,
 :root[data-util="2"] .mail-text,
-:root[data-util="2"] .line.fifth,
+:root[data-page="ioul"][data-util="2"] .line.fifth,
 :root[data-util="2"] .line.sixth {
   display: none !important;
 }
@@ -804,7 +804,7 @@ body.non-fullscreen {
 
 :root[data-util="2"] .mail-line,
 :root[data-util="2"] .mail-text,
-:root[data-util="2"] .line.fifth,
+:root[data-page="ioul"][data-util="2"] .line.fifth,
 :root[data-util="2"] .line.sixth {
   opacity: 0 !important;
   display: none !important;

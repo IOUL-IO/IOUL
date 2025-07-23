@@ -68,7 +68,7 @@ body.non-fullscreen {
 .line.second  { top:28.5vh; left:6.38vw;  width:18.68vw; }
 .line.third   { top:84vh;   left:6.38vw;  width:22.48vw; }
 .line.fourth  { top:12.5vh; left:36vw;    width:57.8vw;  z-index:3; }
-.line.fifth   { top:28.5vh; left:36vw;    width:57.8vw;  z-index:3; }
+:root[data-page="ioul"] .line.fifth { top:28.5vh; left:36vw;    width:57.8vw;  z-index:3; }
 .line.sixth   { top:84vh;   left:36vw;    width:57.8vw;  z-index:1; }
 
 /* Utility line kept for future interaction (click listener removed here) */

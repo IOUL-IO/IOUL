@@ -36,7 +36,11 @@
   visibility: visible !important;
 }
 
-/* Global fix: Ensure line 5 above layer-five */
-.line.fifth {
-  z-index: 120 !important;
+
+/* === KEEP guideline‑5 & util-line above layer‑five everywhere except IOUL === */
+:root:not([data-page="ioul"]) .line.fifth,
+:root:not([data-page="ioul"]) .util-line {
+  z-index: 540 !important;  /* above layer-five (500) */
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }

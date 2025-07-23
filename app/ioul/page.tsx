@@ -3,6 +3,18 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 const IOULPage: React.FC = () => {
+  // ----- Ensure IOUL-only attrs are scoped & cleaned up -----
+useEffect(() => {
+  // mark document while IOUL page mounted
+  document.documentElement.setAttribute('data-page', 'ioul');
+  return () => {
+    // remove attributes so other pages stay unaffected
+    document.documentElement.removeAttribute('data-page');
+    document.documentElement.removeAttribute('data-util');
+  };
+}, []);
+
+  
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
@@ -22,14 +34,6 @@ useEffect(() => {
   const pageContentRef = useRef<HTMLDivElement | null>(null);
   
   const [state, setState] = useState(0); // 0 = baseline (lines visible, others hidden)
-
-  // Cleanup to prevent util-line state leaking after navigation
-  useEffect(() => {
-    return () => {
-      document.documentElement.removeAttribute('data-util');
-    };
-  }, []);
-
 
   const EDGE_MARGIN = 11;
 

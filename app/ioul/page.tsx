@@ -134,12 +134,6 @@ useEffect(() => {
     document.documentElement.setAttribute('data-util', state.toString());
   }, [state]);
 
-useEffect(() => {
-  return () => {
-    document.documentElement.removeAttribute('data-util'); // reset on route change
-  };
-}, []);
-
 
 
   const quickRemoveSubmenu = () => {

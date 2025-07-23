@@ -35,3 +35,9 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+/* ----- GLOBAL PATCH July 23 2025 -----
+   Keep fifth util line above layer‑five everywhere */
+.line.fifth {
+  z-index: 110 !important;
+}

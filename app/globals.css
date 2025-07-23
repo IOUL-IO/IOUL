@@ -35,9 +35,3 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
-
-/* === Global util-line override to keep it above layer-five on every page === */
-.util-line {
-  z-index: 530 !important;
-  pointer-events: auto !important;
-}

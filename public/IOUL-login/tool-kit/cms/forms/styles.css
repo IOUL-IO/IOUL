@@ -56,5 +56,5 @@ body.non-fullscreen{
 /* Util line kept for future interactions */
 .util-line{
   position:absolute;top:28.5vh;left:26.06vw;width:2.8vw;height:1px;
-  background:rgba(172,172,172,0.84);z-index: 530 !important; 01;
+  background:rgba(172,172,172,0.84);z-index:101;
 }

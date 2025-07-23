@@ -35,3 +35,9 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+/* === UTIL LINE STACK FIX — 2025‑07‑23 === */
+.line.fifth,
+.line.sixth{
+  z-index: 999 !important;
+}

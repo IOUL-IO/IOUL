@@ -15,6 +15,14 @@ const IOULPage: React.FC = () => {
   
   const [state, setState] = useState(0); // 0 = baseline (lines visible, others hidden)
 
+  // Cleanup to prevent util-line state leaking after navigation
+  useEffect(() => {
+    return () => {
+      document.documentElement.removeAttribute('data-util');
+    };
+  }, []);
+
+
   const EDGE_MARGIN = 11;
 
   const targetsRef = useRef<(HTMLElement | null)[]>([]); // Reference to target elements

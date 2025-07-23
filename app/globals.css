@@ -35,10 +35,3 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
-
-/* === Global guideline‑5 & util‑line overrides – keep them above layer‑five site‑wide === */
-.line.fifth, .util-line {
-  z-index: 540 !important;   /* ensure both sit above .layer-five */
-  pointer-events: auto !important;
-}
-/* ------------------------------------------------------------------------ */

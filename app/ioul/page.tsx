@@ -90,8 +90,6 @@ useEffect(() => {
   };
   tick();
   return () => {
-    <div className="ioul-page">
-    </div>
     window.removeEventListener('resize', onResize);
     cancelAnimationFrame(rafId);
   };

@@ -845,11 +845,11 @@ body.non-fullscreen {
 }
 
 
-/* (de‑scoped) /* -- Calendar grid stacking adjustment (July 22 2025) -- */
+/* -- Calendar grid stacking adjustment (July 22 2025) -- */
 .grid-number,
 .grid-dashed {
   z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
-} */
+}
 
 /* === PERMANENT VISIBILITY FOR LINES 5 & 6 — 2025-07-23 00:59:10 === */
 /* Undo older util‑state rules that hid the lines */
@@ -861,64 +861,7 @@ body.non-fullscreen {
   pointer-events: none !important; /* same behaviour across pages */
 }
 
-/* =========================================================== *
- * IOUL GLOBAL STACK & VISIBILITY LOCK — 2025-07-23 04:30:42
- * Ensures:
- *   • Line 5 (and 6) visible & above Layer 5 on ALL pages
- *   • Layer 5/6 above calendar grid
- *   • Calendar grid cannot rise above strip
- *   • Overrides legacy 1000 z-index rule
- * =========================================================== */
-
-.other-content { z-index: 510 !important; }
-
-.line.fifth,
-.line.sixth,
-html[data-util="0"] .line.fifth,
-html[data-util="0"] .line.sixth,
-html[data-util="1"] .line.fifth,
-html[data-util="1"] .line.sixth,
-html[data-util="2"] .line.fifth,
-html[data-util="2"] .line.sixth {
-    display: inline-block !important;
-    opacity: 1 !important;
-    pointer-events: none !important;
-    z-index: 520 !important;
-}
-
-.line.util-line { z-index: 530 !important; }
-
-.layer-five,
-.layer-six,
-html[data-util="0"] .layer-five,
-html[data-util="0"] .layer-six,
-html[data-util="1"] .layer-five,
-html[data-util="1"] .layer-six,
-html[data-util="2"] .layer-five,
-html[data-util="2"] .layer-six {
-    display: block !important;
-    opacity: 1 !important;
-    pointer-events: none !important;
-    z-index: 500 !important;
-}
-
-.grid-number,
-.grid-dashed { z-index: 480 !important; }
-
-.mail-line,
-.mail-text,
-.grid-number,
-.grid-dashed { z-index: 480 !important; }
-
-
-/* === IOUL STACK CONTEXT OVERRIDES (2025‑07‑23) === */
-.ioul-page .layer-five,
-.ioul-page .layer-six {
-  z-index: 400 !important;   /* hover strips above calendar grid */
-}
-
-/* Keep calendar grid under strip—but only on IOUL page */
-.ioul-page .grid-number,
-.ioul-page .grid-dashed {
-  z-index: 2 !important;
+/* === LAYER‑FIVE STACKING FIX — 2025‑07‑23 === */
+.layer-five{
+  z-index: 4 !important;   /* sits above .other-content (z‑index 3) so calendar grid lies below */
 }

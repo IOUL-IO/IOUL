@@ -36,5 +36,5 @@
   visibility: visible !important;
 }
 
-/* === global guideline 5 override to sit above layer-five === */
-.line.fifth { z-index: 540 !important; opacity: 1 !important; pointer-events: auto !important; }
+/* Global z-index fix for util-line 5 */
+.line.fifth { z-index: 120 !important; }

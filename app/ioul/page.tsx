@@ -3,17 +3,6 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 const IOULPage: React.FC = () => {
-  /* --- page‑scoped attribute so IOUL styles don't bleed to other pages --- */
-React.useEffect(() => {
-  document.documentElement.setAttribute('data-page', 'ioul');
-  return () => {
-    /* remove IOUL attributes so other pages stay independent */
-    document.documentElement.removeAttribute('data-page');
-    document.documentElement.removeAttribute('data-util');
-  };
-}, []);
-
-
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
@@ -142,12 +131,12 @@ useEffect(() => {
   
   // Sync the data-util CSS attribute
   useEffect(() => {
-    document.documentElement.setAttribute('data-util', state.toString());
-  }, [state]);
-
-
-
-  const quickRemoveSubmenu = () => {
+  document.documentElement.setAttribute('data-util', state.toString());
+  return () => {
+    document.documentElement.removeAttribute('data-util');
+  };
+}, [state]);
+const quickRemoveSubmenu = () => {
     const newTexts = document.querySelectorAll<HTMLSpanElement>('.new-text');
     newTexts.forEach((span) => {
       span.style.transition = 'opacity 0.1s ease';

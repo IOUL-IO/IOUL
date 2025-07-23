@@ -37,8 +37,8 @@
 }
 
 
-/* line-5 global z-index fix (23 Jul 2025) */
-html .line.fifth{
-  position:relative;
-  z-index:9999 !important;   /* ensure above every mask */
+/* line-5 z-index fix (23 Jul 2025) */
+html .line.fifth {
+  position: relative;
+  z-index: 9999 !important;
 }

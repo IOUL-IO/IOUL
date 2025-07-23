@@ -60,15 +60,7 @@ const IOULPage: React.FC = () => {
     window.addEventListener('resize', updateVisibility);
     updateVisibility(); // Initial visibility update
 
-    
-// Clean up util-line attribute when this page unmounts (prevents leaks across routes)
-useEffect(() => {
-  return () => {
-    document.documentElement.removeAttribute('data-util');
-  };
-}, []);
-
-return () => {
+    return () => {
       window.removeEventListener('resize', updateVisibility); // Clean up resize event listener
     };
   }, []);
@@ -82,8 +74,12 @@ return () => {
   }, []);
   
   // Sync the data-util CSS attribute
+  // Sync the data-util CSS attribute and clean up on unmount
   useEffect(() => {
     document.documentElement.setAttribute('data-util', state.toString());
+    return () => {
+      document.documentElement.removeAttribute('data-util');
+    };
   }, [state]);
 
 

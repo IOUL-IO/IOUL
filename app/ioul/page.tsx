@@ -89,15 +89,7 @@ useEffect(() => {
     rafId = requestAnimationFrame(tick);
   };
   tick();
-  
-// Clean up util-line attribute when this page unmounts (prevents leaks across routes)
-useEffect(() => {
   return () => {
-    document.documentElement.removeAttribute('data-util');
-  };
-}, []);
-
-return () => {
     window.removeEventListener('resize', onResize);
     cancelAnimationFrame(rafId);
   };
@@ -138,8 +130,12 @@ return () => {
   }, []);
   
   // Sync the data-util CSS attribute
+  // Sync the data-util CSS attribute and clean up on unmount
   useEffect(() => {
     document.documentElement.setAttribute('data-util', state.toString());
+    return () => {
+      document.documentElement.removeAttribute('data-util');
+    };
   }, [state]);
 
 

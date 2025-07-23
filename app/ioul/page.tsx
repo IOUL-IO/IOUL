@@ -287,16 +287,16 @@ useEffect(() => {
 // runs once on mount
 useEffect(() => {
   numbers1to16Ref.current = document.querySelectorAll(
-    '.grid-number.num1, .grid-number.num2, … , .grid-number.num16'
+    '.grid-number.num1, .grid-number.num2, .grid-number.num3, .grid-number.num4, .grid-number.num5, .grid-number.num6, .grid-number.num7, .grid-number.num8, .grid-number.num9, .grid-number.num10, .grid-number.num11, .grid-number.num12, .grid-number.num13, .grid-number.num14, .grid-number.num15, .grid-number.num16'
   );
   numbers17to31Ref.current = document.querySelectorAll(
-    '.grid-number.num17, … , .grid-number.num31'
+    '.grid-number.num17, .grid-number.num18, .grid-number.num19, .grid-number.num20, .grid-number.num21, .grid-number.num22, .grid-number.num23, .grid-number.num24, .grid-number.num25, .grid-number.num26, .grid-number.num27, .grid-number.num28, .grid-number.num29, .grid-number.num30, .grid-number.num31'
   );
   dashed1to16Ref.current = document.querySelectorAll(
-    '.grid-dashed.dashed1, … , .grid-dashed.dashed16'
+    '.grid-dashed.dashed01, .grid-dashed.dashed02, .grid-dashed.dashed03, .grid-dashed.dashed04, .grid-dashed.dashed05, .grid-dashed.dashed06, .grid-dashed.dashed07, .grid-dashed.dashed08, .grid-dashed.dashed09, .grid-dashed.dashed10, .grid-dashed.dashed11, .grid-dashed.dashed12, .grid-dashed.dashed13, .grid-dashed.dashed14, .grid-dashed.dashed15, .grid-dashed.dashed16'
   );
   dashed17to31Ref.current = document.querySelectorAll(
-    '.grid-dashed.dashed17, … , .grid-dashed.dashed31'
+    '.grid-dashed.dashed17, .grid-dashed.dashed18, .grid-dashed.dashed19, .grid-dashed.dashed20, .grid-dashed.dashed21, .grid-dashed.dashed22, .grid-dashed.dashed23, .grid-dashed.dashed24, .grid-dashed.dashed25, .grid-dashed.dashed26, .grid-dashed.dashed27, .grid-dashed.dashed28, .grid-dashed.dashed29, .grid-dashed.dashed30, .grid-dashed.dashed31'
   );
 }, []);
 

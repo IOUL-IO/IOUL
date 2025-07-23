@@ -851,12 +851,43 @@ body.non-fullscreen {
   z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
 }
 
-/* === PERMANENT VISIBILITY FOR LINES 5 & 6 — 2025-07-23 00:59:10 === */
-/* Undo older util‑state rules that hid the lines */
+/* === STACK ORDER LOCK — 2025-07-23 01:52:45 === */
+/* Merge both requirements: lines 5/6 always over strip; grid under strip, across all pages */
+
+/* Remove local stacking context so child z-index can beat strip */
+.other-content {
+  z-index: auto !important;
+}
+
+/* White strips – fixed layer above grid but below lines */
+.layer-five,
+.layer-six {
+  z-index: 400 !important;
+}
+
+/* Calendar grid — below strips */
+.grid-number,
+.grid-dashed {
+  z-index: 300 !important;
+}
+
+/* Lines 5 & 6 — above strips */
+html[data-util] .line.fifth,
+html[data-util] .line.sixth,
 .line.fifth,
 .line.sixth {
   display: inline-block !important;
   opacity: 1 !important;
-  z-index: 420 !important;      /* stay above strips */
-  pointer-events: none !important; /* same behaviour across pages */
+  pointer-events: none !important;
+  z-index: 450 !important;
+}
+
+/* Util line remains top‑most for clicks */
+.line.util-line {
+  z-index: 500 !important;
+}
+
+/* === HIGH-PRIORITY: promote .other-content above strip — 2025-07-23 02:27:29 === */
+.other-content {
+  z-index: 401 !important;   /* must exceed layer-five (400) */
 }

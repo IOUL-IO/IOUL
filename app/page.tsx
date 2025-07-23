@@ -76,14 +76,6 @@ const IOULPage: React.FC = () => {
   // Sync the data-util CSS attribute
   useEffect(() => {
     document.documentElement.setAttribute('data-util', state.toString());
-
-
-  // --- Auto-cleanup to avoid leaking util state to other routes ---
-  useEffect(() => {
-    return () => {
-      document.documentElement.removeAttribute('data-util');
-    };
-  }, []);
   }, [state]);
 
 

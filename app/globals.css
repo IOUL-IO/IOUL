@@ -35,17 +35,3 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
-
-
-/* === Make page‑wrapper sit above layer‑five on every route except IOUL === */
-:root:not([data-page="ioul"]) .page-wrapper {
-  z-index: 540 !important;
-}
-
-/* keep guideline‑5 & util‑line clearly visible */
-:root:not([data-page="ioul"]) .page-wrapper .line.fifth,
-:root:not([data-page="ioul"]) .page-wrapper .util-line {
-  z-index: 541 !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}

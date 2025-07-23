@@ -3,15 +3,6 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 const IOULPage: React.FC = () => {
-  // -- scope IOUL-only styles --
-React.useEffect(() => {
-  document.documentElement.setAttribute('data-page', 'ioul');
-  return () => {
-    document.documentElement.removeAttribute('data-page');
-  };
-}, []);
-
-  
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);

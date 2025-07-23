@@ -3,6 +3,16 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 const IOULPage: React.FC = () => {
+  // scope IOUL-only styles via data-page
+React.useEffect(() => {
+  document.documentElement.setAttribute('data-page', 'ioul');
+  return () => {
+    document.documentElement.removeAttribute('data-page');
+    document.documentElement.removeAttribute('data-util');
+  };
+}, []);
+
+  
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
@@ -10,13 +20,7 @@ const IOULPage: React.FC = () => {
   const [chatInitialized, setChatInitialized] = useState(true);
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
   const frameRef = useRef<number>();
-  const SLIDE_DURATION = 700;
-  // Ensure calendar grid starts above util-line (z-index 3)
-  useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed');
-    els.forEach(el => (el.style.zIndex = '3'));
-  }, []);
- // ms; keep in sync with CSS slide timing
+  const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
 
 // Disable hover-area clicks once chat has appeared so it no longer blocks util-line
@@ -318,20 +322,20 @@ useEffect(() => {
 
     if (e.deltaY > 0) {
       if (!isSecondScroll) {
-        all.forEach(el => { el.style.transform = 'translateY(-55.5vh)'; el.style.zIndex = '0'; });
+        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
         setIsSecondScroll(true);
       } else {
-        all.forEach(el => { el.style.transform = 'translateY(-111vh)'; el.style.zIndex = '0'; });
+        all.forEach(el => (el.style.transform = 'translateY(-111vh)'));
         setIsSecondScroll(false);
       }
     } else {
       const match = all[0]?.style.transform.match(/translateY\(([-\d.]+)vh\)/);
       const y = match ? parseFloat(match[1]) : 0;
       if (y === -111) {
-        all.forEach(el => { el.style.transform = 'translateY(-55.5vh)'; el.style.zIndex = '0'; });
+        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
         setIsSecondScroll(true);
       } else if (y === -55.5) {
-        all.forEach(el => { el.style.transform = 'translateY(0)'; el.style.zIndex = '3'; });
+        all.forEach(el => (el.style.transform = 'translateY(0)'));
         setIsSecondScroll(false);
       }
     }

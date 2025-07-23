@@ -36,7 +36,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {legacyCssFiles.map((href) => (
           <link key={href} rel="stylesheet" href={href} />
         ))}
-      </head>
+      {/* --- keep guideline 5 & util‑line above layer‑five on all non‑IOUL routes --- */}
+<style
+  id="line-5-override"
+  dangerouslySetInnerHTML={{
+    __html: `
+      :root:not([data-page=\"ioul\"]) .line.fifth,
+      :root:not([data-page=\"ioul\"]) .util-line {
+        z-index: 541 !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+      }
+    `,
+  }}
+/>
+        </head>
       <body className="non-fullscreen stage-login">
         {children}
         <LegacyScripts />

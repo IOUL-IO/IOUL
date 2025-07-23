@@ -74,3 +74,26 @@ body.non-fullscreen {
 }
 
 /* content block */
+
+
+/* === GLOBAL PATCH FOR LAYERING — 2025‑07‑23 === */
+.line.fifth,
+.line.sixth{
+  display:inline-block !important;
+  opacity:1 !important;
+  z-index:420 !important;
+  pointer-events:none !important;
+}
+
+.layer-five{
+  z-index:200 !important;
+}
+
+.other-content{
+  z-index:1 !important;
+}
+
+.grid-number,
+.grid-dashed{
+  z-index:0 !important; /* keep grid beneath layer-five */
+}

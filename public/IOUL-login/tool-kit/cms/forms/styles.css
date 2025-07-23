@@ -60,24 +60,32 @@ body.non-fullscreen{
 }
 
 
-/* === GLOBAL PATCH FOR LAYERING — 2025‑07‑23 === */
+/* === GLOBAL OVERRIDE PATCH — 2025‑07‑23 07:25:51 === */
+
+/* 1 — Permanent visibility & highest stacking for Lines 5 & 6 */
+:root[data-util] .line.fifth,
+:root[data-util] .line.sixth,
+[data-util] .line.fifth,
+[data-util] .line.sixth,
 .line.fifth,
-.line.sixth{
+.line.sixth {
   display:inline-block !important;
   opacity:1 !important;
-  z-index:420 !important;
+  z-index:420 !important;      /* above layer‑five */
   pointer-events:none !important;
 }
 
-.layer-five{
-  z-index:200 !important;
+/* 2 — Layer‑5 white strip sits between grid and lines */
+.layer-five {
+  z-index:200 !important;      /* below lines, above grid */
 }
 
-.other-content{
-  z-index:1 !important;
+/* 3 — Calendar grid hierarchy */
+.other-content {
+  z-index:50 !important;       /* parent container under layer‑five */
 }
-
 .grid-number,
-.grid-dashed{
-  z-index:0 !important; /* keep grid beneath layer-five */
+.grid-dashed {
+  z-index:60 !important;       /* individual grid items */
 }
+

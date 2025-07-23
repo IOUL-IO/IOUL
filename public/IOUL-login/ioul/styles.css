@@ -843,32 +843,3 @@ body.non-fullscreen {
 .line.util-line{
     pointer-events:auto !important;
 }
-
-
-/* -- Calendar grid stacking adjustment (July 22 2025) -- */
-.grid-number,
-.grid-dashed {
-  z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
-}
-
-/* === PERMANENT VISIBILITY FOR LINES 5 & 6 — 2025-07-23 00:59:10 === */
-/* Undo older util‑state rules that hid the lines */
-.line.fifth,
-.line.sixth {
-  display: inline-block !important;
-  opacity: 1 !important;
-  z-index: 420 !important;      /* stay above strips */
-  pointer-events: none !important; /* same behaviour across pages */
-}
-
-
-/* === PATCH 2: calendar grid layering fix — 2025‑07‑23 ===
-   Ensure calendar grid sits below layer-five, while layer-five remains under line 5 */
-.grid-number,
-.grid-dashed{
-  z-index: 50 !important;   /* below layer-five */
-}
-
-.layer-five{
-  z-index: 200 !important;  /* below line 5 but above grid */
-}

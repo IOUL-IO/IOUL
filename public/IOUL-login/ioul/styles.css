@@ -843,3 +843,10 @@ body.non-fullscreen {
 .line.util-line{
     pointer-events:auto !important;
 }
+
+
+/* ---- Calendar grid z-index override to keep it under layer-five ---- */
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed {
+    z-index: 0 !important; /* below layer-five */
+}

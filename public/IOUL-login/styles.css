@@ -776,3 +776,21 @@ html[data-slide="community"] .chat-text {
   opacity: 0 !important;
   pointer-events: none !important;
 }
+
+/* === UNIVERSAL STACKING ORDER FIX — 2025‑07‑23 ===
+   Ensures:
+   • .layer-five (white mask) sits above .other-content / calendar grid
+   • .line.fifth & .line.sixth utility bars always remain above the mask on all pages
+   ------------------------------------------------------------------------------ */
+.layer-five{
+  z-index: 4 !important;    /* above .other-content (z‑index 3) */
+}
+.line.fifth,
+.line.sixth{
+  z-index: 10 !important;   /* above .layer‑five but below menus (100+) */
+}
+/* Lower calendar grid (IOUL page) relative to mask */
+.grid-number,
+.grid-dashed{
+  z-index: 0 !important;    /* under .layer‑five */
+}

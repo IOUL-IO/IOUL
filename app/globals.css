@@ -36,11 +36,8 @@
   visibility: visible !important;
 }
 
-
-/* === KEEP guideline‑5 & util-line above layer‑five everywhere except IOUL === */
-:root:not([data-page="ioul"]) .line.fifth,
-:root:not([data-page="ioul"]) .util-line {
-  z-index: 540 !important;  /* above layer-five (500) */
-  opacity: 1 !important;
-  pointer-events: auto !important;
+/* line‑5 global z‑index fix (23 Jul 2025) */
+html .line.fifth{
+  position:relative;        /* ensure z‑index applies */
+  z-index:200 !important;   /* above layer‑five (101) and all page lines */
 }

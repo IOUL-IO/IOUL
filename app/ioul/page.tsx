@@ -3,16 +3,6 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 const IOULPage: React.FC = () => {
-  // scope IOUL-only styles via data-page
-React.useEffect(() => {
-  document.documentElement.setAttribute('data-page', 'ioul');
-  return () => {
-    document.documentElement.removeAttribute('data-page');
-    document.documentElement.removeAttribute('data-util');
-  };
-}, []);
-
-  
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
@@ -344,6 +334,16 @@ useEffect(() => {
   window.addEventListener('wheel', handleWheel, { passive: false });
   return () => window.removeEventListener('wheel', handleWheel);
 }, [isScrolling, isSecondScroll]);
+
+
+// ─── 
+// ─── Calendar grid under util‑line fix (July 23 2025 — rev 2) ──────────────
+useEffect(() => {
+  // Raise `.other-content` above `.slide-container` so util‑line & lines 5 & 6 stay on top
+  const oc = document.querySelector<HTMLElement>('.other-content');
+  if (oc) oc.style.zIndex = '160'; // must exceed .slide-container (150)
+}, []);
+
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {

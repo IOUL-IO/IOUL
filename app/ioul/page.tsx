@@ -1,6 +1,4 @@
 "use client";
-import "./ioul-login-fix.css";
-
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 const IOULPage: React.FC = () => {

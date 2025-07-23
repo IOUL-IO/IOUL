@@ -8,6 +8,7 @@ const legacyCssFiles = [
   '/IOUL-login/center/community/styles.css',
   '/IOUL-login/center/ioul center/styles.css',
   '/IOUL-login/center/library/styles.css',
+  '/IOUL-login/ioul/styles.css',
   '/IOUL-login/tool-kit/cms/styles.css',
   '/IOUL-login/tool-kit/cms/docs/styles.css',
   '/IOUL-login/tool-kit/cms/forms/styles.css',

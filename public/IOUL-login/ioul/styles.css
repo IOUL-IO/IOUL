@@ -845,11 +845,11 @@ body.non-fullscreen {
 }
 
 
-/* -- Calendar grid stacking adjustment (July 22 2025) -- */
+/* (de‑scoped) /* -- Calendar grid stacking adjustment (July 22 2025) -- */
 .grid-number,
 .grid-dashed {
   z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
-}
+} */
 
 /* === PERMANENT VISIBILITY FOR LINES 5 & 6 — 2025-07-23 00:59:10 === */
 /* Undo older util‑state rules that hid the lines */
@@ -909,3 +909,16 @@ html[data-util="2"] .layer-six {
 .mail-text,
 .grid-number,
 .grid-dashed { z-index: 480 !important; }
+
+
+/* === IOUL STACK CONTEXT OVERRIDES (2025‑07‑23) === */
+.ioul-page .layer-five,
+.ioul-page .layer-six {
+  z-index: 400 !important;   /* hover strips above calendar grid */
+}
+
+/* Keep calendar grid under strip—but only on IOUL page */
+.ioul-page .grid-number,
+.ioul-page .grid-dashed {
+  z-index: 2 !important;
+}

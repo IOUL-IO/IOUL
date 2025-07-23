@@ -83,3 +83,15 @@ body.non-fullscreen {
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+/* Auto‑generated override: keep grid line 5 above layer 5 */
+.line-five,
+.line5,
+.grid-line-5,
+.grid-line-five {{
+  position: relative;
+  z-index: 101 !important;
+}}
+.layer-five {{
+  z-index: 100 !important;
+}}

@@ -36,8 +36,9 @@
   visibility: visible !important;
 }
 
-/* ----- GLOBAL PATCH July 23 2025 -----
-   Keep fifth util line above layer‑five everywhere */
-.line.fifth {
-  z-index: 110 !important;
+/* === Global guideline‑5 & util‑line overrides – keep them above layer‑five site‑wide === */
+.line.fifth, .util-line {
+  z-index: 540 !important;   /* ensure both sit above .layer-five */
+  pointer-events: auto !important;
 }
+/* ------------------------------------------------------------------------ */

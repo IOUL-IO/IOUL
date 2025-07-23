@@ -435,7 +435,7 @@ body.non-fullscreen {
     width: 2.8vw;
     height: 1px;
     background-color: rgba(172, 172, 172, 0.841);
-    z-index: 1;
+    z-index: 540 !important; 
 }
 
 .hidden { }

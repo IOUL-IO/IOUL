@@ -851,24 +851,17 @@ body.non-fullscreen {
   z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
 }
 
-/* === CALENDAR GRID UNDER STRIP FIX – 2025-07-23 01:17:12 === */
-
-/* Lift strips above grid globally */
-.layer-five,
-.layer-six {
-  z-index: 350 !important;         /* higher than grid but below lines 5/6 (420) */
-}
-
-/* Keep calendar grid safely under the strip */
-.grid-number,
-.grid-dashed {
-  z-index: 200 !important;
-}
-
-/* Ensure strips stay visible even in util-state 2 (calendar mode) */
-:root[data-util="2"] .layer-five,
-:root[data-util="2"] .layer-six {
+/* === ENSURE LINES 5 & 6 ALWAYS VISIBLE (final) — 2025-07-23 01:28:35 === */
+html[data-util="0"] .line.fifth,
+html[data-util="0"] .line.sixth,
+html[data-util="1"] .line.fifth,
+html[data-util="1"] .line.sixth,
+html[data-util="2"] .line.fifth,
+html[data-util="2"] .line.sixth,
+.line.fifth,
+.line.sixth {
+  display: inline-block !important;
   opacity: 1 !important;
-  display: block !important;
-  pointer-events: auto !important;
+  pointer-events: none !important;
+  z-index: 420 !important;   /* above white strips */
 }

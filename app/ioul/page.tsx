@@ -134,6 +134,14 @@ useEffect(() => {
     document.documentElement.setAttribute('data-util', state.toString());
   }, [state]);
 
+  // Cleanup: reset data-util attribute when leaving IOUL page
+  useEffect(() => {
+    return () => {
+      document.documentElement.setAttribute('data-util', '0');
+    };
+  }, []);
+
+
 
 
   const quickRemoveSubmenu = () => {
@@ -780,7 +788,7 @@ useEffect(() => {
 
 
 return (
-    <div className="non-fullscreen page-ioul" translate="no">
+    <div className="non-fullscreen" translate="no">
       <p style={{ display: 'none' }} lang="en">This page is already in English. No translation is needed.</p>
 
       <div className="layer-one" />

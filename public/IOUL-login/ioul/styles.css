@@ -843,3 +843,22 @@ body.non-fullscreen {
 .line.util-line{
     pointer-events:auto !important;
 }
+
+
+/* -- Calendar grid stacking adjustment (July 22 2025) -- */
+.grid-number,
+.grid-dashed {
+  z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
+}
+
+/* === FINAL AUTHORITATIVE STACK ORDER – 2025-07-22 23:50:49 === */
+.other-content { z-index: 400 !important; }
+.line.fifth,
+.line.sixth  { z-index: 420 !important; }
+.line.util-line { z-index: 430 !important; }
+
+.layer-five,
+.layer-six { z-index: 300 !important; }
+
+.grid-number,
+.grid-dashed { z-index: 200 !important; }

@@ -860,3 +860,81 @@ body.non-fullscreen {
   z-index: 420 !important;      /* stay above strips */
   pointer-events: none !important; /* same behaviour across pages */
 }
+
+/* =========================================================== *
+ * IOUL GLOBAL STACK & VISIBILITY LOCK — 2025-07-23 04:30:42
+ * Ensures:
+ *   • Line 5 (and 6) visible & above Layer 5 on ALL pages
+ *   • Layer 5/6 above calendar grid
+ *   • Calendar grid cannot rise above strip
+ *   • Overrides legacy 1000 z-index rule
+ * =========================================================== */
+
+.other-content { z-index: 510 !important; }
+
+.line.fifth,
+.line.sixth,
+html[data-util="0"] .line.fifth,
+html[data-util="0"] .line.sixth,
+html[data-util="1"] .line.fifth,
+html[data-util="1"] .line.sixth,
+html[data-util="2"] .line.fifth,
+html[data-util="2"] .line.sixth {
+    display: inline-block !important;
+    opacity: 1 !important;
+    pointer-events: none !important;
+    z-index: 520 !important;
+}
+
+.line.util-line { z-index: 530 !important; }
+
+.layer-five,
+.layer-six,
+html[data-util="0"] .layer-five,
+html[data-util="0"] .layer-six,
+html[data-util="1"] .layer-five,
+html[data-util="1"] .layer-six,
+html[data-util="2"] .layer-five,
+html[data-util="2"] .layer-six {
+    display: block !important;
+    opacity: 1 !important;
+    pointer-events: none !important;
+    z-index: 500 !important;
+}
+
+.grid-number,
+.grid-dashed { z-index: 480 !important; }
+
+.mail-line,
+.mail-text,
+.grid-number,
+.grid-dashed { z-index: 480 !important; }
+
+
+/* ===== IOUL‑scoped overrides ===== */
+.ioul-page .layer-five,
+.ioul-page .layer-six{
+  z-index: 500 !important;
+}
+
+.ioul-page .line.fifth,
+.ioul-page .line.sixth{
+  z-index: 520 !important;
+}
+
+.ioul-page .grid-number,
+.ioul-page .grid-dashed{
+  z-index: 2 !important;
+}
+
+/* ===== GLOBAL baseline ===== */
+.layer-five,
+.layer-six{
+  z-index: 300 !important;
+}
+
+.line.fifth,
+.line.sixth{
+  z-index: 420 !important;
+}
+/* ===== End override ===== */

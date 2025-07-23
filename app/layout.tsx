@@ -36,34 +36,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {legacyCssFiles.map((href) => (
           <link key={href} rel="stylesheet" href={href} />
         ))}
-      {/* --- keep guideline 5 & util‑line above layer‑five on all non‑IOUL routes --- */}
+      {/* --- ensure guideline 5 is above layer‑five without affecting other content --- */}
 <style
   id="line-5-override"
   dangerouslySetInnerHTML={{
     __html: `
-      /* Lift the whole page-content stacking context */
-      :root:not([data-page="ioul"]) .page-content {
-        z-index: 540 !important;     /* above layer-five (500) */
+      /* Remove stacking context on non‑IOUL routes */
+      :root:not([data-page=\"ioul\"]) .page-content {
+        z-index: auto !important;
       }
-
-      /* ensure guideline 5 and util-line sit on top */
-      :root:not([data-page="ioul"]) .page-content .line.fifth,
-      :root:not([data-page="ioul"]) .page-content .util-line {
-        z-index: 541 !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-      }
-    `,
-  }}
-/>
-      {/* --- Guideline 5 & util‑line overlay --- */}
-<style
-  id="guidelines-overlay"
-  dangerouslySetInnerHTML={{
-    __html: `
+      /* Show guideline 5 & util‑line on top */
       :root:not([data-page=\"ioul\"]) .line.fifth,
       :root:not([data-page=\"ioul\"]) .util-line {
-        position: fixed !important;
         z-index: 541 !important;
         opacity: 1 !important;
         pointer-events: auto !important;

@@ -3,9 +3,8 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 const IOULPage: React.FC = () => {
-  // scope IOUL-only styles via data-page attribute
-React.useEffect(() => {
-  document.documentElement.setAttribute('data-page', 'ioul');
+  React.useEffect(() => {
+  document.documentElement.setAttribute('data-page','ioul');
   return () => {
     document.documentElement.removeAttribute('data-page');
     document.documentElement.removeAttribute('data-util');

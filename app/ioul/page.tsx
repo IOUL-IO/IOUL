@@ -89,9 +89,7 @@ useEffect(() => {
     rafId = requestAnimationFrame(tick);
   };
   tick();
-  return () => {
-
-    <div className="ioul-page">    window.removeEventListener('resize', onResize);
+  return () => {    window.removeEventListener('resize', onResize);
     cancelAnimationFrame(rafId);
   };
 }, []);
@@ -781,7 +779,7 @@ useEffect(() => {
 
 
 return (
-    <div className="non-fullscreen" translate="no">
+    <div className="ioul-page non-fullscreen" translate="no">
       <p style={{ display: 'none' }} lang="en">This page is already in English. No translation is needed.</p>
 
       <div className="layer-one" />

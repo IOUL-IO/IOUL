@@ -35,9 +35,3 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
-
-/* line‑5 global z‑index fix (23 Jul 2025) */
-html .line.fifth{
-  position:relative;        /* ensure z‑index applies */
-  z-index:200 !important;   /* above layer‑five (101) and all page lines */
-}

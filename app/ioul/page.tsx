@@ -3,6 +3,16 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 const IOULPage: React.FC = () => {
+  // ----- scope IOUL-only dataset attributes -----
+useEffect(() => {
+  document.documentElement.setAttribute('data-page', 'ioul');
+  return () => {
+    document.documentElement.removeAttribute('data-page');
+    document.documentElement.removeAttribute('data-util');
+  };
+}, []);
+
+  
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
@@ -132,12 +142,6 @@ useEffect(() => {
   // Sync the data-util CSS attribute
   useEffect(() => {
     document.documentElement.setAttribute('data-util', state.toString());
-// --- AUTO‑CLEANUP: remove leaked data‑util on unmount ---
-useEffect(() => {
-  return () => {
-    document.documentElement.removeAttribute('data-util');
-  };
-}, []);
   }, [state]);
 
 

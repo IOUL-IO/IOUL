@@ -73,7 +73,7 @@ body.non-fullscreen {
 
 /* Utility line kept for future interaction (click listener removed here) */
 .line.util-line{
-  top:28.5vh; left:26.06vw; width:2.8vw; z-index:1;
+  top:28.5vh; left:26.06vw; width:2.8vw; z-index: 530 !important; 
 }
 
 /* content block */

@@ -134,14 +134,6 @@ useEffect(() => {
     document.documentElement.setAttribute('data-util', state.toString());
   }, [state]);
 
-  // Cleanup: reset data-util attribute when leaving IOUL page
-  useEffect(() => {
-    return () => {
-      document.documentElement.setAttribute('data-util', '0');
-    };
-  }, []);
-
-
 
 
   const quickRemoveSubmenu = () => {

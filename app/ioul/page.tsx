@@ -90,7 +90,8 @@ useEffect(() => {
   };
   tick();
   return () => {
-    window.removeEventListener('resize', onResize);
+
+    <div className="ioul-page">    window.removeEventListener('resize', onResize);
     cancelAnimationFrame(rafId);
   };
 }, []);
@@ -1033,7 +1034,8 @@ return (
         </div>
     </div>
     </div>
-  );
+      </div>
+);
 };
 
 export default IOULPage;

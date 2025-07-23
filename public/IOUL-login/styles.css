@@ -776,3 +776,14 @@ html[data-slide="community"] .chat-text {
   opacity: 0 !important;
   pointer-events: none !important;
 }
+
+
+/* === GLOBAL PATCH FOR LINES 5 & 6 — Added 2025‑07‑23 ===
+   Keep lines 5 & 6 visible and stacked above layer masks across all pages */
+.line.fifth,
+.line.sixth{
+  display:inline-block !important;
+  opacity:1 !important;
+  z-index:420 !important;      /* above masks & layer strips */
+  pointer-events:none !important;
+}

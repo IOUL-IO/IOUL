@@ -36,7 +36,42 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {legacyCssFiles.map((href) => (
           <link key={href} rel="stylesheet" href={href} />
         ))}
-      </head>
+      {/* --- keep guideline 5 & util‑line above layer‑five on all non‑IOUL routes --- */}
+<style
+  id="line-5-override"
+  dangerouslySetInnerHTML={{
+    __html: `
+      /* Lift the whole page-content stacking context */
+      :root:not([data-page="ioul"]) .page-content {
+        z-index: 540 !important;     /* above layer-five (500) */
+      }
+
+      /* ensure guideline 5 and util-line sit on top */
+      :root:not([data-page="ioul"]) .page-content .line.fifth,
+      :root:not([data-page="ioul"]) .page-content .util-line {
+        z-index: 541 !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+      }
+    `,
+  }}
+/>
+      {/* --- Guideline 5 & util‑line overlay --- */}
+<style
+  id="guidelines-overlay"
+  dangerouslySetInnerHTML={{
+    __html: `
+      :root:not([data-page=\"ioul\"]) .line.fifth,
+      :root:not([data-page=\"ioul\"]) .util-line {
+        position: fixed !important;
+        z-index: 541 !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+      }
+    `,
+  }}
+/>
+        </head>
       <body className="non-fullscreen stage-login">
         {children}
         <LegacyScripts />

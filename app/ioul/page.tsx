@@ -3,6 +3,16 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 const IOULPage: React.FC = () => {
+  // scope IOUL-only styles via data-page
+React.useEffect(() => {
+  document.documentElement.setAttribute('data-page', 'ioul');
+  return () => {
+    document.documentElement.removeAttribute('data-page');
+    document.documentElement.removeAttribute('data-util');
+  };
+}, []);
+
+  
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
@@ -334,21 +344,6 @@ useEffect(() => {
   window.addEventListener('wheel', handleWheel, { passive: false });
   return () => window.removeEventListener('wheel', handleWheel);
 }, [isScrolling, isSecondScroll]);
-
-
-// ─── Calendar grid stacking context fix (July 23 2025) ────────────────────
-useEffect(() => {
-  // Ensure grid numbers & dashed lines are always above content layers (z‑index > layer‑four)
-  const setGridZ = () => {
-    document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed')
-      .forEach(el => (el.style.zIndex = '10'));
-  };
-  setGridZ();
-  // also listen to dynamically created grid nodes (unlikely) via MutationObserver
-  const mo = new MutationObserver(setGridZ);
-  mo.observe(document.body, { childList: true, subtree: true });
-  return () => mo.disconnect();
-}, []);
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {

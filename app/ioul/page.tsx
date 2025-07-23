@@ -1024,8 +1024,8 @@ return (
 
         <div className="custom-line" style={{ position:'absolute', top:'47.8vh', left:'6.41vw', transform:'translateX(-49vw)', width:'22.48vw', height:'1px', backgroundColor:'rgba(230,230,230,0.28)', transition:'transform 0.6s ease', zIndex:1 }} data-offset="-49" data-slide-group="heading" />
 
-        <div className="layer-five" />
-        <div className="layer-six" />
+        <div className="layer-five" style={{ zIndex: 150 }} />
+        <div className="layer-six" style={{ zIndex: 150 }} />
         
         <div className="slide-triggers">
           <div className="slide-trigger" />

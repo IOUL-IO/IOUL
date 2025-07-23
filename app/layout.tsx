@@ -1,7 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import LegacyScripts from './legacy-scripts';
-import GlobalLine5Guard from './components/GlobalLine5Guard';
 
 const legacyCssFiles = [
   '/IOUL-login/styles.css',
@@ -41,8 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="non-fullscreen stage-login">
         {children}
         <LegacyScripts />
-          <GlobalLine5Guard />
-        </body>
+      </body>
     </html>
   );
 }

@@ -3,16 +3,6 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 const IOULPage: React.FC = () => {
-  // ----- scope IOUL-only dataset attributes -----
-useEffect(() => {
-  document.documentElement.setAttribute('data-page', 'ioul');
-  return () => {
-    document.documentElement.removeAttribute('data-page');
-    document.documentElement.removeAttribute('data-util');
-  };
-}, []);
-
-  
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
@@ -99,7 +89,15 @@ useEffect(() => {
     rafId = requestAnimationFrame(tick);
   };
   tick();
+  
+// Clean up util-line attribute when this page unmounts (prevents leaks across routes)
+useEffect(() => {
   return () => {
+    document.documentElement.removeAttribute('data-util');
+  };
+}, []);
+
+return () => {
     window.removeEventListener('resize', onResize);
     cancelAnimationFrame(rafId);
   };

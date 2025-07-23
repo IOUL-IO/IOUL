@@ -851,92 +851,12 @@ body.non-fullscreen {
   z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
 }
 
-/* === GLOBAL STACK & VISIBILITY LOCK – 2025-07-23 01:52:44 === */
-
-/* Place guide lines' parent above white strips */
-.other-content {
-  z-index: 500 !important;
-}
-
-/* Guide lines 5 & 6 – always visible and above strips */
-html[data-util="0"] .line.fifth,
-html[data-util="0"] .line.sixth,
-html[data-util="1"] .line.fifth,
-html[data-util="1"] .line.sixth,
-html[data-util="2"] .line.fifth,
-html[data-util="2"] .line.sixth,
-.line.fifth,
-.line.sixth {
-  display: block !important;
-  opacity: 1 !important;
-  pointer-events: none !important;
-  z-index: 520 !important;  /* local to other-content (500) so renders above it */
-}
-
-/* White strips – above calendar grid but below lines */
-.layer-five,
-.layer-six {
-  z-index: 400 !important;
-  opacity: 1 !important;
-  display: block !important;
-}
-
-/* Calendar grid – always underneath strips */
-.grid-number,
-.grid-dashed {
-  z-index: 300 !important;
-}
-
-/* Util-line click target – top of stack for interactivity */
-.line.util-line {
-  z-index: 540 !important;
-}
-
-/* === IOUL MASTER STACK + VISIBILITY FIX — 2025-07-23 02:07:52 === */
-
-/* 0. Lift util-line for clicks */
-.line.util-line {
-  z-index: 500 !important;
-}
-
-/* 1. Always show & top‑stack guide lines 5 & 6 */
-html[data-util="0"] .line.fifth,
-html[data-util="0"] .line.sixth,
-html[data-util="1"] .line.fifth,
-html[data-util="1"] .line.sixth,
-html[data-util="2"] .line.fifth,
-html[data-util="2"] .line.sixth,
+/* === PERMANENT VISIBILITY FOR LINES 5 & 6 — 2025-07-23 00:59:10 === */
+/* Undo older util‑state rules that hid the lines */
 .line.fifth,
 .line.sixth {
   display: inline-block !important;
   opacity: 1 !important;
-  pointer-events: none !important;
-  z-index: 450 !important;   /* above strips */
-}
-
-/* 2. White strips must stay visible and sit above grid */
-html[data-util="0"] .layer-five,
-html[data-util="0"] .layer-six,
-html[data-util="1"] .layer-five,
-html[data-util="1"] .layer-six,
-html[data-util="2"] .layer-five,
-html[data-util="2"] .layer-six,
-.layer-five,
-.layer-six {
-  display: block !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  z-index: 400 !important;  /* between lines and grid */
-}
-
-/* 3. Calendar grid always under strips */
-.grid-number,
-.grid-dashed {
-  position: absolute !important;
-  z-index: 300 !important;
-}
-
-/* 4. Abolish local stacking‑context on .other-content so child z-indices rule */
-.other-content {
-  z-index: auto !important;
+  z-index: 420 !important;      /* stay above strips */
+  pointer-events: none !important; /* same behaviour across pages */
 }

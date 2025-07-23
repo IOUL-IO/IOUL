@@ -286,47 +286,28 @@ useEffect(() => {
   // Effect to handle component mount and query DOM elements
 // runs once on mount
 useEffect(() => {
-  numbers1to16Ref.current = document.querySelectorAll(
-    '.grid-number.num1, .grid-number.num2, … , .grid-number.num16'
-  );
-  numbers17to31Ref.current = document.querySelectorAll(
-    '.grid-number.num17, … , .grid-number.num31'
-  );
-  dashed1to16Ref.current = document.querySelectorAll(
-    '.grid-dashed.dashed1, … , .grid-dashed.dashed16'
-  );
-  dashed17to31Ref.current = document.querySelectorAll(
-    '.grid-dashed.dashed17, … , .grid-dashed.dashed31'
-  );
+  numbers1to16Ref.current = document.querySelectorAll('.grid-number');
+  numbers17to31Ref.current = document.querySelectorAll('.grid-number');
+  dashed1to16Ref.current = document.querySelectorAll('.grid-dashed');
+  dashed17to31Ref.current = document.querySelectorAll('.grid-dashed');
 }, []);
 
-// re-runs when scrolling flags change
+// ─── Calendar grid scroll logic ────────────────────────────────────────────
 useEffect(() => {
-  const scrollArea = document.createElement('div');
-  scrollArea.style.position = 'absolute';
-  scrollArea.style.top = '28.5vh';
-  scrollArea.style.left = '36vw';
-  scrollArea.style.width = '58vw';
-  scrollArea.style.height = '55.5vh';
-  scrollArea.style.zIndex = '5';
-  document.querySelector('.other-content')!.appendChild(scrollArea);
-
-  function onWheel(e: WheelEvent) {
+  const handleWheel = (e: WheelEvent) => {
+    // Prevent page scroll when interacting with calendar grid
     e.preventDefault();
+
+    // Only continue if calendar grid exists in the DOM
+    if (!document.querySelector('.grid-number')) return;
+
     if (isScrolling) return;
     setIsScrolling(true);
     setTimeout(() => setIsScrolling(false), 700);
 
-    const nums1 = numbers1to16Ref.current || [];
-    const nums2 = numbers17to31Ref.current || [];
-    const das1 = dashed1to16Ref.current || [];
-    const das2 = dashed17to31Ref.current || [];
-    const all = [
-      ...Array.from(nums1),
-      ...Array.from(nums2),
-      ...Array.from(das1),
-      ...Array.from(das2),
-    ];
+    const all = Array.from(
+      document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed')
+    );
     all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
 
     if (e.deltaY > 0) {
@@ -348,15 +329,11 @@ useEffect(() => {
         setIsSecondScroll(false);
       }
     }
-  }
-
-  scrollArea.addEventListener('wheel', onWheel, { passive: false });
-  return () => {
-    scrollArea.removeEventListener('wheel', onWheel);
-    scrollArea.remove();
   };
-}, [isScrolling, isSecondScroll]);
 
+  window.addEventListener('wheel', handleWheel, { passive: false });
+  return () => window.removeEventListener('wheel', handleWheel);
+}, [isScrolling, isSecondScroll]);
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {

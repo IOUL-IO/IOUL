@@ -1,3 +1,4 @@
+import "./ioul-login-fix.css";
 "use client";
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
@@ -780,7 +781,7 @@ useEffect(() => {
 
 
 return (
-    <div className="non-fullscreen" translate="no">
+    <div className="non-fullscreen ioul-login" data-page="ioul-login" translate="no">
       <p style={{ display: 'none' }} lang="en">This page is already in English. No translation is needed.</p>
 
       <div className="layer-one" />

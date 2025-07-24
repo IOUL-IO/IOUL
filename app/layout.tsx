@@ -41,14 +41,57 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   id="line-5-override"
   dangerouslySetInnerHTML={{
     __html: `
-      :root:not([data-page=\"ioul\"]):not([data-page=\"jobs\"]) .page-content {
+      :root:not([data-page=\"ioul\"]) .page-content {
         z-index: 540 !important;
       }
-      :root:not([data-page=\"ioul\"]):not([data-page=\"jobs\"]) .page-content .line.fifth,
-      :root:not([data-page=\"ioul\"]):not([data-page=\"jobs\"]) .page-content .util-line {
+      :root:not([data-page=\"ioul\"]) .page-content .line.fifth,
+      :root:not([data-page=\"ioul\"]) .page-content .util-line {
         z-index: 541 !important;
         opacity: 1 !important;
         pointer-events: auto !important;
+      }
+    `,
+  }}
+/>
+        {/* --- Guideline 5 overlay (jobs page safe) --- */}
+<style
+  id="guideline-override"
+  dangerouslySetInnerHTML={{
+    __html: `
+      /* remove local stacking contexts */
+      :root:not([data-page=\"ioul\"]) .page-wrapper,
+      :root:not([data-page=\"ioul\"]) .page-content {
+        z-index: auto !important;
+      }
+
+      /* elevate only the guideline lines */
+      :root:not([data-page=\"ioul\"]) .line.fifth,
+      :root:not([data-page=\"ioul\"]) .util-line {
+        position: fixed !important;   /* detach from wrapper */
+        z-index: 541 !important;      /* above layer-five (500) */
+        opacity: 1 !important;
+        pointer-events: none !important;
+      }
+    `,
+  }}
+/>
+        {/* --- Guideline 5 overlay; restore page-content stacking for other text --- */}
+<style
+  id="guideline-override"
+  dangerouslySetInnerHTML={{
+    __html: `
+      /* keep normal stacking context so page text stays under layer‑4 */
+      :root:not([data-page=\"ioul\"]) .page-content {
+        z-index: 3 !important;      /* original value */
+      }
+
+      /* detach only the guide‑lines so they can rise above layer‑5 */
+      :root:not([data-page=\"ioul\"]) .line.fifth,
+      :root:not([data-page=\"ioul\"]) .util-line {
+        position: fixed !important;
+        z-index: 541 !important;    /* above layer‑five (500) */
+        opacity: 1 !important;
+        pointer-events: none !important;
       }
     `,
   }}

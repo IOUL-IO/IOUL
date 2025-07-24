@@ -41,32 +41,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   id="line-5-override"
   dangerouslySetInnerHTML={{
     __html: `
-      :root:not([data-page=\"ioul\"]) .page-content {
+      :root:not([data-page=\"ioul\"]):not([data-page=\"jobs\"]) .page-content {
         z-index: 540 !important;
       }
-      :root:not([data-page=\"ioul\"]) .page-content .line.fifth,
-      :root:not([data-page=\"ioul\"]) .page-content .util-line {
+      :root:not([data-page=\"ioul\"]):not([data-page=\"jobs\"]) .page-content .line.fifth,
+      :root:not([data-page=\"ioul\"]):not([data-page=\"jobs\"]) .page-content .util-line {
         z-index: 541 !important;
         opacity: 1 !important;
         pointer-events: auto !important;
-      }
-    `,
-  }}
-/>
-        {/* --- Guideline 5 / util-line overlay for all non‑IOUL pages --- */}
-<style
-  id="guideline-override"
-  dangerouslySetInnerHTML={{
-    __html: `
-      :root:not([data-page=\"ioul\"]) .line.fifth,
-      :root:not([data-page=\"ioul\"]) .util-line {
-        position: fixed !important;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 541 !important;      /* above layer‑five (500) */
-        opacity: 1 !important;
-        pointer-events: none !important;
       }
     `,
   }}

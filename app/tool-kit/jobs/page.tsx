@@ -3,6 +3,8 @@ import React, { useEffect } from "react";
 
 export default function Page() {
   useEffect(() => {
+    // Identify this route for layout overrides
+    document.documentElement.setAttribute("data-page", "jobs");
     // Full-screen toggle on edge click
     const EDGE = 11;
     const fullscreenHandler = ({ clientX: x, clientY: y }: MouseEvent) => {
@@ -186,6 +188,7 @@ export default function Page() {
 document.removeEventListener("click", fullscreenHandler);
       document.removeEventListener("click", pageClickHandler, true);
       window.removeEventListener("resize", updateClip);
+      document.documentElement.removeAttribute("data-page");
     };
   }, []);
 

@@ -1,4 +1,4 @@
-/* --- GLOBALS PREPENDED --- */
+/* GLOBALS PREPENDED */
 /* original styles copied into public folders */
 /* ----- IOUL global layering fix July 3, 2025 -----
    Ensures legacy pages render with proper stacking order and selectable text
@@ -37,7 +37,7 @@
   visibility: visible !important;
 }
 
-/* --- END GLOBALS --- */
+/* END GLOBALS */
 @font-face {
     font-family: 'Distill Expanded';
     src: url('font.woff2') format('woff2'),

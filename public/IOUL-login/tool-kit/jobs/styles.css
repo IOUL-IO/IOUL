@@ -149,6 +149,11 @@ body.non-fullscreen {
 .job-item {
     transition: transform 0.6s ease;
 }
+.freelance-items-container,
+.zero-items-container {
+    position: relative;
+    z-index: 1; /* below layer-four (z-index:2) */
+}
 
 .slide-left-40 {
     transform: translateX(-29vw);
@@ -161,6 +166,11 @@ body.non-fullscreen {
 /* ---- Ledger & Community slide classes (added 2025‑06‑11 v3) ---- */
 .job-item {
     transition: transform 0.6s ease;
+}
+.freelance-items-container,
+.zero-items-container {
+    position: relative;
+    z-index: 1; /* below layer-four (z-index:2) */
 }
 
 .slide-left-40 {
@@ -265,11 +275,4 @@ body.non-fullscreen{
   z-index: 150 !important;
   opacity: 1 !important;
   visibility: visible !important;
-}
-
-/* Ensure containers sit below layer‑four (z‑index:2) */
-.freelance-items-container,
-.zero-items-container {
-  position: relative;
-  z-index: 1;
 }

@@ -902,3 +902,16 @@ body.non-fullscreen {
 .line.util-line { z-index: 120 !important; pointer-events: auto !important; }
 
 /* === End Layering Overrides v4 === */
+
+/* === Layering Overrides v5 (updated 2025-07-24) ===
+   Key fix: raise .other-content stacking context so its children lines 1‑3
+   and util‑line can appear above the left column mask stripes (layer‑1 & layer‑2).
+   The container itself now sits at z‑index 130 above stripes (100)
+   but below timeline fifth/sixth (420) and above all content containers (≤ 90).
+*/
+
+.other-content {
+    z-index: 130 !important;
+}
+
+/* === End Layering Overrides v5 === */

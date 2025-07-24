@@ -2,15 +2,10 @@
 import React, { useEffect } from "react";
 
 export default function Page() {
-React.useEffect(() => {
-  document.documentElement.setAttribute('data-page', 'jobs');
-  return () => {
-    document.documentElement.removeAttribute('data-page');
-  };
-}, []);
-
   useEffect(() => {
-    // Full-screen toggle on edge click
+    // Identify this route for layout overrides
+    document.documentElement.setAttribute("data-page", "jobs");
+        // Full-screen toggle on edge click
     const EDGE = 11;
     const fullscreenHandler = ({ clientX: x, clientY: y }: MouseEvent) => {
       const { innerWidth: w, innerHeight: h } = window;
@@ -193,11 +188,14 @@ React.useEffect(() => {
 document.removeEventListener("click", fullscreenHandler);
       document.removeEventListener("click", pageClickHandler, true);
       window.removeEventListener("resize", updateClip);
+            document.documentElement.removeAttribute("data-page");
     };
   }, []);
 
   return (
     <>
+      <style id="jobs-line5-fix-static">{`.line.fifth{z-index:541 !important;}`}</style>
+
       {/* Fixed white mask layers */}
       <div className="layer-one" />
       <div className="layer-two" />

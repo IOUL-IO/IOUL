@@ -41,11 +41,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   id="line-5-override"
   dangerouslySetInnerHTML={{
     __html: `
-      :root[data-page=\"ioul\"] .page-content {
+      :root:not([data-page=\"ioul\"]):not([data-page=\"jobs\"]) .page-content {
         z-index: 540 !important;
       }
-      :root[data-page=\"ioul\"] .page-content .line.fifth,
-      :root[data-page=\"ioul\"] .page-content .util-line {
+      :root:not([data-page=\"ioul\"]):not([data-page=\"jobs\"]) .page-content .line.fifth,
+      :root:not([data-page=\"ioul\"]):not([data-page=\"jobs\"]) .page-content .util-line {
         z-index: 541 !important;
         opacity: 1 !important;
         pointer-events: auto !important;

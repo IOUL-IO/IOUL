@@ -50,7 +50,13 @@ body.non-fullscreen {
     pointer-events: none;
 }
 
-
+.page-content {
+    position: relative;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    width: 100vw;
+    height: 100vh;
+}
 
 .menu-items {
     position: absolute;
@@ -856,30 +862,57 @@ body.non-fullscreen {
 }
 
 
-.page-content.fade-in{
-  opacity: 1;
-  transition: opacity 0.6s ease;
-}
-
-
-/* Updated z-index layering */
-.layer-one,
-.layer-two,
-.layer-four{
-  z-index: 150;
-}
-
-.layer-three{
-  z-index: 60;
-}
-
-
-/* Force visibility, no masks */
-.page-content{opacity:1 !important;}
-
+/* Hide mask layers to reveal page */
 .layer-one,
 .layer-two,
 .layer-three,
 .layer-four,
 .layer-five,
-.layer-six{display:none !important;}
+.layer-six{
+  display:none !important;
+}
+
+/* Force page-content visible */
+.page-content{
+  opacity:1 !important;
+}
+
+
+/* === Layering Overrides (2025-07-24) === */
+.layer-one { z-index: 100 !important; }
+.layer-two { z-index: 90 !important; }
+.layer-three { z-index: 80 !important; }
+.layer-four { z-index: 70 !important; }
+
+.account-container,
+.heading-container,
+.custom-line[data-slide-group="heading"] {
+  z-index: 60 !important; /* under layer-one */
+}
+
+.menu-items {
+  z-index: 50 !important; /* under layers 1,2,4 */
+}
+
+.community-items-container,
+.zero-items-container {
+  z-index: 40 !important; /* under layers 2,4 */
+}
+
+.item-text,
+.item-line,
+.center-text,
+.center-line {
+  z-index: 30 !important; /* under layer-three */
+}
+
+/* Ensure util-line sits above items but below layer-three */
+.line.util-line {
+  z-index: 35 !important;
+}
+
+/* Keep fifth & sixth lines visible but under layer-three */
+.line.fifth,
+.line.sixth {
+  z-index: 25 !important;
+}

@@ -30,6 +30,16 @@ useEffect(() => {
   }
 }, [chatInitialized]);
   const pageContentRef = useRef<HTMLDivElement | null>(null);
+
+// Fade the page content in once mounted
+useEffect(() => {
+  if (pageContentRef.current) {
+    requestAnimationFrame(() => {
+      pageContentRef.current!.style.opacity = '1';
+    });
+  }
+}, []);
+
   
   const [state, setState] = useState(0); // 0 = baseline (lines visible, others hidden)
 
@@ -797,7 +807,7 @@ return (
       <div className="layer-two" />
       <div className="layer-three" />
 
-      <div className="page-content">
+      <div className="page-content" ref={pageContentRef}>
         <div className="menu-items">
           <span className="custom-text menu-item" style={{ top: '36.1vh', left: '29vw' }} id="online-assets" onClick={() => handleMenuClick("online-assets", openOnlineAssets)}>OnL1nE ASSETS:</span>
           <span className="custom-text menu-item" style={{ top: '43.2vh', left: '29vw' }} id="linkup-center" onClick={() => handleMenuClick("linkup-center", openLinkupCenter)}>L1nKUP cEnTER:</span>

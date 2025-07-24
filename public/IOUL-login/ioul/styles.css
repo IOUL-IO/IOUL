@@ -845,10 +845,10 @@ body.non-fullscreen {
 }
 
 
-/* -- Calendar grid stacking adjustment (July 24 2025) -- */
+/* -- Calendar grid stacking adjustment (July 22 2025) -- */
 .grid-number,
 .grid-dashed {
-  z-index: 0 !important; /* ensure calendar grid sits beneath layer-five */
+  z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
 }
 
 /* === PERMANENT VISIBILITY FOR LINES 5 & 6 — 2025-07-23 00:59:10 === */
@@ -859,4 +859,12 @@ body.non-fullscreen {
   opacity: 1 !important;
   z-index: 420 !important;      /* stay above strips */
   pointer-events: none !important; /* same behaviour across pages */
+}
+
+
+/* === Calendar grid z-index override — 2025-07-24 ===
+   Ensure grid lines & numbers sit beneath layer 5 without affecting other layers */
+.grid-number,
+.grid-dashed {
+  z-index: -1 !important; /* lower than auto/0 used by layer‑five */
 }

@@ -67,12 +67,17 @@ const clipElements = () => {
     '.grid-number', '.grid-dashed',
     '.mail-text', '.mail-line'
   ];
+  // Determine if the entire calendar grid is above the header band (top < 28.5vh)
+  const firstGrid = document.querySelector<HTMLElement>('.grid-number');
+  const gridHidden = firstGrid ? toVh(firstGrid.getBoundingClientRect().top) < 28.5 : false;
+
   selectors.forEach(sel => {
     document.querySelectorAll<HTMLElement>(sel).forEach(el => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 35.9 && t >= 28.5 && t <= 84;
+      const isGrid = el.classList.contains('grid-number') || el.classList.contains('grid-dashed');
+      const hide = (l < 35.9 && t >= 28.5 && t <= 84) || (isGrid && gridHidden);
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });

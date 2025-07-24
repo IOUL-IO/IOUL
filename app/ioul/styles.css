@@ -50,7 +50,13 @@ body.non-fullscreen {
     pointer-events: none;
 }
 
-
+.page-content {
+    position: relative;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    width: 100vw;
+    height: 100vh;
+}
 
 .menu-items {
     position: absolute;
@@ -856,81 +862,121 @@ body.non-fullscreen {
 }
 
 
-.page-content.fade-in{
-  opacity: 1;
-  transition: opacity 0.6s ease;
-}
-
-
-/* Updated z-index layering */
-.layer-one,
-.layer-two,
-.layer-four{
-  z-index: 150;
-}
-
-.layer-three{
-  z-index: 60;
-}
-
-
-/* Force visibility, no masks */
-.page-content{opacity:1 !important;}
-
-.layer-one,
-.layer-two,
-.layer-three,
-.layer-four,
-.layer-five,
-.layer-six{display:none !important;}
-
-
-/* === Final z-index hierarchy (2025-07-24) === */
-/* Keep mask layers transparent but in stack */
+/* Hide mask layers to reveal page */
 .layer-one,
 .layer-two,
 .layer-three,
 .layer-four,
 .layer-five,
 .layer-six{
-  background: transparent !important;
-  pointer-events:none;
+  display:none !important;
 }
 
-/* Layers 1,2,4 should be on top of major containers */
-.layer-one,
-.layer-two,
-.layer-four{
-  z-index: 140 !important;
+/* Force page-content visible */
+.page-content{
+  opacity:1 !important;
 }
 
-/* Layer 3 above item texts/lines but below containers */
-.layer-three{
-  z-index: 120 !important;
-}
 
-/* Containers */
+/* === Layering Overrides (2025-07-24) === */
+.layer-one { z-index: 100 !important; }
+.layer-two { z-index: 90 !important; }
+.layer-three { z-index: 80 !important; }
+.layer-four { z-index: 70 !important; }
+
 .account-container,
 .heading-container,
-.menu-container,
-.community-container,
-.zero-items-container{
-  position: relative;
-  z-index: 110 !important;
+.custom-line[data-slide-group="heading"] {
+  z-index: 60 !important; /* under layer-one */
 }
 
-/* Item texts/lines under layer 3 */
-.item-texts,
-.item-lines,
-.center-texts,
-.center-lines{
-  position: relative;
-  z-index: 90 !important;
+.menu-items {
+  z-index: 50 !important; /* under layers 1,2,4 */
 }
 
-/* Guide lines on very top */
-.line,
-.util-line{
-  position: relative;
+.community-items-container,
+.zero-items-container {
+  z-index: 40 !important; /* under layers 2,4 */
+}
+
+.item-text,
+.item-line,
+.center-text,
+.center-line {
+  z-index: 30 !important; /* under layer-three */
+}
+
+/* Ensure util-line sits above items but below layer-three */
+.line.util-line {
+  z-index: 35 !important;
+}
+
+/* Keep fifth & sixth lines visible but under layer-three */
+.line.fifth,
+.line.sixth {
+  z-index: 25 !important;
+}
+
+
+/* === Layering Overrides v2 (updated 2025-07-24) === */
+
+/* 1 ▸ Primary overlay layers (must sit on top) */
+.layer-one,
+.layer-two,
+.layer-four {
+  z-index: 400 !important;
+}
+
+/* 2 ▸ Main containers (sit below layers 1, 2, 4) */
+.account-container,
+.heading-container,
+.menu-items,
+.community-items-container,
+.zero-items-container {
+  z-index: 350 !important;
+}
+
+/* 3 ▸ Secondary overlay (layer‑three sits above item content) */
+.layer-three {
+  z-index: 300 !important;
+}
+
+/* 4 ▸ Item content rows / columns */
+.item-text,
+.item-line,
+.center-text,
+.center-line {
   z-index: 200 !important;
 }
+
+/* 5 ▸ Utility line just above item content */
+.line.util-line {
+  z-index: 210 !important;
+}
+
+/* 6 ▸ Standard numbered/lettered timeline lines */
+.line.original,
+.line.second,
+.line.third,
+.line.fourth,
+.line.fifth,
+.line.sixth {
+  z-index: 190 !important;
+}
+
+/* 7 ▸ Background grid (lowest interactive layer) */
+.grid-number,
+.grid-dashed {
+  z-index: 50 !important;
+}
+
+/* Ensure all layer divs are visible by default (no accidental display:none) */
+.layer-one,
+.layer-two,
+.layer-three,
+.layer-four,
+.layer-five,
+.layer-six {
+  display: block !important;
+}
+/* === End Layering Overrides v2 === */

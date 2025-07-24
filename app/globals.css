@@ -1,0 +1,37 @@
+/* original styles copied into public folders */
+/* ----- IOUL global layering fix July 3, 2025 -----
+   Ensures legacy pages render with proper stacking order and selectable text
+-------------------------------------------------------------- */
+.page-content{opacity:1 !important;}
+
+/* White mask columns — keep visible & non‑interactive */
+.layer-one,
+.layer-two,
+.layer-three,
+.layer-four,
+.layer-five,
+.layer-six{
+  opacity:1 !important;
+  pointer-events:none !important; /* make sure masks never block clicks */
+  /* no global z‑index override to let per‑page CSS control stacking */
+}
+
+/* Guideline lines */
+.line{
+  opacity:1 !important; /* ensure lines visible */
+  /* allow per‑page z‑index to take precedence */
+}
+
+/* All visible text & UI above masks and selectable */
+.custom-text,
+.content-text{
+  user-select:text !important;
+  z-index:101 !important; /* above most masks & lines */
+}
+
+/* PATCHED content-text visibility */
+.content-text, .custom-text {
+  z-index: 150 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}

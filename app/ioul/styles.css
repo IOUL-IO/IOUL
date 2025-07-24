@@ -862,17 +862,19 @@ body.non-fullscreen {
 }
 
 
-/* Hide mask layers to reveal page */
-.layer-one,
-.layer-two,
-.layer-three,
-.layer-four,
-.layer-five,
-.layer-six{
-  display:none !important;
+.page-content.fade-in{
+  opacity: 1;
+  transition: opacity 0.6s ease;
 }
 
-/* Force page-content visible */
-.page-content{
-  opacity:1 !important;
+
+/* Updated z-index layering */
+.layer-one,
+.layer-two,
+.layer-four{
+  z-index: 150;
+}
+
+.layer-three{
+  z-index: 60;
 }

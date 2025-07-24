@@ -4,7 +4,8 @@ import './styles.css';
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
-\1
+const IOULPage: React.FC = () => {
+  
 
 // Slide trigger logic
 React.useEffect(() => {

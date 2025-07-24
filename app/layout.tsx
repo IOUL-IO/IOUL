@@ -5,7 +5,6 @@ export const metadata: Metadata = {
   description: 'IOUL application',
 };
 
-// Minimal root layout — no global CSS or scripts.
 export default function RootLayout({
   children,
 }: {

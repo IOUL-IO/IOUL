@@ -878,3 +878,22 @@ body.non-fullscreen {
 .layer-three{
   z-index: 60;
 }
+
+
+/* === Layering adjustments === */
+/* Lines and util-line should sit on top of everything for visibility */
+.line,
+.util-line{
+    z-index: 200 !important;
+}
+
+/* Main overlay layers */
+.layer-one,
+.layer-two,
+.layer-four{
+    z-index: 140 !important; /* above containers */
+}
+
+.layer-three{
+    z-index: 80 !important;  /* above item texts & center lines */
+}

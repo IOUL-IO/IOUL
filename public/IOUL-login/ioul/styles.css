@@ -845,10 +845,10 @@ body.non-fullscreen {
 }
 
 
-/* -- Calendar grid stacking adjustment (July 22 2025) -- */
+/* -- Calendar grid stacking adjustment (July 24 2025) -- */
 .grid-number,
 .grid-dashed {
-  z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
+  z-index: 0 !important; /* ensure calendar grid sits beneath layer-five */
 }
 
 /* === PERMANENT VISIBILITY FOR LINES 5 & 6 — 2025-07-23 00:59:10 === */

@@ -2,6 +2,13 @@
 import React, { useEffect } from "react";
 
 export default function Page() {
+React.useEffect(() => {
+  document.documentElement.setAttribute('data-page', 'jobs');
+  return () => {
+    document.documentElement.removeAttribute('data-page');
+  };
+}, []);
+
   useEffect(() => {
     // Full-screen toggle on edge click
     const EDGE = 11;

@@ -878,59 +878,27 @@ body.non-fullscreen {
 }
 
 
-
-
-/* === Layering Overrides v3 (updated 2025-07-24) ===
-   Adjust layer relationships per user's spec:
-   - account+heading under layer‑1
-   - menu under layers 1 / 2 / 4
-   - community+zero under layers 2 / 4
-   - item‑texts / lines under layer‑3 (but above layers 1 / 2 / 4 so they remain visible)
+/* === Layering Overrides v4 (updated 2025-07-24) ===
+   Goal: Lines 1‑3 and util‑line must appear above the left column mask stripes (layer‑1 & layer‑2).
+   We lift all timeline lines to z‑index 110 and util‑line to 120.
+   Containers keep their v3 positions.
 */
 
-/* Keep base layer z‑index from original CSS (layer‑1/2/3: 100, layer‑4: 2) */
-
-/* 0 ▸ Force layers visible */
+/* 0 ▸ Ensure layer divs stay rendered */
 .layer-one, .layer-two, .layer-three, .layer-four, .layer-five, .layer-six {
     display: block !important;
 }
 
-/* 1 ▸ Content containers */
-.account-container,
-.heading-container {
-    z-index: 90 !important;   /* under layer‑1 (100) */
-}
+/* 1 ▸ Containers (unchanged from v3) */
+.account-container, .heading-container { z-index: 90 !important; }
+.menu-items { z-index: 1 !important; }
+.community-items-container, .zero-items-container { z-index: 1 !important; }
 
-.menu-items {
-    z-index: 1 !important;    /* under layers 1 & 2 & 4 */
-}
+/* 2 ▸ Item rows (unchanged) */
+.item-text, .item-line, .center-text, .center-line { z-index: 60 !important; }
 
-.community-items-container,
-.zero-items-container {
-    z-index: 1 !important;    /* under layers 2 & 4 */
-}
+/* 3 ▸ Timeline lines */
+.line { z-index: 110 !important; pointer-events: none !important; }
+.line.util-line { z-index: 120 !important; pointer-events: auto !important; }
 
-/* 2 ▸ Item rows & center rows – must sit under layer‑3 but above layers 1/2/4 */
-.item-text,
-.item-line,
-.center-text,
-.center-line {
-    z-index: 60 !important;   /* between layer‑3 (100) and layer‑4 (2) */
-}
-
-/* 3 ▸ Utility timeline */
-.line.util-line {
-    z-index: 65 !important;   /* slightly above item lines for clickability */
-}
-
-/* 4 ▸ Standard timeline lines (1‑6) */
-.line.original,
-.line.second,
-.line.third,
-.line.fourth,
-.line.fifth,
-.line.sixth {
-    z-index: 55 !important;
-}
-
-/* === End Layering Overrides v3 === */
+/* === End Layering Overrides v4 === */

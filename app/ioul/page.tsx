@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import Head from 'next/head';
 
 const IOULPage: React.FC = () => {
   // scope IOUL-only behaviour
@@ -790,6 +791,9 @@ useEffect(() => {
 
 
 return (
+  <Head>
+    <link rel="stylesheet" href="/IOUL-login/ioul/styles.css" />
+  </Head>
     <div className="non-fullscreen" translate="no">
       <p style={{ display: 'none' }} lang="en">This page is already in English. No translation is needed.</p>
 

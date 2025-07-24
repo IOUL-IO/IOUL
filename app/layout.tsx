@@ -1,7 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import LegacyScripts from './legacy-scripts';
-import RouteStyles from './components/RouteStyles';
 
 const legacyCssFiles = [
   '/IOUL-login/styles.css',

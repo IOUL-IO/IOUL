@@ -53,6 +53,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     `,
   }}
 />
+        {/* --- Guideline 5 / util-line overlay for all non‑IOUL pages --- */}
+<style
+  id="guideline-override"
+  dangerouslySetInnerHTML={{
+    __html: `
+      :root:not([data-page=\"ioul\"]) .line.fifth,
+      :root:not([data-page=\"ioul\"]) .util-line {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 541 !important;      /* above layer‑five (500) */
+        opacity: 1 !important;
+        pointer-events: none !important;
+      }
+    `,
+  }}
+/>
         </head>
       <body className="non-fullscreen stage-login">
         {children}

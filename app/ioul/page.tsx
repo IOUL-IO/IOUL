@@ -1,4 +1,3 @@
-import Head from 'next/head';
 "use client";
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
@@ -7,9 +6,7 @@ const IOULPage: React.FC = () => {
   // scope IOUL-only behaviour
 React.useEffect(() => {
   document.documentElement.setAttribute('data-page', 'ioul');
-  return (<Head>
-  <link rel="stylesheet" href="/IOUL-login/ioul/styles.css" />
-</Head>) => {
+  return () => {
     document.documentElement.removeAttribute('data-page');
     document.documentElement.removeAttribute('data-util');
   };

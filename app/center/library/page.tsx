@@ -1,5 +1,3 @@
-import './styles.css';
-
 "use client";
 import React, { useEffect } from "react";
 

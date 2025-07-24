@@ -788,6 +788,7 @@ return (
       <div className="layer-three" />
 
       <div className="page-content">
+        <div className="calendar-clip-mask" style={{position:"fixed",top:"0",left:"0",width:"100vw",height:"28.5vh",backgroundColor:"#ffffff",pointerEvents:"none",zIndex:150}} />
         <div className="menu-items">
           <span className="custom-text menu-item" style={{ top: '36.1vh', left: '29vw' }} id="online-assets" onClick={() => handleMenuClick("online-assets", openOnlineAssets)}>OnL1nE ASSETS:</span>
           <span className="custom-text menu-item" style={{ top: '43.2vh', left: '29vw' }} id="linkup-center" onClick={() => handleMenuClick("linkup-center", openLinkupCenter)}>L1nKUP cEnTER:</span>

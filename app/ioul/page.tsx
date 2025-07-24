@@ -72,7 +72,10 @@ const clipElements = () => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 35.9 && t >= 28.5 && t <= 84;
+      const isGrid = el.classList.contains('grid-number') || el.classList.contains('grid-dashed');
+const hide =
+  (l < 35.9 && t >= 28.5 && t <= 84) || // existing left‑edge mask
+  (isGrid && t < 28.5);                 // ✨ vertical clip for grid
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });

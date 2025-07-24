@@ -880,9 +880,7 @@ body.non-fullscreen {
 
 
 
-/* === Layering Overrides v6 (updated 2025-07-24) ===
-   Goal: keep menu / account / heading / community / zero containers visible during slide‑in.
-   They now sit ABOVE the white mask stripes (layer‑1 & layer‑2, z = 100) but still below timeline lines. */
+
 
 /* 1 ▸ Sliding content containers */
 .account-container,
@@ -910,3 +908,57 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v6 === */
+
+/* === Layering Overrides v7 (updated 2025-07-24) ===
+   Implements final stacking order per user:
+   • account + heading container ↴ under layer‑1 only
+   • menu container ↴ under layers 1, 2, 4
+   • community + zero container ↴ under layers 2, 4
+   Keeps timeline lines & util‑line on top, containers slide below stripes.
+*/
+
+/* 0 ▸ Ensure layers exist & visible */
+.layer-one, .layer-two, .layer-three, .layer-four, .layer-five, .layer-six {
+    display: block !important;
+}
+
+/* 1 ▸ Primary overlay stripes */
+/* (Assume layer‑1 / layer‑2 default z = 100, layer‑4 = 2) */
+
+/* 2 ▸ Sliding content containers */
+.account-container,
+.heading-container {
+    position: absolute;
+    z-index: 95 !important;          /* under layer‑1 (100), above layer‑4 (2) */
+}
+
+.menu-items {
+    position: absolute;
+    z-index: 1 !important;           /* under layers 1, 2, 4 (100 / 100 / 2) */
+}
+
+.community-items-container,
+.zero-items-container {
+    position: absolute;
+    z-index: 1 !important;           /* under layers 2 & 4 (100 / 2) */
+}
+
+/* 3 ▸ Other timeline / UI lines */
+.other-content {
+    z-index: 130 !important;         /* host for timeline lines */
+}
+
+.line.original,
+.line.second,
+.line.third,
+.line.fourth,
+.line.fifth,
+.line.sixth {
+    z-index: 120 !important;
+}
+
+.line.util-line {
+    z-index: 125 !important;
+}
+
+/* === End Layering Overrides v7 === */

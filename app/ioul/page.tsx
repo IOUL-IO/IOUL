@@ -70,11 +70,21 @@ const clipElements = () => {
   selectors.forEach(sel => {
     document.querySelectorAll<HTMLElement>(sel).forEach(el => {
       const rect = el.getBoundingClientRect();
-      const l = toVw(rect.left);
-      const t = toVh(rect.top);
-      const hide = l < 35.9 && t >= 28.5 && t <= 84;
-      el.style.opacity = hide ? '0' : '';
-      el.style.pointerEvents = hide ? 'none' : '';
+const l = toVw(rect.left);
+const t = toVh(rect.top);
+
+const hideLeft = l < 35.9 && t >= 28.5 && t <= 84; // existing mask
+const isGrid   = el.classList.contains('grid-number') || el.classList.contains('grid-dashed');
+const under    = isGrid && t < 28.5;                // move grid below layer 5
+
+// Apply left-edge hiding
+el.style.opacity        = hideLeft ? '0' : '';
+el.style.pointerEvents  = hideLeft ? 'none' : '';
+
+// Apply z‑index only to grid cells
+if (isGrid) {
+  el.style.zIndex = t < 28.5 ? '4' : '6'; // bring below layer 5 above 28.5vh, restore 6 otherwise
+}
     });
   });
 };

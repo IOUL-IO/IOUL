@@ -1,3 +1,4 @@
+import Head from 'next/head';
 "use client";
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
@@ -5,54 +6,84 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 const IOULPage: React.FC = () => {
   // scope IOUL-only behaviour
 React.useEffect(() => {
-  document.documentElement.setAttribute('data-page', 'ioul');
-  return () => {
-    document.documentElement.removeAttribute('data-page');
-    document.documentElement.removeAttribute('data-util');
+  document.documentElement.setAttribute('data-page', 'ioul'  </>);
+
+  return (
+  <>
+    <Head><link rel="stylesheet" href="/IOUL-login/ioul/styles.css" /></Head>) => {
+    document.documentElement.removeAttribute('data-page'  </>);
+
+    document.documentElement.removeAttribute('data-util'  </>);
+
   };
-}, []);
+}, []  </>);
+
 
   
-  const [currentMenu, setCurrentMenu] = useState<string | null>(null);
-  const [slideState, setSlideState] = useState("none");
-  const [pageFadedIn, setPageFadedIn] = useState(false);
-  const [chatVisible, setChatVisible] = useState(true);
-  const [chatInitialized, setChatInitialized] = useState(true);
-  const chatTextRef = useRef<HTMLSpanElement | null>(null);
-  const frameRef = useRef<number>();
+  const [currentMenu, setCurrentMenu] = useState<string | null>(null  </>);
+
+  const [slideState, setSlideState] = useState("none"  </>);
+
+  const [pageFadedIn, setPageFadedIn] = useState(false  </>);
+
+  const [chatVisible, setChatVisible] = useState(true  </>);
+
+  const [chatInitialized, setChatInitialized] = useState(true  </>);
+
+  const chatTextRef = useRef<HTMLSpanElement | null>(null  </>);
+
+  const frameRef = useRef<number>(  </>);
+
   const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
-  const hoverAreaRef = useRef<HTMLDivElement | null>(null);
+  const hoverAreaRef = useRef<HTMLDivElement | null>(null  </>);
+
 
 // Disable hover-area clicks once chat has appeared so it no longer blocks util-line
 useEffect(() => {
   if (chatInitialized && hoverAreaRef.current) {
     hoverAreaRef.current.style.pointerEvents = "none";
   }
-}, [chatInitialized]);
-  const pageContentRef = useRef<HTMLDivElement | null>(null);
+}, [chatInitialized]  </>);
+
+  const pageContentRef = useRef<HTMLDivElement | null>(null  </>);
+
   
-  const [state, setState] = useState(0); // 0 = baseline (lines visible, others hidden)
+  const [state, setState] = useState(0  </>);
+ // 0 = baseline (lines visible, others hidden)
 
   const EDGE_MARGIN = 11;
 
-  const targetsRef = useRef<(HTMLElement | null)[]>([]); // Reference to target elements
+  const targetsRef = useRef<(HTMLElement | null)[]>([]  </>);
+ // Reference to target elements
 
-  const [itemStage, setItemStage] = useState(0);  // 0 = hidden, 1 = visible (left column), 2 = shifted left / clipped
+  const [itemStage, setItemStage] = useState(0  </>);
+  // 0 = hidden, 1 = visible (left column), 2 = shifted left / clipped
 
-  const [accountStage, setAccountStage] = useState(0);  // 0 = baseline, 1 = slid in
-  const accountStageRef = useRef(0);
-  useEffect(() => { accountStageRef.current = accountStage; }, [accountStage]);
-  const [centerStage, setCenterStage] = useState(0);  // 0 = hidden, 1 = visible (center column)
+  const [accountStage, setAccountStage] = useState(0  </>);
+  // 0 = baseline, 1 = slid in
+  const accountStageRef = useRef(0  </>);
+
+  useEffect(() => { accountStageRef.current = accountStage; }, [accountStage]  </>);
+
+  const [centerStage, setCenterStage] = useState(0  </>);
+  // 0 = hidden, 1 = visible (center column)
 
 // Keep refs for latest stage values to access inside callbacks
-const itemStageRef = useRef(itemStage);
-const centerStageRef = useRef(centerStage);
-useEffect(() => { itemStageRef.current = itemStage; }, [itemStage]);
-useEffect(() => { centerStageRef.current = centerStage; }, [centerStage]);
-  const [animating, setAnimating] = useState(false);
+const itemStageRef = useRef(itemStage  </>);
 
-  const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
-  const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null);
+const centerStageRef = useRef(centerStage  </>);
+
+useEffect(() => { itemStageRef.current = itemStage; }, [itemStage]  </>);
+
+useEffect(() => { centerStageRef.current = centerStage; }, [centerStage]  </>);
+
+  const [animating, setAnimating] = useState(false  </>);
+
+
+  const itemElsRef = useRef<NodeListOf<HTMLElement> | null>(null  </>);
+
+  const centerElsRef = useRef<NodeListOf<HTMLElement> | null>(null  </>);
+
 
   const FWD_MIN = 94, FWD_MAX = 100;   // forward trigger (right edge)
   const REV_MIN = 32.44, REV_MAX = 36;  // reverse trigger (left edge)
@@ -65,8 +96,10 @@ useEffect(() => { centerStageRef.current = centerStage; }, [centerStage]);
   // Helper unit conversions
   const vw = () => window.innerWidth / 100;
   const vh = () => window.innerHeight / 100;
-  const toVw = (px: number) => px / vw();
-  const toVh = (px: number) => px / vh();
+  const toVw = (px: number) => px / vw(  </>);
+
+  const toVh = (px: number) => px / vh(  </>);
+
 // ─── Global real‑time clipping ────────────────────────────────────────────
 // Hide anything that slides left of 36vw while inside the main content band (28.5‑84vh)
 const clipElements = () => {
@@ -79,271 +112,377 @@ const clipElements = () => {
   ];
   selectors.forEach(sel => {
     document.querySelectorAll<HTMLElement>(sel).forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const l = toVw(rect.left);
-      const t = toVh(rect.top);
+      const rect = el.getBoundingClientRect(  </>);
+
+      const l = toVw(rect.left  </>);
+
+      const t = toVh(rect.top  </>);
+
       const hide = l < 35.9 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
-    });
-  });
+    }  </>);
+
+  }  </>);
+
 };
 
 // Keep clipping in real‑time (every animation frame)
 useEffect(() => {
-  const onResize = () => clipElements();
-  window.addEventListener('resize', onResize);
+  const onResize = () => clipElements(  </>);
+
+  window.addEventListener('resize', onResize  </>);
+
   let rafId: number;
   const tick = () => {
-    clipElements();
-    rafId = requestAnimationFrame(tick);
+    clipElements(  </>);
+
+    rafId = requestAnimationFrame(tick  </>);
+
   };
-  tick();
+  tick(  </>);
+
   return () => {
-    window.removeEventListener('resize', onResize);
-    cancelAnimationFrame(rafId);
+    window.removeEventListener('resize', onResize  </>);
+
+    cancelAnimationFrame(rafId  </>);
+
   };
-}, []);
+}, []  </>);
+
 
 
 
   const updateVisibility = () => {
-    const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
-    const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
-    const targets = textEls.concat(lineEls);
+    const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text')  </>);
+
+    const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line')  </>);
+
+    const targets = textEls.concat(lineEls  </>);
+
     targets.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const l = toVw(rect.left);
-      const t = toVh(rect.top);
+      const rect = el.getBoundingClientRect(  </>);
+
+      const l = toVw(rect.left  </>);
+
+      const t = toVh(rect.top  </>);
+
       const hide = l < 35.9 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
-    });
+    }  </>);
+
   };
 
   useEffect(() => {
     // Set base positions and update visibility on resize
-    window.addEventListener('resize', updateVisibility);
-    updateVisibility(); // Initial visibility update
+    window.addEventListener('resize', updateVisibility  </>);
+
+    updateVisibility(  </>);
+ // Initial visibility update
 
     return () => {
-      window.removeEventListener('resize', updateVisibility); // Clean up resize event listener
+      window.removeEventListener('resize', updateVisibility  </>);
+ // Clean up resize event listener
     };
-  }, []);
+  }, []  </>);
+
 
 
 
 
     // Cycle util-state 0 → 1 → 2 → 0 on click
   const handleUtilLineClick = useCallback(() => {
-    setState(prev => (prev + 1) % 3);
-  }, []);
+    setState(prev => (prev + 1) % 3  </>);
+
+  }, []  </>);
+
   
   // Sync the data-util CSS attribute
   useEffect(() => {
-    document.documentElement.setAttribute('data-util', state.toString());
-  }, [state]);
+    document.documentElement.setAttribute('data-util', state.toString()  </>);
+
+  }, [state]  </>);
+
 
 
 
   const quickRemoveSubmenu = () => {
-    const newTexts = document.querySelectorAll<HTMLSpanElement>('.new-text');
+    const newTexts = document.querySelectorAll<HTMLSpanElement>('.new-text'  </>);
+
     newTexts.forEach((span) => {
       span.style.transition = 'opacity 0.1s ease';
-      span.classList.remove('visible');
-    });
+      span.classList.remove('visible'  </>);
+
+    }  </>);
+
 
     // Instantly reset any dropdown movement
     document.querySelectorAll<HTMLElement>('.menu-items .menu-item.slide-down')
-      .forEach(el => el.classList.remove('slide-down'));
+      .forEach(el => el.classList.remove('slide-down')  </>);
+
 
     setTimeout(() => {
-      newTexts.forEach((span) => span.remove());
-    }, 100);
+      newTexts.forEach((span) => span.remove()  </>);
+
+    }, 100  </>);
+
   };
 
 // Utility: ensure any dropdown transforms are cleared
   const resetDropdown = () => {
     document.querySelectorAll<HTMLElement>('.menu-items .menu-item.slide-down')
-      .forEach(el => el.classList.remove('slide-down'));
+      .forEach(el => el.classList.remove('slide-down')  </>);
+
   };
 
   // Function that ensures submenu is closed before executing a callback function
   const forceCloseSubmenuThen = (fn: Function) => {
     if (slideState !== "none") {
-      quickRemoveSubmenu();
-      setTimeout(() => fn(), 100);  // Ensures submenu is closed before executing callback
+      quickRemoveSubmenu(  </>);
+
+      setTimeout(() => fn(), 100  </>);
+  // Ensures submenu is closed before executing callback
     } else {
-      fn();  // If no submenu, just execute the function directly
+      fn(  </>);
+  // If no submenu, just execute the function directly
     }
   };
 
     // Handle the sliding of sibling menu items
   const slideDownSiblings = (clickedId: string) => {
     const menuItems = Array.from(document.querySelectorAll('.menu-items .menu-item')) as HTMLElement[];
-    const clickedIndex = menuItems.findIndex(el => el.id === clickedId);
+    const clickedIndex = menuItems.findIndex(el => el.id === clickedId  </>);
+
 
     menuItems.forEach((el, i) => {
       // reset any previous dropdown transform
-      el.classList.remove("slide-down", "menu-slide");
+      el.classList.remove("slide-down", "menu-slide"  </>);
+
       el.style.transform = "";
       el.style.transition = "";
       // Only items *below* the clicked menu drop down
       if (i > clickedIndex) {
         void el.offsetHeight; // trigger reflow so transition fires
-        el.classList.add("slide-down");
+        el.classList.add("slide-down"  </>);
+
       }
-    });
+    }  </>);
+
   };
 
   // Add new text as a submenu item
   const addNewText = (text: string, topVH: number, leftVW: number) => {
     if (slideState !== "menu") return;
 
-    const span = document.createElement("span");
+    const span = document.createElement("span"  </>);
+
     span.className = "custom-text new-text";
     span.style.top = `${topVH}vh`;
     span.style.left = `${leftVW}vw`;
     span.textContent = text;
-    document.querySelector(".other-content")?.appendChild(span);
+    document.querySelector(".other-content")?.appendChild(span  </>);
+
     
     setTimeout(() => {
-      span.classList.add("visible");
-    }, 10);
+      span.classList.add("visible"  </>);
+
+    }, 10  </>);
+
   };
 
   // Open specific menus
   const openOnlineAssets = () => {
-    slideDownSiblings("online-assets");
+    slideDownSiblings("online-assets"  </>);
+
     setTimeout(() => {
-      addNewText("- cMS", 40.1, 6.4);
-      addNewText("- LMS", 44.1, 6.4);
-    }, 700);
+      addNewText("- cMS", 40.1, 6.4  </>);
+
+      addNewText("- LMS", 44.1, 6.4  </>);
+
+    }, 700  </>);
+
   };
 
   const openLinkupCenter = () => {
-    slideDownSiblings("linkup-center");
+    slideDownSiblings("linkup-center"  </>);
+
     setTimeout(() => {
-      addNewText("- cOM", 47.2, 6.4);
-      addNewText("- JOB", 51.2, 6.4);
-      addNewText("- HR", 55.2, 6.4);
-    }, 700);
+      addNewText("- cOM", 47.2, 6.4  </>);
+
+      addNewText("- JOB", 51.2, 6.4  </>);
+
+      addNewText("- HR", 55.2, 6.4  </>);
+
+    }, 700  </>);
+
   };
 
   const openDeliveryLine = () => {
-    slideDownSiblings("delivery-line");
+    slideDownSiblings("delivery-line"  </>);
+
     setTimeout(() => {
-      addNewText("- cRM", 54.3, 6.4);
-      addNewText("- OPS", 58.3, 6.4);
-    }, 700);
+      addNewText("- cRM", 54.3, 6.4  </>);
+
+      addNewText("- OPS", 58.3, 6.4  </>);
+
+    }, 700  </>);
+
   };
 
   const openInternalUnit = () => {
-    slideDownSiblings("internal-unit");
+    slideDownSiblings("internal-unit"  </>);
+
     setTimeout(() => {
-      addNewText("- 1nV", 61.4, 6.4);
-      addNewText("- FMS", 65.4, 6.4);
-      addNewText("- 1T", 69.4, 6.4);
-    }, 700);
+      addNewText("- 1nV", 61.4, 6.4  </>);
+
+      addNewText("- FMS", 65.4, 6.4  </>);
+
+      addNewText("- 1T", 69.4, 6.4  </>);
+
+    }, 700  </>);
+
   };
 
   // Handle the click event for each menu item
   const handleMenuClick = (menuId: string, openFunction: () => void) => {
     if (currentMenu === menuId) {
-      closeSubmenu();
+      closeSubmenu(  </>);
+
     } else {
       if (currentMenu) {
-        closeSubmenu();
+        closeSubmenu(  </>);
+
         setTimeout(() => {
-          openFunction();
-          setCurrentMenu(menuId);
-        }, 350);
+          openFunction(  </>);
+
+          setCurrentMenu(menuId  </>);
+
+        }, 350  </>);
+
       } else {
-        openFunction();
-        setCurrentMenu(menuId);
+        openFunction(  </>);
+
+        setCurrentMenu(menuId  </>);
+
       }
     }
   };
 
   // Close the submenu
   const closeSubmenu = () => {
-    const newTexts = document.querySelectorAll<HTMLSpanElement>('.new-text');
+    const newTexts = document.querySelectorAll<HTMLSpanElement>('.new-text'  </>);
+
     newTexts.forEach((span) => {
       span.style.transition = 'opacity 0.3s ease';
-      span.classList.remove('visible');
-    });
+      span.classList.remove('visible'  </>);
+
+    }  </>);
+
 
     // Wait for fade‑out to complete before collapsing dropdown
     setTimeout(() => {
       // Now retract the dropdown rows
       document.querySelectorAll<HTMLElement>('.menu-items .menu-item.slide-down')
-        .forEach(el => el.classList.remove('slide-down'));
+        .forEach(el => el.classList.remove('slide-down')  </>);
+
 
       // Finally remove the submenu nodes
-      newTexts.forEach((span) => span.remove());
-    }, 300); // 0.3 s = fade‑out duration
+      newTexts.forEach((span) => span.remove()  </>);
+
+    }, 300  </>);
+ // 0.3 s = fade‑out duration
   };
 
-   const [isScrolling, setIsScrolling] = useState(false);
-   const [isFirstScroll, setIsFirstScroll] = useState(true);
-   const [isSecondScroll, setIsSecondScroll] = useState(false);
+   const [isScrolling, setIsScrolling] = useState(false  </>);
 
-   const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
+   const [isFirstScroll, setIsFirstScroll] = useState(true  </>);
+
+   const [isSecondScroll, setIsSecondScroll] = useState(false  </>);
+
+
+   const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null  </>);
+
+   const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null  </>);
+
+   const dashed1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null  </>);
+
+   const dashed17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null  </>);
+
 
   // Effect to handle component mount and query DOM elements
 // runs once on mount
 useEffect(() => {
-  numbers1to16Ref.current = document.querySelectorAll('.grid-number');
-  numbers17to31Ref.current = document.querySelectorAll('.grid-number');
-  dashed1to16Ref.current = document.querySelectorAll('.grid-dashed');
-  dashed17to31Ref.current = document.querySelectorAll('.grid-dashed');
-}, []);
+  numbers1to16Ref.current = document.querySelectorAll('.grid-number'  </>);
+
+  numbers17to31Ref.current = document.querySelectorAll('.grid-number'  </>);
+
+  dashed1to16Ref.current = document.querySelectorAll('.grid-dashed'  </>);
+
+  dashed17to31Ref.current = document.querySelectorAll('.grid-dashed'  </>);
+
+}, []  </>);
+
 
 // ─── Calendar grid scroll logic ────────────────────────────────────────────
 useEffect(() => {
   const handleWheel = (e: WheelEvent) => {
     // Prevent page scroll when interacting with calendar grid
-    e.preventDefault();
+    e.preventDefault(  </>);
+
 
     // Only continue if calendar grid exists in the DOM
     if (!document.querySelector('.grid-number')) return;
 
     if (isScrolling) return;
-    setIsScrolling(true);
-    setTimeout(() => setIsScrolling(false), 700);
+    setIsScrolling(true  </>);
+
+    setTimeout(() => setIsScrolling(false), 700  </>);
+
 
     const all = Array.from(
       document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed')
-    );
-    all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
+      </>);
+
+    all.forEach(el => (el.style.transition = 'transform 0.7s ease')  </>);
+
 
     if (e.deltaY > 0) {
       if (!isSecondScroll) {
-        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
-        setIsSecondScroll(true);
+        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)')  </>);
+
+        setIsSecondScroll(true  </>);
+
       } else {
-        all.forEach(el => (el.style.transform = 'translateY(-111vh)'));
-        setIsSecondScroll(false);
+        all.forEach(el => (el.style.transform = 'translateY(-111vh)')  </>);
+
+        setIsSecondScroll(false  </>);
+
       }
     } else {
-      const match = all[0]?.style.transform.match(/translateY\(([-\d.]+)vh\)/);
+      const match = all[0]?.style.transform.match(/translateY\(([-\d.]+)vh\)/  </>);
+
       const y = match ? parseFloat(match[1]) : 0;
       if (y === -111) {
-        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
-        setIsSecondScroll(true);
+        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)')  </>);
+
+        setIsSecondScroll(true  </>);
+
       } else if (y === -55.5) {
-        all.forEach(el => (el.style.transform = 'translateY(0)'));
-        setIsSecondScroll(false);
+        all.forEach(el => (el.style.transform = 'translateY(0)')  </>);
+
+        setIsSecondScroll(false  </>);
+
       }
     }
   };
 
-  window.addEventListener('wheel', handleWheel, { passive: false });
-  return () => window.removeEventListener('wheel', handleWheel);
-}, [isScrolling, isSecondScroll]);
+  window.addEventListener('wheel', handleWheel, { passive: false }  </>);
+
+  return () => window.removeEventListener('wheel', handleWheel  </>);
+
+}, [isScrolling, isSecondScroll]  </>);
+
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {
@@ -362,51 +501,66 @@ useEffect(() => {
 
     if (inLeftZone) {
       // Close any open dropdowns before sliding
-      quickRemoveSubmenu();
+      quickRemoveSubmenu(  </>);
+
       setTimeout(() => {
-        resetDropdown();
+        resetDropdown(  </>);
+
         // ── Left edge clicks ─────────────────────────
         switch (slideState) {
           case "none":
             // fade out chat, slide in account+heading          chatTextRef.current!.style.opacity = "0";
             setTimeout(() => {
               document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
-                .forEach(box => box.style.transform = "translateX(0)");
+                .forEach(box => box.style.transform = "translateX(0)"  </>);
+
               document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')
-                .forEach(box => box.style.transform = "translateX(0)");
-            }, 110);
-            setSlideState("heading");
+                .forEach(box => box.style.transform = "translateX(0)"  </>);
+
+            }, 110  </>);
+
+            setSlideState("heading"  </>);
+
             break;
   
           
           case "community":
             // slide community+zero back to menu-position
             document.querySelectorAll<HTMLElement>('.community-items-container *')
-              .forEach(el => el.style.left = el.dataset.originalLeft!);
+              .forEach(el => el.style.left = el.dataset.originalLeft!  </>);
+
             document.querySelectorAll<HTMLElement>('.zero-items-container *')
-              .forEach(el => el.style.left = el.dataset.originalLeft!);
+              .forEach(el => el.style.left = el.dataset.originalLeft!  </>);
+
   
             // slide menu-items back toward original by +29vw
             document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
               .forEach(el => {
                 el.style.transition = "left 0.7s ease";
                 el.style.left = (parseFloat(el.style.left) + 29) + "vw";
-              });
-            setSlideState("menu");
+              }  </>);
+
+            setSlideState("menu"  </>);
+
             break;
   
   
           case "menu":
             // slide menu back to heading-position
             document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
-              .forEach(el => el.style.left = el.dataset.originalLeft!);
+              .forEach(el => el.style.left = el.dataset.originalLeft!  </>);
+
             
-  const headingBoxes = Array.from(document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]'));
-  const headingOut = headingBoxes.some(box => box.style.transform === "translateX(0)");
+  const headingBoxes = Array.from(document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')  </>);
+
+  const headingOut = headingBoxes.some(box => box.style.transform === "translateX(0)"  </>);
+
   if (headingOut) {
-    setSlideState("heading");
+    setSlideState("heading"  </>);
+
   } else {
-    setSlideState("none");
+    setSlideState("none"  </>);
+
   }
   
             break;
@@ -417,22 +571,28 @@ useEffect(() => {
               .forEach(box => {
                 box.style.transition = "transform 0.7s ease";
                 box.style.transform = `translateX(${box.dataset.offset}vw)`;
-              });
+              }  </>);
+
             document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')
               .forEach(box => {
                 box.style.transition = "transform 0.7s ease";
                 box.style.transform = `translateX(${box.dataset.offset}vw)`;
-              });          setSlideState("none");
+              }  </>);
+          setSlideState("none"  </>);
+
             break;
         }
       
-      }, 150);
+      }, 150  </>);
+
 }
     else if (inRightZone) {
       // Close any open dropdowns before sliding
-      quickRemoveSubmenu();
+      quickRemoveSubmenu(  </>);
+
       setTimeout(() => {
-        resetDropdown();
+        resetDropdown(  </>);
+
         // ── Right edge clicks ────────────────────────
         switch (slideState) {
           case "heading":
@@ -441,12 +601,15 @@ useEffect(() => {
               .forEach(box => {
                 box.style.transition = "transform 0.7s ease";
                 box.style.transform = `translateX(${box.dataset.offset}vw)`;
-              });
+              }  </>);
+
             document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')
               .forEach(box => {
                 box.style.transition = "transform 0.7s ease";
                 box.style.transform = `translateX(${box.dataset.offset}vw)`;
-              });          setSlideState("none");
+              }  </>);
+          setSlideState("none"  </>);
+
             break;
   
           case "none":
@@ -456,8 +619,10 @@ useEffect(() => {
                 el.dataset.originalLeft = el.style.left;
                 el.style.transition = "left 0.7s ease";
                 el.style.left = "6.41vw";
-              });chatTextRef.current!.style.opacity = "0";
-  setSlideState("menu");
+              }  </>);
+chatTextRef.current!.style.opacity = "0";
+  setSlideState("menu"  </>);
+
   
             break;
   
@@ -468,39 +633,49 @@ useEffect(() => {
                 el.dataset.originalLeft ||= el.style.left;
                 el.style.transition = "left 0.7s ease";
                 el.style.left = (parseFloat(el.style.left) - 29) + "vw";
-              });
+              }  </>);
+
             document.querySelectorAll<HTMLElement>('.community-items-container *')
               .forEach(el => {
                 el.dataset.originalLeft ||= el.style.left;
                 el.style.transition = "left 0.7s ease";
                 el.style.left = (parseFloat(el.style.left) - 29) + "vw";
-              });
+              }  </>);
+
             document.querySelectorAll<HTMLElement>('.zero-items-container *')
               .forEach(el => {
                 el.dataset.originalLeft ||= el.style.left;
                 el.style.transition = "left 0.7s ease";
                 el.style.left = (parseFloat(el.style.left) - 29) + "vw";
-              });
-            setSlideState("community");
+              }  </>);
+
+            setSlideState("community"  </>);
+
             break;
   
           case "community":
             // optional: return from community to none
             document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
-              .forEach(el => el.style.left = el.dataset.originalLeft!);
-            setSlideState("none");
+              .forEach(el => el.style.left = el.dataset.originalLeft!  </>);
+
+            setSlideState("none"  </>);
+
             break;
         }
       
-      }, 150);
+      }, 150  </>);
+
 }
   };
 
-  document.addEventListener("click", handleEdgeClick, true);
+  document.addEventListener("click", handleEdgeClick, true  </>);
+
   return () => {
-    document.removeEventListener("click", handleEdgeClick, true);
+    document.removeEventListener("click", handleEdgeClick, true  </>);
+
   };
-}, [slideState]);
+}, [slideState]  </>);
+
 
 
         useEffect(() => {
@@ -511,8 +686,10 @@ useEffect(() => {
     const DISTANCE = 60, DURATION = 700;
 
     // Helper functions for px to vw and vh conversions
-    const pxToVw = (px: number) => px / (window.innerWidth / 100);
-    const pxToVh = (px: number) => px / (window.innerHeight / 100);
+    const pxToVw = (px: number) => px / (window.innerWidth / 100  </>);
+
+    const pxToVh = (px: number) => px / (window.innerHeight / 100  </>);
+
 
     // Set the base left position (vw) for each target element
 
@@ -521,11 +698,13 @@ useEffect(() => {
 
 
 
-    const accountEls = Array.from(document.querySelectorAll<HTMLElement>('.account-text'));
+    const accountEls = Array.from(document.querySelectorAll<HTMLElement>('.account-text')  </>);
 
 
 
-    const accountLine = document.querySelector<HTMLElement>('.account-line');
+
+    const accountLine = document.querySelector<HTMLElement>('.account-line'  </>);
+
 
 
 
@@ -550,23 +729,30 @@ useEffect(() => {
     targetsRef.current.forEach(el => {
       if (!el.dataset.baseLeftVw) {
         const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-        el.dataset.baseLeftVw = pxToVw(leftPx).toString();
+        el.dataset.baseLeftVw = pxToVw(leftPx).toString(  </>);
+
       }
-    });
+    }  </>);
+
 
     // Update visibility of targets based on their positions
     const updateVisibility = () => {
       targetsRef.current.forEach(el => {
-        const r = el.getBoundingClientRect();
-        const l = pxToVw(r.left), t = pxToVh(r.top);
+        const r = el.getBoundingClientRect(  </>);
+
+        const l = pxToVw(r.left), t = pxToVh(r.top  </>);
+
         const hide = l < 35.9;
         el.style.opacity = hide ? '0' : '';
         el.style.pointerEvents = hide ? 'none' : '';
-      });
+      }  </>);
+
     };
 
-    updateVisibility();
-    window.addEventListener('resize', updateVisibility);
+    updateVisibility(  </>);
+
+    window.addEventListener('resize', updateVisibility  </>);
+
     let sliding = false;
 
     // Slide elements once
@@ -579,20 +765,26 @@ useEffect(() => {
       targetsRef.current.forEach(el => {
         el.style.opacity = '';
         el.style.pointerEvents = '';
-      });
+      }  </>);
+
 
       targetsRef.current.forEach(el => {
-        const base = parseFloat(el.dataset.baseLeftVw || '0');
+        const base = parseFloat(el.dataset.baseLeftVw || '0'  </>);
+
         el.style.transition = `left ${DURATION}ms ease`;
         el.style.left = `${base + DISTANCE}vw`;
         el.dataset.slid = 'true';
-      setAccountStage(1);
-      });
+      setAccountStage(1  </>);
+
+      }  </>);
+
 
       setTimeout(() => {
-        updateVisibility();
+        updateVisibility(  </>);
+
         sliding = false;
-      }, DURATION);
+      }, DURATION  </>);
+
     };
 
     // Slide elements back
@@ -601,17 +793,22 @@ useEffect(() => {
       sliding = true;
 
       targetsRef.current.forEach(el => {
-        const base = parseFloat(el.dataset.baseLeftVw || '0');
+        const base = parseFloat(el.dataset.baseLeftVw || '0'  </>);
+
         el.style.transition = `left ${DURATION}ms ease`;
         el.style.left = `${base}vw`;
         delete el.dataset.slid;
-      setAccountStage(0);
-      });
+      setAccountStage(0  </>);
+
+      }  </>);
+
 
       setTimeout(() => {
-        updateVisibility();
+        updateVisibility(  </>);
+
         sliding = false;
-      }, DURATION);
+      }, DURATION  </>);
+
     };
 
     // Click listener for the page
@@ -620,172 +817,236 @@ useEffect(() => {
 const handleClick = (e: MouseEvent) => {
   if (accountStageRef.current !== 0) return;
 
-  const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY);
+  const vw = pxToVw(e.clientX), vh = pxToVh(e.clientY  </>);
+
 
   // Forward trigger zone
   if (vw >= CLICK_MIN && vw <= CLICK_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
     // Only slide forward when both groups are at their origin
     if (itemStage === 0 && centerStage === 0) {
-      slideOnce();
+      slideOnce(  </>);
+
     }
   // Inverse trigger zone
   } else if (vw >= REVERSE_MIN && vw <= REVERSE_MAX && vh >= TOP_MIN && vh <= TOP_MAX) {
-    slideBack();
+    slideBack(  </>);
+
   }
 };
 
-document.addEventListener('click', handleClick);
+document.addEventListener('click', handleClick  </>);
+
 // Stop propagation for slide actions
     document.querySelectorAll('.slide-trigger, .slide-triggers, .slide-container').forEach(el => {
       el.addEventListener('click', e => {
-      e.stopPropagation();
+      e.stopPropagation(  </>);
+
       if (itemStageRef.current === 0 && centerStageRef.current === 0) {
-        slideOnce();
+        slideOnce(  </>);
+
       }
-    });
-    });
+    }  </>);
+
+    }  </>);
+
 
     document.querySelectorAll('.slide-trigger-reverse').forEach(el => {
       el.addEventListener('click', e => {
-        e.stopPropagation();
-        slideBack();
-      });
-    });
+        e.stopPropagation(  </>);
+
+        slideBack(  </>);
+
+      }  </>);
+
+    }  </>);
+
 
             return () => {
-    document.removeEventListener('click', handleClick);
+    document.removeEventListener('click', handleClick  </>);
+
     // (and any other listeners you attached in this effect)
   };
-}, [itemStage, centerStage]);
+}, [itemStage, centerStage]  </>);
+
 
            
 // ----- Gather item and center elements once DOM is ready -----
 useEffect(() => {
-  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line');
-  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line');
-}, []);
+  itemElsRef.current = document.querySelectorAll<HTMLElement>('.item-text, .item-line'  </>);
+
+  centerElsRef.current = document.querySelectorAll<HTMLElement>('.center-text, .center-line'  </>);
+
+}, []  </>);
+
 
 useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
       Array.from(itemElsRef.current).concat(Array.from(centerElsRef.current)).forEach(el => {
         if (!el.dataset.baseLeftVw) {
           const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-          el.dataset.baseLeftVw = toVw(leftPx).toString();
+          el.dataset.baseLeftVw = toVw(leftPx).toString(  </>);
+
         }
-      });
+      }  </>);
+
     }
-  }, []);
+  }, []  </>);
+
 
   // Reusable move function for transitions
   const move = (els: NodeListOf<HTMLElement>, offset: number) => {
     els.forEach((el) => {
-      const base = parseFloat(el.dataset.baseLeftVw || '0');
+      const base = parseFloat(el.dataset.baseLeftVw || '0'  </>);
+
       el.style.transition = `left ${DUR}ms ease`;
       el.style.left = `${base + offset}vw`;
-    });
+    }  </>);
+
   };
 
   // Stage transitions
   const toStage1 = () => {
     if (animating) return;
-    setAnimating(true);
-    move(itemElsRef.current, -DIST);
+    setAnimating(true  </>);
+
+    move(itemElsRef.current, -DIST  </>);
+
     setTimeout(() => {
-      setAnimating(false);
-      setItemStage(1);
-    }, DUR);
+      setAnimating(false  </>);
+
+      setItemStage(1  </>);
+
+    }, DUR  </>);
+
   };
 
   const toStage2 = () => {
     if (animating) return;
-    setAnimating(true);
-    move(itemElsRef.current, -2 * DIST - GAP); // items out first
-    move(centerElsRef.current, -DIST - GAP); // center follows
+    setAnimating(true  </>);
+
+    move(itemElsRef.current, -2 * DIST - GAP  </>);
+ // items out first
+    move(centerElsRef.current, -DIST - GAP  </>);
+ // center follows
     setTimeout(() => {
-      setAnimating(false);
-      setItemStage(2);
-      setCenterStage(1);
-    }, DUR + STAGGER);
+      setAnimating(false  </>);
+
+      setItemStage(2  </>);
+
+      setCenterStage(1  </>);
+
+    }, DUR + STAGGER  </>);
+
   };
 
   const backToStage1 = () => {
     if (animating) return;
-    setAnimating(true);
-    move(centerElsRef.current, 0); // center leaves first
-    move(itemElsRef.current, -DIST); // items return after delay
+    setAnimating(true  </>);
+
+    move(centerElsRef.current, 0  </>);
+ // center leaves first
+    move(itemElsRef.current, -DIST  </>);
+ // items return after delay
     setTimeout(() => {
-      setAnimating(false);
-      setItemStage(1);
-      setCenterStage(0);
-    }, DUR + STAGGER);
+      setAnimating(false  </>);
+
+      setItemStage(1  </>);
+
+      setCenterStage(0  </>);
+
+    }, DUR + STAGGER  </>);
+
   };
 
   const backToStage0 = () => {
     if (animating) return;
-    setAnimating(true);
-    move(itemElsRef.current, 0);
+    setAnimating(true  </>);
+
+    move(itemElsRef.current, 0  </>);
+
     setTimeout(() => {
-      setAnimating(false);
-      setItemStage(0);
-    }, DUR);
+      setAnimating(false  </>);
+
+      setItemStage(0  </>);
+
+    }, DUR  </>);
+
   };
 
   // Handle the click event for forward and reverse triggers
 useEffect(() => {
   function handleClick(e: MouseEvent) {
-    const vw = (px: number) => px / (window.innerWidth / 100);
-    const vh = (px: number) => px / (window.innerHeight / 100);
-    const xVw = vw(e.clientX);
-    const yVh = vh(e.clientY);
+    const vw = (px: number) => px / (window.innerWidth / 100  </>);
+
+    const vh = (px: number) => px / (window.innerHeight / 100  </>);
+
+    const xVw = vw(e.clientX  </>);
+
+    const yVh = vh(e.clientY  </>);
+
     const inFwd = xVw >= FWD_MIN && xVw <= FWD_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
     const inRev = xVw >= REV_MIN && xVw <= REV_MAX && yVh >= TOP_MIN && yVh <= TOP_MAX;
 
     if (inFwd && accountStageRef.current === 0) {
       if (itemStage === 0) {
-        toStage1();
+        toStage1(  </>);
+
       } else if (itemStage === 1 && centerStage === 0) {
-        toStage2();
+        toStage2(  </>);
+
       }
     } else if (inRev && accountStageRef.current === 0) {
       if (centerStage === 1) {
-        backToStage1();
+        backToStage1(  </>);
+
       } else if (itemStage === 1 && centerStage === 0) {
-        backToStage0();
+        backToStage0(  </>);
+
       }
     }
   }
 
-  document.addEventListener('click', handleClick, true);
+  document.addEventListener('click', handleClick, true  </>);
+
   return () => {
-    document.removeEventListener('click', handleClick, true);
+    document.removeEventListener('click', handleClick, true  </>);
+
   };
-}, [slideState, itemStage, centerStage]);
+}, [slideState, itemStage, centerStage]  </>);
+
 
 
   
 // ===== Chat-text persistent visibility =====
 const handleChatHover = useCallback(() => {
   if (!chatInitialized && slideState === "none") {
-    setChatInitialized(true);
-    setChatVisible(true);
+    setChatInitialized(true  </>);
+
+    setChatVisible(true  </>);
+
   }
-}, [chatInitialized, slideState]);
+}, [chatInitialized, slideState]  </>);
+
 // Hide chat-text during slides, reveal once panels are back
 useEffect(() => {
   let timer: ReturnType<typeof setTimeout> | null = null;
 
   if (slideState === "none") {
     if (chatInitialized) {
-      timer = setTimeout(() => setChatVisible(true), SLIDE_DURATION);
+      timer = setTimeout(() => setChatVisible(true), SLIDE_DURATION  </>);
+
     }
   } else {
-    setChatVisible(false);
+    setChatVisible(false  </>);
+
   }
 
   return () => {
-    if (timer) clearTimeout(timer);
+    if (timer) clearTimeout(timer  </>);
+
   };
-}, [slideState, chatInitialized]);
+}, [slideState, chatInitialized]  </>);
+
 
 
 
@@ -1043,7 +1304,8 @@ return (
         </div>
     </div>
     </div>
-  );
+    </>);
+
 };
 
 export default IOULPage;

@@ -878,40 +878,35 @@ body.non-fullscreen {
 }
 
 
-/* === Layering Overrides v4 (updated 2025-07-24) ===
-   Goal: Lines 1‑3 and util‑line must appear above the left column mask stripes (layer‑1 & layer‑2).
-   We lift all timeline lines to z‑index 110 and util‑line to 120.
-   Containers keep their v3 positions.
-*/
 
-/* 0 ▸ Ensure layer divs stay rendered */
-.layer-one, .layer-two, .layer-three, .layer-four, .layer-five, .layer-six {
-    display: block !important;
+
+/* === Layering Overrides v6 (updated 2025-07-24) ===
+   Goal: keep menu / account / heading / community / zero containers visible during slide‑in.
+   They now sit ABOVE the white mask stripes (layer‑1 & layer‑2, z = 100) but still below timeline lines. */
+
+/* 1 ▸ Sliding content containers */
+.account-container,
+.heading-container,
+.menu-items,
+.community-items-container,
+.zero-items-container {
+    position: absolute;
+    z-index: 115 !important;   /* > stripes (100) < timeline lines (120) */
 }
 
-/* 1 ▸ Containers (unchanged from v3) */
-.account-container, .heading-container { z-index: 90 !important; }
-.menu-items { z-index: 1 !important; }
-.community-items-container, .zero-items-container { z-index: 1 !important; }
-
-/* 2 ▸ Item rows (unchanged) */
-.item-text, .item-line, .center-text, .center-line { z-index: 60 !important; }
-
-/* 3 ▸ Timeline lines */
-.line { z-index: 110 !important; pointer-events: none !important; }
-.line.util-line { z-index: 120 !important; pointer-events: auto !important; }
-
-/* === End Layering Overrides v4 === */
-
-/* === Layering Overrides v5 (updated 2025-07-24) ===
-   Key fix: raise .other-content stacking context so its children lines 1‑3
-   and util‑line can appear above the left column mask stripes (layer‑1 & layer‑2).
-   The container itself now sits at z‑index 130 above stripes (100)
-   but below timeline fifth/sixth (420) and above all content containers (≤ 90).
-*/
-
-.other-content {
-    z-index: 130 !important;
+/* 2 ▸ Timeline lines for reference */
+.line.original,
+.line.second,
+.line.third,
+.line.fourth,
+.line.fifth,
+.line.sixth {
+    z-index: 120 !important;
 }
 
-/* === End Layering Overrides v5 === */
+/* 3 ▸ util‑line slightly higher for easy clicking */
+.line.util-line {
+    z-index: 125 !important;
+}
+
+/* === End Layering Overrides v6 === */

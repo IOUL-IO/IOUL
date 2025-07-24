@@ -50,13 +50,7 @@ body.non-fullscreen {
     pointer-events: none;
 }
 
-.page-content {
-    position: relative;
-    opacity: 0;
-    transition: opacity 0.6s ease;
-    width: 100vw;
-    height: 100vh;
-}
+
 
 .menu-items {
     position: absolute;
@@ -862,47 +856,30 @@ body.non-fullscreen {
 }
 
 
-/* === Layer hierarchy configuration === */
-/* Make masks present but transparent so they don't hide content */
+.page-content.fade-in{
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+
+
+/* Updated z-index layering */
+.layer-one,
+.layer-two,
+.layer-four{
+  z-index: 150;
+}
+
+.layer-three{
+  z-index: 60;
+}
+
+
+/* Force visibility, no masks */
+.page-content{opacity:1 !important;}
+
 .layer-one,
 .layer-two,
 .layer-three,
 .layer-four,
 .layer-five,
-.layer-six{
-    background:transparent !important;
-    pointer-events:none;
-}
-
-/* Layers 1,2,4 above major containers */
-.layer-one,
-.layer-two,
-.layer-four{
-    z-index: 140;
-}
-
-/* Layer 3 above item texts/lines but below main containers */
-.layer-three{
-    z-index: 90;
-}
-
-/* Containers */
-.account-container,
-.heading-container,
-.menu-container,
-.community-container,
-.zero-items-container{
-    z-index: 100;
-    position: relative;
-}
-
-.item-texts,
-.item-lines,
-.center-texts,
-.center-lines{
-    z-index: 80;
-    position: relative;
-}
-
-/* Guide lines on top */
-.line, .util-line{ z-index: 200; position: relative; }
+.layer-six{display:none !important;}

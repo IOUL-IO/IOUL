@@ -9,11 +9,10 @@ const IOULPage: React.FC = () => {
 // Mount effect: add body class and fade in content
 React.useEffect(() => {
   document.body.classList.add('non-fullscreen');
-  setFadedIn(true);
+  setPageFadedIn(true);
 }, []);
 
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
-  const [fadedIn, setFadedIn] = useState(false);
   const [slideState, setSlideState] = useState("none");
   const [pageFadedIn, setPageFadedIn] = useState(false);
   const [chatVisible, setChatVisible] = useState(true);
@@ -797,7 +796,7 @@ return (
       <div className="layer-two" />
       <div className="layer-three" />
 
-      <div className={`page-content${fadedIn ? " fade-in" : ""}`}>
+      <div className="page-content">
         <div className="menu-items">
           <span className="custom-text menu-item" style={{ top: '36.1vh', left: '29vw' }} id="online-assets" onClick={() => handleMenuClick("online-assets", openOnlineAssets)}>OnL1nE ASSETS:</span>
           <span className="custom-text menu-item" style={{ top: '43.2vh', left: '29vw' }} id="linkup-center" onClick={() => handleMenuClick("linkup-center", openLinkupCenter)}>L1nKUP cEnTER:</span>

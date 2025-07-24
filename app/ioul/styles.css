@@ -862,12 +862,17 @@ body.non-fullscreen {
 }
 
 
-/* Hide mask layers so page is visible */
+/* Hide mask layers to reveal page */
 .layer-one,
 .layer-two,
 .layer-three,
 .layer-four,
 .layer-five,
 .layer-six{
-    display:none !important;
+  display:none !important;
+}
+
+/* Force page-content visible */
+.page-content{
+  opacity:1 !important;
 }

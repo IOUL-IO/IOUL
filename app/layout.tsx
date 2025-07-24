@@ -1,5 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
+import LegacyScripts from './legacy-scripts';
 
 const legacyCssFiles = [
   '/IOUL-login/styles.css',
@@ -32,7 +33,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        {legacyCssFiles.map((href) => ())}
+        {legacyCssFiles.map((href) => (
+          <link key={href} rel="stylesheet" href={href} />
+        ))}
       {/* --- keep page content and guideline 5 above layer‑five on non‑IOUL routes --- */}
 <style
   id="line-5-override"
@@ -52,7 +55,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 />
         </head>
       <body className="non-fullscreen stage-login">
-        {children}</body>
+        {children}
+        <LegacyScripts />
+      </body>
     </html>
   );
 }

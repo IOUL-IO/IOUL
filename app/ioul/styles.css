@@ -50,7 +50,13 @@ body.non-fullscreen {
     pointer-events: none;
 }
 
-
+.page-content {
+    position: relative;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    width: 100vw;
+    height: 100vh;
+}
 
 .menu-items {
     position: absolute;
@@ -856,81 +862,75 @@ body.non-fullscreen {
 }
 
 
-.page-content.fade-in{
-  opacity: 1;
-  transition: opacity 0.6s ease;
-}
-
-
-/* Updated z-index layering */
-.layer-one,
-.layer-two,
-.layer-four{
-  z-index: 150;
-}
-
-.layer-three{
-  z-index: 60;
-}
-
-
-/* Force visibility, no masks */
-.page-content{opacity:1 !important;}
-
-.layer-one,
-.layer-two,
-.layer-three,
-.layer-four,
-.layer-five,
-.layer-six{display:none !important;}
-
-
-/* === Final z-index hierarchy (2025-07-24) === */
-/* Keep mask layers transparent but in stack */
+/* Hide mask layers to reveal page */
 .layer-one,
 .layer-two,
 .layer-three,
 .layer-four,
 .layer-five,
 .layer-six{
-  background: transparent !important;
-  pointer-events:none;
+  display:none !important;
 }
 
-/* Layers 1,2,4 should be on top of major containers */
-.layer-one,
-.layer-two,
-.layer-four{
-  z-index: 140 !important;
+/* Force page-content visible */
+.page-content{
+  opacity:1 !important;
 }
 
-/* Layer 3 above item texts/lines but below containers */
-.layer-three{
-  z-index: 120 !important;
+
+
+
+/* === Layering Overrides v3 (updated 2025-07-24) ===
+   Adjust layer relationships per user's spec:
+   - account+heading under layer‑1
+   - menu under layers 1 / 2 / 4
+   - community+zero under layers 2 / 4
+   - item‑texts / lines under layer‑3 (but above layers 1 / 2 / 4 so they remain visible)
+*/
+
+/* Keep base layer z‑index from original CSS (layer‑1/2/3: 100, layer‑4: 2) */
+
+/* 0 ▸ Force layers visible */
+.layer-one, .layer-two, .layer-three, .layer-four, .layer-five, .layer-six {
+    display: block !important;
 }
 
-/* Containers */
+/* 1 ▸ Content containers */
 .account-container,
-.heading-container,
-.menu-container,
-.community-container,
-.zero-items-container{
-  position: relative;
-  z-index: 110 !important;
+.heading-container {
+    z-index: 90 !important;   /* under layer‑1 (100) */
 }
 
-/* Item texts/lines under layer 3 */
-.item-texts,
-.item-lines,
-.center-texts,
-.center-lines{
-  position: relative;
-  z-index: 90 !important;
+.menu-items {
+    z-index: 1 !important;    /* under layers 1 & 2 & 4 */
 }
 
-/* Guide lines on very top */
-.line,
-.util-line{
-  position: relative;
-  z-index: 200 !important;
+.community-items-container,
+.zero-items-container {
+    z-index: 1 !important;    /* under layers 2 & 4 */
 }
+
+/* 2 ▸ Item rows & center rows – must sit under layer‑3 but above layers 1/2/4 */
+.item-text,
+.item-line,
+.center-text,
+.center-line {
+    z-index: 60 !important;   /* between layer‑3 (100) and layer‑4 (2) */
+}
+
+/* 3 ▸ Utility timeline */
+.line.util-line {
+    z-index: 65 !important;   /* slightly above item lines for clickability */
+}
+
+/* 4 ▸ Standard timeline lines (1‑6) */
+.line.original,
+.line.second,
+.line.third,
+.line.fourth,
+.line.fifth,
+.line.sixth {
+    z-index: 55 !important;
+}
+
+/* === End Layering Overrides v3 === */

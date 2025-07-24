@@ -1,3 +1,4 @@
+import styles from './page.module.css';
 "use client";
 import React, { useEffect } from 'react';
 

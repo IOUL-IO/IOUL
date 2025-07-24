@@ -53,21 +53,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     `,
   }}
 />
-        {/* --- guideline 5 overlay with original spatial positioning --- */}
-<style
-  id="guideline-override"
-  dangerouslySetInnerHTML={{
-    __html: `
-      :root:not([data-page=\"ioul\"]) .line.fifth,
-      :root:not([data-page=\"ioul\"]) .util-line {
-        position: fixed !important;   /* escapes local stacking contexts */
-        z-index: 541 !important;      /* above layer‑five (500) */
-        opacity: 1 !important;
-        pointer-events: none !important;
-      }
-    `,
-  }}
-/>
         </head>
       <body className="non-fullscreen stage-login">
         {children}

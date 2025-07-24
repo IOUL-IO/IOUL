@@ -1,8 +1,5 @@
-import './globals.css';
 import type { Metadata } from 'next';
-import LegacyScripts from './legacy-scripts';
 import RouteStyles from './components/RouteStyles';
-
 const legacyCssFiles = [
   '/IOUL-login/styles.css',
   '/IOUL-login/center/add-ons/styles.css',
@@ -57,7 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </head>
       <body className="non-fullscreen stage-login">
         {children}
-        <LegacyScripts />
+        
       </body>
     </html>
   );

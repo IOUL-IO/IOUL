@@ -861,10 +861,13 @@ body.non-fullscreen {
   pointer-events: none !important; /* same behaviour across pages */
 }
 
-
-/* === Calendar grid z-index override — 2025-07-24 ===
-   Ensure grid lines & numbers sit beneath layer 5 without affecting other layers */
+/* ─── Calendar grid stacking fix (July 24 2025) ───────────────────────────── */
+/* The calendar grid must appear above layer-four (z-index: 2) but below
+   layer-five. We keep the same z-index as layer-four so DOM order places the
+   grid between them, and we override the earlier util-line pop override that
+   set the grid to 1000. */
 .grid-number,
 .grid-dashed {
-  z-index: -1 !important; /* lower than auto/0 used by layer‑five */
+  position: relative !important;
+  z-index: 2 !important;
 }

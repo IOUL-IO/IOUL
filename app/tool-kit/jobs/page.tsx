@@ -2,14 +2,14 @@
 import React, { useEffect } from "react";
 
 export default function Page() {
-React.useEffect(() => {
-  document.documentElement.setAttribute('data-page', 'jobs');
-  return () => {
-    document.documentElement.removeAttribute('data-page');
-  };
-}, []);
-
   useEffect(() => {
+    // Identify this route for layout overrides
+    document.documentElement.setAttribute("data-page", "jobs");
+    // Ensure line 5 sits above layer‑five on the Jobs page only
+    const style = document.createElement("style");
+    style.id = "jobs-line5-fix";
+    style.innerHTML = ":root[data-page='jobs'] .page-content .line.fifth { z-index: 541 !important; }";
+    document.head.appendChild(style);
     // Full-screen toggle on edge click
     const EDGE = 11;
     const fullscreenHandler = ({ clientX: x, clientY: y }: MouseEvent) => {
@@ -193,6 +193,9 @@ React.useEffect(() => {
 document.removeEventListener("click", fullscreenHandler);
       document.removeEventListener("click", pageClickHandler, true);
       window.removeEventListener("resize", updateClip);
+      const styleEl = document.getElementById("jobs-line5-fix");
+      if (styleEl && styleEl.parentNode) styleEl.parentNode.removeChild(styleEl);
+      document.documentElement.removeAttribute("data-page");
     };
   }, []);
 

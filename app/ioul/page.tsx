@@ -1,13 +1,16 @@
+import Head from 'next/head';
 "use client";
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import Head from 'next/head';
 
 const IOULPage: React.FC = () => {
   // scope IOUL-only behaviour
 React.useEffect(() => {
   document.documentElement.setAttribute('data-page', 'ioul');
-  return () => {
+  return (
+    <>
+      <Head><link rel="stylesheet" href="/IOUL-login/ioul/styles.css" /></Head>
+) => {
     document.documentElement.removeAttribute('data-page');
     document.documentElement.removeAttribute('data-util');
   };
@@ -791,9 +794,6 @@ useEffect(() => {
 
 
 return (
-  <Head>
-    <link rel="stylesheet" href="/IOUL-login/ioul/styles.css" />
-  </Head>
     <div className="non-fullscreen" translate="no">
       <p style={{ display: 'none' }} lang="en">This page is already in English. No translation is needed.</p>
 
@@ -1047,6 +1047,7 @@ return (
         </div>
     </div>
     </div>
+      </>
   );
 };
 

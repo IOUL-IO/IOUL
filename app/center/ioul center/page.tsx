@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect } from "react";
-import Head from 'next/head';
 
 export default function Page() {
   useEffect(() => {
@@ -22,9 +21,6 @@ export default function Page() {
   }, []);
 
   return (
-    <Head>
-      <link rel="stylesheet" href="/IOUL-login/center/ioul center/styles.css" />
-    </Head>
     <>
       {/* Fixed white mask layers */}
       <div className="layer-one" />

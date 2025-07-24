@@ -860,3 +860,14 @@ body.non-fullscreen {
   z-index: 420 !important;      /* stay above strips */
   pointer-events: none !important; /* same behaviour across pages */
 }
+
+
+/* Hide mask layers so page is visible */
+.layer-one,
+.layer-two,
+.layer-three,
+.layer-four,
+.layer-five,
+.layer-six{
+    display:none !important;
+}

@@ -1,3 +1,4 @@
+import Head from 'next/head';
 "use client";
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
@@ -60,7 +61,9 @@ const IOULPage: React.FC = () => {
     window.addEventListener('resize', updateVisibility);
     updateVisibility(); // Initial visibility update
 
-    return () => {
+    return (<Head>
+  <link rel="stylesheet" href="/IOUL-login/styles.css" />
+</Head>) => {
       window.removeEventListener('resize', updateVisibility); // Clean up resize event listener
     };
   }, []);

@@ -1,3 +1,4 @@
+import Head from 'next/head';
 "use client";
 import React, { useEffect } from "react";
 
@@ -181,7 +182,9 @@ export default function Page() {
     });
     window.addEventListener("resize", updateClip);
     // Cleanup
-    return () => {
+    return (<Head>
+  <link rel="stylesheet" href="/IOUL-login/tool-kit/jobs/styles.css" />
+</Head>) => {
             document.removeEventListener('click', ledgerClickHandler, true);
 document.removeEventListener("click", fullscreenHandler);
       document.removeEventListener("click", pageClickHandler, true);

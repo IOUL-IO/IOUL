@@ -1,3 +1,4 @@
+import Head from 'next/head';
 "use client";
 import React, { useEffect } from "react";
 
@@ -17,7 +18,9 @@ export default function Page() {
     document.addEventListener("click", handler);
 
     // Cleanup
-    return () => {
+    return (<Head>
+  <link rel="stylesheet" href="/IOUL-login/tool-kit/lms/styles.css" />
+</Head>) => {
       document.removeEventListener("click", handler);
     };
   }, []);

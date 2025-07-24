@@ -7,10 +7,12 @@ const IOULPage: React.FC = () => {
   // scope IOUL-only behaviour
 React.useEffect(() => {
   document.documentElement.setAttribute('data-page', 'ioul');
-  return (
+    return (
     <>
-      <Head><link rel="stylesheet" href="/IOUL-login/ioul/styles.css" /></Head>
-) => {
+      <link rel="stylesheet" href="/IOUL-login/ioul/styles.css" />) => {
+      document.documentElement.removeAttribute('data-page');
+      document.documentElement.removeAttribute('data-util');
+    }; => {
     document.documentElement.removeAttribute('data-page');
     document.documentElement.removeAttribute('data-util');
   };

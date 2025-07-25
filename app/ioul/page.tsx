@@ -5,7 +5,7 @@ import './styles.css';
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
-function IOULPage() {
+const IOULPage: React.FC = () => {
 // Mount effect: add body class and fade in content
 React.useEffect(() => {
   document.body.classList.add('non-fullscreen');
@@ -1046,3 +1046,4 @@ return (
 };
 
 export default IOULPage;
+    

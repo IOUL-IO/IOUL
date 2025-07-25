@@ -862,7 +862,17 @@ body.non-fullscreen {
 }
 
 
+/* Hide mask layers to reveal page */
+.layer-one,
+.layer-two,
+.layer-three,
+.layer-four,
+.layer-five,
+.layer-six{
+  display:none !important;
+}
 
+/* Force page-content visible */
 .page-content{
   opacity:1 !important;
 }
@@ -906,9 +916,35 @@ body.non-fullscreen {
 
 /* === End Layering Overrides v5 === */
 
-
-.layer-one,
-.layer-two,
-.layer-four {
-  z-index: 100 !important;
+/* === Layering Overrides v6 (added 2025-07-25) ===
+   Raise slide‑in containers above mask columns so they appear while animating */
+.account-container,
+.heading-container,
+.menu-container,
+.menu-items,
+.community-items-container,
+.zero-items-container {
+    position: relative;
+    z-index: 150 !important;          /* above mask columns (100) */
+    transition: transform 0.4s ease,
+                left 0.4s ease;
 }
+/* === End Layering Overrides v6 === */
+
+
+/* === Layering Overrides v7 (added 2025‑07‑25) ===
+   Keep menu under masks; raise account/heading/community/zero above. */
+.menu-items,
+.menu-items .menu-item {
+    position: absolute !important;   /* restore original flow */
+    z-index: 90 !important;          /* below layer columns (100) */
+}
+.account-container,
+.heading-container,
+.community-items-container,
+.zero-items-container {
+    z-index: 150 !important;         /* above mask columns */
+    /* keep existing positioning */
+    transition: transform 0.4s ease, left 0.4s ease;
+}
+/* === End Layering Overrides v7 === */

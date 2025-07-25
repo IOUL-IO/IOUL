@@ -190,7 +190,6 @@ body.stage-login .account-wrapper,
 body.stage-login .help-wrapper{pointer-events:none;}
 
 
-}
 
 
 /* Disable clicks on util texts when parked behind layer‑two */
@@ -550,25 +549,23 @@ body.stage-help .open-text,
 body.stage-help .help-text{
   transition: transform 0.7s ease, opacity .3s ease !important;
 }
+/* === Additional fixes 2025‑07‑25 ===
+   Fade lines 5 and 6; ensure login lines under layer-one
+*/
 
-
-/* === IOUL Login Tweaks v7 — 2025‑07‑25 ===
-   1. Fade‑in support for timeline lines 5 & 6.
-   2. Force login username/password lines beneath layer‑one while sliding. */
-
-/* Fade‑in for lines 5‑6 */
-.line.fifth,
-.line.sixth{
-  opacity:0;                           /* start hidden */
+/* Fade in for fifth and sixth timeline lines */
+.fifth:not(.login-line):not(.login-line-second),
+.sixth:not(.login-line):not(.login-line-second){
+  opacity:0;
   transition:opacity .5s ease-in-out;
 }
-body.fade-in-trigger .line.fifth,
-body.fade-in-trigger .line.sixth{
+body.fade-in-trigger .fifth:not(.login-line):not(.login-line-second),
+body.fade-in-trigger .sixth:not(.login-line):not(.login-line-second){
   opacity:1;
 }
 
-/* Keep login lines under the left mask (layer‑one) */
+/* Login lines should stay beneath layer-one during slide */
 .login-line,
 .login-line-second{
-  z-index:90 !important;               /* layer‑one is 100 */
+  z-index:90 !important; /* layer-one is 100 */
 }

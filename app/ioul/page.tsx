@@ -5,7 +5,7 @@ import './styles.css';
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
-function IOULPage() {
+const IOULPage: React.FC = () => {
 // Mount effect: add body class and fade in content
 React.useEffect(() => {
   document.body.classList.add('non-fullscreen');
@@ -20,6 +20,8 @@ React.useEffect(() => {
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
   const frameRef = useRef<number>();
   const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
+  const HEADING_SLIDE_IN_VW = 29.6; // vw offset to clear left mask
+
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
 
 // Disable hover-area clicks once chat has appeared so it no longer blocks util-line
@@ -72,7 +74,7 @@ const clipElements = () => {
   const selectors = [
     '.item-text', '.item-line',
     '.center-text', '.center-line',
-    '.account-text', '.account-line',
+    '.account-text', '.account-line', '.heading-flow',
     '.grid-number', '.grid-dashed',
     '.mail-text', '.mail-line'
   ];
@@ -81,7 +83,7 @@ const clipElements = () => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 35.9 && t >= 28.5 && t <= 84;
+      const hide = l < 6.37 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -114,7 +116,7 @@ useEffect(() => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 35.9 && t >= 28.5 && t <= 84;
+      const hide = l < 6.37 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -558,7 +560,7 @@ useEffect(() => {
       targetsRef.current.forEach(el => {
         const r = el.getBoundingClientRect();
         const l = pxToVw(r.left), t = pxToVh(r.top);
-        const hide = l < 35.9;
+        const hide = l < 6.37;
         el.style.opacity = hide ? '0' : '';
         el.style.pointerEvents = hide ? 'none' : '';
       });
@@ -1046,3 +1048,4 @@ return (
 };
 
 export default IOULPage;
+    

@@ -29,7 +29,26 @@ body.non-fullscreen {
     z-index: 100;
     pointer-events: none;
 }
-.layer-two { position:absolute; }
+.layer-two {
+    position: fixed;
+    top: 0;
+    left: 6.37vw;
+    width: calc(36vw - 6.37vw);
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 100;
+    pointer-events: none;
+}
+.layer-three {
+    position: fixed;
+    top: 0;
+    left: 94.17vw;
+    width: calc(100vw - 94.17vw);
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 100;
+    pointer-events: none;
+}
 
 .page-content {
     position: relative;
@@ -859,7 +878,11 @@ body.non-fullscreen {
 }
 
 
-
+/* === Layering Overrides v4 (updated 2025-07-24) ===
+   Goal: Lines 1‑3 and util‑line must appear above the left column mask stripes (layer‑1 & layer‑2).
+   We lift all timeline lines to z‑index 110 and util‑line to 120.
+   Containers keep their v3 positions.
+*/
 
 /* 0 ▸ Ensure layer divs stay rendered */
 .layer-one, .layer-two, .layer-three, .layer-four, .layer-five, .layer-six {
@@ -880,148 +903,15 @@ body.non-fullscreen {
 
 /* === End Layering Overrides v4 === */
 
-
+/* === Layering Overrides v5 (updated 2025-07-24) ===
+   Key fix: raise .other-content stacking context so its children lines 1‑3
+   and util‑line can appear above the left column mask stripes (layer‑1 & layer‑2).
+   The container itself now sits at z‑index 130 above stripes (100)
+   but below timeline fifth/sixth (420) and above all content containers (≤ 90).
+*/
 
 .other-content {
     z-index: 130 !important;
 }
 
 /* === End Layering Overrides v5 === */
-
-/* --- Slide-in transition (added 2025-07-25) ----------------------------
-   Ensures the containers visibly glide from off-screen positions
-   instead of jumping instantly.
------------------------------------------------------------------------- */
-.heading-container,
-.account-container,
-.custom-line[data-slide-group="heading"],
-.menu-items,
-.community-items-container,
-.zero-items-container {
-    transition: transform 0.7s ease;
-}
-
-
-.line.util-line                  { z-index: 120 !important; }
-.line                            { z-index: 110 !important; }
-.layer-one                       { z-index: 100 !important; }
-.account-container,
-.heading-container,
-.custom-line[data-slide-group="heading"] { z-index: 90 !important; }
-.layer-two                       { z-index: 80 !important; }
-.community-items-container,
-.zero-items-container            { z-index: 70 !important; }
-.layer-four                      { z-index: 60 !important; }
-.menu-items                      { z-index: 50 !important; }
-/* === End Layering Overrides v13 === */
-
-/* --- Layer‑two geometry override (2025‑07‑25) -------------------------- */
-.layer-two { position:absolute; }
-/* ---------------------------------------------------------------------- */
-
-
-.line.util-line                                 { z-index: 120 !important; }
-.line:not(.util-line)                           { z-index: 110 !important; }
-.layer-one                                      { z-index: 100 !important; }
-.account-container,
-.heading-container,
-.custom-line[data-slide-group="heading"]        { z-index:  90 !important; }
-.layer-two                                      { z-index:  80 !important; }
-.layer-four                                     { z-index:  70 !important; }
-.community-items-container,
-.zero-items-container                           { z-index:  60 !important; }
-.menu-items                                     { z-index:  50 !important; }
-/* === End Layering Overrides v14 === */
-
-
-/* Geometry for layer-2 stripe */
-.layer-two {
-    position: absolute !important;
-    left: 28.86vw !important;
-    width: calc(36vw - 28.86vw) !important;
-    top: 28.5vh !important;
-    height: calc(84vh - 28.5vh) !important;
-    background: #fff !important;
-    pointer-events: none !important;
-}
-/* Z-index hierarchy */
-.line.util-line { z-index: 500 !important; }
-.line:not(.util-line) { z-index: 450 !important; }
-.layer-one { z-index: 400 !important; }
-.account-container,
-.heading-container,
-.custom-line[data-slide-group="heading"] { z-index: 350 !important; }
-.layer-two { z-index: 300 !important; }
-.layer-four { z-index: 200 !important; }
-.community-items-container,
-.zero-items-container { z-index: 150 !important; }
-.menu-items { z-index: 100 !important; }
-/* Transition for slide containers */
-.heading-container,
-.account-container,
-.custom-line[data-slide-group="heading"],
-.menu-items,
-.community-items-container,
-.zero-items-container {
-    transition: transform 0.7s ease;
-}
-/* === End Layering Overrides v14 === */
-
-/* === Layering Overrides v15 (updated 2025-07-25) =============================
-   Unified geometry + stacking + animation tweaks
--------------------------------------------------------------------------- */
-
-/* 1 ▸ Geometry fix: layer‑2 stripe (white mask in mid‑col) */
-.layer-two {
-    position: absolute !important;
-    left: 28.86vw !important;
-    width: calc(36vw - 28.86vw) !important;   /* ends at 36 vw */
-    top: 28.5vh !important;
-    height: calc(84vh - 28.5vh) !important;   /* ends at 84 vh */
-    background: #fff !important;
-    pointer-events: none !important;
-}
-
-/* 2 ▸ Z‑index hierarchy (top → bottom) */
-.line.util-line                          { z-index: 500 !important; }
-.line:not(.util-line)                    { z-index: 450 !important; }   /* timeline lines 1‑6 */
-.layer-one                               { z-index: 400 !important; }   /* left stripe */
-.account-container,
-.heading-container,
-.custom-line[data-slide-group="heading"],
-.account-text,
-.account-line                            { z-index: 350 !important; }   /* under layer‑1 only */
-
-.layer-two                               { z-index: 300 !important; }   /* mid stripe */
-
-.layer-three                             { z-index: 250 !important; }   /* overlay layer */
-.item-text,
-.item-line,
-.center-text,
-.center-line,
-.calendar-grid                           { z-index: 225 !important; }   /* under layer‑3, above layer‑4 */
-
-.layer-four                              { z-index: 200 !important; }   /* right stripe */
-
-.community-items-container,
-.zero-items-container                    { z-index: 150 !important; }   /* under layer‑2 & layer‑4 */
-
-.menu-items                              { z-index: 100 !important; }   /* under layers 1, 2, 4 */
-
-/* 3 ▸ Slide‑in animation: ensure all moving parts animate visibly */
-.heading-container,
-.account-container,
-.custom-line[data-slide-group="heading"],
-.account-text,
-.account-line,
-.menu-items,
-.community-items-container,
-.zero-items-container,
-.item-text,
-.item-line,
-.center-text,
-.center-line {
-    transition: transform 0.7s ease;
-}
-
-/* === End Layering Overrides v15 ========================================= */

@@ -5,7 +5,7 @@ import './styles.css';
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
-function IOULPage() {
+const IOULPage: React.FC = () => {
 // Mount effect: add body class and fade in content
 React.useEffect(() => {
   document.body.classList.add('non-fullscreen');
@@ -33,6 +33,8 @@ useEffect(() => {
   const [state, setState] = useState(0); // 0 = baseline (lines visible, others hidden)
 
   const EDGE_MARGIN = 11;
+  // Horizontal threshold that determines when elements are hidden behind the left-column mask (layer‑one)
+  const CLIP_LEFT = 6.37;
 
   const targetsRef = useRef<(HTMLElement | null)[]>([]); // Reference to target elements
 
@@ -81,7 +83,7 @@ const clipElements = () => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 35.9 && t >= 28.5 && t <= 84;
+      const hide = l < CLIP_LEFT && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -114,7 +116,7 @@ useEffect(() => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 35.9 && t >= 28.5 && t <= 84;
+      const hide = l < CLIP_LEFT && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -558,7 +560,7 @@ useEffect(() => {
       targetsRef.current.forEach(el => {
         const r = el.getBoundingClientRect();
         const l = pxToVw(r.left), t = pxToVh(r.top);
-        const hide = l < 35.9;
+        const hide = l < CLIP_LEFT;
         el.style.opacity = hide ? '0' : '';
         el.style.pointerEvents = hide ? 'none' : '';
       });
@@ -1046,3 +1048,4 @@ return (
 };
 
 export default IOULPage;
+    

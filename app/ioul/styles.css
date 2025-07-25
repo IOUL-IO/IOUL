@@ -916,10 +916,11 @@ body.non-fullscreen {
 
 /* === End Layering Overrides v5 === */
 
-/* --- IOUL standalone override: ensure sliding containers are visible --- */
-.layer-two,
-.layer-four,
-.layer-five,
-.layer-six{
-  z-index: -5 !important; /* push white masks behind interactive content */
+/* Ensure key UI text floats above mask layers like in original repo */
+.custom-text,
+.content-text{
+  user-select:text !important;
+  z-index:150 !important; /* above masks & lines */
+  opacity:1 !important;
+  visibility:visible !important;
 }

@@ -10,10 +10,9 @@ const IOULPage: React.FC = () => {
 React.useEffect(() => {
   document.body.classList.add('non-fullscreen');
   const pc = document.querySelector<HTMLElement>('.page-content');
-if (pc) {
-  // allow initial paint then trigger fade
-  requestAnimationFrame(() => { pc.style.opacity = '1'; });
-}
+  if (pc) {
+    requestAnimationFrame(() => { pc.style.opacity = '1'; });
+  }
 }, []);
 
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);

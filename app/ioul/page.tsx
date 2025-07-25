@@ -17,23 +17,9 @@ React.useEffect(() => {
   const [pageFadedIn, setPageFadedIn] = useState(false);
   const [chatVisible, setChatVisible] = useState(true);
   const [chatInitialized, setChatInitialized] = useState(true);
-  
-// Attach slide‑visibility listeners once on mount
-useEffect(() => {
-  attachSlideVisibility();
-}, []);
-const chatTextRef = useRef<HTMLSpanElement | null>(null);
+  const chatTextRef = useRef<HTMLSpanElement | null>(null);
   const frameRef = useRef<number>();
   const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
-
-  // Temporarily lift containers above stripes while they are animating
-  const raiseDuringAnimation = (selector: string, duration = SLIDE_DURATION) => {
-    const els = document.querySelectorAll<HTMLElement>(selector);
-    els.forEach(el => el.classList.add("slide-active"));
-    setTimeout(() => {
-      els.forEach(el => el.classList.remove("slide-active"));
-    }, duration + 20);
-  };
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
 
 // Disable hover-area clicks once chat has appeared so it no longer blocks util-line
@@ -112,8 +98,7 @@ useEffect(() => {
     rafId = requestAnimationFrame(tick);
   };
   tick();
-  
-return () => {
+  return () => {
     window.removeEventListener('resize', onResize);
     cancelAnimationFrame(rafId);
   };
@@ -1060,25 +1045,5 @@ return (
   );
 };
 
-
-// --- auto visibility helper: toggles `.slide-active` during transform transitions ---
-function attachSlideVisibility() {
-  const sel = [
-    '.account-container[data-slide-group="account"]',
-    '.heading-container[data-slide-group="heading"]',
-    '.custom-line[data-slide-group="heading"]',
-    '.menu-items',
-    '.community-items-container',
-    '.zero-items-container'
-  ].join(', ');
-  document.querySelectorAll<HTMLElement>(sel).forEach(el => {
-    el.addEventListener('transitionrun', () => {
-      el.classList.add('slide-active');
-    });
-    el.addEventListener('transitionend', () => {
-      el.classList.remove('slide-active');
-    });
-  });
-}
 export default IOULPage;
     

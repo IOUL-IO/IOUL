@@ -83,3 +83,14 @@ body.non-fullscreen {
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+/* Added by ChatGPT on 2025-07-25: bring sliding containers above masks and smooth animation */
+.account-container,
+.heading-container,
+.menu-container,
+.community-items-container,
+.zero-items-container {
+    position: relative;
+    z-index: 150; /* ensure they sit above the layer masks */
+    transition: transform 400ms ease, left 400ms ease;
+}

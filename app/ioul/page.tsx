@@ -20,6 +20,8 @@ React.useEffect(() => {
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
   const frameRef = useRef<number>();
   const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
+  const HEADING_SLIDE_IN_VW = 29.6; // vw offset to clear left mask
+
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
 
 // Disable hover-area clicks once chat has appeared so it no longer blocks util-line
@@ -72,7 +74,7 @@ const clipElements = () => {
   const selectors = [
     '.item-text', '.item-line',
     '.center-text', '.center-line',
-    '.account-text', '.account-line',
+    '.account-text', '.account-line', '.heading-flow',
     '.grid-number', '.grid-dashed',
     '.mail-text', '.mail-line'
   ];

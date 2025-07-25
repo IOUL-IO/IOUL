@@ -915,3 +915,8 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v5 === */
+
+/* === Mask‑layer transparency hotfix (2025‑07‑25) === */
+.layer-four{
+  background-color: transparent !important;
+}

@@ -174,7 +174,7 @@ body.non-fullscreen {
     width: 100vw;
     height: 100vh;
     pointer-events: none;
-    clip-path: inset(0); /* adjusted to allow sliding content */
+    clip-path: inset(0 0 0 36vw);
     z-index: 150;
 }
 
@@ -915,3 +915,8 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v5 === */
+
+/* === Unmask slide-container left column (July 25 2025 fix) === */
+.slide-container{
+    clip-path: inset(0 0 0 6.37vw) !important; /* reveal everything right of 6.37vw */
+}

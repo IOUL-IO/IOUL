@@ -66,30 +66,27 @@ useEffect(() => { centerStageRef.current = centerStage; }, [centerStage]);
   const vh = () => window.innerHeight / 100;
   const toVw = (px: number) => px / vw();
   const toVh = (px: number) => px / vh();
-
-// ─── Global real‑time clipping — ONLY account* & item* groups ───────────────
+// ─── Global real‑time clipping ────────────────────────────────────────────
+// Hide anything that slides left of 36vw while inside the main content band (28.5‑84vh)
 const clipElements = () => {
-  // Hide item rows while behind stripe‑3 (left < 35.9vw)
-  document.querySelectorAll<HTMLElement>('.item-text, .item-line').forEach(el => {
-    const rect = el.getBoundingClientRect();
-    const l = toVw(rect.left);
-    const t = toVh(rect.top);
-    const hide = l < 35.9 && t >= 28.5 && t <= 84;
-    el.style.opacity = hide ? '0' : '';
-    el.style.pointerEvents = hide ? 'none' : '';
-  });
-
-  // Hide account row only while behind stripe‑1 (left < 6.37vw)
-  document.querySelectorAll<HTMLElement>('.account-text, .account-line').forEach(el => {
-    const rect = el.getBoundingClientRect();
-    const l = toVw(rect.left);
-    const t = toVh(rect.top);
-    const hide = l < 6.37 && t >= 28.5 && t <= 84;
-    el.style.opacity = hide ? '0' : '';
-    el.style.pointerEvents = hide ? 'none' : '';
+  const selectors = [
+    '.item-text', '.item-line',
+    '.center-text', '.center-line',
+    '.account-text', '.account-line',
+    '.grid-number', '.grid-dashed',
+    '.mail-text', '.mail-line'
+  ];
+  selectors.forEach(sel => {
+    document.querySelectorAll<HTMLElement>(sel).forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const l = toVw(rect.left);
+      const t = toVh(rect.top);
+      const hide = l < 35.9 && t >= 28.5 && t <= 84;
+      el.style.opacity = hide ? '0' : '';
+      el.style.pointerEvents = hide ? 'none' : '';
+    });
   });
 };
-
 
 // Keep clipping in real‑time (every animation frame)
 useEffect(() => {

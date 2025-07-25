@@ -1,3 +1,4 @@
+// --- Patch July 25 2025: align clipping with mask stripe 6.37vw ---
 "use client";
 import './styles.css';
 
@@ -81,7 +82,7 @@ const clipElements = () => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 35.9 && t >= 28.5 && t <= 84;
+      const hide = l < 6.37 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -114,7 +115,7 @@ useEffect(() => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 35.9 && t >= 28.5 && t <= 84;
+      const hide = l < 6.37 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -558,7 +559,7 @@ useEffect(() => {
       targetsRef.current.forEach(el => {
         const r = el.getBoundingClientRect();
         const l = pxToVw(r.left), t = pxToVh(r.top);
-        const hide = l < 35.9;
+        const hide = l < 6.37;
         el.style.opacity = hide ? '0' : '';
         el.style.pointerEvents = hide ? 'none' : '';
       });
@@ -678,12 +679,7 @@ useEffect(() => {
   // Reusable move function for transitions
   const move = (els: NodeListOf<HTMLElement>, offset: number) => {
     els.forEach((el) => {
-      let base = parseFloat(el.dataset.baseLeftVw || "");
-      if (isNaN(base)) {
-        const leftPx = parseFloat(window.getComputedStyle(el).left);
-        base = leftPx / (window.innerWidth / 100);
-        el.dataset.baseLeftVw = base.toString();
-      }
+      const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
       el.style.left = `${base + offset}vw`;
     });
@@ -1049,23 +1045,6 @@ return (
     </div>
   );
 };
-
-
-  // ----- Capture base left positions for sliding containers -----
-  useEffect(() => {
-    const capture = () => {
-      document.querySelectorAll<HTMLElement>('[data-offset]').forEach(el => {
-        const leftPx = parseFloat(window.getComputedStyle(el).left);
-        const base = leftPx / (window.innerWidth / 100);
-        if (!el.dataset.baseLeftVw) {
-          el.dataset.baseLeftVw = base.toString();
-        }
-      });
-    };
-    capture();
-    window.addEventListener('resize', capture);
-    return () => window.removeEventListener('resize', capture);
-  }, []);
 
 export default IOULPage;
     

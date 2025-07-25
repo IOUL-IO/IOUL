@@ -915,3 +915,16 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v5 === */
+
+/* === Patch July 25 2025: restore mask layers and adjust clip === */
+.layer-one,
+.layer-two,
+.layer-three,
+.layer-four,
+.layer-five,
+.layer-six {
+    display: block !important;
+}
+.slide-container {
+    clip-path: inset(0 0 0 6.37vw) !important;
+}

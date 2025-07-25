@@ -862,17 +862,7 @@ body.non-fullscreen {
 }
 
 
-/* Hide mask layers to reveal page */
-.layer-one,
-.layer-two,
-.layer-three,
-.layer-four,
-.layer-five,
-.layer-six{
-  display:none !important;
-}
 
-/* Force page-content visible */
 .page-content{
   opacity:1 !important;
 }
@@ -915,3 +905,10 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v5 === */
+
+
+.layer-one,
+.layer-two,
+.layer-four {
+  z-index: 100 !important;
+}

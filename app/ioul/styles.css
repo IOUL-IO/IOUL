@@ -915,40 +915,29 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v5 === */
-/* === Layering Overrides v6 (2025‑07‑25) ===
-   Ensure sliding groups pass **beneath** mask stripes but util‑line stays clickable. */
-.layer-one, .layer-two, .layer-three, .layer-four, .layer-five, .layer-six {
-    z-index: 500 !important;            /* stripes always on top */
-}
-.slide-container {
-    z-index: 80 !important;             /* account-texts + account-line */
-}
-.heading-container,
-.account-container {
-    z-index: 80 !important;             /* same stack group as slide‑container */
-}
-.menu-items,
-.community-items-container,
-.zero-items-container,
-.item-text,
-.item-line,
-.center-text,
-.center-line {
-    z-index: 70 !important;             /* below stripes */
-}
+/* === Layering Overrides v7 (2025‑07‑25) =================================
+   Re‑balance stacks so:
+     • All timeline lines (1‑6 + util‑line) appear ABOVE the mask stripes.
+     • Sliding content groups remain UNDER the stripes.
+   Strategy:
+     1. Masks (.layer-*) sit at z‑index 100.
+     2. .other-content root raised to z‑index 130 so its children lines
+        naturally outrank the stripes.
+     3. Lines themselves kept tidy at 110 / 120.
+     4. Sliding groups stay at 80 or below.
+========================================================================= */
+.layer-one, .layer-two, .layer-three,
+.layer-four, .layer-five, .layer-six  { z-index: 100 !important; }
 
-/* util-line must sit above stripes so users can click it */
-.line.util-line {
-    z-index: 600 !important;
-}
+.other-content                       { z-index: 130 !important; }
 
-/* All other timeline lines beneath the stripes */
-.line:not(.util-line) {
-    z-index: 60 !important;
-}
+.line                                { z-index: 110 !important; pointer-events: none !important; }
+.line.util-line                      { z-index: 120 !important; pointer-events: auto !important; }
 
-/* lower other-content wrapping context */
-.other-content {
-    z-index: 65 !important;
-}
-/* === End Layering Overrides v6 === */
+.line.fifth, .line.sixth             { z-index: 110 !important; } /* restore normal order */
+
+.slide-container,
+.account-container, .heading-container { z-index: 80 !important; }
+
+/* Menu + other sliding groups already <= 70 from v6 — leave unchanged */
+/* === End Layering Overrides v7 === */

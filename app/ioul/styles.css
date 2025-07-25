@@ -915,16 +915,3 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v5 === */
-
-/* === IOUL SLIDE FIX PATCH (2025-07-25) === */
-/* 1. Keep mask stripes visible so they can clip the account row */
-.layer-one,.layer-two,.layer-three,.layer-four,.layer-five,.layer-six{
-    display:block !important;
-}
-
-/* 2. Narrow slide-container mask to show content that stops at 6.41vw */
-.slide-container{
-    clip-path: inset(0 0 0 6.37vw) !important;
-}
-
-/* 3. Make sure account texts/lines obey same mask via JS opacity (no CSS needed) */

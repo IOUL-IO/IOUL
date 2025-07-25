@@ -7,7 +7,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 const IOULPage: React.FC = () => {
 // Mount effect: add body class and fade in content
-React.useEffect(() => {
+useEffect(() => {
   document.body.classList.add('non-fullscreen');
   setPageFadedIn(true);
 }, []);
@@ -33,9 +33,6 @@ useEffect(() => {
   const [state, setState] = useState(0); // 0 = baseline (lines visible, others hidden)
 
   const EDGE_MARGIN = 11;
-
-  const CLIP_EDGE = 6.37; // vw - left mask edge
-
 
   const targetsRef = useRef<(HTMLElement | null)[]>([]); // Reference to target elements
 
@@ -84,7 +81,7 @@ const clipElements = () => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < CLIP_EDGE && t >= 28.5 && t <= 84;
+      const hide = l < 35.9 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -117,7 +114,7 @@ useEffect(() => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < CLIP_EDGE && t >= 28.5 && t <= 84;
+      const hide = l < 35.9 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -561,7 +558,7 @@ useEffect(() => {
       targetsRef.current.forEach(el => {
         const r = el.getBoundingClientRect();
         const l = pxToVw(r.left), t = pxToVh(r.top);
-        const hide = l < CLIP_EDGE;
+        const hide = l < 35.9;
         el.style.opacity = hide ? '0' : '';
         el.style.pointerEvents = hide ? 'none' : '';
       });

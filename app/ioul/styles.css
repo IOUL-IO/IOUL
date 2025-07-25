@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'Distill Expanded';
-    src: url('././font.woff2') format('woff2'),
-         url('./font.woff') format('woff');
+    src: url('font.woff2') format('woff2'),
+         url('font.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
@@ -842,92 +842,4 @@ body.non-fullscreen {
 }
 .line.util-line{
     pointer-events:auto !important;
-}
-
-
-/* -- Calendar grid stacking adjustment (July 22 2025) -- */
-.grid-number,
-.grid-dashed {
-  z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
-}
-
-/* === PERMANENT VISIBILITY FOR LINES 5 & 6 — 2025-07-23 00:59:10 === */
-/* Undo older util‑state rules that hid the lines */
-.line.fifth,
-.line.sixth {
-  display: inline-block !important;
-  opacity: 1 !important;
-  z-index: 420 !important;      /* stay above strips */
-  pointer-events: none !important; /* same behaviour across pages */
-}
-
-
-/* Hide mask layers to reveal page */
-.layer-one,
-.layer-two,
-.layer-three,
-.layer-four,
-.layer-five,
-.layer-six{
-  display:none !important;
-}
-
-/* Force page-content visible */
-.page-content{
-  opacity:1 !important;
-}
-
-
-/* === Layering Overrides v4 (updated 2025-07-24) ===
-   Goal: Lines 1‑3 and util‑line must appear above the left column mask stripes (layer‑1 & layer‑2).
-   We lift all timeline lines to z‑index 110 and util‑line to 120.
-   Containers keep their v3 positions.
-*/
-
-/* 0 ▸ Ensure layer divs stay rendered */
-.layer-one, .layer-two, .layer-three, .layer-four, .layer-five, .layer-six {
-    display: block !important;
-}
-
-/* 1 ▸ Containers (unchanged from v3) */
-.account-container, .heading-container { z-index: 90 !important; }
-.menu-items { z-index: 1 !important; }
-.community-items-container, .zero-items-container { z-index: 1 !important; }
-
-/* 2 ▸ Item rows (unchanged) */
-.item-text, .item-line, .center-text, .center-line { z-index: 60 !important; }
-
-/* 3 ▸ Timeline lines */
-.line { z-index: 110 !important; pointer-events: none !important; }
-.line.util-line { z-index: 120 !important; pointer-events: auto !important; }
-
-/* === End Layering Overrides v4 === */
-
-/* === Layering Overrides v5 (updated 2025-07-24) ===
-   Key fix: raise .other-content stacking context so its children lines 1‑3
-   and util‑line can appear above the left column mask stripes (layer‑1 & layer‑2).
-   The container itself now sits at z‑index 130 above stripes (100)
-   but below timeline fifth/sixth (420) and above all content containers (≤ 90).
-*/
-
-.other-content {
-    z-index: 130 !important;
-}
-
-/* === End Layering Overrides v5 === */
-
-/* === IOUL PATCH 2025‑07‑25: Restore mask stripes & set narrow clip === */
-/* Ensure the six mask layers are rendered so they can hide left column */
-.layer-one,
-.layer-two,
-.layer-three,
-.layer-four,
-.layer-five,
-.layer-six{
-  display:block !important;
-}
-
-/* Narrow clipping window: show content that slides to 6.41vw */
-.slide-container{
-  clip-path: inset(0 0 0 6.37vw) !important;
 }

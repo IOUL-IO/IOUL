@@ -916,7 +916,8 @@ body.non-fullscreen {
 
 /* === End Layering Overrides v5 === */
 
-/* -- Ensure calendar grid scrolls beneath top mask (layer-five) -- */
-.layer-five{
-  z-index: 5 !important;          /* above calendar grid (z:2), below menu/account boxes (z:101) */
+/* Override layer-two position to match original mask stripe width */
+.layer-two{
+  left: 28.87vw !important;
+  width: calc(36vw - 28.87vw) !important;
 }

@@ -915,12 +915,44 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v5 === */
+/* === Layering Overrides v9 (2025‑07‑25) =======================================
+   Authoritative stacking order (low → high):
+     200  Sliding groups (account, heading, menu, community, zero, item, center)
+     350  Mask stripes (layer‑1 … layer‑6)
+     400  Timeline lines (1‑6) and util‑line (410)
+   This guarantees every sliding container is masked by its stripe(s) while
+   keeping all timeline lines visible above the mask. Other elements inherit
+   from their parents and remain unchanged.  Only z‑index and display are set.
+============================================================================== */
+.slide-container,
+.heading-container,
+.account-container,
+.menu-items,
+.community-items-container,
+.zero-items-container,
+.item-text,
+.item-line,
+.center-text,
+.center-line                           { z-index: 200 !important; }
 
-/* Ensure key UI text floats above mask layers like in original repo */
-.custom-text,
-.content-text{
-  user-select:text !important;
-  z-index:150 !important; /* above masks & lines */
-  opacity:1 !important;
-  visibility:visible !important;
-}
+.layer-one,
+.layer-two,
+.layer-three,
+.layer-four,
+.layer-five,
+.layer-six                              { display: block !important; z-index: 350 !important; pointer-events: none !important; }
+
+.line                                   { z-index: 400 !important; pointer-events: none !important; }
+.line.util-line                         { z-index: 410 !important; pointer-events: auto !important; }
+
+/* Raise .other-content so its children (timeline lines) sit above stripes */
+.other-content                          { z-index: 380 !important; }
+
+/* Ensure grid, mail, chat stay above stripes when needed */
+.grid-number,
+.grid-dashed,
+.mail-text,
+.mail-line,
+.chat-text                              { z-index: 390 !important; }
+
+/* === End Layering Overrides v9 ============================================ */

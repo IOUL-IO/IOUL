@@ -9,14 +9,13 @@ const IOULPage: React.FC = () => {
 // Mount effect: add body class and fade in content
 React.useEffect(() => {
   document.body.classList.add('non-fullscreen');
-  const pc = document.querySelector<HTMLElement>('.page-content');
-  if (pc) {
-    requestAnimationFrame(() => { pc.style.opacity = '1'; });
-  }
+  setPageFadedIn(true);
 }, []);
 
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
-  const [slideState, setSlideState] = useState("none");  const [chatVisible, setChatVisible] = useState(true);
+  const [slideState, setSlideState] = useState("none");
+  const [pageFadedIn, setPageFadedIn] = useState(false);
+  const [chatVisible, setChatVisible] = useState(true);
   const [chatInitialized, setChatInitialized] = useState(true);
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
   const frameRef = useRef<number>();

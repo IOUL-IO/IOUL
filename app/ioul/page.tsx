@@ -107,7 +107,11 @@ useEffect(() => {
     rafId = requestAnimationFrame(tick);
   };
   tick();
-  return () => {
+  
+useEffect(() => {
+  attachSlideVisibility();
+}, []);
+return () => {
     window.removeEventListener('resize', onResize);
     cancelAnimationFrame(rafId);
   };
@@ -1054,5 +1058,25 @@ return (
   );
 };
 
+
+// --- auto visibility helper: toggles `.slide-active` during transform transitions ---
+function attachSlideVisibility() {
+  const sel = [
+    '.account-container[data-slide-group="account"]',
+    '.heading-container[data-slide-group="heading"]',
+    '.custom-line[data-slide-group="heading"]',
+    '.menu-items',
+    '.community-items-container',
+    '.zero-items-container'
+  ].join(', ');
+  document.querySelectorAll<HTMLElement>(sel).forEach(el => {
+    el.addEventListener('transitionrun', () => {
+      el.classList.add('slide-active');
+    });
+    el.addEventListener('transitionend', () => {
+      el.classList.remove('slide-active');
+    });
+  });
+}
 export default IOULPage;
     

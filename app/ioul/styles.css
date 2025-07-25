@@ -910,3 +910,11 @@ body.non-fullscreen {
 .slide-active {
     z-index: 101 !important;   /* above stripes (100), below timeline lines (110+) */
 }
+
+
+/* --- Stripe z-index override --- */
+.layer-one,
+.layer-two,
+.layer-four {
+  z-index: 100 !important;
+}

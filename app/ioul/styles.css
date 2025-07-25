@@ -63,13 +63,6 @@ body.non-fullscreen {
 
 
 
-    transition: opacity 0.6s ease;
-    width: 100vw;
-    height: 100vh;
-}
-
-
-
 .menu-items {
     position: absolute;
     top: 0;

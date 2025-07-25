@@ -1,778 +1,552 @@
 @font-face {
-    font-family: 'Distill Expanded';
-    src: url('font.woff2') format('woff2'),
-         url('font.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Distill Expanded';
+  src: url('font.woff2') format('woff2'),
+       url('font.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* ===== Reset & Base ===== */
+*{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --username-line-top:38.9vh;
+  --password-line-top:47vh;
+  --line-gap:2.8vh;
+  --slide-dist:22.59vw;            /* primary horizontal shift */
 }
 
-body.non-fullscreen {
-    background-color: #ffffff;
-    min-height: 100vh;
-    min-width: 100vw;
-    overflow: hidden;
+body.non-fullscreen{background:#fff;min-height:100vh;min-width:100vw;overflow:hidden;}
+body.non-fullscreen .username{top:35.17vh;}
+body.non-fullscreen .password{top:43.17vh;}
+
+body.fade-in-trigger{background:#fff;}
+
+/* ===== Lines ===== */
+.line:not(.login-line):not(.login-line-second){
+  opacity:0;transition:opacity .5s ease-in-out;
+}
+body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
+  opacity:1;
 }
 
-.layer-one {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 6.37vw;
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100;
-    pointer-events: none;
-}
-.layer-two {
-    position: fixed;
-    top: 0;
-    left: 28.87vw;
-    width: calc(36vw - 28.87vw);
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100;
-    pointer-events: none;
-}
-.layer-three {
-    position: fixed;
-    top: 0;
-    left: 94.17vw;
-    width: calc(100vw - 94.17vw);
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100;
-    pointer-events: none;
+.login-line,
+.login-line-second,
+.login-text{opacity:0;transition:opacity .5s ease-in-out;}
+
+.login-text,
+.login-line,
+.login-line-second{
+  transition:transform .7s ease-in-out, opacity .5s ease-in-out;
 }
 
-.page-content {
-    position: relative;
-    opacity: 0;
-    transition: opacity 0.6s ease;
-    width: 100vw;
-    height: 100vh;
+/* ===== Generic Visibility Helpers ===== */
+.visible{opacity:1 !important;transition:transform 0.7s ease-in-out, opacity .5s ease-in-out;}
+.hidden {opacity:0 !important;transition:transform 0.7s ease-in-out, opacity .5s ease-in-out;pointer-events:none;}
+
+/* ===== Static Geometry ===== */
+.line{position:absolute;height:1px;background:rgba(172,172,172,.84)}
+.original{top:12.5vh;left:6.38vw;width:22.48vw;}
+.second  {top:28.5vh;left:6.38vw;width:18.68vw;}
+.third   {top:84vh; left:6.38vw;width:22.48vw;}
+.fourth  {top:12.5vh;left:36vw; width:57.8vw;}
+.fifth   {top:28.5vh;left:36vw; width:57.8vw;}
+.sixth   {top:84vh; left:36vw; width:57.8vw;}
+
+.line.util-line{top:28.5vh;left:26.06vw;width:2.8vw;z-index:1;}
+
+.login-text{
+  position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
+  letter-spacing:.28vw;font-size:.47rem;left:6.41vw;
+  text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
 }
 
-.menu-items {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    pointer-events: none;
+.username{top:calc(var(--username-line-top) - var(--line-gap));}
+.password{top:calc(var(--password-line-top) - var(--line-gap));}
+
+.login-line,
+.login-line-second{
+  position:absolute;left:6.4vw;width:22.48vw;height:1px;
+  background:rgba(230,230,230,.28);
 }
-.menu-items.raised {
-    z-index: 4;
+.login-line {top:var(--username-line-top);}
+.login-line-second{top:var(--password-line-top);}
+
+/* ===== Utility Texts (OPEn / HELP) ===== */
+.open-text,
+.help-text{
+  transition: transform 0.7s ease, opacity 0.3s ease;
+  position:absolute;top:35.17vh;                 /* overwritten for help later */
+  font-family:'Distill Expanded',sans-serif;
+  color:#111;letter-spacing:.28vw;font-size:.47rem;
+  text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
+  left:29vw;                                     /* parked behind layer-two */
+  opacity:0;/* start hidden */                                     /* start fully transparent */
+  transition:transform .7s ease,opacity .3s ease;
 }
-.menu-items .menu-item {
-    pointer-events: auto;
-    transition: left 0.6s ease, transform 0.6s ease;
+.help-text{top:43.17vh;}
+
+/* Hover brighten when visible */
+.open-text.visible:hover,
+.help-text.visible:hover{opacity:1 !important;}
+
+/* ===== Layers ===== */
+.layer-one{
+  position:fixed;top:0;left:0;width:6.37vw;height:100vh;background:#fff;z-index:100;
+}
+.layer-two{
+  position:fixed;top:0;left:28.87vw;width:calc(36vw - 28.87vw);height:100vh;background:#fff;z-index:100;
 }
 
-.layer-four {
-    position: absolute;
-    top: 28.5vh;
-    left: 36vw;
-    width: 61vw;
-    height: 55.5vh;
-    background-color: #ffffff;
-    z-index: 2;
-    pointer-events: none;
+/* ===== Account & Help Wrappers ===== */
+.account-wrapper,
+.help-wrapper{
+  position:fixed;top:0;left:29vw;
+  width:22.48vw;height:100vh;
+  clip-path: inset(0 100% 0 0);     /* hide anything >36vw */
+  transition:left .7s ease,clip-path .7s ease;
+  z-index:5;pointer-events:none;
+}
+.account-wrapper.active,
+.help-wrapper.active{
+  left:6.41vw;clip-path: inset(0);pointer-events:auto;
 }
 
-.other-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 3;
+/* ===== Account specific ===== */
+.account-text{
+  position:absolute;left:0;font-family:'Distill Expanded',sans-serif;color:#111;
+  letter-spacing:.34vw;font-size:.46rem;line-height:1.2;padding:.1rem 0;
+  text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
+}
+.account-text.account-email          {top:35.2vh;}
+.account-text.account-username       {top:43.3vh;}
+.account-text.account-sign-password  {top:51.4vh;}
+.account-text.account-repeat-password{top:59.5vh;}
+
+.account-line{position:absolute;left:0;width:22.48vw;height:1px;background:rgba(230,230,230,.28);}
+.account-line.account-line1{top:38.9vh;}
+.account-line.account-line2{top:47vh;}
+.account-line.account-line3{top:55.1vh;}
+.account-line.account-line4{top:63.2vh;}
+
+/* ===== Help specific ===== */
+.help-text-area{
+  position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
+  letter-spacing:.34vw;font-size:.47rem;white-space:nowrap;
+  text-shadow:.001rem .001rem 0 #717171,-.001rem -.001rem 0 #717171;
+}
+.help-text-area.email   {left:0;top:35.17vh;}
+.help-text-area.sendlink{left:15.77vw;top:35.17vh;opacity:.7;transition:opacity .3s ease;}
+.help-text-area.sendlink:hover{opacity:1;}
+.help-line{position:absolute;top:38.9vh;left:0;width:22.48vw;height:1px;background:rgba(230,230,230,.28);}
+
+/* ========= Dynamic Stage‑based Sliding ======== */
+
+/* LOGIN (default) – everything parked */
+body.stage-login .username,
+body.stage-login .password,
+body.stage-login .login-line,
+body.stage-login .login-line-second{transform:translateX(0);}
+body.stage-login .open-text,
+body.stage-login .help-text{transform:translateX(0);}
+
+/* UTIL (OPEn / HELP visible) */
+body.stage-util .username,
+body.stage-util .password,
+body.stage-util .login-line,
+body.stage-util .login-line-second,
+body.stage-account .username,
+body.stage-account .password,
+body.stage-account .login-line,
+body.stage-account .login-line-second,
+body.stage-help .username,
+body.stage-help .password,
+body.stage-help .login-line,
+body.stage-help .login-line-second{
+  transform:translateX(calc(-1 * var(--slide-dist)));
 }
 
-.slide-triggers {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 101;
-    pointer-events: none;
-}
-.slide-trigger,
-.slide-trigger-reverse {
-    pointer-events: auto;
-}
-.slide-trigger {
-    position: absolute;
-    top: 28.5vh;
-    left: 32.43vw;
-    width: calc(36vw - 32.43vw);
-    height: calc(84vh - 28.5vh);
-    background: transparent;
-    cursor: pointer;
-}
-.slide-trigger-reverse {
-    position: absolute;
-    top: 28.5vh;
-    left: 94vw;
-    width: calc(100vw - 94vw);
-    height: calc(84vh - 28.5vh);
-    background: transparent;
-    cursor: pointer;
+body.stage-util .open-text,
+body.stage-util .help-text{transform:translateX(calc(-1 * var(--slide-dist)));opacity:.7 !important;}
+
+/* ACCOUNT / HELP detail layers */
+body.stage-account .open-text,
+body.stage-account .help-text,
+body.stage-help .open-text,
+body.stage-help .help-text{
+  transform:translateX(calc(-2 * var(--slide-dist)));opacity:.7 !important;
 }
 
-.line {
-    position: absolute;
-    height: 1px;
-    background-color: rgba(172, 172, 172, 0.841);
-}
-.original {
-    top: 12.5vh;
-    left: 6.38vw;
-    width: 22.48vw;
-}
-.second {
-    top: 28.5vh;
-    left: 6.38vw;
-    width: 18.68vw;
-}
-.third {
-    top: 84vh;
-    left: 6.38vw;
-    width: 22.48vw;
-}
-.fourth {
-    top: 12.5vh;
-    left: 36vw;
-    width: 57.8vw;
-    z-index: 1;
-}
-.fifth {
-    top: 28.5vh;
-    left: 36vw;
-    width: 57.8vw;
-    z-index: 1;
-}
-.sixth {
-    top: 84vh;
-    left: 36vw;
-    width: 57.8vw;
-    z-index: 1;
+/* Pointer brightening in any stage */
+body.stage-util .open-text:hover,
+body.stage-util .help-text:hover,
+body.stage-account .open-text:hover,
+body.stage-account .help-text:hover,
+body.stage-help .open-text:hover,
+body.stage-help .help-text:hover{opacity:1 !important;}
+
+/* Ensure wrappers fade in/out only by position */
+body.stage-login .account-wrapper,
+body.stage-login .help-wrapper{pointer-events:none;}
+
+
 }
 
 
-.slide-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    clip-path: inset(0 0 0 36vw);
-    z-index: 150;
+/* Disable clicks on util texts when parked behind layer‑two */
+body.stage-login .open-text,
+body.stage-login .help-text{
+  pointer-events:none;
+}
+body.stage-util .open-text,
+body.stage-util .help-text,
+body.stage-account .open-text,
+body.stage-account .help-text,
+body.stage-help .open-text,
+body.stage-help .help-text{
+  pointer-events:auto;
 }
 
-.hover-area {
-    position: absolute;
-    top: 28.5vh;
-    left: 6.4vw;
-    width: calc(32.43vw - 6.4vw);
-    height: calc(84vh - 28.5vh);
-    pointer-events: auto;
-    background: transparent;
+
+.login-text,
+.login-line,
+.login-line-second{
+  will-change: transform;
 }
 
-.chat-text {
-    position: absolute;
-    top: 77vh;
-    left: 6.41vw;
-    display: inline-block;
-    font-family: 'Distill Expanded', sans-serif;
-    color: #111111;
-    letter-spacing: 0.28vw;
-    font-size: 0.47rem;
-    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.1s ease,  opacity 0.6s ease, transform 0.6s ease;
-    line-height: 1.3;
-    padding-top: 0.1rem;
-}
 
-.chat-input {
-    position: absolute;
-    top: 77vh;
-    left: 6.41vw;
-    width: 22.17vw;
-    font-family: 'Distill Expanded', sans-serif;
-    font-size: 0.47rem;
-    letter-spacing: 0.28vw;
-    color: #111111;
-    caret-color: #717171;
-    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
-    line-height: 1.2;
-    padding: 0.2rem 0;
-    border: none;
-    outline: none;
-    background: #ffffff;
-    cursor: text;
-    transition: transform 0.6s ease;
-}
-
-.grid-number {
-    position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    color: #111111;
-    font-size: 0.411rem;
-    letter-spacing: 0.28vw;
-    text-shadow: 0.011rem 0.011rem 0 #717171, -0.011rem -0.011rem 0 #717171;
-    transition: transform 0.6s ease;
-}
-
-.num1  { top: 28.5vh; left: 48.8vw; }
-.num2  { top: 28.5vh; left: 63.7vw; }
-.num3  { top: 28.5vh; left: 78.5vw; }
-.num4  { top: 28.5vh; left: 93.3vw; }
-.num5  { top: 47vh;   left: 48.8vw; }
-.num6  { top: 47vh;   left: 63.7vw; }
-.num7  { top: 47vh;   left: 78.5vw; }
-.num8  { top: 47vh;   left: 93.3vw; }
-.num9  { top: 65.5vh; left: 48.8vw; }
-.num10 { top: 65.5vh; left: 63.3vw; }
-.num11 { top: 65.5vh; left: 78.3vw; }
-.num12 { top: 65.5vh; left: 92.9vw; }
-.num13 { top: 83.7vh; left: 48.3vw; }
-.num14 { top: 83.7vh; left: 63.2vw; }
-.num15 { top: 83.7vh; left: 78.0vw; }
-.num16 { top: 83.7vh; left: 92.8vw; }
-
-.grid-dashed {
-    position: absolute;
-    height: 1px;
-    width: 11.8vw;
-    background: linear-gradient(to right, #171717 0, #171717 5px, #ffffff 5px, #ffffff 10px);
-    background-size: 10px 1px;
-    transition: transform 0.6s ease;
-    opacity: 0.711;
-}
-
-.dashed01 { top: 28.5vh; left: 36vw; }
-.dashed02 { top: 28.5vh; left: 51vw; }
-.dashed03 { top: 28.5vh; left: 65.9vw; }
-.dashed04 { top: 28.5vh; left: 80.8vw; }
-.dashed05 { top: 47vh;   left: 36vw; }
-.dashed06 { top: 47vh;   left: 51vw; }
-.dashed07 { top: 47vh;   left: 65.9vw; }
-.dashed08 { top: 47vh;   left: 80.8vw; }
-.dashed09 { top: 65.5vh; left: 36vw; }
-.dashed10 { top: 65.5vh; left: 51vw; }
-.dashed11 { top: 65.5vh; left: 65.9vw; }
-.dashed12 { top: 65.5vh; left: 80.8vw; }
-.dashed13 { top: 84vh;   left: 36vw; }
-.dashed14 { top: 84vh;   left: 51vw; }
-.dashed15 { top: 84vh;   left: 65.9vw; }
-.dashed16 { top: 84vh;   left: 80.8vw; }
-
-.num17 { top: 102.2vh; left: 48.3vw; }
-.num18 { top: 102.2vh; left: 63.2vw; }
-.num19 { top: 102.2vh; left: 78.0vw; }
-.num20 { top: 102.2vh; left: 92.8vw; }
-.num21 { top: 120.7vh; left: 48.3vw; }
-.num22 { top: 120.7vh; left: 63.2vw; }
-.num23 { top: 120.7vh; left: 78.0vw; }
-.num24 { top: 120.7vh; left: 92.8vw; }
-.num25 { top: 139.2vh; left: 48.3vw; }
-.num26 { top: 139.2vh; left: 63.2vw; }
-.num27 { top: 139.2vh; left: 78.0vw; }
-.num28 { top: 139.2vh; left: 92.8vw; }
-.num29 { top: 157.7vh; left: 48.3vw; }
-.num30 { top: 157.7vh; left: 63.2vw; }
-.num31 { top: 157.7vh; left: 78.0vw; }
-
-.dashed17 { top: 102.5vh; left: 36vw; }
-.dashed18 { top: 102.5vh; left: 51vw; }
-.dashed19 { top: 102.5vh; left: 65.9vw; }
-.dashed20 { top: 102.5vh; left: 80.8vw; }
-.dashed21 { top: 121vh;   left: 36vw; }
-.dashed22 { top: 121vh;   left: 51vw; }
-.dashed23 { top: 121vh;   left: 65.9vw; }
-.dashed24 { top: 121vh;   left: 80.8vw; }
-.dashed25 { top: 139.5vh; left: 36vw; }
-.dashed26 { top: 139.5vh; left: 51vw; }
-.dashed27 { top: 139.5vh; left: 65.9vw; }
-.dashed28 { top: 139.5vh; left: 80.8vw; }
-.dashed29 { top: 158vh;   left: 36vw; }
-.dashed30 { top: 158vh;   left: 51vw; }
-.dashed31 { top: 158vh;   left: 65.9vw; }
-
-/* Removed dashed lines and time texts animation styles */
-
-.other-content.animate-grid .grid-number,
-.other-content.animate-grid .grid-dashed {
-    transform: translateX(-60vw);
-}
-
-.custom-text {
-    position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    color: #111111;
-    letter-spacing: 0.28vw;
-    font-size: 0.47rem;
-    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
-    transition: left 0.6s ease, transform 0.6s ease;
-    line-height: 1.6;
-    overflow: visible;
-}
-
-.custom-line {
-    position: absolute;
-    top: 47.8vh; 
-    left: -42.59vw;
-    width: 22.48vw;
-    height: 1px;
-    background-color: rgba(230, 230, 230, 0.28);
-    transition: left 0.6s ease, transform 0.6s ease;
-}
-
-.menu-slide {
-    transform: translateX(-22.59vw);
-}
-.menu-items .menu-item.menu-slide.slide-down {
-    transform: translate(-22.59vw, 11vh);
-}
-.slide-down {
-    transform: translateY(11vh);
-}
-
-.layer-five {
-    position: absolute;
-    top: 0;
-    left: 36vw;
-    width: 58.7vw;
-    height: 28.4vh;
-    background-color: #ffffff;
-    pointer-events: none;
-}
-.layer-six {
-    position: absolute;
-    top: 84.7vh;
-    left: 36vw;
-    width: 58.7vw;
-    height: 15.3vh;
-    background-color: #ffffff;
-    pointer-events: none;
-}
-
-.new-text {
-    opacity: 0;
-    transition: opacity 0.6s ease;
-}
-.new-text.visible {
-    opacity: 1;
-}
-
-.heading-container {
-    position: absolute;
-    overflow: visible;
-    transition: transform 0.6s ease;
-}
-.heading-flow {
-    white-space: nowrap;
-}
-
-.account-container {
-    position: absolute;
-    overflow: visible;
-    transition: transform 0.6s ease;
-}
-.right-flow {
-    direction: rtl;
-    text-align: right;
-    white-space: nowrap;
-}
-
-.community-items-container span,
-.zero-items-container span {
-    white-space: nowrap;
-    transition: left 0.6s ease, transform 0.6s ease;
-}
-.community-items-container .custom-line {
-    transition: left 0.6s ease, transform 0.6s ease;
-}
-
-@media (min-width: 1900px) {
-  .chat-text,
-  .community-items-container span,
-  .zero-items-container span,
-  .index-input,
-  .custom-text,
-  .mail-text,
+@media (min-width: 1900px){
+  .login-text,
+  .open-text,
+  .help-text,
+  .username,
+  .password,
   .account-text,
-  .item-text {
-    font-size: 9px !important;
-  }
-
-  .grid-number {
-    font-size: 6.1px !important;
+  .help-text-area{
+    font-size: 0.6rem !important;
+    letter-spacing: 0.36vw !important;
   }
 }
 
-/* Removed slide container animation styles */
 
-/* Hide calendar grid items */
-/* removed display none */
-
-.line.util-line {
-    position: absolute;
-    top: 28.5vh;
-    left: 26.06vw;
-    width: 2.8vw;
-    height: 1px;
-    background-color: rgba(172, 172, 172, 0.841);
-    z-index: 1;
+/* Ensure smooth slide for login group */
+.username,
+.password,
+.login-line,
+.login-line-second{
+  transition: transform 0.7s ease-in-out, opacity 0.5s ease-in-out !important;
+  will-change: transform;
 }
 
-.hidden { }
 
-.account-text {
+/* ===== Two‑phase util slide: login first ===== */
+body.stage-util-pre .username,
+body.stage-util-pre .password,
+body.stage-util-pre .login-line,
+body.stage-util-pre .login-line-second{
+  transform:translateX(calc(-1 * var(--slide-dist)));
+}
+body.stage-util-pre .open-text,
+body.stage-util-pre .help-text{
+  transform:translateX(0);
+}
+
+
+/* === Override (2025‑06‑20): Remove hover opacity change; keep OPEn / HELP at full opacity === */
+body.stage-util .open-text,
+body.stage-util .help-text,
+body.stage-account .open-text,
+body.stage-account .help-text,
+body.stage-help .open-text,
+body.stage-help .help-text{
+  opacity: 1 !important;
+}
+
+.open-text.visible:hover,
+.help-text.visible:hover,
+body.stage-util .open-text:hover,
+body.stage-util .help-text:hover,
+body.stage-account .open-text:hover,
+body.stage-account .help-text:hover,
+body.stage-help .open-text:hover,
+body.stage-help .help-text:hover{
+  opacity: 1 !important;
+}
+
+/* === (2025-06-20) Clip OPEn / HELP text so anything beyond 36vw is hidden === */
+body.stage-login .open-text,
+body.stage-login .help-text,
+body.stage-util-pre .open-text,
+body.stage-util-pre .help-text{
+  width: calc(36vw - 29vw); /* match the visible strip between 29vw and 36vw */
+  overflow: hidden;
+}
+
+body.stage-util .open-text,
+body.stage-util .help-text,
+body.stage-account .open-text,
+body.stage-account .help-text,
+body.stage-help .open-text,
+body.stage-help .help-text{
+  width: 22.48vw;           /* restore full width once texts are slid into view */
+  overflow: visible;
+}
+
+/* === (2025-06-20) Keep OPEn / HELP on one line === */
+body.stage-login .open-text,
+body.stage-login .help-text,
+body.stage-util-pre .open-text,
+body.stage-util-pre .help-text,
+body.stage-util .open-text,
+body.stage-util .help-text,
+body.stage-account .open-text,
+body.stage-account .help-text,
+body.stage-help .open-text,
+body.stage-help .help-text{
+  white-space: nowrap;
+}
+
+
+/* === (2025-06-24) Keep OPEn/HELP fully masked behind layer‑two until slide completes === */
+body.stage-util .open-text,
+body.stage-util .help-text{
+  /* Narrow width equals visible gap (29vw → 36vw) so nothing peeks past 36vw while sliding */
+  width: calc(36vw - 29vw);
+  overflow: hidden;
+  /* Jump to full width after the 0.7s transform finishes */
+  animation: utilExpandWidth 0s 0.7s forwards;
+}
+
+@keyframes utilExpandWidth{
+  to{
+    width: 22.48vw;
+    overflow: visible;
+  }
+}
+
+
+/* === (2025-06-24b) Dynamic width reveal for util texts === */
+body.stage-util .open-text,
+body.stage-util .help-text{
+  /* Start in 29→36 vw gap so nothing peeks past 36vw */
+  width: calc(36vw - 29vw);
+  overflow: hidden;
+  animation: utilRevealWidth 0.7s ease forwards;
+}
+
+body.stage-util-pre .open-text,
+body.stage-util-pre .help-text{
+  /* When sliding OUT we start at full width and shrink to stay hidden */
+  width: 22.48vw;
+  overflow: hidden;
+  animation: utilRevealWidth 0.7s ease reverse forwards;
+}
+
+@keyframes utilRevealWidth{
+  0%{
+    width: calc(36vw - 29vw);
+  }
+  100%{
+    width: 22.48vw;
+    overflow: visible;
+  }
+}
+
+
+/* === (2025-06-24c) Hard mask: guarantee OPEn / HELP never peek past 36vw === */
+.layer-two::after{
+  content:'';
+  position:fixed;
+  top:0;
+  left:36vw;
+  width:calc(100vw - 36vw);
+  height:100vh;
+  background:#fff;
+  pointer-events:none;
+  z-index:101; /* sits above util texts */
+}
+
+/* Reset util text width & remove reveal animation so they stay intact while sliding */
+body.stage-util .open-text,
+body.stage-util-pre .open-text,
+body.stage-util .help-text,
+body.stage-util-pre .help-text{
+  width:22.48vw !important;
+  overflow:visible !important;
+  animation:none !important;
+}
+
+
+/* === (2025‑06‑24d) Refined narrow masks for OPEn / HELP only === */
+/* Remove the full‑height curtain from 24c by overriding it */
+.layer-two::after{
+  all: unset;  /* wipe previous rules */
+}
+
+/* Two slim, fixed strips exactly where the util texts travel */
+.layer-two::before,
+.layer-two::after{
+  content:'';
+  position:fixed;
+  left:36vw;                     /* starts exactly at the 36 vw edge */
+  width:calc(100vw - 36vw);      /* cover everything to the right */
+  pointer-events:none;
+  background:#fff;               /* match page background */
+  z-index:101;                   /* sit just above util texts */
+}
+
+/* Top strip — covers OPEn AccOUnT line (center ~35 vh) */
+.layer-two::before{
+  top:calc(35.17vh - 2.5vh);     /* a little above the baseline */
+  height:5vh;                    /* tall enough to mask ascenders */
+}
+
+/* Bottom strip — covers HELP REQUEST line (center ~43 vh) */
+.layer-two::after{
+  top:calc(43.17vh - 2.5vh);
+  height:5vh;
+}
+
+
+/* ==== Inline Login Tweaks from Original HTML ==== */
+body.stage-login .login-text {
   position: absolute;
-  display: inline-block;
+  z-index: 10;
+  overflow: visible;
   font-family: 'Distill Expanded', sans-serif;
-  color: #111111;
-  letter-spacing: 0.28vw;
-  font-size: 0.47rem;
-  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
-  cursor: default;
-  line-height: 1.3;
+  color: #111;
+  letter-spacing: .34vw;
+  font-size: .46rem;
+  line-height: 1.2;
+  padding: .1rem 0;
+  text-shadow: .001rem .001rem 0 #717171, -.001rem -.001rem 0 #717171;
 }
 
-.account-mask {
-  position: fixed;             
-  top: 28.5vh;                
-  left: 0;
-  width: 36vw;                 
-  height: calc(84vh - 28.5vh); 
-  background: var(--background, #fff);
-  pointer-events: none;
-  z-index: 9999;               
-}
-
-.account-text,
-.account-line {
-  transition: left 0.6s ease;
+body.stage-login .login-line,
+body.stage-login .login-line-second {
+  background: rgba(230,230,230,.28) !important;
 }
 
 
-.item-text {
-    position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    color: #111111;
-    letter-spacing: 0.28vw;
-    font-size: 0.47rem;
-    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
-    line-height: 1.6;
-    overflow: visible;
-    transition: left 0.6s ease, transform 0.6s ease;
+/* ==== Force login text size and line color in all stages ==== */
+.login-text {
+  letter-spacing: .34vw !important;
+  font-size: .46rem !important;
+  line-height: 1.2 !important;
+  padding: .1rem 0 !important;
+}
+.login-line,
+.login-line-second {
+  background: rgba(230,230,230,.28) !important;
 }
 
-
-.item-line {
-    transition: left 0.6s ease, transform 0.6s ease;
-    position: absolute;
-    height: 1px;
-    background-color: rgba(230, 230, 230, 0.28);
-    z-index: 1;
-}
-
-.center-text {
-    z-index: 3;
-    position: absolute;
-    font-family: 'Distill Expanded', sans-serif;
-    color: #111111;
-    letter-spacing: 0.28vw;
-    font-size: 0.47rem;
-    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
-    transition: left 0.6s ease, transform 0.6s ease;
-    line-height: 1.6;
-    overflow: visible;
-}
-
-.center-line {
-    z-index: 3;
-    position: absolute;
-    height: 1px;
-    background-color: rgba(230, 230, 230, 0.28);
-    z-index: 1;
-    transition: left 0.6s ease, transform 0.6s ease;
-}
-
-
-
-@media (min-width: 1900px) {
-  .center-text {
-    z-index: 3;
-    font-size: 9px !important;
+@media screen and (min-width: 1900px) {
+  body.stage-login .login-text,
+  body.stage-login .open-text,
+  body.stage-login .help-text,
+  body.stage-login .help-text-area {
+    font-size: .56rem !important;
+    letter-spacing: .36vw !important;
   }
 }
 
-/* Util-line toggle states */
-[data-util="0"] .mail-line,
-[data-util="0"] .mail-text,
-[data-util="0"] .grid-number,
-[data-util="0"] .grid-dashed {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
 
-[data-util="1"] .mail-line,
-[data-util="1"] .mail-text {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-[data-util="2"] .grid-number,
-[data-util="2"] .grid-dashed {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-/* Ensure grid items transition opacity */
-.grid-number,
-.grid-dashed {
-  transition: transform 0.6s ease, opacity 0.4s ease !important;
+/* ==== Persist text sizing during sliding stages ==== */
+body.stage-login .login-text,
+body.stage-login .open-text,
+body.stage-login .help-text,
+body.stage-login .help-text-area,
+body.stage-util .login-text,
+body.stage-util .open-text,
+body.stage-util .help-text,
+body.stage-util .help-text-area {
+  font-size: .56rem !important;
+  letter-spacing: .36vw !important;
 }
 
 
-/* ── Util-line toggle defaults ── */
-/* Hide mail and calendar by default */
-.mail-line,
-.mail-text,
-.other-content .grid-number,
-.other-content .grid-dashed {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  transition: none !important;
-}
+/* === July 9 2025 – Universal font patch === */
+@media screen and (max-width:1899px){
+  .login-text,
+  .open-text,
+  .help-text,
+  .help-text-area,
+  .account-text,
+  .account-text-area,
+  .username,
+  .password,
+  body.stage-login .login-text,
+  body.stage-login .open-text,
+  body.stage-login .help-text,
+  body.stage-login .help-text-area,
+  body.stage-util .login-text,
+  body.stage-util .open-text,
+  body.stage-util .help-text,
+  body.stage-util .help-text-area,
+  body.stage-account .login-text,
+  body.stage-account .open-text,
+  body.stage-account .help-text,
+  body.stage-account .help-text-area,
+  body.stage-help .login-text,
+  body.stage-help .open-text,
+  body.stage-help .help-text,
+  body.stage-help .help-text-area {
+      font-size:0.47rem !important;
+      letter-spacing:0.28rem !important;
+  }
 
-/* Layers 5 & 6 visible by default */
-.layer-five,
-.layer-six {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  transition: none !important;
-}
-
-/* STATE 1: mail visible, others hidden */
-[data-util="1"] .mail-line,
-[data-util="1"] .mail-text {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-[data-util="1"] .other-content .grid-number,
-[data-util="1"] .other-content .grid-dashed,
-[data-util="1"] .layer-five,
-[data-util="1"] .layer-six {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-/* STATE 2: calendar grid items 1-16 visible, mail & layers hidden */
-[data-util="2"] .num1, [data-util="2"] .num2, [data-util="2"] .num3, [data-util="2"] .num4,
-[data-util="2"] .num5, [data-util="2"] .num6, [data-util="2"] .num7, [data-util="2"] .num8,
-[data-util="2"] .num9, [data-util="2"] .num10, [data-util="2"] .num11, [data-util="2"] .num12,
-[data-util="2"] .num13, [data-util="2"] .num14, [data-util="2"] .num15, [data-util="2"] .num16,
-[data-util="2"] .dashed01, [data-util="2"] .dashed02, [data-util="2"] .dashed03, [data-util="2"] .dashed04,
-[data-util="2"] .dashed05, [data-util="2"] .dashed06, [data-util="2"] .dashed07, [data-util="2"] .dashed08,
-[data-util="2"] .dashed09, [data-util="2"] .dashed10, [data-util="2"] .dashed11, [data-util="2"] .dashed12,
-[data-util="2"] .dashed13, [data-util="2"] .dashed14, [data-util="2"] .dashed15, [data-util="2"] .dashed16 {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-[data-util="2"] .mail-line,
-[data-util="2"] .mail-text,
-[data-util="2"] .layer-five,
-[data-util="2"] .layer-six {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-/* Chat hover logic */
-/* UTIL-LINE TOGGLE OVERRIDES */
-:root[data-util="0"] .mail-line,
-:root[data-util="0"] .mail-text,
-:root[data-util="0"] .grid-number,
-:root[data-util="0"] .grid-dashed {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-:root[data-util="1"] .mail-line,
-:root[data-util="1"] .mail-text {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-:root[data-util="2"] .line.fifth,
-:root[data-util="2"] .line.sixth,
-:root[data-util="2"] .mail-line,
-:root[data-util="2"] .mail-text {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-:root[data-util="2"] .grid-number,
-:root[data-util="2"] .grid-dashed {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-/* UTIL-LINE TOGGLE POP OVERRIDES */
-.mail-text,
-.mail-line,
-.grid-number,
-.grid-dashed {
-  transition: none !important;
-  position: relative !important;
-  z-index: 1000 !important;
-}
-
-/* Default: hide mail and calendar grid */
-:root[data-util="0"] .mail-line,
-:root[data-util="0"] .mail-text,
-:root[data-util="0"] .grid-number,
-:root[data-util="0"] .grid-dashed {
-  display: none !important;
-}
-
-/* State 1: show mail only */
-:root[data-util="1"] .mail-line,
-:root[data-util="1"] .mail-text {
-  display: inline-block !important;
-}
-:root[data-util="1"] .grid-number,
-:root[data-util="1"] .grid-dashed {
-  display: none !important;
-}
-
-/* State 2: show calendar grid (1–16) only, hide mail and lines 5/6 */
-:root[data-util="2"] .grid-number,
-:root[data-util="2"] .grid-dashed {
-  display: inline-block !important;
-}
-:root[data-util="2"] .mail-line,
-:root[data-util="2"] .mail-text,
-:root[data-util="2"] .line.fifth,
-:root[data-util="2"] .line.sixth {
-  display: none !important;
-}
-
-
-/* ===== OVERRIDE: mail-text positions and util toggle ===== */
-
-/* Ensure mail-text uses absolute positions from original inline styles */
-.mail-text {
-  position: absolute !important;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111111 !important;
-  letter-spacing: 0.28vw !important;
-  font-size: 0.47rem !important;
-  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171 !important;
-  display: none !important;
-  pointer-events: none !important;
-}
-
-/* mail-text specific positions */
-.mail-text.to      { top: 35.4vh; left: 36vw; }
-.mail-text.subject { top: 41.6vh; left: 36vw; }
-.mail-text.cc      { top: 35.4vh; left: 89vw; }
-.mail-text.bcc     { top: 35.4vh; left: 91.9vw; }
-.mail-text.send    { top: 41.6vh; left: 91.1vw; }
-
-/* calendar grid overrides */
-.grid-number,
-.grid-dashed {
-  position: absolute !important;
-  display: none !important;
-  pointer-events: none !important;
-}
-
-/* override util-line toggles */
-.mail-line {
-  display: none !important;
-}
-[data-util="1"] .mail-line {
-  display: block !important;
-}
-[data-util="1"] .mail-text {
-  display: inline-block !important;
-}
-[data-util="2"] .grid-number,
-[data-util="2"] .grid-dashed {
-  display: inline-block !important;
-}
-[data-util="2"] .mail-line,
-[data-util="2"] .mail-text,
-[data-util="2"] .line.fifth,
-[data-util="2"] .line.sixth {
-  display: none !important;
-}
-
-/* ensure correct layering */
-.mail-line,
-.mail-text,
-.grid-number,
-.grid-dashed {
-  z-index: 100 !important;
-}
-
-/* === FINAL OVERRIDE: visibile mail-text on state 1 and correct layering === */
-:root[data-util="1"] .mail-text {
-  display: inline-block !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  z-index: 200 !important;
-}
-
-/* Ensure slide-container sits above util lines */
-.slide-container {
-  z-index: 150 !important;
-}
-
-/* Large-screen font size override */
-@media (min-width: 1900px) {
-  .mail-text {
-    font-size: 9px !important;
+  .account-text{
+      letter-spacing:0.28rem !important;
+      font-size:0.47rem !important;
   }
 }
 
-/* === CHAT-TEXT HOVER LAYERING FIX === */
-.hover-area {
-  z-index: 200 !important;
+/* ===  Ultra‑wide (>1900px) persistent font sizing patch 2025‑07‑09 === */
+@media screen and (min-width:1900px){
+  .open-text,
+  .help-text,
+  .account-text,
+  .help-text-area,
+  .login-text{
+    font-size:0.56rem !important;
+    letter-spacing:0.36vw !important;
+  }
 }
 
-.chat-text {
-  z-index: 201 !important;
+/* === Sequential slide patch 2025-07-09 === */
+:root{
+  --open-help-delay:0.7s;      /* delay equals login slide duration */
+}
+.open-text,
+.help-text{
+  /* keep same duration but add delay so they start AFTER login texts/lines finish */
+  transition: transform 0.7s ease var(--open-help-delay), opacity .3s ease !important;
 }
 
-
-
-/* === Chat-text persistent visibility === */
-.chat-text.visible {
-  opacity: 1 !important;
-  pointer-events: auto !important;
+/* === Fine-grained sequential slide patch 2025‑07‑09 (rev2) === */
+/* Default: no delay */
+.open-text,
+.help-text{
+  transition: transform 0.7s ease, opacity .3s ease !important;
 }
 
+/* First invocation: while still in stage-login, delay the transform so login elements can slide first */
+body.stage-login .open-text,
+body.stage-login .help-text{
+  transition: transform 0.7s ease 0.7s, opacity .3s ease !important;
+}
 
-/* Hide chat-text while any slide is active */
-html[data-slide="heading"] .chat-text,
-html[data-slide="menu"] .chat-text,
-html[data-slide="community"] .chat-text {
-  opacity: 0 !important;
-  pointer-events: none !important;
+/* === Sequential slide patch 2025-07-09 rev3 === */
+/* Apply delay ONLY during first outward slide (stage-util) */
+body.stage-util .open-text,
+body.stage-util .help-text{
+  transition: transform 0.7s ease 0.7s, opacity .3s ease !important;
+}
+
+/* Remove delay for subsequent motions (account/help stages) */
+body.stage-account .open-text,
+body.stage-account .help-text,
+body.stage-help .open-text,
+body.stage-help .help-text{
+  transition: transform 0.7s ease, opacity .3s ease !important;
 }

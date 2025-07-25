@@ -1,4 +1,6 @@
 "use client";
+import './styles.css';
+
 import React, { useEffect } from "react";
 
 const Page: React.FC = () => {

@@ -1,6 +1,10 @@
-
-
-
+@font-face {
+    font-family: 'Distill Expanded';
+    src: url('././font.woff2') format('woff2'),
+         url('./font.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 
 * {
     margin: 0;
@@ -8,20 +12,12 @@
     box-sizing: border-box;
 }
 
-
-
-
-
 body.non-fullscreen {
     background-color: #ffffff;
     min-height: 100vh;
     min-width: 100vw;
     overflow: hidden;
 }
-
-
-
-
 
 .layer-one {
     position: fixed;
@@ -33,24 +29,16 @@ body.non-fullscreen {
     z-index: 100;
     pointer-events: none;
 }
-
-
-
-
 .layer-two {
     position: fixed;
     top: 0;
-    left: 28.87vw;
-    width: calc(36vw - 28.87vw);
+    left: 6.37vw;
+    width: calc(36vw - 6.37vw);
     height: 100vh;
     background-color: #ffffff;
     z-index: 100;
     pointer-events: none;
 }
-
-
-
-
 .layer-three {
     position: fixed;
     top: 0;
@@ -62,17 +50,13 @@ body.non-fullscreen {
     pointer-events: none;
 }
 
-
-
-
-
-
+.page-content {
+    position: relative;
+    opacity: 0;
     transition: opacity 0.6s ease;
     width: 100vw;
     height: 100vh;
-
-
-
+}
 
 .menu-items {
     position: absolute;
@@ -83,25 +67,13 @@ body.non-fullscreen {
     z-index: 1;
     pointer-events: none;
 }
-
-
-
-
 .menu-items.raised {
     z-index: 4;
 }
-
-
-
-
 .menu-items .menu-item {
     pointer-events: auto;
     transition: left 0.6s ease, transform 0.6s ease;
 }
-
-
-
-
 
 .layer-four {
     position: absolute;
@@ -114,10 +86,6 @@ body.non-fullscreen {
     pointer-events: none;
 }
 
-
-
-
-
 .other-content {
     position: absolute;
     top: 0;
@@ -126,10 +94,6 @@ body.non-fullscreen {
     height: 100%;
     z-index: 3;
 }
-
-
-
-
 
 .slide-triggers {
     position: fixed;
@@ -140,18 +104,10 @@ body.non-fullscreen {
     z-index: 101;
     pointer-events: none;
 }
-
-
-
-
 .slide-trigger,
 .slide-trigger-reverse {
     pointer-events: auto;
 }
-
-
-
-
 .slide-trigger {
     position: absolute;
     top: 28.5vh;
@@ -161,10 +117,6 @@ body.non-fullscreen {
     background: transparent;
     cursor: pointer;
 }
-
-
-
-
 .slide-trigger-reverse {
     position: absolute;
     top: 28.5vh;
@@ -175,76 +127,44 @@ body.non-fullscreen {
     cursor: pointer;
 }
 
-
-
-
-
 .line {
     position: absolute;
     height: 1px;
     background-color: rgba(172, 172, 172, 0.841);
 }
-
-
-
-
 .original {
     top: 12.5vh;
     left: 6.38vw;
     width: 22.48vw;
 }
-
-
-
-
 .second {
     top: 28.5vh;
     left: 6.38vw;
     width: 18.68vw;
 }
-
-
-
-
 .third {
     top: 84vh;
     left: 6.38vw;
     width: 22.48vw;
 }
-
-
-
-
 .fourth {
     top: 12.5vh;
     left: 36vw;
     width: 57.8vw;
     z-index: 1;
 }
-
-
-
-
 .fifth {
     top: 28.5vh;
     left: 36vw;
     width: 57.8vw;
     z-index: 1;
 }
-
-
-
-
 .sixth {
     top: 84vh;
     left: 36vw;
     width: 57.8vw;
     z-index: 1;
 }
-
-
-
-
 
 
 .slide-container {
@@ -254,13 +174,9 @@ body.non-fullscreen {
     width: 100vw;
     height: 100vh;
     pointer-events: none;
-    clip-path: inset(0 0 0 36vw);
+    clip-path: inset(0 0 0 6.37vw) !important;
     z-index: 150;
 }
-
-
-
-
 
 .hover-area {
     position: absolute;
@@ -271,10 +187,6 @@ body.non-fullscreen {
     pointer-events: auto;
     background: transparent;
 }
-
-
-
-
 
 .chat-text {
     position: absolute;
@@ -288,14 +200,10 @@ body.non-fullscreen {
     text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
     cursor: pointer;
     opacity: 0;
-    transition: opacity 0.1s ease,  opacity 0.6s ease, transform 0.6s ease;
+    transition: opacity 0.1s ease, transform 0.6s ease;
     line-height: 1.3;
     padding-top: 0.1rem;
 }
-
-
-
-
 
 .chat-input {
     position: absolute;
@@ -317,10 +225,6 @@ body.non-fullscreen {
     transition: transform 0.6s ease;
 }
 
-
-
-
-
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -331,90 +235,22 @@ body.non-fullscreen {
     transition: transform 0.6s ease;
 }
 
-
-
-
-
 .num1  { top: 28.5vh; left: 48.8vw; }
-
-
-
-
 .num2  { top: 28.5vh; left: 63.7vw; }
-
-
-
-
 .num3  { top: 28.5vh; left: 78.5vw; }
-
-
-
-
 .num4  { top: 28.5vh; left: 93.3vw; }
-
-
-
-
 .num5  { top: 47vh;   left: 48.8vw; }
-
-
-
-
 .num6  { top: 47vh;   left: 63.7vw; }
-
-
-
-
 .num7  { top: 47vh;   left: 78.5vw; }
-
-
-
-
 .num8  { top: 47vh;   left: 93.3vw; }
-
-
-
-
 .num9  { top: 65.5vh; left: 48.8vw; }
-
-
-
-
 .num10 { top: 65.5vh; left: 63.3vw; }
-
-
-
-
 .num11 { top: 65.5vh; left: 78.3vw; }
-
-
-
-
 .num12 { top: 65.5vh; left: 92.9vw; }
-
-
-
-
 .num13 { top: 83.7vh; left: 48.3vw; }
-
-
-
-
 .num14 { top: 83.7vh; left: 63.2vw; }
-
-
-
-
 .num15 { top: 83.7vh; left: 78.0vw; }
-
-
-
-
 .num16 { top: 83.7vh; left: 92.8vw; }
-
-
-
-
 
 .grid-dashed {
     position: absolute;
@@ -426,242 +262,54 @@ body.non-fullscreen {
     opacity: 0.711;
 }
 
-
-
-
-
 .dashed01 { top: 28.5vh; left: 36vw; }
-
-
-
-
 .dashed02 { top: 28.5vh; left: 51vw; }
-
-
-
-
 .dashed03 { top: 28.5vh; left: 65.9vw; }
-
-
-
-
 .dashed04 { top: 28.5vh; left: 80.8vw; }
-
-
-
-
 .dashed05 { top: 47vh;   left: 36vw; }
-
-
-
-
 .dashed06 { top: 47vh;   left: 51vw; }
-
-
-
-
 .dashed07 { top: 47vh;   left: 65.9vw; }
-
-
-
-
 .dashed08 { top: 47vh;   left: 80.8vw; }
-
-
-
-
 .dashed09 { top: 65.5vh; left: 36vw; }
-
-
-
-
 .dashed10 { top: 65.5vh; left: 51vw; }
-
-
-
-
 .dashed11 { top: 65.5vh; left: 65.9vw; }
-
-
-
-
 .dashed12 { top: 65.5vh; left: 80.8vw; }
-
-
-
-
 .dashed13 { top: 84vh;   left: 36vw; }
-
-
-
-
 .dashed14 { top: 84vh;   left: 51vw; }
-
-
-
-
 .dashed15 { top: 84vh;   left: 65.9vw; }
-
-
-
-
 .dashed16 { top: 84vh;   left: 80.8vw; }
 
-
-
-
-
 .num17 { top: 102.2vh; left: 48.3vw; }
-
-
-
-
 .num18 { top: 102.2vh; left: 63.2vw; }
-
-
-
-
 .num19 { top: 102.2vh; left: 78.0vw; }
-
-
-
-
 .num20 { top: 102.2vh; left: 92.8vw; }
-
-
-
-
 .num21 { top: 120.7vh; left: 48.3vw; }
-
-
-
-
 .num22 { top: 120.7vh; left: 63.2vw; }
-
-
-
-
 .num23 { top: 120.7vh; left: 78.0vw; }
-
-
-
-
 .num24 { top: 120.7vh; left: 92.8vw; }
-
-
-
-
 .num25 { top: 139.2vh; left: 48.3vw; }
-
-
-
-
 .num26 { top: 139.2vh; left: 63.2vw; }
-
-
-
-
 .num27 { top: 139.2vh; left: 78.0vw; }
-
-
-
-
 .num28 { top: 139.2vh; left: 92.8vw; }
-
-
-
-
 .num29 { top: 157.7vh; left: 48.3vw; }
-
-
-
-
 .num30 { top: 157.7vh; left: 63.2vw; }
-
-
-
-
 .num31 { top: 157.7vh; left: 78.0vw; }
 
-
-
-
-
 .dashed17 { top: 102.5vh; left: 36vw; }
-
-
-
-
 .dashed18 { top: 102.5vh; left: 51vw; }
-
-
-
-
 .dashed19 { top: 102.5vh; left: 65.9vw; }
-
-
-
-
 .dashed20 { top: 102.5vh; left: 80.8vw; }
-
-
-
-
 .dashed21 { top: 121vh;   left: 36vw; }
-
-
-
-
 .dashed22 { top: 121vh;   left: 51vw; }
-
-
-
-
 .dashed23 { top: 121vh;   left: 65.9vw; }
-
-
-
-
 .dashed24 { top: 121vh;   left: 80.8vw; }
-
-
-
-
 .dashed25 { top: 139.5vh; left: 36vw; }
-
-
-
-
 .dashed26 { top: 139.5vh; left: 51vw; }
-
-
-
-
 .dashed27 { top: 139.5vh; left: 65.9vw; }
-
-
-
-
 .dashed28 { top: 139.5vh; left: 80.8vw; }
-
-
-
-
 .dashed29 { top: 158vh;   left: 36vw; }
-
-
-
-
 .dashed30 { top: 158vh;   left: 51vw; }
-
-
-
-
 .dashed31 { top: 158vh;   left: 65.9vw; }
-
-
-
-
 
 /* Removed dashed lines and time texts animation styles */
 
@@ -669,10 +317,6 @@ body.non-fullscreen {
 .other-content.animate-grid .grid-dashed {
     transform: translateX(-60vw);
 }
-
-
-
-
 
 .custom-text {
     position: absolute;
@@ -686,10 +330,6 @@ body.non-fullscreen {
     overflow: visible;
 }
 
-
-
-
-
 .custom-line {
     position: absolute;
     top: 47.8vh; 
@@ -700,31 +340,16 @@ body.non-fullscreen {
     transition: left 0.6s ease, transform 0.6s ease;
 }
 
-
-
-
-
 .menu-slide {
     transform: translateX(-22.59vw);
 }
-
-
-
-
 .menu-items .menu-item.menu-slide.slide-down {
-    transform: translate(-22.59vw, 11vh);
+    /* override to drop straight down */
+    transform: translateY(11vh);
 }
-
-
-
-
 .slide-down {
     transform: translateY(11vh);
 }
-
-
-
-
 
 .layer-five {
     position: absolute;
@@ -735,10 +360,6 @@ body.non-fullscreen {
     background-color: #ffffff;
     pointer-events: none;
 }
-
-
-
-
 .layer-six {
     position: absolute;
     top: 84.7vh;
@@ -749,80 +370,59 @@ body.non-fullscreen {
     pointer-events: none;
 }
 
-
-
-
-
 .new-text {
     opacity: 0;
     transition: opacity 0.6s ease;
 }
-
-
-
-
 .new-text.visible {
     opacity: 1;
 }
-
-
-
-
 
 .heading-container {
     position: absolute;
     overflow: visible;
     transition: transform 0.6s ease;
 }
-
-
-
-
 .heading-flow {
     white-space: nowrap;
 }
-
-
-
-
 
 .account-container {
     position: absolute;
     overflow: visible;
     transition: transform 0.6s ease;
 }
-
-
-
-
 .right-flow {
     direction: rtl;
     text-align: right;
     white-space: nowrap;
 }
 
-
-
-
-
 .community-items-container span,
 .zero-items-container span {
     white-space: nowrap;
     transition: left 0.6s ease, transform 0.6s ease;
 }
-
-
-
-
 .community-items-container .custom-line {
     transition: left 0.6s ease, transform 0.6s ease;
 }
 
+@media (min-width: 1900px) {
+  .chat-text,
+  .community-items-container span,
+  .zero-items-container span,
+  .index-input,
+  .custom-text,
+  .mail-text,
+  .account-text,
+  .item-text {
+    font-size: 9px !important;
+  }
 
-
-
-
-
+  .grid-number {
+    font-size: 6.1px !important;
+  }
+}
 
 /* Removed slide container animation styles */
 
@@ -839,15 +439,7 @@ body.non-fullscreen {
     z-index: 1;
 }
 
-
-
-
-
 .hidden { }
-
-
-
-
 
 .account-text {
   position: absolute;
@@ -861,10 +453,6 @@ body.non-fullscreen {
   line-height: 1.3;
 }
 
-
-
-
-
 .account-mask {
   position: fixed;             
   top: 28.5vh;                
@@ -876,18 +464,10 @@ body.non-fullscreen {
   z-index: 9999;               
 }
 
-
-
-
-
 .account-text,
 .account-line {
   transition: left 0.6s ease;
 }
-
-
-
-
 
 
 .item-text {
@@ -903,10 +483,6 @@ body.non-fullscreen {
 }
 
 
-
-
-
-
 .item-line {
     transition: left 0.6s ease, transform 0.6s ease;
     position: absolute;
@@ -914,10 +490,6 @@ body.non-fullscreen {
     background-color: rgba(230, 230, 230, 0.28);
     z-index: 1;
 }
-
-
-
-
 
 .center-text {
     z-index: 3;
@@ -932,10 +504,6 @@ body.non-fullscreen {
     overflow: visible;
 }
 
-
-
-
-
 .center-line {
     z-index: 3;
     position: absolute;
@@ -947,11 +515,12 @@ body.non-fullscreen {
 
 
 
-
-
-
-
-
+@media (min-width: 1900px) {
+  .center-text {
+    z-index: 3;
+    font-size: 9px !important;
+  }
+}
 
 /* Util-line toggle states */
 [data-util="0"] .mail-line,
@@ -962,19 +531,11 @@ body.non-fullscreen {
   pointer-events: none !important;
 }
 
-
-
-
-
 [data-util="1"] .mail-line,
 [data-util="1"] .mail-text {
   opacity: 1 !important;
   pointer-events: auto !important;
 }
-
-
-
-
 
 [data-util="2"] .grid-number,
 [data-util="2"] .grid-dashed {
@@ -982,19 +543,11 @@ body.non-fullscreen {
   pointer-events: auto !important;
 }
 
-
-
-
-
 /* Ensure grid items transition opacity */
 .grid-number,
 .grid-dashed {
   transition: transform 0.6s ease, opacity 0.4s ease !important;
 }
-
-
-
-
 
 
 /* ── Util-line toggle defaults ── */
@@ -1008,10 +561,6 @@ body.non-fullscreen {
   transition: none !important;
 }
 
-
-
-
-
 /* Layers 5 & 6 visible by default */
 .layer-five,
 .layer-six {
@@ -1020,20 +569,12 @@ body.non-fullscreen {
   transition: none !important;
 }
 
-
-
-
-
 /* STATE 1: mail visible, others hidden */
 [data-util="1"] .mail-line,
 [data-util="1"] .mail-text {
   opacity: 1 !important;
   pointer-events: auto !important;
 }
-
-
-
-
 [data-util="1"] .other-content .grid-number,
 [data-util="1"] .other-content .grid-dashed,
 [data-util="1"] .layer-five,
@@ -1041,10 +582,6 @@ body.non-fullscreen {
   opacity: 0 !important;
   pointer-events: none !important;
 }
-
-
-
-
 
 /* STATE 2: calendar grid items 1-16 visible, mail & layers hidden */
 [data-util="2"] .num1, [data-util="2"] .num2, [data-util="2"] .num3, [data-util="2"] .num4,
@@ -1058,10 +595,6 @@ body.non-fullscreen {
   opacity: 1 !important;
   pointer-events: auto !important;
 }
-
-
-
-
 [data-util="2"] .mail-line,
 [data-util="2"] .mail-text,
 [data-util="2"] .layer-five,
@@ -1069,10 +602,6 @@ body.non-fullscreen {
   opacity: 0 !important;
   pointer-events: none !important;
 }
-
-
-
-
 
 /* Chat hover logic */
 /* UTIL-LINE TOGGLE OVERRIDES */
@@ -1084,19 +613,11 @@ body.non-fullscreen {
   pointer-events: none !important;
 }
 
-
-
-
-
 :root[data-util="1"] .mail-line,
 :root[data-util="1"] .mail-text {
   opacity: 1 !important;
   pointer-events: auto !important;
 }
-
-
-
-
 
 :root[data-util="2"] .line.fifth,
 :root[data-util="2"] .line.sixth,
@@ -1106,19 +627,11 @@ body.non-fullscreen {
   pointer-events: none !important;
 }
 
-
-
-
-
 :root[data-util="2"] .grid-number,
 :root[data-util="2"] .grid-dashed {
   opacity: 1 !important;
   pointer-events: auto !important;
 }
-
-
-
-
 
 /* UTIL-LINE TOGGLE POP OVERRIDES */
 .mail-text,
@@ -1130,10 +643,6 @@ body.non-fullscreen {
   z-index: 1000 !important;
 }
 
-
-
-
-
 /* Default: hide mail and calendar grid */
 :root[data-util="0"] .mail-line,
 :root[data-util="0"] .mail-text,
@@ -1142,47 +651,27 @@ body.non-fullscreen {
   display: none !important;
 }
 
-
-
-
-
 /* State 1: show mail only */
 :root[data-util="1"] .mail-line,
 :root[data-util="1"] .mail-text {
   display: inline-block !important;
 }
-
-
-
-
 :root[data-util="1"] .grid-number,
 :root[data-util="1"] .grid-dashed {
   display: none !important;
 }
-
-
-
-
 
 /* State 2: show calendar grid (1–16) only, hide mail and lines 5/6 */
 :root[data-util="2"] .grid-number,
 :root[data-util="2"] .grid-dashed {
   display: inline-block !important;
 }
-
-
-
-
 :root[data-util="2"] .mail-line,
 :root[data-util="2"] .mail-text,
 :root[data-util="2"] .line.fifth,
 :root[data-util="2"] .line.sixth {
   display: none !important;
 }
-
-
-
-
 
 
 /* ===== OVERRIDE: mail-text positions and util toggle ===== */
@@ -1199,36 +688,12 @@ body.non-fullscreen {
   pointer-events: none !important;
 }
 
-
-
-
-
 /* mail-text specific positions */
 .mail-text.to      { top: 35.4vh; left: 36vw; }
-
-
-
-
 .mail-text.subject { top: 41.6vh; left: 36vw; }
-
-
-
-
 .mail-text.cc      { top: 35.4vh; left: 89vw; }
-
-
-
-
 .mail-text.bcc     { top: 35.4vh; left: 91.9vw; }
-
-
-
-
 .mail-text.send    { top: 41.6vh; left: 91.1vw; }
-
-
-
-
 
 /* calendar grid overrides */
 .grid-number,
@@ -1238,50 +703,26 @@ body.non-fullscreen {
   pointer-events: none !important;
 }
 
-
-
-
-
 /* override util-line toggles */
 .mail-line {
   display: none !important;
 }
-
-
-
-
 [data-util="1"] .mail-line {
   display: block !important;
 }
-
-
-
-
 [data-util="1"] .mail-text {
   display: inline-block !important;
 }
-
-
-
-
 [data-util="2"] .grid-number,
 [data-util="2"] .grid-dashed {
   display: inline-block !important;
 }
-
-
-
-
 [data-util="2"] .mail-line,
 [data-util="2"] .mail-text,
 [data-util="2"] .line.fifth,
 [data-util="2"] .line.sixth {
   display: none !important;
 }
-
-
-
-
 
 /* ensure correct layering */
 .mail-line,
@@ -1291,10 +732,6 @@ body.non-fullscreen {
   z-index: 100 !important;
 }
 
-
-
-
-
 /* === FINAL OVERRIDE: visibile mail-text on state 1 and correct layering === */
 :root[data-util="1"] .mail-text {
   display: inline-block !important;
@@ -1303,38 +740,26 @@ body.non-fullscreen {
   z-index: 200 !important;
 }
 
-
-
-
-
 /* Ensure slide-container sits above util lines */
 .slide-container {
   z-index: 150 !important;
 }
 
-
-
-
-
 /* Large-screen font size override */
-
+@media (min-width: 1900px) {
+  .mail-text {
+    font-size: 9px !important;
+  }
+}
 
 /* === CHAT-TEXT HOVER LAYERING FIX === */
 .hover-area {
   z-index: 200 !important;
 }
 
-
-
-
-
 .chat-text {
   z-index: 201 !important;
 }
-
-
-
-
 
 
 
@@ -1343,72 +768,6 @@ body.non-fullscreen {
   opacity: 1 !important;
   pointer-events: auto !important;
 }
-
-
-
-
-
-
-/* Hide chat-text while any slide is active */
-html[data-slide="heading"] .chat-text,
-html[data-slide="menu"] .chat-text,
-html[data-slide="community"] .chat-text {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-
-
-
-
-/* --- IOUL specific below --- */
-
-
-
-
-.layer-two {
-    position: fixed;
-    top: 0;
-    left: 6.37vw;
-    width: calc(36vw - 6.37vw);
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100;
-    pointer-events: none;
-}
-
-
-
-
-
-.chat-text {
-    position: absolute;
-    top: 77vh;
-    left: 6.41vw;
-    display: inline-block;
-    font-family: 'Distill Expanded', sans-serif;
-    color: #111111;
-    letter-spacing: 0.28vw;
-    font-size: 0.47rem;
-    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.1s ease, transform 0.6s ease;
-    line-height: 1.3;
-    padding-top: 0.1rem;
-}
-
-
-
-
-.menu-items .menu-item.menu-slide.slide-down {
-    /* override to drop straight down */
-    transform: translateY(11vh);
-}
-
-
-
-
 
 /* --- Util-line state overrides (authoritative) --- */
 :root[data-util="0"] .mail-line,
@@ -1420,20 +779,12 @@ html[data-slide="community"] .chat-text {
   pointer-events: none !important;
 }
 
-
-
-
-
 :root[data-util="1"] .mail-line,
 :root[data-util="1"] .mail-text {
   opacity: 1 !important;
   display: inline-block !important;
   pointer-events: auto !important;
 }
-
-
-
-
 
 :root[data-util="1"] .grid-number,
 :root[data-util="1"] .grid-dashed,
@@ -1444,20 +795,12 @@ html[data-slide="community"] .chat-text {
   pointer-events: none !important;
 }
 
-
-
-
-
 :root[data-util="2"] .grid-number,
 :root[data-util="2"] .grid-dashed {
   opacity: 1 !important;
   display: inline-block !important;
   pointer-events: auto !important;
 }
-
-
-
-
 
 :root[data-util="2"] .mail-line,
 :root[data-util="2"] .mail-text,
@@ -1468,15 +811,7 @@ html[data-slide="community"] .chat-text {
   pointer-events: none !important;
 }
 
-
-
-
-
 .line.util-line{ z-index: 300 !important; pointer-events: auto !important;}
-
-
-
-
 
 
 /* --- Keep lines 5 & 6 visible in util state 1 --- */
@@ -1487,10 +822,6 @@ html[data-slide="community"] .chat-text {
   pointer-events: auto !important;
 }
 
-
-
-
-
 /* Added to ensure visibility over layer-four */
 
 .item-text,
@@ -1499,93 +830,88 @@ html[data-slide="community"] .chat-text {
 }
 
 
-
-
-
-
 /* Interaction Hotfix Overrides */
 .hover-area{
     pointer-events:none !important;
 }
-
-
-
-
 .other-content{
     pointer-events:none !important;
 }
-
-
-
-
 .line{
     pointer-events:none !important;
 }
-
-
-
-
 .line.util-line{
     pointer-events:auto !important;
 }
 
-@font-face {
-    font-family: 'Distill Expanded';
-    src: url('././font.woff2') format('woff2'),
-         url('./font.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+
+/* -- Calendar grid stacking adjustment (July 22 2025) -- */
+.grid-number,
+.grid-dashed {
+  z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
 }
 
-@media (min-width: 1900px) {
-  .chat-text,
-  .community-items-container span,
-  .zero-items-container span,
-  .index-input,
-  .custom-text,
-  .mail-text,
-  .account-text,
-  .item-text {
-    font-size: 9px !important;
-  }
-
-
-
-  .grid-number {
-    font-size: 6.1px !important;
-  }
-
-
+/* === PERMANENT VISIBILITY FOR LINES 5 & 6 — 2025-07-23 00:59:10 === */
+/* Undo older util‑state rules that hid the lines */
+.line.fifth,
+.line.sixth {
+  display: inline-block !important;
+  opacity: 1 !important;
+  z-index: 420 !important;      /* stay above strips */
+  pointer-events: none !important; /* same behaviour across pages */
 }
 
-@media (min-width: 1900px) {
-  .center-text {
-    z-index: 3;
-    font-size: 9px !important;
-  }
 
-
+/* Hide mask layers to reveal page */
+.layer-one,
+.layer-two,
+.layer-three,
+.layer-four,
+.layer-five,
+.layer-six{
+  display:none !important;
 }
 
-@media (min-width: 1900px) {
-  .mail-text {
-    font-size: 9px !important;
-  }
-
-
-}
-
-@font-face {
-    font-family: 'Distill Expanded';
-    src: url('font.woff2') format('woff2'),
-         url('font.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
+/* Force page-content visible */
 .page-content{
-  position: relative;
-  opacity: 1;
-  transition: opacity 0.6s ease;
-  width: 100vw;
-  height: 100vh;
+  opacity:1 !important;
 }
+
+
+/* === Layering Overrides v4 (updated 2025-07-24) ===
+   Goal: Lines 1‑3 and util‑line must appear above the left column mask stripes (layer‑1 & layer‑2).
+   We lift all timeline lines to z‑index 110 and util‑line to 120.
+   Containers keep their v3 positions.
+*/
+
+/* 0 ▸ Ensure layer divs stay rendered */
+.layer-one, .layer-two, .layer-three, .layer-four, .layer-five, .layer-six {
+    display: block !important;
+}
+
+/* 1 ▸ Containers (unchanged from v3) */
+.account-container, .heading-container { z-index: 90 !important; }
+.menu-items { z-index: 1 !important; }
+.community-items-container, .zero-items-container { z-index: 1 !important; }
+
+/* 2 ▸ Item rows (unchanged) */
+.item-text, .item-line, .center-text, .center-line { z-index: 60 !important; }
+
+/* 3 ▸ Timeline lines */
+.line { z-index: 110 !important; pointer-events: none !important; }
+.line.util-line { z-index: 120 !important; pointer-events: auto !important; }
+
+/* === End Layering Overrides v4 === */
+
+/* === Layering Overrides v5 (updated 2025-07-24) ===
+   Key fix: raise .other-content stacking context so its children lines 1‑3
+   and util‑line can appear above the left column mask stripes (layer‑1 & layer‑2).
+   The container itself now sits at z‑index 130 above stripes (100)
+   but below timeline fifth/sixth (420) and above all content containers (≤ 90).
+*/
+
+.other-content {
+    z-index: 130 !important;
+}
+
+/* === End Layering Overrides v5 === */

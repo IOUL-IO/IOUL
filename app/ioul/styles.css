@@ -962,3 +962,17 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v7 === */
+
+/* === Layering Overrides v8 (updated 2025-07-24) ===
+   Adds '.animating' class to temporarily raise containers above stripes during slide‑in,
+   then automatically removed via JS. */
+
+.account-container.animating,
+.heading-container.animating,
+.menu-items.animating,
+.community-items-container.animating,
+.zero-items-container.animating {
+    z-index: 99 !important;   /* visible above layer‑1/2/4 (<=100) but below timeline lines (120) */
+}
+
+/* === End Layering Overrides v8 === */

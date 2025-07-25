@@ -5,6 +5,13 @@ import './styles.css';
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
+
+// Utility: temporarily raise z-index during animation
+const raiseDuringAnimation = (selector: string, duration = 700) => {
+  const els = document.querySelectorAll<HTMLElement>(selector);
+  els.forEach(el => el.classList.add('animating'));
+  setTimeout(() => els.forEach(el => el.classList.remove('animating')), duration);
+};
 const IOULPage: React.FC = () => {
 // Mount effect: add body class and fade in content
 React.useEffect(() => {
@@ -369,6 +376,7 @@ useEffect(() => {
           case "none":
             // fade out chat, slide in account+heading          chatTextRef.current!.style.opacity = "0";
             setTimeout(() => {
+              raiseDuringAnimation('.account-container[data-slide-group="account"]');
               document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
                 .forEach(box => box.style.transform = "translateX(0)");
               document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')

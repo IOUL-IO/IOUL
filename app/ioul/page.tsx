@@ -5,13 +5,6 @@ import './styles.css';
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
-
-// Utility: temporarily raise z-index during animation
-const raiseDuringAnimation = (selector: string, duration = 700) => {
-  const els = document.querySelectorAll<HTMLElement>(selector);
-  els.forEach(el => el.classList.add('animating'));
-  setTimeout(() => els.forEach(el => el.classList.remove('animating')), duration);
-};
 const IOULPage: React.FC = () => {
 // Mount effect: add body class and fade in content
 React.useEffect(() => {
@@ -25,16 +18,6 @@ React.useEffect(() => {
   const [chatVisible, setChatVisible] = useState(true);
   const [chatInitialized, setChatInitialized] = useState(true);
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
-// Raise containers above stripes only while they are sliding in
-useEffect(() => {
-  if (slideState === "heading") {
-    raiseDuringAnimation('.account-container, .heading-container');
-  } else if (slideState === "menu") {
-    raiseDuringAnimation('.menu-items');
-  } else if (slideState === "community") {
-    raiseDuringAnimation('.community-items-container, .zero-items-container');
-  }
-}, [slideState]);
   const frameRef = useRef<number>();
   const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
@@ -386,7 +369,6 @@ useEffect(() => {
           case "none":
             // fade out chat, slide in account+heading          chatTextRef.current!.style.opacity = "0";
             setTimeout(() => {
-              raiseDuringAnimation(\'.account-container[data-slide-group="account"], .heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]\');
               document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
                 .forEach(box => box.style.transform = "translateX(0)");
               document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')

@@ -174,7 +174,7 @@ body.non-fullscreen {
     width: 100vw;
     height: 100vh;
     pointer-events: none;
-    clip-path: inset(0 0 0 6.37vw) !important;
+    clip-path: inset(0 0 0 36vw);
     z-index: 150;
 }
 
@@ -884,11 +884,6 @@ body.non-fullscreen {
    Containers keep their v3 positions.
 */
 
-/* 0 ▸ Ensure layer divs stay rendered */
-.layer-one, .layer-two, .layer-three, .layer-four, .layer-five, .layer-six {
-    display: block !important;
-}
-
 /* 1 ▸ Containers (unchanged from v3) */
 .account-container, .heading-container { z-index: 90 !important; }
 .menu-items { z-index: 1 !important; }
@@ -915,3 +910,12 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v5 === */
+/* ==== Restore mask layers hidden (fix 2025-07-25) ==== */
+.layer-one,
+.layer-two,
+.layer-three,
+.layer-four,
+.layer-five,
+.layer-six{
+  display:none !important;
+}

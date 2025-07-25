@@ -916,17 +916,37 @@ body.non-fullscreen {
 
 /* === End Layering Overrides v5 === */
 
-/* Override layer-two position to match original mask stripe width */
+/* === IOUL consolidated stacking FIX 2025-07-25 === */
+/* Restore original visibility relationships */
+
+/* Narrow left-column mask to open clear lane for sliding containers */
 .layer-two{
   left: 28.87vw !important;
   width: calc(36vw - 28.87vw) !important;
 }
 
-/* === Calendar grid ↧ under layer‑five — 2025‑07‑25 ===
-   Ensure calendar grid (numbers & dashed lines) sits below the top mask
-   while keeping timeline line‑4 above.
-*/
-:root[data-util="2"] .grid-number,
-:root[data-util="2"] .grid-dashed {
-  z-index: 0 !important;     /* lower than layer‑five (auto) */
+/* Sliding containers sit under masks 1,2,4 */
+.account-container,
+.heading-container,
+.menu-items,
+.community-items-container,
+.zero-items-container{
+  z-index: 0 !important;
+}
+
+/* Calendar grid rows & container */
+.other-content,
+.grid-number,
+.grid-dashed{
+  z-index: 1 !important;
+}
+
+/* Top white cap mask */
+.layer-five{
+  z-index: 100 !important;   /* above grid but below guideline lines (110) */
+}
+
+/* Keep guideline & util lines on top */
+.line{
+  z-index: 110 !important;
 }

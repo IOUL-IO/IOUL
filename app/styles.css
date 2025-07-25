@@ -23,12 +23,17 @@ body.non-fullscreen .password{top:43.17vh;}
 body.fade-in-trigger{background:#fff;}
 
 /* ===== Lines ===== */
-.line:not(.login-line):not(.login-line-second){
-  opacity:0;transition:opacity .5s ease-in-out;
+body:not(.fade-in-trigger) .line:not(.login-line):not(.login-line-second){
+  opacity:0;
+  transition:opacity .5s ease-in-out;
 }
 body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
   opacity:1;
 }
+
+/* ===== Lines ===== */
+
+body.fade-in-trigger 
 
 .login-line,
 .login-line-second,
@@ -189,6 +194,9 @@ body.stage-help .help-text:hover{opacity:1 !important;}
 body.stage-login .account-wrapper,
 body.stage-login .help-wrapper{pointer-events:none;}
 
+
+
+
 /* Disable clicks on util texts when parked behind layer‑two */
 body.stage-login .open-text,
 body.stage-login .help-text{
@@ -203,11 +211,13 @@ body.stage-help .help-text{
   pointer-events:auto;
 }
 
+
 .login-text,
 .login-line,
 .login-line-second{
   will-change: transform;
 }
+
 
 @media (min-width: 1900px){
   .login-text,
@@ -222,6 +232,7 @@ body.stage-help .help-text{
   }
 }
 
+
 /* Ensure smooth slide for login group */
 .username,
 .password,
@@ -230,6 +241,7 @@ body.stage-help .help-text{
   transition: transform 0.7s ease-in-out, opacity 0.5s ease-in-out !important;
   will-change: transform;
 }
+
 
 /* ===== Two‑phase util slide: login first ===== */
 body.stage-util-pre .username,
@@ -242,6 +254,7 @@ body.stage-util-pre .open-text,
 body.stage-util-pre .help-text{
   transform:translateX(0);
 }
+
 
 /* === Override (2025‑06‑20): Remove hover opacity change; keep OPEn / HELP at full opacity === */
 body.stage-util .open-text,
@@ -297,6 +310,7 @@ body.stage-help .help-text{
   white-space: nowrap;
 }
 
+
 /* === (2025-06-24) Keep OPEn/HELP fully masked behind layer‑two until slide completes === */
 body.stage-util .open-text,
 body.stage-util .help-text{
@@ -313,6 +327,7 @@ body.stage-util .help-text{
     overflow: visible;
   }
 }
+
 
 /* === (2025-06-24b) Dynamic width reveal for util texts === */
 body.stage-util .open-text,
@@ -341,6 +356,7 @@ body.stage-util-pre .help-text{
   }
 }
 
+
 /* === (2025-06-24c) Hard mask: guarantee OPEn / HELP never peek past 36vw === */
 .layer-two::after{
   content:'';
@@ -363,6 +379,7 @@ body.stage-util-pre .help-text{
   overflow:visible !important;
   animation:none !important;
 }
+
 
 /* === (2025‑06‑24d) Refined narrow masks for OPEn / HELP only === */
 /* Remove the full‑height curtain from 24c by overriding it */
@@ -394,6 +411,7 @@ body.stage-util-pre .help-text{
   height:5vh;
 }
 
+
 /* ==== Inline Login Tweaks from Original HTML ==== */
 body.stage-login .login-text {
   position: absolute;
@@ -412,6 +430,7 @@ body.stage-login .login-line,
 body.stage-login .login-line-second {
   background: rgba(230,230,230,.28) !important;
 }
+
 
 /* ==== Force login text size and line color in all stages ==== */
 .login-text {
@@ -435,6 +454,7 @@ body.stage-login .login-line-second {
   }
 }
 
+
 /* ==== Persist text sizing during sliding stages ==== */
 body.stage-login .login-text,
 body.stage-login .open-text,
@@ -447,6 +467,7 @@ body.stage-util .help-text-area {
   font-size: .56rem !important;
   letter-spacing: .36vw !important;
 }
+
 
 /* === July 9 2025 – Universal font patch === */
 @media screen and (max-width:1899px){
@@ -537,14 +558,7 @@ body.stage-help .help-text{
    Fade lines 5 and 6; ensure login lines under layer-one
 */
 
-/* Fade in for fifth and sixth timeline lines */
-.fifth:not(.login-line):not(.login-line-second),
-.sixth:not(.login-line):not(.login-line-second){
-  opacity:0;
-  transition:opacity .5s ease-in-out;
-}
-body.fade-in-trigger .fifth:not(.login-line):not(.login-line-second),
-body.fade-in-trigger 
+
 
 /* Login lines should stay beneath layer-one during slide */
 .login-line,

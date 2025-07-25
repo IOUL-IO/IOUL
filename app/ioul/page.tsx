@@ -20,6 +20,15 @@ React.useEffect(() => {
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
   const frameRef = useRef<number>();
   const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
+
+  // Temporarily lift containers above stripes while they are animating
+  const raiseDuringAnimation = (selector: string, duration = SLIDE_DURATION) => {
+    const els = document.querySelectorAll<HTMLElement>(selector);
+    els.forEach(el => el.classList.add("slide-active"));
+    setTimeout(() => {
+      els.forEach(el => el.classList.remove("slide-active"));
+    }, duration + 20);
+  };
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
 
 // Disable hover-area clicks once chat has appeared so it no longer blocks util-line

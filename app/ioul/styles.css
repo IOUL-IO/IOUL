@@ -862,17 +862,7 @@ body.non-fullscreen {
 }
 
 
-/* Hide mask layers to reveal page */
-.layer-one,
-.layer-two,
-.layer-three,
-.layer-four,
-.layer-five,
-.layer-six{
-  display:none !important;
-}
 
-/* Force page-content visible */
 .page-content{
   opacity:1 !important;
 }
@@ -915,3 +905,8 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v5 === */
+
+/* --- Slide‑in visibility helper: raise during animation --- */
+.slide-active {
+    z-index: 101 !important;   /* above stripes (100), below timeline lines (110+) */
+}

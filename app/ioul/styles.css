@@ -174,7 +174,7 @@ body.non-fullscreen {
     width: 100vw;
     height: 100vh;
     pointer-events: none;
-    clip-path: inset(0 0 0 32.43);
+    clip-path: inset(0 0 0 36vw);
     z-index: 150;
 }
 
@@ -915,10 +915,3 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v5 === */
-/* --- Layering Override v6 (2025-07-25) ---
-   Put menu + community + zero-items back under layers 2 & 4 (z100) */
-.menu-items,
-.community-items-container,
-.zero-items-container {
-  z-index: 1 !important;     /* sits well below mask stripes (100) */
-}

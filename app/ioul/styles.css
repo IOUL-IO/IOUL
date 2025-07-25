@@ -68,6 +68,7 @@ body.non-fullscreen {
     pointer-events: none;
 }
 .menu-items.raised {
+    pointer-events: auto;
     z-index: 4;
 }
 .menu-items .menu-item {
@@ -915,11 +916,3 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v5 === */
-/* --- Visibility hotfix (2025‑07‑25) ---------------------------------- */
-.heading-container,
-.account-container,
-.menu-items,
-.community-items-container,
-.zero-items-container {
-  z-index: 101;   /* above structural layers (100) but beneath slide-container (150) */
-}

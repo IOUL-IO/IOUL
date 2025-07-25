@@ -357,7 +357,7 @@ useEffect(() => {
     const vh = height / 100;
 
     const inLeftZone  = x >= 0          && x <= 6.37  * vw && y >= 28.5 * vh && y <= 84 * vh;
-    const inRightZone = x >= 28.86 * vw && x <= 32.43 * vw && y >= 28.5 * vh && y <= 84 * vh;
+    const inRightZone = x >= 28.86 * vw && x <= 36 * vw && y >= 28.5 * vh && y <= 84 * vh;
 
     if (inLeftZone) {
       // Close any open dropdowns before sliding
@@ -391,6 +391,7 @@ useEffect(() => {
                 el.style.transition = "left 0.7s ease";
                 el.style.left = (parseFloat(el.style.left) + 29) + "vw";
               });
+            document.querySelector(".menu-items")?.classList.add("raised");
             setSlideState("menu");
             break;
   
@@ -399,6 +400,7 @@ useEffect(() => {
             // slide menu back to heading-position
             document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
               .forEach(el => el.style.left = el.dataset.originalLeft!);
+            document.querySelector(".menu-items")?.classList.remove("raised");
             
   const headingBoxes = Array.from(document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]'));
   const headingOut = headingBoxes.some(box => box.style.transform === "translateX(0)");
@@ -456,7 +458,8 @@ useEffect(() => {
                 el.style.transition = "left 0.7s ease";
                 el.style.left = "6.41vw";
               });chatTextRef.current!.style.opacity = "0";
-  setSlideState("menu");
+  document.querySelector(".menu-items")?.classList.add("raised");
+            setSlideState("menu");
   
             break;
   
@@ -487,6 +490,7 @@ useEffect(() => {
             // optional: return from community to none
             document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
               .forEach(el => el.style.left = el.dataset.originalLeft!);
+            document.querySelector(".menu-items")?.classList.remove("raised");
             setSlideState("none");
             break;
         }

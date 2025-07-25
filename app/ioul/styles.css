@@ -916,7 +916,39 @@ body.non-fullscreen {
 
 /* === End Layering Overrides v5 === */
 
-/* === Mask‑layer transparency hotfix (2025‑07‑25) === */
-.layer-four{
-  background-color: transparent !important;
+/* --- Slide-in transition (added 2025-07-25) ----------------------------
+   Ensures the containers visibly glide from off-screen positions
+   instead of jumping instantly.
+------------------------------------------------------------------------ */
+.heading-container,
+.account-container,
+.custom-line[data-slide-group="heading"],
+.menu-items,
+.community-items-container,
+.zero-items-container {
+    transition: transform 0.7s ease;
 }
+
+/* === Layering Overrides v13 (updated 2025-07-25) ----------------------------
+   Final simplified hierarchy per spec:
+   120  util-line (topmost line for clicks)
+   110  timeline lines 1‑6
+   100  layer‑1 (left white stripe)
+    90  account-container, heading-container, custom-line (under layer‑1 only)
+    80  layer‑2 (second white stripe)
+    70  community-items-container, zero-items-container (under layer‑2 & layer‑4)
+    60  layer‑4 (fourth white stripe)
+    50  menu-items (under layers 1, 2, 4)
+-------------------------------------------------------------------------- */
+.line.util-line                  { z-index: 120 !important; }
+.line                            { z-index: 110 !important; }
+.layer-one                       { z-index: 100 !important; }
+.account-container,
+.heading-container,
+.custom-line[data-slide-group="heading"] { z-index: 90 !important; }
+.layer-two                       { z-index: 80 !important; }
+.community-items-container,
+.zero-items-container            { z-index: 70 !important; }
+.layer-four                      { z-index: 60 !important; }
+.menu-items                      { z-index: 50 !important; }
+/* === End Layering Overrides v13 === */

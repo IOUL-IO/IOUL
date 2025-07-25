@@ -922,26 +922,65 @@ body.non-fullscreen {
   width: calc(36vw - 28.87vw) !important;
 }
 
-
-/* === Layering fix for calendar grid vs layers 4 & 5 (2025‑07‑25) === */
-
-/* Drop stacking context on .other-content so its children can layer independently */
-.other-content {
-    z-index: auto !important;
+/* === Calendar grid ↧ under layer‑five — 2025‑07‑25 ===
+   Ensure calendar grid (numbers & dashed lines) sits below the top mask
+   while keeping timeline line‑4 above.
+*/
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed {
+  z-index: 0 !important;     /* lower than layer‑five (auto) */
 }
 
-/* Ensure layer-five overlays calendar grid but stays below Line 4 & top timeline lines */
-.layer-five {
-    z-index: 120 !important;
+
+/* === Stacking fix v2 — 2025‑07‑25 ===
+   1. Raise layer‑five so it masks content as intended.
+   2. Keep calendar grid just beneath it (but above layer‑four).
+   3. Elevate the fourth timeline line so it always shows above the mask.
+*/
+.layer-five{
+  z-index: 4 !important;         /* higher than grid & layer‑four */
+}
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed{
+  z-index: 2 !important;         /* between layer‑four (2) and layer‑five (4) */
+}
+/* line 4 */
+.line.fourth,
+.fourth{
+  z-index: 5 !important;         /* stays on top */
 }
 
-/* Calendar grid always above layer‑four and below layer‑five */
-.grid-number,
-.grid-dashed {
-    z-index: 60 !important;
+
+/* === Calendar Grid Layering Fix v3 — 2025‑07‑25 ===
+   Keep the top mask (.layer‑five) visible when util‑state 2 is active,
+   and place the calendar grid just beneath it (above layer‑four).
+   Timeline line 4 is raised above everything else for clarity. */
+:root[data-util="2"] .layer-five{
+  opacity: 1 !important;
+  display: block !important;
+  pointer-events: none !important;
+  z-index: 250 !important;        /* higher than grid + layer-four */
+}
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed{
+  z-index: 200 !important;        /* above layer-four (2) but beneath mask (250) */
+}
+.line.fourth,
+.fourth{
+  z-index: 300 !important;        /* always on top */
 }
 
-/* Guarantee Line 4 is always above layer‑five */
-.line.fourth {
-    z-index: 210 !important;
+
+/* === Calendar Fix v4 — 2025‑07‑25 ===
+   Ensure timeline line‑4 floats above the mask by detaching it
+   from its parent stacking context. */
+.line.fourth{
+  position: fixed !important;
+  top: 12.5vh !important;
+  left: 36vw !important;
+  width: 57.8vw !important;
+  height: 1px !important;
+  background-color: rgba(172,172,172,0.84) !important;
+  z-index: 3000 !important;  /* over .layer-five (250) */
+  pointer-events: none;
 }

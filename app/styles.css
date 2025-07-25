@@ -22,13 +22,22 @@ body.non-fullscreen .password{top:43.17vh;}
 
 body.fade-in-trigger{background:#fff;}
 
-/* ===== Lines ===== */
+/* ===== Lines Fade ===== */
 .line:not(.login-line):not(.login-line-second){
-  opacity:0;transition:opacity .5s ease-in-out;
+  opacity:0;
+  transition:opacity .5s ease-in-out;
 }
 body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
   opacity:1;
+  transition:opacity .5s ease-in-out;
 }
+
+/* ===== End Lines Fade ===== */
+
+
+/* ===== Lines ===== */
+
+body.fade-in-trigger 
 
 .login-line,
 .login-line-second,
@@ -549,17 +558,11 @@ body.stage-help .open-text,
 body.stage-help .help-text{
   transition: transform 0.7s ease, opacity .3s ease !important;
 }
-
+/* === Additional fixes 2025‑07‑25 ===
    Fade lines 5 and 6; ensure login lines under layer-one
 */
 
-/* Fade in for fifth and sixth timeline lines */
-.fifth:not(.login-line):not(.login-line-second),
-.sixth:not(.login-line):not(.login-line-second){
-  opacity:0;
-  transition:opacity .5s ease-in-out;
-}
-body.fade-in-trigger 
+
 
 /* Login lines should stay beneath layer-one during slide */
 .login-line,

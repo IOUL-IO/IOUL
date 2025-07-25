@@ -949,3 +949,23 @@ body.non-fullscreen {
 .fourth{
   z-index: 5 !important;         /* stays on top */
 }
+
+
+/* === Calendar Grid Layering Fix v3 — 2025‑07‑25 ===
+   Keep the top mask (.layer‑five) visible when util‑state 2 is active,
+   and place the calendar grid just beneath it (above layer‑four).
+   Timeline line 4 is raised above everything else for clarity. */
+:root[data-util="2"] .layer-five{
+  opacity: 1 !important;
+  display: block !important;
+  pointer-events: none !important;
+  z-index: 250 !important;        /* higher than grid + layer-four */
+}
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed{
+  z-index: 200 !important;        /* above layer-four (2) but beneath mask (250) */
+}
+.line.fourth,
+.fourth{
+  z-index: 300 !important;        /* always on top */
+}

@@ -916,37 +916,44 @@ body.non-fullscreen {
 
 /* === End Layering Overrides v5 === */
 
-/* === IOUL consolidated stacking FIX 2025-07-25 === */
-/* Restore original visibility relationships */
+/* --- elevate sliding containers above layer-two (z 100) but still below layer-one (z 110) ---
+   ensures they become visible after sliding while preserving mask hierarchy */
+.account-container,
+.heading-container,
+.menu-items,
+.menu-items .menu-item,
+.community-items-container,
+.zero-items-container,
+.custom-line[data-slide-group="heading"] {
+  z-index: 101 !important;
+}
 
-/* Narrow left-column mask to open clear lane for sliding containers */
+
+/* === IOUL FINAL STACKING & VISIBILITY FIX 2025-07-25 === */
+
+/* Ensure sliding boxes show through central open lane */
 .layer-two{
   left: 28.87vw !important;
   width: calc(36vw - 28.87vw) !important;
 }
 
-/* Sliding containers sit under masks 1,2,4 */
-.account-container,
-.heading-container,
-.menu-items,
-.community-items-container,
-.zero-items-container{
-  z-index: 0 !important;
-}
-
-/* Calendar grid rows & container */
-.other-content,
-.grid-number,
-.grid-dashed{
-  z-index: 1 !important;
-}
-
-/* Top white cap mask */
-.layer-five{
-  z-index: 100 !important;   /* above grid but below guideline lines (110) */
+/* Restore calendar container depth so masks can cover grid */
+.other-content{
+  z-index: 3 !important;      /* back to original depth (just above content) */
 }
 
 /* Keep guideline & util lines on top */
 .line{
   z-index: 110 !important;
+}
+
+/* Top mask should eclipse calendar grid but not lines */
+.layer-five{
+  z-index: 5 !important;      /* above .other-content (3) & grid (2) */
+}
+
+/* Calendar grid rows sit below masks */
+.grid-dashed,
+.grid-number{
+  z-index: 2 !important;
 }

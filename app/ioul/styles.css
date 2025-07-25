@@ -884,6 +884,11 @@ body.non-fullscreen {
    Containers keep their v3 positions.
 */
 
+/* 0 ▸ Ensure layer divs stay rendered */
+.layer-one, .layer-two, .layer-three, .layer-four, .layer-five, .layer-six {
+    display: block !important;
+}
+
 /* 1 ▸ Containers (unchanged from v3) */
 .account-container, .heading-container { z-index: 90 !important; }
 .menu-items { z-index: 1 !important; }
@@ -910,12 +915,40 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v5 === */
-/* ==== Restore mask layers hidden (fix 2025-07-25) ==== */
-.layer-one,
-.layer-two,
-.layer-three,
-.layer-four,
-.layer-five,
-.layer-six{
-  display:none !important;
+/* === Layering Overrides v6 (2025‑07‑25) ===
+   Ensure sliding groups pass **beneath** mask stripes but util‑line stays clickable. */
+.layer-one, .layer-two, .layer-three, .layer-four, .layer-five, .layer-six {
+    z-index: 500 !important;            /* stripes always on top */
 }
+.slide-container {
+    z-index: 80 !important;             /* account-texts + account-line */
+}
+.heading-container,
+.account-container {
+    z-index: 80 !important;             /* same stack group as slide‑container */
+}
+.menu-items,
+.community-items-container,
+.zero-items-container,
+.item-text,
+.item-line,
+.center-text,
+.center-line {
+    z-index: 70 !important;             /* below stripes */
+}
+
+/* util-line must sit above stripes so users can click it */
+.line.util-line {
+    z-index: 600 !important;
+}
+
+/* All other timeline lines beneath the stripes */
+.line:not(.util-line) {
+    z-index: 60 !important;
+}
+
+/* lower other-content wrapping context */
+.other-content {
+    z-index: 65 !important;
+}
+/* === End Layering Overrides v6 === */

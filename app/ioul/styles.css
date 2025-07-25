@@ -916,44 +916,36 @@ body.non-fullscreen {
 
 /* === End Layering Overrides v5 === */
 
-/* --- elevate sliding containers above layer-two (z 100) but still below layer-one (z 110) ---
-   ensures they become visible after sliding while preserving mask hierarchy */
-.account-container,
-.heading-container,
-.menu-items,
-.menu-items .menu-item,
-.community-items-container,
-.zero-items-container,
-.custom-line[data-slide-group="heading"] {
-  z-index: 101 !important;
-}
-
-
-/* === IOUL FINAL STACKING & VISIBILITY FIX 2025-07-25 === */
-
-/* Ensure sliding boxes show through central open lane */
+/* Override layer-two position to match original mask stripe width */
 .layer-two{
   left: 28.87vw !important;
   width: calc(36vw - 28.87vw) !important;
 }
 
-/* Restore calendar container depth so masks can cover grid */
-.other-content{
-  z-index: 3 !important;      /* back to original depth (just above content) */
+/* === Calendar grid ↧ under layer‑five — 2025‑07‑25 ===
+   Ensure calendar grid (numbers & dashed lines) sits below the top mask
+   while keeping timeline line‑4 above.
+*/
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed {
+  z-index: 0 !important;     /* lower than layer‑five (auto) */
 }
 
-/* Keep guideline & util lines on top */
-.line{
-  z-index: 110 !important;
-}
 
-/* Top mask should eclipse calendar grid but not lines */
+/* === Stacking fix v2 — 2025‑07‑25 ===
+   1. Raise layer‑five so it masks content as intended.
+   2. Keep calendar grid just beneath it (but above layer‑four).
+   3. Elevate the fourth timeline line so it always shows above the mask.
+*/
 .layer-five{
-  z-index: 5 !important;      /* above .other-content (3) & grid (2) */
+  z-index: 4 !important;         /* higher than grid & layer‑four */
 }
-
-/* Calendar grid rows sit below masks */
-.grid-dashed,
-.grid-number{
-  z-index: 2 !important;
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed{
+  z-index: 2 !important;         /* between layer‑four (2) and layer‑five (4) */
+}
+/* line 4 */
+.line.fourth,
+.fourth{
+  z-index: 5 !important;         /* stays on top */
 }

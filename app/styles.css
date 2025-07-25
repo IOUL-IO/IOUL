@@ -923,16 +923,20 @@ body.non-fullscreen {
 }
 
 
-/* === Lines 5‑6 under mask & revert animation (v10) — 2025‑07‑25 === */
 
-/* Cancel earlier universal fade‑animation that broke layout */
-.line:not(.login-line):not(.login-line-second){
-  animation: none !important;
+/* === Timeline fade restore (v11) — 2025‑07‑25 === */
+
+/* 1) Extend layer‑six upward so it masks line‑6 during initial state */
+.layer-six{
+  top: 84vh !important;      /* closes 0.7 vh gap */
+  height: 16vh !important;   /* keep overall bottom cover */
 }
 
-/* Put timeline lines 5 & 6 beneath left‑column stripes so they emerge with the others */
-.line.fifth,
-.line.sixth{
-  z-index: 90 !important;          /* stripes are 100 */
-  pointer-events: none !important; /* same as other static lines */
+/* 2) Re‑enable interactions that were disabled by earlier overrides */
+.hover-area{
+  pointer-events:auto !important;
 }
+.other-content{
+  pointer-events:auto !important;
+}
+

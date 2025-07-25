@@ -461,7 +461,7 @@ body.non-fullscreen {
   height: calc(84vh - 28.5vh); 
   background: var(--background, #fff);
   pointer-events: none;
-  z-index: 9999;               
+  z-index: 11099;               
 }
 
 .account-text,
@@ -972,7 +972,7 @@ body.non-fullscreen {
 .menu-items.animating,
 .community-items-container.animating,
 .zero-items-container.animating {
-    z-index: 99 !important;   /* visible above layer‑1/2/4 (<=100) but below timeline lines (120) */
+    z-index: 110 !important;   /* visible above layer‑1/2/4 (<=100) but below timeline lines (120) */
 }
 
 /* === End Layering Overrides v8 === */

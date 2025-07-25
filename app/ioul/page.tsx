@@ -25,6 +25,16 @@ React.useEffect(() => {
   const [chatVisible, setChatVisible] = useState(true);
   const [chatInitialized, setChatInitialized] = useState(true);
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
+// Raise containers above stripes only while they are sliding in
+useEffect(() => {
+  if (slideState === "heading") {
+    raiseDuringAnimation('.account-container, .heading-container');
+  } else if (slideState === "menu") {
+    raiseDuringAnimation('.menu-items');
+  } else if (slideState === "community") {
+    raiseDuringAnimation('.community-items-container, .zero-items-container');
+  }
+}, [slideState]);
   const frameRef = useRef<number>();
   const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);

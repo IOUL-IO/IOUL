@@ -916,29 +916,7 @@ body.non-fullscreen {
 
 /* === End Layering Overrides v5 === */
 
-/* -- Ensure calendar grid scrolls beneath top mask (layer-five) -- */
+/* -- Raise top mask above calendar grid (July 25 fix) -- */
 .layer-five{
-  z-index: 5 !important;          /* above calendar grid (z:2), below menu/account boxes (z:101) */
-}
-
-
-/* === IOUL fix: restore original layering === */
-/* Containers should sit beneath mask layers 1,2,4 (z 100,100,2) */
-.account-container,
-.heading-container,
-.menu-items,
-.community-items-container,
-.zero-items-container{
-  z-index: 0 !important;  /* original stacking level */
-}
-
-/* Narrow layer-two so the containers can emerge into visible lane */
-.layer-two{
-  left: 28.87vw !important;
-  width: calc(36vw - 28.87vw) !important;
-}
-
-/* Keep layer-five above calendar grid rows while remaining below containers/layer-one */
-.layer-five{
-  z-index: 5 !important;
+  z-index: 150 !important;   /* above .other-content (130) so grid scrolls under */
 }

@@ -915,3 +915,35 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v5 === */
+/* === Layering Overrides v8 (2025‑07‑25) =======================================
+   Clean slate: stripes mask sliding groups; timeline lines remain on top; clicks work.
+   Order (low → high):
+     50  Sliding groups (account, heading, menu, item, center, community, zero)
+    100  Mask stripes (.layer-*)
+    150  Timeline lines 1‑6
+    160  util‑line (clickable)
+============================================================================== */
+.layer-one, .layer-two, .layer-three,
+.layer-four, .layer-five, .layer-six   {
+    display: block !important;
+    pointer-events: none !important;
+    z-index: 100 !important;
+}
+
+.slide-container,
+.heading-container,
+.account-container,
+.menu-items,
+.community-items-container,
+.zero-items-container,
+.item-text,
+.item-line,
+.center-text,
+.center-line                              { z-index: 50 !important; }
+
+.line                                     { z-index: 150 !important; pointer-events: none !important; }
+.line.util-line                           { z-index: 160 !important; pointer-events: auto !important; }
+
+/* Restore pointer interactions in hover / other-content so edge clicks work */
+.hover-area, .other-content               { pointer-events: auto !important; }
+/* ============================================================================ */

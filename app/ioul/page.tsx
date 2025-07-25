@@ -9,15 +9,13 @@ const IOULPage: React.FC = () => {
 // Mount effect: add body class and fade in content
 React.useEffect(() => {
   document.body.classList.add('non-fullscreen');
-  const pc = document.querySelector<HTMLElement>('.page-content');
-if (pc) {
-  // allow initial paint then trigger fade
-  requestAnimationFrame(() => { pc.style.opacity = '1'; });
-}
+  setPageFadedIn(true);
 }, []);
 
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
-  const [slideState, setSlideState] = useState("none");  const [chatVisible, setChatVisible] = useState(true);
+  const [slideState, setSlideState] = useState("none");
+  const [pageFadedIn, setPageFadedIn] = useState(false);
+  const [chatVisible, setChatVisible] = useState(true);
   const [chatInitialized, setChatInitialized] = useState(true);
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
   const frameRef = useRef<number>();
@@ -68,29 +66,32 @@ useEffect(() => { centerStageRef.current = centerStage; }, [centerStage]);
   const vh = () => window.innerHeight / 100;
   const toVw = (px: number) => px / vw();
   const toVh = (px: number) => px / vh();
-// ─── Global real‑time clipping ────────────────────────────────────────────
-// Hide anything that slides left of 36vw while inside the main content band (28.5‑84vh)
+
+// ─── Global real‑time clipping — only account* and item* groups ────────────
 const clipElements = () => {
-  const selectors = [
-    '.item-text', '.item-line',
-    '.center-text', '.center-line',
-    '.account-text', '.account-line',
-    '.grid-number', '.grid-dashed',
-    '.mail-text', '.mail-line'
-  ];
-  selectors.forEach(sel => {
-    document.querySelectorAll<HTMLElement>(sel).forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const l = toVw(rect.left);
-      const t = toVh(rect.top);
-      const hide = l < 35.9 && t >= 28.5 && t <= 84;
-      el.style.opacity = hide ? '0' : '';
-      el.style.pointerEvents = hide ? 'none' : '';
-    });
+  // Item rows disappear when they slide behind stripe‑3 (left < 36‑vw)
+  document.querySelectorAll<HTMLElement>('.item-text, .item-line').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const l = toVw(rect.left);
+    const t = toVh(rect.top);
+    const hide = l < 35.9 && t >= 28.5 && t <= 84;
+    el.style.opacity = hide ? '0' : '';
+    el.style.pointerEvents = hide ? 'none' : '';
+  });
+
+  // Account row disappears only while behind stripe‑1 (left < 6.37‑vw)
+  document.querySelectorAll<HTMLElement>('.account-text, .account-line').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const l = toVw(rect.left);
+    const t = toVh(rect.top);
+    const hide = l < 6.37 && t >= 28.5 && t <= 84;
+    el.style.opacity = hide ? '0' : '';
+    el.style.pointerEvents = hide ? 'none' : '';
   });
 };
 
 // Keep clipping in real‑time (every animation frame)
+ (every animation frame)
 useEffect(() => {
   const onResize = () => clipElements();
   window.addEventListener('resize', onResize);
@@ -108,19 +109,22 @@ useEffect(() => {
 
 
 
-  const updateVisibility = () => {
-    const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
-    const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
-    const targets = textEls.concat(lineEls);
-    targets.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const l = toVw(rect.left);
-      const t = toVh(rect.top);
-      const hide = l < 35.9 && t >= 28.5 && t <= 84;
-      el.style.opacity = hide ? '0' : '';
-      el.style.pointerEvents = hide ? 'none' : '';
-    });
-  };
+  
+const updateVisibility = () => {
+  // Only item* rows
+  const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
+  const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
+  const targets = textEls.concat(lineEls);
+  targets.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const l = toVw(rect.left);
+    const t = toVh(rect.top);
+    const hide = l < 35.9 && t >= 28.5 && t <= 84;
+    el.style.opacity = hide ? '0' : '';
+    el.style.pointerEvents = hide ? 'none' : '';
+  });
+};
+
 
   useEffect(() => {
     // Set base positions and update visibility on resize

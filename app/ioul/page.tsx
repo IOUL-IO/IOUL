@@ -5,7 +5,7 @@ import './styles.css';
 
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
-const IOULPage: React.FC = () => {
+function IOULPage() {
 // Mount effect: add body class and fade in content
 React.useEffect(() => {
   document.body.classList.add('non-fullscreen');
@@ -20,8 +20,6 @@ React.useEffect(() => {
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
   const frameRef = useRef<number>();
   const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
-  const HEADING_SLIDE_IN_VW = 29.6; // vw offset to clear left mask
-
   const hoverAreaRef = useRef<HTMLDivElement | null>(null);
 
 // Disable hover-area clicks once chat has appeared so it no longer blocks util-line
@@ -74,7 +72,7 @@ const clipElements = () => {
   const selectors = [
     '.item-text', '.item-line',
     '.center-text', '.center-line',
-    '.account-text', '.account-line', '.heading-flow',
+    '.account-text', '.account-line',
     '.grid-number', '.grid-dashed',
     '.mail-text', '.mail-line'
   ];
@@ -372,9 +370,9 @@ useEffect(() => {
             // fade out chat, slide in account+heading          chatTextRef.current!.style.opacity = "0";
             setTimeout(() => {
               document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
-                .forEach(box => box.style.transform = `translateX(${HEADING_SLIDE_IN_VW}vw)`);
+                .forEach(box => box.style.transform = "translateX(0)");
               document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')
-                .forEach(box => box.style.transform = `translateX(${HEADING_SLIDE_IN_VW}vw)`);
+                .forEach(box => box.style.transform = "translateX(0)");
             }, 110);
             setSlideState("heading");
             break;
@@ -391,7 +389,7 @@ useEffect(() => {
             document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
               .forEach(el => {
                 el.style.transition = "left 0.7s ease";
-                el.style.left = (parseFloat(el.style.left) + HEADING_SLIDE_IN_VW) + "vw";
+                el.style.left = (parseFloat(el.style.left) + 29) + "vw";
               });
             setSlideState("menu");
             break;
@@ -403,7 +401,7 @@ useEffect(() => {
               .forEach(el => el.style.left = el.dataset.originalLeft!);
             
   const headingBoxes = Array.from(document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]'));
-  const headingOut = headingBoxes.some(box => box.style.transform === `translateX(${HEADING_SLIDE_IN_VW}vw)`);
+  const headingOut = headingBoxes.some(box => box.style.transform === "translateX(0)");
   if (headingOut) {
     setSlideState("heading");
   } else {
@@ -468,19 +466,19 @@ useEffect(() => {
               .forEach(el => {
                 el.dataset.originalLeft ||= el.style.left;
                 el.style.transition = "left 0.7s ease";
-                el.style.left = (parseFloat(el.style.left) - HEADING_SLIDE_IN_VW) + "vw";
+                el.style.left = (parseFloat(el.style.left) - 29) + "vw";
               });
             document.querySelectorAll<HTMLElement>('.community-items-container *')
               .forEach(el => {
                 el.dataset.originalLeft ||= el.style.left;
                 el.style.transition = "left 0.7s ease";
-                el.style.left = (parseFloat(el.style.left) - HEADING_SLIDE_IN_VW) + "vw";
+                el.style.left = (parseFloat(el.style.left) - 29) + "vw";
               });
             document.querySelectorAll<HTMLElement>('.zero-items-container *')
               .forEach(el => {
                 el.dataset.originalLeft ||= el.style.left;
                 el.style.transition = "left 0.7s ease";
-                el.style.left = (parseFloat(el.style.left) - HEADING_SLIDE_IN_VW) + "vw";
+                el.style.left = (parseFloat(el.style.left) - 29) + "vw";
               });
             setSlideState("community");
             break;
@@ -1048,4 +1046,3 @@ return (
 };
 
 export default IOULPage;
-    

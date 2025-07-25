@@ -862,15 +862,7 @@ body.non-fullscreen {
 }
 
 
-/* Hide mask layers to reveal page */
-.layer-one,
-.layer-two,
-.layer-three,
-.layer-four,
-.layer-five,
-.layer-six{
-  display:none !important;
-}
+
 
 /* Force page-content visible */
 .page-content{
@@ -915,15 +907,24 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v5 === */
-
-/* --- elevate sliding containers above layer-two (z 100) but still below layer-one (z 110) ---
-   ensures they become visible after sliding while preserving mask hierarchy */
-.account-container,
-.heading-container,
-.menu-items,
-.menu-items .menu-item,
-.community-items-container,
-.zero-items-container,
-.custom-line[data-slide-group="heading"] {
-  z-index: 101 !important;
+/* === Layering & Visibility Overrides v10 (2025‑07‑25) =========================
+   • Ensure mask layers are visible (display:block) and on z‑index 350
+   • Keep sliding groups at 200
+   • Keep timeline lines at 400 (util‑line 410)
+=============================================================================== */
+.layer-one, .layer-two, .layer-three, .layer-four, .layer-five, .layer-six {
+  display: block !important;
+  pointer-events: none !important;
+  z-index: 350 !important;
 }
+
+.slide-container,
+.heading-container, .account-container,
+.menu-items, .community-items-container, .zero-items-container,
+.item-text, .item-line, .center-text, .center-line {
+  z-index: 200 !important;
+}
+
+.line { z-index: 400 !important; pointer-events: none !important; }
+.line.util-line { z-index: 410 !important; pointer-events: auto !important; }
+/* ============================================================================ */

@@ -916,7 +916,15 @@ body.non-fullscreen {
 
 /* === End Layering Overrides v5 === */
 
-/* -- Raise top mask above calendar grid (July 25 fix) -- */
-.layer-five{
-  z-index: 150 !important;   /* above .other-content (130) so grid scrolls under */
+/* === 2025-07-25 Final calendar stacking fix === */
+/* Restore .other-content lower than top mask but above background */
+.other-content { z-index: 2 !important; }
+
+/* Calendar grid elements must live below the top mask (#layer-five) */
+.grid-dashed,
+.grid-number {
+  z-index: 1 !important;
 }
+
+/* Make sure top mask sits above grid but still below sliding boxes */
+.layer-five { z-index: 5 !important; }

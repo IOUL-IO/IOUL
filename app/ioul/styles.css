@@ -916,15 +916,17 @@ body.non-fullscreen {
 
 /* === End Layering Overrides v5 === */
 
-/* === 2025-07-25 Final calendar stacking fix === */
-/* Restore .other-content lower than top mask but above background */
-.other-content { z-index: 2 !important; }
-
-/* Calendar grid elements must live below the top mask (#layer-five) */
-.grid-dashed,
-.grid-number {
-  z-index: 1 !important;
+/* Override layer-two position to match original mask stripe width */
+.layer-two{
+  left: 28.87vw !important;
+  width: calc(36vw - 28.87vw) !important;
 }
 
-/* Make sure top mask sits above grid but still below sliding boxes */
-.layer-five { z-index: 5 !important; }
+/* === Calendar grid ↧ under layer‑five — 2025‑07‑25 ===
+   Ensure calendar grid (numbers & dashed lines) sits below the top mask
+   while keeping timeline line‑4 above.
+*/
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed {
+  z-index: 0 !important;     /* lower than layer‑five (auto) */
+}

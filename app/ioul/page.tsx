@@ -17,7 +17,12 @@ React.useEffect(() => {
   const [pageFadedIn, setPageFadedIn] = useState(false);
   const [chatVisible, setChatVisible] = useState(true);
   const [chatInitialized, setChatInitialized] = useState(true);
-  const chatTextRef = useRef<HTMLSpanElement | null>(null);
+  
+// Attach slide‑visibility listeners once on mount
+useEffect(() => {
+  attachSlideVisibility();
+}, []);
+const chatTextRef = useRef<HTMLSpanElement | null>(null);
   const frameRef = useRef<number>();
   const SLIDE_DURATION = 700; // ms; keep in sync with CSS slide timing
 
@@ -108,9 +113,6 @@ useEffect(() => {
   };
   tick();
   
-useEffect(() => {
-  attachSlideVisibility();
-}, []);
 return () => {
     window.removeEventListener('resize', onResize);
     cancelAnimationFrame(rafId);

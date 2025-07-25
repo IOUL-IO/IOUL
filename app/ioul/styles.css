@@ -29,16 +29,7 @@ body.non-fullscreen {
     z-index: 100;
     pointer-events: none;
 }
-.layer-two {
-    position: fixed;
-    top: 0;
-    left: 6.37vw;
-    width: calc(36vw - 6.37vw);
-    height: 100vh;
-    background-color: #ffffff;
-    z-index: 100;
-    pointer-events: none;
-}
+.layer-two { {
 .layer-three {
     position: fixed;
     top: 0;
@@ -952,3 +943,29 @@ body.non-fullscreen {
 .layer-four                      { z-index: 60 !important; }
 .menu-items                      { z-index: 50 !important; }
 /* === End Layering Overrides v13 === */
+
+/* --- Layer‑two geometry override (2025‑07‑25) -------------------------- */
+.layer-two {
+    top: 28.5vh !important;
+    left: 28.86vw !important;
+    width: calc(36vw - 28.86vw) !important;
+    height: calc(84vh - 28.5vh) !important;
+    position: absolute !important;
+    background-color: #ffffff !important;
+    pointer-events: none !important;
+}
+/* ---------------------------------------------------------------------- */
+
+/* === Layering Overrides v14 (2025‑07‑25) — final corrected stacking order === */
+.line.util-line                                 { z-index: 120 !important; }
+.line:not(.util-line)                           { z-index: 110 !important; }
+.layer-one                                      { z-index: 100 !important; }
+.account-container,
+.heading-container,
+.custom-line[data-slide-group="heading"]        { z-index:  90 !important; }
+.layer-two                                      { z-index:  80 !important; }
+.layer-four                                     { z-index:  70 !important; }
+.community-items-container,
+.zero-items-container                           { z-index:  60 !important; }
+.menu-items                                     { z-index:  50 !important; }
+/* === End Layering Overrides v14 === */

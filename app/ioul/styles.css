@@ -915,29 +915,3 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v5 === */
-/* === Layering Overrides v7 (2025‑07‑25) =================================
-   Re‑balance stacks so:
-     • All timeline lines (1‑6 + util‑line) appear ABOVE the mask stripes.
-     • Sliding content groups remain UNDER the stripes.
-   Strategy:
-     1. Masks (.layer-*) sit at z‑index 100.
-     2. .other-content root raised to z‑index 130 so its children lines
-        naturally outrank the stripes.
-     3. Lines themselves kept tidy at 110 / 120.
-     4. Sliding groups stay at 80 or below.
-========================================================================= */
-.layer-one, .layer-two, .layer-three,
-.layer-four, .layer-five, .layer-six  { z-index: 100 !important; }
-
-.other-content                       { z-index: 130 !important; }
-
-.line                                { z-index: 110 !important; pointer-events: none !important; }
-.line.util-line                      { z-index: 120 !important; pointer-events: auto !important; }
-
-.line.fifth, .line.sixth             { z-index: 110 !important; } /* restore normal order */
-
-.slide-container,
-.account-container, .heading-container { z-index: 80 !important; }
-
-/* Menu + other sliding groups already <= 70 from v6 — leave unchanged */
-/* === End Layering Overrides v7 === */

@@ -922,30 +922,87 @@ body.non-fullscreen {
   width: calc(36vw - 28.87vw) !important;
 }
 
-
-/* === Layering Overrides v7 (2025‑07‑25) === */
-/* This block finally fixes calendar grid vs mask stripes
-   - Removes .other-content stacking context
-   - Places layer‑five/layer‑six above the grid
-   - Keeps Line 4 on top */
-
-.other-content {
-  z-index: auto !important;          /* drop forced 130 context */
+/* === Calendar grid ↧ under layer‑five — 2025‑07‑25 ===
+   Ensure calendar grid (numbers & dashed lines) sits below the top mask
+   while keeping timeline line‑4 above.
+*/
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed {
+  z-index: 0 !important;     /* lower than layer‑five (auto) */
 }
 
-.layer-five,
-.layer-six {
-  z-index: 120 !important;           /* mask above grid, below lines */
+
+/* === Stacking fix v2 — 2025‑07‑25 ===
+   1. Raise layer‑five so it masks content as intended.
+   2. Keep calendar grid just beneath it (but above layer‑four).
+   3. Elevate the fourth timeline line so it always shows above the mask.
+*/
+.layer-five{
+  z-index: 4 !important;         /* higher than grid & layer‑four */
+}
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed{
+  z-index: 2 !important;         /* between layer‑four (2) and layer‑five (4) */
+}
+/* line 4 */
+.line.fourth,
+.fourth{
+  z-index: 5 !important;         /* stays on top */
 }
 
-.grid-number,
-.grid-dashed {
-  position: absolute !important;     /* restore absolute positioning */
-  z-index: 60 !important;            /* grid below mask */
+
+/* === Calendar Grid Layering Fix v3 — 2025‑07‑25 ===
+   Keep the top mask (.layer‑five) visible when util‑state 2 is active,
+   and place the calendar grid just beneath it (above layer‑four).
+   Timeline line 4 is raised above everything else for clarity. */
+:root[data-util="2"] .layer-five{
+  opacity: 1 !important;
+  display: block !important;
+  pointer-events: none !important;
+  z-index: 250 !important;        /* higher than grid + layer-four */
+}
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed{
+  z-index: 200 !important;        /* above layer-four (2) but beneath mask (250) */
+}
+.line.fourth,
+.fourth{
+  z-index: 300 !important;        /* always on top */
 }
 
-.line.fourth {
-  z-index: 210 !important;           /* Line 4 always on top */
-}
-/* === End Layering Overrides v7 === */
 
+/* === Calendar Fix v5 — 2025‑07‑25 ===
+   Force timeline line‑4 visible above all masks/grid content. */
+.line.fourth, 
+.fourth{
+  position: fixed !important;       /* escape parent stacking context */
+  top: 12.5vh !important;
+  left: 36vw !important;
+  width: 57.8vw !important;
+  height: 1px !important;
+  background-color: rgba(172,172,172,0.84) !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+  display: block !important;
+  z-index: 10000 !important;        /* ensure visibility over everything */
+}
+
+
+/* === Calendar Fix v6 — 2025‑07‑25 ===
+   Approach: When util‑state 2 is active, paint line‑4 directly *inside*
+   the mask (.layer‑five) via a pseudo‑element so it’s guaranteed to be
+   visible, and hide the original .line.fourth to avoid double‑drawing. */
+:root[data-util="2"] .layer-five::after{
+  content:"";
+  position:absolute;
+  top:12.5vh;          /* same vertical position as original line */
+  left:0;
+  width:100%;
+  height:1px;
+  background:rgba(172,172,172,.84);
+  pointer-events:none;
+  z-index:260 !important;   /* above mask background, below any pop‑ups */
+}
+:root[data-util="2"] .line.fourth{
+  display:none !important;
+}

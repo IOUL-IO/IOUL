@@ -915,8 +915,11 @@ body.non-fullscreen {
 }
 
 /* === End Layering Overrides v5 === */
-
-/* === Unmask slide-container left column (July 25 2025 fix) === */
-.slide-container{
-    clip-path: inset(0 0 0 6.37vw) !important; /* reveal everything right of 6.37vw */
+/* --- Visibility hotfix (2025‑07‑25) ---------------------------------- */
+.heading-container,
+.account-container,
+.menu-items,
+.community-items-container,
+.zero-items-container {
+  z-index: 101;   /* above structural layers (100) but beneath slide-container (150) */
 }

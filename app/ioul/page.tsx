@@ -386,7 +386,7 @@ useEffect(() => {
           case "none":
             // fade out chat, slide in account+heading          chatTextRef.current!.style.opacity = "0";
             setTimeout(() => {
-              raiseDuringAnimation('.account-container[data-slide-group="account"]');
+              raiseDuringAnimation(\'.account-container[data-slide-group="account"], .heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]\');
               document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
                 .forEach(box => box.style.transform = "translateX(0)");
               document.querySelectorAll<HTMLElement>('.heading-container[data-slide-group="heading"], .custom-line[data-slide-group="heading"]')

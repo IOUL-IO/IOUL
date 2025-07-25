@@ -909,70 +909,72 @@ body.non-fullscreen {
 
 /* === End Layering Overrides v6 === */
 
-/* === Layering Overrides v7 (updated 2025-07-24) ===
-   Implements final stacking order per user:
-   • account + heading container ↴ under layer‑1 only
-   • menu container ↴ under layers 1, 2, 4
-   • community + zero container ↴ under layers 2, 4
-   Keeps timeline lines & util‑line on top, containers slide below stripes.
+/* === Layering Overrides v10 (updated 2025-07-25) ===
+   Finalized explicit stacking hierarchy:
+
+   z‑index | element(s)
+   --------|----------------------------------------
+      135  | .line.util-line
+      130  | .line.original … .line.sixth (timeline lines)
+      120  | .layer-one          (white stripe ❶)
+      115  | .account-container, .heading-container     (under ❶ only)
+      110  | .layer-two          (white stripe ❷)
+      105  | .community-items-container, .zero-items-container   (under ❷ + ❹)
+      100  | .layer-four         (white stripe ❹)
+       95  | .menu-items                         (under ❶ + ❷ + ❹)
+       90  | .item-text, .item-line, .center-text, .center-line
 */
 
-/* 0 ▸ Ensure layers exist & visible */
-.layer-one, .layer-two, .layer-three, .layer-four, .layer-five, .layer-six {
-    display: block !important;
-}
+.layer-one        { z-index: 120 !important; }
+.layer-two        { z-index: 110 !important; }
+.layer-four       { z-index: 100 !important; }
 
-/* 1 ▸ Primary overlay stripes */
-/* (Assume layer‑1 / layer‑2 default z = 100, layer‑4 = 2) */
-
-/* 2 ▸ Sliding content containers */
 .account-container,
 .heading-container {
     position: absolute;
-    z-index: 95 !important;          /* under layer‑1 (100), above layer‑4 (2) */
-}
-
-.menu-items {
-    position: absolute;
-    z-index: 1 !important;           /* under layers 1, 2, 4 (100 / 100 / 2) */
+    z-index: 115 !important;
 }
 
 .community-items-container,
 .zero-items-container {
     position: absolute;
-    z-index: 1 !important;           /* under layers 2 & 4 (100 / 2) */
+    z-index: 105 !important;
 }
 
-/* 3 ▸ Other timeline / UI lines */
-.other-content {
-    z-index: 130 !important;         /* host for timeline lines */
+.menu-items {
+    position: absolute;
+    z-index: 95 !important;
 }
 
+/* Item rows under layer‑3 but above layer‑4/menu */
+.item-text,
+.item-line,
+.center-text,
+.center-line {
+    z-index: 90 !important;
+}
+
+/* Timeline */
 .line.original,
 .line.second,
 .line.third,
 .line.fourth,
 .line.fifth,
 .line.sixth {
-    z-index: 120 !important;
+    z-index: 130 !important;
 }
 
 .line.util-line {
-    z-index: 125 !important;
+    z-index: 135 !important;
 }
 
-/* === End Layering Overrides v7 === */
-
-/* === Layering Overrides v8 (updated 2025-07-24) ===
-   Adds '.animating' class to temporarily raise containers above stripes during slide‑in,
-   then automatically removed via JS. */
-
+/* Remove any previous .animating elevation so containers stay under stripes */
 .account-container.animating,
 .heading-container.animating,
 .menu-items.animating,
 .community-items-container.animating,
 .zero-items-container.animating {
-    z-index: 110 !important;   /* visible above layer‑1/2/4 (<=100) but below timeline lines (120) */
+    z-index: inherit !important;
 }
 
-/* === End Layering Overrides v8 === */
+/* === End Layering Overrides v10 === */

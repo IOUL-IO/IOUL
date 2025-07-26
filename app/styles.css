@@ -549,36 +549,14 @@ body.stage-help .open-text,
 body.stage-help .help-text{
   transition: transform 0.7s ease, opacity .3s ease !important;
 }
-/* === Additional fixes 2025‑07‑25 ===
-   Fade lines 5 and 6; ensure login lines under layer-one
-*/
 
-/* Fade in for fifth and sixth timeline lines */
-.fifth:not(.login-line):not(.login-line-second),
-.sixth:not(.login-line):not(.login-line-second){
-  opacity:0;
-  transition:opacity .5s ease-in-out;
-}
-body.fade-in-trigger .fifth:not(.login-line):not(.login-line-second),
-body.fade-in-trigger .sixth:not(.login-line):not(.login-line-second){
-  opacity:1;
-}
 
-/* Login lines should stay beneath layer-one during slide */
-.login-line,
-.login-line-second{
-  z-index:90 !important; /* layer-one is 100 */
-}
-
-/* === Fade restore for lines 4‑6 (2025‑07‑26) === */
-.line.fourth:not(.login-line):not(.login-line-second),
-.line.fifth:not(.login-line):not(.login-line-second),
-.line.sixth:not(.login-line):not(.login-line-second){
+/* ===== Final Timeline Line Fade Override 2025-07-26 ===== */
+.line:not(.login-line):not(.login-line-second){
   opacity:0 !important;
-  transition:opacity .5s ease-in-out;
+  transition:opacity .6s ease-in-out;
 }
-body.fade-in-trigger .line.fourth:not(.login-line):not(.login-line-second),
-body.fade-in-trigger .line.fifth:not(.login-line):not(.login-line-second),
-body.fade-in-trigger .line.sixth:not(.login-line):not(.login-line-second){
+body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
   opacity:1 !important;
 }
+/* ===== End Final Timeline Line Fade Override ===== */

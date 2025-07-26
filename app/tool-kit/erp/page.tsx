@@ -89,6 +89,12 @@ export default function Page() {
           0
         </span>
 
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '35.4vh', left: '58.7vw' }}>PER1OD:</span>
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '41.6vh', left: '58.7vw' }}>F1LTER:</span>
+        
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '71vw' }}>0</span>
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '71vw' }}>0</span>
+
         {/* Column 2 & 3 content labels */}
         <span className="custom-text content-text" style={{ position: 'absolute', top: '53vh', left: '36vw' }}>
           OOS

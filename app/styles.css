@@ -1,3 +1,21 @@
+
+/* ===== Timeline Lines Fade (v5) ===== */
+.line:not(.login-line):not(.login-line-second){
+  opacity:0;
+  visibility:hidden;
+}
+
+body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
+  visibility:visible;
+  animation:line-fade .6s ease-in-out forwards;
+}
+
+@keyframes line-fade{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+/* ===== End Timeline Lines Fade ===== */
+
 @font-face {
   font-family: 'Distill Expanded';
   src: url('font.woff2') format('woff2'),
@@ -21,24 +39,6 @@ body.non-fullscreen .username{top:35.17vh;}
 body.non-fullscreen .password{top:43.17vh;}
 
 body.fade-in-trigger{background:#fff;}
-
-/* ===== Lines ===== */
-.line:not(.login-line):not(.login-line-second){
-  opacity:0;transition:opacity .5s ease-in-out;
-}
-body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
-  opacity:1;
-}
-
-.login-line,
-.login-line-second,
-.login-text{opacity:0;transition:opacity .5s ease-in-out;}
-
-.login-text,
-.login-line,
-.login-line-second{
-  transition:transform .7s ease-in-out, opacity .5s ease-in-out;
-}
 
 /* ===== Generic Visibility Helpers ===== */
 .visible{opacity:1 !important;transition:transform 0.7s ease-in-out, opacity .5s ease-in-out;}
@@ -549,6 +549,12 @@ body.stage-help .open-text,
 body.stage-help .help-text{
   transition: transform 0.7s ease, opacity .3s ease !important;
 }
+/* === Additional fixes 2025‑07‑25 ===
+   Fade lines 5 and 6; ensure login lines under layer-one
+*/
+
+
+
 /* Login lines should stay beneath layer-one during slide */
 .login-line,
 .login-line-second{

@@ -1,3 +1,21 @@
+
+/* === Unified timeline-line fade logic 2025‑07‑26 ===
+   Uses CSS custom property so only one property flips when body gets .fade-in-trigger
+   and avoids selector/cascade conflicts.
+*/
+body {
+  --line-opacity: 0;
+}
+body.fade-in-trigger {
+  --line-opacity: 1;
+}
+/* All seven static timeline strokes (original‑sixth + util) */
+.line:not(.login-line):not(.login-line-second){
+  opacity: var(--line-opacity);
+  transition: opacity .6s ease-in-out;
+}
+/* === End unified fade logic === */
+
 @font-face {
   font-family: 'Distill Expanded';
   src: url('font.woff2') format('woff2'),
@@ -21,25 +39,6 @@ body.non-fullscreen .username{top:35.17vh;}
 body.non-fullscreen .password{top:43.17vh;}
 
 body.fade-in-trigger{background:#fff;}
-
-/* ===== Timeline Lines Fade (2025‑07‑26 final) ===== */
-.line:not(.login-line):not(.login-line-second){
-  opacity:0;
-  transition:opacity .6s ease-in-out;
-}
-
-body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
-  opacity:1;
-}
-/* ===== End Timeline Lines Fade ===== */
-
-/* ===== Lines ===== */
-.line:not(.login-line):not(.login-line-second){
-  opacity:0;transition:opacity .5s ease-in-out;
-}
-body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
-  opacity:1;
-}
 
 .login-line,
 .login-line-second,

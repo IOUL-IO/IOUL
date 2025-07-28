@@ -88,12 +88,24 @@ const Page: React.FC = () => {
         fadeInEls(loginEls);
         phase = 2;
         window.removeEventListener("pointermove", initialPointer);
+                window.removeEventListener("mousemove", initialPointer);
+                window.removeEventListener("mouseover", initialPointer);
+                window.removeEventListener("pointerover", initialPointer);
         window.removeEventListener("touchstart", initialPointer);
       }
     };
     window.addEventListener("pointermove", initialPointer, {
       passive: true,
     });
+    window.addEventListener("mousemove", initialPointer, {
+          passive: true,
+        });
+    window.addEventListener("mouseover", initialPointer, {
+          passive: true,
+        });
+    window.addEventListener("pointerover", initialPointer, {
+          passive: true,
+        });
     window.addEventListener("touchstart", initialPointer, {
       passive: true,
     });

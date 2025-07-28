@@ -51,7 +51,7 @@ const Page: React.FC = () => {
         )
       );
 
-    /* ===== Initial fade‑in logic ===== */
+    /* ===== Initial fade‑in of background lines ===== */
     let phase = 0; // 0 = waiting for first interaction
     const triggerInitialFade = () => {
       if (phase !== 0) return;
@@ -59,7 +59,7 @@ const Page: React.FC = () => {
       phase = 1;
     };
 
-    // Comprehensive set of events so we always catch at least one:
+    // Fire once on any first pointer/touch interaction:
     ["pointermove", "mousemove", "pointerover", "mouseover", "touchstart"].forEach(
       (evt) =>
         window.addEventListener(
@@ -67,7 +67,7 @@ const Page: React.FC = () => {
           triggerInitialFade,
           {
             passive: true,
-            once: true, // auto‑remove after it fires
+            once: true,
           }
         )
     );
@@ -84,10 +84,18 @@ const Page: React.FC = () => {
     /* ===== Sequential UI flow ===== */
     let step = 0; // 0 login-fade, 1 util, 2 account, 3 help
 
-    // Fade out login els after inactivity – re‑instate on hover back in zone
+    // Manage login elements visibility ----------------------------
     const loginFadeTimeout = 20000;
     let inactivityTimer: number;
-    let loginElsHidden = false;
+    let loginElsHidden = true; // start hidden; show after first hover in zone
+
+    function showLogin() {
+      if (!loginElsHidden) return;
+      fadeInEls(loginEls);
+      loginElsHidden = false;
+      resetInactivityTimer();
+    }
+
     function resetInactivityTimer() {
       clearTimeout(inactivityTimer);
       if (step !== 0) return;
@@ -97,29 +105,27 @@ const Page: React.FC = () => {
         }
       }, loginFadeTimeout);
     }
+
+    // Watch pointer location for login zone entry
+    const loginZoneWatcher = (ev: MouseEvent | PointerEvent) => {
+      if (step !== 0 || !loginElsHidden) return;
+      const { clientX: x, clientY: y } = ev;
+      if (inLoginZone(x, y)) {
+        showLogin();
+      }
+    };
+    window.addEventListener("pointermove", loginZoneWatcher, { passive: true });
+    window.addEventListener("mousemove", loginZoneWatcher, { passive: true });
+
     ["mousemove", "mousedown", "keydown", "touchstart"].forEach((evt) =>
       window.addEventListener(evt, resetInactivityTimer, { passive: true })
     );
 
-    window.addEventListener(
-      "pointermove",
-      (ev: PointerEvent) => {
-        if (step !== 0 || !loginElsHidden) return;
-        const { clientX: x, clientY: y } = ev;
-        if (inLoginZone(x, y)) {
-          fadeInEls(loginEls);
-          loginElsHidden = false;
-          resetInactivityTimer();
-        }
-      },
-      { passive: true }
-    );
-    resetInactivityTimer();
-
     /* ===== Click handlers for util -> account/help ===== */
     utilLine.addEventListener("click", () => {
       if (step !== 0) return;
-      fadeInEls([...loginEls, openText, helpText]);
+      showLogin(); // ensure visible
+      fadeInEls([openText, helpText]);
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           body.classList.add("stage-util");
@@ -152,7 +158,7 @@ const Page: React.FC = () => {
       if (step === 1) {
         body.classList.remove("stage-util");
         step = 0;
-        fadeInEls(loginEls);
+        resetInactivityTimer();
       } else if (step === 2) {
         accountWrap.classList.remove("active");
         body.classList.remove("stage-account");
@@ -235,6 +241,8 @@ const Page: React.FC = () => {
     /* ===== Cleanup ===== */
     return () => {
       clearTimeout(inactivityTimer);
+      window.removeEventListener("pointermove", loginZoneWatcher);
+      window.removeEventListener("mousemove", loginZoneWatcher);
     };
   }, []);
 

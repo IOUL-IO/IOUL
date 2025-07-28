@@ -562,7 +562,10 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 /* ===== End Final Timeline Line Fade Override ===== */
 
 
-/* === 2025-07-28 Layering: raise main lines above login lines === */
-.line:not(.login-line):not(.login-line-second){
-  z-index:1;
+/* === (2025‑07‑28) Ensure login visuals slide *under* left masking bar === */
+.login-line,
+.login-line-second,
+.username,
+.password{
+  z-index:90;          /* layer‑one is 100, so stay underneath */
 }

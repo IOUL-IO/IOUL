@@ -74,6 +74,16 @@ const Page: React.FC = () => {
         y <= vh * 0.84
       );
     }
+
+// --- Cross‑device first interaction trigger (2025‑07‑28) ---
+const triggerFirstInteraction = () => {
+  if (phase !== 0) return;
+  body.classList.add("fade-in-trigger");
+  phase = 1;
+};
+
+window.addEventListener("pointerdown", triggerFirstInteraction, { passive: true });
+window.addEventListener("keydown", triggerFirstInteraction, { passive: true });
     const initialPointer = (e: PointerEvent | TouchEvent) => {
       const p =
         e instanceof TouchEvent ? e.touches[0] : (e as PointerEvent);
@@ -87,16 +97,16 @@ const Page: React.FC = () => {
       if (phase === 1 && inLoginZone(x, y)) {
         fadeInEls(loginEls);
         phase = 2;
-          window.removeEventListener("pointermove", triggerFade);
-          window.removeEventListener("pointerdown", triggerFade);
-          window.removeEventListener("keydown",     triggerFade);
-          window.removeEventListener("touchstart",  triggerFade);
+        window.removeEventListener("pointermove", initialPointer);
+        window.removeEventListener("touchstart", initialPointer);
       }
     };
-    window.addEventListener("pointermove", triggerFade, { passive: true });
-    window.addEventListener("pointerdown", triggerFade, { passive: true });
-    window.addEventListener("keydown",     triggerFade, { passive: true });
-    window.addEventListener("touchstart",  triggerFade, { passive: true });
+    window.addEventListener("pointermove", initialPointer, {
+      passive: true,
+    });
+    window.addEventListener("touchstart", initialPointer, {
+      passive: true,
+    });
 
     /* ===== Sequential logic ===== */
     let step = 0;
@@ -269,6 +279,9 @@ const Page: React.FC = () => {
 
     /* ==== Cleanup on unmount ==== */
     return () => {
+
+window.removeEventListener("pointerdown", triggerFirstInteraction);
+window.removeEventListener("keydown", triggerFirstInteraction);
       window.removeEventListener("pointermove", initialPointer);
       window.removeEventListener("touchstart", initialPointer);
       ["mousemove", "mousedown", "keydown", "touchstart"].forEach((evt) => {

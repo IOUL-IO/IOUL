@@ -560,3 +560,9 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
   opacity:1 !important;
 }
 /* ===== End Final Timeline Line Fade Override ===== */
+
+
+/* === 2025-07-28 Layering: raise main lines above login lines === */
+.line:not(.login-line):not(.login-line-second){
+  z-index:1;
+}

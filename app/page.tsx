@@ -83,6 +83,7 @@ const triggerFirstInteraction = () => {
 };
 
 window.addEventListener("pointerdown", triggerFirstInteraction, { passive: true });
+window.addEventListener("mousemove", triggerFirstInteraction, { passive: true });
 window.addEventListener("keydown", triggerFirstInteraction, { passive: true });
     const initialPointer = (e: PointerEvent | TouchEvent) => {
       const p =
@@ -281,6 +282,7 @@ window.addEventListener("keydown", triggerFirstInteraction, { passive: true });
     return () => {
 
 window.removeEventListener("pointerdown", triggerFirstInteraction);
+            window.removeEventListener("mousemove", triggerFirstInteraction);
 window.removeEventListener("keydown", triggerFirstInteraction);
       window.removeEventListener("pointermove", initialPointer);
       window.removeEventListener("touchstart", initialPointer);

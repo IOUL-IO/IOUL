@@ -1,3 +1,4 @@
+
 "use client";
 import './styles.css';
 
@@ -62,7 +63,7 @@ const Page: React.FC = () => {
       body.classList.add(name);
     }
 
-    /* ===== Initial hover logic (unchanged) ===== */
+    /* ===== Initial hover logic ===== */
     let phase = 0; // 0: waiting for first pointer -> lines fade. 1: waiting for login zone hover
     function inLoginZone(x: number, y: number) {
       const vw = window.innerWidth,
@@ -74,9 +75,9 @@ const Page: React.FC = () => {
         y <= vh * 0.84
       );
     }
-    const initialPointer = (e: PointerEvent | TouchEvent) => {
+    const initialPointer = (e: PointerEvent | TouchEvent | MouseEvent) => {
       const p =
-        e instanceof TouchEvent ? e.touches[0] : (e as PointerEvent);
+        e instanceof TouchEvent ? e.touches[0] : (e as PointerEvent | MouseEvent);
       const { clientX: x, clientY: y } = p;
 
       if (phase === 0) {
@@ -88,17 +89,16 @@ const Page: React.FC = () => {
         fadeInEls(loginEls);
         phase = 2;
         window.removeEventListener("pointermove", initialPointer);
-         window.removeEventListener("mousemove", initialPointer);
-         window.removeEventListener("pointerdown", initialPointer);
+        window.removeEventListener("mousemove", initialPointer);
         window.removeEventListener("touchstart", initialPointer);
       }
     };
+
+    // Pointer‑event capable browsers
     window.addEventListener("pointermove", initialPointer, {
       passive: true,
     });
-    window.addEventListener("pointerdown", initialPointer, {
-      passive: true,
-    });
+    // Fallback for browsers (e.g. older Safari) that may not fire pointer events
     window.addEventListener("mousemove", initialPointer, {
       passive: true,
     });
@@ -133,19 +133,6 @@ const Page: React.FC = () => {
     window.addEventListener(
       "pointermove",
       (ev: PointerEvent) => {
-        if (step !== 0 || !loginElsHidden) return;
-        const { clientX: x, clientY: y } = ev;
-        if (inLoginZone(x, y)) {
-          fadeInEls(loginEls);
-          loginElsHidden = false;
-          resetInactivityTimer();
-        }
-      },
-      { passive: true }
-    );
-    window.addEventListener(
-      "mousemove",
-      (ev: MouseEvent) => {
         if (step !== 0 || !loginElsHidden) return;
         const { clientX: x, clientY: y } = ev;
         if (inLoginZone(x, y)) {
@@ -215,7 +202,7 @@ const Page: React.FC = () => {
     /* ===== Editable text logic (unchanged) ===== */
     const editableSel =
       ".username, .password, .account-text, .help-text-area";
-    function findEditable(ev: PointerEvent) {
+    function findEditable(ev: PointerEvent | MouseEvent) {
       let el = (ev.target as Element).closest(editableSel);
       if (!el) {
         const alt = document.elementFromPoint(
@@ -290,9 +277,8 @@ const Page: React.FC = () => {
 
     /* ==== Cleanup on unmount ==== */
     return () => {
-         window.removeEventListener("mousemove", initialPointer);
-         window.removeEventListener("pointerdown", initialPointer);
       window.removeEventListener("pointermove", initialPointer);
+      window.removeEventListener("mousemove", initialPointer);
       window.removeEventListener("touchstart", initialPointer);
       ["mousemove", "mousedown", "keydown", "touchstart"].forEach((evt) => {
         window.removeEventListener(evt, resetInactivityTimer as any);

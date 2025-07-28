@@ -91,6 +91,8 @@ const Page: React.FC = () => {
          window.removeEventListener("mousemove", initialPointer);
          window.removeEventListener("pointerdown", initialPointer);
         window.removeEventListener("touchstart", initialPointer);
+        window.removeEventListener("mouseover", initialPointer);
+        window.removeEventListener("pointerover", initialPointer);
       }
     };
     window.addEventListener("pointermove", initialPointer, {
@@ -103,6 +105,12 @@ const Page: React.FC = () => {
       passive: true,
     });
     window.addEventListener("touchstart", initialPointer, {
+      passive: true,
+    });
+    window.addEventListener("mouseover", initialPointer, {
+      passive: true,
+    });
+    window.addEventListener("pointerover", initialPointer, {
       passive: true,
     });
 
@@ -294,6 +302,8 @@ const Page: React.FC = () => {
          window.removeEventListener("pointerdown", initialPointer);
       window.removeEventListener("pointermove", initialPointer);
       window.removeEventListener("touchstart", initialPointer);
+        window.removeEventListener("mouseover", initialPointer);
+        window.removeEventListener("pointerover", initialPointer);
       ["mousemove", "mousedown", "keydown", "touchstart"].forEach((evt) => {
         window.removeEventListener(evt, resetInactivityTimer as any);
       });

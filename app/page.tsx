@@ -74,17 +74,6 @@ const Page: React.FC = () => {
         y <= vh * 0.84
       );
     }
-
-// --- Cross‑device first interaction trigger (2025‑07‑28) ---
-const triggerFirstInteraction = () => {
-  if (phase !== 0) return;
-  body.classList.add("fade-in-trigger");
-  phase = 1;
-};
-
-window.addEventListener("pointerdown", triggerFirstInteraction, { passive: true });
-window.addEventListener("mousemove", triggerFirstInteraction, { passive: true });
-window.addEventListener("keydown", triggerFirstInteraction, { passive: true });
     const initialPointer = (e: PointerEvent | TouchEvent) => {
       const p =
         e instanceof TouchEvent ? e.touches[0] : (e as PointerEvent);
@@ -99,10 +88,18 @@ window.addEventListener("keydown", triggerFirstInteraction, { passive: true });
         fadeInEls(loginEls);
         phase = 2;
         window.removeEventListener("pointermove", initialPointer);
+         window.removeEventListener("mousemove", initialPointer);
+         window.removeEventListener("pointerdown", initialPointer);
         window.removeEventListener("touchstart", initialPointer);
       }
     };
     window.addEventListener("pointermove", initialPointer, {
+      passive: true,
+    });
+    window.addEventListener("pointerdown", initialPointer, {
+      passive: true,
+    });
+    window.addEventListener("mousemove", initialPointer, {
       passive: true,
     });
     window.addEventListener("touchstart", initialPointer, {
@@ -136,6 +133,19 @@ window.addEventListener("keydown", triggerFirstInteraction, { passive: true });
     window.addEventListener(
       "pointermove",
       (ev: PointerEvent) => {
+        if (step !== 0 || !loginElsHidden) return;
+        const { clientX: x, clientY: y } = ev;
+        if (inLoginZone(x, y)) {
+          fadeInEls(loginEls);
+          loginElsHidden = false;
+          resetInactivityTimer();
+        }
+      },
+      { passive: true }
+    );
+    window.addEventListener(
+      "mousemove",
+      (ev: MouseEvent) => {
         if (step !== 0 || !loginElsHidden) return;
         const { clientX: x, clientY: y } = ev;
         if (inLoginZone(x, y)) {
@@ -280,10 +290,8 @@ window.addEventListener("keydown", triggerFirstInteraction, { passive: true });
 
     /* ==== Cleanup on unmount ==== */
     return () => {
-
-window.removeEventListener("pointerdown", triggerFirstInteraction);
-            window.removeEventListener("mousemove", triggerFirstInteraction);
-window.removeEventListener("keydown", triggerFirstInteraction);
+         window.removeEventListener("mousemove", initialPointer);
+         window.removeEventListener("pointerdown", initialPointer);
       window.removeEventListener("pointermove", initialPointer);
       window.removeEventListener("touchstart", initialPointer);
       ["mousemove", "mousedown", "keydown", "touchstart"].forEach((evt) => {

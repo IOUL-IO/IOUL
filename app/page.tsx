@@ -88,24 +88,20 @@ const Page: React.FC = () => {
         fadeInEls(loginEls);
         phase = 2;
         window.removeEventListener("pointermove", initialPointer);
-                window.removeEventListener("mousemove", initialPointer);
-                window.removeEventListener("mouseover", initialPointer);
-                window.removeEventListener("pointerover", initialPointer);
+         window.removeEventListener("mousemove", initialPointer);
+         window.removeEventListener("pointerdown", initialPointer);
         window.removeEventListener("touchstart", initialPointer);
       }
     };
     window.addEventListener("pointermove", initialPointer, {
       passive: true,
     });
+    window.addEventListener("pointerdown", initialPointer, {
+      passive: true,
+    });
     window.addEventListener("mousemove", initialPointer, {
-          passive: true,
-        });
-    window.addEventListener("mouseover", initialPointer, {
-          passive: true,
-        });
-    window.addEventListener("pointerover", initialPointer, {
-          passive: true,
-        });
+      passive: true,
+    });
     window.addEventListener("touchstart", initialPointer, {
       passive: true,
     });
@@ -137,6 +133,19 @@ const Page: React.FC = () => {
     window.addEventListener(
       "pointermove",
       (ev: PointerEvent) => {
+        if (step !== 0 || !loginElsHidden) return;
+        const { clientX: x, clientY: y } = ev;
+        if (inLoginZone(x, y)) {
+          fadeInEls(loginEls);
+          loginElsHidden = false;
+          resetInactivityTimer();
+        }
+      },
+      { passive: true }
+    );
+    window.addEventListener(
+      "mousemove",
+      (ev: MouseEvent) => {
         if (step !== 0 || !loginElsHidden) return;
         const { clientX: x, clientY: y } = ev;
         if (inLoginZone(x, y)) {
@@ -281,6 +290,8 @@ const Page: React.FC = () => {
 
     /* ==== Cleanup on unmount ==== */
     return () => {
+         window.removeEventListener("mousemove", initialPointer);
+         window.removeEventListener("pointerdown", initialPointer);
       window.removeEventListener("pointermove", initialPointer);
       window.removeEventListener("touchstart", initialPointer);
       ["mousemove", "mousedown", "keydown", "touchstart"].forEach((evt) => {

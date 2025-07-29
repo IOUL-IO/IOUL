@@ -1015,5 +1015,6 @@ body.non-fullscreen {
    independently. */
 html:fullscreen,
 body:fullscreen {
+  overflow-x: hidden !important;
   overflow-y: hidden !important;
 }

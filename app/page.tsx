@@ -219,10 +219,35 @@ const Page: React.FC = () => {
     );
 
     /* ===== Edge‑click full‑screen toggle ===== */
-    function toggleFullScreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      } else {
+    
+
+/* ===== Full‑screen helpers (2025‑07‑29) ===== */
+function freezeTransitions() {
+  body.classList.add('no-transitions'); // temporarily stop slide animations
+  clearTimeout((freezeTransitions as any)._t);
+  (freezeTransitions as any)._t = window.setTimeout(() => {
+    body.classList.remove('no-transitions');
+  }, 600); // slightly longer than the longest transform transition
+}
+
+document.addEventListener('fullscreenchange', () => {
+  freezeTransitions();
+  if (document.fullscreenElement) {
+    body.classList.remove('non-fullscreen');
+  } else {
+    body.classList.add('non-fullscreen');
+  }
+});
+
+function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+    body.classList.remove('non-fullscreen'); // make sure content can stretch
+    document.documentElement.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen().catch(() => {});
+  }
+}
+ else {
         document.exitFullscreen().catch(() => {});
       }
     }

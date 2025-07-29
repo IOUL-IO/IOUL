@@ -569,3 +569,14 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .password{
   z-index:90;          /* layer‑one is 100, so stay underneath */
 }
+
+
+/* ===== Full‑screen flash / transition fixes (2025‑07‑29) ===== */
+html, html:fullscreen{
+  background:#fff;
+}
+
+/* Temporarily disable transitions while entering/exiting fullscreen */
+.no-transitions *, .no-transitions *::before, .no-transitions *::after{
+  transition:none !important;
+}

@@ -7,14 +7,43 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 const IOULPage: React.FC = () => {
 // Mount effect: add body class and fade in content
+  const [pageFadedIn, setPageFadedIn] = useState(false);
 React.useEffect(() => {
   document.body.classList.add('non-fullscreen');
   setPageFadedIn(true);
 }, []);
 
+// ───────── Edge‑click full‑screen toggle ─────────
+useEffect(() => {
+  const handleClick = (e: MouseEvent) => {
+    const { clientX: x, clientY: y } = e;
+    const { innerWidth: w, innerHeight: h } = window;
+    const nearEdge = x <= EDGE_MARGIN || x >= w - EDGE_MARGIN || y <= EDGE_MARGIN || y >= h - EDGE_MARGIN;
+    if (!nearEdge) return;
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  };
+  const onFsChange = () => {
+    if (document.fullscreenElement) {
+      document.body.classList.remove('non-fullscreen');
+    } else {
+      document.body.classList.add('non-fullscreen');
+    }
+  };
+  document.addEventListener('click', handleClick);
+  document.addEventListener('fullscreenchange', onFsChange);
+  return () => {
+    document.removeEventListener('click', handleClick);
+    document.removeEventListener('fullscreenchange', onFsChange);
+  };
+}, []);
+
+
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");
-  const [pageFadedIn, setPageFadedIn] = useState(false);
   const [chatVisible, setChatVisible] = useState(true);
   const [chatInitialized, setChatInitialized] = useState(true);
   const chatTextRef = useRef<HTMLSpanElement | null>(null);
@@ -98,46 +127,7 @@ useEffect(() => {
     rafId = requestAnimationFrame(tick);
   };
   tick();
-  
-  // Edge-click full-screen toggle (matches login page)
-  useEffect(() => {
-    const EDGE_MARGIN = 12; // px from screen edge that counts as "edge click"
-
-    function onEdgeClick(e: MouseEvent) {
-      const { clientX: x, clientY: y } = e;
-      const { innerWidth: w, innerHeight: h } = window;
-      const nearEdge =
-        x <= EDGE_MARGIN ||
-        x >= w - EDGE_MARGIN ||
-        y <= EDGE_MARGIN ||
-        y >= h - EDGE_MARGIN;
-      if (!nearEdge) return;
-
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
-    }
-
-    function onFullscreenChange() {
-      if (document.fullscreenElement) {
-        document.body.classList.remove('non-fullscreen');
-      } else {
-        document.body.classList.add('non-fullscreen');
-      }
-    }
-
-    window.addEventListener('click', onEdgeClick);
-    document.addEventListener('fullscreenchange', onFullscreenChange);
-
-    // clean up
-    return () => {
-      window.removeEventListener('click', onEdgeClick);
-      document.removeEventListener('fullscreenchange', onFullscreenChange);
-    };
-  }, []);
-return () => {
+  return () => {
     window.removeEventListener('resize', onResize);
     cancelAnimationFrame(rafId);
   };

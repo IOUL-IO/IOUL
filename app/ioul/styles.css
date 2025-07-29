@@ -1008,13 +1008,15 @@ body.non-fullscreen {
 }
 
 
-/* === Full‑screen vertical scrollbar fix — 2025‑07‑29 ===
-   Hide the vertical scrollbar that appears on the right edge
-   of the viewport when the document is in full‑screen mode.
-   Internal components (e.g. calendar grid) can still scroll
-   independently. */
+/* === Global overflow suppression — 2025‑07‑29 ===
+   Ensure no browser scrollbars (horizontal or vertical) are ever
+   shown for the page itself, in or out of full‑screen. Internal
+   components must manage their own scrolling. */
+html,
+body,
 html:fullscreen,
 body:fullscreen {
-  overflow-x: hidden !important;
-  overflow-y: hidden !important;
+  overflow: hidden !important;
+  max-width: 100%;
+  max-height: 100%;
 }

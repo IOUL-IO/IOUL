@@ -218,23 +218,20 @@ const Page: React.FC = () => {
       true
     );
 
-    /* ===== Edge‑click full‑screen toggle ===== */
-    function toggleFullScreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      } else {
-        document.exitFullscreen().catch(() => {});
-      }
-    }
-    document.addEventListener("click", (ev: MouseEvent) => {
-      const { clientX: x, clientY: y } = ev;
-      if (
-        x <= 11 ||
-        x >= window.innerWidth - 11 ||
-        y <= 11 ||
-        y >= window.innerHeight - 11
-      ) {
-        toggleFullScreen();
+    
+/* ===== Edge‑click enter‑only full‑screen ===== */
+document.addEventListener("click", ({ clientX: x, clientY: y }) => {
+  const EDGE_MARGIN = 11; // px from any edge
+  const { innerWidth: w, innerHeight: h } = window;
+  const nearEdge =
+    x <= EDGE_MARGIN ||
+    x >= w - EDGE_MARGIN ||
+    y <= EDGE_MARGIN ||
+    y >= h - EDGE_MARGIN;
+  if (nearEdge && !document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  }
+});
       }
     });
 

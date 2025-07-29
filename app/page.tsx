@@ -5,18 +5,11 @@ import React, { useEffect } from 'react';
 
 /**
  * Login page for all‑in‑one online labour app
- *
- * – Enters native browser full‑screen when the user clicks near any edge
- *   (11 px gutter).  No fade‑in animation, so the viewport just expands,
- *   mirroring behaviour of Tool‑Kit / Center pages.
- * – The <html> element background is forced to white before the request to
- *   prevent Safari/Chrome’s default black flash.
- * – Six fixed white “mask” layers cover gutters so the transition looks
- *   seamless during the resize.
+ * Behaviour: one‑time edge click to ENTER fullscreen (no toggle), with white background
+ * Lines 1–6 + util-line fade in on first hover; masks sit *beneath* them to avoid covering.
  */
 export default function LoginPage() {
   useEffect(() => {
-    /* ============ Edge‑click → enter‑only fullscreen ============ */
     const EDGE_MARGIN = 11;
 
     function edgeClickHandler({ clientX: x, clientY: y }: MouseEvent) {
@@ -28,16 +21,20 @@ export default function LoginPage() {
         y >= h - EDGE_MARGIN;
 
       if (nearEdge && !document.fullscreenElement) {
-        // guarantee white background so the browser never paints black
         document.documentElement.style.background = "#ffffff";
-        document.documentElement.requestFullscreen().catch(() => {});
+        document.documentElement.requestFullscreen()
+          .then(() => {
+            // After entering fullscreen, we no longer need the click handler
+            document.removeEventListener("click", edgeClickHandler);
+          })
+          .catch(() => {});
       }
     }
 
     document.addEventListener("click", edgeClickHandler);
-    // flag initial state for CSS
     document.body.classList.add("non-fullscreen");
 
+    // Cleanup if component unmounts before fullscreen entered
     return () => {
       document.removeEventListener("click", edgeClickHandler);
       document.body.classList.remove("non-fullscreen");
@@ -46,7 +43,7 @@ export default function LoginPage() {
 
   return (
     <>
-      {/* Fixed white mask layers to hide gutters while expanding */}
+      {/* Fixed white mask layers – lower z-index so guidelines remain visible */}
       <div className="layer-one" />
       <div className="layer-two" />
       <div className="layer-three" />
@@ -54,9 +51,9 @@ export default function LoginPage() {
       <div className="layer-five" />
       <div className="layer-six" />
 
-      {/* --------- Login UI --------- */}
+      {/* ------- Login UI ------- */}
       <div className="page-content">
-        {/* Replace the placeholder below with your actual login form */}
+        {/* ...existing login form content unchanged... */}
         <div style={{
           position: "absolute",
           top: "50%",
@@ -69,7 +66,13 @@ export default function LoginPage() {
           background: "#fff",
           boxShadow: "0 6px 12px rgba(0,0,0,0.08)"
         }}>
-          <h1 style={{ marginBottom: "1.5rem", fontSize: "1.25rem", textAlign: "center", fontFamily: "sans-serif", letterSpacing: "0.08rem" }}>
+          <h1 style={{
+            marginBottom: "1.5rem",
+            fontSize: "1.25rem",
+            textAlign: "center",
+            fontFamily: "sans-serif",
+            letterSpacing: "0.08rem"
+          }}>
             Sign in
           </h1>
           <form>
@@ -104,6 +107,15 @@ export default function LoginPage() {
             </button>
           </form>
         </div>
+
+        {/* Guidelines – retain original ordering */}
+        <div className="line original" />
+        <div className="line second" />
+        <div className="line third" />
+        <div className="line fourth" />
+        <div className="line fifth" />
+        <div className="line sixth" />
+        <div className="line util-line" />
       </div>
     </>
   );

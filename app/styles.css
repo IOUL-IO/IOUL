@@ -14,9 +14,9 @@ body.non-fullscreen{
 }
 
 /* ---- White mask columns ---- */
-.layer-one  { position:fixed; top:0; left:0;        width:6.37vw;  height:100vh; background:#ffffff; z-index:100; pointer-events:none; }
-.layer-two  { position:fixed; top:0; left:28.87vw;  width:7.13vw;  height:100vh; background:#ffffff; z-index:100; pointer-events:none; }
-.layer-three{ position:fixed; top:0; left:94.17vw;  width:5.83vw;  height:100vh; background:#ffffff; z-index:100; pointer-events:none; }
+.layer-one  { position:fixed; top:0; left:0;        width:6.37vw;  height:100vh; background:#ffffff; z-index:2; pointer-events:none; }
+.layer-two  { position:fixed; top:0; left:28.87vw;  width:7.13vw;  height:100vh; background:#ffffff; z-index:2; pointer-events:none; }
+.layer-three{ position:fixed; top:0; left:94.17vw;  width:5.83vw;  height:100vh; background:#ffffff; z-index:2; pointer-events:none; }
 .layer-four { position:absolute; top:28.5vh; left:36vw;  width:61vw;   height:55.5vh; background:#ffffff; z-index:2; pointer-events:none; }
 .layer-five { position:absolute; top:0;      left:36vw;  width:58.7vw; height:28.4vh; background:#ffffff; pointer-events:none; }
 .layer-six  { position:absolute; top:84.7vh; left:36vw;  width:58.7vw; height:15.3vh; background:#ffffff; pointer-events:none; }
@@ -60,3 +60,13 @@ body.non-fullscreen{
 .page-content:hover .line.util-line {
   opacity: 1;
 }
+
+/* Ensure guidelines sit above masks */
+.line { z-index: 10; }
+.line.original,
+.line.second,
+.line.third,
+.line.fourth,
+.line.fifth,
+.line.sixth,
+.line.util-line { z-index: 10; }

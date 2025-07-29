@@ -232,8 +232,6 @@ document.addEventListener("click", ({ clientX: x, clientY: y }) => {
     document.documentElement.requestFullscreen().catch(() => {});
   }
 });
-      }
-    });
 
     /* ===== Cleanup ===== */
     return () => {

@@ -12,6 +12,17 @@
     box-sizing: border-box;
 }
 
+/* === Full‑screen scrollbar fix — 2025‑07‑29 ===
+   Hide the horizontal scrollbar that appears once the page
+   is expanded to full‑screen, without affecting existing
+   non‑fullscreen behaviour. */
+html:fullscreen, body:fullscreen,
+body {
+  overflow-x: hidden !important;
+}
+
+
+
 body.non-fullscreen {
     background-color: #ffffff;
     min-height: 100vh;
@@ -1005,15 +1016,4 @@ body.non-fullscreen {
 }
 :root[data-util="2"] .line.fourth{
   display:none !important;
-}
-
-/* ─── Show mask layers during full‑screen ─── */
-body:not(.non-fullscreen) .layer-one,
-body:not(.non-fullscreen) .layer-two,
-body:not(.non-fullscreen) .layer-three,
-body:not(.non-fullscreen) .layer-four,
-body:not(.non-fullscreen) .layer-five,
-body:not(.non-fullscreen) .layer-six {
-  display: block !important;
-  pointer-events: none !important;
 }

@@ -1,308 +1,138 @@
-
 "use client";
 import './styles.css';
 
-import React, { useEffect } from "react";
 
-const Page: React.FC = () => {
+import React, { useEffect } from 'react';
+
+export default function Page() {
   useEffect(() => {
-    /* ===== Element groups ===== */
-    const loginEls = Array.from(
-      document.querySelectorAll<HTMLElement>(
-        ".username, .password, .login-line, .login-line-second"
-      )
-    );
-    const utilLine = document.querySelector<HTMLElement>(".util-line")!;
-    const openText = document.querySelector<HTMLElement>(".open-text")!;
-    const helpText = document.querySelector<HTMLElement>(".help-text")!;
-    const accountWrap = document.querySelector<HTMLElement>(
-      ".account-wrapper"
-    )!;
-    const helpWrap = document.querySelector<HTMLElement>(".help-wrapper")!;
-    const body = document.body;
+    // ==== Edge‑triggered full‑screen toggle (arrow‑func variant) ====
+const EDGE_MARGIN = Math.max(
+  16 * window.devicePixelRatio,
+  0.01 * Math.min(window.innerWidth, window.innerHeight)
+);
 
-    /* ===== Visibility helpers ===== */
-    const fadeInEls = (els: HTMLElement[]) =>
-      els.forEach((el) => {
-        el.classList.remove("hidden");
-        void el.offsetWidth; // force reflow so opacity transition triggers
-        el.classList.add("visible");
-      });
-    const fadeOutEls = (els: HTMLElement[]) =>
-      Promise.all(
-        els.map(
-          (el) =>
-            new Promise<void>((res) => {
-              if (!el.classList.contains("visible")) {
-                res();
-                return;
-              }
-              const end = (e: TransitionEvent) => {
-                if (e.propertyName === "opacity") {
-                  el.removeEventListener("transitionend", end);
-                  res();
-                }
-              };
-              el.addEventListener("transitionend", end);
-              el.classList.remove("visible");
-              void el.offsetWidth;
-              el.classList.add("hidden");
-            })
-        )
-      );
+const isNearEdge = (x: number, y: number) => {
+  const { innerWidth: w, innerHeight: h } = window;
+  const m = EDGE_MARGIN;
+  return x <= m || x >= w - m || y <= m || y >= h - m;
+};
 
-    /* ===== Initial fade‑in of background lines ===== */
-    let phase = 0; // 0 = waiting for first interaction
-    const triggerInitialFade = () => {
-      if (phase !== 0) return;
-      body.classList.add("fade-in-trigger");
-      phase = 1;
-    };
-
-    // Fire once on any first pointer/touch interaction:
-    ["pointermove", "mousemove", "pointerover", "mouseover", "touchstart"].forEach(
-      (evt) =>
-        window.addEventListener(
-          evt,
-          triggerInitialFade,
-          {
-            passive: true,
-            once: true,
-          }
-        )
-    );
-
-    /* ===== Helper for login zone detection ===== */
-    function inLoginZone(x: number, y: number) {
-      const vw = window.innerWidth,
-        vh = window.innerHeight;
-      return (
-        x >= vw * 0.064 && x <= vw * 0.289 && y >= vh * 0.285 && y <= vh * 0.84
-      );
-    }
-
-    /* ===== Sequential UI flow ===== */
-    let step = 0; // 0 login-fade, 1 util, 2 account, 3 help
-
-    // Manage login elements visibility ----------------------------
-    const loginFadeTimeout = 20000;
-    let inactivityTimer: number;
-    let loginElsHidden = true; // start hidden; show after first hover in zone
-
-    function showLogin() {
-      if (!loginElsHidden) return;
-      fadeInEls(loginEls);
-      loginElsHidden = false;
-      resetInactivityTimer();
-    }
-
-    function resetInactivityTimer() {
-      clearTimeout(inactivityTimer);
-      if (step !== 0) return;
-      inactivityTimer = window.setTimeout(() => {
-        if (step === 0) {
-          fadeOutEls(loginEls).then(() => (loginElsHidden = true));
-        }
-      }, loginFadeTimeout);
-    }
-
-    // Watch pointer location for login zone entry
-    const loginZoneWatcher = (ev: MouseEvent | PointerEvent) => {
-      if (step !== 0 || !loginElsHidden) return;
-      const { clientX: x, clientY: y } = ev;
-      if (inLoginZone(x, y)) {
-        showLogin();
+const toggleFullScreen = async () => {
+  try {
+    if (!document.fullscreenElement) {
+      const el: any = document.documentElement;
+      if (el.requestFullscreen) {
+        await el.requestFullscreen();
+      } else if (el.webkitRequestFullscreen) {
+        el.webkitRequestFullscreen();
       }
-    };
-    window.addEventListener("pointermove", loginZoneWatcher, { passive: true });
-    window.addEventListener("mousemove", loginZoneWatcher, { passive: true });
+    } else {
+      if (document.exitFullscreen) {
+        await document.exitFullscreen();
+      } else if ((document as any).webkitExitFullscreen) {
+        (document as any).webkitExitFullscreen();
+      }
+    }
+  } catch (err) {
+    console.error('Fullscreen toggle failed:', err);
+  }
+};
 
-    ["mousemove", "mousedown", "keydown", "touchstart"].forEach((evt) =>
-      window.addEventListener(evt, resetInactivityTimer, { passive: true })
-    );
+const onPointerUp = (ev: PointerEvent) => {
+  if (isNearEdge(ev.clientX, ev.clientY)) {
+    toggleFullScreen();
+  }
+};
 
-    /* ===== Click handlers for util -> account/help ===== */
-    utilLine.addEventListener("click", () => {
-      if (step !== 0) return;
-      showLogin(); // ensure visible
-      fadeInEls([openText, helpText]);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          body.classList.add("stage-util");
-        });
-      });
-      step = 1;
-    });
-
-    openText.addEventListener("click", () => {
-      if (step !== 1) return;
-      accountWrap.classList.add("active");
-      body.classList.add("stage-account");
-      step = 2;
-    });
-
-    helpText.addEventListener("click", () => {
-      if (step !== 1) return;
-      helpWrap.classList.add("active");
-      body.classList.add("stage-help");
-      step = 3;
-    });
-
-    // Back‑zone click (left gutter)
-    document.addEventListener("click", (e) => {
-      const { clientX: x, clientY: y } = e as MouseEvent;
-      const vw = window.innerWidth,
-        vh = window.innerHeight;
-      const backZone = x <= vw * 0.064 && y >= vh * 0.285 && y <= vh * 0.84;
-      if (!backZone) return;
-      if (step === 1) {
-        body.classList.remove("stage-util");
-
-// Keep body styles in sync with fullscreen state
-function onFsChange() {
+const onFsChange = () => {
   document.body.classList.toggle('fs-active', !!document.fullscreenElement);
-}
+};
+
+document.addEventListener('pointerup', onPointerUp, { passive: true });
 document.addEventListener('fullscreenchange', onFsChange);
-onFsChange(); // initialize
+onFsChange();
 
-        step = 0;
-        resetInactivityTimer();
-      } else if (step === 2) {
-        accountWrap.classList.remove("active");
-        body.classList.remove("stage-account");
-        body.classList.add("stage-util");
-        step = 1;
-      } else if (step === 3) {
-        helpWrap.classList.remove("active");
-        body.classList.remove("stage-help");
-        body.classList.add("stage-util");
-        step = 1;
-      }
-    });
+return () => {
 
-    /* ===== Editable text behaviour (unchanged) ===== */
-    const editableSel =
-      ".username, .password, .account-text, .help-text-area";
-    function findEditable(ev: PointerEvent | MouseEvent) {
-      let el = (ev.target as Element).closest(editableSel);
-      if (!el) {
-        const alt = document.elementFromPoint(ev.clientX, ev.clientY);
-        if (alt) el = alt.closest(editableSel);
-      }
-      return el as HTMLElement | null;
-    }
-    document.addEventListener(
-      "pointerdown",
-      (ev: PointerEvent) => {
-        const el = findEditable(ev);
-        if (!el) return;
-        if (
-          /send\s*l1nk/i.test(el.textContent || "") ||
-          /send\s*link/i.test(el.textContent || "") ||
-          el.classList.contains("send-link") ||
-          el.id === "send-link"
-        )
-          return;
-        if (el.isContentEditable) return;
-        ev.preventDefault();
-        el.dataset.placeholder = el.textContent || "";
-        el.textContent = "";
-        el.setAttribute("contenteditable", "true");
-        el.focus({ preventScroll: true });
-      },
-      true
-    );
-    document.addEventListener(
-      "focusout",
-      (ev: FocusEvent) => {
-        const el = ev.target as HTMLElement;
-        if (!el.matches || !el.matches(editableSel) || !el.isContentEditable)
-          return;
-        if (el.textContent?.trim() === "") {
-          el.textContent = el.dataset.placeholder || "";
-          el.removeAttribute("contenteditable");
-        }
-      },
-      true
-    );
-
-    /* ===== Edge‑click full‑screen toggle ===== */
-    function toggleFullScreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      } else {
-        document.exitFullscreen().catch(() => {});
-      }
-    }
-    document.addEventListener("click", (ev: MouseEvent) => {
-      const { clientX: x, clientY: y } = ev;
-      if (
-        x <= 11 ||
-        x >= window.innerWidth - 11 ||
-        y <= 11 ||
-        y >= window.innerHeight - 11
-      ) {
-        toggleFullScreen();
-      }
-    });
-
-    /* ===== Cleanup ===== */
-    return () => {
-
-      clearTimeout(inactivityTimer);
-      window.removeEventListener("pointermove", loginZoneWatcher);
-      window.removeEventListener("mousemove", loginZoneWatcher);
+    
+      document.removeEventListener('pointerup', onPointerUp);
       document.removeEventListener('fullscreenchange', onFsChange);
     };
   }, []);
 
   return (
     <>
-      {/* Static lines */}
-      <div className="line original" />
-      <div className="line second" />
-      <div className="line third" />
-      <div className="line fourth" />
-      <div className="line fifth" />
-      <div className="line sixth" />
-      <div className="line util-line" />
-
-      {/* Login */}
-      <span className="login-text username hidden">USERnAME</span>
-      <span className="login-text password hidden">PASSWORD</span>
-
-      {/* Util texts */}
-      <span className="login-text open-text hidden">OPEn AccOUnT</span>
-      <span className="login-text help-text hidden">HELP REQUEST</span>
-
-      {/* Login entry lines */}
-      <div className="line login-line hidden" />
-      <div className="line login-line-second hidden" />
-
-      {/* Account creation wrapper */}
-      <div className="account-wrapper">
-        <span className="account-text account-email">E-MA1L ADDRESS</span>
-        <span className="account-text account-username">YOUR USERnAME</span>
-        <span className="account-text account-sign-password">YOUR PASSWORD</span>
-        <span className="account-text account-repeat-password">REDO PASSWORD</span>
-        <div className="account-line account-line1" />
-        <div className="account-line account-line2" />
-        <div className="account-line account-line3" />
-        <div className="account-line account-line4" />
-      </div>
-
-      {/* Help wrapper */}
-      <div className="help-wrapper">
-        <span className="help-text-area email">YOUR EMA1L</span>
-        <span className="help-text-area sendlink">SEnD L1nK</span>
-        <div className="help-line" />
-      </div>
-
-      {/* Masking layers */}
+      {/* Fixed white mask layers */}
       <div className="layer-one" />
       <div className="layer-two" />
+      <div className="layer-three" />
+      <div className="layer-four" />
+      <div className="layer-five" />
+      <div className="layer-six" />
+
+      {/* All visible UI sits inside page-content */}
+      <div className="page-content">
+        {/* Primary guideline lines */}
+        <div className="line original" />
+        <div className="line second" />
+        <div className="line third" />
+        <div className="line fourth" />
+        <div className="line fifth" />
+        <div className="line sixth" />
+        <div className="line util-line" />
+
+        {/* Labels */}
+        <span className="custom-text" style={{ position: 'absolute', top: '35.4vh', left: '6.41vw' }}>1OUL ADD-OnS</span>
+        <span className="custom-text" style={{ position: 'absolute', top: '41.6vh', left: '6.41vw' }}>UT1L ADD-OnS</span>
+        <span className="custom-text" style={{ position: 'absolute', top: '53vh',   left: '6.41vw' }}>cREATE ADD-On</span>
+        <span className="custom-text" style={{ position: 'absolute', top: '59.2vh', left: '6.41vw' }}>UPDATE ADD-On</span>
+
+        {/* Counters */}
+        <span className="custom-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '28.41vw' }}>0</span>
+        <span className="custom-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '28.41vw' }}>0</span>
+        <span className="custom-text right-flow" style={{ position: 'absolute', top: '53vh',   left: '28.41vw' }}>0</span>
+        <span className="custom-text right-flow" style={{ position: 'absolute', top: '59.2vh', left: '28.41vw' }}>0</span>
+
+        {/* Divider line */}
+        <div className="custom-line" />
+
+        {/* Column 1 (36 vw) */}
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '35.4vh', left: '36vw' }}>LATEST:</span>
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '41.6vh', left: '36vw' }}>LEAgUE:</span>
+
+        {/* Column 2 counters */}
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '49.7vw' }}>0</span>
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '49.7vw' }}>0</span>
+
+        {/* Column 3 labels */}
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '35.4vh', left: '58.7vw' }}>PER1OD:</span>
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '41.6vh', left: '58.7vw' }}>F1LTER:</span>
+
+        {/* Column 4 counters */}
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '71vw' }}>0</span>
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '71vw' }}>0</span>
+
+        {/* Column 5 labels */}
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '35.4vh', left: '79vw' }}>cATALOg:</span>
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '41.6vh', left: '79vw' }}>LOOK UP:</span>
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '53vh',   left: '79vw' }}>AO:</span>
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '59.2vh', left: '79vw' }}>AO:</span>
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '65.4vh', left: '79vw' }}>AO:</span>
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '71.6vh', left: '79vw' }}>AO:</span>
+
+        {/* Column 6 counters */}
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '93.4vw' }}>0</span>
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '93.4vw' }}>0</span>
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '53vh',   left: '93.4vw' }}>0</span>
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '59.2vh', left: '93.4vw' }}>0</span>
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '65.4vh', left: '93.4vw' }}>0</span>
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '71.6vh', left: '93.4vw' }}>0</span>
+
+        {/* Horizontal guide lines */}
+        <div className="content-line content-line-one" style={{ position: 'absolute', top: '47.8vh', left: '36vw', width: '36vw', height: '1px', background: 'rgba(230,230,230,0.28)' }} />
+        <div className="content-line content-line-two" style={{ position: 'absolute', top: '47.8vh', left: '79vw', width: '14.8vw', height: '1px', background: 'rgba(230,230,230,0.28)' }} />
+      </div>
     </>
   );
-};
-
-export default Page;
+}

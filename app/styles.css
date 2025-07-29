@@ -571,12 +571,38 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 }
 
 
-/* ===== Full‑screen flash / transition fixes (2025‑07‑29) ===== */
-html, html:fullscreen{
-  background:#fff;
+/* ─── Shared viewport wrapper ─── */
+.page-content{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  overflow:hidden;          /* keeps grid lines from re‑flowing */
 }
 
-/* Temporarily disable transitions while entering/exiting fullscreen */
-.no-transitions *, .no-transitions *::before, .no-transitions *::after{
-  transition:none !important;
+/* ─── Extra white masks (match tool‑kit geometry) ─── */
+.layer-three{
+  position:fixed;   top:0;    left:94.17vw;
+  width:5.83vw;     height:100vh;
+  background:#fff;  z-index:100; pointer-events:none;
+}
+.layer-four{
+  position:absolute; top:28.5vh; left:36vw;
+  width:61vw;        height:55.5vh;
+  background:#fff;   z-index:2;   pointer-events:none;
+}
+.layer-five{
+  position:absolute; top:0;      left:36vw;
+  width:58.7vw;      height:28.4vh;
+  background:#fff;   pointer-events:none;
+}
+.layer-six{
+  position:absolute; top:84.7vh; left:36vw;
+  width:58.7vw;      height:15.3vh;
+  background:#fff;   pointer-events:none;
+}
+
+/* Make the original two masks match pointer‑events behaviour */
+.layer-one,
+.layer-two{
+  pointer-events:none;
 }

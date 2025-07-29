@@ -49,3 +49,14 @@ body.non-fullscreen{
 @media screen and (min-width:1900px){
   .custom-text{ font-size:9px; }
 }
+
+/* ===== Guide lines fade‑in on hover ===== */
+.line,
+.line.util-line {
+  opacity: 0;
+  transition: opacity 0.35s ease-out 40ms; /* subtle delay like the original behaviour */
+}
+.page-content:hover .line,
+.page-content:hover .line.util-line {
+  opacity: 1;
+}

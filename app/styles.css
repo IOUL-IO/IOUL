@@ -569,3 +569,13 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .password{
   z-index:90;          /* layer‑one is 100, so stay underneath */
 }
+
+
+/* ===== Fullscreen adjustments (2025-07-29) ===== */
+html:fullscreen, body.fs-active{
+  background:#fff;
+}
+
+body.fs-active{
+  overflow:auto;
+}

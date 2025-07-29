@@ -157,6 +157,14 @@ const Page: React.FC = () => {
       if (!backZone) return;
       if (step === 1) {
         body.classList.remove("stage-util");
+
+// Keep body styles in sync with fullscreen state
+function onFsChange() {
+  document.body.classList.toggle('fs-active', !!document.fullscreenElement);
+}
+document.addEventListener('fullscreenchange', onFsChange);
+onFsChange(); // initialize
+
         step = 0;
         resetInactivityTimer();
       } else if (step === 2) {
@@ -218,60 +226,34 @@ const Page: React.FC = () => {
       true
     );
 
-    /* ===== Edge‑click full‑screen toggle (rev 2025‑07‑29) ===== */
-const EDGE_MARGIN_PX = Math.max(
-  16 * window.devicePixelRatio,
-  0.01 * Math.min(window.innerWidth, window.innerHeight)
-);
-
-function isNearEdge(x: number, y: number) {
-  const { innerWidth: w, innerHeight: h } = window;
-  const m = EDGE_MARGIN_PX;
-  return x <= m || x >= w - m || y <= m || y >= h - m;
-}
-
-async function toggleFullScreen() {
-  try {
-    if (!document.fullscreenElement) {
-      const el: any = document.documentElement;
-      if (el.requestFullscreen) {
-        await el.requestFullscreen();
-      } else if ((el as any).webkitRequestFullscreen) {
-        (el as any).webkitRequestFullscreen();
-      }
-    } else {
-      if (document.exitFullscreen) {
-        await document.exitFullscreen();
-      } else if ((document as any).webkitExitFullscreen) {
-        (document as any).webkitExitFullscreen();
+    /* ===== Edge‑click full‑screen toggle ===== */
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
       }
     }
-  } catch (err) {
-    console.error('Fullscreen toggle failed:', err);
-  }
-}
+    document.addEventListener("click", (ev: MouseEvent) => {
+      const { clientX: x, clientY: y } = ev;
+      if (
+        x <= 11 ||
+        x >= window.innerWidth - 11 ||
+        y <= 11 ||
+        y >= window.innerHeight - 11
+      ) {
+        toggleFullScreen();
+      }
+    });
 
-function onPointerUp(ev: PointerEvent) {
-  if (isNearEdge(ev.clientX, ev.clientY)) {
-    toggleFullScreen();
-  }
-}
-
-function onFsChange() {
-  document.body.classList.toggle('non-fullscreen', !document.fullscreenElement);
-}
-
-document.addEventListener('pointerup', onPointerUp, { passive: true });
-document.addEventListener('fullscreenchange', onFsChange);
-onFsChange();
-/* ===== Cleanup ===== */
+    /* ===== Cleanup ===== */
     return () => {
+
       clearTimeout(inactivityTimer);
       window.removeEventListener("pointermove", loginZoneWatcher);
       window.removeEventListener("mousemove", loginZoneWatcher);
-    
-      document.removeEventListener('pointerup', onPointerUp);
-      document.removeEventListener('fullscreenchange', onFsChange);};
+      document.removeEventListener('fullscreenchange', onFsChange);
+    };
   }, []);
 
   return (

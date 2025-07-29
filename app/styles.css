@@ -1,4 +1,3 @@
-html{background:#fff;}
 @font-face {
   font-family: 'Distill Expanded';
   src: url('font.woff2') format('woff2'),
@@ -569,12 +568,4 @@ body.fade-in-trigger .line:not(.login-line):not(.login-line-second){
 .username,
 .password{
   z-index:90;          /* layer‑one is 100, so stay underneath */
-}
-
-/* Ensure browser uses white while transitioning into fullscreen */
-html:fullscreen,
-body:fullscreen,
-html:-webkit-full-screen,
-body:-webkit-full-screen {
-  background:#ffffff !important;
 }

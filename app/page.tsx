@@ -18,7 +18,8 @@ export default function Page() {
     }
     document.addEventListener('click', fullscreenHandler);
     return () => {
-      document.removeEventListener('click', fullscreenHandler);
+          document.removeEventListener("click", edgeHandler);
+document.removeEventListener('click', fullscreenHandler);
     };
   }, []);
 
@@ -97,20 +98,3 @@ export default function Page() {
     </>
   );
 }
-
-/* ===== Edge‑click enter‑only fullscreen (borrowed from working page) ===== */
-const EDGE_MARGIN = 11;
-function fullscreenHandler({ clientX: x, clientY: y }: MouseEvent) {
-  const { innerWidth: w, innerHeight: h } = window;
-  const nearEdge =
-    x <= EDGE_MARGIN ||
-    x >= w - EDGE_MARGIN ||
-    y <= EDGE_MARGIN ||
-    y >= h - EDGE_MARGIN;
-  if (nearEdge && !document.fullscreenElement) {
-    document.documentElement.style.background = "#ffffff"; // prevent black flash
-    document.documentElement.requestFullscreen().catch(() => {});
-  }
-}
-document.addEventListener("click", fullscreenHandler);
-/* --------------------------------------------- */

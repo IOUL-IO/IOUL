@@ -11,6 +11,37 @@ React.useEffect(() => {
   document.body.classList.add('non-fullscreen');
   setPageFadedIn(true);
 }, []);
+  // ─── Full‑screen edge toggle (matches login behaviour) ───
+  useEffect(() => {
+    const edgeClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('.menu-item') || target.closest('.chat-text') || target.closest('.hover-area')) return;
+      const vw = window.innerWidth / 100;
+      const xVw = e.clientX / vw;
+      // Leftmost 6.37vw or rightmost 5.83vw (94.17–100)
+      if (xVw <= 6.37 || xVw >= 94.17) {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen();
+        }
+      }
+    };
+    const onFsChange = () => {
+      if (document.fullscreenElement) {
+        document.body.classList.remove('non-fullscreen');
+      } else {
+        document.body.classList.add('non-fullscreen');
+      }
+    };
+    document.addEventListener('click', edgeClick, true);
+    document.addEventListener('fullscreenchange', onFsChange);
+    return () => {
+      document.removeEventListener('click', edgeClick, true);
+      document.removeEventListener('fullscreenchange', onFsChange);
+    };
+  }, []);
+
 
   const [currentMenu, setCurrentMenu] = useState<string | null>(null);
   const [slideState, setSlideState] = useState("none");

@@ -1006,3 +1006,14 @@ body.non-fullscreen {
 :root[data-util="2"] .line.fourth{
   display:none !important;
 }
+
+/* ─── Show mask layers during full‑screen ─── */
+body:not(.non-fullscreen) .layer-one,
+body:not(.non-fullscreen) .layer-two,
+body:not(.non-fullscreen) .layer-three,
+body:not(.non-fullscreen) .layer-four,
+body:not(.non-fullscreen) .layer-five,
+body:not(.non-fullscreen) .layer-six {
+  display: block !important;
+  pointer-events: none !important;
+}

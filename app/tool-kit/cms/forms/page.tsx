@@ -47,10 +47,10 @@ export default function Page() {
           ADD QUEST1On
         </span>
         <span className="custom-text" style={{ position: 'absolute', top: '41.6vh', left: '6.41vw' }}>
-          UPLOAD YOURS
+          LOAD QUER1ES
         </span>
         <span className="custom-text" style={{ position: 'absolute', top: '53vh', left: '6.41vw' }}>
-          REPLY L1ST
+          AnSWER LOg
         </span>
         <span className="custom-text" style={{ position: 'absolute', top: '59.2vh', left: '6.41vw' }}>
           OPT1On LOg

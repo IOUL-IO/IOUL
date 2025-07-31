@@ -43,7 +43,7 @@ export default function Page() {
 
       <div className="line util-line" />
 
-      <div className="line mail-line" style={{ position: 'absolute', top: '47.8vh', left: '36vw', width: '57.8vw', height: '1px', backgroundColor: 'rgba(230,230,230,0.28)', zIndex: 4 }} />    
+      <div className="line form-line" style={{ position: 'absolute', top: '47.8vh', left: '36vw', width: '57.8vw', height: '1px', backgroundColor: 'rgba(230,230,230,0.28)', zIndex: 4 }} />    
       
         <span className="custom-text" style={{ position: 'absolute', top: '35.4vh', left: '6.41vw' }}>
           ADD QUEST1On

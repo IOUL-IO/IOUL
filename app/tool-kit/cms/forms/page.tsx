@@ -50,7 +50,7 @@ export default function Page() {
           LOAD QUER1ES
         </span>
         <span className="custom-text" style={{ position: 'absolute', top: '53vh', left: '6.41vw' }}>
-          REPLY L1ST
+          REPLY F1LE
         </span>
         <span className="custom-text" style={{ position: 'absolute', top: '59.2vh', left: '6.41vw' }}>
           OPT1On LOg

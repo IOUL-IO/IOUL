@@ -47,13 +47,13 @@ export default function Page() {
           ADD QUEST1On
         </span>
         <span className="custom-text" style={{ position: 'absolute', top: '41.6vh', left: '6.41vw' }}>
-          1MPORT YOURS
+          UPLOAD YOURS
         </span>
         <span className="custom-text" style={{ position: 'absolute', top: '53vh', left: '6.41vw' }}>
-          REPL1ES
+          REPLY L1ST
         </span>
         <span className="custom-text" style={{ position: 'absolute', top: '59.2vh', left: '6.41vw' }}>
-          OPT1OnS
+          OPT1On LOg
         </span>
 
         <span className="custom-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '28.41vw' }}>

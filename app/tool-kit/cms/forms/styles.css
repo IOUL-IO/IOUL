@@ -62,9 +62,8 @@ body.non-fullscreen{
 .custom-line {
     position: absolute;
     top: 47.8vh; 
-    left: -42.59vw;
+    left: 6.41vw;
     width: 22.48vw;
     height: 1px;
     background-color: rgba(230, 230, 230, 0.28);
-    transition: left 0.6s ease, transform 0.6s ease;
 }

@@ -71,7 +71,7 @@ export default function Page() {
         {/* Column 5: labels */}
         <span className="custom-text content-text" style={{ position: 'absolute', top: '35.4vh', left: '79vw' }}>1nQU1RY:</span>
         <span className="custom-text content-text" style={{ position: 'absolute', top: '41.6vh', left: '79vw' }}>REPORT:</span>
-        <span className="custom-text content-text" style={{ position: 'absolute', top: '53vh',   left: '79vw' }}>LEARn</span>
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '53vh',   left: '79vw' }}>cLASS</span>
         <span className="custom-text content-text" style={{ position: 'absolute', top: '59.2vh', left: '79vw' }}>cOAcH</span>
         <span className="custom-text content-text" style={{ position: 'absolute', top: '65.4vh', left: '79vw' }}>1-TEST</span>
         <span className="custom-text content-text" style={{ position: 'absolute', top: '71.6vh', left: '79vw' }}>1-L1VE</span>

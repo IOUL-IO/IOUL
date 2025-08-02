@@ -43,8 +43,8 @@ export default function Page() {
 
       <div className="line util-line" />
 
-        <span className="custom-text" style={{ position: 'absolute', top: '35.4vh', left: '6.41vw' }}>LESSOn LOg</span>
-        <span className="custom-text" style={{ position: 'absolute', top: '41.6vh', left: '6.41vw' }}>OPT1On LOg</span>
+        <span className="custom-text" style={{ position: 'absolute', top: '35.4vh', left: '6.41vw' }}>LEcTURE LOg</span>
+        <span className="custom-text" style={{ position: 'absolute', top: '41.6vh', left: '6.41vw' }}>LEARnER LOg</span>
       
  
         <span className="custom-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '28.41vw' }}>0</span>

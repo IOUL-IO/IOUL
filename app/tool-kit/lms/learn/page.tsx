@@ -57,9 +57,9 @@ export default function Page() {
         <span className="custom-text" style={{position:'absolute',top:'35.4vh',left:'36vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>T1TLE:</span>
         <span className="custom-text" style={{position:'absolute',top:'41.6vh',left:'36vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>1NFO:</span>
 
-        <span className="custom-text" style={{position:'absolute',top:'53vh',left:'36vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>L-1:</span>
+        <span className="custom-text" style={{position:'absolute',top:'53vh',left:'36vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>LEcTURE 1:</span>
       
-        <span className="custom-text" style={{position:'absolute',top:'53vh',left:'91vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>LOAD:</span>
+        <span className="custom-text" style={{position:'absolute',top:'53vh',left:'90vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>LOAD:</span>
       
     </div>
   );

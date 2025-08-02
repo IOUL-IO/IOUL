@@ -49,6 +49,12 @@ export default function Page() {
  
         <span className="custom-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '28.41vw' }}>0</span>
         <span className="custom-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '28.41vw' }}>0</span>
+      
+
+        <div className="line form-line" style={{ position: 'absolute', top: '47.8vh', left: '36vw', width: '57.8vw', height: '1px', backgroundColor: 'rgba(230,230,230,0.28)', zIndex: 4 }} />    
+      
+        <span className="custom-text" style={{position:'absolute',top:'35.4vh',left:'36vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>T1TLE:</span>
+        <span className="custom-text" style={{position:'absolute',top:'41.6vh',left:'36vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>1NFO:</span>
 
 
     </div>

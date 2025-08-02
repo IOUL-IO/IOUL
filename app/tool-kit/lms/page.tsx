@@ -47,8 +47,8 @@ export default function Page() {
         <div className="line util-line" />
 
         {/* Top labels and counters */}
-        <span className="custom-text" style={{ position: 'absolute', top: '35.4vh', left: '6.41vw' }}>LEARnER LOg</span>
-        <span className="custom-text" style={{ position: 'absolute', top: '41.6vh', left: '6.41vw' }}>LAYOUTS LOg</span>
+        <span className="custom-text" style={{ position: 'absolute', top: '35.4vh', left: '6.41vw' }}>1n1T1ATE LOg</span>
+        <span className="custom-text" style={{ position: 'absolute', top: '41.6vh', left: '6.41vw' }}>OUTL1nE LOg</span>
         <span className="custom-text" style={{ position: 'absolute', top: '53vh',   left: '6.41vw' }}>cLUB LOg</span>
         <span className="custom-text" style={{ position: 'absolute', top: '59.2vh', left: '6.41vw' }}>JUnK LOg</span>
 

@@ -42,6 +42,13 @@ export default function Page() {
       <div className="line sixth" />
 
       <div className="line util-line" />
+
+        <span className="custom-text" style={{ position: 'absolute', top: '35.4vh', left: '6.41vw' }}>T1TLE:</span>
+
+
+        <span className="custom-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '28.41vw' }}>0</span>
+
+      
     </div>
   );
 }

@@ -44,7 +44,7 @@ export default function Page() {
       <div className="line util-line" />
 
         <span className="custom-text" style={{ position: 'absolute', top: '35.4vh', left: '6.41vw' }}>LEcTURE LOg</span>
-        <span className="custom-text" style={{ position: 'absolute', top: '41.6vh', left: '6.41vw' }}>LEARnER LOg</span>
+        <span className="custom-text" style={{ position: 'absolute', top: '41.6vh', left: '6.41vw' }}>cOnTROL LOg</span>
       
         <span className="custom-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '28.41vw' }}>0</span>
         <span className="custom-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '28.41vw' }}>0</span>
@@ -57,10 +57,16 @@ export default function Page() {
         <span className="custom-text" style={{position:'absolute',top:'35.4vh',left:'36vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>T1TLE:</span>
         <span className="custom-text" style={{position:'absolute',top:'41.6vh',left:'36vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>1NFO:</span>
 
-        <span className="custom-text" style={{position:'absolute',top:'53vh',left:'36vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>L-1:</span>
+        <span className="custom-text" style={{position:'absolute',top:'35.4vh',left:'84vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>L1nK:</span>
+        <span className="custom-text" style={{position:'absolute',top:'35.4vh',left:'89vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>PR1VATE</span>
+
+        <span className="custom-text" style={{position:'absolute',top:'41.6vh',left:'84vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>DR1P:</span>
+        <span className="custom-text" style={{position:'absolute',top:'41.6vh',left:'91vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>0 DAYS</span>
       
-        <span className="custom-text" style={{position:'absolute',top:'53vh',left:'82vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>LOAD:</span>
-        <span className="custom-text" style={{position:'absolute',top:'53vh',left:'91.7vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>B1n:</span>
+        <span className="custom-text" style={{position:'absolute',top:'53vh',left:'36vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>LEcT-1:</span>
+      
+        <span className="custom-text" style={{position:'absolute',top:'53vh',left:'84vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>LOAD</span>
+        <span className="custom-text" style={{position:'absolute',top:'53vh',left:'91vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>DELETE</span>
 
       
     </div>

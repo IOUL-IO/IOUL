@@ -272,10 +272,10 @@ const Page: React.FC = () => {
 
       {/* Account creation wrapper */}
       <div className="account-wrapper">
-        <span className="account-text account-email">E-MA1L ADDRESS</span>
-        <span className="account-text account-username">YOUR USERnAME</span>
-        <span className="account-text account-sign-password">YOUR PASSWORD</span>
-        <span className="account-text account-repeat-password">REDO PASSWORD</span>
+        <span className="account-text account-email">YOUR E-MA1L</span>
+        <span className="account-text account-username">ADD USERnAME</span>
+        <span className="account-text account-sign-password">ADD PASSWORD</span>
+        <span className="account-text account-repeat-password">AccOUnT nAME</span>
         <div className="account-line account-line1" />
         <div className="account-line account-line2" />
         <div className="account-line account-line3" />

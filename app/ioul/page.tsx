@@ -109,7 +109,10 @@ const clipElements = () => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 35.9 && t >= 28.5 && t <= 84;
+      const r = toVw(rect.right);
+      const isAccountLine = el.classList.contains('account-line');
+      const hideHoriz = isAccountLine ? (r < 35.9) : (l < 35.9);
+      const hide = hideHoriz && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -142,7 +145,10 @@ useEffect(() => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 35.9 && t >= 28.5 && t <= 84;
+      const r = toVw(rect.right);
+      const isAccountLine = el.classList.contains('account-line');
+      const hideHoriz = isAccountLine ? (r < 35.9) : (l < 35.9);
+      const hide = hideHoriz && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -331,7 +337,8 @@ useEffect(() => {
         // ── Left edge clicks ─────────────────────────
         switch (slideState) {
           case "none":
-            // fade out chat, slide in account+heading          chatTextRef.current!.style.opacity = "0";
+            // fade out chat, slide in account+heading
+            if (chatTextRef.current) chatTextRef.current.style.opacity = "0";
             setTimeout(() => {
               document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
                 .forEach(box => box.style.transform = "translateX(0)");
@@ -419,7 +426,8 @@ useEffect(() => {
                 el.dataset.originalLeft = el.style.left;
                 el.style.transition = "left 0.7s ease";
                 el.style.left = "6.41vw";
-              });chatTextRef.current!.style.opacity = "0";
+              });
+              if (chatTextRef.current) chatTextRef.current.style.opacity = "0";
   setSlideState("menu");
   
             break;
@@ -522,7 +530,10 @@ useEffect(() => {
       targetsRef.current.forEach(el => {
         const r = el.getBoundingClientRect();
         const l = pxToVw(r.left), t = pxToVh(r.top);
-        const hide = l < 35.9;
+        const right = pxToVw(r.right);
+        const isLine = el.classList.contains('account-line');
+        const hideHoriz = isLine ? (right < 35.9) : (l < 35.9);
+        const hide = hideHoriz && t >= TOP_MIN && t <= TOP_MAX;
         el.style.opacity = hide ? '0' : '';
         el.style.pointerEvents = hide ? 'none' : '';
       });

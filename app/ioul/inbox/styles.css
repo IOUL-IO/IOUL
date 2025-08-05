@@ -31,7 +31,7 @@ body.non-fullscreen{
 }
 .layer-four{
   position:fixed;top:28.5vh;left:36vw;width:61vw;height:55.5vh;
-  background:#ffffff;z-index:0.1;pointer-events:none;
+  background:#ffffff;z-index:1;pointer-events:none;
 }
 .layer-five{
   position:fixed;top:0;left:36vw;width:58.7vw;height:28.4vh;

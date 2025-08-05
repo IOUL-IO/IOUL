@@ -21,6 +21,11 @@ export default function Page() {
     return () => document.removeEventListener('click', handler);
   }, []);
 
+  /* Generate calendar cells: 1‑31 numbered, rest blank */
+  const cells = Array.from({ length: 42 }, (_, i) =>
+    i < 31 ? (i + 1).toString() : ''
+  );
+
   return (
     <div>
       {/* Fixed masking layers (unchanged) */}
@@ -31,20 +36,22 @@ export default function Page() {
       <div className="layer-five" />
       <div className="layer-six" />
 
-      {/* Primary guide lines (removed .fifth & .sixth) */}
+      {/* Primary guide lines (1‑4) */}
       <div className="line original" />
       <div className="line second" />
       <div className="line third" />
       <div className="line fourth" />
 
-      {/* Util guide line (kept for future interactions) */}
+      {/* Util guide line */}
       <div className="line util-line" />
 
       {/* -------- Scrollable Calendar Grid -------- */}
       <main className="calendar-scroll">
         <section className="calendar-grid">
-          {Array.from({ length: 42 }).map((_, i) => (
-            <div key={i} className="cell" />
+          {cells.map((label, i) => (
+            <div key={i} className="cell">
+              {label}
+            </div>
           ))}
         </section>
       </main>

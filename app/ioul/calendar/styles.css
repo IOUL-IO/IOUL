@@ -51,9 +51,7 @@ body.non-fullscreen{
 .third   {top:84vh;left:6.38vw;width:22.48vw;}
 .fourth  {top:12.5vh;left:36vw;width:57.8vw;z-index:101;}
 
-/* Removed .fifth and .sixth lines */
-
-/* Util line kept for future interactions */
+/* Util line */
 .util-line{
   position:absolute;top:28.5vh;left:26.06vw;width:2.8vw;height:1px;
   background:rgba(172,172,172,0.84);z-index:101;
@@ -71,14 +69,18 @@ body.non-fullscreen{
   display:grid;
   grid-template-columns:repeat(7, 1fr);   /* 7 days */
   grid-template-rows:repeat(6, minmax(110px, 1fr)); /* 6 rows */
-  gap:1px;
-  background:#e5e7eb; /* grid lines */
   min-height:100%;
 }
 
 .calendar-grid .cell{
-  background:#ffffff;
-  min-height:110px;
+  border:1px dashed #d1d5db; /* dashed lines */
+  display:flex;
+  align-items:flex-start;
+  justify-content:flex-end;
+  padding:4px;
+  font-family:'Distill Expanded', sans-serif;
+  font-size:0.8rem;
+  user-select:none;
 }
 
 /* Responsive tweak */

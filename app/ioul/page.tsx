@@ -109,10 +109,7 @@ const clipElements = () => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const r = toVw(rect.right);
-      const isAccountLine = el.classList.contains('account-line');
-      const hideHoriz = isAccountLine ? (r < 35.9) : (l < 35.9);
-      const hide = hideHoriz && t >= 28.5 && t <= 84;
+      const hide = l < 35.9 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -145,10 +142,7 @@ useEffect(() => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const r = toVw(rect.right);
-      const isAccountLine = el.classList.contains('account-line');
-      const hideHoriz = isAccountLine ? (r < 35.9) : (l < 35.9);
-      const hide = hideHoriz && t >= 28.5 && t <= 84;
+      const hide = l < 35.9 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -399,6 +393,8 @@ useEffect(() => {
       }, 150);
 }
     else if (inRightZone) {
+      // Ignore clicks when community is active
+      if (slideState === "community") return;
       // Close any open dropdowns before sliding
       quickRemoveSubmenu();
       setTimeout(() => {
@@ -456,11 +452,10 @@ useEffect(() => {
             break;
   
           case "community":
-            // optional: return from community to none
-            document.querySelectorAll<HTMLElement>('.menu-items .menu-item')
-              .forEach(el => el.style.left = el.dataset.originalLeft!);
-            setSlideState("none");
+            // ignore right-edge clicks while community is active
             break;
+
+
         }
       
       }, 150);
@@ -530,10 +525,7 @@ useEffect(() => {
       targetsRef.current.forEach(el => {
         const r = el.getBoundingClientRect();
         const l = pxToVw(r.left), t = pxToVh(r.top);
-        const right = pxToVw(r.right);
-        const isLine = el.classList.contains('account-line');
-        const hideHoriz = isLine ? (right < 35.9) : (l < 35.9);
-        const hide = hideHoriz && t >= TOP_MIN && t <= TOP_MAX;
+        const hide = l < 35.9;
         el.style.opacity = hide ? '0' : '';
         el.style.pointerEvents = hide ? 'none' : '';
       });

@@ -745,3 +745,18 @@ body:fullscreen {
   max-width: 100%;
   max-height: 100%;
 }
+
+/* === Fix account-line smooth slide (2025‑08‑05) ===
+   The previous clip-path applied to .slide-container caused the .account-line
+   to remain hidden until its left edge crossed 36vw, making it appear to
+   "pop" in and out. Removing the clip-path lets the line travel smoothly
+   with the account-text elements.
+*/
+.slide-container{
+  clip-path: none !important;
+}
+
+/* Allow account-line to animate with transform if needed */
+.account-line{
+  transition: left 0.6s ease, transform 0.6s ease;
+}

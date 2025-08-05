@@ -304,60 +304,11 @@ useEffect(() => {
     }, 300); // 0.3 s = fade‑out duration
   };
 
-   const [isScrolling, setIsScrolling] = useState(false);
-   const [isFirstScroll, setIsFirstScroll] = useState(true);
-   const [isSecondScroll, setIsSecondScroll] = useState(false);
-
-   const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-
   // Effect to handle component mount and query DOM elements
 // runs once on mount
 useEffect(() => {
 }, []);
 
-// ─── Calendar grid scroll logic ────────────────────────────────────────────
-useEffect(() => {
-  const handleWheel = (e: WheelEvent) => {
-    // Prevent page scroll when interacting with calendar grid
-    e.preventDefault();
-
-    // Only continue if calendar grid exists in the DOM
-
-    if (isScrolling) return;
-    setIsScrolling(true);
-    setTimeout(() => setIsScrolling(false), 700);
-
-    const all = Array.from(
-    );
-    all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
-
-    if (e.deltaY > 0) {
-      if (!isSecondScroll) {
-        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
-        setIsSecondScroll(true);
-      } else {
-        all.forEach(el => (el.style.transform = 'translateY(-111vh)'));
-        setIsSecondScroll(false);
-      }
-    } else {
-      const match = all[0]?.style.transform.match(/translateY\(([-\d.]+)vh\)/);
-      const y = match ? parseFloat(match[1]) : 0;
-      if (y === -111) {
-        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
-        setIsSecondScroll(true);
-      } else if (y === -55.5) {
-        all.forEach(el => (el.style.transform = 'translateY(0)'));
-        setIsSecondScroll(false);
-      }
-    }
-  };
-
-  window.addEventListener('wheel', handleWheel, { passive: false });
-  return () => window.removeEventListener('wheel', handleWheel);
-}, [isScrolling, isSecondScroll]);
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {

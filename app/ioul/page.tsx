@@ -96,6 +96,15 @@ useEffect(() => { centerStageRef.current = centerStage; }, [centerStage]);
   const toVh = (px: number) => px / vh();
 // ─── Global real‑time clipping ────────────────────────────────────────────
 // Hide anything that slides left of 36vw while inside the main content band (28.5‑84vh)
+
+const isLineElement = (el: HTMLElement) =>
+  el.classList.contains('line') ||
+  el.classList.contains('account-line') ||
+  el.classList.contains('item-line') ||
+  el.classList.contains('center-line') ||
+  el.classList.contains('grid-dashed') ||
+  el.classList.contains('mail-line');
+
 const clipElements = () => {
   const selectors = [
     '.item-text', '.item-line',
@@ -108,14 +117,17 @@ const clipElements = () => {
     document.querySelectorAll<HTMLElement>(sel).forEach(el => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
+      const r = toVw(rect.right);
       const t = toVh(rect.top);
-      const hide = l < 35.9 && t >= 28.5 && t <= 84;
+      // For thin lines, reveal as soon as ANY part enters the visible band.
+      const hide = isLineElement(el)
+        ? (r < 35.9)                       // wait until the right edge passes the clip line
+        : (l < 35.9 && t >= 28.5 && t <= 84); // original rule for texts
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
   });
 };
-
 // Keep clipping in real‑time (every animation frame)
 useEffect(() => {
   const onResize = () => clipElements();
@@ -484,34 +496,18 @@ useEffect(() => {
 
 
 
-    const accountEls = Array.from(document.querySelectorAll<HTMLElement>('.account-text'));
-
-
-
-    const accountLine = document.querySelector<HTMLElement>('.account-line');
-
-
-
-    if (accountLine) {
-
-
-
-      targetsRef.current = [...accountEls, accountLine];
-
-
-
-    } else {
-
-
-
-      targetsRef.current = accountEls;
-
-
-
-    }
-
-    targetsRef.current.forEach(el => {
-      if (!el.dataset.baseLeftVw) {
+    const accountEls = Array.from(document.querySelectorAll<HTMLE
+const updateVisibility = () => {
+      targetsRef.current.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const l = pxToVw(rect.left);
+        const r = pxToVw(rect.right);
+        const hide = el.classList.contains('account-line') ? (r < 35.9) : (l < 35.9);
+        el.style.opacity = hide ? '0' : '';
+        el.style.pointerEvents = hide ? 'none' : '';
+      });
+    };
+taset.baseLeftVw) {
         const leftPx = parseFloat(getComputedStyle(el).left) || 0;
         el.dataset.baseLeftVw = pxToVw(leftPx).toString();
       }

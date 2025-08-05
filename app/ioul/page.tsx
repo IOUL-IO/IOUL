@@ -800,7 +800,7 @@ return (
           <span className="account-text" style={{position:'absolute',top:'35.4vh',left:'26.00vw'}}>L1nKED:</span>
           <span className="account-text right-flow" style={{position:'absolute',top:'35.4vh',left:'33.19vw'}}>0</span>
           <span className="account-text" style={{position:'absolute',top:'77vh',left:'-24.00vw',color:'#111111'}}>. . .</span>
-          <div className="line account-line" style={{ position: 'absolute', top: '41.6vh', left: '-24vw', width: '22.48vw', height: '1px', backgroundColor: 'rgba(230,230,230,0.28)', zIndex: 1 }} />
+        <div className="line account-line" style={{position:'absolute',top:'41.6vh',left:'-24.00vw',width:'57.8vw',height:'1px',backgroundColor:'rgba(230,230,230,0.28)',zIndex:1}} />
         </div>
         
         <div className="item-line item-line-one" style={{position:'absolute',top:'47.8vh',left:'96vw',width:'36vw'}} />

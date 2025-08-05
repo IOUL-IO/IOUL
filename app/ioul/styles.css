@@ -226,21 +226,75 @@ body.non-fullscreen {
 }
 
 
+.num1  { top: 28.5vh; left: 48.8vw; }
+.num2  { top: 28.5vh; left: 63.7vw; }
+.num3  { top: 28.5vh; left: 78.5vw; }
+.num4  { top: 28.5vh; left: 93.3vw; }
+.num5  { top: 47vh;   left: 48.8vw; }
+.num6  { top: 47vh;   left: 63.7vw; }
+.num7  { top: 47vh;   left: 78.5vw; }
+.num8  { top: 47vh;   left: 93.3vw; }
+.num9  { top: 65.5vh; left: 48.8vw; }
+.num10 { top: 65.5vh; left: 63.3vw; }
+.num11 { top: 65.5vh; left: 78.3vw; }
+.num12 { top: 65.5vh; left: 92.9vw; }
+.num13 { top: 83.7vh; left: 48.3vw; }
+.num14 { top: 83.7vh; left: 63.2vw; }
+.num15 { top: 83.7vh; left: 78.0vw; }
+.num16 { top: 83.7vh; left: 92.8vw; }
 
-    position: absolute;
-    height: 1px;
-    width: 11.8vw;
-    background: linear-gradient(to right, #171717 0, #171717 5px, #ffffff 5px, #ffffff 10px);
-    background-size: 10px 1px;
-    transition: transform 0.6s ease;
-    opacity: 0.711;
 
+.dashed01 { top: 28.5vh; left: 36vw; }
+.dashed02 { top: 28.5vh; left: 51vw; }
+.dashed03 { top: 28.5vh; left: 65.9vw; }
+.dashed04 { top: 28.5vh; left: 80.8vw; }
+.dashed05 { top: 47vh;   left: 36vw; }
+.dashed06 { top: 47vh;   left: 51vw; }
+.dashed07 { top: 47vh;   left: 65.9vw; }
+.dashed08 { top: 47vh;   left: 80.8vw; }
+.dashed09 { top: 65.5vh; left: 36vw; }
+.dashed10 { top: 65.5vh; left: 51vw; }
+.dashed11 { top: 65.5vh; left: 65.9vw; }
+.dashed12 { top: 65.5vh; left: 80.8vw; }
+.dashed13 { top: 84vh;   left: 36vw; }
+.dashed14 { top: 84vh;   left: 51vw; }
+.dashed15 { top: 84vh;   left: 65.9vw; }
+.dashed16 { top: 84vh;   left: 80.8vw; }
 
+.num17 { top: 102.2vh; left: 48.3vw; }
+.num18 { top: 102.2vh; left: 63.2vw; }
+.num19 { top: 102.2vh; left: 78.0vw; }
+.num20 { top: 102.2vh; left: 92.8vw; }
+.num21 { top: 120.7vh; left: 48.3vw; }
+.num22 { top: 120.7vh; left: 63.2vw; }
+.num23 { top: 120.7vh; left: 78.0vw; }
+.num24 { top: 120.7vh; left: 92.8vw; }
+.num25 { top: 139.2vh; left: 48.3vw; }
+.num26 { top: 139.2vh; left: 63.2vw; }
+.num27 { top: 139.2vh; left: 78.0vw; }
+.num28 { top: 139.2vh; left: 92.8vw; }
+.num29 { top: 157.7vh; left: 48.3vw; }
+.num30 { top: 157.7vh; left: 63.2vw; }
+.num31 { top: 157.7vh; left: 78.0vw; }
 
+.dashed17 { top: 102.5vh; left: 36vw; }
+.dashed18 { top: 102.5vh; left: 51vw; }
+.dashed19 { top: 102.5vh; left: 65.9vw; }
+.dashed20 { top: 102.5vh; left: 80.8vw; }
+.dashed21 { top: 121vh;   left: 36vw; }
+.dashed22 { top: 121vh;   left: 51vw; }
+.dashed23 { top: 121vh;   left: 65.9vw; }
+.dashed24 { top: 121vh;   left: 80.8vw; }
+.dashed25 { top: 139.5vh; left: 36vw; }
+.dashed26 { top: 139.5vh; left: 51vw; }
+.dashed27 { top: 139.5vh; left: 65.9vw; }
+.dashed28 { top: 139.5vh; left: 80.8vw; }
+.dashed29 { top: 158vh;   left: 36vw; }
+.dashed30 { top: 158vh;   left: 51vw; }
+.dashed31 { top: 158vh;   left: 65.9vw; }
 
 /* Removed dashed lines and time texts animation styles */
 
-    transform: translateX(-60vw);
 
 .custom-text {
     position: absolute;
@@ -342,11 +396,11 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 
-    font-size: 6.1px !important;
-  }
+}
 
 /* Removed slide container animation styles */
 
+/* Hide calendar grid items */
 /* removed display none */
 
 .line.util-line {
@@ -442,23 +496,15 @@ body.non-fullscreen {
   }
 }
 
-  opacity: 0 !important;
-  pointer-events: none !important;
+/* Util-line toggle states */
 
-  opacity: 1 !important;
-  pointer-events: auto !important;
 
-  opacity: 1 !important;
-  pointer-events: auto !important;
 
 /* Ensure grid items transition opacity */
-  transition: transform 0.6s ease, opacity 0.4s ease !important;
 
 
+/* ── Util-line toggle defaults ── */
 /* Hide mail and calendar by default */
-  opacity: 0 !important;
-  pointer-events: none !important;
-  transition: none !important;
 
 /* Layers 5 & 6 visible by default */
 .layer-five,
@@ -469,74 +515,36 @@ body.non-fullscreen {
 }
 
 /* STATE 1: mail visible, others hidden */
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
 
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
+/* STATE 2: calendar grid items 1-16 visible, mail & layers hidden */
 
 /* Chat hover logic */
 /* UTIL-LINE TOGGLE OVERRIDES */
-  opacity: 0 !important;
-  pointer-events: none !important;
 
-  opacity: 1 !important;
-  pointer-events: auto !important;
 
-  opacity: 0 !important;
-  pointer-events: none !important;
 
-  opacity: 1 !important;
-  pointer-events: auto !important;
 
 /* UTIL-LINE TOGGLE POP OVERRIDES */
-  transition: none !important;
-  position: relative !important;
-  z-index: 1000 !important;
 
-  display: none !important;
+/* Default: hide mail and calendar grid */
 
 /* State 1: show mail only */
-  display: inline-block !important;
-  display: none !important;
 
-  display: inline-block !important;
-  display: none !important;
+/* State 2: show calendar grid (1–16) only, hide mail and lines 5/6 */
 
 
+/* ===== OVERRIDE: mail-text positions and util toggle ===== */
 
-  position: absolute !important;
-  font-family: 'Distill Expanded', sans-serif;
-  color: #111111 !important;
-  letter-spacing: 0.28vw !important;
-  font-size: 0.47rem !important;
-  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171 !important;
-  display: none !important;
-  pointer-events: none !important;
+/* Ensure mail-text uses absolute positions from original inline styles */
 
-
-  position: absolute !important;
-  display: none !important;
-  pointer-events: none !important;
+/* mail-text specific positions */
+/* calendar grid overrides */
 
 /* override util-line toggles */
-  display: none !important;
-  display: block !important;
-  display: inline-block !important;
-  display: inline-block !important;
-  display: none !important;
 
 /* ensure correct layering */
-  z-index: 100 !important;
 
-  display: inline-block !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  z-index: 200 !important;
+/* === FINAL OVERRIDE: visibile mail-text on state 1 and correct layering === */
 
 /* Ensure slide-container sits above util lines */
 .slide-container {
@@ -545,8 +553,7 @@ body.non-fullscreen {
 
 /* Large-screen font size override */
 @media (min-width: 1900px) {
-    font-size: 9px !important;
-  }
+}
 
 /* === CHAT-TEXT HOVER LAYERING FIX === */
 .hover-area {
@@ -566,33 +573,15 @@ body.non-fullscreen {
 }
 
 /* --- Util-line state overrides (authoritative) --- */
-  opacity: 0 !important;
-  display: none !important;
-  pointer-events: none !important;
 
-  opacity: 1 !important;
-  display: inline-block !important;
-  pointer-events: auto !important;
 
-  opacity: 0 !important;
-  display: none !important;
-  pointer-events: none !important;
 
-  opacity: 1 !important;
-  display: inline-block !important;
-  pointer-events: auto !important;
 
-  opacity: 0 !important;
-  display: none !important;
-  pointer-events: none !important;
 
 .line.util-line{ z-index: 300 !important; pointer-events: auto !important;}
 
 
 /* --- Keep lines 5 & 6 visible in util state 1 --- */
-  opacity: 1 !important;
-  display: inline-block !important;
-  pointer-events: auto !important;
 
 /* Added to ensure visibility over layer-four */
 
@@ -691,19 +680,19 @@ body.non-fullscreen {
 }
 
 /* === Calendar grid ↧ under layer‑five — 2025‑07‑25 ===
+   Ensure calendar grid (numbers & dashed lines) sits below the top mask
    while keeping timeline line‑4 above.
 */
-  z-index: 0 !important;     /* lower than layer‑five (auto) */
 
 
 /* === Stacking fix v2 — 2025‑07‑25 ===
    1. Raise layer‑five so it masks content as intended.
+   2. Keep calendar grid just beneath it (but above layer‑four).
    3. Elevate the fourth timeline line so it always shows above the mask.
 */
 .layer-five{
   z-index: 4 !important;         /* higher than grid & layer‑four */
 }
-  z-index: 2 !important;         /* between layer‑four (2) and layer‑five (4) */
 /* line 4 */
 .line.fourth,
 .fourth{
@@ -713,12 +702,8 @@ body.non-fullscreen {
 
 /* === Calendar Grid Layering Fix v3 — 2025‑07‑25 ===
    Keep the top mask (.layer‑five) visible when util‑state 2 is active,
+   and place the calendar grid just beneath it (above layer‑four).
    Timeline line 4 is raised above everything else for clarity. */
-  opacity: 1 !important;
-  display: block !important;
-  pointer-events: none !important;
-  z-index: 250 !important;        /* higher than grid + layer-four */
-  z-index: 200 !important;        /* above layer-four (2) but beneath mask (250) */
 .line.fourth,
 .fourth{
   z-index: 300 !important;        /* always on top */
@@ -746,16 +731,6 @@ body.non-fullscreen {
    Approach: When util‑state 2 is active, paint line‑4 directly *inside*
    the mask (.layer‑five) via a pseudo‑element so it’s guaranteed to be
    visible, and hide the original .line.fourth to avoid double‑drawing. */
-  content:"";
-  position:absolute;
-  top:12.5vh;          /* same vertical position as original line */
-  left:0;
-  width:100%;
-  height:1px;
-  background:rgba(172,172,172,.84);
-  pointer-events:none;
-  z-index:260 !important;   /* above mask background, below any pop‑ups */
-  display:none !important;
 
 
 /* === Global overflow suppression — 2025‑07‑29 ===

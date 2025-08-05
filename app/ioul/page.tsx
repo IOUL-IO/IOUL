@@ -101,6 +101,8 @@ const clipElements = () => {
     '.item-text', '.item-line',
     '.center-text', '.center-line',
     '.account-text', '.account-line',
+    '.grid-number', '.grid-dashed',
+    '.mail-text', '.mail-line'
   ];
   selectors.forEach(sel => {
     document.querySelectorAll<HTMLElement>(sel).forEach(el => {
@@ -158,6 +160,9 @@ useEffect(() => {
 
 
 
+
+    // Cycle util-state 0 → 1 → 2 → 0 on click
+  
 
 
 
@@ -298,6 +303,10 @@ useEffect(() => {
       newTexts.forEach((span) => span.remove());
     }, 300); // 0.3 s = fade‑out duration
   };
+
+
+
+
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {
@@ -779,6 +788,7 @@ return (
         <div className="other-content">
           <div className="line original" />
           <div className="line second" />
+          <div className="line util-line" />
           <div className="line third" />
           <div className="line fourth" />
           <div className="line fifth" />

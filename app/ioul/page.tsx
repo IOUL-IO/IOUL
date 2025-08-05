@@ -109,7 +109,10 @@ const clipElements = () => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 35.9 && t >= 28.5 && t <= 84;
+      const r = toVw(rect.right);
+const isAccountLine = el.classList.contains('account-line');
+const hideHoriz = isAccountLine ? (r < 35.9) : (l < 35.9);
+const hide = hideHoriz && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
@@ -142,7 +145,10 @@ useEffect(() => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
       const t = toVh(rect.top);
-      const hide = l < 35.9 && t >= 28.5 && t <= 84;
+      const rVw = toVw(rect.right);
+const isAccountLine = el.classList.contains('account-line');
+const hideHoriz = isAccountLine ? (rVw < 35.9) : (l < 35.9);
+const hide = hideHoriz && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });

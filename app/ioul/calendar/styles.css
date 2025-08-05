@@ -13,8 +13,13 @@ body{background:#fff;font-family:system-ui,sans-serif;}
 .util-line{position:absolute;top:28.5vh;left:26.06vw;width:2.8vw;height:1px;background:rgba(172,172,172,.84);}
 
 /* ——— Calendar numbers & dashed rules ——— */
+.grid-number{
+  z-index: 110;
+}
+
 .grid-number,
 .grid-dashed{
+  z-index: 110;
   position:absolute;
   font-family:'Distill Expanded',sans-serif;
   font-size:.75rem;

@@ -159,10 +159,6 @@ useEffect(() => {
 
 
 
-    // Cycle util-state 0 → 1 → 2 → 0 on click
-  
-  useEffect(() => {
-
 
 
   const quickRemoveSubmenu = () => {
@@ -302,21 +298,6 @@ useEffect(() => {
       newTexts.forEach((span) => span.remove());
     }, 300); // 0.3 s = fade‑out duration
   };
-
-   const [isScrolling, setIsScrolling] = useState(false);
-   const [isFirstScroll, setIsFirstScroll] = useState(true);
-   const [isSecondScroll, setIsSecondScroll] = useState(false);
-
-   const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-
-  // Effect to handle component mount and query DOM elements
-// runs once on mount
-useEffect(() => {
-}, []);
-
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {
@@ -798,7 +779,6 @@ return (
         <div className="other-content">
           <div className="line original" />
           <div className="line second" />
-          <div className="line util-line" />
           <div className="line third" />
           <div className="line fourth" />
           <div className="line fifth" />

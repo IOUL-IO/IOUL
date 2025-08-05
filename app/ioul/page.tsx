@@ -147,16 +147,11 @@ useEffect(() => {
 
 
   const updateVisibility = () => {
-    const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
-    const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
-    const targets = textEls.concat(lineEls);
-    targets.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const l = toVw(rect.left);
-      const t = toVh(rect.top);
-      const hide = l < 35.9 && t >= 28.5 && t <= 84;
-      el.style.opacity = hide ? '0' : '';
-      el.style.pointerEvents = hide ? 'none' : '';
+    targetsRef.current.forEach(el => {
+      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      if (!el.dataset.baseLeftVw) {
+        el.dataset.baseLeftVw = pxToVw(leftPx).toString();
+      }
     });
   };
 
@@ -344,7 +339,9 @@ useEffect(() => {
         switch (slideState) {
           case "none":
             // fade out chat, slide in account+heading
-            chatTextRef.current?.style.opacity = "0";
+            if (chatTextRef.current) {
+              chatTextRef.current.style.opacity = "0";
+            }
             setTimeout(() => {
               document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
                 .forEach(box => box.style.transform = "translateX(0)");
@@ -435,7 +432,9 @@ useEffect(() => {
                 el.style.transition = "left 0.7s ease";
                 el.style.left = "6.41vw";
               });
-              chatTextRef.current?.style.opacity = "0";
+              if (chatTextRef.current) {
+                chatTextRef.current.style.opacity = "0";
+              }
   setSlideState("menu");
   
             break;
@@ -500,33 +499,16 @@ useEffect(() => {
 
 
 
-    const accountEls = Array.from(document.querySelectorAll<HTMLE
-const updateVisibility = () => {
-      targetsRef.current.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        const l = pxToVw(rect.left);
-        const r = pxToVw(rect.right);
-        const hide = el.classList.contains('account-line') ? (r < 35.9) : (l < 35.9);
-        el.style.opacity = hide ? '0' : '';
-        el.style.pointerEvents = hide ? 'none' : '';
-      });
-    };
-taset.baseLeftVw) {
-        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+    const accountEls = Array.from(document.querySelectorAll<HTMLElement>(
+      '.account-container[data-slide-group="account"], .account-line[data-slide-group="account"], .account-text[data-slide-group="account"]'));
+    targetsRef.current = accountEls;
+    targetsRef.current.forEach(el => {
+      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+      if (!el.dataset.baseLeftVw) {
         el.dataset.baseLeftVw = pxToVw(leftPx).toString();
       }
     });
-
     // Update visibility of targets based on their positions
-    const updateVisibility = () => {
-      targetsRef.current.forEach(el => {
-        const r = el.getBoundingClientRect();
-        const l = pxToVw(r.left), t = pxToVh(r.top);
-        const hide = l < 35.9;
-        el.style.opacity = hide ? '0' : '';
-        el.style.pointerEvents = hide ? 'none' : '';
-      });
-    };
 
     updateVisibility();
     window.addEventListener('resize', updateVisibility);
@@ -540,16 +522,17 @@ taset.baseLeftVw) {
       sliding = true;
 
       targetsRef.current.forEach(el => {
-        el.style.opacity = '';
-        el.style.pointerEvents = '';
+        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+        if (!el.dataset.baseLeftVw) {
+          el.dataset.baseLeftVw = pxToVw(leftPx).toString();
+        }
       });
 
       targetsRef.current.forEach(el => {
-        const base = parseFloat(el.dataset.baseLeftVw || '0');
-        el.style.transition = `left ${DURATION}ms ease`;
-        el.style.left = `${base + DISTANCE}vw`;
-        el.dataset.slid = 'true';
-      setAccountStage(1);
+        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+        if (!el.dataset.baseLeftVw) {
+          el.dataset.baseLeftVw = pxToVw(leftPx).toString();
+        }
       });
 
       setTimeout(() => {
@@ -564,11 +547,10 @@ taset.baseLeftVw) {
       sliding = true;
 
       targetsRef.current.forEach(el => {
-        const base = parseFloat(el.dataset.baseLeftVw || '0');
-        el.style.transition = `left ${DURATION}ms ease`;
-        el.style.left = `${base}vw`;
-        delete el.dataset.slid;
-      setAccountStage(0);
+        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+        if (!el.dataset.baseLeftVw) {
+          el.dataset.baseLeftVw = pxToVw(leftPx).toString();
+        }
       });
 
       setTimeout(() => {
@@ -631,9 +613,6 @@ useEffect(() => {
 useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
       Array.from(itemElsRef.current).concat(Array.from(centerElsRef.current)).forEach(el => {
-        if (!el.dataset.baseLeftVw) {
-          const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-          el.dataset.baseLeftVw = toVw(leftPx).toString();
         }
       });
     }
@@ -642,7 +621,6 @@ useEffect(() => {
   // Reusable move function for transitions
   const move = (els: NodeListOf<HTMLElement>, offset: number) => {
     els.forEach((el) => {
-      const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
       el.style.left = `${base + offset}vw`;
     });

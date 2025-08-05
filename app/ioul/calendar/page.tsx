@@ -6,7 +6,7 @@ export default function Page() {
   /* ---------- Full‑screen edge toggle ---------- */
   useEffect(() => {
     const EDGE = 11; // px from browser edge
-    const handler = (e) => {
+    const handler = (e: MouseEvent) => {
       const { clientX: x, clientY: y } = e;
       const { innerWidth: w, innerHeight: h } = window;
       if (!document.fullscreenElement &&
@@ -23,16 +23,18 @@ export default function Page() {
   const second = useRef(false);
 
   useEffect(() => {
-    const handleWheel = (e) => {
+    const handleWheel = (e: WheelEvent) => {
       e.preventDefault();                 // keep window from scrolling
       if (scrolling.current) return;      // debounce
       scrolling.current = true;
       setTimeout(() => (scrolling.current = false), 700);
 
       const els = Array.from(
-        document.querySelectorAll('.grid-number, .grid-dashed')
+        document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed')
       );
-      els.forEach(el => (el.style.transition = 'transform 0.7s ease'));
+      els.forEach((el) => {
+        el.style.transition = 'transform 0.7s ease';
+      });
 
       // three positions: 0 ► −55.5vh ► −111vh
       if (e.deltaY > 0) {
@@ -43,7 +45,7 @@ export default function Page() {
           els.forEach(el => (el.style.transform = 'translateY(-111vh)'));
         }
       } else {
-        const yMatch = els[0]?.style.transform.match(/([-\\d.]+)vh/);
+        const yMatch = els[0]?.style.transform.match(/([-\d.]+)vh/);
         const y = yMatch ? yMatch[1] : '0';
         if (y === '-111') {
           els.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
@@ -71,12 +73,12 @@ export default function Page() {
       <div className="line util-line" />
 
       {/* Calendar grid numbers */}
-      {numbers.map(n => (
+      {numbers.map((n) => (
         <span key={n} className={`grid-number num${n}`}>{n}</span>
       ))}
 
       {/* Horizontal dashed rules */}
-      {numbers.map(n => (
+      {numbers.map((n) => (
         <span key={n} className={`grid-dashed dashed${String(n).padStart(2,'0')}`} />
       ))}
     </div>

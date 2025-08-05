@@ -101,6 +101,8 @@ const clipElements = () => {
     '.item-text', '.item-line',
     '.center-text', '.center-line',
     '.account-text', '.account-line',
+    '.grid-number', '.grid-dashed',
+    '.mail-text', '.mail-line'
   ];
   selectors.forEach(sel => {
     document.querySelectorAll<HTMLElement>(sel).forEach(el => {
@@ -303,10 +305,6 @@ useEffect(() => {
   };
 
 
-   const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
-   const dashed17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
 
 
 
@@ -802,7 +800,7 @@ return (
           <span className="account-text" style={{position:'absolute',top:'35.4vh',left:'26.00vw'}}>L1nKED:</span>
           <span className="account-text right-flow" style={{position:'absolute',top:'35.4vh',left:'33.19vw'}}>0</span>
           <span className="account-text" style={{position:'absolute',top:'77vh',left:'-24.00vw',color:'#111111'}}>. . .</span>
-        <div className="line account-line" style={{position:'absolute',top:'41.6vh',left:'-24.00vw',width:'57.8vw',height:'1px',backgroundColor:'rgba(230,230,230,0.28)',zIndex:1}} />
+        <div className="line account-line" data-slide-group="account" data-offset="-49" style={{position:'absolute',top:'41.6vh',left:'29.11vw',transform:'translateX(-49vw)',width:'22.48vw',height:'1px',backgroundColor:'rgba(230,230,230,0.28)',transition:'transform 0.6s ease',zIndex:1}} />
         </div>
         
         <div className="item-line item-line-one" style={{position:'absolute',top:'47.8vh',left:'96vw',width:'36vw'}} />

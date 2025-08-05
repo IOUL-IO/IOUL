@@ -57,8 +57,11 @@ body.non-fullscreen{
   background:rgba(172,172,172,0.84);z-index:101;
 }
 
-.mail-line{
-  position:absolute;top:47.3vh;left:36vw;width:2.8vw;height:1px;
-  background: rgba(172,172,172,0.28); z-index:101;
-
-
+.custom-line {
+    position: absolute;
+    top: 47.8vh; 
+    left: 6.41vw;
+    width: 22.48vw;
+    height: 1px;
+    background-color: rgba(230, 230, 230, 0.28);
+}

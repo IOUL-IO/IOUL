@@ -53,6 +53,7 @@ useEffect(() => {
 
 // Disable hover-area clicks once chat has appeared so it no longer blocks util-line
 useEffect(() => {
+  if (chatInitialized && hoverAreaRef.current) {
     hoverAreaRef.current.style.pointerEvents = "none";
   }
 }, [chatInitialized]);
@@ -159,10 +160,8 @@ useEffect(() => {
 
 
     // Cycle util-state 0 → 1 → 2 → 0 on click
-  }, []);
   
   useEffect(() => {
-  }, [state]);
 
 
 
@@ -304,45 +303,19 @@ useEffect(() => {
     }, 300); // 0.3 s = fade‑out duration
   };
 
+   const [isScrolling, setIsScrolling] = useState(false);
    const [isFirstScroll, setIsFirstScroll] = useState(true);
+   const [isSecondScroll, setIsSecondScroll] = useState(false);
 
+   const numbers1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
+   const numbers17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
+   const dashed1to16Ref = useRef<NodeListOf<HTMLElement> | null>(null);
+   const dashed17to31Ref = useRef<NodeListOf<HTMLElement> | null>(null);
 
+  // Effect to handle component mount and query DOM elements
 // runs once on mount
 useEffect(() => {
 }, []);
-
-useEffect(() => {
-    // Prevent page scroll when interacting with calendar grid
-    e.preventDefault();
-
-    // Only continue if calendar grid exists in the DOM
-
-    setIsScrolling(true);
-    setTimeout(() => setIsScrolling(false), 700);
-
-    const all = Array.from(
-    );
-    all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
-
-    if (e.deltaY > 0) {
-        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
-        setIsSecondScroll(true);
-      } else {
-        all.forEach(el => (el.style.transform = 'translateY(-111vh)'));
-        setIsSecondScroll(false);
-      }
-    } else {
-      const match = all[0]?.style.transform.match(/translateY\(([-\d.]+)vh\)/);
-      const y = match ? parseFloat(match[1]) : 0;
-      if (y === -111) {
-        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
-        setIsSecondScroll(true);
-      } else if (y === -55.5) {
-        all.forEach(el => (el.style.transform = 'translateY(0)'));
-        setIsSecondScroll(false);
-      }
-    }
-  };
 
 
 // ─── Unified click effect ───────────────────────────────────────────────────
@@ -825,6 +798,7 @@ return (
         <div className="other-content">
           <div className="line original" />
           <div className="line second" />
+          <div className="line util-line" />
           <div className="line third" />
           <div className="line fourth" />
           <div className="line fifth" />

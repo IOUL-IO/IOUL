@@ -31,7 +31,7 @@ body.non-fullscreen{
 }
 .layer-four{
   position:fixed;top:28.5vh;left:36vw;width:61vw;height:55.5vh;
-  background:#ffffff;z-index:0;pointer-events:none;
+  background:#ffffff;z-index:0.1;pointer-events:none;
 }
 .layer-five{
   position:fixed;top:0;left:36vw;width:58.7vw;height:28.4vh;
@@ -42,7 +42,6 @@ body.non-fullscreen{
   background:#ffffff;pointer-events:none;
 }
 
-/* —— Guide lines —— */
 .line{
   position:absolute;height:1px;background:rgba(172,172,172,0.84);
 }
@@ -53,7 +52,6 @@ body.non-fullscreen{
 .fifth   {top:28.5vh;left:36vw;width:57.8vw;z-index:101;}
 .sixth   {top:84vh;left:36vw;width:57.8vw;z-index:101;}
 
-/* Util line kept for future interactions */
 .util-line{
   position:absolute;top:28.5vh;left:26.06vw;width:2.8vw;height:1px;
   background:rgba(172,172,172,0.84);z-index:101;

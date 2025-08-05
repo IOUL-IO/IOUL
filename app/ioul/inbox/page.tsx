@@ -41,7 +41,7 @@ export default function Page() {
       <div className="line fifth" />
       <div className="line sixth" />
       
-      <div className="line mail-line" />
+      <div className="line custom-line" />
 
         <span className="custom-text" style={{position:'absolute',top:'35.4vh',left:'36vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>TO:</span>
         <span className="custom-text" style={{position:'absolute',top:'41.6vh',left:'36vw',zIndex:4,fontFamily:"'Distill Expanded',sans-serif",color:'#111111',letterSpacing:'0.28vw',fontSize:'0.47rem',textShadow:'0.001rem 0.001rem 0 #717171,-0.001rem -0.001rem 0 #717171',}}>SUBJEcT:</span>

@@ -225,6 +225,14 @@ body.non-fullscreen {
     transition: transform 0.6s ease;
 }
 
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #111111;
+    font-size: 0.411rem;
+    letter-spacing: 0.28vw;
+    text-shadow: 0.011rem 0.011rem 0 #717171, -0.011rem -0.011rem 0 #717171;
+    transition: transform 0.6s ease;
+}
 
 .num1  { top: 28.5vh; left: 48.8vw; }
 .num2  { top: 28.5vh; left: 63.7vw; }
@@ -243,6 +251,14 @@ body.non-fullscreen {
 .num15 { top: 83.7vh; left: 78.0vw; }
 .num16 { top: 83.7vh; left: 92.8vw; }
 
+    position: absolute;
+    height: 1px;
+    width: 11.8vw;
+    background: linear-gradient(to right, #171717 0, #171717 5px, #ffffff 5px, #ffffff 10px);
+    background-size: 10px 1px;
+    transition: transform 0.6s ease;
+    opacity: 0.711;
+}
 
 .dashed01 { top: 28.5vh; left: 36vw; }
 .dashed02 { top: 28.5vh; left: 51vw; }
@@ -293,6 +309,22 @@ body.non-fullscreen {
 .dashed30 { top: 158vh;   left: 51vw; }
 .dashed31 { top: 158vh;   left: 65.9vw; }
 
+/* Removed dashed lines and time texts animation styles */
+
+    transform: translateX(-60vw);
+}
+
+.custom-text {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #111111;
+    letter-spacing: 0.28vw;
+    font-size: 0.47rem;
+    text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
+    transition: left 0.6s ease, transform 0.6s ease;
+    line-height: 1.6;
+    overflow: visible;
+}
 
 .custom-line {
     position: absolute;
@@ -382,13 +414,23 @@ body.non-fullscreen {
     font-size: 9px !important;
   }
 
+    font-size: 6.1px !important;
+  }
 }
 
 /* Removed slide container animation styles */
 
-/* Hide calendar grid items */
 /* removed display none */
 
+.line.util-line {
+    position: absolute;
+    top: 28.5vh;
+    left: 26.06vw;
+    width: 2.8vw;
+    height: 1px;
+    background-color: rgba(172, 172, 172, 0.841);
+    z-index: 1;
+}
 
 .hidden { }
 
@@ -473,8 +515,139 @@ body.non-fullscreen {
   }
 }
 
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Ensure grid items transition opacity */
+  transition: transform 0.6s ease, opacity 0.4s ease !important;
+}
+
+
+/* Hide mail and calendar by default */
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: none !important;
+}
+
+/* Layers 5 & 6 visible by default */
+.layer-five,
+.layer-six {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transition: none !important;
+}
+
+/* STATE 1: mail visible, others hidden */
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Chat hover logic */
+/* UTIL-LINE TOGGLE OVERRIDES */
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* UTIL-LINE TOGGLE POP OVERRIDES */
+  transition: none !important;
+  position: relative !important;
+  z-index: 1000 !important;
+}
+
+  display: none !important;
+}
+
+/* State 1: show mail only */
+  display: inline-block !important;
+}
+  display: none !important;
+}
+
+  display: inline-block !important;
+}
+  display: none !important;
+}
+
+
+
+  position: absolute !important;
+  font-family: 'Distill Expanded', sans-serif;
+  color: #111111 !important;
+  letter-spacing: 0.28vw !important;
+  font-size: 0.47rem !important;
+  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171 !important;
+  display: none !important;
+  pointer-events: none !important;
+}
+
+
+  position: absolute !important;
+  display: none !important;
+  pointer-events: none !important;
+}
+
+/* override util-line toggles */
+  display: none !important;
+}
+  display: block !important;
+}
+  display: inline-block !important;
+}
+  display: inline-block !important;
+}
+  display: none !important;
+}
+
+/* ensure correct layering */
+  z-index: 100 !important;
+}
+
+  display: inline-block !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  z-index: 200 !important;
+}
+
+/* Ensure slide-container sits above util lines */
+.slide-container {
+  z-index: 150 !important;
+}
+
 /* Large-screen font size override */
 @media (min-width: 1900px) {
+    font-size: 9px !important;
+  }
 }
 
 /* === CHAT-TEXT HOVER LAYERING FIX === */
@@ -494,6 +667,48 @@ body.non-fullscreen {
   pointer-events: auto !important;
 }
 
+/* --- Util-line state overrides (authoritative) --- */
+  opacity: 0 !important;
+  display: none !important;
+  pointer-events: none !important;
+}
+
+  opacity: 1 !important;
+  display: inline-block !important;
+  pointer-events: auto !important;
+}
+
+  opacity: 0 !important;
+  display: none !important;
+  pointer-events: none !important;
+}
+
+  opacity: 1 !important;
+  display: inline-block !important;
+  pointer-events: auto !important;
+}
+
+  opacity: 0 !important;
+  display: none !important;
+  pointer-events: none !important;
+}
+
+.line.util-line{ z-index: 300 !important; pointer-events: auto !important;}
+
+
+/* --- Keep lines 5 & 6 visible in util state 1 --- */
+  opacity: 1 !important;
+  display: inline-block !important;
+  pointer-events: auto !important;
+}
+
+/* Added to ensure visibility over layer-four */
+
+.item-text,
+.item-line {
+  z-index: 3;
+}
+
 
 /* Interaction Hotfix Overrides */
 .hover-area{
@@ -504,6 +719,23 @@ body.non-fullscreen {
 }
 .line{
     pointer-events:none !important;
+}
+.line.util-line{
+    pointer-events:auto !important;
+}
+
+
+/* -- Calendar grid stacking adjustment (July 22 2025) -- */
+}
+
+/* === PERMANENT VISIBILITY FOR LINES 5 & 6 — 2025-07-23 00:59:10 === */
+/* Undo older util‑state rules that hid the lines */
+.line.fifth,
+.line.sixth {
+  display: inline-block !important;
+  opacity: 1 !important;
+  z-index: 420 !important;      /* stay above strips */
+  pointer-events: none !important; /* same behaviour across pages */
 }
 
 
@@ -544,6 +776,8 @@ body.non-fullscreen {
 
 /* 3 ▸ Timeline lines */
 .line { z-index: 110 !important; pointer-events: none !important; }
+.line.util-line { z-index: 120 !important; pointer-events: auto !important; }
+
 /* === End Layering Overrides v4 === */
 
 /* === Layering Overrides v5 (updated 2025-07-24) ===
@@ -563,6 +797,44 @@ body.non-fullscreen {
 .layer-two{
   left: 28.87vw !important;
   width: calc(36vw - 28.87vw) !important;
+}
+
+/* === Calendar grid ↧ under layer‑five — 2025‑07‑25 ===
+   while keeping timeline line‑4 above.
+*/
+  z-index: 0 !important;     /* lower than layer‑five (auto) */
+}
+
+
+/* === Stacking fix v2 — 2025‑07‑25 ===
+   1. Raise layer‑five so it masks content as intended.
+   3. Elevate the fourth timeline line so it always shows above the mask.
+*/
+.layer-five{
+  z-index: 4 !important;         /* higher than grid & layer‑four */
+}
+  z-index: 2 !important;         /* between layer‑four (2) and layer‑five (4) */
+}
+/* line 4 */
+.line.fourth,
+.fourth{
+  z-index: 5 !important;         /* stays on top */
+}
+
+
+/* === Calendar Grid Layering Fix v3 — 2025‑07‑25 ===
+   Keep the top mask (.layer‑five) visible when util‑state 2 is active,
+   Timeline line 4 is raised above everything else for clarity. */
+  opacity: 1 !important;
+  display: block !important;
+  pointer-events: none !important;
+  z-index: 250 !important;        /* higher than grid + layer-four */
+}
+  z-index: 200 !important;        /* above layer-four (2) but beneath mask (250) */
+}
+.line.fourth,
+.fourth{
+  z-index: 300 !important;        /* always on top */
 }
 
 
@@ -587,6 +859,18 @@ body.non-fullscreen {
    Approach: When util‑state 2 is active, paint line‑4 directly *inside*
    the mask (.layer‑five) via a pseudo‑element so it’s guaranteed to be
    visible, and hide the original .line.fourth to avoid double‑drawing. */
+  content:"";
+  position:absolute;
+  top:12.5vh;          /* same vertical position as original line */
+  left:0;
+  width:100%;
+  height:1px;
+  background:rgba(172,172,172,.84);
+  pointer-events:none;
+  z-index:260 !important;   /* above mask background, below any pop‑ups */
+}
+  display:none !important;
+}
 
 
 /* === Global overflow suppression — 2025‑07‑29 ===

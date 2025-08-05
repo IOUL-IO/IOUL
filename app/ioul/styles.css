@@ -225,8 +225,34 @@ body.non-fullscreen {
     transition: transform 0.6s ease;
 }
 
+.grid-number {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #111111;
+    font-size: 0.411rem;
+    letter-spacing: 0.28vw;
+    text-shadow: 0.011rem 0.011rem 0 #717171, -0.011rem -0.011rem 0 #717171;
+    transition: transform 0.6s ease;
+}
 
+.num1  { top: 28.5vh; left: 48.8vw; }
+.num2  { top: 28.5vh; left: 63.7vw; }
+.num3  { top: 28.5vh; left: 78.5vw; }
+.num4  { top: 28.5vh; left: 93.3vw; }
+.num5  { top: 47vh;   left: 48.8vw; }
+.num6  { top: 47vh;   left: 63.7vw; }
+.num7  { top: 47vh;   left: 78.5vw; }
+.num8  { top: 47vh;   left: 93.3vw; }
+.num9  { top: 65.5vh; left: 48.8vw; }
+.num10 { top: 65.5vh; left: 63.3vw; }
+.num11 { top: 65.5vh; left: 78.3vw; }
+.num12 { top: 65.5vh; left: 92.9vw; }
+.num13 { top: 83.7vh; left: 48.3vw; }
+.num14 { top: 83.7vh; left: 63.2vw; }
+.num15 { top: 83.7vh; left: 78.0vw; }
+.num16 { top: 83.7vh; left: 92.8vw; }
 
+.grid-dashed {
     position: absolute;
     height: 1px;
     width: 11.8vw;
@@ -234,13 +260,63 @@ body.non-fullscreen {
     background-size: 10px 1px;
     transition: transform 0.6s ease;
     opacity: 0.711;
+}
 
+.dashed01 { top: 28.5vh; left: 36vw; }
+.dashed02 { top: 28.5vh; left: 51vw; }
+.dashed03 { top: 28.5vh; left: 65.9vw; }
+.dashed04 { top: 28.5vh; left: 80.8vw; }
+.dashed05 { top: 47vh;   left: 36vw; }
+.dashed06 { top: 47vh;   left: 51vw; }
+.dashed07 { top: 47vh;   left: 65.9vw; }
+.dashed08 { top: 47vh;   left: 80.8vw; }
+.dashed09 { top: 65.5vh; left: 36vw; }
+.dashed10 { top: 65.5vh; left: 51vw; }
+.dashed11 { top: 65.5vh; left: 65.9vw; }
+.dashed12 { top: 65.5vh; left: 80.8vw; }
+.dashed13 { top: 84vh;   left: 36vw; }
+.dashed14 { top: 84vh;   left: 51vw; }
+.dashed15 { top: 84vh;   left: 65.9vw; }
+.dashed16 { top: 84vh;   left: 80.8vw; }
 
+.num17 { top: 102.2vh; left: 48.3vw; }
+.num18 { top: 102.2vh; left: 63.2vw; }
+.num19 { top: 102.2vh; left: 78.0vw; }
+.num20 { top: 102.2vh; left: 92.8vw; }
+.num21 { top: 120.7vh; left: 48.3vw; }
+.num22 { top: 120.7vh; left: 63.2vw; }
+.num23 { top: 120.7vh; left: 78.0vw; }
+.num24 { top: 120.7vh; left: 92.8vw; }
+.num25 { top: 139.2vh; left: 48.3vw; }
+.num26 { top: 139.2vh; left: 63.2vw; }
+.num27 { top: 139.2vh; left: 78.0vw; }
+.num28 { top: 139.2vh; left: 92.8vw; }
+.num29 { top: 157.7vh; left: 48.3vw; }
+.num30 { top: 157.7vh; left: 63.2vw; }
+.num31 { top: 157.7vh; left: 78.0vw; }
 
+.dashed17 { top: 102.5vh; left: 36vw; }
+.dashed18 { top: 102.5vh; left: 51vw; }
+.dashed19 { top: 102.5vh; left: 65.9vw; }
+.dashed20 { top: 102.5vh; left: 80.8vw; }
+.dashed21 { top: 121vh;   left: 36vw; }
+.dashed22 { top: 121vh;   left: 51vw; }
+.dashed23 { top: 121vh;   left: 65.9vw; }
+.dashed24 { top: 121vh;   left: 80.8vw; }
+.dashed25 { top: 139.5vh; left: 36vw; }
+.dashed26 { top: 139.5vh; left: 51vw; }
+.dashed27 { top: 139.5vh; left: 65.9vw; }
+.dashed28 { top: 139.5vh; left: 80.8vw; }
+.dashed29 { top: 158vh;   left: 36vw; }
+.dashed30 { top: 158vh;   left: 51vw; }
+.dashed31 { top: 158vh;   left: 65.9vw; }
 
 /* Removed dashed lines and time texts animation styles */
 
+.other-content.animate-grid .grid-number,
+.other-content.animate-grid .grid-dashed {
     transform: translateX(-60vw);
+}
 
 .custom-text {
     position: absolute;
@@ -337,16 +413,20 @@ body.non-fullscreen {
   .zero-items-container span,
   .index-input,
   .custom-text,
+  .mail-text,
   .account-text,
   .item-text {
     font-size: 9px !important;
   }
 
+  .grid-number {
     font-size: 6.1px !important;
   }
+}
 
 /* Removed slide container animation styles */
 
+/* Hide calendar grid items */
 /* removed display none */
 
 .line.util-line {
@@ -386,7 +466,7 @@ body.non-fullscreen {
 
 .account-text,
 .account-line {
-  transition: left 0.6s ease;
+  transition: left 0.6s ease, transform 0.6s ease;
 }
 
 
@@ -442,23 +522,44 @@ body.non-fullscreen {
   }
 }
 
+/* Util-line toggle states */
+[data-util="0"] .mail-line,
+[data-util="0"] .mail-text,
+[data-util="0"] .grid-number,
+[data-util="0"] .grid-dashed {
   opacity: 0 !important;
   pointer-events: none !important;
+}
 
+[data-util="1"] .mail-line,
+[data-util="1"] .mail-text {
   opacity: 1 !important;
   pointer-events: auto !important;
+}
 
+[data-util="2"] .grid-number,
+[data-util="2"] .grid-dashed {
   opacity: 1 !important;
   pointer-events: auto !important;
+}
 
 /* Ensure grid items transition opacity */
+.grid-number,
+.grid-dashed {
   transition: transform 0.6s ease, opacity 0.4s ease !important;
+}
 
 
+/* ── Util-line toggle defaults ── */
 /* Hide mail and calendar by default */
+.mail-line,
+.mail-text,
+.other-content .grid-number,
+.other-content .grid-dashed {
   opacity: 0 !important;
   pointer-events: none !important;
   transition: none !important;
+}
 
 /* Layers 5 & 6 visible by default */
 .layer-five,
@@ -469,46 +570,114 @@ body.non-fullscreen {
 }
 
 /* STATE 1: mail visible, others hidden */
+[data-util="1"] .mail-line,
+[data-util="1"] .mail-text {
   opacity: 1 !important;
   pointer-events: auto !important;
+}
+[data-util="1"] .other-content .grid-number,
+[data-util="1"] .other-content .grid-dashed,
+[data-util="1"] .layer-five,
+[data-util="1"] .layer-six {
   opacity: 0 !important;
   pointer-events: none !important;
+}
 
+/* STATE 2: calendar grid items 1-16 visible, mail & layers hidden */
+[data-util="2"] .num1, [data-util="2"] .num2, [data-util="2"] .num3, [data-util="2"] .num4,
+[data-util="2"] .num5, [data-util="2"] .num6, [data-util="2"] .num7, [data-util="2"] .num8,
+[data-util="2"] .num9, [data-util="2"] .num10, [data-util="2"] .num11, [data-util="2"] .num12,
+[data-util="2"] .num13, [data-util="2"] .num14, [data-util="2"] .num15, [data-util="2"] .num16,
+[data-util="2"] .dashed01, [data-util="2"] .dashed02, [data-util="2"] .dashed03, [data-util="2"] .dashed04,
+[data-util="2"] .dashed05, [data-util="2"] .dashed06, [data-util="2"] .dashed07, [data-util="2"] .dashed08,
+[data-util="2"] .dashed09, [data-util="2"] .dashed10, [data-util="2"] .dashed11, [data-util="2"] .dashed12,
+[data-util="2"] .dashed13, [data-util="2"] .dashed14, [data-util="2"] .dashed15, [data-util="2"] .dashed16 {
   opacity: 1 !important;
   pointer-events: auto !important;
+}
+[data-util="2"] .mail-line,
+[data-util="2"] .mail-text,
+[data-util="2"] .layer-five,
+[data-util="2"] .layer-six {
   opacity: 0 !important;
   pointer-events: none !important;
+}
 
 /* Chat hover logic */
 /* UTIL-LINE TOGGLE OVERRIDES */
+:root[data-util="0"] .mail-line,
+:root[data-util="0"] .mail-text,
+:root[data-util="0"] .grid-number,
+:root[data-util="0"] .grid-dashed {
   opacity: 0 !important;
   pointer-events: none !important;
+}
 
+:root[data-util="1"] .mail-line,
+:root[data-util="1"] .mail-text {
   opacity: 1 !important;
   pointer-events: auto !important;
+}
 
+:root[data-util="2"] .line.fifth,
+:root[data-util="2"] .line.sixth,
+:root[data-util="2"] .mail-line,
+:root[data-util="2"] .mail-text {
   opacity: 0 !important;
   pointer-events: none !important;
+}
 
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed {
   opacity: 1 !important;
   pointer-events: auto !important;
+}
 
 /* UTIL-LINE TOGGLE POP OVERRIDES */
+.mail-text,
+.mail-line,
+.grid-number,
+.grid-dashed {
   transition: none !important;
   position: relative !important;
   z-index: 1000 !important;
+}
 
+/* Default: hide mail and calendar grid */
+:root[data-util="0"] .mail-line,
+:root[data-util="0"] .mail-text,
+:root[data-util="0"] .grid-number,
+:root[data-util="0"] .grid-dashed {
   display: none !important;
+}
 
 /* State 1: show mail only */
+:root[data-util="1"] .mail-line,
+:root[data-util="1"] .mail-text {
   display: inline-block !important;
+}
+:root[data-util="1"] .grid-number,
+:root[data-util="1"] .grid-dashed {
   display: none !important;
+}
 
+/* State 2: show calendar grid (1–16) only, hide mail and lines 5/6 */
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed {
   display: inline-block !important;
+}
+:root[data-util="2"] .mail-line,
+:root[data-util="2"] .mail-text,
+:root[data-util="2"] .line.fifth,
+:root[data-util="2"] .line.sixth {
   display: none !important;
+}
 
 
+/* ===== OVERRIDE: mail-text positions and util toggle ===== */
 
+/* Ensure mail-text uses absolute positions from original inline styles */
+.mail-text {
   position: absolute !important;
   font-family: 'Distill Expanded', sans-serif;
   color: #111111 !important;
@@ -517,26 +686,59 @@ body.non-fullscreen {
   text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171 !important;
   display: none !important;
   pointer-events: none !important;
+}
 
+/* mail-text specific positions */
+.mail-text.to      { top: 35.4vh; left: 36vw; }
+.mail-text.subject { top: 41.6vh; left: 36vw; }
+.mail-text.cc      { top: 35.4vh; left: 89vw; }
+.mail-text.bcc     { top: 35.4vh; left: 91.9vw; }
+.mail-text.send    { top: 41.6vh; left: 91.1vw; }
 
+/* calendar grid overrides */
+.grid-number,
+.grid-dashed {
   position: absolute !important;
   display: none !important;
   pointer-events: none !important;
+}
 
 /* override util-line toggles */
+.mail-line {
   display: none !important;
+}
+[data-util="1"] .mail-line {
   display: block !important;
+}
+[data-util="1"] .mail-text {
   display: inline-block !important;
+}
+[data-util="2"] .grid-number,
+[data-util="2"] .grid-dashed {
   display: inline-block !important;
+}
+[data-util="2"] .mail-line,
+[data-util="2"] .mail-text,
+[data-util="2"] .line.fifth,
+[data-util="2"] .line.sixth {
   display: none !important;
+}
 
 /* ensure correct layering */
+.mail-line,
+.mail-text,
+.grid-number,
+.grid-dashed {
   z-index: 100 !important;
+}
 
+/* === FINAL OVERRIDE: visibile mail-text on state 1 and correct layering === */
+:root[data-util="1"] .mail-text {
   display: inline-block !important;
   opacity: 1 !important;
   pointer-events: auto !important;
   z-index: 200 !important;
+}
 
 /* Ensure slide-container sits above util lines */
 .slide-container {
@@ -545,8 +747,10 @@ body.non-fullscreen {
 
 /* Large-screen font size override */
 @media (min-width: 1900px) {
+  .mail-text {
     font-size: 9px !important;
   }
+}
 
 /* === CHAT-TEXT HOVER LAYERING FIX === */
 .hover-area {
@@ -566,33 +770,57 @@ body.non-fullscreen {
 }
 
 /* --- Util-line state overrides (authoritative) --- */
+:root[data-util="0"] .mail-line,
+:root[data-util="0"] .mail-text,
+:root[data-util="0"] .grid-number,
+:root[data-util="0"] .grid-dashed {
   opacity: 0 !important;
   display: none !important;
   pointer-events: none !important;
+}
 
+:root[data-util="1"] .mail-line,
+:root[data-util="1"] .mail-text {
   opacity: 1 !important;
   display: inline-block !important;
   pointer-events: auto !important;
+}
 
+:root[data-util="1"] .grid-number,
+:root[data-util="1"] .grid-dashed,
+:root[data-util="1"] .line.fifth,
+:root[data-util="1"] .line.sixth {
   opacity: 0 !important;
   display: none !important;
   pointer-events: none !important;
+}
 
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed {
   opacity: 1 !important;
   display: inline-block !important;
   pointer-events: auto !important;
+}
 
+:root[data-util="2"] .mail-line,
+:root[data-util="2"] .mail-text,
+:root[data-util="2"] .line.fifth,
+:root[data-util="2"] .line.sixth {
   opacity: 0 !important;
   display: none !important;
   pointer-events: none !important;
+}
 
 .line.util-line{ z-index: 300 !important; pointer-events: auto !important;}
 
 
 /* --- Keep lines 5 & 6 visible in util state 1 --- */
+:root[data-util="1"] .line.fifth,
+:root[data-util="1"] .line.sixth {
   opacity: 1 !important;
   display: inline-block !important;
   pointer-events: auto !important;
+}
 
 /* Added to ensure visibility over layer-four */
 
@@ -618,6 +846,10 @@ body.non-fullscreen {
 
 
 /* -- Calendar grid stacking adjustment (July 22 2025) -- */
+.grid-number,
+.grid-dashed {
+  z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
+}
 
 /* === PERMANENT VISIBILITY FOR LINES 5 & 6 — 2025-07-23 00:59:10 === */
 /* Undo older util‑state rules that hid the lines */
@@ -691,19 +923,27 @@ body.non-fullscreen {
 }
 
 /* === Calendar grid ↧ under layer‑five — 2025‑07‑25 ===
+   Ensure calendar grid (numbers & dashed lines) sits below the top mask
    while keeping timeline line‑4 above.
 */
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed {
   z-index: 0 !important;     /* lower than layer‑five (auto) */
+}
 
 
 /* === Stacking fix v2 — 2025‑07‑25 ===
    1. Raise layer‑five so it masks content as intended.
+   2. Keep calendar grid just beneath it (but above layer‑four).
    3. Elevate the fourth timeline line so it always shows above the mask.
 */
 .layer-five{
   z-index: 4 !important;         /* higher than grid & layer‑four */
 }
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed{
   z-index: 2 !important;         /* between layer‑four (2) and layer‑five (4) */
+}
 /* line 4 */
 .line.fourth,
 .fourth{
@@ -713,12 +953,18 @@ body.non-fullscreen {
 
 /* === Calendar Grid Layering Fix v3 — 2025‑07‑25 ===
    Keep the top mask (.layer‑five) visible when util‑state 2 is active,
+   and place the calendar grid just beneath it (above layer‑four).
    Timeline line 4 is raised above everything else for clarity. */
+:root[data-util="2"] .layer-five{
   opacity: 1 !important;
   display: block !important;
   pointer-events: none !important;
   z-index: 250 !important;        /* higher than grid + layer-four */
+}
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed{
   z-index: 200 !important;        /* above layer-four (2) but beneath mask (250) */
+}
 .line.fourth,
 .fourth{
   z-index: 300 !important;        /* always on top */
@@ -746,6 +992,7 @@ body.non-fullscreen {
    Approach: When util‑state 2 is active, paint line‑4 directly *inside*
    the mask (.layer‑five) via a pseudo‑element so it’s guaranteed to be
    visible, and hide the original .line.fourth to avoid double‑drawing. */
+:root[data-util="2"] .layer-five::after{
   content:"";
   position:absolute;
   top:12.5vh;          /* same vertical position as original line */
@@ -755,7 +1002,10 @@ body.non-fullscreen {
   background:rgba(172,172,172,.84);
   pointer-events:none;
   z-index:260 !important;   /* above mask background, below any pop‑ups */
+}
+:root[data-util="2"] .line.fourth{
   display:none !important;
+}
 
 
 /* === Global overflow suppression — 2025‑07‑29 ===
@@ -769,14 +1019,4 @@ body:fullscreen {
   overflow: hidden !important;
   max-width: 100%;
   max-height: 100%;
-}
-
-/* Restore consistent font across account, heading, and menu containers */
-.item-text,
-.heading-flow,
-.right-flow,
-.menu-item,
-.account-container,
-.heading-container {
-    font-family: 'Distill Expanded', sans-serif;
 }

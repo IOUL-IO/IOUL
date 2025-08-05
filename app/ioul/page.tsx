@@ -96,15 +96,6 @@ useEffect(() => { centerStageRef.current = centerStage; }, [centerStage]);
   const toVh = (px: number) => px / vh();
 // ─── Global real‑time clipping ────────────────────────────────────────────
 // Hide anything that slides left of 36vw while inside the main content band (28.5‑84vh)
-
-const isLineElement = (el: HTMLElement) =>
-  el.classList.contains('line') ||
-  el.classList.contains('account-line') ||
-  el.classList.contains('item-line') ||
-  el.classList.contains('center-line') ||
-  el.classList.contains('grid-dashed') ||
-  el.classList.contains('mail-line');
-
 const clipElements = () => {
   const selectors = [
     '.item-text', '.item-line',
@@ -117,17 +108,14 @@ const clipElements = () => {
     document.querySelectorAll<HTMLElement>(sel).forEach(el => {
       const rect = el.getBoundingClientRect();
       const l = toVw(rect.left);
-      const r = toVw(rect.right);
       const t = toVh(rect.top);
-      // For thin lines, reveal as soon as ANY part enters the visible band.
-      const hide = isLineElement(el)
-        ? (r < 35.9)                       // wait until the right edge passes the clip line
-        : (l < 35.9 && t >= 28.5 && t <= 84); // original rule for texts
+      const hide = l < 35.9 && t >= 28.5 && t <= 84;
       el.style.opacity = hide ? '0' : '';
       el.style.pointerEvents = hide ? 'none' : '';
     });
   });
 };
+
 // Keep clipping in real‑time (every animation frame)
 useEffect(() => {
   const onResize = () => clipElements();
@@ -147,11 +135,16 @@ useEffect(() => {
 
 
   const updateVisibility = () => {
-    targetsRef.current.forEach(el => {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-      if (!el.dataset.baseLeftVw) {
-        el.dataset.baseLeftVw = pxToVw(leftPx).toString();
-      }
+    const textEls = Array.from(document.querySelectorAll<HTMLElement>('.item-text'));
+    const lineEls = Array.from(document.querySelectorAll<HTMLElement>('.item-line'));
+    const targets = textEls.concat(lineEls);
+    targets.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const l = toVw(rect.left);
+      const t = toVh(rect.top);
+      const hide = l < 35.9 && t >= 28.5 && t <= 84;
+      el.style.opacity = hide ? '0' : '';
+      el.style.pointerEvents = hide ? 'none' : '';
     });
   };
 
@@ -338,10 +331,7 @@ useEffect(() => {
         // ── Left edge clicks ─────────────────────────
         switch (slideState) {
           case "none":
-            // fade out chat, slide in account+heading
-            if (chatTextRef.current) {
-              chatTextRef.current.style.opacity = "0";
-            }
+            // fade out chat, slide in account+heading          chatTextRef.current!.style.opacity = "0";
             setTimeout(() => {
               document.querySelectorAll<HTMLElement>('.account-container[data-slide-group="account"]')
                 .forEach(box => box.style.transform = "translateX(0)");
@@ -395,8 +385,7 @@ useEffect(() => {
               .forEach(box => {
                 box.style.transition = "transform 0.7s ease";
                 box.style.transform = `translateX(${box.dataset.offset}vw)`;
-              });
-              setSlideState("none");
+              });          setSlideState("none");
             break;
         }
       
@@ -420,8 +409,7 @@ useEffect(() => {
               .forEach(box => {
                 box.style.transition = "transform 0.7s ease";
                 box.style.transform = `translateX(${box.dataset.offset}vw)`;
-              });
-              setSlideState("none");
+              });          setSlideState("none");
             break;
   
           case "none":
@@ -431,10 +419,7 @@ useEffect(() => {
                 el.dataset.originalLeft = el.style.left;
                 el.style.transition = "left 0.7s ease";
                 el.style.left = "6.41vw";
-              });
-              if (chatTextRef.current) {
-                chatTextRef.current.style.opacity = "0";
-              }
+              });chatTextRef.current!.style.opacity = "0";
   setSlideState("menu");
   
             break;
@@ -499,16 +484,49 @@ useEffect(() => {
 
 
 
-    const accountEls = Array.from(document.querySelectorAll<HTMLElement>(
-      '.account-container[data-slide-group="account"], .account-line[data-slide-group="account"], .account-text[data-slide-group="account"]'));
-    targetsRef.current = accountEls;
+    const accountEls = Array.from(document.querySelectorAll<HTMLElement>('.account-text'));
+
+
+
+    const accountLine = document.querySelector<HTMLElement>('.account-line');
+
+
+
+    if (accountLine) {
+
+
+
+      targetsRef.current = [...accountEls, accountLine];
+
+
+
+    } else {
+
+
+
+      targetsRef.current = accountEls;
+
+
+
+    }
+
     targetsRef.current.forEach(el => {
-      const leftPx = parseFloat(getComputedStyle(el).left) || 0;
       if (!el.dataset.baseLeftVw) {
+        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
         el.dataset.baseLeftVw = pxToVw(leftPx).toString();
       }
     });
+
     // Update visibility of targets based on their positions
+    const updateVisibility = () => {
+      targetsRef.current.forEach(el => {
+        const r = el.getBoundingClientRect();
+        const l = pxToVw(r.left), t = pxToVh(r.top);
+        const hide = l < 35.9;
+        el.style.opacity = hide ? '0' : '';
+        el.style.pointerEvents = hide ? 'none' : '';
+      });
+    };
 
     updateVisibility();
     window.addEventListener('resize', updateVisibility);
@@ -522,17 +540,16 @@ useEffect(() => {
       sliding = true;
 
       targetsRef.current.forEach(el => {
-        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-        if (!el.dataset.baseLeftVw) {
-          el.dataset.baseLeftVw = pxToVw(leftPx).toString();
-        }
+        el.style.opacity = '';
+        el.style.pointerEvents = '';
       });
 
       targetsRef.current.forEach(el => {
-        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-        if (!el.dataset.baseLeftVw) {
-          el.dataset.baseLeftVw = pxToVw(leftPx).toString();
-        }
+        const base = parseFloat(el.dataset.baseLeftVw || '0');
+        el.style.transition = `left ${DURATION}ms ease`;
+        el.style.left = `${base + DISTANCE}vw`;
+        el.dataset.slid = 'true';
+      setAccountStage(1);
       });
 
       setTimeout(() => {
@@ -547,10 +564,11 @@ useEffect(() => {
       sliding = true;
 
       targetsRef.current.forEach(el => {
-        const leftPx = parseFloat(getComputedStyle(el).left) || 0;
-        if (!el.dataset.baseLeftVw) {
-          el.dataset.baseLeftVw = pxToVw(leftPx).toString();
-        }
+        const base = parseFloat(el.dataset.baseLeftVw || '0');
+        el.style.transition = `left ${DURATION}ms ease`;
+        el.style.left = `${base}vw`;
+        delete el.dataset.slid;
+      setAccountStage(0);
       });
 
       setTimeout(() => {
@@ -613,6 +631,9 @@ useEffect(() => {
 useEffect(() => {
     if (itemElsRef.current && centerElsRef.current) {
       Array.from(itemElsRef.current).concat(Array.from(centerElsRef.current)).forEach(el => {
+        if (!el.dataset.baseLeftVw) {
+          const leftPx = parseFloat(getComputedStyle(el).left) || 0;
+          el.dataset.baseLeftVw = toVw(leftPx).toString();
         }
       });
     }
@@ -621,6 +642,7 @@ useEffect(() => {
   // Reusable move function for transitions
   const move = (els: NodeListOf<HTMLElement>, offset: number) => {
     els.forEach((el) => {
+      const base = parseFloat(el.dataset.baseLeftVw || '0');
       el.style.transition = `left ${DUR}ms ease`;
       el.style.left = `${base + offset}vw`;
     });

@@ -59,6 +59,7 @@ useEffect(() => {
 }, [chatInitialized]);
   const pageContentRef = useRef<HTMLDivElement | null>(null);
   
+  const [state, setState] = useState(0); // 0 = baseline (lines visible, others hidden)
 
   const EDGE_MARGIN = 11;
 
@@ -161,7 +162,7 @@ useEffect(() => {
 
     // Cycle util-state 0 → 1 → 2 → 0 on click
   
-  useEffect(() => {
+  // Sync the data-util CSS attribute
 
 
 
@@ -317,6 +318,46 @@ useEffect(() => {
 useEffect(() => {
 }, []);
 
+// ─── Calendar grid scroll logic ────────────────────────────────────────────
+useEffect(() => {
+  const handleWheel = (e: WheelEvent) => {
+    // Prevent page scroll when interacting with calendar grid
+    e.preventDefault();
+
+    // Only continue if calendar grid exists in the DOM
+
+    if (isScrolling) return;
+    setIsScrolling(true);
+    setTimeout(() => setIsScrolling(false), 700);
+
+    const all = Array.from(
+    );
+    all.forEach(el => (el.style.transition = 'transform 0.7s ease'));
+
+    if (e.deltaY > 0) {
+      if (!isSecondScroll) {
+        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
+        setIsSecondScroll(true);
+      } else {
+        all.forEach(el => (el.style.transform = 'translateY(-111vh)'));
+        setIsSecondScroll(false);
+      }
+    } else {
+      const match = all[0]?.style.transform.match(/translateY\(([-\d.]+)vh\)/);
+      const y = match ? parseFloat(match[1]) : 0;
+      if (y === -111) {
+        all.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
+        setIsSecondScroll(true);
+      } else if (y === -55.5) {
+        all.forEach(el => (el.style.transform = 'translateY(0)'));
+        setIsSecondScroll(false);
+      }
+    }
+  };
+
+  window.addEventListener('wheel', handleWheel, { passive: false });
+  return () => window.removeEventListener('wheel', handleWheel);
+}, [isScrolling, isSecondScroll]);
 
 // ─── Unified click effect ───────────────────────────────────────────────────
 useEffect(() => {
@@ -798,7 +839,6 @@ return (
         <div className="other-content">
           <div className="line original" />
           <div className="line second" />
-          <div className="line util-line" />
           <div className="line third" />
           <div className="line fourth" />
           <div className="line fifth" />

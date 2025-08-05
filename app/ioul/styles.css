@@ -489,3 +489,302 @@ body.non-fullscreen {
   }
 }
 
+[data-util="0"] .mail-line,
+[data-util="0"] .mail-text,
+[data-util="0"] .grid-number,
+
+[data-util="1"] .mail-line,
+
+[data-util="2"] .grid-number,
+
+/* Ensure grid items transition opacity */
+.grid-number,
+
+
+/* Hide mail and calendar by default */
+.mail-line,
+.mail-text,
+.other-content .grid-number,
+
+/* Layers 5 & 6 visible by default */
+.layer-five,
+.layer-six {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transition: none !important;
+}
+
+/* STATE 1: mail visible, others hidden */
+[data-util="1"] .mail-line,
+[data-util="1"] .other-content .grid-number,
+[data-util="1"] .other-content .grid-dashed,
+[data-util="1"] .layer-five,
+
+/* STATE 2: calendar grid items 1-16 visible, mail & layers hidden */
+[data-util="2"] .num1, [data-util="2"] .num2, [data-util="2"] .num3, [data-util="2"] .num4,
+[data-util="2"] .num5, [data-util="2"] .num6, [data-util="2"] .num7, [data-util="2"] .num8,
+[data-util="2"] .num9, [data-util="2"] .num10, [data-util="2"] .num11, [data-util="2"] .num12,
+[data-util="2"] .num13, [data-util="2"] .num14, [data-util="2"] .num15, [data-util="2"] .num16,
+[data-util="2"] .dashed01, [data-util="2"] .dashed02, [data-util="2"] .dashed03, [data-util="2"] .dashed04,
+[data-util="2"] .dashed05, [data-util="2"] .dashed06, [data-util="2"] .dashed07, [data-util="2"] .dashed08,
+[data-util="2"] .dashed09, [data-util="2"] .dashed10, [data-util="2"] .dashed11, [data-util="2"] .dashed12,
+[data-util="2"] .mail-line,
+[data-util="2"] .mail-text,
+[data-util="2"] .layer-five,
+
+/* Chat hover logic */
+:root[data-util="0"] .mail-line,
+:root[data-util="0"] .mail-text,
+:root[data-util="0"] .grid-number,
+
+:root[data-util="1"] .mail-line,
+
+:root[data-util="2"] .line.fifth,
+:root[data-util="2"] .line.sixth,
+:root[data-util="2"] .mail-line,
+
+:root[data-util="2"] .grid-number,
+
+.mail-text,
+.mail-line,
+.grid-number,
+
+/* Default: hide mail and calendar grid */
+:root[data-util="0"] .mail-line,
+:root[data-util="0"] .mail-text,
+:root[data-util="0"] .grid-number,
+
+/* State 1: show mail only */
+:root[data-util="1"] .mail-line,
+:root[data-util="1"] .grid-number,
+
+/* State 2: show calendar grid (1–16) only, hide mail and lines 5/6 */
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .mail-line,
+:root[data-util="2"] .mail-text,
+:root[data-util="2"] .line.fifth,
+
+
+
+
+/* calendar grid overrides */
+.grid-number,
+
+[data-util="2"] .grid-number,
+[data-util="2"] .mail-line,
+[data-util="2"] .mail-text,
+[data-util="2"] .line.fifth,
+
+/* ensure correct layering */
+.mail-line,
+.mail-text,
+.grid-number,
+
+
+/* Ensure slide-container sits above util lines */
+.slide-container {
+  z-index: 150 !important;
+}
+
+/* Large-screen font size override */
+@media (min-width: 1900px) {
+}
+
+/* === CHAT-TEXT HOVER LAYERING FIX === */
+.hover-area {
+  z-index: 200 !important;
+}
+
+.chat-text {
+  z-index: 201 !important;
+}
+
+
+
+/* === Chat-text persistent visibility === */
+.chat-text.visible {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+:root[data-util="0"] .mail-line,
+:root[data-util="0"] .mail-text,
+:root[data-util="0"] .grid-number,
+
+:root[data-util="1"] .mail-line,
+
+:root[data-util="1"] .grid-number,
+:root[data-util="1"] .grid-dashed,
+:root[data-util="1"] .line.fifth,
+
+:root[data-util="2"] .grid-number,
+
+:root[data-util="2"] .mail-line,
+:root[data-util="2"] .mail-text,
+:root[data-util="2"] .line.fifth,
+
+
+/* --- Keep lines 5 & 6 visible in util state 1 --- */
+:root[data-util="1"] .line.fifth,
+
+/* Added to ensure visibility over layer-four */
+
+.item-text,
+.item-line {
+  z-index: 3;
+}
+
+
+/* Interaction Hotfix Overrides */
+.hover-area{
+    pointer-events:none !important;
+}
+.other-content{
+    pointer-events:none !important;
+}
+.line{
+    pointer-events:none !important;
+}
+
+
+/* -- Calendar grid stacking adjustment (July 22 2025) -- */
+.grid-number,
+
+/* === PERMANENT VISIBILITY FOR LINES 5 & 6 — 2025-07-23 00:59:10 === */
+/* Undo older util‑state rules that hid the lines */
+.line.fifth,
+.line.sixth {
+  display: inline-block !important;
+  opacity: 1 !important;
+  z-index: 420 !important;      /* stay above strips */
+  pointer-events: none !important; /* same behaviour across pages */
+}
+
+
+/* Hide mask layers to reveal page */
+.layer-one,
+.layer-two,
+.layer-three,
+.layer-four,
+.layer-five,
+.layer-six{
+  display:none !important;
+}
+
+/* Force page-content visible */
+.page-content{
+  opacity:1 !important;
+}
+
+
+/* === Layering Overrides v4 (updated 2025-07-24) ===
+   Goal: Lines 1‑3 and util‑line must appear above the left column mask stripes (layer‑1 & layer‑2).
+   We lift all timeline lines to z‑index 110 and util‑line to 120.
+   Containers keep their v3 positions.
+*/
+
+/* 0 ▸ Ensure layer divs stay rendered */
+.layer-one, .layer-two, .layer-three, .layer-four, .layer-five, .layer-six {
+    display: block !important;
+}
+
+/* 1 ▸ Containers (unchanged from v3) */
+.account-container, .heading-container { z-index: 90 !important; }
+.menu-items { z-index: 1 !important; }
+.community-items-container, .zero-items-container { z-index: 1 !important; }
+
+/* 2 ▸ Item rows (unchanged) */
+.item-text, .item-line, .center-text, .center-line { z-index: 60 !important; }
+
+/* 3 ▸ Timeline lines */
+.line { z-index: 110 !important; pointer-events: none !important; }
+/* === End Layering Overrides v4 === */
+
+/* === Layering Overrides v5 (updated 2025-07-24) ===
+   Key fix: raise .other-content stacking context so its children lines 1‑3
+   and util‑line can appear above the left column mask stripes (layer‑1 & layer‑2).
+   The container itself now sits at z‑index 130 above stripes (100)
+   but below timeline fifth/sixth (420) and above all content containers (≤ 90).
+*/
+
+.other-content {
+    z-index: 130 !important;
+}
+
+/* === End Layering Overrides v5 === */
+
+/* Override layer-two position to match original mask stripe width */
+.layer-two{
+  left: 28.87vw !important;
+  width: calc(36vw - 28.87vw) !important;
+}
+
+/* === Calendar grid ↧ under layer‑five — 2025‑07‑25 ===
+   Ensure calendar grid (numbers & dashed lines) sits below the top mask
+   while keeping timeline line‑4 above.
+*/
+:root[data-util="2"] .grid-number,
+
+
+/* === Stacking fix v2 — 2025‑07‑25 ===
+   1. Raise layer‑five so it masks content as intended.
+   2. Keep calendar grid just beneath it (but above layer‑four).
+   3. Elevate the fourth timeline line so it always shows above the mask.
+*/
+.layer-five{
+  z-index: 4 !important;         /* higher than grid & layer‑four */
+}
+:root[data-util="2"] .grid-number,
+/* line 4 */
+.line.fourth,
+.fourth{
+  z-index: 5 !important;         /* stays on top */
+}
+
+
+/* === Calendar Grid Layering Fix v3 — 2025‑07‑25 ===
+   Keep the top mask (.layer‑five) visible when util‑state 2 is active,
+   and place the calendar grid just beneath it (above layer‑four).
+   Timeline line 4 is raised above everything else for clarity. */
+:root[data-util="2"] .grid-number,
+.line.fourth,
+.fourth{
+  z-index: 300 !important;        /* always on top */
+}
+
+
+/* === Calendar Fix v5 — 2025‑07‑25 ===
+   Force timeline line‑4 visible above all masks/grid content. */
+.line.fourth, 
+.fourth{
+  position: fixed !important;       /* escape parent stacking context */
+  top: 12.5vh !important;
+  left: 36vw !important;
+  width: 57.8vw !important;
+  height: 1px !important;
+  background-color: rgba(172,172,172,0.84) !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+  display: block !important;
+  z-index: 10000 !important;        /* ensure visibility over everything */
+}
+
+
+/* === Calendar Fix v6 — 2025‑07‑25 ===
+   Approach: When util‑state 2 is active, paint line‑4 directly *inside*
+   the mask (.layer‑five) via a pseudo‑element so it’s guaranteed to be
+   visible, and hide the original .line.fourth to avoid double‑drawing. */
+
+
+/* === Global overflow suppression — 2025‑07‑29 ===
+   Ensure no browser scrollbars (horizontal or vertical) are ever
+   shown for the page itself, in or out of full‑screen. Internal
+   components must manage their own scrolling. */
+html,
+body,
+html:fullscreen,
+body:fullscreen {
+  overflow: hidden !important;
+  max-width: 100%;
+  max-height: 100%;
+}

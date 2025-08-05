@@ -745,3 +745,20 @@ body:fullscreen {
   max-width: 100%;
   max-height: 100%;
 }
+
+/* Account line base style */
+.line.account-line {
+  position: absolute;
+  top: 41.6vh;
+  left: -24.00vw;
+  width: 22.48vw;
+  height: 1px;
+  background-color: rgba(230, 230, 230, 0.28);
+  z-index: 1;
+}
+
+/* Ensure account line transitions with text */
+.account-text,
+.account-line {
+  transition: left 0.6s ease;
+}

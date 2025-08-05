@@ -74,3 +74,9 @@ body{background:#fff;font-family:system-ui,sans-serif;}
 .num29 {top:157.7vh;left:48.8vw;} .dashed29{top:158vh;left:36vw;}
 .num30 {top:157.7vh;left:63.7vw;} .dashed30{top:158vh;left:51vw;}
 .num31 {top:157.7vh;left:78.6vw;} .dashed31{top:158vh;left:65.9vw;}
+
+.grid-number,
+.grid-dashed {
+  z-index: 2000 !important;
+  pointer-events: none;   /* keeps them non-interactive */
+}

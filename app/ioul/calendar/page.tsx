@@ -2,10 +2,27 @@
 import "./styles.css";
 import React, { useEffect, useRef } from "react";
 
+/**
+ * IOULPage  • Fix v3 (deeper clean)
+ * -------------------------------------------
+ * - Removes ALL data‑util usage and toggles.
+ * - Removes timeline lines 5 & 6.
+ * - Keeps util‑line and lines 1‑4.
+ * - Ensures calendar grid sits ABOVE layer‑4,
+ *   but UNDER layers 5 & 6 (masks).
+ * - Line‑4 is fixed and always ABOVE masks.
+ * -------------------------------------------
+ */
+
 const IOULPage: React.FC = () => {
-  /* ─ Edge-click fullscreen toggle ─ */
+  // Mark non‑fullscreen view for body
   useEffect(() => {
-    const EDGE = 11;
+    document.body.classList.add("non-fullscreen");
+  }, []);
+
+  // Edge‑click full‑screen toggle
+  useEffect(() => {
+    const EDGE = 11; // px
     const handleClick = (e: MouseEvent) => {
       const { clientX: x, clientY: y } = e;
       const { innerWidth: w, innerHeight: h } = window;
@@ -17,46 +34,34 @@ const IOULPage: React.FC = () => {
         document.exitFullscreen().catch(() => {});
       }
     };
+    const onFsChange = () => {
+      document.body.classList.toggle(
+        "non-fullscreen",
+        !document.fullscreenElement
+      );
+    };
     document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
-  }, []);
-
-  /* ─ Inject fixed timeline line‑4 into <body> ─ */
-  useEffect(() => {
-    const line = document.createElement("div");
-    line.id = "timeline-line4";
-    Object.assign(line.style, {
-      position: "fixed",
-      top: "12.5vh",
-      left: "36vw",
-      width: "57.8vw",
-      height: "1px",
-      background: "rgba(172,172,172,0.84)",
-      zIndex: "2147483647",
-      pointerEvents: "none",
-    });
-    document.body.appendChild(line);
-
-    // Clean‑up
-    return (): void => {
-      if (line.parentNode) {
-        line.parentNode.removeChild(line);
-      }
+    document.addEventListener("fullscreenchange", onFsChange);
+    return () => {
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("fullscreenchange", onFsChange);
     };
   }, []);
 
-  /* ─ Scroll calendar grid ─ */
-  const scrollIdx = useRef(0);
+  // Calendar grid vertical scroll (3 pages)
+  const scrollIdxRef = useRef(0);
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
-      const els = document.querySelectorAll<HTMLElement>(
-        ".grid-number, .grid-dashed"
+      const els = Array.from(
+        document.querySelectorAll<HTMLElement>(".grid-number, .grid-dashed")
       );
       if (!els.length) return;
+      const clamp = (v: number, min: number, max: number) =>
+        Math.min(Math.max(v, min), max);
       const dir = e.deltaY > 0 ? 1 : -1;
-      scrollIdx.current = Math.max(0, Math.min(2, scrollIdx.current + dir));
-      const offset = -55.5 * scrollIdx.current; // vh
+      scrollIdxRef.current = clamp(scrollIdxRef.current + dir, 0, 2);
+      const offset = -55.5 * scrollIdxRef.current; // vh units
       els.forEach((el) => {
         el.style.transition = "transform 0.7s ease";
         el.style.transform = `translateY(${offset}vh)`;
@@ -67,7 +72,7 @@ const IOULPage: React.FC = () => {
   }, []);
 
   return (
-    <div translate="no">
+    <div className="non-fullscreen" translate="no">
       {/* mask layers */}
       <div className="layer-one" />
       <div className="layer-two" />
@@ -76,24 +81,35 @@ const IOULPage: React.FC = () => {
       <div className="layer-five" />
       <div className="layer-six" />
 
-      {/* timeline lines */}
-      <div className="line original" />
-      <div className="line second" />
-      <div className="line util-line" />
-      <div className="line third" />
+      {/* content */}
+      <div className="other-content">
+        {/* timeline lines (kept: 1‑4 + util) */}
+        <div className="line original" />
+        <div className="line second" />
+        <div className="line util-line" />
+        <div className="line third" />
+        <div className="line fourth" />
 
-      {/* calendar grid */}
-      {Array.from({ length: 31 }, (_, i) => (
-        <span key={`n${i + 1}`} className={`grid-number num${i + 1}`}>
-          {i + 1}
-        </span>
-      ))}
-      {Array.from({ length: 31 }, (_, i) => (
-        <span
-          key={`d${i + 1}`}
-          className={`grid-dashed dashed${String(i + 1).padStart(2, "0")}`}
-        />
-      ))}
+        {/* calendar grid numbers 1‑31 */}
+        {Array.from({ length: 31 }, (_, i) => (
+          <span
+            key={`num${i + 1}`}
+            className={`grid-number num${i + 1}`}
+            style={{ display: "inline-block" }}
+          >
+            {i + 1}
+          </span>
+        ))}
+
+        {/* dashed grid rows 01‑31 */}
+        {Array.from({ length: 31 }, (_, i) => (
+          <span
+            key={`dash${i + 1}`}
+            className={`grid-dashed dashed${String(i + 1).padStart(2, "0")}`}
+            style={{ display: "inline-block" }}
+          />
+        ))}
+      </div>
     </div>
   );
 };

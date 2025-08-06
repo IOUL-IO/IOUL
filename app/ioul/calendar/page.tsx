@@ -1,66 +1,31 @@
 "use client";
-import "./styles.css";
-import React, { useEffect, useRef } from "react";
+import './styles.css';
 
-const IOULPage: React.FC = () => {
-  /* ───────────────── edge-click full-screen toggle ───────────────── */
+
+import React, { useEffect } from "react";
+
+export default function Page() {
   useEffect(() => {
-    document.body.classList.add("non-fullscreen");            // start zoomed-out
-
-    const onFsChange = () => {
-      if (document.fullscreenElement)
-        document.body.classList.remove("non-fullscreen");      // zoom-in
-      else
-        document.body.classList.add("non-fullscreen");         // zoom-out
-    };
-    document.addEventListener("fullscreenchange", onFsChange);
-
-    const EDGE = 11;
-    const onClick = (e: MouseEvent) => {
-      const { clientX: x, clientY: y } = e;
+    // Full-screen trigger logic (click near any screen edge)
+    const EDGE_MARGIN = 11;
+    const fullscreenHandler = ({ clientX: x, clientY: y }: MouseEvent) => {
       const { innerWidth: w, innerHeight: h } = window;
-      const near = x <= EDGE || x >= w - EDGE || y <= EDGE || y >= h - EDGE;
-      if (!near) return;
-
-      if (document.fullscreenElement)
-        document.exitFullscreen().catch(() => {});
-      else
-        document.documentElement.requestFullscreen().catch(() => {});
+      const nearEdge =
+        x <= EDGE_MARGIN || x >= w - EDGE_MARGIN || y <= EDGE_MARGIN || y >= h - EDGE_MARGIN;
+      if (nearEdge && !document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      }
     };
-    document.addEventListener("click", onClick);
 
+    document.addEventListener("click", fullscreenHandler);
     return () => {
-      document.removeEventListener("fullscreenchange", onFsChange);
-      document.removeEventListener("click", onClick);
+      document.removeEventListener("click", fullscreenHandler);
     };
   }, []);
 
-  /* ───────────────── calendar grid scroll (3 pages) ───────────────── */
-  const idxRef = useRef(0);
-  useEffect(() => {
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      const els = document.querySelectorAll<HTMLElement>(
-        ".grid-number, .grid-dashed"
-      );
-      if (!els.length) return;
-
-      const dir = e.deltaY > 0 ? 1 : -1;
-      idxRef.current = Math.max(0, Math.min(2, idxRef.current + dir));
-      const offset = -55.5 * idxRef.current; // vh
-      els.forEach((el) => {
-        el.style.transition = "transform 0.7s ease";
-        el.style.transform = `translateY(${offset}vh)`;
-      });
-    };
-    window.addEventListener("wheel", onWheel, { passive: false });
-    return () => window.removeEventListener("wheel", onWheel);
-  }, []);
-
-  /* ─────────────────────────── render ─────────────────────────────── */
   return (
-    <div translate="no">
-      {/* mask layers */}
+    <>
+      {/* Fixed white mask layers */}
       <div className="layer-one" />
       <div className="layer-two" />
       <div className="layer-three" />
@@ -68,20 +33,75 @@ const IOULPage: React.FC = () => {
       <div className="layer-five" />
       <div className="layer-six" />
 
-      {/* timeline lines */}
-      <div className="line original" />
-      <div className="line second" />
-      <div className="line util-line" />
-      <div className="line fourth" />
-      <div className="line third" />
+      {/* All visible UI sits inside page-content */}
+      <div className="page-content">
+        {/* Primary guideline lines */}
+        <div className="line original" />
+        <div className="line second" />
+        <div className="line third" />
+        <div className="line fourth" />
+        <div className="line fifth" />
+        <div className="line sixth" />
 
-      {/* calendar numbers 1-31 */}
-      <span className="grid-number num1">1</span><span className="grid-number num2">2</span><span className="grid-number num3">3</span><span className="grid-number num4">4</span><span className="grid-number num5">5</span><span className="grid-number num6">6</span><span className="grid-number num7">7</span><span className="grid-number num8">8</span><span className="grid-number num9">9</span><span className="grid-number num10">10</span><span className="grid-number num11">11</span><span className="grid-number num12">12</span><span className="grid-number num13">13</span><span className="grid-number num14">14</span><span className="grid-number num15">15</span><span className="grid-number num16">16</span><span className="grid-number num17">17</span><span className="grid-number num18">18</span><span className="grid-number num19">19</span><span className="grid-number num20">20</span><span className="grid-number num21">21</span><span className="grid-number num22">22</span><span className="grid-number num23">23</span><span className="grid-number num24">24</span><span className="grid-number num25">25</span><span className="grid-number num26">26</span><span className="grid-number num27">27</span><span className="grid-number num28">28</span><span className="grid-number num29">29</span><span className="grid-number num30">30</span><span className="grid-number num31">31</span>
+        <div className="line util-line" />
 
-      {/* dashed rows 01-31 */}
-      <span className="grid-dashed dashed01" /><span className="grid-dashed dashed02" /><span className="grid-dashed dashed03" /><span className="grid-dashed dashed04" /><span className="grid-dashed dashed05" /><span className="grid-dashed dashed06" /><span className="grid-dashed dashed07" /><span className="grid-dashed dashed08" /><span className="grid-dashed dashed09" /><span className="grid-dashed dashed10" /><span className="grid-dashed dashed11" /><span className="grid-dashed dashed12" /><span className="grid-dashed dashed13" /><span className="grid-dashed dashed14" /><span className="grid-dashed dashed15" /><span className="grid-dashed dashed16" /><span className="grid-dashed dashed17" /><span className="grid-dashed dashed18" /><span className="grid-dashed dashed19" /><span className="grid-dashed dashed20" /><span className="grid-dashed dashed21" /><span className="grid-dashed dashed22" /><span className="grid-dashed dashed23" /><span className="grid-dashed dashed24" /><span className="grid-dashed dashed25" /><span className="grid-dashed dashed26" /><span className="grid-dashed dashed27" /><span className="grid-dashed dashed28" /><span className="grid-dashed dashed29" /><span className="grid-dashed dashed30" /><span className="grid-dashed dashed31" />
-    </div>
+        {/* Main Links */}
+        <span className="custom-text" style={{ position: 'absolute', top: '35.4vh', left: '6.41vw' }}>UPDATES</span>
+        <span className="custom-text" style={{ position: 'absolute', top: '41.6vh', left: '6.41vw' }}>cOnTAcT</span>
+        <span className="custom-text" style={{ position: 'absolute', top: '53vh',   left: '6.41vw' }}>JO1n US</span>
+        <span className="custom-text" style={{ position: 'absolute', top: '59.2vh', left: '6.41vw' }}>AP1 LOg</span>
+
+        {/* Counters */}
+        <span className="custom-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '28.41vw' }}>0</span>
+        <span className="custom-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '28.41vw' }}>0</span>
+        <span className="custom-text right-flow" style={{ position: 'absolute', top: '53vh',   left: '28.41vw' }}>0</span>
+        <span className="custom-text right-flow" style={{ position: 'absolute', top: '59.2vh', left: '28.41vw' }}>0</span>
+
+        {/* Divider line */}
+        <div className="custom-line" />
+
+        {/* Column 1 (36 vw) */}
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '35.4vh', left: '36vw' }}>LOOK UP:</span>
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '41.6vh', left: '36vw' }}>cATALOg:</span>
+
+        {/* Column 2 counters */}
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '49.7vw' }}>0</span>
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '49.7vw' }}>0</span>
+
+        {/* Column 3 labels */}
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '35.4vh', left: '58.7vw' }}>PER1OD:</span>
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '41.6vh', left: '58.7vw' }}>F1LTER:</span>
+
+        {/* Column 4 counters */}
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '71vw' }}>0</span>
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '71vw' }}>0</span>
+
+        {/* Column 5 labels */}
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '35.4vh', left: '79vw' }}>ABOUT</span>
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '41.6vh', left: '79vw' }}>LEgAL</span>
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '53vh',   left: '79vw' }}>c-LOg:</span>
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '59.2vh', left: '79vw' }}>c-LOg:</span>
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '65.4vh', left: '79vw' }}>c-LOg:</span>
+        <span className="custom-text content-text" style={{ position: 'absolute', top: '71.6vh', left: '79vw' }}>c-LOg:</span>
+
+        {/* Column 6 counters */}
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '93.4vw' }}>0</span>
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '93.4vw' }}>0</span>
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '53vh',   left: '93.4vw' }}>0</span>
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '59.2vh', left: '93.4vw' }}>0</span>
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '65.4vh', left: '93.4vw' }}>0</span>
+        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '71.6vh', left: '93.4vw' }}>0</span>
+
+        {/* Horizontal guide lines */}
+        <div
+          className="content-line content-line-one"
+          style={{ position: 'absolute', top: '47.8vh', left: '36vw', width: '36vw', height: '1px', background: 'rgba(230,230,230,0.28)' }}
+        />
+        <div
+          className="content-line content-line-two"
+          style={{ position: 'absolute', top: '47.8vh', left: '79vw', width: '14.8vw', height: '1px', background: 'rgba(230,230,230,0.28)' }}
+        />
+      </div>
+    </>
   );
-};
-
-export default IOULPage;
+}

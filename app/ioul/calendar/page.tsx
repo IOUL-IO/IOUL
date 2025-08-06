@@ -4,112 +4,73 @@ import "./styles.css";
 import React, { useEffect, useRef } from "react";
 
 /* ─────────────────────────────────────────────────────────────────────
-   IOULPage (minimal, util‑state removed)
-   - Edge‑click full‑screen toggle
-   - Mask layers (1‑6) + timeline lines (1‑6 + util‑line)
-   - Calendar grid numbers & dashed rows (1‑31) with scroll logic
+   IOULPage (REV‑2)
+   - lines 5 & 6 removed
+   - grid sits under mask layers 5 & 6
    ───────────────────────────────────────────────────────────────────── */
 
 const IOULPage: React.FC = () => {
-  /* 1. Ensure body styles for non‑fullscreen view */
   useEffect(() => {
     document.body.classList.add("non-fullscreen");
   }, []);
 
-  /* 2. Edge‑click full‑screen toggle */
+  /* Full‑screen toggle (edge‑click) */
   useEffect(() => {
-    const EDGE_MARGIN = 11; // px
-    const handleClick = (e: MouseEvent) => {
-      const { clientX: x, clientY: y } = e;
-      const { innerWidth: w, innerHeight: h } = window;
-      const nearEdge =
-        x <= EDGE_MARGIN ||
-        x >= w - EDGE_MARGIN ||
-        y <= EDGE_MARGIN ||
-        y >= h - EDGE_MARGIN;
-      if (!nearEdge) return;
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      } else {
-        document.exitFullscreen().catch(() => {});
+    const EDGE = 11;
+    const clickEdge = (e: MouseEvent) => {
+      const { clientX:x, clientY:y } = e;
+      const { innerWidth:w, innerHeight:h } = window;
+      const hit = x<=EDGE || x>=w-EDGE || y<=EDGE || y>=h-EDGE;
+      if(!hit) return;
+      if(!document.fullscreenElement){
+        document.documentElement.requestFullscreen().catch(()=>{});
+      }else{
+        document.exitFullscreen().catch(()=>{});
       }
     };
-    const onFsChange = () => {
-      document.body.classList.toggle("non-fullscreen", !document.fullscreenElement);
-    };
-    document.addEventListener("click", handleClick);
-    document.addEventListener("fullscreenchange", onFsChange);
-    return () => {
-      document.removeEventListener("click", handleClick);
-      document.removeEventListener("fullscreenchange", onFsChange);
-    };
+    const fsChange = ()=>document.body.classList.toggle("non-fullscreen",!document.fullscreenElement);
+    document.addEventListener("click",clickEdge);
+    document.addEventListener("fullscreenchange",fsChange);
+    return ()=>{document.removeEventListener("click",clickEdge);document.removeEventListener("fullscreenchange",fsChange);};
   }, []);
 
-  /* 3. Calendar grid scroll (unchanged) */
-  const scrollIdxRef = useRef(0); // 0, 1, 2
+  /* Scroll grid */
+  const idxRef = useRef(0);
   useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
+    const wheel = (e: WheelEvent) => {
       e.preventDefault();
-      const els = Array.from(
-        document.querySelectorAll<HTMLElement>(".grid-number, .grid-dashed")
-      );
-      if (!els.length) return;
-
-      const clamp = (v: number, min: number, max: number) =>
-        Math.min(Math.max(v, min), max);
-      const dir = e.deltaY > 0 ? 1 : -1;
-      scrollIdxRef.current = clamp(scrollIdxRef.current + dir, 0, 2);
-      const offset = -55.5 * scrollIdxRef.current; // vh units
-      els.forEach((el) => {
-        el.style.transition = "transform 0.7s ease";
-        el.style.transform = `translateY(${offset}vh)`;
+      const els = Array.from(document.querySelectorAll<HTMLElement>(".grid-number,.grid-dashed"));
+      if(!els.length) return;
+      const dir = e.deltaY>0?1:-1;
+      idxRef.current = Math.min(Math.max(idxRef.current+dir,0),2);
+      const offset = -55.5*idxRef.current;
+      els.forEach(el=>{
+        el.style.transition="transform .7s ease";
+        el.style.transform=`translateY(${offset}vh)`;
       });
     };
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    return () => window.removeEventListener("wheel", handleWheel);
+    window.addEventListener("wheel",wheel,{passive:false});
+    return ()=>window.removeEventListener("wheel",wheel);
   }, []);
 
-  /* 4. Render minimal layout */
   return (
     <div className="non-fullscreen" translate="no">
       {/* mask layers */}
-      <div className="layer-one" />
-      <div className="layer-two" />
-      <div className="layer-three" />
-      <div className="layer-four" />
-      <div className="layer-five" />
-      <div className="layer-six" />
+      <div className="layer-one"/><div className="layer-two"/><div className="layer-three"/>
+      <div className="layer-four"/><div className="layer-five"/><div className="layer-six"/>
 
       {/* content */}
       <div className="other-content">
         {/* timeline lines */}
-        <div className="line original" />
-        <div className="line second" />
-        <div className="line util-line" />
-        <div className="line third" />
-        <div className="line fourth" />
-        <div className="line fifth" />
-        <div className="line sixth" />
+        <div className="line original"/>
+        <div className="line second"/>
+        <div className="line util-line"/>
+        <div className="line third"/>
+        <div className="line fourth"/>
 
-        {/* calendar grid numbers 1-31 */}
-        {Array.from({ length: 31 }, (_, i) => (
-          <span
-            key={`num${i + 1}`}
-            className={`grid-number num${i + 1}`}
-            style={{ display: "inline-block" }}
-          >
-            {i + 1}
-          </span>
-        ))}
-
-        {/* dashed grid lines 01-31 */}
-        {Array.from({ length: 31 }, (_, i) => (
-          <span
-            key={`dash${i + 1}`}
-            className={`grid-dashed dashed${String(i + 1).padStart(2, "0")}`}
-            style={{ display: "inline-block" }}
-          />
-        ))}
+        {/* calendar grid */}
+        {Array.from({length:31},(_,i)=>(<span key={i} className={`grid-number num${i+1}`} style={{display:"inline-block"}}>{i+1}</span>))}
+        {Array.from({length:31},(_,i)=>(<span key={`d${i}`} className={`grid-dashed dashed${String(i+1).padStart(2,"0")}`} style={{display:"inline-block"}}/>))}
       </div>
     </div>
   );

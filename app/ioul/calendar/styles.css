@@ -1,5 +1,5 @@
 
-/* === IOUL Calendar Styles (refined 2025‑08‑05) === */
+/* === IOUL Calendar Styles v2 (2025‑08‑05) === */
 
 /* ---------- Base Reset ---------- */
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -14,46 +14,51 @@ body.non-fullscreen{background:#fff;min-height:100vh;min-width:100vw;overflow:hi
 .layer-three{left:94.17vw;width:calc(100vw - 94.17vw);}
 
 /* ---------- Scroll Masks (layers 4‑6) ---------- */
-.layer-four{ /* middle mask that grid must sit above */
+/* layer‑four sits behind the grid – keep lower z‑index */
+.layer-four{
   position:absolute;top:28.5vh;left:36vw;width:61vw;height:55.5vh;
-  background:#fff;pointer-events:none;z-index:200;
+  background:#fff;pointer-events:none;z-index:300;
 }
-.layer-five, .layer-six{ /* top & bottom masks – must cover grid while scrolling */
-  position:absolute;left:36vw;width:58.7vw;background:#fff;pointer-events:none;
-  z-index:500; /* ABOVE grid & layer‑four */
+
+/* layers 5 & 6 must hide the grid while scrolling */
+.layer-five,.layer-six{
+  position:absolute;left:36vw;width:61vw;background:#fff;pointer-events:none;
+  z-index:600; /* ABOVE grid */
 }
-.layer-five{top:0;height:28.4vh;}
-.layer-six{top:84.7vh;height:15.3vh;}
+.layer-five{top:0;height:28.5vh;}   /* mask above row‑1 */
+.layer-six{top:84.7vh;height:15.3vh;} /* mask below last row */
 
 /* ---------- Timeline Lines ---------- */
-.line{position:absolute;height:1px;background:rgba(172,172,172,.84);}
-.original{top:12.5vh;left:6.38vw;width:22.48vw;}
-.second  {top:28.5vh;left:6.38vw;width:18.68vw;}
-.third   {top:84vh;  left:6.38vw;width:22.48vw;}
-.util-line{top:28.5vh;left:26.06vw;width:2.8vw;}
-.fourth  { /* must remain visible above layer‑five */
-  top:12.5vh;left:36vw;width:57.8vw;z-index:600;
+.line{
+  position:absolute;height:1px;background:rgba(172,172,172,.84);
 }
+.original{top:12.5vh;left:6.38vw;width:22.48vw;}          /* unchanged */
+.second  {top:28.5vh;left:6.38vw;width:18.68vw;}          /* unchanged */
+.third   {top:84vh;  left:6.38vw;width:22.48vw;}          /* unchanged */
+.fourth  {top:12.5vh;left:36vw;width:57.8vw;z-index:650;} /* ALWAYS on top */
+/* deleted .fifth & .sixth completely */
 
 /* ---------- Calendar Grid ---------- */
-.grid-number, .grid-dashed{
-  position:absolute;z-index:300; /* sits above layer‑four, below layer‑five/six */
+.grid-number,.grid-dashed{
+  position:absolute;z-index:400; /* between layer‑four (300) and masks (600) */
   transition:transform .7s ease;
 }
+
+/* number styling */
 .grid-number{
   font-family:'Distill Expanded',sans-serif;
   color:#111;font-size:6.1px;letter-spacing:.28vw;
   text-shadow:0.011rem 0.011rem 0 #717,-0.011rem -0.011rem 0 #717;
 }
+
+/* dashed horizontal line styling */
 .grid-dashed{
   height:1px;width:11.8vw;
   background:linear-gradient(to right,#171 0,#171 5px,#fff 5px,#fff 10px);
   background-size:10px 1px;opacity:.711;
 }
 
-/* ---------- Grid Coordinates (#s & dashed rows) ---------- */
-/* (unchanged – generated positions) */
-/* --- Grid Positions --- */
+/* ---------- Grid Positions (numbers & dashed rows) ---------- */
 .num1  { top: 28.5vh; left: 48.8vw; }
 .num2  { top: 28.5vh; left: 63.7vw; }
 .num3  { top: 28.5vh; left: 78.5vw; }
@@ -118,16 +123,11 @@ body.non-fullscreen{background:#fff;min-height:100vh;min-width:100vw;overflow:hi
 .dashed30 { top: 158vh;   left: 51vw; }
 .dashed31 { top: 158vh;   left: 65.9vw; }
 
-/* --- Utility Toggle (data-util) --- */
-:root[data-util="0"] .grid-number,
-:root[data-util="0"] .grid-dashed{opacity:0;pointer-events:none;}
 
-:root[data-util="2"] .grid-number,
-:root[data-util="2"] .grid-dashed{opacity:1;pointer-events:auto;}
 
-/* --- Scroll transform handled via JS (page.tsx) --- */
+/* ... (unchanged, omitted for brevity) */
 
-/* ---------- Utility Toggle ---------- */
+/* ---------- Utility Toggle (data‑util) ---------- */
 :root[data-util="0"] .grid-number,
 :root[data-util="0"] .grid-dashed{opacity:0;pointer-events:none;}
 

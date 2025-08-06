@@ -1,13 +1,12 @@
-
 "use client";
 import "./styles.css";
 import React, { useEffect, useRef } from "react";
 
 const IOULPage: React.FC = () => {
-  /* ─ Edge-click fullscreen ─ */
+  // Edge-click fullscreen toggle
   useEffect(() => {
     const EDGE = 11;
-    const toggleFS = (e: MouseEvent) => {
+    const onClick = (e: MouseEvent) => {
       const { clientX: x, clientY: y } = e;
       const { innerWidth: w, innerHeight: h } = window;
       if (x > EDGE && x < w - EDGE && y > EDGE && y < h - EDGE) return;
@@ -17,11 +16,11 @@ const IOULPage: React.FC = () => {
         document.exitFullscreen().catch(() => {});
       }
     };
-    document.addEventListener("click", toggleFS);
-    return () => document.removeEventListener("click", toggleFS);
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
   }, []);
 
-  /* ─ Inject timeline line‑4 directly into <body> to bypass every stacking context ─ */
+  // Inject fixed timeline line‑4 into <body>
   useEffect(() => {
     const line = document.createElement("div");
     line.id = "timeline-line4";
@@ -36,12 +35,10 @@ const IOULPage: React.FC = () => {
       pointerEvents: "none",
     });
     document.body.appendChild(line);
-    return () => {
-      document.body.removeChild(line);
-    };
+    return () => document.body.removeChild(line);
   }, []);
 
-  /* ─ 3‑step scroll for calendar grid ─ */
+  // Calendar grid scroll (3 steps)
   const idxRef = useRef(0);
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
@@ -59,10 +56,9 @@ const IOULPage: React.FC = () => {
     return () => window.removeEventListener("wheel", onWheel);
   }, []);
 
-  /* ─ render masks, grid, and lines 1‑3 ─ */
   return (
     <div translate="no">
-      {/* masks */}
+      {/* mask layers */}
       <div className="layer-one" />
       <div className="layer-two" />
       <div className="layer-three" />
@@ -70,9 +66,10 @@ const IOULPage: React.FC = () => {
       <div className="layer-five" />
       <div className="layer-six" />
 
-      {/* timeline lines 1‑3 only (line‑4 handled via portal) */}
+      {/* timeline lines */}
       <div className="line original" />
       <div className="line second" />
+      <div className="line util-line" />
       <div className="line third" />
 
       {/* calendar grid */}

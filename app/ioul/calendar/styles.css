@@ -52,7 +52,7 @@ body.non-fullscreen {
 }
 .original { top:12.5vh; left:6.38vw; width:22.48vw; }
 .second   { top:28.5vh; left:6.38vw; width:18.68vw; }
-.util-line{ top:28.5vh; left:26.06vw; width:2.8vw; }
+
 .third    { top:84vh;   left:6.38vw; width:22.48vw; }
 
 /* fourth line must float above masks */
@@ -130,3 +130,16 @@ body.non-fullscreen {
   z-index:2 !important;            /* layer‑four(2) < grid(2) < masks(≥4) */
 }
 /* ─── End dashed‑rows override ─── */
+
+
+/* util-line (line between util section) */
+.util-line{
+  position: absolute;
+  top: 28.5vh;
+  left: 26.06vw;
+  width: 2.8vw;
+  height: 1px;
+  background: rgba(172, 172, 172, 0.84);
+  z-index: 300;
+  pointer-events: none;
+}

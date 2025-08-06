@@ -1,28 +1,126 @@
-@font-face{font-family:'Distill Expanded';src:url('./font.woff2') format('woff2'),url('./font.woff') format('woff');font-weight:normal;font-style:normal;}
+/* ───────────────────────────────────────────────
+   Minimal IOUL styles (rev‑2025‑08‑06)
+   — Retains only:
+     • mask layers 1‑6
+     • timeline lines 1‑6 + util‑line
+     • calendar grid numbers & dashed rows (wheel‑scroll)
+   — Stacking order (low → high)
+       10  layer‑four          (background under grid)
+       20  grid numbers/rows   (scrolls)
+       30  layer‑five, layer‑six  (clip grid)
+       40  layer‑one, -two, -three (stripes)
+      120  timeline lines 1‑3,5‑6 & util‑line
+      150  timeline line‑4     (always on top)
+   ───────────────────────────────────────────────*/
+
+/* 0 ▸ Base reset & font */
+@font-face{
+  font-family:'Distill Expanded';
+  src:url('./font.woff2') format('woff2'),
+      url('./font.woff')  format('woff');
+}
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{overflow:hidden;width:100%;height:100%;}
-body.non-fullscreen{background:#fff;min-height:100vh;min-width:100vw;}
+body.non-fullscreen{
+  background:#fff;
+  min-height:100vh;
+  min-width:100vw;
+  overflow:hidden;
+}
 
-.layer-one,.layer-two,.layer-three,.layer-four,.layer-five,.layer-six{background:#fff;pointer-events:none;}
+/* 1 ▸ Mask layers */
+.layer-one,.layer-two,.layer-three{
+  position:fixed;top:0;height:100vh;background:#fff;pointer-events:none;z-index:40;
+}
+.layer-one{left:0;width:6.37vw;}
+.layer-two{left:6.37vw;width:calc(36vw - 6.37vw);}
+.layer-three{left:94.17vw;width:calc(100vw - 94.17vw);}
 
-.layer-one{position:fixed;top:0;left:0;width:6.37vw;height:100vh;z-index:100;}
-.layer-two{position:fixed;top:0;left:6.37vw;width:calc(36vw-6.37vw);height:100vh;z-index:100;}
-.layer-three{position:fixed;top:0;left:94.17vw;width:calc(100vw-94.17vw);height:100vh;z-index:100;}
+/* Middle mask (reveals grid) */
+.layer-four{
+  position:absolute;top:28.5vh;left:36vw;width:61vw;height:55.5vh;
+  background:#fff;pointer-events:none;z-index:10;
+}
 
-/* middle mask below grid */
-.layer-four{position:absolute;top:28.5vh;left:36vw;width:61vw;height:55.5vh;z-index:10;}
+/* Top & bottom masks (clip grid) */
+.layer-five,.layer-six{
+  position:absolute;left:36vw;width:58.7vw;background:#fff;pointer-events:none;z-index:30;
+}
+.layer-five{top:0;height:28.4vh;}
+.layer-six{top:84.7vh;height:15.3vh;}
 
-/* top & bottom masks fixed at very high z-index */
-.layer-five{position:fixed;top:0;left:36vw;width:58.7vw;height:28.4vh;z-index:2000;}
-.layer-six{position:fixed;top:84.7vh;left:36vw;width:58.7vw;height:15.3vh;z-index:2000;}
+/* 2 ▸ Timeline lines */
+.line{
+  position:absolute;height:1px;background:rgba(172,172,172,.84);
+  pointer-events:none;z-index:120;
+}
+.original{top:12.5vh;left:6.38vw;width:22.48vw;}
+.second  {top:28.5vh;left:6.38vw;width:18.68vw;}
+.third   {top:84vh;  left:6.38vw;width:22.48vw;}
+.fourth  {top:12.5vh;left:36vw;width:57.8vw;z-index:150;} /* above layer‑five */
+.fifth   {top:28.5vh;left:36vw;width:57.8vw;}
+.sixth   {top:84vh;  left:36vw;width:57.8vw;}
+.util-line{
+  top:28.5vh;left:26.06vw;width:2.8vw;
+  z-index:130;pointer-events:auto;
+}
 
-.line{position:absolute;height:1px;background:rgba(172,172,172,.84);pointer-events:none;}
-.line.original{top:12.5vh;left:6.38vw;width:22.48vw;z-index:2100;}
-.line.second{top:28.5vh;left:6.38vw;width:18.68vw;z-index:2100;}
-.line.util-line{top:28.5vh;left:26.06vw;width:2.8vw;z-index:2100;}
-.line.third{top:84vh;left:6.38vw;width:22.48vw;z-index:2100;}
-.line.fourth{top:12.5vh;left:36vw;width:57.8vw;z-index:2200;}
+/* 3 ▸ Calendar grid (numbers & dashed rows) */
+.grid-number,.grid-dashed{
+  position:absolute;z-index:20;pointer-events:none;
+  transition:transform .6s ease;
+}
 
-.grid-number,.grid-dashed{position:absolute;transition:transform .7s ease;z-index:100;pointer-events:none;}
-.grid-number{font-family:'Distill Expanded',sans-serif;font-size:6px;letter-spacing:.28vw;color:#111;text-shadow:.011rem .011rem 0 #717,-.011rem -.011rem 0 #717;}
-.grid-dashed{width:11.8vw;height:1px;opacity:.711;background:linear-gradient(to right,#171717 0 5px,#fff 5px 10px);background-size:10px 1px;}
+/* Numbers */
+.grid-number{
+  font-family:'Distill Expanded',sans-serif;
+  font-size:.411rem;letter-spacing:.28vw;color:#111;
+  text-shadow:.011rem .011rem 0 #717171,-.011rem -.011rem 0 #717171;
+}
+/* Row tops */
+.num1,.num2,.num3,.num4        {top:28.5vh;}
+.num5,.num6,.num7,.num8        {top:47vh;}
+.num9,.num10,.num11,.num12     {top:65.5vh;}
+.num13,.num14,.num15,.num16    {top:83.7vh;}
+.num17,.num18,.num19,.num20    {top:102.2vh;}
+.num21,.num22,.num23,.num24    {top:120.7vh;}
+.num25,.num26,.num27,.num28    {top:139.2vh;}
+.num29,.num30,.num31           {top:157.7vh;}
+/* Column lefts */
+.num1,.num5,.num9,.num13,
+.num17,.num21,.num25,.num29    {left:48.8vw;}
+.num2,.num6,.num10,.num14,
+.num18,.num22,.num26,.num30    {left:63.7vw;}
+.num3,.num7,.num11,.num15,
+.num19,.num23,.num27,.num31    {left:78.5vw;}
+.num4,.num8,.num12,.num16,
+.num20,.num24,.num28           {left:93.3vw;}
+
+/* Dashed horizontal rows */
+.grid-dashed{
+  height:1px;width:11.8vw;opacity:.711;
+  background:linear-gradient(to right,#171717 0 5px,#fff 0 10px);
+  background-size:10px 1px;
+}
+/* Row tops for dashes */
+.dashed01,.dashed02,.dashed03,.dashed04 {top:28.5vh;}
+.dashed05,.dashed06,.dashed07,.dashed08 {top:47vh;}
+.dashed09,.dashed10,.dashed11,.dashed12 {top:65.5vh;}
+.dashed13,.dashed14,.dashed15,.dashed16 {top:84vh;}
+.dashed17,.dashed18,.dashed19,.dashed20 {top:102.5vh;}
+.dashed21,.dashed22,.dashed23,.dashed24 {top:121vh;}
+.dashed25,.dashed26,.dashed27,.dashed28 {top:139.5vh;}
+.dashed29,.dashed30,.dashed31           {top:158vh;}
+/* Column lefts for dashes */
+.dashed01,.dashed05,.dashed09,.dashed13,
+.dashed17,.dashed21,.dashed25,.dashed29  {left:36vw;}
+.dashed02,.dashed06,.dashed10,.dashed14,
+.dashed18,.dashed22,.dashed26,.dashed30  {left:51vw;}
+.dashed03,.dashed07,.dashed11,.dashed15,
+.dashed19,.dashed23,.dashed27,.dashed31  {left:65.9vw;}
+.dashed04,.dashed08,.dashed12,.dashed16,
+.dashed20,.dashed24,.dashed28            {left:80.8vw;}
+
+/* 4 ▸ Hide browser scrollbars in/out of full‑screen */
+html,body,html:fullscreen,body:fullscreen{
+  overflow:hidden;max-width:100%;max-height:100%;
+}

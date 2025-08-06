@@ -1,126 +1,86 @@
+'use client';
+import './styles.css';
+import React, { useEffect, useRef } from 'react';
 
-"use client";
-import "./styles.css";
-
-import React, { useEffect, useRef } from "react";
-
-// ─────────────────────────────────────────────────────────────────────────────
-//  IOULPage (minimal)
-//  - Keeps only:
-//    • Full-screen edge-click toggle
-//    • Mask layers (1-6) and timeline lines (1-6 + util-line)
-//    • Calendar grid numbers & dashed rows (1-31) with scroll logic
-//  - All other UI / util-line functions removed per user request.
-// ─────────────────────────────────────────────────────────────────────────────
-
-const IOULPage: React.FC = () => {
-  // 1. Ensure body styles for non-fullscreen view
+export default function Page() {
+  /* ---------- Full‑screen edge toggle ---------- */
   useEffect(() => {
-    document.body.classList.add("non-fullscreen");
-    document.documentElement.setAttribute("data-util", "2"); // show calendar grid by default
-  }, []);
-
-  // 2. Edge-click full-screen toggle (unchanged)
-  useEffect(() => {
-    const EDGE_MARGIN = 11; // px
-    const handleClick = (e: MouseEvent) => {
+    const EDGE = 11; // px from browser edge
+    const handler = (e: MouseEvent) => {
       const { clientX: x, clientY: y } = e;
       const { innerWidth: w, innerHeight: h } = window;
-      const nearEdge =
-        x <= EDGE_MARGIN ||
-        x >= w - EDGE_MARGIN ||
-        y <= EDGE_MARGIN ||
-        y >= h - EDGE_MARGIN;
-      if (!nearEdge) return;
-      if (!document.fullscreenElement) {
+      if (!document.fullscreenElement &&
+          (x <= EDGE || x >= w - EDGE || y <= EDGE || y >= h - EDGE)) {
         document.documentElement.requestFullscreen().catch(() => {});
-      } else {
-        document.exitFullscreen().catch(() => {});
       }
     };
-    const onFsChange = () => {
-      if (document.fullscreenElement) {
-        document.body.classList.remove("non-fullscreen");
-      } else {
-        document.body.classList.add("non-fullscreen");
-      }
-    };
-    document.addEventListener("click", handleClick);
-    document.addEventListener("fullscreenchange", onFsChange);
-    return () => {
-      document.removeEventListener("click", handleClick);
-      document.removeEventListener("fullscreenchange", onFsChange);
-    };
+    window.addEventListener('click', handler);
+    return () => window.removeEventListener('click', handler);
   }, []);
 
-  // 3. Calendar grid scroll (kept)
-  const scrollIdxRef = useRef(0); // 0, 1, 2
+  /* ---------- Two‑step vertical scroll ---------- */
+  const scrolling = useRef(false);
+  const second = useRef(false);
+
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      const els = Array.from(
-        document.querySelectorAll<HTMLElement>(".grid-number, .grid-dashed")
-      );
-      if (!els.length) return;
+      e.preventDefault();                 // keep window from scrolling
+      if (scrolling.current) return;      // debounce
+      scrolling.current = true;
+      setTimeout(() => (scrolling.current = false), 700);
 
-      const clamp = (v: number, min: number, max: number) =>
-        Math.min(Math.max(v, min), max);
-      const dir = e.deltaY > 0 ? 1 : -1;
-      scrollIdxRef.current = clamp(scrollIdxRef.current + dir, 0, 2);
-      const offset = -55.5 * scrollIdxRef.current; // vh units
+      const els = Array.from(
+        document.querySelectorAll<HTMLElement>('.grid-number, .grid-dashed')
+      );
       els.forEach((el) => {
-        el.style.transition = "transform 0.7s ease";
-        el.style.transform = `translateY(${offset}vh)`;
+        el.style.transition = 'transform 0.7s ease';
       });
+
+      // three positions: 0 ► −55.5vh ► −111vh
+      if (e.deltaY > 0) {
+        if (!second.current) {
+          els.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
+          second.current = true;
+        } else {
+          els.forEach(el => (el.style.transform = 'translateY(-111vh)'));
+        }
+      } else {
+        const yMatch = els[0]?.style.transform.match(/([-\d.]+)vh/);
+        const y = yMatch ? yMatch[1] : '0';
+        if (y === '-111') {
+          els.forEach(el => (el.style.transform = 'translateY(-55.5vh)'));
+        } else if (y === '-55.5') {
+          els.forEach(el => (el.style.transform = 'translateY(0)'));
+          second.current = false;
+        }
+      }
     };
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    return () => window.removeEventListener("wheel", handleWheel);
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    return () => window.removeEventListener('wheel', handleWheel);
   }, []);
 
-  // 4. Render minimal layout
+  /* ---------- Calendar markup (numbers + dashed rules) ---------- */
+  const numbers = Array.from({ length: 31 }, (_, i) => i + 1);
+
   return (
-    <div className="non-fullscreen" translate="no">
-      {/* mask layers */}
-      <div className="layer-one" />
-      <div className="layer-two" />
-      <div className="layer-three" />
-      <div className="layer-four" />
-      <div className="layer-five" />
-      <div className="layer-six" />
+    <div className="stage">
+      {/* Guide lines 1‑4 & util‑line (line 5‑6 removed) */}
+      <div className="line original" />
+      <div className="line second" />
+      <div className="line third" />
+      <div className="line fourth" />
+      <div className="line util-line" />
 
-      {/* content */}
-      <div className="other-content">
-        {/* timeline lines */}
-        <div className="line original" />
-        <div className="line second" />
-        <div className="line util-line" />
-        <div className="line third" />
-        <div className="line fourth" />
-        <div className="line fifth" />
-        <div className="line sixth" />
+      {/* Calendar grid numbers */}
+      {numbers.map((n) => (
+        <span key={n} className={`grid-number num${n}`}>{n}</span>
+      ))}
 
-        {/* calendar grid numbers 1-31 */}
-        {Array.from({ length: 31 }, (_, i) => (
-          <span
-            key={`num${i + 1}`}
-            className={`grid-number num${i + 1}`}
-            style={{ display: "inline-block" }}
-          >
-            {i + 1}
-          </span>
-        ))}
-
-        {/* dashed grid lines 01-31 */}
-        {Array.from({ length: 31 }, (_, i) => (
-          <span
-            key={`dash${i + 1}`}
-            className={`grid-dashed dashed${String(i + 1).padStart(2, "0")}`}
-            style={{ display: "inline-block" }}
-          />
-        ))}
-      </div>
+      {/* Horizontal dashed rules */}
+      {numbers.map((n) => (
+        <span key={n} className={`grid-dashed dashed${String(n).padStart(2,'0')}`} />
+      ))}
     </div>
   );
-};
-
-export default IOULPage;
+}

@@ -1,31 +1,62 @@
 "use client";
-import './styles.css';
+import "./styles.css";
+import React, { useEffect, useRef } from "react";
 
-
-import React, { useEffect } from "react";
-
-export default function Page() {
+const IOULPage: React.FC = () => {
+  /* Edge‑click fullscreen */
   useEffect(() => {
-    // Full-screen trigger logic (click near any screen edge)
-    const EDGE_MARGIN = 11;
-    const fullscreenHandler = ({ clientX: x, clientY: y }: MouseEvent) => {
+    const EDGE = 11;
+    const onClick = (e: MouseEvent) => {
+      const { clientX: x, clientY: y } = e;
       const { innerWidth: w, innerHeight: h } = window;
-      const nearEdge =
-        x <= EDGE_MARGIN || x >= w - EDGE_MARGIN || y <= EDGE_MARGIN || y >= h - EDGE_MARGIN;
-      if (nearEdge && !document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
+      const near = x <= EDGE || x >= w - EDGE || y <= EDGE || y >= h - EDGE;
+      if (!near) return;
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
       }
     };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, []);
 
-    document.addEventListener("click", fullscreenHandler);
-    return () => {
-      document.removeEventListener("click", fullscreenHandler);
+  /* Add/remove body.non-fullscreen for smooth zoom transition */
+useEffect(() => {
+  document.body.classList.add("non-fullscreen");
+  const onFsChange = () => {
+    if (document.fullscreenElement) {
+      document.body.classList.remove("non-fullscreen");
+    } else {
+      document.body.classList.add("non-fullscreen");
+    }
+  };
+  document.addEventListener("fullscreenchange", onFsChange);
+  return () => document.removeEventListener("fullscreenchange", onFsChange);
+}, []);
+
+  /* Calendar grid scroll */
+  const idxRef = useRef(0);
+  useEffect(() => {
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const els = document.querySelectorAll<HTMLElement>(".grid-number, .grid-dashed");
+      if (!els.length) return;
+      const dir = e.deltaY > 0 ? 1 : -1;
+      idxRef.current = Math.max(0, Math.min(2, idxRef.current + dir));
+      const offset = -55.5 * idxRef.current;
+      els.forEach(el => {
+        el.style.transition = "transform 0.7s ease";
+        el.style.transform = `translateY(${offset}vh)`;
+      });
     };
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => window.removeEventListener("wheel", onWheel);
   }, []);
 
   return (
-    <>
-      {/* Fixed white mask layers */}
+    <div translate="no">
+      {/* mask layers */}
       <div className="layer-one" />
       <div className="layer-two" />
       <div className="layer-three" />
@@ -33,75 +64,24 @@ export default function Page() {
       <div className="layer-five" />
       <div className="layer-six" />
 
-      {/* All visible UI sits inside page-content */}
-      <div className="page-content">
-        {/* Primary guideline lines */}
-        <div className="line original" />
-        <div className="line second" />
-        <div className="line third" />
-        <div className="line fourth" />
-        <div className="line fifth" />
-        <div className="line sixth" />
+      {/* timeline lines */}
+      <div className="line original" />
+      <div className="line second" />
+      <div className="line util-line" />
+      <div className="line fourth" />
+      <div className="line third" />
 
-        <div className="line util-line" />
-
-        {/* Main Links */}
-        <span className="custom-text" style={{ position: 'absolute', top: '35.4vh', left: '6.41vw' }}>UPDATES</span>
-        <span className="custom-text" style={{ position: 'absolute', top: '41.6vh', left: '6.41vw' }}>cOnTAcT</span>
-        <span className="custom-text" style={{ position: 'absolute', top: '53vh',   left: '6.41vw' }}>JO1n US</span>
-        <span className="custom-text" style={{ position: 'absolute', top: '59.2vh', left: '6.41vw' }}>AP1 LOg</span>
-
-        {/* Counters */}
-        <span className="custom-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '28.41vw' }}>0</span>
-        <span className="custom-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '28.41vw' }}>0</span>
-        <span className="custom-text right-flow" style={{ position: 'absolute', top: '53vh',   left: '28.41vw' }}>0</span>
-        <span className="custom-text right-flow" style={{ position: 'absolute', top: '59.2vh', left: '28.41vw' }}>0</span>
-
-        {/* Divider line */}
-        <div className="custom-line" />
-
-        {/* Column 1 (36 vw) */}
-        <span className="custom-text content-text" style={{ position: 'absolute', top: '35.4vh', left: '36vw' }}>LOOK UP:</span>
-        <span className="custom-text content-text" style={{ position: 'absolute', top: '41.6vh', left: '36vw' }}>cATALOg:</span>
-
-        {/* Column 2 counters */}
-        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '49.7vw' }}>0</span>
-        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '49.7vw' }}>0</span>
-
-        {/* Column 3 labels */}
-        <span className="custom-text content-text" style={{ position: 'absolute', top: '35.4vh', left: '58.7vw' }}>PER1OD:</span>
-        <span className="custom-text content-text" style={{ position: 'absolute', top: '41.6vh', left: '58.7vw' }}>F1LTER:</span>
-
-        {/* Column 4 counters */}
-        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '71vw' }}>0</span>
-        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '71vw' }}>0</span>
-
-        {/* Column 5 labels */}
-        <span className="custom-text content-text" style={{ position: 'absolute', top: '35.4vh', left: '79vw' }}>ABOUT</span>
-        <span className="custom-text content-text" style={{ position: 'absolute', top: '41.6vh', left: '79vw' }}>LEgAL</span>
-        <span className="custom-text content-text" style={{ position: 'absolute', top: '53vh',   left: '79vw' }}>c-LOg:</span>
-        <span className="custom-text content-text" style={{ position: 'absolute', top: '59.2vh', left: '79vw' }}>c-LOg:</span>
-        <span className="custom-text content-text" style={{ position: 'absolute', top: '65.4vh', left: '79vw' }}>c-LOg:</span>
-        <span className="custom-text content-text" style={{ position: 'absolute', top: '71.6vh', left: '79vw' }}>c-LOg:</span>
-
-        {/* Column 6 counters */}
-        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '35.4vh', left: '93.4vw' }}>0</span>
-        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '41.6vh', left: '93.4vw' }}>0</span>
-        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '53vh',   left: '93.4vw' }}>0</span>
-        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '59.2vh', left: '93.4vw' }}>0</span>
-        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '65.4vh', left: '93.4vw' }}>0</span>
-        <span className="custom-text content-text right-flow" style={{ position: 'absolute', top: '71.6vh', left: '93.4vw' }}>0</span>
-
-        {/* Horizontal guide lines */}
-        <div
-          className="content-line content-line-one"
-          style={{ position: 'absolute', top: '47.8vh', left: '36vw', width: '36vw', height: '1px', background: 'rgba(230,230,230,0.28)' }}
-        />
-        <div
-          className="content-line content-line-two"
-          style={{ position: 'absolute', top: '47.8vh', left: '79vw', width: '14.8vw', height: '1px', background: 'rgba(230,230,230,0.28)' }}
-        />
-      </div>
-    </>
+      {/* calendar grid */}
+      {Array.from({ length: 31 }, (_, i) => (
+        <span key={`n${i + 1}`} className={`grid-number num${i + 1}`}>
+          {i + 1}
+        </span>
+      ))}
+      {Array.from({ length: 31 }, (_, i) => (
+        <span key={`d${i + 1}`} className={`grid-dashed dashed${String(i + 1).padStart(2, "0")}`} />
+      ))}
+    </div>
   );
-}
+};
+
+export default IOULPage;

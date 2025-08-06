@@ -95,7 +95,11 @@ const IOULPage: React.FC = () => {
         <div className="line second" />
         <div className="line util-line" />
         <div className="line third" />
-        <div className="line fourth" />{/* calendar grid numbers 1-31 */}
+        <div className="line fourth" />
+        <div className="line fifth" />
+        <div className="line sixth" />
+
+        {/* calendar grid numbers 1-31 */}
         {Array.from({ length: 31 }, (_, i) => (
           <span
             key={`num${i + 1}`}

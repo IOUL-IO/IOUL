@@ -88,7 +88,7 @@ const IOULPage: React.FC = () => {
         <div className="line second" />
         <div className="line util-line" />
         <div className="line third" />
-        <div className="line fourth" />
+        <div className="line fourth" style={{ position:"fixed", top:"12.5vh", left:"36vw", width:"57.8vw", height:"1px", background:"rgba(172,172,172,0.84)", zIndex:10000, pointerEvents:"none" }} />
 
         {/* calendar grid numbers 1‑31 */}
         {Array.from({ length: 31 }, (_, i) => (

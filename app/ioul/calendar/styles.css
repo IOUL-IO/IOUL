@@ -117,3 +117,24 @@ body.non-fullscreen {
 .dashed27 { top:139.5vh; left:65.9vw; } .dashed28 { top:139.5vh; left:80.8vw; }
 .dashed29 { top:158vh;   left:36vw; } .dashed30 { top:158vh;   left:51vw; }
 .dashed31 { top:158vh;   left:65.9vw; }
+/* ───── Dash Lines Visibility Fix • 2025‑08‑06 ─────
+   Ensure all dashed grid rows are visible regardless of earlier
+   util‑state or legacy overrides.
+   1. Force display & opacity
+   2. Give a crisper, thicker dashed pattern that stands out.
+   3. Keep them beneath numbers (z‑index 3) and under mask strips.
+*/
+.grid-dashed{
+  display:inline-block !important;
+  opacity:0.9 !important;
+  pointer-events:none !important;
+  height:2px !important;
+  background-image:repeating-linear-gradient(
+    to right,
+    #111 0 6px,
+    transparent 6px 12px
+  ) !important;
+  background-size:12px 2px !important;
+  z-index:3 !important;
+}
+/* ─── End Fix ─── */

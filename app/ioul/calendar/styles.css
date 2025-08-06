@@ -37,12 +37,12 @@ body.non-fullscreen {
   background:#ffffff; pointer-events:none; z-index:2;
 }
 .layer-five {
-  position:fixed; top:0; left:36vw; width:58.7vw; height:28.4vh;
-  background:#ffffff; pointer-events:none; z-index:200 !important;
+  position:absolute; top:0; left:36vw; width:58.7vw; height:28.4vh;
+  background:#ffffff; pointer-events:none; z-index:4;
 }
 .layer-six {
-  position:fixed; top:84.7vh; left:36vw; width:58.7vw; height:15.3vh;
-  background:#ffffff; pointer-events:none; z-index:200 !important;
+  position:absolute; top:84.7vh; left:36vw; width:58.7vw; height:15.3vh;
+  background:#ffffff; pointer-events:none; z-index:4;
 }
 
 /* timeline lines */
@@ -58,7 +58,7 @@ body.non-fullscreen {
 /* fourth line must float above masks */
 .fourth{
   position:fixed; top:12.5vh; left:36vw; width:57.8vw; height:1px;
-  background:rgba(172, 172, 172, 0.84); z-index:400 !important; pointer-events:none;
+  background:rgba(172,172,172,0.84); z-index:120; pointer-events:none;
 }
 
 /* calendar grid */
@@ -70,7 +70,7 @@ body.non-fullscreen {
   letter-spacing:0.28vw;
   text-shadow:0.011rem 0.011rem 0 #717171, -0.011rem -0.011rem 0 #717171;
   transition:transform 0.6s ease;
-  z-index:3 !important; /* between layer‑4 (2) and masks 5/6 (4) */
+  z-index:3; /* between layer‑4 (2) and masks 5/6 (4) */
 }
 .grid-dashed {
   position:absolute;
@@ -79,7 +79,7 @@ body.non-fullscreen {
   background-size:10px 1px;
   transition:transform 0.6s ease;
   opacity:0.711;
-  z-index:3 !important;
+  z-index:3;
 }
 
 /* grid positions (numbers) */
@@ -130,6 +130,6 @@ body.non-fullscreen {
   background:linear-gradient(to right,#171717 0,#171717 5px,#ffffff 5px,#ffffff 10px) !important;
   background-size:10px 1px !important;
   pointer-events:none !important;
-  z-index:3 !important;            /* layer‑four(2) < grid(2) < masks(≥4) */
+  z-index:2 !important;            /* layer‑four(2) < grid(2) < masks(≥4) */
 }
 /* ─── End dashed‑rows override ─── */

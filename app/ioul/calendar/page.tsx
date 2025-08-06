@@ -1,48 +1,52 @@
-
 "use client";
 import "./styles.css";
-
 import React, { useEffect, useRef } from "react";
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  IOULPage (cleaned)
-//  • Removed data‑util toggle logic
-//  • Removed timeline lines 5 & 6 (fifth / sixth)
-//  • Calendar grid always visible; stacked above layer‑four and
-//    underneath mask layers 5 & 6.
-// ─────────────────────────────────────────────────────────────────────────────
+/**
+ * IOULPage  • 2025‑08‑06
+ * --------------------------------------------------
+ * • Removes ALL data‑util logic.
+ * • Deletes original timeline lines 5 & 6.
+ * • Keeps util‑line (mini helper line).
+ * • Calendar grid (numbers + dashed rows) is always
+ *   visible, scrollable and layered:
+ *       layer‑four  (z‑index 2)
+ *         < calendar grid (z‑index 3)
+ *         < layer‑five / layer‑six (z‑index 4)
+ *         < timeline line‑4 (z‑index 120)
+ * --------------------------------------------------
+ */
 
 const IOULPage: React.FC = () => {
-  // Ensure body styles for non‑fullscreen view
+  /* 1 ▸ mark non‑fullscreen view */
   useEffect(() => {
     document.body.classList.add("non-fullscreen");
   }, []);
 
-  // Edge‑click full‑screen toggle
+  /* 2 ▸ edge‑click full‑screen toggle (unchanged) */
   useEffect(() => {
-    const EDGE_MARGIN = 11; // px
+    const EDGE = 11; // px
     const handleClick = (e: MouseEvent) => {
       const { clientX: x, clientY: y } = e;
       const { innerWidth: w, innerHeight: h } = window;
       const nearEdge =
-        x <= EDGE_MARGIN ||
-        x >= w - EDGE_MARGIN ||
-        y <= EDGE_MARGIN ||
-        y >= h - EDGE_MARGIN;
+        x <= EDGE || x >= w - EDGE || y <= EDGE || y >= h - EDGE;
       if (!nearEdge) return;
+
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(() => {});
       } else {
         document.exitFullscreen().catch(() => {});
       }
     };
+
     const onFsChange = () => {
-      if (document.fullscreenElement) {
-        document.body.classList.remove("non-fullscreen");
-      } else {
-        document.body.classList.add("non-fullscreen");
-      }
+      document.body.classList.toggle(
+        "non-fullscreen",
+        !document.fullscreenElement
+      );
     };
+
     document.addEventListener("click", handleClick);
     document.addEventListener("fullscreenchange", onFsChange);
     return () => {
@@ -51,8 +55,8 @@ const IOULPage: React.FC = () => {
     };
   }, []);
 
-  // Calendar grid scroll (unchanged)
-  const scrollIdxRef = useRef(0); // 0, 1, 2
+  /* 3 ▸ calendar grid vertical scroll (3 pages) */
+  const scrollIdxRef = useRef(0);
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
@@ -63,19 +67,22 @@ const IOULPage: React.FC = () => {
 
       const clamp = (v: number, min: number, max: number) =>
         Math.min(Math.max(v, min), max);
+
       const dir = e.deltaY > 0 ? 1 : -1;
       scrollIdxRef.current = clamp(scrollIdxRef.current + dir, 0, 2);
       const offset = -55.5 * scrollIdxRef.current; // vh units
+
       els.forEach((el) => {
         el.style.transition = "transform 0.7s ease";
         el.style.transform = `translateY(${offset}vh)`;
       });
     };
+
     window.addEventListener("wheel", handleWheel, { passive: false });
     return () => window.removeEventListener("wheel", handleWheel);
   }, []);
 
-  // Render minimal layout
+  /* 4 ▸ render */
   return (
     <div className="non-fullscreen" translate="no">
       {/* mask layers */}
@@ -86,9 +93,9 @@ const IOULPage: React.FC = () => {
       <div className="layer-five" />
       <div className="layer-six" />
 
-      {/* content */}
+      {/* main content */}
       <div className="other-content">
-        {/* timeline lines */}
+        {/* timeline lines (lines 5‑6 removed) */}
         <div className="line original" />
         <div className="line second" />
         <div className="line util-line" />
@@ -106,7 +113,7 @@ const IOULPage: React.FC = () => {
           </span>
         ))}
 
-        {/* dashed grid lines 01‑31 */}
+        {/* dashed grid rows 01‑31 */}
         {Array.from({ length: 31 }, (_, i) => (
           <span
             key={`dash${i + 1}`}

@@ -1,55 +1,84 @@
-/* Distill Expanded font */
-@font-face{
-  font-family:'Distill Expanded';
-  src:url('./font.woff2') format('woff2'),
-      url('./font.woff') format('woff');
-  font-weight:normal;
-  font-style:normal;
+@font-face {
+  font-family: 'Distill Expanded';
+  src: url('././font.woff2') format('woff2'),
+       url('./font.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;}
-body{overflow:hidden;min-height:100vh;background:#fff;}
+/* Global reset */
+* { margin:0; padding:0; box-sizing:border-box; }
 
-/* masks */
-.layer-one,.layer-two,.layer-three{position:fixed;top:0;height:100vh;background:#fff;z-index:100;pointer-events:none;}
-.layer-one{left:0;width:6.37vw;}
-.layer-two{left:6.37vw;width:calc(36vw - 6.37vw);}
-.layer-three{left:94.17vw;width:calc(100vw - 94.17vw);}
-.layer-four{position:absolute;top:28.5vh;left:36vw;width:61vw;height:55.5vh;background:#fff;z-index:2;}
-.layer-five,.layer-six{position:absolute;left:36vw;width:58.7vw;background:#fff;z-index:200;}
-.layer-five{top:0;height:28.4vh;}
-.layer-six{top:84.7vh;height:15.3vh;}
-
-/* timeline lines */
-.line{position:absolute;height:1px;background:rgba(172,172,172,.84);z-index:300;pointer-events:none;}
-.original{top:12.5vh;left:6.38vw;width:22.48vw;}
-.second{top:28.5vh;left:6.38vw;width:18.68vw;}
-.third{top:84vh;left:6.38vw;width:22.48vw;}
-.util-line{top:28.5vh;left:26.06vw;width:2.8vw;}
-
-/* fixed always‑on‑top line 4: no flicker */
-.fourth{
-  position:fixed;
-  top:12.5vh;
-  left:36vw;
-  width:57.8vw;
-  height:1px;
-  background:rgba(172,172,172,0.84);
-  z-index:2147483647 !important;
-  pointer-events:none;
+body.non-fullscreen {
+  background:#ffffff;
+  min-height:100vh;
+  min-width:100vw;
+  overflow:hidden;
 }
 
-/* calendar grid */
-.grid-number,.grid-dashed{position:absolute;z-index:3;transition:transform .6s ease;}
-.grid-number{
+/* White mask columns */
+.layer-one  { position:fixed; top:0; left:0;        width:6.37vw;  height:100vh; background:#ffffff; z-index:100; pointer-events:none; }
+.layer-two  { position:fixed; top:0; left:28.87vw;  width:7.13vw;  height:100vh; background:#ffffff; z-index:100; pointer-events:none; }
+.layer-three{ position:fixed; top:0; left:94.17vw;  width:5.83vw;  height:100vh; background:#ffffff; z-index:100; pointer-events:none; }
+.layer-four { position:absolute; top:28.5vh; left:36vw;  width:61vw;   height:55.5vh; background:#ffffff; z-index:2; pointer-events:none; }
+.layer-five { position:absolute; top:0;      left:36vw;  width:58.7vw; height:28.4vh; background:#ffffff; pointer-events:none; }
+.layer-six  { position:absolute; top:84.7vh; left:36vw;  width:58.7vw; height:15.3vh; background:#ffffff; pointer-events:none; }
+
+.page-content { position:relative; width:100vw; height:100vh; }
+
+/* Generic typography */
+.custom-text {
+  position:absolute;
   font-family:'Distill Expanded', sans-serif;
-  font-size:0.411rem;
-  color:#111111;
+  color:#111;
   letter-spacing:0.28vw;
-  text-shadow:0.011rem 0.011rem 0 #717171, -0.011rem -0.011rem 0 #717171;
+  font-size:0.47rem; /* ~7.5px base */
+  text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
+  line-height:1.6;
+  white-space:nowrap;   /* keep each heading text on one line */
 }
-.grid-dashed{height:1px;width:11.8vw;opacity:.711;background:linear-gradient(to right,#171717 0,#171717 5px,#fff 5px,#fff 10px);background-size:10px 1px;}
+.right-flow { direction:rtl; text-align:right; white-space:nowrap; }
 
-body.non-fullscreen{transform:scale(.94) translateY(1.5vh);} 
+/* Increase font for ultra‑wide screens */
+@media screen and (min-width: 1900px){
+  .custom-text{ font-size:9px; }
+}
+
+/* Containers simply hold the text */
+.heading-container,
+.account-container { position:absolute; overflow:visible; }
+
+/* Divider / custom line */
+.custom-line {
+  position:absolute;
+  top:47.8vh;
+  left:6.38vw;
+  width:22.48vw;
+  height:1px;
+  background:rgba(230,230,230,0.28);
+}
+
+/* Guide lines */
+.line         { position:absolute; height:1px; background:rgba(172,172,172,0.84); }
+.line.original{ top:12.5vh; left:6.38vw;  width:22.48vw; }
+.line.second  { top:28.5vh; left:6.38vw;  width:18.68vw; }
+.line.third   { top:84vh;   left:6.38vw;  width:22.48vw; }
+.line.fourth  { top:12.5vh; left:36vw;    width:57.8vw;  z-index:3; }
+.line.fifth   { top:28.5vh; left:36vw;    width:57.8vw;  z-index:3; }
+.line.sixth   { top:84vh;   left:36vw;    width:57.8vw;  z-index:1; }
+
+/* Utility line kept for future interaction (click listener removed here) */
+.line.util-line{
+  top:28.5vh; left:26.06vw; width:2.8vw; z-index:1;
+}
+
+/* content block */
+.content-text, .content-line { z-index: 101; }
 
 
+/* PATCHED content-text visibility */
+.content-text, .custom-text {
+  z-index: 150 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}

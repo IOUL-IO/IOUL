@@ -1,24 +1,27 @@
-
 "use client";
 import "./styles.css";
 
 import React, { useEffect, useRef } from "react";
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  IOULPage (cleaned)
-//  • Removed data‑util toggle logic
-//  • Removed timeline lines 5 & 6 (fifth / sixth)
-//  • Calendar grid always visible; stacked above layer‑four and
-//    underneath mask layers 5 & 6.
-// ─────────────────────────────────────────────────────────────────────────────
+/**
+ * IOULPage (cleaned)
+ * ------------------------------------------------------------
+ * • Removes all data‑util / util‑line / mail logic
+ * • Removes original timeline lines 5 & 6
+ * • Keeps calendar grid scroll functionality
+ * • Keeps mask layers (1‑6) and timeline lines 1‑4
+ * • Ensures stacking order:
+ *      layer‑four (2) < calendar grid (3) < layer‑five/six (4) < line‑four (5)
+ * ------------------------------------------------------------
+ */
 
 const IOULPage: React.FC = () => {
-  // Ensure body styles for non‑fullscreen view
+  /* 1. Ensure body styles for non‑fullscreen view */
   useEffect(() => {
     document.body.classList.add("non-fullscreen");
   }, []);
 
-  // Edge‑click full‑screen toggle
+  /* 2. Edge‑click full‑screen toggle */
   useEffect(() => {
     const EDGE_MARGIN = 11; // px
     const handleClick = (e: MouseEvent) => {
@@ -29,13 +32,16 @@ const IOULPage: React.FC = () => {
         x >= w - EDGE_MARGIN ||
         y <= EDGE_MARGIN ||
         y >= h - EDGE_MARGIN;
+
       if (!nearEdge) return;
+
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(() => {});
       } else {
         document.exitFullscreen().catch(() => {});
       }
     };
+
     const onFsChange = () => {
       if (document.fullscreenElement) {
         document.body.classList.remove("non-fullscreen");
@@ -43,6 +49,7 @@ const IOULPage: React.FC = () => {
         document.body.classList.add("non-fullscreen");
       }
     };
+
     document.addEventListener("click", handleClick);
     document.addEventListener("fullscreenchange", onFsChange);
     return () => {
@@ -51,7 +58,7 @@ const IOULPage: React.FC = () => {
     };
   }, []);
 
-  // Calendar grid scroll (unchanged)
+  /* 3. Calendar grid scroll */
   const scrollIdxRef = useRef(0); // 0, 1, 2
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
@@ -63,19 +70,22 @@ const IOULPage: React.FC = () => {
 
       const clamp = (v: number, min: number, max: number) =>
         Math.min(Math.max(v, min), max);
+
       const dir = e.deltaY > 0 ? 1 : -1;
       scrollIdxRef.current = clamp(scrollIdxRef.current + dir, 0, 2);
       const offset = -55.5 * scrollIdxRef.current; // vh units
+
       els.forEach((el) => {
         el.style.transition = "transform 0.7s ease";
         el.style.transform = `translateY(${offset}vh)`;
       });
     };
+
     window.addEventListener("wheel", handleWheel, { passive: false });
     return () => window.removeEventListener("wheel", handleWheel);
   }, []);
 
-  // Render minimal layout
+  /* 4. Render */
   return (
     <div className="non-fullscreen" translate="no">
       {/* mask layers */}
@@ -86,12 +96,11 @@ const IOULPage: React.FC = () => {
       <div className="layer-five" />
       <div className="layer-six" />
 
-      {/* content */}
+      {/* timeline & grid */}
       <div className="other-content">
         {/* timeline lines */}
         <div className="line original" />
         <div className="line second" />
-        <div className="line util-line" />
         <div className="line third" />
         <div className="line fourth" />
 

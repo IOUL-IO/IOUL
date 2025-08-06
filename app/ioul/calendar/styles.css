@@ -19,8 +19,7 @@ html, body, html:fullscreen, body:fullscreen {
 
 body.non-fullscreen{
     background:#ffffff;
-    min-height:100vh;
-    min-width:100vw;
+    min-height:100vh; min-width:100vw;
 }
 
 /* ---------------------------------------
@@ -54,12 +53,12 @@ body.non-fullscreen{
     z-index:2; pointer-events:none;
 }
 
+/* Layer‑five is the top white band. Calendar must slide below it. */
 .layer-five{
     position:absolute; top:0; left:36vw;
     width:58.7vw; height:28.4vh;
     background:#ffffff;
-    z-index:1000; /* raised so calendar passes below */
-    pointer-events:none;
+    z-index:1000; pointer-events:none;
 }
 
 .layer-six{
@@ -76,18 +75,17 @@ body.non-fullscreen{
     position:absolute;
     height:1px;
     background:rgba(172,172,172,.84);
-    z-index:110;
     pointer-events:none;
 }
 
+/* interactive util line */
 .line.util-line{ z-index:120; pointer-events:auto; }
-/* Removed .line.fifth/.line.sixth */
 
-.original { top:12.5vh; left:6.38vw; width:22.48vw; }
-.second   { top:28.5vh; left:6.38vw; width:18.68vw; }
-.third    { top:84vh;   left:6.38vw; width:22.48vw; }
+.original { top:12.5vh; left:6.38vw; width:22.48vw; z-index:110; }
+.second   { top:28.5vh; left:6.38vw; width:18.68vw; z-index:110; }
+.third    { top:84vh;   left:6.38vw; width:22.48vw; z-index:110; }
 
-/* line-4 is fixed so it always sits above masks */
+/* line‑4 must sit above everything */
 .fourth{
     position:fixed;
     top:12.5vh; left:36vw;
@@ -99,32 +97,32 @@ body.non-fullscreen{
 /* ---------------------------------------
    Content container
 --------------------------------------- */
-.other-content{ position:relative; z-index:120; }
+.other-content{ position:relative; z-index:90; } /* below layer‑five (1000) */
 
 /* ---------------------------------------
    Calendar grid
 --------------------------------------- */
-.grid-number{
+.grid-number, .grid-dashed{
     position:absolute;
+    transition:transform .6s ease;
+    pointer-events:none;
+}
+
+/* Text styling only for numbers */
+.grid-number{
     font-family:'Distill Expanded', sans-serif;
     color:#111;
     font-size:0.411rem;
     letter-spacing:0.28vw;
     text-shadow:0.011rem 0.011rem 0 #717171,-0.011rem -0.011rem 0 #717171;
-    transition:transform .6s ease;
-    z-index:200;
-    pointer-events:none;
 }
 
+/* Dashed horizontal rule */
 .grid-dashed{
-    position:absolute;
     height:1px; width:11.8vw;
     background:linear-gradient(to right,#171717 0,#171717 5px,#ffffff 5px,#ffffff 10px);
     background-size:10px 1px;
     opacity:.711;
-    transition:transform .6s ease;
-    z-index:200;
-    pointer-events:none;
 }
 
 /* Grid-number positions */

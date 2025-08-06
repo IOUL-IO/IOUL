@@ -18,15 +18,18 @@ const IOULPage: React.FC = () => {
     return()=>{document.removeEventListener("click",click);document.removeEventListener("fullscreenchange",fs);};
   },[]);
 
-  const idx=useRef(0);
+  const idx = useRef(0);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
   useEffect(()=>{
     const wh=(e:WheelEvent)=>{
       e.preventDefault();
-      const els=document.querySelectorAll<HTMLElement>(".grid-number,.grid-dashed");
-      if(!els.length) return;
-      idx.current=Math.min(Math.max(idx.current+(e.deltaY>0?1:-1),0),2);
-      const off=-55.5*idx.current;
-      els.forEach(el=>{el.style.transform=`translateY(${off}vh)`;});
+      const dir = e.deltaY>0?1:-1;
+      idx.current = Math.min(Math.max(idx.current+dir,0),2);
+      const offset=-55.5*idx.current; // vh
+      if(wrapperRef.current){
+        wrapperRef.current.style.top = offset+"vh";
+      }
     };
     window.addEventListener("wheel",wh,{passive:false});
     return()=>window.removeEventListener("wheel",wh);
@@ -34,22 +37,20 @@ const IOULPage: React.FC = () => {
 
   return (
     <div className="non-fullscreen" translate="no">
-      {/* fixed vertical stripes */}
       <div className="layer-one"/><div className="layer-two"/><div className="layer-three"/>
-
-      {/* layer‑four (middle mask) */}
       <div className="layer-four"/>
 
-      {/* content: grid + lines */}
       <div className="other-content">
         <div className="line original"/><div className="line second"/><div className="line util-line"/>
         <div className="line third"/><div className="line fourth"/>
 
-        {Array.from({length:31},(_,i)=>(<span key={i} className={`grid-number num${i+1}`} style={{display:"inline-block"}}>{i+1}</span>))}
-        {Array.from({length:31},(_,i)=>(<span key={`d${i}`} className={`grid-dashed dashed${String(i+1).padStart(2,"0")}`} style={{display:"inline-block"}}/>))}
+        {/* grid wrapper moves vertically */}
+        <div ref={wrapperRef} className="grid-wrapper">
+          {Array.from({length:31},(_,i)=>(<span key={i} className={`grid-number num${i+1}`}>{i+1}</span>))}
+          {Array.from({length:31},(_,i)=>(<span key={`d${i}`} className={`grid-dashed dashed${String(i+1).padStart(2,"0")}`}/>))}
+        </div>
       </div>
 
-      {/* top & bottom masks so they paint *after* grid */}
       <div className="layer-five"/><div className="layer-six"/>
     </div>
   );

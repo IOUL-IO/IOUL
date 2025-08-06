@@ -3,11 +3,6 @@ import "./styles.css";
 
 import React, { useEffect, useRef } from "react";
 
-/* IOULPage REV‑3
-   - other-content no longer has stacking context
-   - Grid now sits beneath layer‑five/six, line‑four above
-*/
-
 const IOULPage: React.FC = () => {
   useEffect(()=>document.body.classList.add("non-fullscreen"),[]);
 
@@ -31,7 +26,7 @@ const IOULPage: React.FC = () => {
       if(!els.length) return;
       idx.current=Math.min(Math.max(idx.current+(e.deltaY>0?1:-1),0),2);
       const off=-55.5*idx.current;
-      els.forEach(el=>{el.style.transition="transform .7s ease";el.style.transform=`translateY(${off}vh)`;});
+      els.forEach(el=>{el.style.transform=`translateY(${off}vh)`;});
     };
     window.addEventListener("wheel",wh,{passive:false});
     return()=>window.removeEventListener("wheel",wh);
@@ -39,9 +34,13 @@ const IOULPage: React.FC = () => {
 
   return (
     <div className="non-fullscreen" translate="no">
+      {/* fixed vertical stripes */}
       <div className="layer-one"/><div className="layer-two"/><div className="layer-three"/>
-      <div className="layer-four"/><div className="layer-five"/><div className="layer-six"/>
 
+      {/* layer‑four (middle mask) */}
+      <div className="layer-four"/>
+
+      {/* content: grid + lines */}
       <div className="other-content">
         <div className="line original"/><div className="line second"/><div className="line util-line"/>
         <div className="line third"/><div className="line fourth"/>
@@ -49,6 +48,9 @@ const IOULPage: React.FC = () => {
         {Array.from({length:31},(_,i)=>(<span key={i} className={`grid-number num${i+1}`} style={{display:"inline-block"}}>{i+1}</span>))}
         {Array.from({length:31},(_,i)=>(<span key={`d${i}`} className={`grid-dashed dashed${String(i+1).padStart(2,"0")}`} style={{display:"inline-block"}}/>))}
       </div>
+
+      {/* top & bottom masks so they paint *after* grid */}
+      <div className="layer-five"/><div className="layer-six"/>
     </div>
   );
 };

@@ -4,19 +4,19 @@ import "./styles.css";
 import React, { useEffect, useRef } from "react";
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  IOULPage (cleaned)
-//  • Keeps full‑screen edge‑click toggle
-//  • Mask layers (layer‑one to layer‑six) & timeline lines
-//  • Calendar grid numbers & dashed rows (1–31) with scroll logic
+//  IOULPage (cleaned v2)
+//  • Removes timeline lines 5 & 6
+//  • Keeps calendar scroll & mask layering
+//  • Ensures calendar sits beneath layer‑five overlay
 // ─────────────────────────────────────────────────────────────────────────────
 
 const IOULPage: React.FC = () => {
-  // Ensure body styles for non‑fullscreen view
+  // Ensure body styles for non-fullscreen view
   useEffect(() => {
     document.body.classList.add("non-fullscreen");
   }, []);
 
-  // Edge‑click full‑screen toggle
+  // Edge-click full-screen toggle
   useEffect(() => {
     const EDGE_MARGIN = 11; // px
     const handleClick = (e: MouseEvent) => {
@@ -87,8 +87,7 @@ const IOULPage: React.FC = () => {
         <div className="line util-line" />
         <div className="line third" />
         <div className="line fourth" />
-        <div className="line fifth" />
-        <div className="line sixth" />
+        {/* Removed <div className="line fifth" /> and sixth */}
 
         {/* calendar grid numbers 1-31 */}
         {Array.from({ length: 31 }, (_, i) => (

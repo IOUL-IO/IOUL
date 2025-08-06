@@ -58,7 +58,8 @@ body.non-fullscreen{
     position:absolute; top:0; left:36vw;
     width:58.7vw; height:28.4vh;
     background:#ffffff;
-    z-index:250; pointer-events:none;
+    z-index:1000; /* raised so calendar passes below */
+    pointer-events:none;
 }
 
 .layer-six{
@@ -80,13 +81,13 @@ body.non-fullscreen{
 }
 
 .line.util-line{ z-index:120; pointer-events:auto; }
-.line.fifth, .line.sixth{ z-index:420; pointer-events:none; }
+/* Removed .line.fifth/.line.sixth */
 
 .original { top:12.5vh; left:6.38vw; width:22.48vw; }
 .second   { top:28.5vh; left:6.38vw; width:18.68vw; }
 .third    { top:84vh;   left:6.38vw; width:22.48vw; }
 
-/* line‑4 is fixed so it always sits above masks */
+/* line-4 is fixed so it always sits above masks */
 .fourth{
     position:fixed;
     top:12.5vh; left:36vw;
@@ -95,13 +96,10 @@ body.non-fullscreen{
     z-index:10000; pointer-events:none;
 }
 
-.fifth   { top:28.5vh; left:36vw; width:57.8vw; }
-.sixth   { top:84vh;   left:36vw; width:57.8vw; }
-
 /* ---------------------------------------
    Content container
 --------------------------------------- */
-.other-content{ position:relative; z-index:130; }
+.other-content{ position:relative; z-index:120; }
 
 /* ---------------------------------------
    Calendar grid
@@ -129,7 +127,7 @@ body.non-fullscreen{
     pointer-events:none;
 }
 
-/* Grid‑number positions */
+/* Grid-number positions */
 .num1  { top:28.5vh; left:48.8vw; }
 .num2  { top:28.5vh; left:63.7vw; }
 .num3  { top:28.5vh; left:78.5vw; }

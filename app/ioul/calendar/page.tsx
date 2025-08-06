@@ -3,25 +3,41 @@ import "./styles.css";
 import React, { useEffect, useRef } from "react";
 
 const IOULPage: React.FC = () => {
-  /* Edge‑click fullscreen */
+  /* ─ Add/remove body.non-fullscreen for smooth transition ─ */
   useEffect(() => {
-    const EDGE = 11;
-    const onClick = (e: MouseEvent) => {
-      const { clientX: x, clientY: y } = e;
-      const { innerWidth: w, innerHeight: h } = window;
-      const near = x <= EDGE || x >= w - EDGE || y <= EDGE || y >= h - EDGE;
-      if (!near) return;
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
+    document.body.classList.add("non-fullscreen");
+    const onFsChange = () => {
+      if (document.fullscreenElement) {
+        document.body.classList.remove("non-fullscreen");
       } else {
+        document.body.classList.add("non-fullscreen");
+      }
+    };
+    document.addEventListener("fullscreenchange", onFsChange);
+    return () => document.removeEventListener("fullscreenchange", onFsChange);
+  }, []);
+
+  /* ─ Edge‑click fullscreen toggle ─ */
+  useEffect(() => {
+    const EDGE = 11; // px from any edge
+    const onClick = (e: MouseEvent) => {
+      const near =
+        e.clientX <= EDGE ||
+        e.clientX >= window.innerWidth - EDGE ||
+        e.clientY <= EDGE ||
+        e.clientY >= window.innerHeight - EDGE;
+      if (!near) return;
+      if (document.fullscreenElement) {
         document.exitFullscreen().catch(() => {});
+      } else {
+        document.documentElement.requestFullscreen().catch(() => {});
       }
     };
     document.addEventListener("click", onClick);
     return () => document.removeEventListener("click", onClick);
   }, []);
 
-  /* Calendar grid scroll */
+  /* ─ Calendar grid scroll ─ */
   const idxRef = useRef(0);
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
@@ -31,7 +47,7 @@ const IOULPage: React.FC = () => {
       const dir = e.deltaY > 0 ? 1 : -1;
       idxRef.current = Math.max(0, Math.min(2, idxRef.current + dir));
       const offset = -55.5 * idxRef.current;
-      els.forEach(el => {
+      els.forEach((el) => {
         el.style.transition = "transform 0.7s ease";
         el.style.transform = `translateY(${offset}vh)`;
       });
@@ -57,14 +73,42 @@ const IOULPage: React.FC = () => {
       <div className="line fourth" />
       <div className="line third" />
 
-      {/* calendar grid */}
+      {/* calendar numbers 1‑31 */}
+      <span className="grid-number num1">1</span>
+      <span className="grid-number num2">2</span>
+      <span className="grid-number num3">3</span>
+      <span className="grid-number num4">4</span>
+      <span className="grid-number num5">5</span>
+      <span className="grid-number num6">6</span>
+      <span className="grid-number num7">7</span>
+      <span className="grid-number num8">8</span>
+      <span className="grid-number num9">9</span>
+      <span className="grid-number num10">10</span>
+      <span className="grid-number num11">11</span>
+      <span className="grid-number num12">12</span>
+      <span className="grid-number num13">13</span>
+      <span className="grid-number num14">14</span>
+      <span className="grid-number num15">15</span>
+      <span className="grid-number num16">16</span>
+      <span className="grid-number num17">17</span>
+      <span className="grid-number num18">18</span>
+      <span className="grid-number num19">19</span>
+      <span className="grid-number num20">20</span>
+      <span className="grid-number num21">21</span>
+      <span className="grid-number num22">22</span>
+      <span className="grid-number num23">23</span>
+      <span className="grid-number num24">24</span>
+      <span className="grid-number num25">25</span>
+      <span className="grid-number num26">26</span>
+      <span className="grid-number num27">27</span>
+      <span className="grid-number num28">28</span>
+      <span className="grid-number num29">29</span>
+      <span className="grid-number num30">30</span>
+      <span className="grid-number num31">31</span>
+
+      {/* dashed rows 01‑31 */}
       {Array.from({ length: 31 }, (_, i) => (
-        <span key={`n${i + 1}`} className={`grid-number num${i + 1}`}>
-          {i + 1}
-        </span>
-      ))}
-      {Array.from({ length: 31 }, (_, i) => (
-        <span key={`d${i + 1}`} className={`grid-dashed dashed${String(i + 1).padStart(2, "0")}`} />
+        <span key={`dash${i + 1}`} className={`grid-dashed dashed${String(i + 1).padStart(2, "0")}`} />
       ))}
     </div>
   );

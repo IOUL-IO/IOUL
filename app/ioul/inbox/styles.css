@@ -1,67 +1,60 @@
+/* Distill Expanded font */
 @font-face{
   font-family:'Distill Expanded';
-  src:url('././font.woff2') format('woff2'),
-      url('./font.woff')  format('woff');
+  src:url('./font.woff2') format('woff2'),
+      url('./font.woff') format('woff');
   font-weight:normal;
   font-style:normal;
 }
 
-/* —— Reset —— */
 *{margin:0;padding:0;box-sizing:border-box;}
+body{overflow:hidden;min-height:100vh;background:#fff;}
 
+/* masks */
+.layer-one,.layer-two,.layer-three{position:fixed;top:0;height:100vh;background:#fff;z-index:100;pointer-events:none;}
+.layer-one{left:0;width:6.37vw;}
+.layer-two{left:6.37vw;width:calc(36vw - 6.37vw);}
+.layer-three{left:94.17vw;width:calc(100vw - 94.17vw);}
+.layer-four{position:absolute;top:28.5vh;left:36vw;width:61vw;height:55.5vh;background:#fff;z-index:2;}
+.layer-five,.layer-six{position:absolute;left:36vw;width:58.7vw;background:#fff;z-index:200;}
+.layer-five{top:0;height:28.4vh;}
+.layer-six{top:84.7vh;height:15.3vh;}
+
+/* timeline lines */
+.line{position:absolute;height:1px;background:rgba(172,172,172,.84);z-index:300;pointer-events:none;}
+.original{top:12.5vh;left:6.38vw;width:22.48vw;}
+.second{top:28.5vh;left:6.38vw;width:18.68vw;}
+.third{top:84vh;left:6.38vw;width:22.48vw;}
+.util-line{top:28.5vh;left:26.06vw;width:2.8vw;}
+
+/* fixed always‑on‑top line 4: no flicker */
+.fourth{
+  position:fixed;
+  top:12.5vh;
+  left:36vw;
+  width:57.8vw;
+  height:1px;
+  background:rgba(172,172,172,0.84);
+  z-index:2147483647 !important;
+  pointer-events:none;
+}
+
+/* calendar grid */
+.grid-number,.grid-dashed{position:absolute;z-index:3;transition:transform .6s ease;}
+.grid-number{
+  font-family:'Distill Expanded', sans-serif;
+  font-size:0.411rem;
+  color:#111111;
+  letter-spacing:0.28vw;
+  text-shadow:0.011rem 0.011rem 0 #717171, -0.011rem -0.011rem 0 #717171;
+}
+.grid-dashed{height:1px;width:11.8vw;opacity:.711;background:linear-gradient(to right,#171717 0,#171717 5px,#fff 5px,#fff 10px);background-size:10px 1px;}
+
+
+/* full-screen windowed state */
 body.non-fullscreen{
   background:#ffffff;
   min-height:100vh;
   min-width:100vw;
   overflow:hidden;
-}
-
-/* —— Fixed masking layers —— */
-.layer-one{
-  position:fixed;top:0;left:0;width:6.37vw;height:100vh;
-  background:#ffffff;z-index:100;pointer-events:none;
-}
-.layer-two{
-  position:fixed;top:0;left:28.87vw;width:calc(36vw - 28.87vw);height:100vh;
-  background:#ffffff;z-index:100;pointer-events:none;
-}
-.layer-three{
-  position:fixed;top:0;left:94.17vw;width:calc(100vw - 94.17vw);height:100vh;
-  background:#ffffff;z-index:100;pointer-events:none;
-}
-.layer-four{
-  position:fixed;top:28.5vh;left:36vw;width:61vw;height:55.5vh;
-  background:#ffffff;z-index:1;pointer-events:none;
-}
-.layer-five{
-  position:fixed;top:0;left:36vw;width:58.7vw;height:28.4vh;
-  background:#ffffff;pointer-events:none;
-}
-.layer-six{
-  position:fixed;top:84.7vh;left:36vw;width:58.7vw;height:15.3vh;
-  background:#ffffff;pointer-events:none;
-}
-
-.line{
-  position:absolute;height:1px;background:rgba(172,172,172,0.84);
-}
-.original{top:12.5vh;left:6.38vw;width:22.48vw;}
-.second  {top:28.5vh;left:6.38vw;width:18.68vw;}
-.third   {top:84vh;left:6.38vw;width:22.48vw;}
-.fourth  {top:12.5vh;left:36vw;width:57.8vw;z-index:101;}
-.fifth   {top:28.5vh;left:36vw;width:57.8vw;z-index:101;}
-.sixth   {top:84vh;left:36vw;width:57.8vw;z-index:101;}
-
-.util-line{
-  position:absolute;top:28.5vh;left:26.06vw;width:2.8vw;height:1px;
-  background:rgba(172,172,172,0.84);z-index:101;
-}
-
-.custom-line {
-    position: absolute;
-    top: 47.8vh; 
-    left: 36vw;
-    width: 57.8vw;
-    height: 1px;
-    background-color: rgba(230, 230, 230, 0.28);
 }

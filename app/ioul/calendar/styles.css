@@ -6,61 +6,51 @@
     font-style: normal;
 }
 
-/* RESET */
+/* reset */
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{overflow:hidden;max-width:100%;max-height:100%;}
 body.non-fullscreen{background:#fff;min-height:100vh;min-width:100vw;}
 
-/* MASKS */
+/* mask layers */
 .layer-one{position:fixed;top:0;left:0;width:6.37vw;height:100vh;background:#fff;z-index:100;}
 .layer-two{position:fixed;top:0;left:28.87vw;width:calc(36vw-28.87vw);height:100vh;background:#fff;z-index:100;}
 .layer-three{position:fixed;top:0;left:94.17vw;width:calc(100vw-94.17vw);height:100vh;background:#fff;z-index:100;}
-.layer-four{position:absolute;top:28.5vh;left:36vw;width:61vw;height:55.5vh;background:#fff;z-index:99980;}
-.layer-five{position:fixed;top:0;left:36vw;width:58.7vw;height:28.4vh;background:#fff;z-index:99990;}/* must cover calendar */
-.layer-six{position:absolute;top:84.7vh;left:36vw;width:58.7vw;height:15.3vh;background:#fff;z-index:99970;}
 
-/* LINES */
+/* layer-four: middle white block the calendar should sit ABOVE */
+.layer-four{position:absolute;top:28.5vh;left:36vw;width:61vw;height:55.5vh;background:#fff;z-index:7000;}
+
+/* layer-five: top white block the calendar should pass UNDER */
+.layer-five{position:absolute;top:0;left:36vw;width:58.7vw;height:28.4vh;background:#fff;z-index:9000;pointer-events:none;}
+
+/* layer-six: bottom block */
+.layer-six{position:absolute;top:84.7vh;left:36vw;width:58.7vw;height:15.3vh;background:#fff;z-index:6000;}
+
+/* timeline lines */
 .line{position:absolute;height:1px;background:rgba(172,172,172,.84);}
-.line.util-line{pointer-events:auto;z-index:1000;}
-.original{top:12.5vh;left:6.38vw;width:22.48vw;z-index:1000;}
-.second{top:28.5vh;left:6.38vw;width:18.68vw;z-index:1000;}
-.third{top:84vh;left:6.38vw;width:22.48vw;z-index:1000;}
-.fourth{position:fixed;top:12.5vh;left:36vw;width:57.8vw;height:1px;background:rgba(172,172,172,.84);z-index:100000;}/* top-most */
+.line.util-line{pointer-events:auto;z-index:1200;}
+.original{top:12.5vh;left:6.38vw;width:22.48vw;z-index:1200;}
+.second{top:28.5vh;left:6.38vw;width:18.68vw;z-index:1200;}
+.third{top:84vh;left:6.38vw;width:22.48vw;z-index:1200;}
+.fourth{position:fixed;top:12.5vh;left:36vw;width:57.8vw;height:1px;background:rgba(172,172,172,.84);z-index:10000;}
 
-/* CONTENT CONTAINER */
-.other-content{position:relative;z-index:500;} /* well below layer-five */
+/* content container */
+.other-content{position:relative;z-index:8000;} /* between layer-four (7000) and layer-five (9000) */
 
-/* GRID BASE */
-.grid-number,.grid-dashed{
-    position:absolute;
-    transition:transform .6s ease;
-    pointer-events:none;
-    z-index:0; /* kept inside .other-content */
-    will-change:transform;
-}
+/* calendar wrapper (scrolls) */
+.calendar-wrapper{position:relative;z-index:0;}
 
-.grid-number{
-    font-family:'Distill Expanded',sans-serif;
-    font-size:0.411rem;
-    letter-spacing:0.28vw;
-    color:#111;
-    text-shadow:.011rem .011rem 0 #717171,-.011rem -.011rem 0 #717171;
-}
+/* grid common */
+.grid-number,.grid-dashed{position:absolute;transition:transform .6s ease;pointer-events:none;will-change:transform;}
+.grid-number{font-family:'Distill Expanded',sans-serif;font-size:0.411rem;letter-spacing:0.28vw;color:#111;text-shadow:.011rem .011rem 0 #717171,-.011rem -.011rem 0 #717171;}
+.grid-dashed{height:1px;width:11.8vw;background:linear-gradient(to right,#171717 0,#171717 5px,#fff 5px,#fff 10px);background-size:10px 1px;opacity:.711;}
 
-.grid-dashed{
-    height:1px;width:11.8vw;
-    background:linear-gradient(to right,#171717 0,#171717 5px,#fff 5px,#fff 10px);
-    background-size:10px 1px;
-    opacity:.711;
-}
-
-/* Positions... (unchanged, trimmed for brevity) */
+/* positions */
 .num1{top:28.5vh;left:48.8vw;} .num2{top:28.5vh;left:63.7vw;} .num3{top:28.5vh;left:78.5vw;} .num4{top:28.5vh;left:93.3vw;}
-.num5{top:47vh;left:48.8vw;}  .num6{top:47vh;left:63.7vw;}  .num7{top:47vh;left:78.5vw;}  .num8{top:47vh;left:93.3vw;}
+.num5{top:47vh;left:48.8vw;} .num6{top:47vh;left:63.7vw;} .num7{top:47vh;left:78.5vw;} .num8{top:47vh;left:93.3vw;}
 .num9{top:65.5vh;left:48.8vw;} .num10{top:65.5vh;left:63.3vw;} .num11{top:65.5vh;left:78.3vw;} .num12{top:65.5vh;left:92.9vw;}
 .num13{top:83.7vh;left:48.3vw;} .num14{top:83.7vh;left:63.2vw;} .num15{top:83.7vh;left:78vw;} .num16{top:83.7vh;left:92.8vw;}
 .num17{top:102.2vh;left:48.3vw;} .num18{top:102.2vh;left:63.2vw;} .num19{top:102.2vh;left:78vw;} .num20{top:102.2vh;left:92.8vw;}
 .num21{top:120.7vh;left:48.3vw;} .num22{top:120.7vh;left:63.2vw;} .num23{top:120.7vh;left:78vw;} .num24{top:120.7vh;left:92.8vw;}
 .num25{top:139.2vh;left:48.3vw;} .num26{top:139.2vh;left:63.2vw;} .num27{top:139.2vh;left:78vw;} .num28{top:139.2vh;left:92.8vw;}
 .num29{top:157.7vh;left:48.3vw;} .num30{top:157.7vh;left:63.2vw;} .num31{top:157.7vh;left:78vw;}
-/* dashed lines similarly kept but omitted*/
+/* dashed row positions omitted for brevity (unchanged) */

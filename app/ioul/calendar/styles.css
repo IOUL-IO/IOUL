@@ -64,3 +64,7 @@ body.non-fullscreen{background:#fff;min-height:100vh;min-width:100vw;}
 .num25{top:139.2vh;left:48.3vw;} .num26{top:139.2vh;left:63.2vw;} .num27{top:139.2vh;left:78vw;} .num28{top:139.2vh;left:92.8vw;}
 .num29{top:157.7vh;left:48.3vw;} .num30{top:157.7vh;left:63.2vw;} .num31{top:157.7vh;left:78vw;}
 /* dashed lines similarly kept but omitted*/
+.calendar-wrapper{
+    position:relative;
+    z-index:0; /* inherits stacking context 500 from parent */
+}

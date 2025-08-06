@@ -3,70 +3,57 @@ import "./styles.css";
 
 import React, { useEffect, useRef } from "react";
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  IOULPage (cleaned v2)
-//  • Removes timeline lines 5 & 6
-//  • Keeps calendar scroll & mask layering
-//  • Ensures calendar sits beneath layer‑five overlay
-// ─────────────────────────────────────────────────────────────────────────────
-
 const IOULPage: React.FC = () => {
-  // Ensure body styles for non-fullscreen view
+  // Add fullscreen body class
   useEffect(() => {
     document.body.classList.add("non-fullscreen");
   }, []);
 
-  // Edge-click full-screen toggle
+  // Edge fullscreen toggle
   useEffect(() => {
-    const EDGE_MARGIN = 11; // px
-    const handleClick = (e: MouseEvent) => {
+    const EDGE = 11;
+    const clickEdge = (e: MouseEvent) => {
       const { clientX: x, clientY: y } = e;
       const { innerWidth: w, innerHeight: h } = window;
-      const nearEdge =
-        x <= EDGE_MARGIN ||
-        x >= w - EDGE_MARGIN ||
-        y <= EDGE_MARGIN ||
-        y >= h - EDGE_MARGIN;
-      if (!nearEdge) return;
+      const onEdge = x <= EDGE || x >= w - EDGE || y <= EDGE || y >= h - EDGE;
+      if (!onEdge) return;
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(() => {});
       } else {
         document.exitFullscreen().catch(() => {});
       }
     };
-    const onFsChange = () => {
+    const fsChange = () =>
       document.body.classList.toggle("non-fullscreen", !document.fullscreenElement);
-    };
-    document.addEventListener("click", handleClick);
-    document.addEventListener("fullscreenchange", onFsChange);
+
+    document.addEventListener("click", clickEdge);
+    document.addEventListener("fullscreenchange", fsChange);
     return () => {
-      document.removeEventListener("click", handleClick);
-      document.removeEventListener("fullscreenchange", onFsChange);
+      document.removeEventListener("click", clickEdge);
+      document.removeEventListener("fullscreenchange", fsChange);
     };
   }, []);
 
-  // Calendar grid scroll logic
-  const scrollIdxRef = useRef(0); // 0, 1, 2
+  // Scroll logic on single wrapper instead of individual cells
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const scrollIndex = useRef(0); // 0..2
+
   useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
+    const onWheel = (e: WheelEvent) => {
       e.preventDefault();
-      const els = Array.from(
-        document.querySelectorAll<HTMLElement>(".grid-number, .grid-dashed")
-      );
-      if (!els.length) return;
+      const wrap = wrapperRef.current;
+      if (!wrap) return;
 
       const clamp = (v: number, min: number, max: number) =>
         Math.min(Math.max(v, min), max);
       const dir = e.deltaY > 0 ? 1 : -1;
-      scrollIdxRef.current = clamp(scrollIdxRef.current + dir, 0, 2);
-      const offset = -55.5 * scrollIdxRef.current; // vh units
-      els.forEach((el) => {
-        el.style.transition = "transform 0.7s ease";
-        el.style.transform = `translateY(${offset}vh)`;
-      });
+      scrollIndex.current = clamp(scrollIndex.current + dir, 0, 2);
+      const offset = -55.5 * scrollIndex.current; // vh
+      wrap.style.transition = "transform 0.7s ease";
+      wrap.style.transform = `translateY(${offset}vh)`;
     };
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    return () => window.removeEventListener("wheel", handleWheel);
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => window.removeEventListener("wheel", onWheel);
   }, []);
 
   return (
@@ -79,35 +66,37 @@ const IOULPage: React.FC = () => {
       <div className="layer-five" />
       <div className="layer-six" />
 
-      {/* content */}
+      {/* timeline + calendar */}
       <div className="other-content">
-        {/* timeline lines */}
+        {/* timeline guides */}
         <div className="line original" />
         <div className="line second" />
         <div className="line util-line" />
         <div className="line third" />
         <div className="line fourth" />
-        {/* Removed <div className="line fifth" /> and sixth */}
 
-        {/* calendar grid numbers 1-31 */}
-        {Array.from({ length: 31 }, (_, i) => (
-          <span
-            key={`num${i + 1}`}
-            className={`grid-number num${i + 1}`}
-            style={{ display: "inline-block" }}
-          >
-            {i + 1}
-          </span>
-        ))}
+        {/* calendar wrapper */}
+        <div className="calendar-wrapper" ref={wrapperRef}>
+          {/* 1‑31 numbers */}
+          {Array.from({ length: 31 }, (_, i) => (
+            <span
+              key={`num${i + 1}`}
+              className={`grid-number num${i + 1}`}
+              style={{ display: "inline-block" }}
+            >
+              {i + 1}
+            </span>
+          ))}
 
-        {/* dashed grid lines 01-31 */}
-        {Array.from({ length: 31 }, (_, i) => (
-          <span
-            key={`dash${i + 1}`}
-            className={`grid-dashed dashed${String(i + 1).padStart(2, "0")}`}
-            style={{ display: "inline-block" }}
-          />
-        ))}
+          {/* dashed rows */}
+          {Array.from({ length: 31 }, (_, i) => (
+            <span
+              key={`dash${i + 1}`}
+              className={`grid-dashed dashed${String(i + 1).padStart(2, "0")}`}
+              style={{ display: "inline-block" }}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

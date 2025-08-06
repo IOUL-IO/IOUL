@@ -390,7 +390,7 @@
 
 
 
-/* === Layering Overrides v4 (updated 2025-07-24) ===
+/* === Layering Overrides v4 (updated 2025-07-24) === */
 
 /* 0 ▸ Ensure layer divs stay rendered */
 
@@ -412,7 +412,7 @@
 
 /* === End Layering Overrides v4 === */
 
-/* === Layering Overrides v5 (updated 2025-07-24) ===
+/* === Layering Overrides v5 (updated 2025-07-24) === */
 
 
 
@@ -423,12 +423,12 @@
 
 
 
-/* === Calendar grid ↧ under layer‑five — 2025‑07‑25 ===
+/* === Calendar grid ↧ under layer‑five — 2025‑07‑25 === */
 
 
 
 
-/* === Stacking fix v2 — 2025‑07‑25 ===
+/* === Stacking fix v2 — 2025‑07‑25 === */
 
 
 
@@ -442,7 +442,7 @@
 
 
 
-/* === Calendar Grid Layering Fix v3 — 2025‑07‑25 ===
+/* === Calendar Grid Layering Fix v3 — 2025‑07‑25 === */
 
 
 
@@ -454,7 +454,7 @@
 
 
 
-/* === Calendar Fix v5 — 2025‑07‑25 ===
+/* === Calendar Fix v5 — 2025‑07‑25 === */
 .line.fourth, 
 .fourth{
   position: fixed !important;       /* escape parent stacking context */
@@ -472,14 +472,14 @@
 
 
 
-/* === Calendar Fix v6 — 2025‑07‑25 ===
+/* === Calendar Fix v6 — 2025‑07‑25 === */
 
 
 
 
 
 
-/* === Global overflow suppression — 2025‑07‑29 ===
+/* === Global overflow suppression — 2025‑07‑29 === */
 
 
 /* === Overrides after cleanup (2025‑08‑05) === */

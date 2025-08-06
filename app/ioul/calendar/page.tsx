@@ -1,11 +1,43 @@
+
 "use client";
 import "./styles.css";
+
 import React, { useEffect, useRef } from "react";
 
+// ─────────────────────────────────────────────────────────────────────────────
+//  IOULPage (minimal)
+//  - Keeps only:
+//    • Full-screen edge-click toggle
+//    • Mask layers (1-6) and timeline lines (1-6 + util-line)
+//    • Calendar grid numbers & dashed rows (1-31) with scroll logic
+//  - All other UI / util-line functions removed per user request.
+// ─────────────────────────────────────────────────────────────────────────────
+
 const IOULPage: React.FC = () => {
-  /* ─ Add/remove body.non-fullscreen for smooth transition ─ */
+  // 1. Ensure body styles for non-fullscreen view
   useEffect(() => {
     document.body.classList.add("non-fullscreen");
+    document.documentElement.setAttribute("data-util", "2"); // show calendar grid by default
+  }, []);
+
+  // 2. Edge-click full-screen toggle (unchanged)
+  useEffect(() => {
+    const EDGE_MARGIN = 11; // px
+    const handleClick = (e: MouseEvent) => {
+      const { clientX: x, clientY: y } = e;
+      const { innerWidth: w, innerHeight: h } = window;
+      const nearEdge =
+        x <= EDGE_MARGIN ||
+        x >= w - EDGE_MARGIN ||
+        y <= EDGE_MARGIN ||
+        y >= h - EDGE_MARGIN;
+      if (!nearEdge) return;
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    };
     const onFsChange = () => {
       if (document.fullscreenElement) {
         document.body.classList.remove("non-fullscreen");
@@ -13,51 +45,41 @@ const IOULPage: React.FC = () => {
         document.body.classList.add("non-fullscreen");
       }
     };
+    document.addEventListener("click", handleClick);
     document.addEventListener("fullscreenchange", onFsChange);
-    return () => document.removeEventListener("fullscreenchange", onFsChange);
-  }, []);
-
-  /* ─ Edge‑click fullscreen toggle ─ */
-  useEffect(() => {
-    const EDGE = 11; // px from any edge
-    const onClick = (e: MouseEvent) => {
-      const near =
-        e.clientX <= EDGE ||
-        e.clientX >= window.innerWidth - EDGE ||
-        e.clientY <= EDGE ||
-        e.clientY >= window.innerHeight - EDGE;
-      if (!near) return;
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      } else {
-        document.documentElement.requestFullscreen().catch(() => {});
-      }
+    return () => {
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("fullscreenchange", onFsChange);
     };
-    document.addEventListener("click", onClick);
-    return () => document.removeEventListener("click", onClick);
   }, []);
 
-  /* ─ Calendar grid scroll ─ */
-  const idxRef = useRef(0);
+  // 3. Calendar grid scroll (kept)
+  const scrollIdxRef = useRef(0); // 0, 1, 2
   useEffect(() => {
-    const onWheel = (e: WheelEvent) => {
+    const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
-      const els = document.querySelectorAll<HTMLElement>(".grid-number, .grid-dashed");
+      const els = Array.from(
+        document.querySelectorAll<HTMLElement>(".grid-number, .grid-dashed")
+      );
       if (!els.length) return;
+
+      const clamp = (v: number, min: number, max: number) =>
+        Math.min(Math.max(v, min), max);
       const dir = e.deltaY > 0 ? 1 : -1;
-      idxRef.current = Math.max(0, Math.min(2, idxRef.current + dir));
-      const offset = -55.5 * idxRef.current;
+      scrollIdxRef.current = clamp(scrollIdxRef.current + dir, 0, 2);
+      const offset = -55.5 * scrollIdxRef.current; // vh units
       els.forEach((el) => {
         el.style.transition = "transform 0.7s ease";
         el.style.transform = `translateY(${offset}vh)`;
       });
     };
-    window.addEventListener("wheel", onWheel, { passive: false });
-    return () => window.removeEventListener("wheel", onWheel);
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    return () => window.removeEventListener("wheel", handleWheel);
   }, []);
 
+  // 4. Render minimal layout
   return (
-    <div translate="no">
+    <div className="non-fullscreen" translate="no">
       {/* mask layers */}
       <div className="layer-one" />
       <div className="layer-two" />
@@ -66,50 +88,37 @@ const IOULPage: React.FC = () => {
       <div className="layer-five" />
       <div className="layer-six" />
 
-      {/* timeline lines */}
-      <div className="line original" />
-      <div className="line second" />
-      <div className="line util-line" />
-      <div className="line fourth" />
-      <div className="line third" />
+      {/* content */}
+      <div className="other-content">
+        {/* timeline lines */}
+        <div className="line original" />
+        <div className="line second" />
+        <div className="line util-line" />
+        <div className="line third" />
+        <div className="line fourth" />
+        <div className="line fifth" />
+        <div className="line sixth" />
 
-      {/* calendar numbers 1‑31 */}
-      <span className="grid-number num1">1</span>
-      <span className="grid-number num2">2</span>
-      <span className="grid-number num3">3</span>
-      <span className="grid-number num4">4</span>
-      <span className="grid-number num5">5</span>
-      <span className="grid-number num6">6</span>
-      <span className="grid-number num7">7</span>
-      <span className="grid-number num8">8</span>
-      <span className="grid-number num9">9</span>
-      <span className="grid-number num10">10</span>
-      <span className="grid-number num11">11</span>
-      <span className="grid-number num12">12</span>
-      <span className="grid-number num13">13</span>
-      <span className="grid-number num14">14</span>
-      <span className="grid-number num15">15</span>
-      <span className="grid-number num16">16</span>
-      <span className="grid-number num17">17</span>
-      <span className="grid-number num18">18</span>
-      <span className="grid-number num19">19</span>
-      <span className="grid-number num20">20</span>
-      <span className="grid-number num21">21</span>
-      <span className="grid-number num22">22</span>
-      <span className="grid-number num23">23</span>
-      <span className="grid-number num24">24</span>
-      <span className="grid-number num25">25</span>
-      <span className="grid-number num26">26</span>
-      <span className="grid-number num27">27</span>
-      <span className="grid-number num28">28</span>
-      <span className="grid-number num29">29</span>
-      <span className="grid-number num30">30</span>
-      <span className="grid-number num31">31</span>
+        {/* calendar grid numbers 1-31 */}
+        {Array.from({ length: 31 }, (_, i) => (
+          <span
+            key={`num${i + 1}`}
+            className={`grid-number num${i + 1}`}
+            style={{ display: "inline-block" }}
+          >
+            {i + 1}
+          </span>
+        ))}
 
-      {/* dashed rows 01‑31 */}
-      {Array.from({ length: 31 }, (_, i) => (
-        <span key={`dash${i + 1}`} className={`grid-dashed dashed${String(i + 1).padStart(2, "0")}`} />
-      ))}
+        {/* dashed grid lines 01-31 */}
+        {Array.from({ length: 31 }, (_, i) => (
+          <span
+            key={`dash${i + 1}`}
+            className={`grid-dashed dashed${String(i + 1).padStart(2, "0")}`}
+            style={{ display: "inline-block" }}
+          />
+        ))}
+      </div>
     </div>
   );
 };

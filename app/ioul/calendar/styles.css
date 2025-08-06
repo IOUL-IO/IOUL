@@ -1,84 +1,972 @@
 @font-face {
-  font-family: 'Distill Expanded';
-  src: url('././font.woff2') format('woff2'),
-       url('./font.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'Distill Expanded';
+    src: url('././font.woff2') format('woff2'),
+         url('./font.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
-/* Global reset */
-* { margin:0; padding:0; box-sizing:border-box; }
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
 
 body.non-fullscreen {
-  background:#ffffff;
-  min-height:100vh;
-  min-width:100vw;
-  overflow:hidden;
+    background-color: #ffffff;
+    min-height: 100vh;
+    min-width: 100vw;
+    overflow: hidden;
 }
 
-/* White mask columns */
-.layer-one  { position:fixed; top:0; left:0;        width:6.37vw;  height:100vh; background:#ffffff; z-index:100; pointer-events:none; }
-.layer-two  { position:fixed; top:0; left:28.87vw;  width:7.13vw;  height:100vh; background:#ffffff; z-index:100; pointer-events:none; }
-.layer-three{ position:fixed; top:0; left:94.17vw;  width:5.83vw;  height:100vh; background:#ffffff; z-index:100; pointer-events:none; }
-.layer-four { position:absolute; top:28.5vh; left:36vw;  width:61vw;   height:55.5vh; background:#ffffff; z-index:2; pointer-events:none; }
-.layer-five { position:absolute; top:0;      left:36vw;  width:58.7vw; height:28.4vh; background:#ffffff; pointer-events:none; }
-.layer-six  { position:absolute; top:84.7vh; left:36vw;  width:58.7vw; height:15.3vh; background:#ffffff; pointer-events:none; }
 
-.page-content { position:relative; width:100vw; height:100vh; }
 
-/* Generic typography */
-.custom-text {
-  position:absolute;
-  font-family:'Distill Expanded', sans-serif;
-  color:#111;
-  letter-spacing:0.28vw;
-  font-size:0.47rem; /* ~7.5px base */
-  text-shadow:0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171;
-  line-height:1.6;
-  white-space:nowrap;   /* keep each heading text on one line */
-}
-.right-flow { direction:rtl; text-align:right; white-space:nowrap; }
-
-/* Increase font for ultra‑wide screens */
-@media screen and (min-width: 1900px){
-  .custom-text{ font-size:9px; }
+.layer-one {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 6.37vw;
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 100;
+    pointer-events: none;
 }
 
-/* Containers simply hold the text */
-.heading-container,
-.account-container { position:absolute; overflow:visible; }
 
-/* Divider / custom line */
-.custom-line {
-  position:absolute;
-  top:47.8vh;
-  left:6.38vw;
-  width:22.48vw;
-  height:1px;
-  background:rgba(230,230,230,0.28);
+.layer-two {
+    position: fixed;
+    top: 0;
+    left: 6.37vw;
+    width: calc(36vw - 6.37vw);
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 100;
+    pointer-events: none;
 }
 
-/* Guide lines */
-.line         { position:absolute; height:1px; background:rgba(172,172,172,0.84); }
-.line.original{ top:12.5vh; left:6.38vw;  width:22.48vw; }
-.line.second  { top:28.5vh; left:6.38vw;  width:18.68vw; }
-.line.third   { top:84vh;   left:6.38vw;  width:22.48vw; }
-.line.fourth  { top:12.5vh; left:36vw;    width:57.8vw;  z-index:3; }
-.line.fifth   { top:28.5vh; left:36vw;    width:57.8vw;  z-index:3; }
-.line.sixth   { top:84vh;   left:36vw;    width:57.8vw;  z-index:1; }
 
-/* Utility line kept for future interaction (click listener removed here) */
-.line.util-line{
-  top:28.5vh; left:26.06vw; width:2.8vw; z-index:1;
+.layer-three {
+    position: fixed;
+    top: 0;
+    left: 94.17vw;
+    width: calc(100vw - 94.17vw);
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 100;
+    pointer-events: none;
 }
 
-/* content block */
-.content-text, .content-line { z-index: 101; }
 
 
-/* PATCHED content-text visibility */
-.content-text, .custom-text {
-  z-index: 150 !important;
+.layer-four {
+    position: absolute;
+    top: 28.5vh;
+    left: 36vw;
+    width: 61vw;
+    height: 55.5vh;
+    background-color: #ffffff;
+    z-index: 2;
+    pointer-events: none;
+}
+
+
+
+.line {
+    position: absolute;
+    height: 1px;
+    background-color: rgba(172, 172, 172, 0.841);
+}
+
+
+.original {
+    top: 12.5vh;
+    left: 6.38vw;
+    width: 22.48vw;
+}
+
+
+.second {
+    top: 28.5vh;
+    left: 6.38vw;
+    width: 18.68vw;
+}
+
+
+.third {
+    top: 84vh;
+    left: 6.38vw;
+    width: 22.48vw;
+}
+
+
+.fourth {
+    top: 12.5vh;
+    left: 36vw;
+    width: 57.8vw;
+    z-index: 1;
+}
+
+
+.fifth {
+    top: 28.5vh;
+    left: 36vw;
+    width: 57.8vw;
+    z-index: 1;
+}
+
+
+.sixth {
+    top: 84vh;
+    left: 36vw;
+    width: 57.8vw;
+    z-index: 1;
+}
+
+
+
+.grid-number {
+    position: absolute;
+    font-family: 'Distill Expanded', sans-serif;
+    color: #111111;
+    font-size: 0.411rem;
+    letter-spacing: 0.28vw;
+    text-shadow: 0.011rem 0.011rem 0 #717171, -0.011rem -0.011rem 0 #717171;
+    transition: transform 0.6s ease;
+}
+
+
+
+.num1  { top: 28.5vh; left: 48.8vw; }
+
+
+.num2  { top: 28.5vh; left: 63.7vw; }
+
+
+.num3  { top: 28.5vh; left: 78.5vw; }
+
+
+.num4  { top: 28.5vh; left: 93.3vw; }
+
+
+.num5  { top: 47vh;   left: 48.8vw; }
+
+
+.num6  { top: 47vh;   left: 63.7vw; }
+
+
+.num7  { top: 47vh;   left: 78.5vw; }
+
+
+.num8  { top: 47vh;   left: 93.3vw; }
+
+
+.num9  { top: 65.5vh; left: 48.8vw; }
+
+
+.num10 { top: 65.5vh; left: 63.3vw; }
+
+
+.num11 { top: 65.5vh; left: 78.3vw; }
+
+
+.num12 { top: 65.5vh; left: 92.9vw; }
+
+
+.num13 { top: 83.7vh; left: 48.3vw; }
+
+
+.num14 { top: 83.7vh; left: 63.2vw; }
+
+
+.num15 { top: 83.7vh; left: 78.0vw; }
+
+
+.num16 { top: 83.7vh; left: 92.8vw; }
+
+
+
+.grid-dashed {
+    position: absolute;
+    height: 1px;
+    width: 11.8vw;
+    background: linear-gradient(to right, #171717 0, #171717 5px, #ffffff 5px, #ffffff 10px);
+    background-size: 10px 1px;
+    transition: transform 0.6s ease;
+    opacity: 0.711;
+}
+
+
+
+.dashed01 { top: 28.5vh; left: 36vw; }
+
+
+.dashed02 { top: 28.5vh; left: 51vw; }
+
+
+.dashed03 { top: 28.5vh; left: 65.9vw; }
+
+
+.dashed04 { top: 28.5vh; left: 80.8vw; }
+
+
+.dashed05 { top: 47vh;   left: 36vw; }
+
+
+.dashed06 { top: 47vh;   left: 51vw; }
+
+
+.dashed07 { top: 47vh;   left: 65.9vw; }
+
+
+.dashed08 { top: 47vh;   left: 80.8vw; }
+
+
+.dashed09 { top: 65.5vh; left: 36vw; }
+
+
+.dashed10 { top: 65.5vh; left: 51vw; }
+
+
+.dashed11 { top: 65.5vh; left: 65.9vw; }
+
+
+.dashed12 { top: 65.5vh; left: 80.8vw; }
+
+
+.dashed13 { top: 84vh;   left: 36vw; }
+
+
+.dashed14 { top: 84vh;   left: 51vw; }
+
+
+.dashed15 { top: 84vh;   left: 65.9vw; }
+
+
+.dashed16 { top: 84vh;   left: 80.8vw; }
+
+
+
+.num17 { top: 102.2vh; left: 48.3vw; }
+
+
+.num18 { top: 102.2vh; left: 63.2vw; }
+
+
+.num19 { top: 102.2vh; left: 78.0vw; }
+
+
+.num20 { top: 102.2vh; left: 92.8vw; }
+
+
+.num21 { top: 120.7vh; left: 48.3vw; }
+
+
+.num22 { top: 120.7vh; left: 63.2vw; }
+
+
+.num23 { top: 120.7vh; left: 78.0vw; }
+
+
+.num24 { top: 120.7vh; left: 92.8vw; }
+
+
+.num25 { top: 139.2vh; left: 48.3vw; }
+
+
+.num26 { top: 139.2vh; left: 63.2vw; }
+
+
+.num27 { top: 139.2vh; left: 78.0vw; }
+
+
+.num28 { top: 139.2vh; left: 92.8vw; }
+
+
+.num29 { top: 157.7vh; left: 48.3vw; }
+
+
+.num30 { top: 157.7vh; left: 63.2vw; }
+
+
+.num31 { top: 157.7vh; left: 78.0vw; }
+
+
+
+.dashed17 { top: 102.5vh; left: 36vw; }
+
+
+.dashed18 { top: 102.5vh; left: 51vw; }
+
+
+.dashed19 { top: 102.5vh; left: 65.9vw; }
+
+
+.dashed20 { top: 102.5vh; left: 80.8vw; }
+
+
+.dashed21 { top: 121vh;   left: 36vw; }
+
+
+.dashed22 { top: 121vh;   left: 51vw; }
+
+
+.dashed23 { top: 121vh;   left: 65.9vw; }
+
+
+.dashed24 { top: 121vh;   left: 80.8vw; }
+
+
+.dashed25 { top: 139.5vh; left: 36vw; }
+
+
+.dashed26 { top: 139.5vh; left: 51vw; }
+
+
+.dashed27 { top: 139.5vh; left: 65.9vw; }
+
+
+.dashed28 { top: 139.5vh; left: 80.8vw; }
+
+
+.dashed29 { top: 158vh;   left: 36vw; }
+
+
+.dashed30 { top: 158vh;   left: 51vw; }
+
+
+.dashed31 { top: 158vh;   left: 65.9vw; }
+
+
+
+/* Removed dashed lines and time texts animation styles */
+
+.other-content.animate-grid .grid-number,
+.other-content.animate-grid .grid-dashed {
+    transform: translateX(-60vw);
+}
+
+
+
+.layer-five {
+    position: absolute;
+    top: 0;
+    left: 36vw;
+    width: 58.7vw;
+    height: 28.4vh;
+    background-color: #ffffff;
+    pointer-events: none;
+}
+
+
+.layer-six {
+    position: absolute;
+    top: 84.7vh;
+    left: 36vw;
+    width: 58.7vw;
+    height: 15.3vh;
+    background-color: #ffffff;
+    pointer-events: none;
+}
+
+
+
+  .grid-number {
+    font-size: 6.1px !important;
+  }
+
+
+
+/* Removed slide container animation styles */
+
+/* Hide calendar grid items */
+/* removed display none */
+
+.line.util-line {
+    position: absolute;
+    top: 28.5vh;
+    left: 26.06vw;
+    width: 2.8vw;
+    height: 1px;
+    background-color: rgba(172, 172, 172, 0.841);
+    z-index: 1;
+}
+
+
+
+/* Util-line toggle states */
+[data-util="0"] .mail-line,
+[data-util="0"] .mail-text,
+[data-util="0"] .grid-number,
+[data-util="0"] .grid-dashed {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+
+
+[data-util="2"] .grid-number,
+[data-util="2"] .grid-dashed {
   opacity: 1 !important;
-  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+
+
+/* Ensure grid items transition opacity */
+.grid-number,
+.grid-dashed {
+  transition: transform 0.6s ease, opacity 0.4s ease !important;
+}
+
+
+
+
+/* ── Util-line toggle defaults ── */
+/* Hide mail and calendar by default */
+.mail-line,
+.mail-text,
+.other-content .grid-number,
+.other-content .grid-dashed {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: none !important;
+}
+
+
+
+/* Layers 5 & 6 visible by default */
+.layer-five,
+.layer-six {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transition: none !important;
+}
+
+
+
+/* STATE 1: mail visible, others hidden */
+[data-util="1"] .mail-line,
+[data-util="1"] .mail-text {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+
+[data-util="1"] .other-content .grid-number,
+[data-util="1"] .other-content .grid-dashed,
+[data-util="1"] .layer-five,
+[data-util="1"] .layer-six {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+
+
+/* STATE 2: calendar grid items 1-16 visible, mail & layers hidden */
+[data-util="2"] .num1, [data-util="2"] .num2, [data-util="2"] .num3, [data-util="2"] .num4,
+[data-util="2"] .num5, [data-util="2"] .num6, [data-util="2"] .num7, [data-util="2"] .num8,
+[data-util="2"] .num9, [data-util="2"] .num10, [data-util="2"] .num11, [data-util="2"] .num12,
+[data-util="2"] .num13, [data-util="2"] .num14, [data-util="2"] .num15, [data-util="2"] .num16,
+[data-util="2"] .dashed01, [data-util="2"] .dashed02, [data-util="2"] .dashed03, [data-util="2"] .dashed04,
+[data-util="2"] .dashed05, [data-util="2"] .dashed06, [data-util="2"] .dashed07, [data-util="2"] .dashed08,
+[data-util="2"] .dashed09, [data-util="2"] .dashed10, [data-util="2"] .dashed11, [data-util="2"] .dashed12,
+[data-util="2"] .dashed13, [data-util="2"] .dashed14, [data-util="2"] .dashed15, [data-util="2"] .dashed16 {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+
+[data-util="2"] .mail-line,
+[data-util="2"] .mail-text,
+[data-util="2"] .layer-five,
+[data-util="2"] .layer-six {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+
+
+/* Chat hover logic */
+/* UTIL-LINE TOGGLE OVERRIDES */
+:root[data-util="0"] .mail-line,
+:root[data-util="0"] .mail-text,
+:root[data-util="0"] .grid-number,
+:root[data-util="0"] .grid-dashed {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+
+
+:root[data-util="2"] .line.fifth,
+:root[data-util="2"] .line.sixth,
+:root[data-util="2"] .mail-line,
+:root[data-util="2"] .mail-text {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+
+
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+
+
+/* UTIL-LINE TOGGLE POP OVERRIDES */
+.mail-text,
+.mail-line,
+.grid-number,
+.grid-dashed {
+  transition: none !important;
+  position: relative !important;
+  z-index: 1000 !important;
+}
+
+
+
+/* Default: hide mail and calendar grid */
+:root[data-util="0"] .mail-line,
+:root[data-util="0"] .mail-text,
+:root[data-util="0"] .grid-number,
+:root[data-util="0"] .grid-dashed {
+  display: none !important;
+}
+
+
+
+/* State 1: show mail only */
+:root[data-util="1"] .mail-line,
+:root[data-util="1"] .mail-text {
+  display: inline-block !important;
+}
+
+
+:root[data-util="1"] .grid-number,
+:root[data-util="1"] .grid-dashed {
+  display: none !important;
+}
+
+
+
+/* State 2: show calendar grid (1–16) only, hide mail and lines 5/6 */
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed {
+  display: inline-block !important;
+}
+
+
+:root[data-util="2"] .mail-line,
+:root[data-util="2"] .mail-text,
+:root[data-util="2"] .line.fifth,
+:root[data-util="2"] .line.sixth {
+  display: none !important;
+}
+
+
+
+
+/* ===== OVERRIDE: mail-text positions and util toggle ===== */
+
+/* Ensure mail-text uses absolute positions from original inline styles */
+.mail-text {
+  position: absolute !important;
+  font-family: 'Distill Expanded', sans-serif;
+  color: #111111 !important;
+  letter-spacing: 0.28vw !important;
+  font-size: 0.47rem !important;
+  text-shadow: 0.001rem 0.001rem 0 #717171, -0.001rem -0.001rem 0 #717171 !important;
+  display: none !important;
+  pointer-events: none !important;
+}
+
+
+
+/* mail-text specific positions */
+.mail-text.to      { top: 35.4vh; left: 36vw; }
+
+
+
+/* calendar grid overrides */
+.grid-number,
+.grid-dashed {
+  position: absolute !important;
+  display: none !important;
+  pointer-events: none !important;
+}
+
+
+
+/* override util-line toggles */
+.mail-line {
+  display: none !important;
+}
+
+
+[data-util="2"] .grid-number,
+[data-util="2"] .grid-dashed {
+  display: inline-block !important;
+}
+
+
+[data-util="2"] .mail-line,
+[data-util="2"] .mail-text,
+[data-util="2"] .line.fifth,
+[data-util="2"] .line.sixth {
+  display: none !important;
+}
+
+
+
+/* ensure correct layering */
+.mail-line,
+.mail-text,
+.grid-number,
+.grid-dashed {
+  z-index: 100 !important;
+}
+
+
+
+/* === FINAL OVERRIDE: visibile mail-text on state 1 and correct layering === */
+:root[data-util="1"] .mail-text {
+  display: inline-block !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  z-index: 200 !important;
+}
+
+
+
+/* Ensure slide-container sits above util lines */
+.slide-container {
+  z-index: 150 !important;
+}
+
+
+
+/* === CHAT-TEXT HOVER LAYERING FIX === */
+.hover-area {
+  z-index: 200 !important;
+}
+
+
+
+
+
+/* === Chat-text persistent visibility === */
+.chat-text.visible {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+
+
+/* --- Util-line state overrides (authoritative) --- */
+:root[data-util="0"] .mail-line,
+:root[data-util="0"] .mail-text,
+:root[data-util="0"] .grid-number,
+:root[data-util="0"] .grid-dashed {
+  opacity: 0 !important;
+  display: none !important;
+  pointer-events: none !important;
+}
+
+
+
+:root[data-util="1"] .grid-number,
+:root[data-util="1"] .grid-dashed,
+:root[data-util="1"] .line.fifth,
+:root[data-util="1"] .line.sixth {
+  opacity: 0 !important;
+  display: none !important;
+  pointer-events: none !important;
+}
+
+
+
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed {
+  opacity: 1 !important;
+  display: inline-block !important;
+  pointer-events: auto !important;
+}
+
+
+
+:root[data-util="2"] .mail-line,
+:root[data-util="2"] .mail-text,
+:root[data-util="2"] .line.fifth,
+:root[data-util="2"] .line.sixth {
+  opacity: 0 !important;
+  display: none !important;
+  pointer-events: none !important;
+}
+
+
+
+.line.util-line{ z-index: 300 !important; pointer-events: auto !important;}
+
+
+
+
+/* --- Keep lines 5 & 6 visible in util state 1 --- */
+:root[data-util="1"] .line.fifth,
+:root[data-util="1"] .line.sixth {
+  opacity: 1 !important;
+  display: inline-block !important;
+  pointer-events: auto !important;
+}
+
+
+
+/* Added to ensure visibility over layer-four */
+
+.item-text,
+.item-line {
+  z-index: 3;
+}
+
+
+
+
+/* Interaction Hotfix Overrides */
+.hover-area{
+    pointer-events:none !important;
+}
+
+
+.line{
+    pointer-events:none !important;
+}
+
+
+.line.util-line{
+    pointer-events:auto !important;
+}
+
+
+
+
+/* -- Calendar grid stacking adjustment (July 22 2025) -- */
+.grid-number,
+.grid-dashed {
+  z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
+}
+
+
+
+/* === PERMANENT VISIBILITY FOR LINES 5 & 6 — 2025-07-23 00:59:10 === */
+/* Undo older util‑state rules that hid the lines */
+.line.fifth,
+.line.sixth {
+  display: inline-block !important;
+  opacity: 1 !important;
+  z-index: 420 !important;      /* stay above strips */
+  pointer-events: none !important; /* same behaviour across pages */
+}
+
+
+
+
+/* Hide mask layers to reveal page */
+.layer-one,
+.layer-two,
+.layer-three,
+.layer-four,
+.layer-five,
+.layer-six{
+  display:none !important;
+}
+
+
+
+/* Force page-content visible */
+.page-content{
+  opacity:1 !important;
+}
+
+
+
+
+/* === Layering Overrides v4 (updated 2025-07-24) ===
+   Goal: Lines 1‑3 and util‑line must appear above the left column mask stripes (layer‑1 & layer‑2).
+   We lift all timeline lines to z‑index 110 and util‑line to 120.
+   Containers keep their v3 positions.
+*/
+
+/* 0 ▸ Ensure layer divs stay rendered */
+.layer-one, .layer-two, .layer-three, .layer-four, .layer-five, .layer-six {
+    display: block !important;
+}
+
+
+
+/* 1 ▸ Containers (unchanged from v3) */
+.account-container, .heading-container { z-index: 90 !important; }
+
+
+
+/* 2 ▸ Item rows (unchanged) */
+.item-text, .item-line, .center-text, .center-line { z-index: 60 !important; }
+
+
+
+/* 3 ▸ Timeline lines */
+.line { z-index: 110 !important; pointer-events: none !important; }
+
+
+.line.util-line { z-index: 120 !important; pointer-events: auto !important; }
+
+
+
+/* === End Layering Overrides v4 === */
+
+/* === Layering Overrides v5 (updated 2025-07-24) ===
+   Key fix: raise .other-content stacking context so its children lines 1‑3
+   and util‑line can appear above the left column mask stripes (layer‑1 & layer‑2).
+   The container itself now sits at z‑index 130 above stripes (100)
+   but below timeline fifth/sixth (420) and above all content containers (≤ 90).
+*/
+
+.other-content {
+    z-index: 130 !important;
+}
+
+
+
+/* === End Layering Overrides v5 === */
+
+/* Override layer-two position to match original mask stripe width */
+.layer-two{
+  left: 28.87vw !important;
+  width: calc(36vw - 28.87vw) !important;
+}
+
+
+
+/* === Calendar grid ↧ under layer‑five — 2025‑07‑25 ===
+   Ensure calendar grid (numbers & dashed lines) sits below the top mask
+   while keeping timeline line‑4 above.
+*/
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed {
+  z-index: 0 !important;     /* lower than layer‑five (auto) */
+}
+
+
+
+
+/* === Stacking fix v2 — 2025‑07‑25 ===
+   1. Raise layer‑five so it masks content as intended.
+   2. Keep calendar grid just beneath it (but above layer‑four).
+   3. Elevate the fourth timeline line so it always shows above the mask.
+*/
+.layer-five{
+  z-index: 4 !important;         /* higher than grid & layer‑four */
+}
+
+
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed{
+  z-index: 2 !important;         /* between layer‑four (2) and layer‑five (4) */
+}
+
+
+/* line 4 */
+.line.fourth,
+.fourth{
+  z-index: 5 !important;         /* stays on top */
+}
+
+
+
+
+/* === Calendar Grid Layering Fix v3 — 2025‑07‑25 ===
+   Keep the top mask (.layer‑five) visible when util‑state 2 is active,
+   and place the calendar grid just beneath it (above layer‑four).
+   Timeline line 4 is raised above everything else for clarity. */
+:root[data-util="2"] .layer-five{
+  opacity: 1 !important;
+  display: block !important;
+  pointer-events: none !important;
+  z-index: 250 !important;        /* higher than grid + layer-four */
+}
+
+
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed{
+  z-index: 200 !important;        /* above layer-four (2) but beneath mask (250) */
+}
+
+
+.line.fourth,
+.fourth{
+  z-index: 300 !important;        /* always on top */
+}
+
+
+
+
+/* === Calendar Fix v5 — 2025‑07‑25 ===
+   Force timeline line‑4 visible above all masks/grid content. */
+.line.fourth, 
+.fourth{
+  position: fixed !important;       /* escape parent stacking context */
+  top: 12.5vh !important;
+  left: 36vw !important;
+  width: 57.8vw !important;
+  height: 1px !important;
+  background-color: rgba(172,172,172,0.84) !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+  display: block !important;
+  z-index: 10000 !important;        /* ensure visibility over everything */
+}
+
+
+
+
+/* === Calendar Fix v6 — 2025‑07‑25 ===
+   Approach: When util‑state 2 is active, paint line‑4 directly *inside*
+   the mask (.layer‑five) via a pseudo‑element so it’s guaranteed to be
+   visible, and hide the original .line.fourth to avoid double‑drawing. */
+:root[data-util="2"] .layer-five::after{
+  content:"";
+  position:absolute;
+  top:12.5vh;          /* same vertical position as original line */
+  left:0;
+  width:100%;
+  height:1px;
+  background:rgba(172,172,172,.84);
+  pointer-events:none;
+  z-index:260 !important;   /* above mask background, below any pop‑ups */
+}
+
+
+:root[data-util="2"] .line.fourth{
+  display:none !important;
+}
+
+
+
+
+/* === Global overflow suppression — 2025‑07‑29 ===
+   Ensure no browser scrollbars (horizontal or vertical) are ever
+   shown for the page itself, in or out of full‑screen. Internal
+   components must manage their own scrolling. */
+html,
+body,
+html:fullscreen,
+body:fullscreen {
+  overflow: hidden !important;
+  max-width: 100%;
+  max-height: 100%;
 }

@@ -1,126 +1,124 @@
-/* ───────────────────────────────────────────────
-   Minimal IOUL styles (rev‑2025‑08‑06)
-   — Retains only:
-     • mask layers 1‑6
-     • timeline lines 1‑6 + util‑line
-     • calendar grid numbers & dashed rows (wheel‑scroll)
-   — Stacking order (low → high)
-       10  layer‑four          (background under grid)
-       20  grid numbers/rows   (scrolls)
-       30  layer‑five, layer‑six  (clip grid)
-       40  layer‑one, -two, -three (stripes)
-      120  timeline lines 1‑3,5‑6 & util‑line
-      150  timeline line‑4     (always on top)
-   ───────────────────────────────────────────────*/
 
-/* 0 ▸ Base reset & font */
-@font-face{
-  font-family:'Distill Expanded';
-  src:url('./font.woff2') format('woff2'),
-      url('./font.woff')  format('woff');
-}
+/* === IOUL Calendar Minimal Styles (cleaned 2025‑08‑05) === */
+
+/* --- Base Reset --- */
 *{margin:0;padding:0;box-sizing:border-box;}
-body.non-fullscreen{
-  background:#fff;
-  min-height:100vh;
-  min-width:100vw;
-  overflow:hidden;
-}
+body.non-fullscreen{background:#fff;min-height:100vh;min-width:100vw;overflow:hidden;}
 
-/* 1 ▸ Mask layers */
-.layer-one,.layer-two,.layer-three{
-  position:fixed;top:0;height:100vh;background:#fff;pointer-events:none;z-index:40;
-}
+/* --- Mask Layers --- */
+.layer-one,.layer-two,.layer-three{position:fixed;top:0;height:100vh;background:#fff;pointer-events:none;z-index:100;}
 .layer-one{left:0;width:6.37vw;}
 .layer-two{left:6.37vw;width:calc(36vw - 6.37vw);}
 .layer-three{left:94.17vw;width:calc(100vw - 94.17vw);}
 
-/* Middle mask (reveals grid) */
-.layer-four{
-  position:absolute;top:28.5vh;left:36vw;width:61vw;height:55.5vh;
-  background:#fff;pointer-events:none;z-index:10;
-}
+.layer-four{position:absolute;top:28.5vh;left:36vw;width:61vw;height:55.5vh;background:#fff;pointer-events:none;z-index:120;}
+.layer-five{position:absolute;top:0;left:36vw;width:58.7vw;height:28.4vh;background:#fff;pointer-events:none;z-index:200;}
+.layer-six{position:absolute;top:84.7vh;left:36vw;width:58.7vw;height:15.3vh;background:#fff;pointer-events:none;z-index:200;}
 
-/* Top & bottom masks (clip grid) */
-.layer-five,.layer-six{
-  position:absolute;left:36vw;width:58.7vw;background:#fff;pointer-events:none;z-index:30;
-}
-.layer-five{top:0;height:28.4vh;}
-.layer-six{top:84.7vh;height:15.3vh;}
-
-/* 2 ▸ Timeline lines */
-.line{
-  position:absolute;height:1px;background:rgba(172,172,172,.84);
-  pointer-events:none;z-index:120;
-}
+/* --- Timeline Lines --- */
+.line{position:absolute;height:1px;background:rgba(172,172,172,.84);}
 .original{top:12.5vh;left:6.38vw;width:22.48vw;}
 .second  {top:28.5vh;left:6.38vw;width:18.68vw;}
 .third   {top:84vh;  left:6.38vw;width:22.48vw;}
-.fourth  {top:12.5vh;left:36vw;width:57.8vw;z-index:150;} /* above layer‑five */
-.fifth   {top:28.5vh;left:36vw;width:57.8vw;}
-.sixth   {top:84vh;  left:36vw;width:57.8vw;}
-.util-line{
-  top:28.5vh;left:26.06vw;width:2.8vw;
-  z-index:130;pointer-events:auto;
-}
+.fourth  {top:12.5vh;left:36vw;width:57.8vw;z-index:300;}  /* always above layer‑five */
 
-/* 3 ▸ Calendar grid (numbers & dashed rows) */
-.grid-number,.grid-dashed{
-  position:absolute;z-index:20;pointer-events:none;
-  transition:transform .6s ease;
-}
+/* removed timeline lines 5 & 6 */
+.fifth, .sixth {display:none;}
 
-/* Numbers */
+.line.util-line{top:28.5vh;left:26.06vw;width:2.8vw;z-index:300;}
+
+/* --- Calendar Grid --- */
 .grid-number{
+  position:absolute;
   font-family:'Distill Expanded',sans-serif;
-  font-size:.411rem;letter-spacing:.28vw;color:#111;
-  text-shadow:.011rem .011rem 0 #717171,-.011rem -.011rem 0 #717171;
+  color:#111;
+  font-size:6.1px;
+  letter-spacing:.28vw;
+  text-shadow:0.011rem 0.011rem 0 #717,-0.011rem -0.011rem 0 #717;
+  transition:transform .7s ease;
+  z-index:130;               /* above layer‑four, below layer‑five/six */
 }
-/* Row tops */
-.num1,.num2,.num3,.num4        {top:28.5vh;}
-.num5,.num6,.num7,.num8        {top:47vh;}
-.num9,.num10,.num11,.num12     {top:65.5vh;}
-.num13,.num14,.num15,.num16    {top:83.7vh;}
-.num17,.num18,.num19,.num20    {top:102.2vh;}
-.num21,.num22,.num23,.num24    {top:120.7vh;}
-.num25,.num26,.num27,.num28    {top:139.2vh;}
-.num29,.num30,.num31           {top:157.7vh;}
-/* Column lefts */
-.num1,.num5,.num9,.num13,
-.num17,.num21,.num25,.num29    {left:48.8vw;}
-.num2,.num6,.num10,.num14,
-.num18,.num22,.num26,.num30    {left:63.7vw;}
-.num3,.num7,.num11,.num15,
-.num19,.num23,.num27,.num31    {left:78.5vw;}
-.num4,.num8,.num12,.num16,
-.num20,.num24,.num28           {left:93.3vw;}
-
-/* Dashed horizontal rows */
 .grid-dashed{
-  height:1px;width:11.8vw;opacity:.711;
-  background:linear-gradient(to right,#171717 0 5px,#fff 0 10px);
+  position:absolute;
+  height:1px;
+  width:11.8vw;
+  background:linear-gradient(to right,#171 0,#171 5px,#fff 5px,#fff 10px);
   background-size:10px 1px;
+  transition:transform .7s ease;
+  opacity:.711;
+  z-index:130;
 }
-/* Row tops for dashes */
-.dashed01,.dashed02,.dashed03,.dashed04 {top:28.5vh;}
-.dashed05,.dashed06,.dashed07,.dashed08 {top:47vh;}
-.dashed09,.dashed10,.dashed11,.dashed12 {top:65.5vh;}
-.dashed13,.dashed14,.dashed15,.dashed16 {top:84vh;}
-.dashed17,.dashed18,.dashed19,.dashed20 {top:102.5vh;}
-.dashed21,.dashed22,.dashed23,.dashed24 {top:121vh;}
-.dashed25,.dashed26,.dashed27,.dashed28 {top:139.5vh;}
-.dashed29,.dashed30,.dashed31           {top:158vh;}
-/* Column lefts for dashes */
-.dashed01,.dashed05,.dashed09,.dashed13,
-.dashed17,.dashed21,.dashed25,.dashed29  {left:36vw;}
-.dashed02,.dashed06,.dashed10,.dashed14,
-.dashed18,.dashed22,.dashed26,.dashed30  {left:51vw;}
-.dashed03,.dashed07,.dashed11,.dashed15,
-.dashed19,.dashed23,.dashed27,.dashed31  {left:65.9vw;}
-.dashed04,.dashed08,.dashed12,.dashed16,
-.dashed20,.dashed24,.dashed28            {left:80.8vw;}
 
-/* 4 ▸ Hide browser scrollbars in/out of full‑screen */
-html,body,html:fullscreen,body:fullscreen{
-  overflow:hidden;max-width:100%;max-height:100%;
-}
+/* --- Grid Positions --- */
+.num1  { top: 28.5vh; left: 48.8vw; }
+.num2  { top: 28.5vh; left: 63.7vw; }
+.num3  { top: 28.5vh; left: 78.5vw; }
+.num4  { top: 28.5vh; left: 93.3vw; }
+.num5  { top: 47vh;   left: 48.8vw; }
+.num6  { top: 47vh;   left: 63.7vw; }
+.num7  { top: 47vh;   left: 78.5vw; }
+.num8  { top: 47vh;   left: 93.3vw; }
+.num9  { top: 65.5vh; left: 48.8vw; }
+.num10 { top: 65.5vh; left: 63.3vw; }
+.num11 { top: 65.5vh; left: 78.3vw; }
+.num12 { top: 65.5vh; left: 92.9vw; }
+.num13 { top: 83.7vh; left: 48.3vw; }
+.num14 { top: 83.7vh; left: 63.2vw; }
+.num15 { top: 83.7vh; left: 78.0vw; }
+.num16 { top: 83.7vh; left: 92.8vw; }
+.num17 { top: 102.2vh; left: 48.3vw; }
+.num18 { top: 102.2vh; left: 63.2vw; }
+.num19 { top: 102.2vh; left: 78.0vw; }
+.num20 { top: 102.2vh; left: 92.8vw; }
+.num21 { top: 120.7vh; left: 48.3vw; }
+.num22 { top: 120.7vh; left: 63.2vw; }
+.num23 { top: 120.7vh; left: 78.0vw; }
+.num24 { top: 120.7vh; left: 92.8vw; }
+.num25 { top: 139.2vh; left: 48.3vw; }
+.num26 { top: 139.2vh; left: 63.2vw; }
+.num27 { top: 139.2vh; left: 78.0vw; }
+.num28 { top: 139.2vh; left: 92.8vw; }
+.num29 { top: 157.7vh; left: 48.3vw; }
+.num30 { top: 157.7vh; left: 63.2vw; }
+.num31 { top: 157.7vh; left: 78.0vw; }
+
+.dashed01 { top: 28.5vh; left: 36vw; }
+.dashed02 { top: 28.5vh; left: 51vw; }
+.dashed03 { top: 28.5vh; left: 65.9vw; }
+.dashed04 { top: 28.5vh; left: 80.8vw; }
+.dashed05 { top: 47vh;   left: 36vw; }
+.dashed06 { top: 47vh;   left: 51vw; }
+.dashed07 { top: 47vh;   left: 65.9vw; }
+.dashed08 { top: 47vh;   left: 80.8vw; }
+.dashed09 { top: 65.5vh; left: 36vw; }
+.dashed10 { top: 65.5vh; left: 51vw; }
+.dashed11 { top: 65.5vh; left: 65.9vw; }
+.dashed12 { top: 65.5vh; left: 80.8vw; }
+.dashed13 { top: 84vh;   left: 36vw; }
+.dashed14 { top: 84vh;   left: 51vw; }
+.dashed15 { top: 84vh;   left: 65.9vw; }
+.dashed16 { top: 84vh;   left: 80.8vw; }
+.dashed17 { top: 102.5vh; left: 36vw; }
+.dashed18 { top: 102.5vh; left: 51vw; }
+.dashed19 { top: 102.5vh; left: 65.9vw; }
+.dashed20 { top: 102.5vh; left: 80.8vw; }
+.dashed21 { top: 121vh;   left: 36vw; }
+.dashed22 { top: 121vh;   left: 51vw; }
+.dashed23 { top: 121vh;   left: 65.9vw; }
+.dashed24 { top: 121vh;   left: 80.8vw; }
+.dashed25 { top: 139.5vh; left: 36vw; }
+.dashed26 { top: 139.5vh; left: 51vw; }
+.dashed27 { top: 139.5vh; left: 65.9vw; }
+.dashed28 { top: 139.5vh; left: 80.8vw; }
+.dashed29 { top: 158vh;   left: 36vw; }
+.dashed30 { top: 158vh;   left: 51vw; }
+.dashed31 { top: 158vh;   left: 65.9vw; }
+
+/* --- Utility Toggle (data-util) --- */
+:root[data-util="0"] .grid-number,
+:root[data-util="0"] .grid-dashed{opacity:0;pointer-events:none;}
+
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed{opacity:1;pointer-events:auto;}
+
+/* --- Scroll transform handled via JS (page.tsx) --- */

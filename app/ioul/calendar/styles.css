@@ -1,142 +1,66 @@
-/* ──────────────────────────────────────────────────────────────
-   IOUL stripped stylesheet • 2025‑08‑06
-   • All data‑util, mail‑text / mail‑line, and lines‑5‑6 code removed.
-   • Calendar grid always visible.
-   • Layering matches: layer‑4 (2) < grid (3) < mask‑5/6 (4) < line‑4 (120).
-──────────────────────────────────────────────────────────────── */
 
-@font-face {
-  font-family: 'Distill Expanded';
-  src: url('./font.woff2') format('woff2'),
-       url('./font.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
-/* base reset */
+/* ==========================  CORE RESET  ============================= */
 *{margin:0;padding:0;box-sizing:border-box;}
-
-body.non-fullscreen{
-  background:#ffffff;
-  min-height:100vh;
-  min-width:100vw;
-  overflow:hidden;
+@font-face{
+  font-family:'Distill Expanded';
+  src:url('./font.woff2') format('woff2'),
+      url('./font.woff') format('woff');
+  font-weight:normal;font-style:normal;
 }
 
-/* === permanent mask stripes === */
-.layer-one,.layer-two,.layer-three{
-  position:fixed;top:0;height:100vh;background:#ffffff;
-  z-index:100;pointer-events:none;
-}
-.layer-one {left:0;width:6.37vw;}
-.layer-two {left:6.37vw;width:calc(36vw - 6.37vw);}
-.layer-three{left:94.17vw;width:calc(100vw - 94.17vw);}
+body{overflow:hidden;min-height:100vh;background:#ffffff;}
+/* ==========================  MASK LAYERS  ============================ */
+.layer-one{position:fixed;top:0;left:0;width:6.37vw;height:100vh;background:#fff;z-index:100;}
+.layer-two{position:fixed;top:0;left:6.37vw;width:calc(36vw-6.37vw);height:100vh;background:#fff;z-index:100;}
+.layer-three{position:fixed;top:0;left:94.17vw;width:calc(100vw-94.17vw);height:100vh;background:#fff;z-index:100;}
 
-/* in‑flow masks + stage */
-.layer-four{
-  position:absolute;top:28.5vh;left:36vw;width:61vw;height:55.5vh;
-  background:#ffffff;pointer-events:none;z-index:2;
-}
-.layer-five{
-  position:absolute;top:0;left:36vw;width:58.7vw;height:28.4vh;
-  background:#ffffff;pointer-events:none;z-index:4;
-}
-.layer-six{
-  position:absolute;top:84.7vh;left:36vw;width:58.7vw;height:15.3vh;
-  background:#ffffff;pointer-events:none;z-index:4;
-}
+.layer-four{position:absolute;top:28.5vh;left:36vw;width:61vw;height:55.5vh;background:#fff;z-index:2;}
+.layer-five{position:absolute;top:0;left:36vw;width:58.7vw;height:28.4vh;background:#fff;z-index:30;}
+.layer-six{position:absolute;top:84.7vh;left:36vw;width:58.7vw;height:15.3vh;background:#fff;z-index:30;}
 
-/* timeline lines */
-.line{
-  position:absolute;height:1px;background:rgba(172,172,172,.84);
-  pointer-events:none;
-}
-.original{top:12.5vh;left:6.38vw;width:22.48vw;z-index:110;}
-.second  {top:28.5vh;left:6.38vw;width:18.68vw;z-index:110;}
-.util-line{top:28.5vh;left:26.06vw;width:2.8vw;z-index:110;}
-.third   {top:84vh;  left:6.38vw;width:22.48vw;z-index:110;}
+/* ==========================  TIMELINE LINES  ========================= */
+.line{position:absolute;height:1px;background:rgba(172,172,172,.84);}
+.original{top:12.5vh;left:6.38vw;width:22.48vw;z-index:3;}
+.second {top:28.5vh;left:6.38vw;width:18.68vw;z-index:3;}
+.third  {top:84vh;  left:6.38vw;width:22.48vw;z-index:3;}
+.fourth {top:12.5vh;left:36vw;  width:57.8vw; z-index:40;}
 
-/* special fixed fourth line */
-.fourth{
-  position:fixed;top:12.5vh;left:36vw;width:57.8vw;height:1px;
-  background:rgba(172,172,172,.84);
-  pointer-events:none;z-index:120;
-}
-
-/* calendar grid items */
+/* ==========================  CALENDAR GRID  ========================== */
 .grid-number{
-  position:absolute;font-family:'Distill Expanded',sans-serif;
-  color:#111;font-size:0.411rem;letter-spacing:0.28vw;
-  text-shadow:0.011rem 0.011rem 0 #717171,-0.011rem -0.011rem 0 #717171;
+  position:absolute;font-family:'Distill Expanded',sans-serif;color:#111;
+  font-size:0.411rem;letter-spacing:0.28vw;
+  text-shadow:0.011rem 0.011rem #717,-0.011rem -0.011rem #717;
   transition:transform .6s ease;z-index:3;
 }
 .grid-dashed{
   position:absolute;height:1px;width:11.8vw;
-  background:linear-gradient(to right,#171717 0,#171717 5px,#ffffff 5px,#ffffff 10px);
+  background:linear-gradient(to right,#171717 0,#171717 5px,#fff 5px,#fff 10px);
   background-size:10px 1px;opacity:.711;transition:transform .6s ease;z-index:3;
 }
 
-/* grid number positions */
-.num1{top:28.5vh;left:48.8vw;}
-.num2{top:28.5vh;left:63.7vw;}
-.num3{top:28.5vh;left:78.5vw;}
-.num4{top:28.5vh;left:93.3vw;}
-.num5{top:47vh;left:48.8vw;}
-.num6{top:47vh;left:63.7vw;}
-.num7{top:47vh;left:78.5vw;}
-.num8{top:47vh;left:93.3vw;}
-.num9{top:65.5vh;left:48.8vw;}
-.num10{top:65.5vh;left:63.3vw;}
-.num11{top:65.5vh;left:78.3vw;}
-.num12{top:65.5vh;left:92.9vw;}
-.num13{top:83.7vh;left:48.3vw;}
-.num14{top:83.7vh;left:63.2vw;}
-.num15{top:83.7vh;left:78vw;}
-.num16{top:83.7vh;left:92.8vw;}
-.num17{top:102.2vh;left:48.3vw;}
-.num18{top:102.2vh;left:63.2vw;}
-.num19{top:102.2vh;left:78vw;}
-.num20{top:102.2vh;left:92.8vw;}
-.num21{top:120.7vh;left:48.3vw;}
-.num22{top:120.7vh;left:63.2vw;}
-.num23{top:120.7vh;left:78vw;}
-.num24{top:120.7vh;left:92.8vw;}
-.num25{top:139.2vh;left:48.3vw;}
-.num26{top:139.2vh;left:63.2vw;}
-.num27{top:139.2vh;left:78vw;}
-.num28{top:139.2vh;left:92.8vw;}
-.num29{top:157.7vh;left:48.3vw;}
-.num30{top:157.7vh;left:63.2vw;}
-.num31{top:157.7vh;left:78vw;}
+/* Fallback override to squash any stray high z‑indices */
+.grid-number,.grid-dashed{z-index:3 !important;}
+.num16 { top: 83.7vh; left: 92.8vw; }
 
-.dashed01{top:28.5vh;left:36vw;}
-.dashed02{top:28.5vh;left:51vw;}
-.dashed03{top:28.5vh;left:65.9vw;}
-.dashed04{top:28.5vh;left:80.8vw;}
-.dashed05{top:47vh;left:36vw;}
-.dashed06{top:47vh;left:51vw;}
-.dashed07{top:47vh;left:65.9vw;}
-.dashed08{top:47vh;left:80.8vw;}
-.dashed09{top:65.5vh;left:36vw;}
-.dashed10{top:65.5vh;left:51vw;}
-.dashed11{top:65.5vh;left:65.9vw;}
-.dashed12{top:65.5vh;left:80.8vw;}
-.dashed13{top:84vh;left:36vw;}
-.dashed14{top:84vh;left:51vw;}
-.dashed15{top:84vh;left:65.9vw;}
-.dashed16{top:84vh;left:80.8vw;}
-.dashed17{top:102.5vh;left:36vw;}
-.dashed18{top:102.5vh;left:51vw;}
-.dashed19{top:102.5vh;left:65.9vw;}
-.dashed20{top:102.5vh;left:80.8vw;}
-.dashed21{top:121vh;left:36vw;}
-.dashed22{top:121vh;left:51vw;}
-.dashed23{top:121vh;left:65.9vw;}
-.dashed24{top:121vh;left:80.8vw;}
-.dashed25{top:139.5vh;left:36vw;}
-.dashed26{top:139.5vh;left:51vw;}
-.dashed27{top:139.5vh;left:65.9vw;}
-.dashed28{top:139.5vh;left:80.8vw;}
-.dashed29{top:158vh;left:36vw;}
-.dashed30{top:158vh;left:51vw;}
-.dashed31{top:158vh;left:65.9vw;}
+
+
+.grid-dashed {
+    position: absolute;
+    height: 1px;
+    width: 11.8vw;
+    background: linear-gradient(to right, #171717 0, #171717 5px, #ffffff 5px, #ffffff 10px);
+    background-size: 10px 1px;
+    transition: transform 0.6s ease;
+    opacity: 0.711;
+}
+
+.dashed31 { top: 158vh;   left: 65.9vw; }
+
+
+
+/* Removed dashed lines and time texts animation styles */
+
+.other-content.animate-grid .grid-number,
+.other-content.animate-grid .grid-dashed {
+    transform: translateX(-60vw);
+}

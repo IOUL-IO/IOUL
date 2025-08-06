@@ -1,26 +1,22 @@
-
 "use client";
 import "./styles.css";
 
 import React, { useEffect, useRef } from "react";
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  IOULPage (minimal)
-//  - Keeps only:
-//    • Full-screen edge-click toggle
-//    • Mask layers (1-6) and timeline lines (1-6 + util-line)
-//    • Calendar grid numbers & dashed rows (1-31) with scroll logic
-//  - All other UI / util-line functions removed per user request.
+//  IOULPage (cleaned)
+//  • Keeps full‑screen edge‑click toggle
+//  • Mask layers (layer‑one to layer‑six) & timeline lines
+//  • Calendar grid numbers & dashed rows (1–31) with scroll logic
 // ─────────────────────────────────────────────────────────────────────────────
 
 const IOULPage: React.FC = () => {
-  // 1. Ensure body styles for non-fullscreen view
+  // Ensure body styles for non‑fullscreen view
   useEffect(() => {
     document.body.classList.add("non-fullscreen");
-    document.documentElement.setAttribute("data-util", "2"); // show calendar grid by default
   }, []);
 
-  // 2. Edge-click full-screen toggle (unchanged)
+  // Edge‑click full‑screen toggle
   useEffect(() => {
     const EDGE_MARGIN = 11; // px
     const handleClick = (e: MouseEvent) => {
@@ -39,11 +35,7 @@ const IOULPage: React.FC = () => {
       }
     };
     const onFsChange = () => {
-      if (document.fullscreenElement) {
-        document.body.classList.remove("non-fullscreen");
-      } else {
-        document.body.classList.add("non-fullscreen");
-      }
+      document.body.classList.toggle("non-fullscreen", !document.fullscreenElement);
     };
     document.addEventListener("click", handleClick);
     document.addEventListener("fullscreenchange", onFsChange);
@@ -53,7 +45,7 @@ const IOULPage: React.FC = () => {
     };
   }, []);
 
-  // 3. Calendar grid scroll (kept)
+  // Calendar grid scroll logic
   const scrollIdxRef = useRef(0); // 0, 1, 2
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
@@ -77,7 +69,6 @@ const IOULPage: React.FC = () => {
     return () => window.removeEventListener("wheel", handleWheel);
   }, []);
 
-  // 4. Render minimal layout
   return (
     <div className="non-fullscreen" translate="no">
       {/* mask layers */}

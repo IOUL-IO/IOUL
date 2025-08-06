@@ -1,54 +1,58 @@
 
-/* === IOUL Calendar Minimal Styles (cleaned 2025‑08‑05) === */
+/* === IOUL Calendar Styles (refined 2025‑08‑05) === */
 
-/* --- Base Reset --- */
+/* ---------- Base Reset ---------- */
 *{margin:0;padding:0;box-sizing:border-box;}
 body.non-fullscreen{background:#fff;min-height:100vh;min-width:100vw;overflow:hidden;}
 
-/* --- Mask Layers --- */
-.layer-one,.layer-two,.layer-three{position:fixed;top:0;height:100vh;background:#fff;pointer-events:none;z-index:100;}
+/* ---------- Fixed Side Masks (layers 1‑3) ---------- */
+.layer-one,.layer-two,.layer-three{
+  position:fixed;top:0;height:100vh;background:#fff;pointer-events:none;z-index:100;
+}
 .layer-one{left:0;width:6.37vw;}
 .layer-two{left:6.37vw;width:calc(36vw - 6.37vw);}
 .layer-three{left:94.17vw;width:calc(100vw - 94.17vw);}
 
-.layer-four{position:absolute;top:28.5vh;left:36vw;width:61vw;height:55.5vh;background:#fff;pointer-events:none;z-index:120;}
-.layer-five{position:absolute;top:0;left:36vw;width:58.7vw;height:28.4vh;background:#fff;pointer-events:none;z-index:200;}
-.layer-six{position:absolute;top:84.7vh;left:36vw;width:58.7vw;height:15.3vh;background:#fff;pointer-events:none;z-index:200;}
+/* ---------- Scroll Masks (layers 4‑6) ---------- */
+.layer-four{ /* middle mask that grid must sit above */
+  position:absolute;top:28.5vh;left:36vw;width:61vw;height:55.5vh;
+  background:#fff;pointer-events:none;z-index:200;
+}
+.layer-five, .layer-six{ /* top & bottom masks – must cover grid while scrolling */
+  position:absolute;left:36vw;width:58.7vw;background:#fff;pointer-events:none;
+  z-index:500; /* ABOVE grid & layer‑four */
+}
+.layer-five{top:0;height:28.4vh;}
+.layer-six{top:84.7vh;height:15.3vh;}
 
-/* --- Timeline Lines --- */
+/* ---------- Timeline Lines ---------- */
 .line{position:absolute;height:1px;background:rgba(172,172,172,.84);}
 .original{top:12.5vh;left:6.38vw;width:22.48vw;}
 .second  {top:28.5vh;left:6.38vw;width:18.68vw;}
 .third   {top:84vh;  left:6.38vw;width:22.48vw;}
-.fourth  {top:12.5vh;left:36vw;width:57.8vw;z-index:300;}  /* always above layer‑five */
+.util-line{top:28.5vh;left:26.06vw;width:2.8vw;}
+.fourth  { /* must remain visible above layer‑five */
+  top:12.5vh;left:36vw;width:57.8vw;z-index:600;
+}
 
-/* removed timeline lines 5 & 6 */
-.fifth, .sixth {display:none;}
-
-.line.util-line{top:28.5vh;left:26.06vw;width:2.8vw;z-index:300;}
-
-/* --- Calendar Grid --- */
-.grid-number{
-  position:absolute;
-  font-family:'Distill Expanded',sans-serif;
-  color:#111;
-  font-size:6.1px;
-  letter-spacing:.28vw;
-  text-shadow:0.011rem 0.011rem 0 #717,-0.011rem -0.011rem 0 #717;
+/* ---------- Calendar Grid ---------- */
+.grid-number, .grid-dashed{
+  position:absolute;z-index:300; /* sits above layer‑four, below layer‑five/six */
   transition:transform .7s ease;
-  z-index:130;               /* above layer‑four, below layer‑five/six */
+}
+.grid-number{
+  font-family:'Distill Expanded',sans-serif;
+  color:#111;font-size:6.1px;letter-spacing:.28vw;
+  text-shadow:0.011rem 0.011rem 0 #717,-0.011rem -0.011rem 0 #717;
 }
 .grid-dashed{
-  position:absolute;
-  height:1px;
-  width:11.8vw;
+  height:1px;width:11.8vw;
   background:linear-gradient(to right,#171 0,#171 5px,#fff 5px,#fff 10px);
-  background-size:10px 1px;
-  transition:transform .7s ease;
-  opacity:.711;
-  z-index:130;
+  background-size:10px 1px;opacity:.711;
 }
 
+/* ---------- Grid Coordinates (#s & dashed rows) ---------- */
+/* (unchanged – generated positions) */
 /* --- Grid Positions --- */
 .num1  { top: 28.5vh; left: 48.8vw; }
 .num2  { top: 28.5vh; left: 63.7vw; }
@@ -122,3 +126,12 @@ body.non-fullscreen{background:#fff;min-height:100vh;min-width:100vw;overflow:hi
 :root[data-util="2"] .grid-dashed{opacity:1;pointer-events:auto;}
 
 /* --- Scroll transform handled via JS (page.tsx) --- */
+
+/* ---------- Utility Toggle ---------- */
+:root[data-util="0"] .grid-number,
+:root[data-util="0"] .grid-dashed{opacity:0;pointer-events:none;}
+
+:root[data-util="2"] .grid-number,
+:root[data-util="2"] .grid-dashed{opacity:1;pointer-events:auto;}
+
+/* ---------- End Styles ---------- */

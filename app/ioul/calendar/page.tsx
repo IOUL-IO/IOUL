@@ -5,22 +5,20 @@ import "./styles.css";
 import React, { useEffect, useRef } from "react";
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  IOULPage (minimal)
-//  - Keeps only:
-//    • Full-screen edge-click toggle
-//    • Mask layers (1-6) and timeline lines (1-6 + util-line)
-//    • Calendar grid numbers & dashed rows (1-31) with scroll logic
-//  - All other UI / util-line functions removed per user request.
+//  IOULPage (cleaned)
+//  • Removed data‑util toggle logic
+//  • Removed timeline lines 5 & 6 (fifth / sixth)
+//  • Calendar grid always visible; stacked above layer‑four and
+//    underneath mask layers 5 & 6.
 // ─────────────────────────────────────────────────────────────────────────────
 
 const IOULPage: React.FC = () => {
-  // 1. Ensure body styles for non-fullscreen view
+  // Ensure body styles for non‑fullscreen view
   useEffect(() => {
     document.body.classList.add("non-fullscreen");
-    document.documentElement.setAttribute("data-util", "2"); // show calendar grid by default
   }, []);
 
-  // 2. Edge-click full-screen toggle (unchanged)
+  // Edge‑click full‑screen toggle
   useEffect(() => {
     const EDGE_MARGIN = 11; // px
     const handleClick = (e: MouseEvent) => {
@@ -53,7 +51,7 @@ const IOULPage: React.FC = () => {
     };
   }, []);
 
-  // 3. Calendar grid scroll (kept)
+  // Calendar grid scroll (unchanged)
   const scrollIdxRef = useRef(0); // 0, 1, 2
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
@@ -77,7 +75,7 @@ const IOULPage: React.FC = () => {
     return () => window.removeEventListener("wheel", handleWheel);
   }, []);
 
-  // 4. Render minimal layout
+  // Render minimal layout
   return (
     <div className="non-fullscreen" translate="no">
       {/* mask layers */}
@@ -96,10 +94,8 @@ const IOULPage: React.FC = () => {
         <div className="line util-line" />
         <div className="line third" />
         <div className="line fourth" />
-        <div className="line fifth" />
-        <div className="line sixth" />
 
-        {/* calendar grid numbers 1-31 */}
+        {/* calendar grid numbers 1‑31 */}
         {Array.from({ length: 31 }, (_, i) => (
           <span
             key={`num${i + 1}`}
@@ -110,7 +106,7 @@ const IOULPage: React.FC = () => {
           </span>
         ))}
 
-        {/* dashed grid lines 01-31 */}
+        {/* dashed grid lines 01‑31 */}
         {Array.from({ length: 31 }, (_, i) => (
           <span
             key={`dash${i + 1}`}

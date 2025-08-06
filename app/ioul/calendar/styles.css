@@ -1,398 +1,106 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Removed dashed lines and time texts animation styles */
-
-.other-content.animate-grid .grid-number,
-.other-content.animate-grid .grid-dashed {
-    transform: translateX(-60vw);
+@font-face {
+    font-family: 'Distill Expanded';
+    src: url('././font.woff2') format('woff2'),
+         url('./font.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
-
-
-
-
-
-
-
-
-
-
-/* Removed slide container animation styles */
-
-/* Hide calendar grid items */
-/* removed display none */
-
-
-
-
-/* Util-line toggle states */
-
-
-
-
-
-
-/* Ensure grid items transition opacity */
-.grid-number,
-.grid-dashed {
-  transition: transform 0.6s ease, opacity 0.4s ease !important;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-
-
-
-/* ── Util-line toggle defaults ── */
-/* Hide mail and calendar by default */
-.other-content .grid-number,
-.other-content .grid-dashed {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  transition: none !important;
+body.non-fullscreen {
+    background: #ffffff;
+    min-height: 100vh;
+    min-width: 100vw;
+    overflow: hidden;
 }
 
+/* ─────────────────────────────────────────────────────────────────── Mask Layers ── */
+.layer-one {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 6.37vw;
+    height: 100vh;
+    background: #ffffff;
+    z-index: 100;
+    pointer-events: none;
+}
 
+.layer-two {
+    position: fixed;
+    top: 0;
+    left: 6.37vw;
+    width: calc(36vw - 6.37vw);
+    height: 100vh;
+    background: #ffffff;
+    z-index: 100;
+    pointer-events: none;
+}
 
-/* Layers 5 & 6 visible by default */
-.layer-five,
+.layer-three {
+    position: fixed;
+    top: 0;
+    left: 94.17vw;
+    width: calc(100vw - 94.17vw);
+    height: 100vh;
+    background: #ffffff;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.layer-four {
+    position: absolute;
+    top: 28.5vh;
+    left: 36vw;
+    width: 61vw;
+    height: 55.5vh;
+    background: #ffffff;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.layer-five {
+    position: absolute;
+    top: 0;
+    left: 36vw;
+    width: 58.7vw;
+    height: 28.4vh;
+    background: #ffffff;
+    z-index: 4;
+    pointer-events: none;
+}
+
 .layer-six {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  transition: none !important;
+    position: absolute;
+    top: 84.7vh;
+    left: 36vw;
+    width: 58.7vw;
+    height: 15.3vh;
+    background: #ffffff;
+    z-index: 4;
+    pointer-events: none;
 }
 
-
-
-/* STATE 1: mail visible, others hidden */
-
-
-
-
-
-/* STATE 2: calendar grid items 1-16 visible, mail & layers hidden */
-
-
-
-
-
-/* Chat hover logic */
-/* UTIL-LINE TOGGLE OVERRIDES */
-
-
-
-
-
-
-
-
-
-/* UTIL-LINE TOGGLE POP OVERRIDES */
-.grid-dashed {
-  transition: none !important;
-  position: relative !important;
-  z-index: 1000 !important;
+/* ─────────────────────────────────────────────────────────────── Timeline Lines ── */
+.line {
+    position: absolute;
+    height: 1px;
+    background: rgba(172, 172, 172, 0.84);
 }
 
-
-
-/* Default: hide mail and calendar grid */
-
-
-
-/* State 1: show mail only */
-
-
-
-
-
-/* State 2: show calendar grid (1–16) only, hide mail and lines 5/6 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* calendar grid overrides */
-.grid-dashed {
-  position: absolute !important;
-  display: none !important;
-  pointer-events: none !important;
-}
-
-
-
-/* override util-line toggles */
-
-
-
-
-
-
-
-/* ensure correct layering */
-.grid-dashed {
-  z-index: 100 !important;
-}
-
-
-
-
-
-
-/* Ensure slide-container sits above util lines */
-
-
-
-/* === CHAT-TEXT HOVER LAYERING FIX === */
-
-
-
-
-
-/* === Chat-text persistent visibility === */
-
-
-
-/* --- Util-line state overrides (authoritative) --- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* --- Keep lines 5 & 6 visible in util state 1 --- */
-
-
-
-/* Added to ensure visibility over layer-four */
-
-.item-text,
-.item-line {
-  z-index: 3;
-}
-
-
-
-
-/* Interaction Hotfix Overrides */
-
-
-
-
-
-
-
-
-/* -- Calendar grid stacking adjustment (July 22 2025) -- */
-.grid-dashed {
-  z-index: 2 !important; /* ensure calendar grid sits beneath layers 5 & 6 */
-}
-
-
-
-/* === PERMANENT VISIBILITY FOR LINES 5 & 6 — 2025-07-23 00:59:10 === */
-/* Undo older util‑state rules that hid the lines */
-
-
-
-
-/* Hide mask layers to reveal page */
-.layer-six{
-  display:none !important;
-}
-
-
-
-/* Force page-content visible */
-
-
-
-
-
-
-/* === Calendar Grid Positioning === */
+.original { top: 12.5vh; left: 6.38vw; width: 22.48vw; z-index: 3; }
+.second  { top: 28.5vh; left: 6.38vw; width: 18.68vw; z-index: 3; }
+.third   { top: 84vh;   left: 6.38vw; width: 22.48vw; z-index: 3; }
+.fourth  { top: 12.5vh; left: 36vw;   width: 57.8vw; z-index: 5; pointer-events: none; }
+.util-line { top: 28.5vh; left: 26.06vw; width: 2.8vw; z-index: 3; }
+
+/* ────────────────────────────────────────────────── Calendar Grid Styling ── */
 .grid-number {
     position: absolute;
     font-family: 'Distill Expanded', sans-serif;
@@ -401,58 +109,8 @@
     letter-spacing: 0.28vw;
     text-shadow: 0.011rem 0.011rem 0 #717171, -0.011rem -0.011rem 0 #717171;
     transition: transform 0.6s ease;
+    z-index: 3;
 }
-
-
-
-.num1  { top: 28.5vh; left: 48.8vw; }
-
-
-.num2  { top: 28.5vh; left: 63.7vw; }
-
-
-.num3  { top: 28.5vh; left: 78.5vw; }
-
-
-.num4  { top: 28.5vh; left: 93.3vw; }
-
-
-.num5  { top: 47vh;   left: 48.8vw; }
-
-
-.num6  { top: 47vh;   left: 63.7vw; }
-
-
-.num7  { top: 47vh;   left: 78.5vw; }
-
-
-.num8  { top: 47vh;   left: 93.3vw; }
-
-
-.num9  { top: 65.5vh; left: 48.8vw; }
-
-
-.num10 { top: 65.5vh; left: 63.3vw; }
-
-
-.num11 { top: 65.5vh; left: 78.3vw; }
-
-
-.num12 { top: 65.5vh; left: 92.9vw; }
-
-
-.num13 { top: 83.7vh; left: 48.3vw; }
-
-
-.num14 { top: 83.7vh; left: 63.2vw; }
-
-
-.num15 { top: 83.7vh; left: 78.0vw; }
-
-
-.num16 { top: 83.7vh; left: 92.8vw; }
-
-
 
 .grid-dashed {
     position: absolute;
@@ -462,269 +120,69 @@
     background-size: 10px 1px;
     transition: transform 0.6s ease;
     opacity: 0.711;
+    z-index: 3;
 }
 
-
-
-.dashed01 { top: 28.5vh; left: 36vw; }
-
-
-.dashed02 { top: 28.5vh; left: 51vw; }
-
-
-.dashed03 { top: 28.5vh; left: 65.9vw; }
-
-
-.dashed04 { top: 28.5vh; left: 80.8vw; }
-
-
-.dashed05 { top: 47vh;   left: 36vw; }
-
-
-.dashed06 { top: 47vh;   left: 51vw; }
-
-
-.dashed07 { top: 47vh;   left: 65.9vw; }
-
-
-.dashed08 { top: 47vh;   left: 80.8vw; }
-
-
-.dashed09 { top: 65.5vh; left: 36vw; }
-
-
-.dashed10 { top: 65.5vh; left: 51vw; }
-
-
-.dashed11 { top: 65.5vh; left: 65.9vw; }
-
-
-.dashed12 { top: 65.5vh; left: 80.8vw; }
-
-
-.dashed13 { top: 84vh;   left: 36vw; }
-
-
-.dashed14 { top: 84vh;   left: 51vw; }
-
-
-.dashed15 { top: 84vh;   left: 65.9vw; }
-
-
-.dashed16 { top: 84vh;   left: 80.8vw; }
-
-
-
+.num1  { top: 28.5vh; left: 48.8vw; }
+.num2  { top: 28.5vh; left: 63.7vw; }
+.num3  { top: 28.5vh; left: 78.5vw; }
+.num4  { top: 28.5vh; left: 93.3vw; }
+.num5  { top: 47vh;   left: 48.8vw; }
+.num6  { top: 47vh;   left: 63.7vw; }
+.num7  { top: 47vh;   left: 78.5vw; }
+.num8  { top: 47vh;   left: 93.3vw; }
+.num9  { top: 65.5vh; left: 48.8vw; }
+.num10 { top: 65.5vh; left: 63.3vw; }
+.num11 { top: 65.5vh; left: 78.3vw; }
+.num12 { top: 65.5vh; left: 92.9vw; }
+.num13 { top: 83.7vh; left: 48.3vw; }
+.num14 { top: 83.7vh; left: 63.2vw; }
+.num15 { top: 83.7vh; left: 78.0vw; }
+.num16 { top: 83.7vh; left: 92.8vw; }
 .num17 { top: 102.2vh; left: 48.3vw; }
-
-
 .num18 { top: 102.2vh; left: 63.2vw; }
-
-
 .num19 { top: 102.2vh; left: 78.0vw; }
-
-
 .num20 { top: 102.2vh; left: 92.8vw; }
-
-
 .num21 { top: 120.7vh; left: 48.3vw; }
-
-
 .num22 { top: 120.7vh; left: 63.2vw; }
-
-
 .num23 { top: 120.7vh; left: 78.0vw; }
-
-
 .num24 { top: 120.7vh; left: 92.8vw; }
-
-
 .num25 { top: 139.2vh; left: 48.3vw; }
-
-
 .num26 { top: 139.2vh; left: 63.2vw; }
-
-
 .num27 { top: 139.2vh; left: 78.0vw; }
-
-
 .num28 { top: 139.2vh; left: 92.8vw; }
-
-
 .num29 { top: 157.7vh; left: 48.3vw; }
-
-
 .num30 { top: 157.7vh; left: 63.2vw; }
-
-
 .num31 { top: 157.7vh; left: 78.0vw; }
 
-
-
+.dashed01 { top: 28.5vh; left: 36vw; }
+.dashed02 { top: 28.5vh; left: 51vw; }
+.dashed03 { top: 28.5vh; left: 65.9vw; }
+.dashed04 { top: 28.5vh; left: 80.8vw; }
+.dashed05 { top: 47vh;   left: 36vw; }
+.dashed06 { top: 47vh;   left: 51vw; }
+.dashed07 { top: 47vh;   left: 65.9vw; }
+.dashed08 { top: 47vh;   left: 80.8vw; }
+.dashed09 { top: 65.5vh; left: 36vw; }
+.dashed10 { top: 65.5vh; left: 51vw; }
+.dashed11 { top: 65.5vh; left: 65.9vw; }
+.dashed12 { top: 65.5vh; left: 80.8vw; }
+.dashed13 { top: 84vh;   left: 36vw; }
+.dashed14 { top: 84vh;   left: 51vw; }
+.dashed15 { top: 84vh;   left: 65.9vw; }
+.dashed16 { top: 84vh;   left: 80.8vw; }
 .dashed17 { top: 102.5vh; left: 36vw; }
-
-
 .dashed18 { top: 102.5vh; left: 51vw; }
-
-
 .dashed19 { top: 102.5vh; left: 65.9vw; }
-
-
 .dashed20 { top: 102.5vh; left: 80.8vw; }
-
-
 .dashed21 { top: 121vh;   left: 36vw; }
-
-
 .dashed22 { top: 121vh;   left: 51vw; }
-
-
 .dashed23 { top: 121vh;   left: 65.9vw; }
-
-
 .dashed24 { top: 121vh;   left: 80.8vw; }
-
-
 .dashed25 { top: 139.5vh; left: 36vw; }
-
-
 .dashed26 { top: 139.5vh; left: 51vw; }
-
-
 .dashed27 { top: 139.5vh; left: 65.9vw; }
-
-
 .dashed28 { top: 139.5vh; left: 80.8vw; }
-
-
 .dashed29 { top: 158vh;   left: 36vw; }
-
-
 .dashed30 { top: 158vh;   left: 51vw; }
-
-
 .dashed31 { top: 158vh;   left: 65.9vw; }
-
-
-
-
-
-/* === Layering Overrides v4 (updated 2025-07-24) === */
-
-/* 0 ▸ Ensure layer divs stay rendered */
-
-
-
-/* 1 ▸ Containers (unchanged from v3) */
-
-
-
-/* 2 ▸ Item rows (unchanged) */
-
-
-
-/* 3 ▸ Timeline lines */
-
-
-
-
-
-/* === End Layering Overrides v4 === */
-
-/* === Layering Overrides v5 (updated 2025-07-24) === */
-
-
-
-
-/* === End Layering Overrides v5 === */
-
-/* Override layer-two position to match original mask stripe width */
-
-
-
-/* === Calendar grid ↧ under layer‑five — 2025‑07‑25 === */
-
-
-
-
-/* === Stacking fix v2 — 2025‑07‑25 === */
-
-
-
-
-/* line 4 */
-.line.fourth,
-.fourth{
-  z-index: 5 !important;         /* stays on top */
-}
-
-
-
-
-/* === Calendar Grid Layering Fix v3 — 2025‑07‑25 === */
-
-
-
-
-.fourth{
-  z-index: 300 !important;        /* always on top */
-}
-
-
-
-
-/* === Calendar Fix v5 — 2025‑07‑25 === */
-.line.fourth, 
-.fourth{
-  position: fixed !important;       /* escape parent stacking context */
-  top: 12.5vh !important;
-  left: 36vw !important;
-  width: 57.8vw !important;
-  height: 1px !important;
-  background-color: rgba(172,172,172,0.84) !important;
-  pointer-events: none !important;
-  opacity: 1 !important;
-  display: block !important;
-  z-index: 10000 !important;        /* ensure visibility over everything */
-}
-
-
-
-
-/* === Calendar Fix v6 — 2025‑07‑25 === */
-
-
-
-
-
-
-/* === Global overflow suppression — 2025‑07‑29 === */
-
-
-/* === Overrides after cleanup (2025‑08‑05) === */
-.grid-dashed {
-  opacity: 1 !important;
-  display: inline-block !important;
-  pointer-events: auto !important;
-}
-
-
-/* === Layering Overrides (2025-08-05) === */
-.layer-four {
-  z-index: 100 !important; /* below grid */
-}
-
-.grid-number,
-.grid-dashed {
-  z-index: 150 !important; /* above layer-four, below layers 5-6 */
-}
-
-.layer-five,
-.layer-six {
-  z-index: 200 !important; /* above grid */
-}
-
-.line.fourth {
-  z-index: 250 !important; /* stays on top of layer-five/six */
-}
-

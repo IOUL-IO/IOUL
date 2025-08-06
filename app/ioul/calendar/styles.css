@@ -50,22 +50,23 @@ body.non-fullscreen{
     position:absolute; top:28.5vh; left:36vw;
     width:61vw; height:55.5vh;
     background:#ffffff;
-    z-index:2; pointer-events:none;
+    z-index:9000; pointer-events:none;
 }
 
-/* Layer‑five is the top white band. Calendar must slide below it. */
+/* Fixed white top bar that grid must slide UNDER */
 .layer-five{
     position:absolute; top:0; left:36vw;
     width:58.7vw; height:28.4vh;
     background:#ffffff;
-    z-index:1000; pointer-events:none;
+    z-index:9500; /* just under line-four (10000) */
+    pointer-events:none;
 }
 
 .layer-six{
     position:absolute; top:84.7vh; left:36vw;
     width:58.7vw; height:15.3vh;
     background:#ffffff;
-    z-index:250; pointer-events:none;
+    z-index:8500; pointer-events:none;
 }
 
 /* ---------------------------------------
@@ -73,19 +74,17 @@ body.non-fullscreen{
 --------------------------------------- */
 .line{
     position:absolute;
-    height:1px;
-    background:rgba(172,172,172,.84);
+    height:1px; background:rgba(172,172,172,.84);
     pointer-events:none;
 }
 
-/* interactive util line */
-.line.util-line{ z-index:120; pointer-events:auto; }
+.line.util-line{ z-index:1100; pointer-events:auto; }
 
-.original { top:12.5vh; left:6.38vw; width:22.48vw; z-index:110; }
-.second   { top:28.5vh; left:6.38vw; width:18.68vw; z-index:110; }
-.third    { top:84vh;   left:6.38vw; width:22.48vw; z-index:110; }
+.original { top:12.5vh; left:6.38vw; width:22.48vw; z-index:1100; }
+.second   { top:28.5vh; left:6.38vw; width:18.68vw; z-index:1100; }
+.third    { top:84vh;   left:6.38vw; width:22.48vw; z-index:1100; }
 
-/* line‑4 must sit above everything */
+/* line-4 must rule over everything except maybe fixed modals */
 .fourth{
     position:fixed;
     top:12.5vh; left:36vw;
@@ -97,7 +96,10 @@ body.non-fullscreen{
 /* ---------------------------------------
    Content container
 --------------------------------------- */
-.other-content{ position:relative; z-index:90; } /* below layer‑five (1000) */
+.other-content{
+    position:relative;
+    z-index:500; /* beneath layer-five (9500) */
+}
 
 /* ---------------------------------------
    Calendar grid
@@ -106,15 +108,17 @@ body.non-fullscreen{
     position:absolute;
     transition:transform .6s ease;
     pointer-events:none;
+    z-index:0; /* keep within .other-content stacking context */
+    will-change: transform;
 }
 
-/* Text styling only for numbers */
+/* Text styling for grid numbers */
 .grid-number{
     font-family:'Distill Expanded', sans-serif;
     color:#111;
     font-size:0.411rem;
     letter-spacing:0.28vw;
-    text-shadow:0.011rem 0.011rem 0 #717171,-0.011rem -0.011rem 0 #717171;
+    text-shadow:0.011rem 0.011rem 0 #717171, -0.011rem -0.011rem 0 #717171;
 }
 
 /* Dashed horizontal rule */
@@ -125,7 +129,7 @@ body.non-fullscreen{
     opacity:.711;
 }
 
-/* Grid-number positions */
+/* positions (unchanged) */
 .num1  { top:28.5vh; left:48.8vw; }
 .num2  { top:28.5vh; left:63.7vw; }
 .num3  { top:28.5vh; left:78.5vw; }
@@ -162,30 +166,30 @@ body.non-fullscreen{
 .dashed02 { top:28.5vh; left:51vw; }
 .dashed03 { top:28.5vh; left:65.9vw; }
 .dashed04 { top:28.5vh; left:80.8vw; }
-.dashed05 { top:47vh; left:36vw; }
-.dashed06 { top:47vh; left:51vw; }
-.dashed07 { top:47vh; left:65.9vw; }
-.dashed08 { top:47vh; left:80.8vw; }
+.dashed05 { top:47vh;   left:36vw; }
+.dashed06 { top:47vh;   left:51vw; }
+.dashed07 { top:47vh;   left:65.9vw; }
+.dashed08 { top:47vh;   left:80.8vw; }
 .dashed09 { top:65.5vh; left:36vw; }
 .dashed10 { top:65.5vh; left:51vw; }
 .dashed11 { top:65.5vh; left:65.9vw; }
 .dashed12 { top:65.5vh; left:80.8vw; }
-.dashed13 { top:84vh; left:36vw; }
-.dashed14 { top:84vh; left:51vw; }
-.dashed15 { top:84vh; left:65.9vw; }
-.dashed16 { top:84vh; left:80.8vw; }
+.dashed13 { top:84vh;   left:36vw; }
+.dashed14 { top:84vh;   left:51vw; }
+.dashed15 { top:84vh;   left:65.9vw; }
+.dashed16 { top:84vh;   left:80.8vw; }
 .dashed17 { top:102.5vh; left:36vw; }
 .dashed18 { top:102.5vh; left:51vw; }
 .dashed19 { top:102.5vh; left:65.9vw; }
 .dashed20 { top:102.5vh; left:80.8vw; }
-.dashed21 { top:121vh; left:36vw; }
-.dashed22 { top:121vh; left:51vw; }
-.dashed23 { top:121vh; left:65.9vw; }
-.dashed24 { top:121vh; left:80.8vw; }
+.dashed21 { top:121vh;  left:36vw; }
+.dashed22 { top:121vh;  left:51vw; }
+.dashed23 { top:121vh;  left:65.9vw; }
+.dashed24 { top:121vh;  left:80.8vw; }
 .dashed25 { top:139.5vh; left:36vw; }
 .dashed26 { top:139.5vh; left:51vw; }
 .dashed27 { top:139.5vh; left:65.9vw; }
 .dashed28 { top:139.5vh; left:80.8vw; }
-.dashed29 { top:158vh; left:36vw; }
-.dashed30 { top:158vh; left:51vw; }
-.dashed31 { top:158vh; left:65.9vw; }
+.dashed29 { top:158vh;  left:36vw; }
+.dashed30 { top:158vh;  left:51vw; }
+.dashed31 { top:158vh;  left:65.9vw; }

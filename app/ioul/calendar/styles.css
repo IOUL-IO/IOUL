@@ -12,9 +12,17 @@ body.non-fullscreen{background:#fff;min-height:100vh;min-width:100vw;}
 /* middle mask below grid */
 .layer-four{position:absolute;top:28.5vh;left:36vw;width:61vw;height:55.5vh;z-index:10;}
 
-/* top & bottom masks fixed at very high z-index */
-.layer-five{position:fixed;top:0;left:36vw;width:58.7vw;height:28.4vh;z-index:2000;}
-.layer-six{position:fixed;top:84.7vh;left:36vw;width:58.7vw;height:15.3vh;z-index:2000;}
+/* top & bottom masks: translateZ(0) to ensure highest composite layer */
+.layer-five,.layer-six{
+  position:fixed;
+  left:36vw;
+  width:58.7vw;
+  background:#fff;
+  z-index:2000;
+  transform:translateZ(0); /* creates its own stacking layer above transforms */
+}
+.layer-five{top:0;height:28.4vh;}
+.layer-six{top:84.7vh;height:15.3vh;}
 
 .line{position:absolute;height:1px;background:rgba(172,172,172,.84);pointer-events:none;}
 .line.original{top:12.5vh;left:6.38vw;width:22.48vw;z-index:2100;}

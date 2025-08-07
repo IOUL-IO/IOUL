@@ -6,17 +6,21 @@
   font-style:normal;
 }
 
-/* —— Reset —— */
 *{margin:0;padding:0;box-sizing:border-box;}
 
+body{
+  overflow:hidden;
+  min-height:100vh;
+  background:#fff;
+}
+
 body.non-fullscreen{
-  background:#ffffff;
+  background:#fff;
   min-height:100vh;
   min-width:100vw;
   overflow:hidden;
 }
 
-/* —— Fixed masking layers —— */
 .layer-one{
   position:fixed;top:0;left:0;width:6.37vw;height:100vh;
   background:#ffffff;z-index:100;pointer-events:none;

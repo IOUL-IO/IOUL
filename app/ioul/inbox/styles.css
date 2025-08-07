@@ -9,12 +9,22 @@
 /* —— Reset —— */
 *{margin:0;padding:0;box-sizing:border-box;}
 
+/* full-screen states — identical proportions */
+body{
+  overflow:hidden;
+  min-height:100vh;
+  background:#fff;
+  /* no transform, no transition */
+}
+
 body.non-fullscreen{
-  background:#ffffff;
+  background:#fff;
   min-height:100vh;
   min-width:100vw;
   overflow:hidden;
+  /* nothing else */
 }
+
 
 /* —— Fixed masking layers —— */
 .layer-one{

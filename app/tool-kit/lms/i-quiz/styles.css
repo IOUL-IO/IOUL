@@ -20,6 +20,7 @@ body.non-fullscreen{
   min-width:100vw;
   overflow:hidden;
 }
+
 .layer-one{
   position:fixed;top:0;left:0;width:6.37vw;height:100vh;
   background:#ffffff;z-index:100;pointer-events:none;

@@ -6,11 +6,16 @@
   font-style:normal;
 }
 
-/* —— Reset —— */
 *{margin:0;padding:0;box-sizing:border-box;}
 
+body{
+  overflow:hidden;
+  min-height:100vh;
+  background:#fff;
+}
+
 body.non-fullscreen{
-  background:#ffffff;
+  background:#fff;
   min-height:100vh;
   min-width:100vw;
   overflow:hidden;
